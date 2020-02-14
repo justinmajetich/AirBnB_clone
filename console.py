@@ -3,7 +3,7 @@
 import cmd
 from models.base_model import BaseModel
 from models.__init__ import storage
-#["BaseModel.376f6e8a-ef80-45b9-9bda-973366b811d9"])
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -77,6 +77,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
         try:
             del(storage._FileStorage__objects[key])
+            storage.save()
         except KeyError:
             print("** no instance found **")
 
@@ -92,10 +93,14 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """ """
         new = args.split(" ")
-        c_name = new[0]
-        c_id = new[1]
-        att_name = new[3]
-        att_val = new[4]
+        try:
+            c_name = new[0]
+            c_id = new[1]
+            att_name = new[2]
+            att_val = new[3]
+        except:
+            pass
+
         if not c_name:
             print("** class name missing **")
             return
@@ -113,11 +118,12 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-        try: 
+        try:
             new_dict = storage._FileStorage__objects[key]
-            new_dict.update({att_name: att_val})
+            new_dict.__dict__.update({att_name: att_val})
+            storage.save()
         except KeyError:
-            print ("** no instance found **")
+            print("** no instance found **")
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
