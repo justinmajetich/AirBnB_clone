@@ -18,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
-        print("Exits the program with formatting")
+        print("Exits the program with formatting\n")
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
@@ -27,14 +27,14 @@ class HBNBCommand(cmd.Cmd):
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
-        print("Exits the program without formatting")
+        print("Exits the program without formatting\n")
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
 
     def do_create(self, args):
-        """ """
+        """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
@@ -44,8 +44,13 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args]()
         print(new_instance.id)
 
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
+
     def do_show(self, args):
-        """ """
+        """ Method to show an individual object """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -67,8 +72,13 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
+    def help_show(self):
+        """ Help information for the show command """
+        print("Shows an individual instance of a class")
+        print("[Usage]: show <className> <objectId>\n")
+
     def do_destroy(self, args):
-        """ """
+        """ Destroys a specified object """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -91,8 +101,13 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
+    def help_destroy(self):
+        """ Help information for the destroy command """
+        print("Destroys an individual instance of a class")
+        print("[Usage]: destroy <className> <objectId>\n")
+
     def do_all(self, args):
-        """ """
+        """ Shows all objects, or all objects of a class"""
         print_list = []
 
         if args:
@@ -108,8 +123,13 @@ class HBNBCommand(cmd.Cmd):
 
         print(print_list)
 
+    def help_all(self):
+        """ Help information for the all command """
+        print("Shows all objects, or all of a class")
+        print("[Usage]: all <className>\n")
+
     def do_update(self, args):
-        """ """
+        """ Updates a certain object with new info """
         new = args.split(" ")
         try:
             c_name = new[0]
@@ -149,6 +169,11 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except KeyError:
             print("** no instance found **")
+
+    def help_update(self):
+        """ Help information for the update class """
+        print("Updates an object with new information")
+        print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
