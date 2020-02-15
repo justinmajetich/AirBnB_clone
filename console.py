@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -13,13 +14,25 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-    prompt = '(hbnb) '
+
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
     intro = ""
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
+
+    def preloop(self):
+        """ """
+        if not sys.__stdin__.isatty():
+            print('(hbnb)')
+
+    def postcmd(self, stop, line):
+        """ """
+        if not sys.__stdin__.isatty():
+            print('(hbnb) ', end='')
+        return stop
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
