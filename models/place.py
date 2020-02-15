@@ -3,7 +3,7 @@
 from models.base_model import BaseModel
 
 
-def Place(BaseModel):
+class Place(BaseModel):
     """ A place to stay """
     city_id = ""
     user_id = ""
