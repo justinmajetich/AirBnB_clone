@@ -9,6 +9,7 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
     prompt = '(hbnb)'
     intro = ""
+    classes = {'BaseModel': BaseModel, 'User': User}
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
@@ -36,10 +37,10 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args != "BaseModel":
+        elif args not in classes:
             print("** class doesn't exist")
             return
-        new_instance = BaseModel()
+        new_instance = classes[args]()
         print(new_instance.id)
 
     def do_show(self, args):
@@ -51,8 +52,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
+        if c_name not in classes:
+            print("** class doesn't exist **")
+            return
+
         if not c_id:
-            print("** class id missing **")
+            print("** instance id missing **")
             return
 
         key = c_name + "." + c_id
@@ -70,8 +75,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
+        if c_name not in classes:
+            print("** class doesn't exist **")
+            return
+
         if not c_id:
-            print("** class id missing **")
+            print("** instance id missing **")
             return
 
         key = c_name + "." + c_id
@@ -83,12 +92,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ """
-        if args != "BaseModel":
-            print("** class doesn't exist **")
-            return
+        print_list = []
 
-        for k, v in storage._FileStorage__objects.items():
-            print(v)
+        if args:
+            if args not in classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in storage._FileStorage__objects.items():
+                if k == args.split('.')[0]:
+                    print_list.append(str(v))
+        else:
+            for k, v in storage._FileStorage__objects.items():
+                print_list.append(str(v))
+
+        print(print_list)
 
     def do_update(self, args):
         """ """
@@ -96,6 +113,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             c_name = new[0]
             c_id = new[1]
+            key = c_name + "." + c_id
             att_name = new[2]
             att_val = new[3]
         except:
@@ -105,8 +123,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
+        if c_name not in classes:
+            print("** class doesn't exist **")
+            return
+
         if not c_id:
-            print("** class id missing **")
+            print("** instance id missing **")
+            return
+        if key not in storage._FileStorage__objects:
+            print("** no instance found **")
             return
 
         if not att_name:
@@ -117,7 +142,6 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
-        key = c_name + "." + c_id
         try:
             new_dict = storage._FileStorage__objects[key]
             new_dict.__dict__.update({att_name: att_val})
