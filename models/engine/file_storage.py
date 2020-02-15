@@ -30,14 +30,13 @@ class FileStorage:
         """Loads storage dictionary from file"""
         from models.base_model import BaseModel
         from models.user import User
+        classes = {'BaseModel': BaseModel, 'User': User}
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    if val['__class__'] == 'BaseModel':
-                        FileStorage.__objects[key] = BaseModel(**val)
-                    if val['__class__'] == 'User':
-                        FileStorage.__objects[key] = User(**val)
+                        FileStorage.__objects[key] =
+                        classes[val['__class__']](**val)
         except IOError:
             pass
