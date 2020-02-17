@@ -15,21 +15,53 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
+    # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-    intro = ""
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
+    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
 
     def preloop(self):
-        """ """
+        """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
+    def precmd(self, line):
+        """Reformat command line for advanced command syntax"""
+        temp = line.partition('.')
+        try:
+            if temp[0] in HBNBCommand.classes and temp[1] is '.' and (temp[2])[0].isalpha():
+                _cls = temp[0]
+                temp = temp[2].partition('(')
+                _cmd = temp[0]
+                if temp[1] == '(' and (temp[2])[0] == ')': 
+                    print(_cmd + ' ' + _cls)
+                    return _cmd + ' ' + _cls
+                elif temp[1] == '(' and (temp[2])[0] == '\"':
+                    temp = temp[2].split('\"')
+                    _id = temp[1]
+                    if temp[2] == ')':
+                        print(_cmd + ' ' + _cls + ' ' + _id)
+                        return _cmd + ' ' + _cls + ' ' + _id
+                else:
+                    return line
+                temp = (''.join(temp[3:-1])).split(', ') 
+
+                temp_line = _cmd + ' ' + _cls + ' ' + _id
+                for arg in temp:
+                    if arg:
+                        temp_line = temp_line + ' ' + arg
+            print(temp_line)
+            return temp_line
+        except:
+            print(line)
+            return line
+
     def postcmd(self, stop, line):
-        """ """
+        """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
@@ -153,6 +185,8 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """ Updates a certain object with new info """
         new = args.split(" ")
+        c_name, c_id, att_name, att_val = '', '', '', ''
+
         try:
             c_name = new[0]
             c_id = new[1]
