@@ -8,34 +8,40 @@ import uuid
 
 class test_basemodel(unittest.TestCase):
     """ """
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = 'BaseModel'
+        self.value = BaseModel
+
     def setUp(self):
         """ """
         pass
 
     def test_default(self):
-        i = BaseModel()
-        self.assertEqual(type(i), BaseModel)
+        i = self.value()
+        self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        i = BaseModel()
+        i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        i = BaseModel()
+        i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
     def test_str(self):
-        i = BaseModel()
-        self.assertEqual(str(i), '[BaseModel] ({}) {}'.format(i.id, i.__dict__))
+        i = self.value()
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id, i.__dict__))
 
     def test_todict(self):
         """ """
-        i = BaseModel()
+        i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
@@ -43,16 +49,16 @@ class test_basemodel(unittest.TestCase):
         """ """
         n = {None: None}
         with self.assertRaises(TypeError):
-            new = BaseModel(**n)
+            new = self.value(**n)
  
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
-            new = BaseModel(**n)
+            new = self.value(**n)
 
     def test_types(self):
-        new = BaseModel()
+        new = self.value()
         self.assertEqual(type(new.id), str)
         self.assertEqual(type(new.created_at), datetime.datetime)
         self.assertEqual(type(new.updated_at), datetime.datetime)
