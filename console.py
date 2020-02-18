@@ -63,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(', ')  # pline convert to tuple
-                print(pline)
 
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
@@ -72,25 +71,19 @@ class HBNBCommand(cmd.Cmd):
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
-                print(pline)
                 if pline:
                     # check for *args or **kwargs
-                    print('Here')
                     if pline[0] is '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
                         _args = _args.replace('\"', '')
-                        print(_args)
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
-            print(mess)
-            print('Exception raised!')
+            pass
         finally:
-            print('Finally! x_x')
-            print(line)
             return line
 
     def postcmd(self, stop, line):
@@ -219,8 +212,9 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: all <className>\n")
 
     def do_count(self, args):
+        """Count current number of class instances"""
         count = 0
-        for k,v in storage._FileStorage__objects.items():
+        for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -259,7 +253,6 @@ class HBNBCommand(cmd.Cmd):
         # first determine if kwargs or args
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
-            print(kwargs)
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
             for k, v in kwargs.items():
                 args.append(k)
@@ -275,8 +268,6 @@ class HBNBCommand(cmd.Cmd):
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
-
-        print(args)
 
         # iterate through attr names and values
         for i, att_name in enumerate(args):
