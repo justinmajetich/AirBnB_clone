@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from json import loads
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -30,33 +31,64 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb)')
 
     def precmd(self, line):
-        """Reformat command line for advanced command syntax"""
-        temp = line.partition('.')
-        try:
-            if temp[0] in HBNBCommand.classes and temp[1] is '.' and (temp[2])[0].isalpha():
-                _cls = temp[0]
-                temp = temp[2].partition('(')
-                _cmd = temp[0]
-                if temp[1] == '(' and (temp[2])[0] == ')': 
-                    print(_cmd + ' ' + _cls)
-                    return _cmd + ' ' + _cls
-                elif temp[1] == '(' and (temp[2])[0] == '\"':
-                    temp = temp[2].split('\"')
-                    _id = temp[1]
-                    if temp[2] == ')':
-                        print(_cmd + ' ' + _cls + ' ' + _id)
-                        return _cmd + ' ' + _cls + ' ' + _id
-                else:
-                    return line
-                temp = (''.join(temp[3:-1])).split(', ') 
+        """Reformat command line for advanced command syntax.
+        
+        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])  
+        (Brackets denote optional fields in usage example.)
+        """
+        _cmd = _cls = _id = _args = ''  # initialize line elements
 
-                temp_line = _cmd + ' ' + _cls + ' ' + _id
-                for arg in temp:
-                    if arg:
-                        temp_line = temp_line + ' ' + arg
-            print(temp_line)
-            return temp_line
-        except:
+        # scan for general formating - i.e '.', '(', ')'
+        if not ('.' in line and '(' in line and ')' in line):
+            print('Did not pass initial syntax scan')
+            return line
+
+        try:  # parse line left to right
+            pline = line[:]  # parsed line
+            
+            # isolate and validate <class name>
+            _cls = pline[:pline.find('.')]
+            if _cls not in HBNBCommand.classes:
+                print('_cls not in classes')
+                raise Exception
+       
+            # isolate and validate <command>
+            _cmd = pline[pline.find('.') + 1:pline.find('(')]
+            if _cmd not in HBNBCommand.dot_cmds:
+                print('_cmd not in dot_cmds')
+                raise Exception
+
+            # if parantheses contain arguments, parse them
+            pline = pline[pline.find('(') + 1:pline.find(')')]
+            if pline:
+                # partition args: (<id>, [<delim>], [<*args>])
+                pline = pline.partition(', ')  # pline convert to tuple
+                print(pline)
+
+                # isolate _id, stripping quotes
+                _id = pline[0].replace('\"', '')
+                # possible bug here:
+                # empty quotes register as empty _id when replaced
+                print('id = ' + _id)
+
+                # if arguments exist beyond _id
+                pline = pline[2].strip() # pline is now str
+                print(pline)
+                if pline:
+                    # check for *args or **kwargs
+                    if type(eval(pline)) is dict:
+                        _args = pline
+                    else:
+                        _args = pline.replace(',', '')
+                        print(_args)
+
+                line = ' '.join([_cmd, _cls, _id, _args])
+
+        except Exception as mess:
+            print(mess)
+            print('Exception raised!')
+        finally:
+            print('Finally! x_x')
             print(line)
             return line
 
@@ -185,6 +217,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """ Updates a certain object with new info """
         new = args.split(" ")
+        print(new)
         c_name, c_id, att_name, att_val = '', '', '', ''
 
         try:
