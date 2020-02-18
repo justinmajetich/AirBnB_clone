@@ -48,9 +48,9 @@ class HBNBCommand(cmd.Cmd):
             
             # isolate and validate <class name>
             _cls = pline[:pline.find('.')]
-            if _cls not in HBNBCommand.classes:
-                print('_cls not in classes')
-                raise Exception
+            # if _cls not in HBNBCommand.classes:
+            #    print('_cls not in classes')
+            #    raise Exception
        
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
                         _args = pline.replace(',', '')
                         print(_args)
 
-                line = ' '.join([_cmd, _cls, _id, _args])
+            line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
             print(mess)
@@ -128,6 +128,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist")
             return
         new_instance = HBNBCommand.classes[args]()
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -197,6 +198,7 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
+            args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
