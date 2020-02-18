@@ -258,7 +258,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(k)
                 args.append(v)
         else:  # isolate args
-            args = args[2].split(' ')
+            args = args[2].replace('\"', '').split(' ')
             try:  # assign
                 att_name = args[0]
                 att_val = args[1]
