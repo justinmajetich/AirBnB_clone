@@ -40,7 +40,6 @@ class HBNBCommand(cmd.Cmd):
 
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
-            print('Did not pass initial syntax scan')
             return line
 
         try:  # parse line left to right
@@ -129,6 +128,7 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[args]()
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -213,6 +213,13 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")
         print("[Usage]: all <className>\n")
+
+    def do_count(self, args):
+        count = 0
+        for k,v in storage._FileStorage__objects.items():
+            if args == k.split('.')[0]:
+                count += 1
+        print(count)
 
     def do_update(self, args):
         """ Updates a certain object with new info """
