@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         elif args not in HBNBCommand.classes:
-            print("** class doesn't exist")
+            print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args]()
         storage.save()
@@ -136,6 +136,11 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -164,6 +169,9 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -177,8 +185,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
+
         try:
-            del(storage._FileStorage__objects[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -225,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_name = args[0]
         else:  # class name not present
             print("** class name missing **")
@@ -236,7 +245,7 @@ class HBNBCommand(cmd.Cmd):
 
         # isolate id from args
         args = args[2].partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_id = args[0]
         else:  # id not present
             print("** instance id missing **")
@@ -275,12 +284,7 @@ class HBNBCommand(cmd.Cmd):
 
             # if att_val was not quoted arg
             if not att_val and args[2]:
-                att_val = args[2]
-            # try:  # assign
-            #    att_name = args[0]
-            #    att_val = args[1]
-            # except IndexError:  # do nothing on KeyError
-            #    pass
+                att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
 
