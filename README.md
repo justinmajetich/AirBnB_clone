@@ -65,7 +65,7 @@ Advanced syntax is implemented for the following commands:
 
     * update - Updates existing attributes an object based on class name and UUID
 
-Examples below.
+<br>
 <br>
 <center> <h2>Examples</h2> </center>
 <h3>Primary Command Syntax</h3>
