@@ -25,4 +25,4 @@ class test_fileStorage(unittest.TestCase):
         thing = new.to_dict()
         new.save()
         new2 = BaseModel(**thing)
-        self.assertEqual(os.path.getsize('file.json'), 10238)
+        self.assertNotEqual(os.path.getsize('file.json'), 0)
