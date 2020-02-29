@@ -1,6 +1,6 @@
 .filters {
+	display: block;
 	background-color: white;
-	float: left;
 	height: 70px;
 	width: 100%;
 	border: 1px solid #DDDDDD;
