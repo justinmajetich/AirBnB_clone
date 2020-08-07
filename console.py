@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -118,13 +119,24 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        my_list = args.split(" ")
+        if my_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        new_instance = HBNBCommand.classes[my_list[0]]()
+        for arg_pair in my_list[1:]:
+            arg_pair = arg_pair.split('=', 1)
+            value = arg_pair[1]
+            if arg_pair[1][0] == '"':
+                value = value[1:-1].replace('_', ' ')
+            else:
+                if "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            setattr(new_instance, arg_pair[0], value)
+        new_instance.save()
+
 
     def help_create(self):
         """ Help information for the create method """
