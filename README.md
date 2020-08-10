@@ -79,9 +79,7 @@ Non-Interactive Mode:
 ___
 **Authors**
 
-Console Developed By Ezra Nobrega <ezra.nobrega@outlook.com>
-
-Justin Majetich <justinmajetich@gmail.com>
+Console Developed By Ezra Nobrega <ezra.nobrega@outlook.com> & Justin Majetich <justinmajetich@gmail.com>
 
 Michael G. - [Github](https://github.com/R6Doc) / [Twitter](https://twitter.com/Docwastaken_)  
 
