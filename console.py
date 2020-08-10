@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from re import search
 
 
 class HBNBCommand(cmd.Cmd):
@@ -118,10 +119,32 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        largs = args.split(" ")
+        if largs[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        rex_str = r"^\w+=\".+\"$"
+        rex_num = r"^\w+=-{0,1}\d+$|^\w+=-{0,1}\d+\.{0,1}\d+$"
+
+        if len(largs) > 1:
+            kw = {}
+            for attribute in largs[1:]:
+                if search(rex_str, attribute):
+                    alist = attribute.split("=")
+                    kw[alist[0]] = alist[1][1: -1].replace("_", " ")
+                elif search(rex_num, attribute):
+                    alist = attribute.split("=")
+                    if "." in alist[1]:
+                        kw[alist[0]] = float(alist[1])
+                    else:
+                        kw[alist[0]] = int(alist[1])
+            new_instance = HBNBCommand.classes[largs[0]]()
+            for name, value in kw.items():
+                setattr(new_instance, name, value)
+        else:
+            new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +342,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
