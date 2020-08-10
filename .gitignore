@@ -1,0 +1,8 @@
+*
+!*.md
+!*.py
+AUTHORS
+!.gitignore
+!tests/*
+!models/*
+!web_static/*
