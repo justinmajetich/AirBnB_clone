@@ -78,7 +78,12 @@ Non-Interactive Mode:
 ![image](https://user-images.githubusercontent.com/60362631/85659352-1272cc00-b67a-11ea-8f92-bf2c0f8bd7e8.png)
 ___
 **Authors**
+
 Console Developed By Ezra Nobrega <ezra.nobrega@outlook.com>
+
 Justin Majetich <justinmajetich@gmail.com>
+
 Michael G. - [Github](https://github.com/R6Doc) / [Twitter](https://twitter.com/Docwastaken_)  
+
 Juan Camilo Acevedo - [Github](https://github.com/acamilojuan) / [Twitter](https://twitter.com/camilojace)
+
