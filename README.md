@@ -1,142 +1,84 @@
-<center> <h1>HBNB - The Console</h1> </center>
+# Welcome to the AirBnB clone project! (The Holberton B&B)
+___
+![hbnb clone](https://user-images.githubusercontent.com/60371540/86303135-83f9cf80-bbd0-11ea-88d1-e19c4441c4b8.png)
+___
+                        AirBnB clone project repository for Holberton School
+___
+![Part of process](https://user-images.githubusercontent.com/60371540/86302417-3e3c0780-bbce-11ea-907c-9a5a2be9ef7f.png)
+___
+![pld](https://user-images.githubusercontent.com/60371540/86388061-b56aad80-bc59-11ea-94e8-f070e0922462.png)
+___
+ **General Concepts**
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+    How to create a Python package
 
----
+    How to create a command interpreter in Python using the cmd module
 
-<center><h3>Repository Contents by Project Task</h3> </center>
+    What is Unit testing and how to implement it in a large project
 
-| Tasks | Files | Description |
-| ----- | ----- | ------ |
-| 0: Authors/README File | [AUTHORS](https://github.com/justinmajetich/AirBnB_clone/blob/dev/AUTHORS) | Project authors |
-| 1: Pep8 | N/A | All code is pep8 compliant|
-| 2: Unit Testing | [/tests](https://github.com/justinmajetich/AirBnB_clone/tree/dev/tests) | All class-defining modules are unittested |
-| 3. Make BaseModel | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a parent class to be inherited by all model classes|
-| 4. Update BaseModel w/ kwargs | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Add functionality to recreate an instance of a class from a dictionary representation|
-| 5. Create FileStorage class | [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/_ _init_ _.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/__init__.py) [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a class to manage persistent file storage system|
-| 6. Console 0.0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Add basic functionality to console program, allowing it to quit, handle empty lines and ^D |
-| 7. Console 0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Update the console with methods allowing the user to create, destroy, show, and update stored data |
-| 8. Create User class | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) | Dynamically implements a user class |
-| 9. More Classes | [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) [/models/place.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/place.py) [/models/city.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/city.py) [/models/amenity.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/amenity.py) [/models/state.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/state.py) [/models/review.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/review.py) | Dynamically implements more classes |
-| 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
-<br>
-<br>
-<center> <h2>General Use</h2> </center>
+    How to serialize and deserialize a Class
 
-1. First clone this repository.
+    How to write and read a JSON file
 
-3. Once the repository is cloned locate the "console.py" file and run it as follows:
-```
-/AirBnB_clone$ ./console.py
-```
-4. When this command is run the following prompt should appear:
-```
-(hbnb)
-```
-5. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
+    How to manage datetime
 
-##### Commands
-    * create - Creates an instance based on given class
+    What is an UUID
 
-    * destroy - Destroys an object based on class and UUID
+    What is *args and how to use it
 
-    * show - Shows an object based on class and UUID
+    What is **kwargs and how to use it
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+    How to handle named arguments in a function
+___
+ **Output**
 
-    * update - Updates existing attributes an object based on class name and UUID
+Do you remember the Shell? It’s exactly the same but limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
 
-    * quit - Exits the program (EOF will as well)
+    Create a new object (ex: a new User or a new Place)
 
+    Retrieve an object from a file, a database etc…
 
-##### Alternative Syntax
-Users are able to issue a number of console command using an alternative syntax:
+    Do operations on objects (count, compute stats, etc…)
 
-	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
-Advanced syntax is implemented for the following commands: 
+    Update attributes of an object
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+    Destroy an object
+___
+**Runing**
 
-	* count - Return number of object instances by class
+The console will be ran this way:
 
-    * show - Shows an object based on class and UUID
+**./console.py**
+___
+**Learning Objectives**
 
-	* destroy - Destroys an object based on class and UUID
+At the end of this project, we have been meant to be able to explain to anyone, without the help of Google, how does the command interpreter to manage our AirBnB objects works.
+___
+**Commands into the console**
 
-    * update - Updates existing attributes an object based on class name and UUID
+    quit
+    EOF
+    help
+    create
+    update
+    show
+    destroy
+___
+**Basic usage**
 
-<br>
-<br>
-<center> <h2>Examples</h2> </center>
-<h3>Primary Command Syntax</h3>
+(hbnb) <'command_name'> <'model_name'>
+___
+**Example**
+Interactive Mode:
 
-###### Example 0: Create an object
-Usage: create <class_name>
-```
-(hbnb) create BaseModel
-```
-```
-(hbnb) create BaseModel
-3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb)                   
-```
-###### Example 1: Show an object
-Usage: show <class_name> <_id>
+![image](https://user-images.githubusercontent.com/60362631/85659218-e8210e80-b679-11ea-84ec-f115219efa22.png)
 
-```
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
-(hbnb)  
-```
-###### Example 2: Destroy an object
-Usage: destroy <class_name> <_id>
-```
-(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-** no instance found **
-(hbnb)   
-```
-###### Example 3: Update an object
-Usage: update <class_name> <_id>
-```
-(hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
-(hbnb) show BaseModel b405fc64-9724-498f-b405-e4071c3d857f
-[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
-(hbnb)
-```
-<h3>Alternative Syntax</h3>
+Non-Interactive Mode:
 
-###### Example 0: Show all User objects
-Usage: <class_name>.all()
-```
-(hbnb) User.all()
-["[User] (99f45908-1d17-46d1-9dd2-b7571128115b) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92071), 'id': '99f45908-1d17-46d1-9dd2-b7571128115b', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92056)}", "[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-
-###### Example 1: Destroy a User
-Usage: <class_name>.destroy(<_id>)
-```
-(hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-###### Example 2: Update User (by attribute)
-Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'name': 'Todd the Toad', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-###### Example 3: Update User (by dictionary)
-Usage: <class_name>.update(<_id>, <dictionary>)
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-<br>
+![image](https://user-images.githubusercontent.com/60362631/85659352-1272cc00-b67a-11ea-8f92-bf2c0f8bd7e8.png)
+___
+**Authors**
+Console Developed By Ezra Nobrega <ezra.nobrega@outlook.com>
+Justin Majetich <justinmajetich@gmail.com>
+Michael G. - [Github](https://github.com/R6Doc) / [Twitter](https://twitter.com/Docwastaken_)  
+Juan Camilo Acevedo - [Github](https://github.com/acamilojuan) / [Twitter](https://twitter.com/camilojace)
