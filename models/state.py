@@ -5,4 +5,10 @@ from models.base_model import BaseModel
 
 class State(BaseModel):
     """ State class """
+    valid_attr = ['name']
     name = ""
+    def __init__(self, *args, **kwargs):
+        super(State, self).__init__()
+        for key in self.valid_attr:
+            if key in kwargs:
+                setattr(self, key, kwargs[key])
