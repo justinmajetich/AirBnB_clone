@@ -35,10 +35,18 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
+        members = [attr for attr in dir(self)
+                   if not callable(getattr(self, attr)) and not
+                   attr.startswith("__")]
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+
+        #for key in self.__class__.__dict__:
+        #    if key in members:
+        #            dictionary[key] = self.__class__.__dict__[key]
+
         return dictionary

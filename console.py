@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,17 +115,46 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """ Create an object of any class
+        Command syntax: create <Class name> <param 1> <param 2> <param 3>...
+        Param syntax: <key name>=<value>
+        Value syntax:
+        String: "<value>" => starts with a double quote
+        any double quote inside the value must be escaped with a backslash \
+        all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name="My_little_house"
+        Float: <unit>.<decimal> => contains a dot .
+        Integer: <number> => default case """
+        lista = args.split()
+        if not lista:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif lista[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[lista[0]]()
+        for param in lista[1:]:
+            if self.param_ver(param):
+                lt = param.split("=")
+                if lt[1][0] == "\"" and lt[1][-1] == "\"":
+                    lt[1] = lt[1][1:-1]
+                else:
+                    try:
+                        lt[1] = int(lt[1])
+                    except ValueError:
+                        lt[1] = float(lt[1])
+                if self.var_in_class(new_instance, lt[0]):
+                    setattr(new_instance, lt[0], lt[1])
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+
+    def var_in_class(self, instance, var):
+        """ checks if var is a global var """
+        members = [attr for attr in dir(instance)
+                   if not callable(getattr(instance, attr)) and not
+                   attr.startswith("__")]
+        if var not in members:
+            return False
+        return True
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +349,17 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    def param_ver(self, string):
+        """ verifies if params is acceptable name="California" """
+        p_str = re.compile('\w+="\w+"')
+        p_float = re.compile('\w+=\d+\.\d+')
+        p_int = re.compile('\w+=\d+')
+        if p_str.match(string) == None and\
+            p_float.match(string) == None and\
+            p_int.match(string) == None:
+            return False
+        return True
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

@@ -15,6 +15,8 @@ class FileStorage:
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        print("filestorage:",FileStorage.__objects)
+        print("new_object:", obj.to_dict())
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -23,6 +25,7 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
+            print("dict_to_save:", temp)
             json.dump(temp, f)
 
     def reload(self):
