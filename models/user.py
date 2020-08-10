@@ -9,3 +9,10 @@ class User(BaseModel):
     password = ''
     first_name = ''
     last_name = ''
+    valid_attr = ['email', 'password', 'first_name', 'last_name']
+
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__()
+        for key in self.valid_attr:
+            if key in kwargs:
+                setattr(self, key, kwargs[key])

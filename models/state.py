@@ -5,8 +5,9 @@ from models.base_model import BaseModel
 
 class State(BaseModel):
     """ State class """
-    valid_attr = ['name']
     name = ""
+    valid_attr = ['name']
+
     def __init__(self, *args, **kwargs):
         super(State, self).__init__()
         for key in self.valid_attr:
