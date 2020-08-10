@@ -1,29 +1,29 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""  Tests for review """
+
+import unittest
+import models
 from models.review import Review
+from models.base_model import BaseModel
 
 
-class test_review(test_basemodel):
-    """ """
+class review_tests(unittest.TestCase):
+    """ Tests for review file """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Review"
-        self.value = Review
+    def test_reviewsub(self):
+        """ Test for the subclass review """
+        instance = Review()
+        self.assertIsInstance(instance, BaseModel)
+        self.assertTrue(hasattr(instance, "id"))
+        self.assertTrue(hasattr(instance, "created_at"))
+        self.assertTrue(hasattr(instance, "updated_at"))
 
-    def test_place_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.place_id), str)
-
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
-
-    def test_text(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.text), str)
+    def test_reviewname(self):
+        """ Test for the name"""
+        instance = Review()
+        self.assertTrue(hasattr(instance, "place_id"))
+        self.assertEqual(instance.place_id, "")
+        self.assertTrue(hasattr(instance, "user_id"))
+        self.assertEqual(instance.user_id, "")
+        self.assertTrue(hasattr(instance, "text"))
+        self.assertEqual(instance.user_id, "")

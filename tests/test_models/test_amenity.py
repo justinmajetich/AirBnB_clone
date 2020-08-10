@@ -1,19 +1,25 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+""" Test amenity """
+
+import unittest
+import models
 from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
-class test_Amenity(test_basemodel):
-    """ """
+class amenity_tests(unittest.TestCase):
+    """ Test for amenity file """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    def test_amenity(self):
+        """ Test the subclass amenity """
+        inst = Amenity()
+        self.assertIsInstance(inst, BaseModel)
+        self.assertTrue(hasattr(inst, "id"))
+        self.assertTrue(hasattr(inst, "created_at"))
+        self.assertTrue(hasattr(inst, "updated_at"))
 
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_amenityname(self):
+        """ Test if the name exists """
+        instance = Amenity()
+        self.assertTrue(hasattr(instance, "name"))
+        self.assertEqual(instance.name, "")
