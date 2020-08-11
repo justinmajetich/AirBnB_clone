@@ -40,10 +40,11 @@ class DBStorage:
                 key = cls.__name__ + '.' + row.id
                 instances[key] = row
         else:
-            class_instances = self.__session.query(User, Place, State, City).all()
+            class_instances = self.__session.query(User, Place, State, City,
+                                                   Amenity, Review).all()
             for class_ins in class_instances:
                 for obj in class_ins:
-                    instances[obj.__class__.__name__ + '.' + obj.id] = obj  
+                    instances[obj.__class__.__name__ + '.' + obj.id] = obj
         return instances
 
     def new(self, obj):
