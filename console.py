@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -114,26 +115,45 @@ class HBNBCommand(cmd.Cmd):
         """Override the emptyline method of CMD."""
         pass
 
+    def validate_str(self, strs):
+        """validate"""
+        string = ""
+        if '_' in str:
+            av = str.split('_')
+            for s in av:
+                string += s
+            return string
+        return strs
+
     def do_create(self, args):
         """Create an object of any class."""
-        argv = shlex.split(args)
+        argv = args.split(' ')
         new_dict = {}
+        value = ""
         for i in range(1, len(argv)):
             parameter = argv[i].split('=')
             key = parameter[0]
-            value = parameter[1]
+            s = parameter[1]
+            if s[0] != '"':
+                if '.' in s:
+                    value = float(s)
+                else:
+                    value = int(s)
+            else:
+                value1 = s.replace('_', ' ')
+                value = value1.replace('"', '')
             new_dict.update({key: value})
-
-        # print(new_dict)
-        # print(len(argv))
         if not args:
             print("** class name missing **")
             return
         elif argv[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[argv[0]](new_dict)
-        storage.save()
+        if (len(argv) >= 1):
+            new_instance = HBNBCommand.classes[argv[0]](**new_dict)
+        else:
+            new_instance = HBNBCommand.classes[argv[0]]()
+
         print(new_instance.id)
         storage.save()
 
@@ -227,12 +247,12 @@ class HBNBCommand(cmd.Cmd):
         print(print_list)
 
     def help_all(self):
-        """ Help information for the all command """
+        """Help information for the all command."""
         print("Shows all objects, or all of a class")
         print("[Usage]: all <className>\n")
 
     def do_count(self, args):
-        """Count current number of class instances"""
+        """Count current number of class instances."""
         count = 0
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
@@ -291,10 +311,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -327,7 +347,7 @@ class HBNBCommand(cmd.Cmd):
         new_dict.save()  # save updates to file
 
     def help_update(self):
-        """ Help information for the update class """
+        """Help information for the update class."""
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
