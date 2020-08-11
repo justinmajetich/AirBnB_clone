@@ -20,7 +20,8 @@ class FileStorage:
 
     def delete(self, obj=None):
         """deletes obj from __objects"""
-        print("THE OBJECT ISsssss: {}".format(obj))
+        if not obj:
+            return
         try:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except:
