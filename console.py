@@ -116,22 +116,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        # args_list = args.split(" ")
         if len(args) == 0:
             print("** class name missing **")
             return
-        # elif args_list[0] not in HBNBCommand.classes:
-        #     print("** class doesn't exist **")
-        #     return
         try:
-            args_c = shlex.split(args)
+            args_list = shlex.split(args)
+            # ['State', 'name=California']
             new_dict = {}
-            for elem in args_c[1:]:
+            for elem in args_list[1:]:
                 new_arg = elem.split("=")
+                # ['name', 'California']
                 new_dict[new_arg[0]] = new_arg[1]
+                # new_dict[name] = 'California'
 
-            new_instance = HBNBCommand.classes[args_c[0]]()
-            print(args_c[0])
+            new_instance = HBNBCommand.classes[args_list[0]]()
             for key, value in new_dict.items():
                 if "_" in value:
                     value = value.replace("_", " ")
