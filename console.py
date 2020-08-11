@@ -129,9 +129,10 @@ class HBNBCommand(cmd.Cmd):
         kwargs = dict()
         for pair in attributes:
             x = pair.partition("=")
-            kwargs[x[0]]=x[2]
-        print(kwargs)
-        new_instance = HBNBCommand.classes[className]()
+            value = x[2].replace("\"", '')
+            kwargs[x[0]]= value
+            print(kwargs)
+        new_instance = HBNBCommand.classes[className](**kwargs)
         storage.save()
         print(new_instance.id)
         storage.save()
