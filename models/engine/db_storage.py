@@ -6,10 +6,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from models.base_model import Base
-from models.state import State
-from models.city import City
 from models.user import User
 from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class DBStorage:
@@ -38,13 +40,10 @@ class DBStorage:
                 key = cls.__name__ + '.' + row.id
                 instances[key] = row
         else:
-            clases = [State, City]
-            for clase in clases:
-                records = self.__session.query(clase).all()
-
-                for record in records:
-                    key = "{}.{}".format(type(record).__name__, record.id)
-                    instances[key] = record
+            class_instances = self.__session.query(User, Place, State, City).all()
+            for class_ins in class_instances:
+                for obj in class_ins:
+                    instances[obj.__class__.__name__ + '.' + obj.id] = obj  
         return instances
 
     def new(self, obj):

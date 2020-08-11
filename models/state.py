@@ -17,8 +17,8 @@ class State(BaseModel, Base):
     def cities(self):
         """Returns the list of City instances for current state"""
         state_cities = []
-        cities_all = Filestorage.all(City)
-        for city in cities_all.values():
+        cities_all = self.cities
+        for city in cities_all:
             if city.state_id == self.id:
                 state_cities.append(city)
         return state_cities
