@@ -29,6 +29,16 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    list_instances = {
+        'User': ['email', 'password', 'first_name', 'last_name'],
+        'Place': ['city_id', 'user_id', 'name', 'description',
+                  'number_rooms = 0', 'number_bathrooms', 'max_guest',
+                  'price_by_night', 'latitude', 'longitude', 'amenity_ids'],
+        'State': ['name'],
+        'City': ['state_id', 'name'],
+        'Amenity': ['name'],
+        'Review': ['place_id', 'user_id', 'text'],
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -115,16 +125,48 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        # create whit given parameters if args > 1 otherwhise create normally .
+        n_args = args.split()
+        if len(n_args) <= 1:
+            if not args:
+                print("** class name missing **")
+                return
+            elif args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[args]()
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+        else:
+            if n_args[0] in HBNBCommand.classes:
+                # create new_istance and set atributes
+                new_instance = HBNBCommand.classes[n_args[0]]()
+                for i in range(1, len(n_args)):
+                    if '=' in n_args[i]:
+                        param = n_args[i].split('=')
+                        if (param[1][0] == '"' and param[0] in
+                           HBNBCommand.list_instances[n_args[0]]):
+                                # elimina comillas.
+                                if param[1].endswith('"'):
+                                    param[1] = param[1][1:-1]
+                                else:
+                                    param[1] = param[1][1:]
+                                param[1] = param[1].replace('"', '\"')
+                                param[1] = param[1].replace('_', ' ')
+                        elif (param[1][0] != '"' and '.' in param[1] and
+                              param[0] in HBNBCommand.list_instances[
+                             n_args[0]]):
+                            param[1] = float(param[1])
+                        elif (param[1].isdigit() and
+                              param[0] in HBNBCommand.list_instances[
+                             n_args[0]]):
+                            param[1] = int(param[1])
+                        # set atribuestes given in comand line.
+                        setattr(new_instance, param[0], param[1])
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
