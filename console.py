@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+        }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+        }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -126,27 +126,24 @@ class HBNBCommand(cmd.Cmd):
 
         if args[2]:
             dic_values = {}
+            new_instance = HBNBCommand.classes[args[0]]()
             # Split string for remove "_"
             for row in args[2].split():
                 row = row.partition("=")
                 key = row[0]
                 value = row[2]
-                # Create a new dictionary whit out "_"
+                # Create a new dictionary whitout "_"
                 if "\"" in value:
-                    value = value[1:-1]
-                    value = value.replace("_", " ")
+                    value = value[1:-1].replace("_", " ")
                 elif "." in value:
                     value = float(value)
                 else:
                     value = int(value)
-                dic_values.update({key: value})
-
-        new_instance = HBNBCommand.classes[args[0]]()
-        storage.save()
+                setattr(new_instance, key, value)
+        else:
+            new_instance = HBNBCommand.classes[args]()
+        new_instance.save()
         print(new_instance.id)
-        args_update = args[0]+" "+str(new_instance.id)+" "+str(dic_values)
-        HBNBCommand.do_update(self, args_update)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
