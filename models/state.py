@@ -4,7 +4,7 @@ from models.base_model import BaseModel
 from models.base_model import BaseModel, Base
 from sqlalchemy import Table, Column, Integer, String
 from models.city import City
-
+from sqlalchemy.orm import relationship, backref
 
 class State(BaseModel, Base):
     """ State class """
