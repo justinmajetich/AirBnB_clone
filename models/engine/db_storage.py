@@ -40,11 +40,15 @@ class DBStorage:
                 key = cls.__name__ + '.' + row.id
                 instances[key] = row
         else:
-            class_instances = self.__session.query(User, Place, State, City,
-                                                   Amenity, Review).all()
-            for class_ins in class_instances:
-                for obj in class_ins:
-                    instances[obj.__class__.__name__ + '.' + obj.id] = obj
+            clases = [User, Place, State, City, Amenity, Review]
+            for clase in clases:
+                try:
+                    records = self.__session.query(clase).all()
+                except Exception:
+                    continue
+                for record in records:
+                    key = "{}.{}".format(type(record).__name__, record.id)
+                    instances[key] = record
         return instances
 
     def new(self, obj):
