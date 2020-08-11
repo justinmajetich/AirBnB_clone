@@ -24,9 +24,10 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete a object to storage dictionary"""
-        key = obj.to_dict()['__class__'] + '.' + obj.id
-        if key in self.all():
-            self.all().pop(key)
+        if obj is not None:
+            key = obj.to_dict()['__class__'] + '.' + obj.id
+            if key in self.all():
+                self.all().pop(key)
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
