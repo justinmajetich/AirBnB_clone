@@ -12,6 +12,7 @@ from models.review import Review
 from models.user import User
 from models.engine.file_storage import FileStorage
 import models
+import pep8
 import os
 
 
@@ -32,6 +33,12 @@ class test_fileStorage(unittest.TestCase):
             os.remove('file.json')
         except:
             pass
+
+    def test_base_pep8(self):
+        """Test for pep8"""
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(['./models/engine/file_storage.py'])
+        self.assertEqual(result.total_errors, 0)
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
