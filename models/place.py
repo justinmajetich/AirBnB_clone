@@ -10,13 +10,13 @@ class Place(BaseModel, Base):
     city_id = (String(60), ForeignKey('cities.id'), nullable=False)
     user_id = (String(60), ForeignKey('users.id'), nullable=False)
     name = (String(128), nullable=False)
-    description = (String(1024), nullable=False)
+    description = (String(1024), nullable=True)
     number_rooms = (Integer, nullable=False, default=0)
     number_bathrooms = (Integer, nullable=False, default=0)
     max_guest = (Integer, nullable=False, default=0)
     price_by_night = (Integer, nullable=False, default=0)
-    latitude = (Float, nullable=False)
-    longitude = (Float, nullable=False)
+    latitude = (Float, nullable=True)
+    longitude = (Float, nullable=True)
     amenity_ids = []
 
     reviews = relationship("Review", backref="place", cascade="all, delete")
