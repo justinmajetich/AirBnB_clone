@@ -23,16 +23,17 @@ This project focuses on updating The Console to allow storage abstraction using 
 <br>
 <br>
 <center> <h2>Lessons Learned</h2> </center>
-* What is Unit testing & how to implement it in a large project.
-* What is `*args` & how to use it.
-* What is `**kwargs` & how to use it.
-* How to handle named arguments in a function.
-* How to create a MySQL database.
-* How to create a MySQL user & grant it privileges.
-* What ORM means.
-* How to map a Python Class to a MySQL table.
-* How to handle 2 different storage engines with the same codebase.
-* How to use environment variables.
+<ul>
+  <li>What is Unit testing & how to implement it in a large project</li>
+  <li>What is `*args` & how to use it</li>
+  <li>What is `**kwargs` & how to use it</li>
+  <li>How to handle named arguments in a function</li>
+  <li>How to create a MySQL database</li>
+  <li>How to create a MySQL user & grant it privileges</li>
+  <li>What ORM means</li>
+  <li>How to map a Python Class to a MySQL table</li>
+  <li>How to handle 2 different storage engines with the same codebase</li>
+  <li>How to use environment variables</li>
 
 
 <center> <h2>General Use</h2> </center>
