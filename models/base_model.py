@@ -33,11 +33,7 @@ class BaseModel:
 
             if '__class__' in kwargs.keys():
                 del kwargs['__class__']
-            # print("**********************************************")
-            # print(kwargs)
-            # print("**********************************************")
             self.__dict__.update(kwargs)
-            # print(self.__dict__)
             storage.new(self)
 
     def __str__(self):
