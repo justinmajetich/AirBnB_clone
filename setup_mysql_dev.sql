@@ -1,4 +1,4 @@
--- script that creates the MySQL server user user_0d_1. Create states table in hbtn_0e_0_usa with some data
+-- This script script that prepares the hbnb_dev_db MySQL server for the project.
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost';
 SET PASSWORD FOR 'hbnb_dev'@'localhost' = PASSWORD('hbnb_dev_pwd');
