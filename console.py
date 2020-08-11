@@ -124,13 +124,29 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args_tokken[0]]()
-        param = args_tokken[2].split()
+        param = args_tokken[2]
+        #print(param)
         new_list = []
-        for items in param:
-                new_list.append(items.split('='))
-        
+        param = param.partition(' ')
+        while param != ('', '', ''):
+            new_list.append(param[0])
+            param = param[2]
+            param = param.partition(' ')
+        for i in range(0, len(new_list)-1):
+            if i < len(new_list):
+                if '=' not in new_list[i]:
+                    new_list[i-1] = new_list[i-1] + " {}".format(new_list[i])
+                    new_list.pop(i)
+                if '=' not in new_list[i]:
+                    new_list[i-1] = new_list[i-1] + " {}".format(new_list[i])
+                    new_list.pop(i)
+        for i in range(len(new_list)):
+            new_list[i] = new_list[i].split('=')
+        for i in range(len(new_list)):
+            new_list[i][1] = new_list[i][1].replace('_', ' ')
         args = '{} {} {}'.format(args_tokken[0], new_instance.id, dict(new_list))
         args = args.replace('"', '')
+        #print(args)
         storage.save()
         print(new_instance.id)
         storage.save()
