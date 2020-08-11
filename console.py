@@ -115,15 +115,37 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        c_name = c_key = c_value = ''
+        args = args.partition(" ")
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        if args[2]:
+            dic_values = {}
+            # Split string for remove "_"
+            for row in args[2].split():
+                row = row.partition("=")
+                key = row[0]
+                value = row[2]
+                # Create a new dictionary whit out "_"
+                if "\"" in value:
+                    value = value[1:-1]
+                    value = value.replace("_", " ")
+                elif "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                dic_values.update({key: value})
+
+        new_instance = HBNBCommand.classes[args[0]]()
         storage.save()
         print(new_instance.id)
+        args_update = args[0]+" "+str(new_instance.id)+" "+str(dic_values)
+        HBNBCommand.do_update(self, args_update)
         storage.save()
 
     def help_create(self):
