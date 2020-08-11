@@ -9,3 +9,22 @@ class User(BaseModel):
     password = ''
     first_name = ''
     last_name = ''
+    """needs to inherit from base (task six, update basemodel)"""
+
+    """
+   Add or replace in the class User:
+        class attribute __tablename__
+        represents the table name, users
+   class attribute email
+        represents a column containing a string (128 characters)
+        can’t be null
+   class attribute password
+        represents a column containing a string (128 characters)
+        can’t be null
+   class attribute first_name
+        represents a column containing a string (128 characters)
+        can be null
+   class attribute last_name
+        represents a column containing a string (128 characters)
+        can be null
+""" 
