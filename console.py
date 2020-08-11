@@ -32,13 +32,22 @@ Return:
             new_str += var[i]
         return new_str
 
-    for i in var:
-        if i == ".":
-            a += 1
-    if a == 0:
-        return int(var)
     else:
-        return float(var)
+        for i in var:
+            if i == ".":
+                a += 1
+        if a == 0:
+            try:
+                my_int = int(var)
+                return (my_int)
+            except:
+                pass
+        else:
+            try:
+                my_float = float(var)
+                return (my_float)
+            except:
+                pass
 
 
 class HBNBCommand(cmd.Cmd):
@@ -157,7 +166,8 @@ class HBNBCommand(cmd.Cmd):
             if i != var[0]:
                 key_value = i.split("=")
                 k = parsing(key_value[1])
-                setattr(new_instance, key_value[0], k)
+                if k is not None:
+                    setattr(new_instance, key_value[0], k)
 
         print(new_instance.id)
         storage.save()
