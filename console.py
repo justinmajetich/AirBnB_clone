@@ -131,10 +131,18 @@ class HBNBCommand(cmd.Cmd):
                     if not x:
                         return
                     else:
-                        if re.search("^[\"](.*[\"])?$", argu.split("=")[1]):
-                            arg_dict[argu.split("=")[0]] = argu.split("=")[1][1:-1]
+                        key = argu.split("=")[0]
+                        value = argu.split("=")[1]
+                        if re.search("^[\"](.*[\"])?$", value):
+                            arg_dict[key] = value[1:-1].replace("_", " ")
                         else:
-                            arg_dict[argu.split("=")[0]] = argu.split("=")[1]
+                            if "." in value:
+                                arg_dict[key] = float(value)
+                            else:
+                                try:
+                                    arg_dict[key] = int(value)
+                                except ValueError:
+                                    return
         new_instance = HBNBCommand.classes[list_arguments[0]]()
         new_instance.__dict__.update(arg_dict)
         storage.save()
