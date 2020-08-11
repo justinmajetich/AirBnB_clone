@@ -1,6 +1,6 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-This project focuses on updating The Console to allow storage abstraction using MySQL & SQLAlchemy.
+This project focuses on updating The Console to allow storage abstraction using MySQL & SQLAlchemy!!
 
 ---
 
