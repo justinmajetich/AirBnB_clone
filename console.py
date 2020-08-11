@@ -128,10 +128,8 @@ class HBNBCommand(cmd.Cmd):
         new_list = []
         for items in param:
                 new_list.append(items.split('='))
-        args = '{} {} '.format(args_tokken[0], new_instance.id)
-        for sub_l in new_list:
-            for str_l in sub_l:
-                args = args + '{} '.format(str_l)
+        
+        args = '{} {} {}'.format(args_tokken[0], new_instance.id, dict(new_list))
         args = args.replace('"', '')
         storage.save()
         print(new_instance.id)
