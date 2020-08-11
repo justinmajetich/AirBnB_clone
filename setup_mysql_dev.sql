@@ -1,4 +1,4 @@
--- This script prepares a MySQL server for the project.
+-- This script prepare a MySQL server for the project.
 -- Task 3 - MySQL setup development.
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 USE hbnb_dev_db;
