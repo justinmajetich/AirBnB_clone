@@ -23,20 +23,12 @@ Return:
     new_str = ""
     j = 0
     if var[0] == '"' and var[-1] == '"':
-        for i in range(1, len(var) - 1):
-            # if var[i] == '"':
-            #     new_str += ''
-            if var[i] == '_':
-                new_str += ' '
-                continue
-            new_str += var[i]
+        new_str = var.strip('"').replace("_", " ")
         return new_str
 
+    # check for a non string like a number int or float
     else:
-        for i in var:
-            if i == ".":
-                a += 1
-        if a == 0:
+        if (var.find(".") == -1):
             try:
                 my_int = int(var)
                 return (my_int)
@@ -71,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end="")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -160,11 +152,12 @@ class HBNBCommand(cmd.Cmd):
         elif var[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
         new_instance = HBNBCommand.classes[var[0]]()
+        # var[0] is the class
         for i in var:
             if i != var[0]:
                 key_value = i.split("=")
+                # k is the new value without double quotes
                 k = parsing(key_value[1])
                 if k is not None:
                     setattr(new_instance, key_value[0], k)
