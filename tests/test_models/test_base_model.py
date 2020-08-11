@@ -6,7 +6,10 @@ import datetime
 from uuid import UUID
 import json
 import os
+import io
 import pep8
+from console import HBNBCommand
+from unittest.mock import patch
 
 
 class test_basemodel(unittest.TestCase):
@@ -87,7 +90,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                                                       i.__dict__))
 
     def test_todict(self):
         """ """
@@ -101,11 +104,18 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
+    @ unittest.skip("new future added")
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
+
+    def test_kwargs_object(self):
+        """ """
+        n = {'Name': 'test'}
+        new_obj = self.value(**n)
+        self.assertEqual(new_obj.__dict__['Name'], 'test')
 
     def test_id(self):
         """ """
