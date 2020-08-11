@@ -3,7 +3,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.engine.file_storage import FileStorage
 from models.city import City
 
 
@@ -16,9 +15,11 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         """Returns the list of City instances for current state"""
+        from models import storage
+
         state_cities = []
-        cities_all = self.cities
-        for city in cities_all:
+        cities_all = storage.all(City)
+        for city in cities_all.values():
             if city.state_id == self.id:
                 state_cities.append(city)
         return state_cities
