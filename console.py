@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import re
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from time import sleep
 
 
 class HBNBCommand(cmd.Cmd):
@@ -113,18 +115,56 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def regex_dict(self, values):
+        fdict = {}
+        print(values)
+        for val in values:
+            idx = [(m.start(0), m.end(0)) for m in re.finditer("=", val)]
+            fdict.update({val[:idx[0][0]] : val[idx[0][1]:]})
+
+        keys = list(fdict.keys())
+        fvalues = list(fdict.values())
+        fdict = {}
+        for k, v in zip(keys, fvalues):
+            Rexk = "".join(re.findall("\w", k))
+            Rexv = "".join(re.findall("\w", v)).replace("_", " ")
+            fdict.update(
+                { Rexk: Rexv}
+            )
+
+        return fdict
+
     def do_create(self, args):
+        parsed_args = args.split(" ")
+        values = []
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif parsed_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        rex = re.finditer(r"(\w+=\W.*)\W", args)
+        for rx in rex:
+            values.append(rx.group().split())
+        """ Values take all values in child list if exist"""
+        if values:
+            values = values[0]
+            """ now parse all these values into a valid dictionary """
+            values = self.regex_dict(values)
+            new_instance = HBNBCommand.classes[parsed_args[0]]()
+            new_instance.__dict__.update(values)
+            print(new_instance.id)
+            storage.save()
+            return
+        else:
+            if len(parsed_args) > 1:
+                return cmd.Cmd.default(self, args)
+        """ If not arguments just create a new instance """
+        new_instance = HBNBCommand.classes[parsed_args[0]]()
         print(new_instance.id)
         storage.save()
+        return
 
     def help_create(self):
         """ Help information for the create method """
