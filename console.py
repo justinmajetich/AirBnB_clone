@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -126,9 +127,8 @@ class HBNBCommand(cmd.Cmd):
         
         parse_dict = utilities.create_dictionary(args)
         new_instance = HBNBCommand.classes[class_name](**parse_dict)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -210,11 +210,19 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                keys = storage.all().items()
+            else:
+                keys = storage._FileStorage__objects.items()
+            for k, v in keys:
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                keys = storage.all().items()
+            else:
+                keys = storage._FileStorage__objects.items()
+            for k, v in keys.items():
                 print_list.append(str(v))
 
         print(print_list)

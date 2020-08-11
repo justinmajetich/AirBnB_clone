@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from file_storage import Filestorage
-from city import City
+from models.engine.file_storage import FileStorage
+from models.city import City
 
 
 class State(BaseModel, Base):
