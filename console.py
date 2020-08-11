@@ -119,6 +119,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         line = args.split(" ")
+        if line[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
         kwargs = {'name': 'California'}
         for i in range(1, len(line)):
             key, value = tuple(line[i].split("="))
