@@ -23,20 +23,16 @@ Return:
     new_str = ""
     j = 0
     if var[0] == '"' and var[-1] == '"':
-        for i in range(1, len(var) - 2):
-            if i == '"':
-                new_str[j] += "\\"
-                j += 1
-            if i == "_":
-                new_str[j] += " "
-                j += 1
-            new_str[j] += var[i]
-            j += 1
-            print(new_str)
+        for i in range(1, len(var) - 1):
+            # if var[i] == '"':
+            #     new_str += ''
+            if var[i] == '_':
+                new_str += ' '
+                continue
+            new_str += var[i]
         return new_str
 
     for i in var:
-
         if i == ".":
             a += 1
     if a == 0:
