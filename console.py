@@ -243,9 +243,6 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: count <class_name>")
 
     def do_update(self, args):
-        #for i in args:
-        #    print(i)
-        print("update args:\n{}".format(args))
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
@@ -335,44 +332,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
-
-    """
-    def default(self, line):
-        ls = line.split('.')
-        if ls[0] in self.allclass:  # create State name="California"
-            if ls[1] == 'all()':
-                self.do_all(ls[0])
-            elif ls[1] == 'count()':
-                all_objs = models.storage.all()
-                counter = 0
-                for k, v in all_objs.items():
-                    if ls[0] in k:
-                        counter += 1
-                print(counter)
-            elif ls[1] == 'create':
-                pass
-            elif 'show' in ls[1] and "\"" in ls[1]:
-                new_ls = ls[1].split('\"')
-                if 'show' in new_ls[0]:
-                    st = ls[0] + ' ' + new_ls[1]
-                    self.do_show(st)
-            elif 'destroy' in ls[1] and "\"" in ls[1]:
-                new_ls = ls[1].split('\"')
-                if 'destroy' in new_ls[0]:
-                    st = ls[0] + ' ' + new_ls[1]
-                    self.do_destroy(st)
-            elif 'update' in ls[1]:
-                st = ls[1].replace(',', '.')
-                st = st.replace('update(', '')
-                st = st.replace(')', '')
-                st = st.replace('\"', '')
-                st = st.replace(' ', '')
-                st = st.replace('.', ' ')
-                fst = ls[0] + ' ' + st
-                self.do_update(fst)                
-            else:
-                return cmd.Cmd.default(self, line)
-        else:
-            return cmd.Cmd.default(self, line)
-    """
