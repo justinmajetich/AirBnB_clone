@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from re import search
 
 
 class HBNBCommand(cmd.Cmd):
@@ -116,10 +117,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        print(str(args))
         className = args.split(" ")[0]
         attributes = args.split(" ")[1:]
-        print(attributes)
         if not className:
             print("** class name missing **")
             return
@@ -127,11 +126,22 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         kwargs = dict()
+        regex_string = r"^\w+=\".+\"$"
+        regex_number = r"^\w+=-{0,1}\d+$|^\w+=-{0,1}\d+\.{0,1}\d+$"
         for pair in attributes:
+            value = ''
             x = pair.partition("=")
-            value = x[2].replace("\"", '')
-            kwargs[x[0]]= value
-            print(kwargs)
+            if search(regex_string, pair):
+                value = x[2][1:-1]
+                value = value.replace("_", " ")
+            elif search(regex_number, pair):
+                if x[2].find(".") > 0:
+                    value = float(x[2])
+                else:
+                    value = int(x[2])
+            if value == '':
+                continue
+            kwargs[x[0]] = value
         new_instance = HBNBCommand.classes[className](**kwargs)
         storage.save()
         print(new_instance.id)
