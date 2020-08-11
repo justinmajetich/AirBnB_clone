@@ -60,5 +60,4 @@ class FileStorage:
         """ deletes obj from objz if inside """
         k = obj.__class__.__name__ + "." + obj.id
         if k in FileStorage.__objects:
-            FileStorage.__objects.pop(k)
-            del obj
+            del FileStorage.__objects[k]
