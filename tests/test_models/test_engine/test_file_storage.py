@@ -3,6 +3,15 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.user import User
+from models.engine.file_storage import FileStorage
+import models
 import os
 
 
@@ -34,6 +43,22 @@ class test_fileStorage(unittest.TestCase):
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is obj)
+
+    def test_create(self):
+        """ test object creation with given parameters """
+        storage = FileStorage()
+        new_place = Place()
+        new_place.city_id = "0001"
+        new_place.user_id = "0001"
+        new_place.name = "My_little_house"
+        new_place.number_rooms = 4
+        new_place.number_bathrooms = 2
+        new_place.max_guest = 10
+        new_place.price_by_night = 300
+        new_place.latitude = 37.773972
+        new_place.longitude = -122.431297
+        key = "Place" + "." + str(new_place.id)
+        self.assertTrue(storage.all()[key] is not None)
 
     def test_all(self):
         """ __objects is properly returned """
