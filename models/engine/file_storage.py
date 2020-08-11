@@ -21,9 +21,8 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ delete an instance """
-        if obj is None:
-            raise ValueError("I need OBJ to delete")
-        del(FileStorage.__objects[obj.to_dict()['__class__'] + '.' + obj.id])
+        if obj is not None:
+            del(FileStorage.__objects[obj.to_dict()['__class__'] + '.' + obj.id])
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
