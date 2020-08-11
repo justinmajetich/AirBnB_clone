@@ -21,7 +21,7 @@ class DBStorage:
     __engine = None
     __session = None
     def __init__(self):
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.format
                                       (user, password, host, database),
                                       pool_pre_ping=True)
         
@@ -29,7 +29,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
     
     def all(self, cls=None):
-    """Returns a dictionary of models currently in db_storage"""
+        """Returns a dictionary of models currently in db_storage"""
         if cls is None:
             new_dict = {}
             new_query = DBStorage.__session.query(User, State, City,
@@ -44,21 +44,21 @@ class DBStorage:
             return new_dict
     
     def new(self, obj):
-    """Adds new object to db storage"""
+        """Adds new object to db storage"""
         if obj:
             self.__session.add(obj)
     
     def save(self):
-    """Saves in dbstorage a object"""
+        """Saves in dbstorage a object"""
         self.__session.commit()
     
     def delete(self, obj=None):
-    """Delete object in databases"""
-        if obj is Not None:
+        """Delete object in databases"""
+        if obj is not None:
             self.__session.delete(obj)
     
     def reload(self):
-    """Loads storage dictionary from database"""
+        """Loads storage dictionary from database"""
         Base.metadata.create_all(DBStorage.__engine)
         session_factory = sessionmaker(bind=DBStorage.__engine,
                                        expire_on_commit=False)
