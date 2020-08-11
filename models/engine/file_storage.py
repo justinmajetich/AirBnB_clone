@@ -11,13 +11,14 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         
-        if type(cls) is 'NoneType':
-            raise ValueError("Usage all(<class>)")
-        ret_dir = {}
-        for k, v in FileStorage.__objects.items():
-            if cls.__name__ in k:
-                 ret_dir.update({k:v})
-        return ret_dir
+        if cls is not None:
+            ret_dir = {}
+            for k, v in FileStorage.__objects.items():
+                if cls.__name__ in k:
+                    ret_dir.update({k:v})
+            return ret_dir
+        else:
+            return FileStorage.__objects
 
     def delete(self, obj=None):
         """ delete an instance """
