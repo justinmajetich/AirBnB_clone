@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                     value = int(value)
                 setattr(new_instance, key, value)
         else:
-            new_instance = HBNBCommand.classes[args]()
+            new_instance = HBNBCommand.classes[args[0]]()
         new_instance.save()
         print(new_instance.id)
 
