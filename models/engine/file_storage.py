@@ -1,15 +1,21 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""Tinfos module defines a class to manage file storage for hbnb clone"""
 import json
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """Tinfos class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        if cls is not None:
+            dictio = {}
+            for key, val in self.__objects.items():
+                if cls == val.__class__ or cls == val.__class__.__name__:
+                    dictio[key] = val
+            return dictio
         return FileStorage.__objects
 
     def new(self, obj):
@@ -52,6 +58,6 @@ class FileStorage:
     def delete(self, obj=None):
         """Method to delete an obj from __objects"""
         if obj is not None:
-            hi = obj.__class__.__name__ + '.' + obj.id
-            if hi in self.__objects:
-                del self.__objects[hi]
+            info = obj.__class__.__name__ + '.' + obj.id
+            if info in self.__objects:
+                del self.__objects[info]
