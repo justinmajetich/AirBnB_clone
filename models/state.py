@@ -26,7 +26,7 @@ class State(BaseModel, Base):
             # Returns the list of City instances with
             # state_id == to the current State.id
             for value in storage.all(City).values():
-                dict_obj = v.to_dict()
+                dict_obj = value.to_dict()
                 if dict_obj["state_id"] == self.id:
                     lista.append(value)
             return (lista)
