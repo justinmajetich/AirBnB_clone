@@ -68,10 +68,6 @@ class TestBase(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help quit")
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("quit")
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.assertTrue(HBNBCommand().onecmd("EOF"))
 
     def test_4_check_for_command(self):
         """ Check if command interpreter (console.py) have these commands:
