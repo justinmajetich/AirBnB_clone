@@ -23,7 +23,7 @@ class DBStorage():
                     getenv('HBNB_MYSQL_DB')),
             pool_pre_ping=True
         )
-    
+
     def all(self, cls=None):
         """All :D
         """
