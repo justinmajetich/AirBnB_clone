@@ -22,7 +22,7 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             data = [__class__, "created_at", "updated_at",
-                "id", "name", "my_number"]
+                    "id", "name", "my_number"]
 
             for key, value in kwargs.items():
                 if key in data:
