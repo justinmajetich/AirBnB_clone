@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """This module defines a class to manage dbstorage for hbnb clone"""
 import json
-from sqlalchemy import (create_engine)
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
-from models.base_model import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session
+from models.base_model import Base, BaseModel
 import os
 
 
@@ -27,7 +28,6 @@ class DBStorage:
 
     def all(self, cls=None):
         """Return a dictionary of objects"""
-
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -35,19 +35,18 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        if cls is None:
+        if cls is not None:
+            query_obj = self.__session.query(cls).all()
+        else:
             list_class = [User, State, City, Amenity, Place, Review]
             for x in list_class:
                 query_obj += self.__session.query(x).all()
-        else:
-            query_obj = self.__session.query(cls).all()
-        for obj in query_obj:
-            id_key = type(obj).__name__ + "." + obj.id
-
-            new_dict[id_key] = obj
+        for v in query_obj:
+            id_key = type(v).__name__ + "." + v.id
+            new_dict[id_key] = v
         return new_dict
 
-    def new(self):
+    def new(self, obj):
         """Add the object to the database"""
         self.__session.add(obj)
 
