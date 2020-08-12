@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 import os
 
+
 class DBStorage:
     """This class manages storage of hbnb models in JSON format"""
     __engine = None
@@ -14,12 +15,12 @@ class DBStorage:
     def __init__(self):
         """Returns a dictionary of models currently in storage"""
         self.__engine = create_engine(
-        'mysql+mysqldb://{}:{}@{}/{}'.format(
-            os.getenv("HBNB_MYSQL_USER"),
-            os.getenv("HBNB_MYSQL_PWD"),
-            os.getenv("HBNB_MYSQL_HOST"),
-            os.getenv("HBNB_MYSQL_DB"),
-            pool_pre_ping=True))
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                os.getenv("HBNB_MYSQL_USER"),
+                os.getenv("HBNB_MYSQL_PWD"),
+                os.getenv("HBNB_MYSQL_HOST"),
+                os.getenv("HBNB_MYSQL_DB"),
+                pool_pre_ping=True))
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(bind=self.__engine)
 
@@ -33,7 +34,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        if cls == None:
+        if cls is None:
             list_class = [User, State, City, Amenity, Place, Review]
             for x in list_class:
                 query_obj += self.__session.query(x).all()
@@ -61,5 +62,7 @@ class DBStorage:
     def reload(self):
         """Method reload"""
         Base.metadata.create_all(self.__engine)
-        session_registry = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_registry = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False)
         self.__session = scoped_session(session_registry)
