@@ -5,4 +5,6 @@ from models.base_model import BaseModel
 
 class State(BaseModel):
     """ State class """
-    name = ""
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    #Faltan relaciones (ultimos 2 parrafos de state)
