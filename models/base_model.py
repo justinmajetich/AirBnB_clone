@@ -22,8 +22,10 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '\
+%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '\
+%Y-%m-%dT%H:%M:%S.%f')
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
@@ -33,7 +35,6 @@ class BaseModel:
         del dictionary["__class__"]
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, dictionary)
-
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -56,5 +57,4 @@ class BaseModel:
 
     def delete(self):
         """delete the current instance from the storage models.storage"""
-        
         storage.delete(self)

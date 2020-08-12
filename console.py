@@ -18,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) '
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -31,11 +31,6 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-
-    def preloop(self):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb)')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -75,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -87,12 +82,6 @@ class HBNBCommand(cmd.Cmd):
             pass
         finally:
             return line
-
-    def postcmd(self, stop, line):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
-        return stop
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
@@ -124,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         parse_dict = utilities.create_dictionary(args)
         new_instance = HBNBCommand.classes[class_name](**parse_dict)
         new_instance.save()
@@ -210,19 +199,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                keys = storage.all().items()
-            else:
-                keys = storage._FileStorage__objects.items()
-            for k, v in keys:
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                print_list.append(str(v))
         else:
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                keys = storage.all().items()
-            else:
-                keys = storage._FileStorage__objects.items()
-            for k, v in keys.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
