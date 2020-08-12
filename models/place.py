@@ -34,13 +34,3 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
-
-        @property
-        def reviews(self):
-            from models import storage
-            result = []
-            dict_cities = storage.all("Review")
-            for key, obj in dict_cities.items():
-                if self.id == obj["place_id"]:
-                    result.append(obj)
-            return result
