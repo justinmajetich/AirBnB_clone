@@ -12,8 +12,10 @@ class test_Amenity(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "Amenity"
         self.value = Amenity
+        self.amenity = self.value()
+        self.amenity.name = "Gorrito pal baño"
 
     def test_name2(self):
         """ """
-        new = self.value()
+        new = self.amenity
         self.assertEqual(type(new.name), str)
