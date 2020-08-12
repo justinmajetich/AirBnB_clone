@@ -15,7 +15,7 @@ class FileStorage:
         else:
             cls_dict = {}
             for key, obj in FileStorage.__objects.items():
-                if isinstance(obj, cls):
+                if obj.__class__ == cls:
                     cls_dict[key] = obj
             return cls_dict
 
