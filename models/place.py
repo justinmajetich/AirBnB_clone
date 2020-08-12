@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from os import getenv
 
 
@@ -22,6 +22,15 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
+        place_amenity = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60), ForeignKey(
+                                  'places.id'),
+                                  primary_key=True, nullable=False),
+                              Column('amenity_id', String(60), ForeignKey(
+                                  'amenities.id'),
+                                  primary_key=True, nullable=False))
+        amenities = relationship(
+            "Amenity", secondary=place_amenity, viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -37,10 +46,30 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
+            """reviews getter"""
             from models import storage
             result = []
-            dict_cities = storage.all("Review")
-            for key, obj in dict_cities.items():
+            dict_reviews = storage.all("Review")
+            for key, obj in dict_reviews.items():
                 if self.id == obj["place_id"]:
                     result.append(obj)
             return result
+
+        @property
+        def amenities(self):
+            """amenities getter"""
+            from models import storage
+            result = []
+            dict_amenities = storage.all("Amenity")
+            id_list = self.amenity_ids
+            for item in id_list:
+                for key, obj in dict_amenities.items():
+                    if item == obj.id:
+                        result.append(obj)
+            return result
+
+        @amenities.setter
+        def amenities(self, value):
+            """Amenities setter"""
+            if isinstance(value, Amenity):
+                self.amenity_ids.append(value.id)
