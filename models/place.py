@@ -5,7 +5,7 @@ from sqlalchemy import String, Column, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
     city_id = Column(String(60), nullable=False, ForeignKey('cities.id'))
@@ -20,6 +20,19 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+
+    reviews = relationship("Review", cascade="all, delete", backref="place")
+
+    @property
+    def reviews(self):
+        """Getter for reviews. Returns a list of reviews with
+        matching place id """
+        from models import Review
+        from models import storage
+        reviews = storage.all(Review)
+        all_reviews = [review for review in reviews.values()
+                       if review.place_id == self.id]
+        return all_reviews
 
     """
         Update Place: (models/place.py)
