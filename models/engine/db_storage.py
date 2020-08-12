@@ -8,7 +8,14 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+classes = {'User': User, 'Place': Place,
              'State': State, 'City': City, 'Amenity': Amenity,
              'Review': Review
            }
@@ -27,7 +34,7 @@ class DBStorage:
         host = os.getenv('HBNB_MYSQL_HOST ')
         db = os.getenv('HBNB_MYSQL_DB')
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                user, pswd, host, db), pool_pre_ping = True)
         if os.getenv('HBNB_ENV') == 'test':
             # drop all tables
@@ -40,12 +47,12 @@ class DBStorage:
             if cls is None or cls is classes[clase] or cls is clase:
                 objects = self.__session.query(clase).all()
                 for obj in objects:
-                    show[obj.to_dict()['__class__'] + '.' + obj.id]=obj
+                    show[obj.to_dict()['__class__'] + '.' + obj.id] = obj
         return show
 
     def new(self, obj):
         """Add the obj to the current db session"""
-        session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """commit al changes of the current db session"""
@@ -57,13 +64,6 @@ class DBStorage:
 
     def reload(self):
         """create all tables in database, create current db session"""
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         Base.metadata.create_all(self.__engine)
 
         session_factory=sessionmaker(
