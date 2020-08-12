@@ -2,3 +2,4 @@ main_delete.py
 __pycache__
 test_params_create
 file.json
+main_place_amenities.py
