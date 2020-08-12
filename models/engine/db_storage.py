@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """DB_storage engine"""
-from os import gentenv
+from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
-from sqlalchemy.orm.session import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.amenity import Amenity
 from models.base_model import Base, BaseModel
 from models.city import City
