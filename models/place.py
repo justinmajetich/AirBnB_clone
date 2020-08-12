@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Float, Integer
 from sqlalchemy.orm import relationship
+from models.review import Review
 import os
 
 
@@ -22,13 +23,13 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship("Review", backref="place", cascade="all, delete")
+        reviews = relationship("Review", backref="place", cascade="all, delete")
     else:
         @property
         def reviews(self):
             """ get the reviews in FileStorage """
             all_reviews = []
-            for k, v in models.storage.all(Review).items():
-                if v.state_id == self.id:
+            for v in models.storage.all(Review).values():
+                if v.place_id == self.id:
                     all_reviews.append(v)
             return all_reviews

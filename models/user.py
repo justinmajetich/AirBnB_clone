@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-
+from models.review import Review
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
