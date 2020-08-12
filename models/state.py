@@ -16,6 +16,7 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
+            """ getter to filestorage """
             lista = []
             # Returns the list of City instances with
             # state_id == to the current State.id

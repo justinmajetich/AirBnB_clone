@@ -6,7 +6,6 @@ import os
 
 
 class City(BaseModel, Base):
-    # class City(BaseModel, Base):
     """ City class, contains state ID and name """
 
     if os.getenv("HBNB_TYPE_STORAGE") == "db":

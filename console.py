@@ -14,11 +14,10 @@ from models.review import Review
 
 def parsing(var):
     """This funtion check the type of input and cast it
-Args:
-    - Value to save like instance value
-Return:
-    - Value casted"""
-    # "my_littl"e_house"
+    Args:
+        - Value to save like instance value
+    Return:
+        - Value casted"""
     a = 0
     new_str = ""
     j = 0
@@ -270,7 +269,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """Count the amount of classes """
         print("Usage: count <class_name>")
 
     def do_update(self, args):

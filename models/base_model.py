@@ -23,10 +23,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            # crear nuevos atributos de la instancia punto 6. all
-            # ej:
-            # kwargs={ 'name': "California" }
-            # self.name = "California"
+            # crear nuevos atributos de la instancia punto 6. all ?
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
@@ -49,7 +46,6 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
 
-        # Update to_dict
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Module that saves into a MYSQL database """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
