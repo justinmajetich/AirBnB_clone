@@ -114,29 +114,27 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = args.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            for param in my_list[1:]:
-                my_param = param.split("=")
-                my_param[1] = my_param[1].strip('"')
-                my_param[1] = my_param[1].replace('_', ' ')
-                setattr(obj, my_param[0], my_param[1])
-            obj.save()
-            print("{}".format(obj.id))
-        except SyntaxError:
+        args = line.split(" ")
+
+        if not line or len(line) == 0:
             print("** class name missing **")
-        except NameError:
+        elif args[0] not in HBNBCommand().classes.keys():
             print("** class doesn't exist **")
+
+        obj = eval("{}()".format(args[0]))
+        for param in args[1:]:
+            my_param = param.split("=")
+            my_param[1] = my_param[1].replace('_', ' ')
+            setattr(obj, my_param[0], eval(my_param[1]))
+        obj.save()
+        print("{}".format(obj.id))
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> [<key>=<value> ...]\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
