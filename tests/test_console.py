@@ -12,6 +12,7 @@ from io import StringIO
 import MySQLdb
 import pep8
 import tests
+import console
 from console import HBNBCommand
 from models.base_model import BaseModel
 from models.state import State
@@ -47,6 +48,8 @@ class test_console(unittest.TestCase):
         """ removing file.json created and closing DB connection """
         if os.access("file.json", os.F_OK):
             os.remove("file.json")
+        if getenv('HBNB_TYPE_STORAGE') == "db":
+            self.db.close()
 
     def test_pep8_style(self):
         """ Checking pep8 coding style """
@@ -75,8 +78,9 @@ class test_console(unittest.TestCase):
 
     def test_create(self):
         """ Testing the create command """
-        self.console.onecmd('create State')
-        s = f.getvalue()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd('create State')
+            s = f.getvalue()
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd('all State')
             self.assertEqual('["[State]', f.getvalue()[:9])
@@ -99,8 +103,7 @@ class test_console(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("all State")
             out = f.getvalue()
-            self.assertEqual(
-                "[[State]", out[:8])
+            self.assertEqual('["[State]', out[:9])
             self.assertIn("AjaLandia", out)
 
-        self.console.oncmd("destroy State "+ s)
+        self.console.onecmd("destroy State "+ s)
