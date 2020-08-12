@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,18 +113,48 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    @staticmethod
+    def do_create_dictionary(args):
+        """Create a new dictionary"""
+        new_dict = {}
+        for element in args:
+            if "=" in element:
+                list_val = element.split("=")
+                key = list_val[0]
+                value = list_val[1]
+                if value[0] == '"' and value[-1] == '"':
+                    new_val = value[1:-1]
+                    new_val = new_val.replace('"', '\"')
+                    new_val = new_val.replace("_", " ")
+                elif "." in value:
+                    new_val = float(value)
+                else:
+                    new_val = int(value)
+                new_dict[key] = new_val
+        return new_dict
+
     def do_create(self, args):
         """ Create an object of any class"""
+        arguments = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arguments[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        if len(arguments) == 1:
+            new_instance = HBNBCommand.classes[arguments[0]]()
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+        elif len(arguments) > 1:
+            new_dict = HBNBCommand.do_create_dictionary(arguments[1:])
+            clse = HBNBCommand.classes[arguments[0]]
+            instance = clse()
+            for key, value in new_dict.items():
+                setattr(instance, key, value)
+            print(instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +349,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
