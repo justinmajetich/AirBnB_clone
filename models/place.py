@@ -7,10 +7,13 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import os
 
-place_amenity = Table('place_amenity', Base.metadata,
+place_amenity = Table(
+    'place_amenity',
+    Base.metadata,
     Column('place_id', String(60), ForeignKey('places.id')),
     Column('amenity_id', String(60), ForeignKey('amenities.id'))
 )
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -45,6 +48,7 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
+            """return the reviews linked with the place"""
             place_review = []
             review_all = storage.all(Review)
             for review in review_all.values():
@@ -54,6 +58,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            """return the amenities linked with the place"""
             place_amenities = []
             amenities_all = storage.all(Amenity)
             for amenity in amenities_all.values():
@@ -63,5 +68,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, amenity):
+            """add a new amenity to the place"""
             if type(amenity) is Amenity:
                 amenity_ids.append(amenity.id)
