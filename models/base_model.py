@@ -26,11 +26,17 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            if "updated_at" in kwargs and "updated_at" in kwargs\
+                    and "__class__" in kwargs:
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                del kwargs['__class__']
+            else:
+                self.id = str(uuid.uuid4())
+                self.created_at = datetime.now()
+                self.updated_at = datetime.now()
             for k, v in kwargs.items():
                 setattr(self, k, v)
             self.__dict__.update(kwargs)
@@ -52,7 +58,7 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         dictionary.pop("_sa_instance_state", None)
