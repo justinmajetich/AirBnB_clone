@@ -50,8 +50,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Function to delete object"""
+        if obj is None:
+            return
         new_obj = obj.__class__.__name__ + "." + obj.id
-        if new_obj in self.__objects:
-            del self.__objects[new_obj]
+        if new_obj in FileStorage.__objects:
+            FileStorage.__objects.pop(new_obj)
             self.save()
