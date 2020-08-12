@@ -148,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
         elif len(arguments) > 1:
-            new_dict = HBNBCommand.do_create_dictionary(arguments[1:])
+            new_dict = HBNBCommand.do   _create_dictionary(arguments[1:])
             clse = HBNBCommand.classes[arguments[0]]
             instance = clse()
             for key, value in new_dict.items():

@@ -13,3 +13,7 @@ class State(BaseModel, Base):
         String(128),
         nullable=False
     )
+    cities = relationship(
+        "City",
+        
+    )

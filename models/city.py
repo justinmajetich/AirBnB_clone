@@ -19,3 +19,4 @@ class City(BaseModel, Base):
         ForeignKey("state_id"),
         nullable=False
     )
+            
