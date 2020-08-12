@@ -2,7 +2,7 @@
 """This module defines a class User"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 import os
 
 
@@ -20,6 +20,10 @@ class User(BaseModel, Base):
                               backref='user', cascade='all, delete-orphan',
                               passive_deletes=True,
                               single_parent=True)
+        reviews = relationship('Review',
+                               backref='user', cascade='all, delete-orphan',
+                               passive_deletes=True,
+                               single_parent=True)
 
     else:
         email = ''
