@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -125,22 +125,20 @@ class HBNBCommand(cmd.Cmd):
         if arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-    # create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10 price_by_night=300 latitude=37.773972 longitude=-122.431297
         for arg in range(1, len(arg_list) - 1):
             # key_value contains i.e name="My_little_house" or latitude=37.773972
             key_value = arg_list[arg].split('=')
             key = key_value[0]
             # value set to whats after '='
             value = key_value[1]
-            print(value)
             # replace necessary characters
-    #        if value[0] in '"':
-     #           s = value[1:len(value) - 1]
-      #          s.replace('"', '\\"')
-       #         value = '"{}"'.format(s)
-            if '_' in value:
-                value.replace('_', ' ')
-            if '.' in value:
+            value = value.replace('"', '')
+            if '.' not in value:
+                if key != 'name':
+                    value = int(value)
+                else:
+                    value = value.replace('_', ' ')
+            else:
                 value = float(value)
             # update dictonary we'll use to set obj attrs
             my_dict.update({key: value})
@@ -299,7 +297,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -307,10 +305,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
