@@ -1,30 +1,14 @@
 #!/usr/bin/python3
 """This module defines a class User"""
+import sqlalchemy
 from models.base_model import BaseModel
+from sqlalchemy import Column, Integer, ForeignKey, String
 
 
 class User(BaseModel):
     """This class defines a user by various attributes"""
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
-    """needs to inherit from base (task six, update basemodel)"""
-
-    """
-   Add or replace in the class User:
-        class attribute __tablename__
-        represents the table name, users
-   class attribute email
-        represents a column containing a string (128 characters)
-        can’t be null
-   class attribute password
-        represents a column containing a string (128 characters)
-        can’t be null
-   class attribute first_name
-        represents a column containing a string (128 characters)
-        can be null
-   class attribute last_name
-        represents a column containing a string (128 characters)
-        can be null
-""" 
+    __tablename__ = 'users'
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
