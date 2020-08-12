@@ -25,9 +25,10 @@ class FileStorage:
             new_dict = {}
             for key, value in all_objs.items():
                 # class name is the name of the class cls
-                class_name = str(cls.__doc__).split()[0]
+                class_name = str(cls).split(".")[2].split("'")[0]
                 if key.split(".")[0] == class_name:
                     new_dict[key] = value
+            print(new_dict)
             return (new_dict)
         return (FileStorage.__objects)
 
