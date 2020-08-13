@@ -15,6 +15,8 @@ class State(BaseModel, Base):
         cities = relationship("City",
                               backref='state',
                               cascade="all, delete-orphan")
+    else:
+        name = ""
 
         @property
         def cities(self):
@@ -26,5 +28,3 @@ class State(BaseModel, Base):
                 if City == type(obj) and obj.state_id == self.id:
                     cities.append(obj)
             return obj
-    else:
-        name = ""
