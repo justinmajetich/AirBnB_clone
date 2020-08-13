@@ -43,13 +43,11 @@ class DBStorage:
 
             objects = self.__session.query(cls).all()
             for obj in objects:
-                delattr(obj, "_sa_instance_state")
                 show[obj.to_dict()['__class__'] + '.' + obj.id] = obj
         else:
             for clase, value in classes.items():
                 objects = self.__session.query(value).all()
                 for obj in objects:
-                    delattr(obj, "_sa_instance_state")
                     show[obj.to_dict()['__class__'] + '.' + obj.id] = obj
         return show
 
