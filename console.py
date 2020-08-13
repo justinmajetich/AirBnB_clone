@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+import os
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -135,6 +136,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             new_instance = HBNBCommand.classes[args]()
+            storage.new(new_instance)
             storage.save()
             print(new_instance.id)
             storage.save()
@@ -142,6 +144,7 @@ class HBNBCommand(cmd.Cmd):
             if n_args[0] in HBNBCommand.classes:
                 # create new_istance and set atributes
                 new_instance = HBNBCommand.classes[n_args[0]]()
+
                 for i in range(1, len(n_args)):
                     if '=' in n_args[i]:
                         param = n_args[i].split('=')
@@ -164,7 +167,8 @@ class HBNBCommand(cmd.Cmd):
                             param[1] = int(param[1])
                         # set atribuestes given in comand line.
                         setattr(new_instance, param[0], param[1])
-            storage.save()
+                storage.new(new_instance)
+                storage.save()
             print(new_instance.id)
             storage.save()
 
@@ -196,10 +200,14 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
-            print("** no instance found **")
+        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+            try:
+                print(storage._FileStorage__objects[key])
+            except KeyError:
+                print("** no instance found **")
+        else:
+            #aqui va codigo DBSstorage.
+            pass
 
     def help_show(self):
         """ Help information for the show command """
@@ -241,21 +249,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+            print_list = []
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                if args not in HBNBCommand.classes:
+                    print("** class doesn't exist **")
+                    return
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+            else:
+                for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
 
-        print(print_list)
+            print(print_list)
+        else:
+            print(storage.all())
+            pass
 
     def help_all(self):
         """ Help information for the all command """
@@ -264,11 +276,14 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
-        count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-                count += 1
-        print(count)
+        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+            count = 0
+            for k, v in storage._FileStorage__objects.items():
+                if args == k.split('.')[0]:
+                    count += 1
+            print(count)
+        else:
+            print (storage.all())
 
     def help_count(self):
         """ """
