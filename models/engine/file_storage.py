@@ -62,9 +62,6 @@ class FileStorage:
         Args:
             obj: [None]. Defaults to None.
         """
-        if not obj:
-            return
-
         if obj:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if key in self.__objects:
