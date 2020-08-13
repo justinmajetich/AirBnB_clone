@@ -17,12 +17,6 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from __object
         """
-        from models.state import State
-        from models.city import City
-        from models.user import User
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
         if obj:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             if key in self.__objects:
