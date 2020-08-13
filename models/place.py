@@ -44,6 +44,7 @@ class Place(BaseModel, Base):
         amenities = relationship(
             "Amenity",
             secondary='place_amenity',
+            back_populates='place_amenities',
             viewonly=False
             )
         reviews = relationship(
@@ -80,8 +81,9 @@ class Place(BaseModel, Base):
         def amenities(self, value):
             """ setter to amenities asociated with the current state """
             if type(value) == Amenity:
-                self.amenity_ids = value.id
+                self.amenity_ids.append(value.id)
 
+        @property
         def reviews(self):
             """ getter to reviews asociated with the current place """
             from models import storage
