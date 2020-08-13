@@ -16,4 +16,3 @@ class Amenity(BaseModel, Base):
         "Place",
         secondary=place_amenity
     )
-
