@@ -15,7 +15,8 @@ class FileStorage:
         else:
             instances = {}
             for key, value in self.__objects.items():
-                if type(value) == cls:
+                # Cambiar
+                if key.split('.')[0] == cls or type(value) == cls:
                     instances[key] = value
             return instances
 
