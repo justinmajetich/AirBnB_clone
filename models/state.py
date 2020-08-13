@@ -17,12 +17,11 @@ class State(BaseModel, Base):
         backref="state",
         cascade="all, delete-orphan")
 
-    @property
-    def cities(self):
-        if os.getenv("HBNB_TYPE_STORAGE") == "db":
-            return
-        list_cities = []
-        for c in FileStorage.all(City).values():
-            if c.states_id == self.id:
-                list_cities.append(c)
-        return list_cities
+    if os.getenv("HBNB_TYPE_STORAGE") != "db":
+        @property
+        def cities(self):
+            list_cities = []
+            for c in FileStorage.all(City).values():
+                if c.states_id == self.id:
+                    list_cities.append(c)
+            return list_cities
