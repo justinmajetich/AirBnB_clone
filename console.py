@@ -134,8 +134,8 @@ class HBNBCommand(cmd.Cmd):
             setattr(new_instance, key, eval(val))  # give new instance
                                                    # these parses params
         new_instance.save()  # save to storage using basemodel method
-        #print("{}".format(new_instance.id).strip('"'))  # output
-        print("new={}".format(new_instance))
+        # print("{}".format(new_instance.id).strip('"'))  # output
+        # print("new={}".format(new_instance))
         storage.save()
 
     def help_create(self):

@@ -37,7 +37,7 @@ class FileStorage:
             # print("temp.items{}".format(type(temp.items())))
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            print("Before json dump, type of temp = {}".format(type(temp)))
+            # print("Before json dump, type of temp = {}".format(type(temp)))
             json.dump(temp, f)
 
     def reload(self):
@@ -57,13 +57,13 @@ class FileStorage:
                   }
         try:
             temp = {}
-            print(type(temp))
+            # print(type(temp))
             with open(FileStorage.__file_path, 'r', encoding="UTF-8") as f:
                 """Json is recieving None val here """
-                print(type(f))
-                print("temp in with{}".format(temp))
+                # print(type(f))
+                # print("temp in with{}".format(temp))
                 temp = json.load(f)
-                print("2nd temp in with{}".format(temp))
+                # print("2nd temp in with{}".format(temp))
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
