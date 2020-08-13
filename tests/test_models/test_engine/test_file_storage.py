@@ -173,14 +173,5 @@ class TestFileStorage(unittest.TestCase):
         except Exception:
             self.fail
 
-    def test_permissions(self):
-        """test read-write-execute permissions"""
-        read = os.access('models/engine/file_storage.py', os.R_OK)
-        self.assertTrue(read)
-        write = os.access('models/engine/file_storage.py', os.W_OK)
-        self.assertTrue(write)
-        exe = os.access('models/engine/file_storage.py', os.X_OK)
-        self.assertTrue(exe)
-
 if __name__ == "__main__":
     unittest.main()

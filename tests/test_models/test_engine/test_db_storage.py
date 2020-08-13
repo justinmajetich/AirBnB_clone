@@ -182,14 +182,5 @@ class TestDBStorage(unittest.TestCase):
         self.storage._DBStorage__session.close()
         self.storage._DBStorage__session = og_session
 
-    def test_permissions(self):
-        """test read-write-execute permissions"""
-        read = os.access('models/engine/db_storage.py', os.R_OK)
-        self.assertTrue(read)
-        write = os.access('models/engine/db_storage.py', os.W_OK)
-        self.assertTrue(write)
-        exe = os.access('models/engine/db_storage.py', os.X_OK)
-        self.assertTrue(exe)
-
 if __name__ == "__main__":
     unittest.main()
