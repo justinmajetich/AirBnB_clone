@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
+
 class Place(BaseModel, Base):
     """A place"""
     if models.storage_t == 'db':
