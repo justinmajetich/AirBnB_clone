@@ -39,12 +39,12 @@ class DBStorage:
             for k, v in classes.items():
                 query = self.__session.query(v).all()
                 for obj in query:
-                    delattr(obj, "_sa_instance_state")
+                    # delattr(obj, "_sa_instance_state")
                     dic_obj[obj.__class__.__name__ + "." + str(obj.id)] = obj
         else:
             query = self.__session.query(cls).all()
             for obj in query:
-                delattr(obj, "_sa_instance_state")
+                # delattr(obj, "_sa_instance_state")
                 dic_obj[obj.__class__.__name__ + "." + str(obj.id)] = obj
         return dic_obj
 
