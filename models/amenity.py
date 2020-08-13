@@ -16,3 +16,8 @@ class Amenity(BaseModel, Base):
             "Place", secondary=place_amenity)
     else:
         name = ""
+
+    def __init__(self, *args, **kwargs):
+        """Amenity constructor"""
+        super().__init__(*args, **kwargs)
+
