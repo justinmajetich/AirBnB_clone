@@ -107,6 +107,7 @@ EOF  all  count  create  destroy  help  quit  show  update\n\n"""
         """Test show command.
         """
         new = BaseModel()
+        new.save()
         nid = new.id
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -150,6 +151,7 @@ EOF  all  count  create  destroy  help  quit  show  update\n\n"""
         """Test destroy command.
         """
         new = BaseModel()
+        new.save()
         nid = new.id
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -218,6 +220,7 @@ EOF  all  count  create  destroy  help  quit  show  update\n\n"""
         self.assertEqual(val, msg)
 
         new = BaseModel()
+        new.save()
         nid = new.id
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -261,6 +264,7 @@ Usage: update <className> <id> <attName> <attVal>\n\n"
         self.assertEqual(val, msg)
 
         new = BaseModel()
+        new.save()
         nid = new.id
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -291,6 +295,7 @@ Usage: update <className> <id> <attName> <attVal>\n\n"
         self.assertEqual(val, msg)
 
         new = BaseModel()
+        new.save()
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("count BaseModel")
