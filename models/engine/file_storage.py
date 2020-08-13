@@ -15,10 +15,14 @@ class FileStorage:
 
 """
         #print("from all obj={}".format(FileStorage.__objects))
-        if cls is None:
-            return FileStorage.__objects
+        if cls:
+            obj_dict = {}
+            for key, val in self.__objects.items():
+                if cls == key:
+                    obj_dict[key] = val
+                return obj_dict
         else:
-            return {k: v for k, v in FileStorage.__objects.items() if isinstance(v, cls)}
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -29,8 +33,11 @@ class FileStorage:
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
+            print("temp.items{}".format(temp.items()))
+            print("temp.items{}".format(type(temp.items())))
             for key, val in temp.items():
                 temp[key] = val.to_dict()
+            print("Before json dump, type of temp = {}".format(type(temp)))
             json.dump(temp, f)
 
     def reload(self):
