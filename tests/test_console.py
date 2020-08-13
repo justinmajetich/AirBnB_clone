@@ -57,8 +57,8 @@ class TestHBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("help")
             val = f.getvalue()
             msg = """\nDocumented commands (type help <topic>):
-    ========================================
-    EOF  all  count  create  destroy  help  quit  show  update\n\n"""
+========================================
+EOF  all  count  create  destroy  help  quit  show  update\n\n"""
             self.assertEqual(val, msg)
 
         def test_quit(self):
@@ -85,13 +85,8 @@ class TestHBCommand(unittest.TestCase):
             with patch('sys.stdout', new=StringIO()) as f:
                 HBNBCommand().onecmd("help create")
             val = f.getvalue()
-            msg = "Creates a class of any type\n[Usage]: create <className>\n\n"
-            self.assertEqual(val, msg)
-
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("create")
-            val = f.getvalue()
-            msg = "** class name missing **\n"
+            msg = "Creates a class of any type\n\
+[Usage]: create <className>\n\n"
             self.assertEqual(val, msg)
 
             with patch('sys.stdout', new=StringIO()) as f:
@@ -117,7 +112,7 @@ class TestHBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("help show")
             val = f.getvalue()
             msg = "Shows an individual instance of a class\n\
-    [Usage]: show <className> <objectId>\n\n"
+[Usage]: show <className> <objectId>\n\n"
             self.assertEqual(val, msg)
 
             with patch('sys.stdout', new=StringIO()) as f:
@@ -161,7 +156,7 @@ class TestHBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("help destroy")
             val = f.getvalue()
             msg = "Destroys an individual instance of a class\n\
-    [Usage]: destroy <className> <objectId>\n\n"
+[Usage]: destroy <className> <objectId>\n\n"
             self.assertEqual(val, msg)
 
             with patch('sys.stdout', new=StringIO()) as f:
@@ -201,7 +196,7 @@ class TestHBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("help all")
             val = f.getvalue()
             msg = "Shows all objects, or all of a class\n\
-    [Usage]: all <className>\n\n"
+[Usage]: all <className>\n\n"
             self.assertEqual(val, msg)
 
             with patch('sys.stdout', new=StringIO()) as f:
@@ -239,7 +234,7 @@ class TestHBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("help update")
             val = f.getvalue()
             msg = "Updates an object with new information\n\
-    Usage: update <className> <id> <attName> <attVal>\n\n"
+Usage: update <className> <id> <attName> <attVal>\n\n"
             self.assertEqual(val, msg)
 
             with patch('sys.stdout', new=StringIO()) as f:
