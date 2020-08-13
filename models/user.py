@@ -1,6 +1,11 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
-from models.base_model import BaseModel
+"""Class useario"""
+import models
+from models.base_model import BaseModel, Base
+from os import getenv
+import sqlalchemy
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
@@ -18,3 +23,7 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """init"""
+        super().__init__(*args, **kwargs)
