@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import (create_engine)
 from sqlalchemy import MetaData
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, mapper
 from models.base_model import Base, BaseModel
 from models.user import User
 from models.place import Place
@@ -29,7 +29,7 @@ class DBStorage:
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 user, password, host, database), pool_pre_ping=True)
 
-        Session = sessionmaker()
+        Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
 
         if enviroment == "test":
@@ -37,17 +37,18 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls:
-            objects = self.__session.query(cls).all()
-        else:
-            objects = self.__session.query(
-                User, State, City, Amenity, Place, Review).all()
-
+        classes = [State, City, Place, Review]
         new_dic = {}
-        for key in objects.keys():
-            key = "{}.{}".format(i.__class__.__name__, i.__dict__.id)
-            # Pendienteeee value
-            setattr(new_dic, key, objects[key])
+        if cls:
+            for instance in self.__session.query(cls).all():
+                key = "{}.{}".format(instance.__class__.__name__, instance.id)
+                new_dic[key] = instance
+        else:
+            for unique_class in classes:
+                for instance in self.__session.query(unique_class).all():
+                    key = "{}.{}".format(
+                        instance.__class__.__name__, instance.id)
+                    new_dic[key] = instance
         return new_dic
 
     def new(self, obj):
@@ -68,4 +69,4 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
+        self.__session = scoped_session(session_factory)
