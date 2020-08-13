@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif arg_list[0] not in HBNBCommand.classes:  # use the class given and check
+        elif arg_list[0] not in HBNBCommand.classes:
                                          # against allowed classes
             print("** class doesn't exist **")
             return
@@ -130,6 +130,7 @@ class HBNBCommand(cmd.Cmd):
             dic = param.split("=")  # parse params
             key = dic[0]
             val = dic[1]
+            key = key.strip('"')
             val = val.replace('_', ' ')  # replace underscore with space
             setattr(new_instance, key, eval(val))  # give new instance
                                                    # these parses params
