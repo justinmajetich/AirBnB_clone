@@ -12,6 +12,7 @@ place_amenity = Table('place_amenity', Base.metadata,
                              ForeignKey('amenities.id'),
                              nullable=False, primary_key=True))
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -55,4 +56,4 @@ class Place(BaseModel, Base):
         from models import Amenity
         from models import storage
         if type(obj) == Amenity:
-           self.amenity_ids.append(obj.id)
+            self.amenity_ids.append(obj.id)
