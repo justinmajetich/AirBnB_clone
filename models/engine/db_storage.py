@@ -1,4 +1,4 @@
-yy#!/usr/bin/python3
+#!/usr/bin/python3
 """ New file storage"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
