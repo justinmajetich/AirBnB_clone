@@ -30,17 +30,17 @@ class DBStorage:
         """Return a dictionary of objects"""
         from models.state import State
         from models.city import City
+        from models.user import User
+        from models.place import Place
         """
         from models.amenity import Amenity
         from models.review import Review
-        from models.user import User
-        from models.place import Place
         """
         query_obj = []
         if cls is not None:
             query_obj = self.__session.query(cls).all()
         else:
-            list_class = [State, City]
+            list_class = [User, Place, State, City]
             for x in list_class:
                 query_obj += self.__session.query(x).all()
         new_dict = {}
