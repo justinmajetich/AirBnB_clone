@@ -37,7 +37,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        classes = [State, City, Place, Review]
+        classes = [User, State, City, Place, Review]
         new_dic = {}
         if cls:
             for instance in self.__session.query(cls).all():
