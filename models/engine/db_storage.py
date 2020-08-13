@@ -37,7 +37,7 @@ class DBStorage():
                'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
-              }
+            }
 
         dictionary = {}
 
