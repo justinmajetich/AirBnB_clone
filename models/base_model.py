@@ -5,7 +5,7 @@ import os
 import sqlalchemy
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Integer, Colum, DateTime
+from sqlalchemy import String, Integer, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()

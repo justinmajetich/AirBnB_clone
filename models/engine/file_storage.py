@@ -50,8 +50,13 @@ class FileStorage:
                   }
         try:
             temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
+            print(type(temp))
+            with open(FileStorage.__file_path, 'r', encoding="UTF-8") as f:
+                """Json is recieving None val here """
+                print(type(f))
+                print("temp in with{}".format(temp))
                 temp = json.load(f)
+                print("2nd temp in with{}".format(temp))
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
