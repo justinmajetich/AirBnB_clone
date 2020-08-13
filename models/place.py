@@ -73,14 +73,14 @@ class Place(BaseModel, Base):
             amenities = []
             objects = storage.all("Amenity")
             for obj in objects.values():
-                if obj.id == self.amenity_ids:
+                if obj.id in self.amenity_ids:
                     amenities.append(obj)
             return amenities
 
         @amenities.setter
         def amenities(self, value):
             """ setter to amenities asociated with the current state """
-            if type(value) == Amenity:
+            if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
 
         @property
