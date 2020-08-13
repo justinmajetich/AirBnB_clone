@@ -1,9 +1,9 @@
-#!/usr/bin/python3
+yy#!/usr/bin/python3
 """ New file storage"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from os import getenv
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 from models.user import User
 from models.state import State
 from models.city import City
@@ -35,10 +35,6 @@ class DBStorage:
         else:
             objs = self.__session.query(State).all()
             objs += self.__session.query(City).all()
-            objs += self.__session.query(User).all()
-            objs += self.__session.query(Place).all()
-            objs += self.__session.query(Amenity).all()
-            objs += self.__session.query(Review).all()
         return {"{}.{}".format(type(x).__name__, x.id): x for x in objs}
 
     def new(self, obj):
@@ -56,8 +52,9 @@ class DBStorage:
 
     def reload(self):
         """ reaload all for session"""
+        from sqlalchemy.orm import scoped_session
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.__engine,
-                            expire_on_commit=False)
-        Sesh = scoped_session(session)
-        self.__session = Sesh()
+        sesh = sessionmaker(bind=self.__engine,
+                expire_on_commit=False)
+        Session = scoped_session(sesh)
+        self.__session = Session()
