@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -117,9 +116,9 @@ class HBNBCommand(cmd.Cmd):
     def do_create_dictionary(args):
         """Create a new dictionary"""
         new_dict = {}
-        for element in args:
-            if "=" in element:
-                list_val = element.split("=")
+        for elem in args:
+            if "=" in elem:
+                list_val = elem.split("=")
                 key = list_val[0]
                 value = list_val[1]
                 if value[0] == '"' and value[-1] == '"':
