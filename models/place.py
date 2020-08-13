@@ -30,7 +30,8 @@ class Place(BaseModel, Base):
                                   'amenities.id'),
                                   primary_key=True, nullable=False))
         amenities = relationship(
-            "Amenity", secondary=place_amenity, viewonly=False)
+            "Amenity", secondary=place_amenity,
+            viewonly=False, backref="places")
     else:
         city_id = ""
         user_id = ""
@@ -72,13 +73,5 @@ class Place(BaseModel, Base):
             """Amenities setter"""
             from models import storage
             from models.amenity import Amenity
-            from datetime import datetime
-            lili = self.amenity_ids
-            if not isinstance(value, Amenity):
-                return
-            lili.append(value.id)
-            self.updated_at = datetime.now()
-            setattr(self, 'amenity_ids', lili)
-            storage.all().update(
-                {self.to_dict()['__class__'] + '.' + self.id: self})
-            storage.save()
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
