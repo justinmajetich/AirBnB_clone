@@ -74,8 +74,9 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             from datetime import datetime
             lili = self.amenity_ids
-            if isinstance(value, Amenity):
-                lili.append(value.id)
+            if not isinstance(value, Amenity):
+                return
+            lili.append(value.id)
             self.updated_at = datetime.now()
             setattr(self, 'amenity_ids', lili)
             storage.all().update(
