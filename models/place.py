@@ -59,12 +59,11 @@ class Place(BaseModel, Base):
         def amenities(self):
             """amenities getter"""
             from models import storage
+            from models.amenity import Amenity
             result = []
-            dict_amenities = storage.all("Amenity")
-            id_list = self.amenity_ids
-            for item in id_list:
-                for key, obj in dict_amenities.items():
-                    if item == obj.id:
+            for key, obj in storage.all(Amenity).items():
+                for aid in self.amenity_ids:
+                    if aid == obj.id:
                         result.append(obj)
             return result
 
