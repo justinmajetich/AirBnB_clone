@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
+from models.amenity import Amenity
 from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 from os import getenv
@@ -57,3 +58,20 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+        @property
+        def amenities(self):
+            """ getter to amenities asociated with the current state """
+            from models import storage
+            amenities = []
+            objects = storage.all("Amenity")
+            for obj in objects.values():
+                if obj.id == self.amenity_ids:
+                    amenities.append(obj)
+            return amenities
+
+        @amenities.setter
+        def amenities(self, value):
+            """ setter to amenities asociated with the current state """
+            if type(value) == Amenity:
+                self.amenity_ids = value.id
