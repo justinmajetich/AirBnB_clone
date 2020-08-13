@@ -5,6 +5,8 @@ from os import getenv
 from models.base_model import Base, BaseModel
 from models.city import City
 from models.state import State
+from models.user import User
+from models.place import Place
 from sqlalchemy import create_engine
 
 
@@ -45,10 +47,10 @@ class DBStorage():
         if cls is None:
             objects = self.__session.query(State).all()
             objects += self.__session.query(City).all()
-            """
             objects += self.__session.query(User).all()
-            objects += self.__session.query(Amenity).all()
             objects += self.__session.query(Place).all()
+            """
+            objects += self.__session.query(Amenity).all()
             objects += self.__session.query(Review).all()
             """
         else:
