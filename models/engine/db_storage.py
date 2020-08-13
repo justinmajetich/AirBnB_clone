@@ -28,19 +28,22 @@ class DBStorage:
 
     def all(self, cls=None):
         """Return a dictionary of objects"""
-        from models.user import User
-        from models.place import Place
         from models.state import State
         from models.city import City
+        """
         from models.amenity import Amenity
         from models.review import Review
-
+        from models.user import User
+        from models.place import Place
+        """
+        query_obj = []
         if cls is not None:
             query_obj = self.__session.query(cls).all()
         else:
-            list_class = [User, State, City, Amenity, Place, Review]
+            list_class = [State, City]
             for x in list_class:
                 query_obj += self.__session.query(x).all()
+        new_dict = {}
         for v in query_obj:
             id_key = type(v).__name__ + "." + v.id
             new_dict[id_key] = v
