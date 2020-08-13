@@ -3,7 +3,7 @@
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float
-from models.place import Place
+from models.place import Place, place_amenity
 from os import getenv
 
 
@@ -13,6 +13,6 @@ class Amenity(BaseModel, Base):
         __tablename__ = 'amenities'
         name = Column(String(128), nullable=False)
         place_amenities = relationship(
-            'Place', secondary="place_amenity", back_populates="amenities")
+            'Place', secondary=place_amenity, back_populates="amenities")
     else:
         name = ""
