@@ -39,7 +39,8 @@ class DBStorage():
         """Lists all objects depending of the class or all types of objects """
         classes = {
             'State': State,
-            'City': City
+            'City': City,
+            'User': User
             }
 
         dictionary = {}
