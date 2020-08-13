@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import String, Column, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             nullable=False, primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             nullable=False, primary_key=True))
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -22,11 +29,12 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     reviews = relationship("Review", cascade="all, delete", backref="place")
+    amenities = relationship("Amenity", secondary=place_amenity,
+                             viewonly=False)
 
     @property
     def reviews(self):
-        """Getter for reviews. Returns a list of reviews with
-        matching place id """
+        """Returns a list of reviews with matching place id """
         from models import Review
         from models import storage
         reviews = storage.all(Review)
@@ -34,52 +42,17 @@ class Place(BaseModel, Base):
                        if review.place_id == self.id]
         return all_reviews
 
-    """
-        Update Place: (models/place.py)
+    @property
+    def amenities(self):
+        """Returns a list of amenities with matching place id"""
+        from models import Amenity
+        from models import storage
+        return self.amenity_ids
 
-Place inherits from BaseModel and Base (respect the order)
-Add or replace in the class Place:
-class attribute __tablename__
-    represents the table name, places
-class attribute city_id
-    represents a column containing a string (60 characters)
-    can’t be null
-    is a foreign key to cities.id
-class attribute user_id
-    represents a column containing a string (60 characters)
-    can’t be null
-    is a foreign key to users.id
-class attribute name
-    represents a column containing a string (128 characters)
-    can’t be null
-class attribute description
-    represents a column containing a string (1024 characters)
-    can be null
-    class attribute number_rooms
-represents a column containing an integer
-    can’t be null
-    default value: 0
-    class attribute number_bathrooms
-represents a column containing an integer
-    can’t be null
-    default value: 0
-    class attribute max_guest
-represents a column containing an integer
-    can’t be null
-    default value: 0
-    class attribute price_by_night
-represents a column containing an integer
-    can’t be null
-    default value: 0
-class attribute latitude
-    represents a column containing a float
-    can be null
-class attribute longitude
-    represents a column containing a float
-    can be null
-"""
-"""make sure in class USER-- class attribute places must represent a relationship with the class Place. If the User object is deleted, all linked Place objects must be automatically deleted. Also, the reference from a Place object to his User should be named user
-
-
-in class CITY -- class attribute places must represent a relationship with the class Place. If the City object is deleted, all linked Place objects must be automatically deleted. Also, the reference from a Place object to his City should be named cities
-"""
+    @amenities.setter
+    def amenities(self, obj=None):
+        """Returns a list of amenities with matching place id"""
+        from models import Amenity
+        from models import storage
+        if type(obj) == Amenity:
+           self.amenity_ids.append(obj.id)
