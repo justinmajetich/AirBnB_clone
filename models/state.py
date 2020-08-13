@@ -1,8 +1,25 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orl import relationship
+from models.base_model import BaseModel, Base
 
 
-class State(BaseModel):
-    """ State class """
-    name = ""
+class State(BaseModel, Base):
+    """ The city class, contains state ID and name """
+    __tablename__ = 'states'
+    name = Column(
+        'name',
+        String(128),
+        nullable=False
+    )
+
+    # for dbstorage:
+    cities = relationship('City')
+
+    # for filestorage:
+    @property
+    def __cities(self):
+        new_dict = {}
+    
+    #Pendiente hacer la relacion con la llave foranea (cities)
