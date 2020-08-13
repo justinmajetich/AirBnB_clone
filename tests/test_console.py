@@ -35,10 +35,10 @@ class test_console(unittest.TestCase):
         self.console = HBNBCommand()
         if getenv('HBNB_TYPE_STORAGE') == "db":
             self.db = MySQLdb.connect(user=os.environ.get('HBNB_MYSQL_USER'),
-                                     passwd=os.environ.get('HBNB_MYSQL_PWD'),
-                                     db=os.environ.get('HBNB_MYSQL_DB'),
-                                     port=3306,
-                                     host=os.environ.get('HBNB_MYSQL_HOST'))
+                                      passwd=os.environ.get('HBNB_MYSQL_PWD'),
+                                      db=os.environ.get('HBNB_MYSQL_DB'),
+                                      port=3306,
+                                      host=os.environ.get('HBNB_MYSQL_HOST'))
 
     def setUp(self):
         """ setUp function """
@@ -78,13 +78,14 @@ class test_console(unittest.TestCase):
 
     def test_create(self):
         """ Testing the create command """
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('create State')
-            s = f.getvalue()
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('all State')
-            self.assertEqual('["[State]', f.getvalue()[:9])
-        self.console.onecmd("destroy State " + s)
+        if(os.getenv("HBNB_TYPE_STORAGE") != "db"):
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd('create State')
+                s = f.getvalue()
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd('all State')
+                self.assertEqual('["[State]', f.getvalue()[:9])
+            self.console.onecmd("destroy State " + s)
 
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("create")
