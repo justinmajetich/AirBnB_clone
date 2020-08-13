@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         if arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for arg in range(1, len(arg_list) - 1):
+        for arg in range(1, len(arg_list)):
             # key_value contains i.e name="My_little_house" or latitude=37.773972
             key_value = arg_list[arg].split('=')
             key = key_value[0]
@@ -133,13 +133,13 @@ class HBNBCommand(cmd.Cmd):
             value = key_value[1]
             # replace necessary characters
             value = value.replace('"', '')
-            if '.' not in value:
-                if key != 'name':
+            if '.' in value and '@' not in value:
+                value = float(value)
+            else:
+                if key not in ['name', 'email', 'password', 'first_name', 'last_name']:
                     value = int(value)
                 else:
                     value = value.replace('_', ' ')
-            else:
-                value = float(value)
             # update dictonary we'll use to set obj attrs
             my_dict.update({key: value})
         # create our new instance
