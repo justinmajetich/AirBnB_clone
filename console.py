@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import models
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -162,33 +163,26 @@ class HBNBCommand(cmd.Cmd):
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
 
-    def do_show(self, args):
-        """ Method to show an individual object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
+    def do_show(self, line):
+        """Prints the string representation of an instance
+        based on the class name and id.
+        Ex: $ show BaseModel 1234-1234-1234
+        """
+        args = line.split()
+        objects = models.storage.all()
 
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
-            print("** class name missing **")
-            return
-
-        if c_name not in HBNBCommand.classes:
+        if len(args) == 0:
+            print('** class name missing **')
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return
-
-        if not c_id:
-            print("** instance id missing **")
-            return
-
-        key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
-            print("** no instance found **")
+        elif len(args) == 1:
+            print('** instance id missing **')
+        else:
+            key_find = args[0] + '.' + args[1]
+            if key_find in objects.keys():
+                print(objects[key_find])
+            else:
+                print('** no instance found **')
 
     def help_show(self):
         """ Help information for the show command """
@@ -230,21 +224,22 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+        args = args.split()
+        obj_list = []
+        if len(args) >= 1:
+            if args[0] not in HBNBCommand.classes:
                 print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            else:
+                objs = models.storage.all(args[0])
+                for key, obj in objs.items():
+                    if key.startswith(args[0]):
+                        obj_list.append(obj)
+                print(obj_list)
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            objs = models.storage.all()
+            for obj in objs.values():
+                obj_list.append(obj)
+            print(obj_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -253,11 +248,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
-        count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-                count += 1
-        print(count)
+        args = args.split()
+        if len(args) >= 1:
+            if args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+            else:
+                objs = models.storage.all(args[0])
+                print(len(objs))
+        else:
+            objs = models.storage.all()
+            print(len(objs))
 
     def help_count(self):
         """ """
