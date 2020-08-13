@@ -37,7 +37,6 @@ class FileStorage:
                 class_name = str(cls).split(".")[2].split("'")[0]
                 if key.split(".")[0] == class_name:
                     new_dict[key] = value
-            print(new_dict)
             return (new_dict)
         return (FileStorage.__objects)
 
