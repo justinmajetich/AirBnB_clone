@@ -2,11 +2,13 @@
 """ db storage """
 
 from os import getenv
-from models.base_model import Base
-import sqlalchemy import create_engine
+from models.base_model import Base, BaseModel
+from models.city import City
+from models.state import State
+from sqlalchemy import create_engine
 
 
-class DBStorage:
+class DBStorage():
     """ db storage """
 
     __engine = None
@@ -17,8 +19,8 @@ class DBStorage:
         ''' init '''
 
         db_user = getenv('HBNB_MYSQL_USER')
-        db_user = getenv('HBNB_MYSQL_PWD')
-        db_user = getenv('HBNB_MYSQL_HOST')
+        db_pass = getenv('HBNB_MYSQL_PWD')
+        db_host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
         env = getenv('HBNB_ENV') 
 
@@ -30,7 +32,7 @@ class DBStorage:
 
     def reload(self):
         ''' reload '''
-        from sqlalchemy.orm import sessionmaker, scoped_session
+        from sqlalchemy.orm import sessionmaker as sm, scoped_session
 
         Base.metadata.create_all(self.__engine)
         sess = sm(bind=self.__engine, expire_on_commit=False)
@@ -39,7 +41,25 @@ class DBStorage:
 
     def all(self, cls=None):
         ''' all '''
-''' next '''
+
+        if cls is None:
+            objects = self.__session.query(State).all()
+            objects += self.__session.query(City).all()
+            """
+            objects += self.__session.query(User).all()
+            objects += self.__session.query(Amenity).all()
+            objects += self.__session.query(Place).all()
+            objects += self.__session.query(Review).all()
+            """
+        else:
+            objects = self.__session.query(cls)        
+
+        ret = {}
+        for obj in objects:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            ret[key] = obj
+
+        return ret
 
     def new(self, obj):
         ''' new '''
