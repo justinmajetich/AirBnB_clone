@@ -10,12 +10,9 @@ import os
 class Amenity(BaseModel, Base):
     """Object representation of table amenities
     """
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = "amenities"
-        name = Column(String(128), nullable=False)
-        place_amenities = relationship(
-            "Place",
-            secondary=place_amenity
-        )
-    else:
-        name = ""
+    __tablename__ = "amenities"
+    name = Column(String(128), nullable=False)
+    place_amenities = relationship(
+        "Place",
+        secondary=place_amenity
+    )
