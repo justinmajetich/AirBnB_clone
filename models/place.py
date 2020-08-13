@@ -4,11 +4,13 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy import Table
 from sqlalchemy.orm import relationship
+from sqlalchemy import MetaData
 import os
+metadata = MetaData()
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """This Class stores information of places"""
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -21,19 +23,22 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
+
     place_amenity = Table(
         "place_amenity", metadata,
         Column("place_id", String(60), ForeignKey('place.id'),
-                primary_key=True, nullable=False),
+               primary_key=True, nullable=False),
         Column("amenity_id", String(60), ForeignKey('amenity.id'),
-                primary_key=True, nullable=False))
+               primary_key=True, nullable=False))
+
     reviews = relationship(
         "Review",
         backref="place",
-        cascade="all, delete-orphan")
+        cascade="all")
+
     amenities = relationship(
         "Amenity",
-        secondary=place_amenity,
+        secondary="place_amenity",
         viewonly=False)
 
     if os.getenv("HBNB_TYPE_STORAGE") != "db":
@@ -53,7 +58,7 @@ class Place(BaseModel, Base):
 
             list_amenities = []
             for c in FileStorage.all(Amenity).values():
-                if c.amenity_ids == Amenity.id:
+                if self.amenity_ids == c.id:
                     list_amenities.append(c)
             return list_amenities
 
@@ -61,5 +66,5 @@ class Place(BaseModel, Base):
         def amenities(self, value):
             from models.amenity import Amenity
 
-            if type(value) is type(Amenity):
+            if isinstance(value, type(Amenity)):
                 self.amenity_ids.append(value.id)
