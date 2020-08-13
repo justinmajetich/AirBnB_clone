@@ -1,10 +1,29 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Float
+from models.amenity import Amenity
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 from models.review import Review
 from os import getenv
+
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+
+    place_amenity = Table(
+        'place_amenity',
+        Base.metadata,
+        Column(
+            'place_id',
+            String(60),
+            ForeignKey('places.id'),
+            primary_key=True, nullable=False),
+        Column(
+            'amenity_id',
+            String(60),
+            ForeignKey('amenities.id'),
+            primary_key=True,
+            nullable=False)
+        )
 
 
 class Place(BaseModel, Base):
@@ -22,6 +41,11 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        amenities = relationship(
+            "Amenity",
+            secondary='place_amenity',
+            viewonly=False
+            )
         reviews = relationship(
             'Review',
             backref='place',
@@ -42,6 +66,22 @@ class Place(BaseModel, Base):
         amenity_ids = []
 
         @property
+        def amenities(self):
+            """ getter to amenities asociated with the current state """
+            from models import storage
+            amenities = []
+            objects = storage.all("Amenity")
+            for obj in objects.values():
+                if obj.id == self.amenity_ids:
+                    amenities.append(obj)
+            return amenities
+
+        @amenities.setter
+        def amenities(self, value):
+            """ setter to amenities asociated with the current state """
+            if type(value) == Amenity:
+                self.amenity_ids = value.id
+
         def reviews(self):
             """ getter to reviews asociated with the current place """
             from models import storage
