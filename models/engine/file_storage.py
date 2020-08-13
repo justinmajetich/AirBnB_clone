@@ -33,8 +33,8 @@ class FileStorage:
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
-            print("temp.items{}".format(temp.items()))
-            print("temp.items{}".format(type(temp.items())))
+           # print("temp.items{}".format(temp.items()))
+            # print("temp.items{}".format(type(temp.items())))
             for key, val in temp.items():
                 temp[key] = val.to_dict()
             print("Before json dump, type of temp = {}".format(type(temp)))
