@@ -15,4 +15,4 @@ class City(BaseModel, Base):
     # id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-    
+
