@@ -37,7 +37,7 @@ class DBStorage:
     def all(self, cls=None):
         """Query currend tb session for all objects dpending on cls"""
         classes = {'State': State, 'City': City, 'User': User, 'Place': Place,
-                   'Review': Review}
+                   'Review': Review, 'Amenity': Amenity}
         show = {}
         if cls is not None:
 
