@@ -33,15 +33,13 @@ class DBStorage:
         from models.user import User
         from models.place import Place
         from models.review import Review
-
-        """
         from models.amenity import Amenity
-        """
+
         query_obj = []
         if cls is not None:
             query_obj = self.__session.query(cls).all()
         else:
-            list_class = [User, Place, State, City, Review]
+            list_class = [User, Place, State, City, Review, Amenity]
             for x in list_class:
                 query_obj += self.__session.query(x).all()
         new_dict = {}
