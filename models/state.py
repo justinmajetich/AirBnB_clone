@@ -23,4 +23,3 @@ class State(BaseModel, Base):
         all_cities = [city for city in cities.values()
                       if city.state_id == self.id]
         return all_cities
-
