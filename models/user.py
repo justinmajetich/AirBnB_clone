@@ -18,6 +18,7 @@ if models.storage_t == 'db':
                                             ondelete='CASCADE'),
                                  primary_key=True))
 
+
 class User(BaseModel, Base):
     """A user"""
     if models.storage_t == 'db':
