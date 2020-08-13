@@ -13,14 +13,12 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class DBStorage:
     __engine = None
     __session = None
 
     def __init__(self):
-        """[summary]
-        """        
+        """[Init db storage environment]"""
         enviroment = os.getenv('HBNB_ENV')
         user = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
@@ -30,10 +28,9 @@ class DBStorage:
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 user, password, host, database), pool_pre_ping=True)
-        
+
         Session = sessionmaker()
         self.__session = Session()
-
 
         if enviroment == "test":
             Base.metadata.drop_all(engine, checkfirst=True)
@@ -43,7 +40,8 @@ class DBStorage:
         if cls:
             objects = self.__session.query(cls).all()
         else:
-            objects = self.__session.query(User, State, City, Amenity, Place, Review).all()
+            objects = self.__session.query(
+                User, State, City, Amenity, Place, Review).all()
 
         new_dic = {}
         for key in objects.keys():
@@ -52,10 +50,8 @@ class DBStorage:
             setattr(new_dic, key, objects[key])
         return new_dic
 
-
-
     def new(self, obj):
-        """[New object to session]""" 
+        """[New object to session]"""
         self.__session.add(obj)
 
     def save(self):
@@ -66,10 +62,10 @@ class DBStorage:
         """[Delete objects of databases]"""
         if obj is not None:
             self.__session.delete(obj)
-    
+
     def reload(self):
         """[Reload objects in databases]"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)            
-
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
