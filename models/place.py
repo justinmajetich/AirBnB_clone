@@ -71,5 +71,14 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, value):
             """Amenities setter"""
+            from models import storage
+            from models.amenity import Amenity
+            from datetime import datetime
+            lili = []
             if isinstance(value, Amenity):
-                self.amenity_ids.append(value.id)
+                lili.append(value.id)
+            self.updated_at = datetime.now()
+            setattr(self, 'amenity_ids', lili)
+            storage.all().update(
+                {self.to_dict()['__class__'] + '.' + self.id: self})
+            storage.save()
