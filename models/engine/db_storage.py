@@ -5,6 +5,8 @@ from os import getenv
 from models.base_model import Base, BaseModel
 from models.city import City
 from models.state import State
+from models.user import User
+from models.place import Place
 from sqlalchemy import create_engine
 
 
@@ -14,7 +16,6 @@ class DBStorage():
     __engine = None
     __session = None
 
-
     def __init__(self):
         ''' init '''
 
@@ -22,11 +23,11 @@ class DBStorage():
         db_pass = getenv('HBNB_MYSQL_PWD')
         db_host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
-        env = getenv('HBNB_ENV') 
+        env = getenv('HBNB_ENV')
 
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                                      db_user, db_pass, db_host, db), 
-                                      pool_pre_ping=True) 
+                                      db_user, db_pass, db_host, db),
+                                      pool_pre_ping=True)
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -45,14 +46,14 @@ class DBStorage():
         if cls is None:
             objects = self.__session.query(State).all()
             objects += self.__session.query(City).all()
-            """
             objects += self.__session.query(User).all()
-            objects += self.__session.query(Amenity).all()
             objects += self.__session.query(Place).all()
+            """
+            objects += self.__session.query(Amenity).all()
             objects += self.__session.query(Review).all()
             """
         else:
-            objects = self.__session.query(cls)        
+            objects = self.__session.query(cls)
 
         ret = {}
         for obj in objects:
@@ -79,4 +80,4 @@ class DBStorage():
         if obj is None:
             return
         else:
-            self.__session.delete(obj) 
+            self.__session.delete(obj)
