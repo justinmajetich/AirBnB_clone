@@ -14,9 +14,12 @@ import MySQLdb
 import pep8
 import sys
 
-db = MySQLdb.connect(host=getenv("HBNB_MYSQL_HOST"), passwd=getenv("HBNB_MYSQL_PWD"),
-                     user=getenv("HBNB_MYSQL_USER"), db=getenv("HBNB_MYSQL_DB"))
-cursor_objects = db.cursor()
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    db = MySQLdb.connect(
+        host=getenv("HBNB_MYSQL_HOST"),
+        passwd=getenv("HBNB_MYSQL_PWD"), user=getenv("HBNB_MYSQL_USER"),
+        db=getenv("HBNB_MYSQL_DB"))
+    cursor_objects = db.cursor()
 
 
 class test_DBStorage(unittest.TestCase):
@@ -43,9 +46,10 @@ class test_DBStorage(unittest.TestCase):
             storage = DBStorage()
             storage.reload()
             initial_count = len(storage.all(State))
-            initial_db = cursor_objects.execute("""SELECT COUNT(id) FROM states;""")
+            initial_db = cursor_objects.execute(
+                """SELECT COUNT(id) FROM states;""")
 
-            self.assertTrue(initial_count == initial_db)
+            self.assertTrue(initial_count == 0)
 
             new_state = State(name="Antioquia")
             storage.reload()
@@ -53,7 +57,8 @@ class test_DBStorage(unittest.TestCase):
             storage.save()
 
             final_count = len(storage.all(State))
-            final_db = cursor_objects.execute("""SELECT COUNT(id) FROM states;""")
+            final_db = cursor_objects.execute(
+                """SELECT COUNT(id) FROM states;""")
 
             self.assertEqual(final_count, final_db)
 
