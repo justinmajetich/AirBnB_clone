@@ -25,7 +25,10 @@ class test_User(test_basemodel):
         if os.access("file.json", os.F_OK):
             os.remove("file.json")
         if getenv('HBNB_TYPE_STORAGE') == "db":
-            self.db.close()
+            try:
+                self.db.close()
+            except:
+                pass
 
     def test_first_name(self):
         """ """
