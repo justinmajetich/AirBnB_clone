@@ -52,6 +52,8 @@ class DBStorage:
     def new(self, obj):
         """Add the object to the database"""
         self.__session.add(obj)
+        self.save()
+        self.reload()
 
     def save(self):
         """Commit all changes of the database"""
@@ -61,6 +63,7 @@ class DBStorage:
         """Delete the obj from the DB if is not none"""
         if obj is not None:
             self.__session.delete(obj)
+            self.save()
 
     def reload(self):
         """Method reload"""
