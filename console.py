@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import json
+import sys
 import models
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
@@ -19,7 +20,7 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = ("(hbnb) ")
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
