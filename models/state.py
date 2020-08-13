@@ -3,6 +3,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -13,13 +14,12 @@ class State(BaseModel, Base):
         String(128),
         nullable=False
     )
-
     # for dbstorage:
-    cities = relationship('City')
+    cities = relationship('City', cascade="all, delete", backref="state")
 
     # for filestorage:
     @property
     def cities(self):
-        new_dict = {}
-    
+        """ Getter method for cities attribute"""
+        return type(self).cities
     #Pendiente hacer la relacion con la llave foranea (cities)

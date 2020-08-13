@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
-import sqlalchemy
+from sqlalchemy import Column, DateTime, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
@@ -10,20 +10,19 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    id = sqlalchemy.Column(
-        'id',
-        sqlalchemy.String(60),
+    id = Column(
+        String(60),
         unique=True,
         nullable=False,
         primary_key=True
     )
-    created_at = sqlalchemy.Column(
-        'created_at',
+    created_at = Column(
+        DateTime,
         nullable=False,
         default=datetime.utcnow()
     )
-    updated_at = sqlalchemy.Column(
-        'updated_at',
+    updated_at = Column(
+        DateTime,
         nullable=False,
         default=datetime.utcnow()
     )
@@ -31,23 +30,29 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            # from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            # storage.new(self)
         else:
-            for key, value in kwargs.items(): 
-                if key == "updated_at":
-                    kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                            '%Y-%m-%dT%H:%M:%S.%f')
-                elif key == "created_at":
-                    kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                            '%Y-%m-%dT%H:%M:%S.%f')
-                elif key != "__class__":
-                    setattr(self, key, value)
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            if '__class__' in kwargs.keys():
+                for key, value in kwargs.items():
+                    if key == "updated_at":
+                        kwargs['updated_at'] = datetime.strptime(
+                            kwargs['updated_at'],
+                            '%Y-%m-%dT%H:%M:%S.%f'
+                            )
+                    elif key == "created_at":
+                        kwargs['created_at'] = datetime.strptime(
+                            kwargs['created_at'],
+                            '%Y-%m-%dT%H:%M:%S.%f'
+                            )
+                    elif key != "__class__":
+                        setattr(self, key, value)
+                del kwargs['__class__']
+                self.__dict__.update(kwargs)
+            for key in kwargs.keys():
+                if key not in self.__dict__.keys():
+                    setattr(self, key, kwargs[key])
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -57,7 +62,7 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
-        storage.new(self) #New object before saving it
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
@@ -75,5 +80,6 @@ class BaseModel:
         return dictionary
 
     def delete(self):
+        """delete the current instance from the storage"""
         from models import storage
         storage.delete(self)
