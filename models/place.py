@@ -8,8 +8,15 @@ from os import getenv
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60), ForeignKey(
+                              'places.id'),
+                              primary_key=True, nullable=False),
+                          Column('amenity_id', String(60), ForeignKey(
+                              'amenities.id'),
+                              primary_key=True, nullable=False))
+    __tablename__ = 'places'
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         name = Column(String(128), nullable=False)
@@ -22,13 +29,6 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
-        place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60), ForeignKey(
-                                  'places.id'),
-                                  primary_key=True, nullable=False),
-                              Column('amenity_id', String(60), ForeignKey(
-                                  'amenities.id'),
-                                  primary_key=True, nullable=False))
         amenities = relationship(
             "Amenity", secondary=place_amenity,
             viewonly=False, backref="places")
@@ -50,7 +50,7 @@ class Place(BaseModel, Base):
             """reviews getter"""
             from models import storage
             result = []
-            dict_reviews = storage.all("Review")
+            dict_reviews = storage.all(Review)
             for key, obj in dict_reviews.items():
                 if self.id == obj["place_id"]:
                     result.append(obj)
@@ -63,9 +63,8 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             result = []
             for key, obj in storage.all(Amenity).items():
-                for aid in self.amenity_ids:
-                    if aid == obj.id:
-                        result.append(obj)
+                if key.id == self.amenity_ids:
+                    result.append(obj)
             return result
 
         @amenities.setter
