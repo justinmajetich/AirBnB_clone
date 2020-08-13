@@ -6,8 +6,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
 from os import getenv
 
+Base2 = declarative_base()
 if getenv("HBNB_TYPE_STORAGE") == "db":
-    Base = declarative_base()
+    Base = Base2
 else:
     Base = object
 
