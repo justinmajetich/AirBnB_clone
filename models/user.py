@@ -230,14 +230,6 @@ class User(BaseModel, Base):
         places = relationship("Place", backref="user", cascade="all, delete")
         reviews = relationship("Review", backref="user",
                                cascade="all, delete")
-    else:
-        email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
-        """This class defines a user by various attributes"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        __tablename__ = 'users'
 
 
 
