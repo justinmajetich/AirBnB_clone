@@ -1,93 +1,58 @@
 #!/usr/bin/python3
 """ """
 from models.base_model import BaseModel
-import unittest
-import datetime
+import unittestcd
+import datetimecd
 from uuid import UUID
 import json
 import os
+import pep8
+from models.engine.file_storage import FileStorage
+from console import HBNBCommand
 
 
-class test_basemodel(unittest.TestCase):
-    """ """
+class TestHBCommand(unittest.TestCase):
+    """Test for command line"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.value = BaseModel
+    def test_style(self):
+        """test pep8 style"""
+        style = pep8.StyleGuide()
+        m = style.check_files(["console.py"])
+        self.assertEqual(m.total_errors, 0, "fix pep8")
 
-    def setUp(self):
-        """ """
+    def test_quit(self, command):
+        """ Method to exit the HBNB console"""
         pass
 
-    def test_default(self):
+    def test_docstring(self):
         """ """
-        i = self.value()
-        self.assertEqual(type(i), self.value)
 
-    def test_kwargs(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
-        new = BaseModel(**copy)
-        self.assertFalse(new is i)
+    def test_help_EOF(self):
+        """ Prints the help documentation for quit  """
+        pass
 
-    def test_kwargs_int(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
-        copy.update({1: 2})
-        with self.assertRaises(TypeError):
-            new = BaseModel(**copy)
+    if getenv("HBNB_TYPE_STORAGE") != "db":
 
-    def test_save(self):
-        """ Testing save """
-        i = self.value()
-        i.save()
-        key = self.name + "." + i.id
-        with open('file.json', 'r') as f:
-            j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
+        def test_show(self, arg):
+            """ Handles EOF to exit program """
+            pass
 
-    def test_str(self):
-        """ """
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        def test_create(self):
+            """ Prints the help documentation for EOF """
+            pass
 
-    def test_todict(self):
-        """ """
-        i = self.value()
-        n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
+        def test_count(self):
+            """ """
+            pass
 
-    def test_kwargs_none(self):
-        """ """
-        n = {None: None}
-        with self.assertRaises(TypeError):
-            new = self.value(**n)
+        def test_destroy(self, args):
+            """ Destroys a specified object """
+            pass
 
-    def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        def test_update(self, args):
+            """ Updates a certain object with new info """
+            pass
 
-    def test_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.id), str)
-
-    def test_created_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.created_at), datetime.datetime)
-
-    def test_updated_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        def test_help_all(self, args):
+            """ Shows all objects, or all objects of a class"""
+            pass
