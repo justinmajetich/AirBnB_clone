@@ -21,9 +21,21 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False))
+
     if os.getenv("HBNB_TYPE_STROAGE") == 'db':
         reviews = relationship('Review', cascade='all, delete',
                                backref='place')
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 backref='place_amenity', viewonly=False)
     else:
 
         @property
@@ -40,3 +52,23 @@ class Place(BaseModel, Base):
                     # append it
                     ret.append(value)
             return ret
+
+        @property
+        def amenities(self):
+            ''' amenities '''
+
+            adict = storage.all(Amenity)
+            alist = []
+            for v in adict.values():
+                if Amenity.id in self.amenity_ids:
+                    alist.append(value)
+            return alist
+
+        @amenities.setter
+        def amenities(self, value=None):
+            ''' amenity setter '''
+            from models.amenity import Amenity
+
+            if value:
+                if type(value).__name__ == 'Amenity':
+                    self.amenity_ids.append(value.id)
