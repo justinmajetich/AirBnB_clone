@@ -26,12 +26,11 @@ class Place(BaseModel, Base):
         backref="place",
         cascade="all, delete-orphan")
 
-    @property
-    def reviews(self):
-        if os.getenv("HBNB_TYPE_STORAGE") == "db":
-            return
-        list_reviews = []
-        for c in FileStorage.all(Review).values():
-            if c.place_id == self.id:
-                list_reviews.append(c)
-        return list_reviews
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        @property
+        def reviews(self):
+            list_reviews = []
+            for c in FileStorage.all(Review).values():
+                if c.place_id == self.id:
+                    list_reviews.append(c)
+            return list_reviews
