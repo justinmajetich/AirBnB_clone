@@ -26,7 +26,7 @@ class Place(BaseModel, Base):
         backref="place",
         cascade="all, delete-orphan")
 
-    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    if os.getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def reviews(self):
             list_reviews = []

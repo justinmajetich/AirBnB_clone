@@ -17,7 +17,7 @@ class State(BaseModel, Base):
         backref="state",
         cascade="all, delete-orphan")
 
-    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    if os.getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
             list_cities = []
