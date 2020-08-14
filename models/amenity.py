@@ -10,4 +10,4 @@ class Amenity(BaseModel):
     __tablename__ = 'amenities'
     name = Column(String(128))
     place_amenities = relationship(
-        "Place", secondary=place_amenity, backref='amenities')
+        "Place", secondary='place_amenity', backref='amenities')
