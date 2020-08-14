@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+""" Console class """
 import cmd
 import sys
 import models
@@ -12,6 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import shlex
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -149,7 +150,6 @@ class HBNBCommand(cmd.Cmd):
             return False
         print(instance.id)
         instance.save()
-
 
     def help_create(self):
         """ Help information for the create method """
