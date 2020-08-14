@@ -30,3 +30,10 @@ class test_review(test_basemodel):
             """ """
             new = self.value()
             self.assertEqual(type(new.text), str)
+    else:
+        def test_review_attributes(self):
+            """ """
+            new = Review(text="nice", place_id="001", user_id="007")
+            self.assertEqual(type(new.place_id), str)
+            self.assertEqual(type(new.user_id), str)
+            self.assertEqual(type(new.text), str)
