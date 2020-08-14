@@ -21,12 +21,15 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     if os.getenv("HBNB_TYPE_STROAGE") == 'db':
-        reviews = relationship('Review', cascade='all, delete', backref='place')
+        reviews = relationship('Review', cascade='all, delete',
+                               backref='place')
     else:
         from models.__init__ import storage
+
         @property
         def reviews(self):
-            '''returns the list of Review instances with place_id equals to the current Place.id'''
+            '''returns the list of Review instances with
+               place_id equals to the current Place.id'''
         ret = []
         # get dictionary of all out objects
         all_objs_dict = storage.all()
