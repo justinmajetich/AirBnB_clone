@@ -20,6 +20,7 @@ place_amenity = Table(
 
 
 class Place(BaseModel, Base):
+    """ Place class """
     __tablename__ = "places"
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", passive_deletes=True, backref="place")
@@ -53,4 +54,3 @@ class Place(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """Place constructor"""
         super().__init__(*args, **kwargs)
-

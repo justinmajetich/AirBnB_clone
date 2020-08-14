@@ -6,6 +6,7 @@ import os
 
 
 class Review(BaseModel, Base):
+    """Review class """
     __tablename__ = "reviews"
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
@@ -19,4 +20,3 @@ class Review(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """Review constructor"""
         super().__init__(*args, **kwargs)
-
