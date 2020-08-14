@@ -17,7 +17,6 @@ class State(BaseModel, Base):
 
     cities = relationship('City', cascade="all, delete", backref='state')
 
-
     @property
     def cities(self):
         ''' cities getter '''
