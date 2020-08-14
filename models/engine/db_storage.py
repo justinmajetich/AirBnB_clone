@@ -25,7 +25,7 @@ class DBStorage:
                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
                 HBNB_MYSQL_DB), pool_pre_ping=True)
         if HBNB_ENV == 'tets':
-            Base.metadata.drop_all
+            Base.metadata.drop_all()
         
     def all(self, cls=None):
         """ call all """
@@ -52,21 +52,24 @@ class DBStorage:
     
     
     def new(self, obj):
+        """ add values in table"""
         print(obj)
 
         self.__session.add(obj)
         
     def save(self):
+        """ save changes in talbes"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """ delete imput in table"""
         pass
 
     def reload(self):
+        """ recharge session and tables"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False )
-        Session = scoped_session(session_factory)
-        self.__session = Session()
-        
+        self.__session = scoped_session(session_factory)
+         
 
 

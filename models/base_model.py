@@ -16,8 +16,10 @@ class BaseModel:
     # add atributes inheritance of Base
    
     id = Column(String(60), primary_key=True, nullable=False)
-    created_date = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    # created_date = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    # updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
         
     def __init__(self, *args, **kwargs):

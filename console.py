@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
-import os
+from os import getenv
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -142,7 +142,6 @@ class HBNBCommand(cmd.Cmd):
                 v = v.replace('_', " ")
                 setattr(obj, k, eval(v))
 
-            print("hola")
             obj.save()
             print("{}".format(obj.id))
         else:
@@ -220,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+        if getenv("HBNB_TYPE_STORAGE") == "FileStorage":
             try:
                 print(storage._FileStorage__objects[key])
             except KeyError:
@@ -269,7 +268,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+        if getenv("HBNB_TYPE_STORAGE") == "FileStorage":
             print_list = []
 
             if args:
@@ -296,7 +295,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
-        if os.environ["HBNB_TYPE_STORAGE"] == "FileStorage":
+        if getenv("HBNB_TYPE_STORAGE") == "FileStorage":
             count = 0
             for k, v in storage._FileStorage__objects.items():
                 if args == k.split('.')[0]:
