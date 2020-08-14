@@ -29,9 +29,10 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-    str_cols = ['id', 'name', 'email', 'password', 'first_name', 
-                'last_name', 'city_id', 'user_id', 'state_id', 
+    str_cols = ['id', 'name', 'email', 'password', 'first_name',
+                'last_name', 'city_id', 'user_id', 'state_id',
                 'place_id', 'amenity_id']
+
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -128,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         for arg in range(1, len(arg_list)):
-            # key_value contains i.e name="My_little_house" or latitude=37.773972
+            # key_value contains i.e name="My_little_house"/latitude=37.773972
             key_value = arg_list[arg].split('=')
             key = key_value[0]
             # value set to whats after '='
@@ -138,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             if '.' in value and '@' not in value:
                 value = float(value)
             else:
-                if key not in HBNBCommand.str_cols: 
+                if key not in HBNBCommand.str_cols:
                     value = int(value)
                 else:
                     value = value.replace('_', ' ')
