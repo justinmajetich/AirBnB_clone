@@ -28,56 +28,58 @@ class TestHBCommand(unittest.TestCase):
                 os.remove("file.json")
             FileStorage._FileStorage__objects = {}
 
-        def test_style_base(self):
-            """test pep8
-            """
-            style = pep8.StyleGuide()
-            m = style.check_files(["console.py"])
-            self.assertEqual(m.total_errors, 0, "fix pep8")
+    def test_style_base(self):
+        """test pep8
+        """
+        style = pep8.StyleGuide()
+        m = style.check_files(["console.py"])
+        self.assertEqual(m.total_errors, 0, "fix pep8")
 
-        def test_docstring(self):
-            """Test doc strings.
-            """
-            self.assertIsNotNone(HBNBCommand.__doc__)
-            self.assertIsNotNone(HBNBCommand.precmd.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
-            self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_create.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_show.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_all.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-            self.assertIsNotNone(HBNBCommand.do_count.__doc__)
+    def test_docstring(self):
+        """Test doc strings.
+        """
+        self.assertIsNotNone(HBNBCommand.__doc__)
+        self.assertIsNotNone(HBNBCommand.precmd.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
+        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
 
-        def test_help(self):
-            """Test help message.
-            """
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("help")
-            val = f.getvalue()
-            msg = """\nDocumented commands (type help <topic>):
+    def test_help(self):
+        """Test help message.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("help")
+        val = f.getvalue()
+        msg = """\nDocumented commands (type help <topic>):
 ========================================
 EOF  all  count  create  destroy  help  quit  show  update\n\n"""
-            self.assertEqual(val, msg)
+        self.assertEqual(val, msg)
 
-        def test_quit(self):
-            """Test quit command.
-            """
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("help quit")
-            val = f.getvalue()
-            msg = "Exits the program with formatting\n\n"
-            self.assertEqual(val, msg)
+    def test_quit(self):
+        """Test quit command.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("help quit")
+        val = f.getvalue()
+        msg = "Exits the program with formatting\n\n"
+        self.assertEqual(val, msg)
 
-        def test_help_EOF(self):
-            """Test EOF command.
-            """
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("help EOF")
-            val = f.getvalue()
-            msg = "Exits the program without formatting\n\n"
-            self.assertEqual(val, msg)
+    def test_help_EOF(self):
+        """Test EOF command.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("help EOF")
+        val = f.getvalue()
+        msg = "Exits the program without formatting\n\n"
+        self.assertEqual(val, msg)
+
+    if getenv("HBNB_TYPE_STORAGE") != "db":
 
         def test_create(self):
             """Test create command.
