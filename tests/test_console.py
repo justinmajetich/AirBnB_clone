@@ -76,3 +76,6 @@ class TestHBCommand(unittest.TestCase):
         def test_help_all(self, args):
             """ Shows all objects, or all objects of a class"""
             pass
+
+if __name__ == "__main__":
+    unittest.main()
