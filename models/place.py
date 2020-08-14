@@ -3,6 +3,7 @@
 import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
@@ -24,19 +25,18 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', cascade='all, delete',
                                backref='place')
     else:
-        from models.__init__ import storage
 
         @property
         def reviews(self):
             '''returns the list of Review instances with
                place_id equals to the current Place.id'''
-        ret = []
-        # get dictionary of all out objects
-        all_objs_dict = storage.all()
-        # loop through our dict for key, value
-        for key, value in all_objs_dict.items():
-            # if we're at a Review object
-            if key.split('.')[0] == 'Review' and self.id == value.place_id:
-                # append it
-                ret.append(value)
-        return ret
+            ret = []
+            # get dictionary of all out objects
+            all_objs_dict = storage.all()
+            # loop through our dict for key, value
+            for key, value in all_objs_dict.items():
+                # if we're at a Review object
+                if key.split('.')[0] == 'Review' and self.id == value.place_id:
+                    # append it
+                    ret.append(value)
+            return ret
