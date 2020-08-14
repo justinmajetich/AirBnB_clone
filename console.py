@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import json
+import sys
 import models
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
@@ -12,13 +13,20 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models import classes
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = ("(hbnb) ")
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
+    classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
 
     types = {
         'number_rooms': int, 'number_bathrooms': int,
@@ -28,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
+        return True
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -36,8 +44,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
-        print()
-        exit()
+        return True
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -154,24 +161,22 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
-        args = args.split()
+    def do_all(self, arg):
+        """Prints string representations of instances"""
+        args = shlex.split(arg)
         obj_list = []
-        if len(args) >= 1:
-            if args[0] not in classes:
-                print("** class doesn't exist **")
-            else:
-                objs = models.storage.all(args[0])
-                for key, obj in objs.items():
-                    if key.startswith(args[0]):
-                        obj_list.append(obj)
-                print(obj_list)
+        if len(args) == 0:
+            obj_dict = models.storage.all()
+        elif args[0] in classes:
+            obj_dict = models.storage.all(classes[args[0]])
         else:
-            objs = models.storage.all()
-            for obj in objs.values():
-                obj_list.append(obj)
-            print(obj_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
@@ -222,7 +227,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         # determine if key is present
-        if key not in storage.all():
+        if key not in models.storage.all():
             print("** no instance found **")
             return
 

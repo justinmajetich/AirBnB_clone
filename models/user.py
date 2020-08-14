@@ -7,6 +7,7 @@ import os
 
 
 class User(BaseModel, Base):
+    """Definition of the User class"""
     __tablename__ = "users"
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         email = Column(String(128), nullable=False)
@@ -20,3 +21,8 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """User constructor"""
+        super().__init__(*args, **kwargs)
+

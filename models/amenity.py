@@ -8,6 +8,7 @@ from models.place import place_amenity
 
 
 class Amenity(BaseModel, Base):
+    """Implementation for the Amenities"""
     __tablename__ = 'amenities'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         name = Column(String(128), nullable=False, default="")
@@ -15,3 +16,8 @@ class Amenity(BaseModel, Base):
             "Place", secondary=place_amenity)
     else:
         name = ""
+
+    def __init__(self, *args, **kwargs):
+        """Amenity constructor"""
+        super().__init__(*args, **kwargs)
+
