@@ -36,6 +36,7 @@ class DBStorage:
             objs = self.__session.query(State).all()
             objs += self.__session.query(City).all()
             objs += self.__session.query(User).all()
+            objs += self.__session.query(Place).all()
         return {"{}.{}".format(type(x).__name__, x.id): x for x in objs}
 
     def new(self, obj):
