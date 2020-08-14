@@ -17,8 +17,6 @@ from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
 from models.engine.db_storage import DBStorage
 
-print("\n ###################  ##### INICIO TESTS ######## ###### ######\n")
-
 
 class test_Place_file_storage(unittest.TestCase):
     """ """
@@ -104,11 +102,14 @@ class test_Place_file_storage(unittest.TestCase):
 class test_Place_db_storage(unittest.TestCase):
     """ test for checking deb_storage """
 
-    print("\n **************** START test db ****************\n")
-
     @classmethod
     def setUpClass(cls):
         if os.getenv("HBNB_TYPE_STORAGE") == "db":
+
+            # create storage DB
+            cls.storage = DBStorage()
+            cls.storage.reload()
+
             # creation of a State
             cls.state = State(name="California")
             cls.state.save()
@@ -123,6 +124,10 @@ class test_Place_db_storage(unittest.TestCase):
                               city_id=cls.city.id, name="House 1")
             cls.place.save()
 
+            cls.place_2 = Place(user_id=cls.user.id,
+                                city_id=cls.city.id, name="House 2")
+            cls.place_2.save()
+
             cls.amenity_1 = Amenity(name="Wifi")
             cls.amenity_1.save()
 
@@ -131,9 +136,15 @@ class test_Place_db_storage(unittest.TestCase):
 
             cls.amenity_3 = Amenity(name="Oven")
             cls.amenity_3.save()
+            # link place_1 with 2 amenities
+            cls.place.amenities.append(cls.amenity_1)
+            cls.place.amenities.append(cls.amenity_2)
 
-            cls.storage = DBStorage()
-            cls.storage.reload()
+            # link place_2 with 3 amenities
+            cls.place_2.amenities.append(cls.amenity_1)
+            cls.place_2.amenities.append(cls.amenity_2)
+            cls.place_2.amenities.append(cls.amenity_3)
+
             cls.storage.save()
 
     def setUp(self):
@@ -141,6 +152,11 @@ class test_Place_db_storage(unittest.TestCase):
         if os.getenv("HBNB_TYPE_STORAGE") != "db":
             self.skipTest("because is not using db_storage")
         self.connection()
+
+    def tearDown(self):
+        """ Close conections """
+        self.db.close()
+        self.storage.close()
 
     def connection(self):
         """ set the connection for the database MYSQL """
@@ -178,9 +194,28 @@ class test_Place_db_storage(unittest.TestCase):
         self.assertIn(self.place.name, lista)
         self.cursor.close()
 
+    def test_leng_queary(self):
+        """Check the lenght of the query """
+
+        self.cursor.execute(
+            """SELECT id FROM places""")
+        query = self.cursor.fetchall()
+        self.assertEqual(2, len(query))
+        self.cursor.close()
+
     def test_type(self):
         """test the type of the class """
         self.assertTrue(type(self.place), Place)
+
+    def test_amenities(self):
+        """ Test for the the amenitis of id of the"""
+        list_amenities = self.place_2.amenities
+        amenity_name = []
+        for a in list_amenities:
+            amenity_name.append(a.name)
+        self.assertIn("Wifi", amenity_name)
+        self.assertIn("Oven", amenity_name)
+        self.assertIn("Cable", amenity_name)
 
 
 if __name__ == "__main__":
