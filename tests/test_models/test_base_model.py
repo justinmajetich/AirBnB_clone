@@ -86,3 +86,51 @@ class test_basemodel(unittest.TestCase):
             """ """
             new = self.value()
             self.assertEqual(type(new.created_at), datetime.datetime)
+    else:
+        def test_default(self):
+            """ """
+            i = BaseModel()
+            self.assertEqual(type(i), BaseModel)
+
+        def test_kwargs(self):
+            """ """
+            i = BaseModel()
+            copy = i.to_dict()
+            new = BaseModel(**copy)
+            self.assertFalse(new is i)
+
+        def test_kwargs_int(self):
+            """ """
+            i = BaseModel()
+            copy = i.to_dict()
+            copy.update({1: 2})
+            with self.assertRaises(TypeError):
+                new = BaseModel(**copy)
+
+        def test_str(self):
+            """ """
+            i = BaseModel()
+            self.assertEqual(
+                str(i), '[{}] ({}) {}'.format("BaseModel", i.id, i.__dict__))
+
+        def test_todict(self):
+            """ """
+            i = BaseModel()
+            n = i.to_dict()
+            self.assertEqual(i.to_dict(), n)
+
+        def test_kwargs_none(self):
+            """ """
+            n = {None: None}
+            with self.assertRaises(TypeError):
+                new = BaseModel(**n)
+
+        def test_id(self):
+            """ """
+            new = BaseModel()
+            self.assertEqual(type(new.id), str)
+
+        def test_created_at(self):
+            """ """
+            new = BaseModel()
+            self.assertEqual(type(new.created_at), datetime.datetime)

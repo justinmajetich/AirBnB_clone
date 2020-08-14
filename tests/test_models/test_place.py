@@ -70,3 +70,21 @@ class test_Place(test_basemodel):
             """ """
             new = self.value()
             self.assertEqual(type(new.amenity_ids), list)
+    else:
+        def test_place_attributes(self):
+            """ """
+            new = Place(city_id="0001", user_id="0001",
+                        name="My_little_house", number_rooms=4,
+                        number_bathrooms=2, max_guest=10,
+                        price_by_night=300, latitude=37.773972,
+                        longitude=-122.431297, description="cool")
+            self.assertEqual(type(new.city_id), str)
+            self.assertEqual(type(new.user_id), str)
+            self.assertEqual(type(new.name), str)
+            self.assertEqual(type(new.description), str)
+            self.assertEqual(type(new.number_rooms), int)
+            self.assertEqual(type(new.number_bathrooms), int)
+            self.assertEqual(type(new.max_guest), int)
+            self.assertEqual(type(new.price_by_night), int)
+            self.assertEqual(type(new.latitude), float)
+            self.assertEqual(type(new.longitude), float)
