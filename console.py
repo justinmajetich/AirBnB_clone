@@ -29,7 +29,9 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-
+    str_cols = ['id', 'name', 'email', 'password', 'first_name', 
+                'last_name', 'city_id', 'user_id', 'state_id', 
+                'place_id', 'amenity_id']
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -136,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             if '.' in value and '@' not in value:
                 value = float(value)
             else:
-                if key not in ['name', 'email', 'password', 'first_name', 'last_name']:
+                if key not in HBNBCommand.str_cols: 
                     value = int(value)
                 else:
                     value = value.replace('_', ' ')
