@@ -19,8 +19,7 @@ class TestHBCommand(unittest.TestCase):
     """Test for command line"""
 
     def test_style_base(self):
-            """test pep8
-            """
+            """test pep8 style"""
             style = pep8.StyleGuide()
             m = style.check_files(["console.py"])
             self.assertEqual(m.total_errors, 0, "fix pep8")
