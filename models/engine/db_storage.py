@@ -1,15 +1,25 @@
 #!/usr/bin/python3
 """ engine DBStorage """
-from os import getenv
-import sqlalchemy
+# from os import getenv
+# import sqlalchemy
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker, scoped_session
+# from models.base_model import Base
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from os import getenv
 from models.base_model import Base
+from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.user import User
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 
-
-class DBStorage:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-    """ Manage storage in bd """
+class:
     __engine = None
     __session = None
 
@@ -21,12 +31,13 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.format(
-                HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
-                HBNB_MYSQL_DB), pool_pre_ping=True)
-        if HBNB_ENV == 'tets':
+        self.__engine = create_engine(
+                'mysql+mysqldb://{}:{}@{}:3306/{}'.format(
+                    HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
+                    HBNB_MYSQL_DB), pool_pre_ping=True)
+        if HBNB_ENV == 'test':
             Base.metadata.drop_all()
-        
+
     def all(self, cls=None):
         """ call all """
         from models.user import User
@@ -37,26 +48,23 @@ class DBStorage:
         from models.review import Review
 
         if cls is not None:
-            query = self.__session.query(State)
-            print(query)
+            query = self.__session.query(cls)
             return (query)
         else:
-            classes = [State, City]
-            repuesta = {}
-            for clas in classes:
-                query = self.__session.query(clas)
-                repuesta.update(query)
-            print(repuesta)
-            return (query)
-        
-    
-    
+            # print(cls)
+            # classes = [State, City]
+            # repuesta = {}
+            # for clas in classes:
+            # query = self.__session.query(cls)
+            #     repuesta.update(query)
+            # print(query)
+            # return (query)
+            pass
+
     def new(self, obj):
         """ add values in table"""
-        print(obj)
-
         self.__session.add(obj)
-        
+
     def save(self):
         """ save changes in talbes"""
         self.__session.commit()
@@ -68,8 +76,6 @@ class DBStorage:
     def reload(self):
         """ recharge session and tables"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False )
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
-         
-
-
