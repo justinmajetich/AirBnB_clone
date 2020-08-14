@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import models
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,7 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+import shlex
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -113,33 +114,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def parser_key(self, args):
+        """parser for the keys"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_dict[key] = value
+        return new_dict
+
     def do_create(self, args):
-        """ Create an object of any class"""
-        line = args.split()
-        if not args:
+        """ Create the obj"""
+        arg = args.split()
+        if len(arg) == 0:
             print("** class name missing **")
-            return
-        elif len(line) > 1:
-            dictio = {}
-            for index in line:
-                for index2 in index:
-                    if index2 == "=":
-                        line2 = str(index.split("="))
-                        dictio[line2[0]] = line2[1]
-                        new_instance = HBNBCommand.classes[]()
-            dictio2 = dictio
-            storage.save()
-            print(dictio)
-            """storage.save()"""
-            return
-        elif len(line) == 1 and args not in HBNBCommand.classes:
+            return False
+        if arg[0] in self.classes:
+            new_dict = self.parser_key(arg[1:])
+            instance = self.classes[arg[0]](**new_dict)
+        else:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        """print(new_instance)"""
-        """storage.save()"""
-        """print(new_instance.id)"""
-        """storage.save()"""
+            return False
+        print(instance.id)
+        instance.save()
+
 
     def help_create(self):
         """ Help information for the create method """
