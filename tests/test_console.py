@@ -77,5 +77,6 @@ class TestHBCommand(unittest.TestCase):
             """ Shows all objects, or all objects of a class"""
             pass
 
+
 if __name__ == "__main__":
     unittest.main()
