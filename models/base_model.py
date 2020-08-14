@@ -11,6 +11,8 @@ if models.storage_t == "db":
 else:
     Base = object
 
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
 
 class BaseModel:
     """A base class for all hbnb models"""
