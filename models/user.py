@@ -277,10 +277,5 @@ class User(BaseModel, Base):
                                cascade="all, delete")
     else:
         email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
-        """This class defines a user by various attributes"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        __tablename__ = 'users'
+
 
