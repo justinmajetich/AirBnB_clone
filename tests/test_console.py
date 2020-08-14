@@ -107,4 +107,4 @@ class test_console(unittest.TestCase):
             self.assertEqual('["[State]', out[:9])
             self.assertIn("AjaLandia", out)
 
-        self.console.onecmd("destroy State "+ s)
+        self.console.onecmd("destroy State " + s)
