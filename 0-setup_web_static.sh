@@ -7,7 +7,7 @@ sudo mkdir -p /data/web_static/
 sudo mkdir -p /data/web_static/releases/
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
-sudo echo "<html>
+echo "<html>
   <head>
   </head>
   <body>
