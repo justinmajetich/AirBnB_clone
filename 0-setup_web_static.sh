@@ -31,6 +31,7 @@ ln -sf /data/web_static/releases/test/ /data/web_static/current
 # Recursively Change the File Ownership
 chown -R ubuntu:ubuntu /data/
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
-sudo sed -i "/listen 80 default_server;/ \\\n\tlocation /hbnb_static {\n\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-enabled/default
+sudo sed -i "/listen 80 default_server;/ \\\n\tlocation /hbnb_static/ {\n\t\alias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-available/default
+
 # Nginx restart after updating the configuration
 sudo service nginx restart
