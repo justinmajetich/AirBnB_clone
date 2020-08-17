@@ -8,9 +8,21 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        """
+       !!! Objects printed in do_all console func have quotes !!!
+
+"""
+        #print("from all obj={}".format(FileStorage.__objects))
+        if cls:
+            obj_dict = {}
+            for key, val in self.__objects.items():
+                if cls == key:
+                    obj_dict[key] = val
+                return obj_dict
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -21,8 +33,11 @@ class FileStorage:
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
+           # print("temp.items{}".format(temp.items()))
+            # print("temp.items{}".format(type(temp.items())))
             for key, val in temp.items():
                 temp[key] = val.to_dict()
+            # print("Before json dump, type of temp = {}".format(type(temp)))
             json.dump(temp, f)
 
     def reload(self):
@@ -35,16 +50,29 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+        classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                   'State': State, 'City': City, 'Amenity': Amenity,
+                   'Review': Review
+                   }
         try:
             temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
+            # print(type(temp))
+            with open(FileStorage.__file_path, 'r', encoding="UTF-8") as f:
+                """Json is recieving None val here """
+                # print(type(f))
+                # print("temp in with{}".format(temp))
                 temp = json.load(f)
+                # print("2nd temp in with{}".format(temp))
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
+            pass
+
+    def delete(self, obj=None):
+        """delete obj from storage"""
+        if obj is None:
+            return
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except KeyError:
             pass
