@@ -12,7 +12,7 @@ sudo ufw allow "Nginx HTTP"
 # Create the folder /data/web_static/shared/ if it doesn’t already exist
 # Create the folder /data/web_static/releases/test/ if it doesn’t already exist
 sudo mkdir -p /data/web_static/releases/test/
-
+sudo mkdir -p /data/web_static/shared/
 # Create a fake HTML file, with simple content, to test your Nginx configuration
 printf %s "<html>
     <head>
