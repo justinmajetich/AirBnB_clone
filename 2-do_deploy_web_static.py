@@ -49,8 +49,9 @@ def do_deploy(archive_path):
         sudo('rm -f /data/web_static/current')
         # Create a new the symbolic link on the web server
         # linked to the new version of your code
-        sudo("ln -s {}{} /data/web_static/current".format(remote_path,
-                                                          file_name))
+        sudo("ln -s {}{} /data/web_static/current".format(
+            remote_path, filename_noextension))
+
         print("New version deployed!")
         return True
     else:
