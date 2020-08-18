@@ -27,7 +27,7 @@ def do_pack():
 
     local('tar -czvf versions/{} web_static'.format(file_name))
 
-    file_path = "/versions/{}".format(file_name)
+    file_path = "versions/{}".format(file_name)
     if path.exists(file_path):
         return file_path
     else:
