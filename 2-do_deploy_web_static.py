@@ -6,7 +6,7 @@ using the function do_deploy
 """
 
 from fabric.api import *
-from os.path import isfile, exists
+from os.path import isfile
 from datetime import datetime
 
 env.hosts = ['34.73.51.195', '34.73.59.80']
