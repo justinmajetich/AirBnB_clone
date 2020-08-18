@@ -17,10 +17,11 @@ def do_deploy(archive_path):
         script that distributes an archive to your web servers
         using the function do_deploy
     """
-    if path.exists(archive_path):
+    if path.isfile(archive_path):
         # Upload the archive to the /tmp/ directory of the web server
         local_path = archive_path
         remote_path = "/tmp/"
+
         put(archive_path, remote_path)
 
         path_to_uncompress = "/data/web_static/releases/"
@@ -36,8 +37,15 @@ def do_deploy(archive_path):
                                             filename_noextension))
 
         # Delete the archive from the web server
-        sudo('rm -f {}{}'.format(remote_path, file_name))
+        sudo('rm {}{}'.format(remote_path, file_name))
+        # move files
+        sudo("mv {}{}/web_static/* {}{}/".format(path_to_uncompress,
+                                                 filename_noextension,
+                                                 path_to_uncompress,
+                                                 filename_noextension))
         # Delete the symbolic link /data/web_static/current from the web server
+        sudo("rm -rf {}{}/web_static".format(path_to_uncompress,
+                                             filename_noextension))
         sudo('rm -f /data/web_static/current')
         # Create a new the symbolic link on the web server
         # linked to the new version of your code
