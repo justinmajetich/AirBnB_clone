@@ -29,30 +29,31 @@ def do_deploy(archive_path):
         filename_noextension = file_name.split('.')[0]
 
         # Creating folder /data/web_static/releases/web_static_202081720267
-        sudo("mkdir -p {}{}".format(path_to_uncompress, filename_noextension))
+        sudo("mkdir -p {}{}/".format(path_to_uncompress, filename_noextension))
 
         # Uncompress the archive to the folder "/data/web_static/releases/"
-        sudo("tar -xzf {}{} -C {}{}".format(remote_path, file_name,
+        sudo("tar -xzf {}{} -C {}{}/".format(remote_path, file_name,
                                             path_to_uncompress,
                                             filename_noextension))
 
         # Delete the archive from the web server
         sudo('rm {}{}'.format(remote_path, file_name))
         # move files
-        sudo("mv {}{}/web_static/* {}{}/".format(path_to_uncompress,
+        sudo("mv {}{}/web_static/* {}{}/.".format(path_to_uncompress,
                                                  filename_noextension,
                                                  path_to_uncompress,
                                                  filename_noextension))
         # Delete the symbolic link /data/web_static/current from the web server
-        sudo("rm -rf {}{}/web_static".format(path_to_uncompress,
+        sudo("rm -rf {}{}/web_static/".format(path_to_uncompress,
                                              filename_noextension))
-        sudo('rm -f /data/web_static/current')
+        sudo('rm -rf /data/web_static/current')
         # Create a new the symbolic link on the web server
         # linked to the new version of your code
-        sudo("ln -s {}{} /data/web_static/current".format(
+        sudo("ln -s {}{}/ /data/web_static/current".format(
             remote_path, filename_noextension))
 
         print("New version deployed!")
         return True
     else:
         return False
+
