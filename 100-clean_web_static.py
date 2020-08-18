@@ -121,13 +121,10 @@ def deploy():
 def do_clean(number=0):
     """script that deletes out-of-date archives
     """
-    n = int(number)
-    if n <= 1:
-        n = 1
-    else:
-        n += 1
-        with lcd("versions"):
-            local("ls -1t | tail -n +{:d} | xargs rm -rf".format(number))
-        with cd("/data/web_static/releases/"):
-            sudo("ls -1t -I test | tail -n +{:d} | xargs rm -rf".format(
-                number))
+    if int(number) <= 1:
+        number = 1
+    number = int(number) + 1
+    with lcd("versions"):
+        local("ls -1t | tail -n +{:d} | xargs rm -rf".format(number))
+    with cd("/data/web_static/releases/"):
+        sudo("ls -1t -I test | tail -n +{:d} | xargs rm -rf".format(number))
