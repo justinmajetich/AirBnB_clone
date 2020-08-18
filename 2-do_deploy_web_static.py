@@ -12,37 +12,38 @@ def do_deploy(archive_path):
     if path.exits(archive_path):
         full_name = archive_path.split('/')[-1]
         filename = full_name.split('.')[0]
-        path_file = "/data/".apend(filename)
 
-        """ send archive """
         value = put(archive_path, "/tmp/{}".format(full_name))
         if value.failed:
             return False
 
-        """ uncompress file """
-        value = run("mkdir -p /data/web_static/releases/")
+        value = run("mkdir -p /data/web_static/releases/{}/".format(filename))
         if value.failed:
             return False
 
-        value = run(
-            "tar -xzf {} -C /data/web_static/releases/".format(path_file))
+        value = run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
+                    .format(full_name, filename))
         if value.failed:
             return False
 
-        """ delete tmp file """
-        value = run("rm {}".format(path_file))
+        value = run("rm /tmp/{}".format(full_name))
         if value.failed:
             return False
 
         value = run("mv /data/web_static/releases/{}/web_static/* "
-            "/data/web_static/releases/{}/".format(filename, filename))
+                    "/data/web_static/releases/{}/".format(filename, filename))
         if value.failed:
             return False
 
-        """ softlink to new deploy """
+        value = run("rm -rf /data/web_static/releases/{}/web_static"
+                    .format(filename))
+        if value.failed:
+            return False
+
         value = run("rm -rf /data/web_static/current")
         if value.failed:
             return False
+
         value = run(
             "ln -sf /data/web_static/releases/{}\
                 /data/web_static/current".format(filename))
