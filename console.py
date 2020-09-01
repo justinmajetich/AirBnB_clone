@@ -141,55 +141,11 @@ class HBNBCommand(cmd.Cmd):
                 k, v = key_values.split("=")
                 v = v.replace('_', " ")
                 setattr(obj, k, eval(v))
-
             obj.save()
             print("{}".format(obj.id))
         else:
             print("** class doesn't exist **")
-        # n_args = args.split()
-        # if len(n_args) <= 1:
-        #     if not args:
-        #         print("** class name missing **")
-        #         return
-        #     elif args not in HBNBCommand.classes:
-        #         print("** class doesn't exist **")
-        #         return
-        #     new_instance = HBNBCommand.classes[args]()
-        #     storage.new(new_instance)
-        #     storage.save()
-        #     print(new_instance.id)
-        #     storage.save()
-        # else:
-        #     if n_args[0] in HBNBCommand.classes:
-        #         # create new_istance and set atributes
-        #         new_instance = HBNBCommand.classes[n_args[0]]()
-
-        #         for i in range(1, len(n_args)):
-        #             if '=' in n_args[i]:
-        #                 param = n_args[i].split('=')
-        #                 if (param[1][0] == '"' and param[0] in
-        #                    HBNBCommand.list_instances[n_args[0]]):
-        #                         # elimina comillas.
-        #                         if param[1].endswith('"'):
-        #                             param[1] = param[1][1:-1]
-        #                         else:
-        #                             param[1] = param[1][1:]
-        #                         param[1] = param[1].replace('"', '\"')
-        #                         param[1] = param[1].replace('_', ' ')
-        #                 elif (param[1][0] != '"' and '.' in param[1] and
-        #                       param[0] in HBNBCommand.list_instances[
-        #                      n_args[0]]):
-        #                     param[1] = float(param[1])
-        #                 elif (param[1].isdigit() and
-        #                       param[0] in HBNBCommand.list_instances[
-        #                      n_args[0]]):
-        #                     param[1] = int(param[1])
-        #                 # set atribuestes given in comand line.
-        #                 setattr(new_instance, param[0], param[1])
-        #     storage.new(new_instance)
-        #     storage.save()
-        #     print(new_instance.id)
-        #     storage.save()
+       
 
     def help_create(self):
         """ Help information for the create method """
@@ -285,8 +241,12 @@ class HBNBCommand(cmd.Cmd):
 
             print(print_list)
         else:
-            print(storage.all())
-            pass
+            args = args.split(' ')
+            if len(args) == 1 and args[0] in HBNBCommand.classes:
+                storage.all(HBNBCommand.classes[args[0]])
+            else:
+                storage.all()
+            
 
     def help_all(self):
         """ Help information for the all command """
