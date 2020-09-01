@@ -18,7 +18,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-class:
+class DBStorage():
     __engine = None
     __session = None
 
@@ -31,11 +31,13 @@ class:
         HBNB_ENV = getenv('HBNB_ENV')
 
         self.__engine = create_engine(
-                'mysql+mysqldb://{}:{}@{}:3306/{}'.format(
-                    HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
-                    HBNB_MYSQL_DB), pool_pre_ping=True)
-        if HBNB_ENV == 'test':
-            Base.metadata.drop_all()
+                'mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost:3306/hbnb_dev_db', pool_pre_ping=True)
+        # self.__engine = create_engine(
+        #         'mysql+mysqldb://{}:{}@{}:3306/{}'.format(
+        #             HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
+        #             HBNB_MYSQL_DB), pool_pre_ping=True)
+        # if HBNB_ENV == 'test':
+        #     Base.metadata.drop_all()
 
     def all(self, cls=None):
         """ call all """
@@ -74,3 +76,8 @@ class:
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
+
+    def close(self):
+        """  method on the private session attribut """
+        self.__session.remove()
+    
