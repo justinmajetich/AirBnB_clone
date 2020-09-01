@@ -23,20 +23,13 @@ def holberton():
     return 'HBNB'
 
 
-@app.route('/c/is_fun', strict_slashes=False)
-def is_fun():
+@app.route('/c/<text>/', strict_slashes=False)
+def is_fun(text):
     """
-    Print a str
+    Print a string, display “C ” followed by the value of
+    the text variable
     """
-    return 'C is fun'
-
-
-@app.route('/c/cool', strict_slashes=False)
-def cool():
-    """
-    Print a str
-    """
-    return 'C cool'
+    return 'C {}'.format(text.replace('_', ' '))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
