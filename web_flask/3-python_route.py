@@ -31,5 +31,15 @@ def is_fun(text):
     """
     return 'C {}'.format(text.replace('_', ' '))
 
+
+@app.route('/python/', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def is_magic(text="is cool"):
+    """
+    Print a str, display “Python ”, followed by the
+    value of the text variable
+    """
+    return 'Python {}'.format(text.replace('_', ' '))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
