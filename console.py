@@ -131,12 +131,12 @@ class HBNBCommand(cmd.Cmd):
         if len(total) < 1:
             print("** class name missing **")
             return
- 
+
         if total[0] in HBNBCommand.classes:
             my_list = line.split(" ")
- 
+
             obj = eval(my_list[0])()
- 
+
             for key_values in my_list[1:]:
                 k, v = key_values.split("=")
                 v = v.replace('_', " ")
@@ -181,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** no instance found **")
         else:
-            #aqui va codigo DBSstorage.
+            # aqui va codigo DBSstorage.
             pass
 
     def help_show(self):
@@ -224,9 +224,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+
         if getenv("HBNB_TYPE_STORAGE") == "FileStorage":
             print_list = []
-
             if args:
                 args = args.split(' ')[0]  # remove possible trailing args
                 if args not in HBNBCommand.classes:
@@ -238,7 +238,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
-
             print(print_list)
         else:
             args = args.split(' ')
@@ -262,7 +261,7 @@ class HBNBCommand(cmd.Cmd):
                     count += 1
             print(count)
         else:
-            print (storage.all())
+            print(storage.all())
 
     def help_count(self):
         """ """
