@@ -8,11 +8,12 @@ app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hello_world():
+def hello():
     """
     Print a str
     """
     return 'Hello HBNB!'
+
 
 @app.route('/hbnb', strict_slashes=False)
 def holberton():
@@ -21,12 +22,14 @@ def holberton():
     """
     return 'HBNB'
 
+
 @app.route('/c/is_fun', strict_slashes=False)
 def is_fun():
     """
     Print a str
     """
     return 'C is fun'
+
 
 @app.route('/c/cool', strict_slashes=False)
 def cool():
