@@ -3,7 +3,6 @@
 script that starts a Flask web application
 """
 from flask import Flask
-
 app = Flask(__name__)
 
 
@@ -13,6 +12,7 @@ def hello_world():
     Print a str
     """
     return 'Hello HBNB!'
+
 
 @app.route('/hbnb', strict_slashes=False)
 def holberton():
