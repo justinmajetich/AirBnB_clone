@@ -8,7 +8,7 @@ app.url_map.strict_slashes = False
 
 
 @app.route('/')
-def hello():
+def hello_route():
     return 'Hello HBNB!'
 
 if __name__ == "__main__":

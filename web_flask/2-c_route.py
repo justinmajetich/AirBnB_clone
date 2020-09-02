@@ -9,17 +9,17 @@ app.url_map.strict_slashes = False
 
 
 @app.route('/')
-def hello():
+def hello_route():
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb')
-def hello_hbnb():
+def hbnb_route():
     return 'HBNB'
 
 
 @app.route('/c/<text>')
-def c_is_fun(text):
+def c_route(text):
     text = text.replace('_', ' ')
     return 'C %s' % escape(text)
 
