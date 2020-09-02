@@ -64,3 +64,7 @@ class FileStorage:
         if new_obj in FileStorage.__objects:
             FileStorage.__objects.pop(new_obj)
             self.save()
+
+    def close(self):
+        """ Function to close """
+        self.reload()
