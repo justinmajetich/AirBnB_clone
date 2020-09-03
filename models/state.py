@@ -17,10 +17,6 @@ class State(BaseModel, Base):
         cities = relationship(
             "City", cascade="all, delete-orphan", backref="state")
 
-        @property
-        def cities(self):
-            """Getter attribute"""
-            return type(self).cities
     else:
         name = ''
 
