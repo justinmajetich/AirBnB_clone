@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, Integer
 from models.city import City
 from sqlalchemy.orm import relationship, backref
 from os import getenv
+import models
 
 
 class State(BaseModel, Base):
@@ -26,7 +27,13 @@ class State(BaseModel, Base):
             our_cts = storage.all(City)
             state_cts = []
             for city in our_cts.values():
-                if self.id == city.id:
+                if self.id == city.state_id:
                     state_cts.append(city)
 
             return state_cts
+    else:
+        cities = relationship(
+            'City',
+            cascade='all, delete-orphan',
+            backref='state',
+        )
