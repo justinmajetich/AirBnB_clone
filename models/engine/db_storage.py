@@ -76,12 +76,9 @@ class DBStorage:
         """
         if obj:
             self.__session.delete(obj)
-"""
-            _cls = obj.__class__
-            print(_cls)
-            my_query = self.__session.query(_cls) \
-                                     .filter(_cls.id=obj.id) \
-                                     .first()
-            if my_query:
-                self.__session.delete(my_query)
-"""
+
+    def close(self):
+        """
+        call remove()
+        """
+        self.__session.close()
