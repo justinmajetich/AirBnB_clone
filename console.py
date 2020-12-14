@@ -118,11 +118,28 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        
+        arguments = args.split()
+
+        if arguments[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        
+        if len(arguments) > 1:
+            new_instance = HBNBCommand.classes[arguments[0]]()
+            for parameter in arguments[1:]:
+                key, value = parameter.split("=")
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace('_', ' ').replace('"', '\"')
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            pass
+                setattr(new_instance, key, value)
         print(new_instance.id)
         storage.save()
 
@@ -279,7 +296,7 @@ class HBNBCommand(cmd.Cmd):
 
             args = args.partition(' ')
 
-            # if att_name was not quoted arg
+            # if att_name was not quoted arg`
             if not att_name and args[0] is not ' ':
                 att_name = args[0]
             # check for quoted val arg
