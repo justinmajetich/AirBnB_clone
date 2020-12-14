@@ -8,9 +8,16 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if cls is None:
+            return self.__objects
+        else:
+            class_objs = {}
+            for key, value in self.__objects.items():
+                if cls.__name__ in key:
+                    class_objs[key] = value
+            return class_objs
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -35,6 +42,20 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
+    def delete(self, obj=None):
+        if obj is not None:
+            obj_class = obj.__class__.__name__
+            key = obj_class + '.' + obj.id
+            try:
+                objs = self.__objects
+                if key in objs:
+                    del objs[key]
+                    self.save()
+                else:
+                    raise KeyError
+            except KeyError:
+                print("** no instance found **")
+            
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
