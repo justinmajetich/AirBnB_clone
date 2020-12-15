@@ -113,10 +113,10 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        class_name = args.split(" ")
-        if not args:
+        class_name = arg.split(" ")
+        if not arg:
             print("** class name missing **")
             return
         elif class_name[0] not in HBNBCommand.classes:
