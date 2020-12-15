@@ -126,9 +126,17 @@ class HBNBCommand(cmd.Cmd):
         if len(arguments) > 1:
             new_instance = HBNBCommand.classes[arguments[0]]()
             for parameter in arguments[1:]:
+                flagg = 0
                 key, value = parameter.split("=")
                 if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace('_', ' ').replace('"', '\"')
+                    value = value[1:-1].replace('_', ' ') #.replace('"', '\"')
+                    for i in range(len(value[1: -1])):
+                        if value[i] == '"':
+                            if value[i - 1] != '\\':
+                                pass
+                                flagg = 1
+                if flagg == 1:
+                    pass
                 else:
                     try:
                         value = int(value)
