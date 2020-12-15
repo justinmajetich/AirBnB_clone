@@ -36,4 +36,4 @@ class testHBNBCommand(unittest.TestCase):
     def test_prueba(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create BaseModel name=\"Arizona\"")
-        self.assertTrue('"Arizona"' in storage.all().values())
+        self.assertTrue('Arizona' in storage.all().values())
