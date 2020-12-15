@@ -19,3 +19,9 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    reviews = relationship('Review', backref='user')
+
+    @property
+    def reviews(self):
+        """Getter attribute"""
+        return type(self).reviews
