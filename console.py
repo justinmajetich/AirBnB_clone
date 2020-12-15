@@ -132,9 +132,7 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:-1].replace('_', ' ') #.replace('"', '\"')
                     for i in range(len(value[1: -1])):
                         if value[i] == '"':
-                            print("HAY COMILLA")
                             if value[i - 1] != "\\":
-                                print("NO HAY BACKSLASH")
                                 flagg = 1
                 else:
                     try:
