@@ -64,4 +64,5 @@ class FileStorage:
             for k in self.__objects:
                 if k.split(".")[1] == obj.id:
                     self.__objects.pop(k)
+                    break
             self.save()
