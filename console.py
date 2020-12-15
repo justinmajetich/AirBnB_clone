@@ -127,7 +127,16 @@ class HBNBCommand(cmd.Cmd):
             kwargs = args[2].split()
             for v in kwargs:
                 res = v.partition('=')
-                setattr(new_instance, res[0], res[2])
+                if res[2][0] == '"':
+                    string = res[2][1:-1]
+                    string.replace('_', ' ')
+                    setattr(new_instance, res[0], string)
+                elif '.' in res[2] and res[2][0].isnumeric():
+                    setattr(new_instance, res[0], float(res[2]))
+                elif res[2][0].isnumeric():
+                    setattr(new_instance, res[0], int(res[2]))
+                else:
+                    pass
 
         storage.save()
         print(new_instance.id)
