@@ -132,11 +132,10 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:-1].replace('_', ' ') #.replace('"', '\"')
                     for i in range(len(value[1: -1])):
                         if value[i] == '"':
-                            if value[i - 1] != '\\':
-                                pass
+                            print("HAY COMILLA")
+                            if value[i - 1] != "\\":
+                                print("NO HAY BACKSLASH")
                                 flagg = 1
-                if flagg == 1:
-                    pass
                 else:
                     try:
                         value = int(value)
@@ -145,7 +144,8 @@ class HBNBCommand(cmd.Cmd):
                             value = float(value)
                         except ValueError:
                             pass
-                setattr(new_instance, key, value)
+                if flagg == 0:
+                    setattr(new_instance, key, value)
         print(new_instance.id)
         storage.save()
 
