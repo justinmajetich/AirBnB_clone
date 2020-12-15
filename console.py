@@ -115,13 +115,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        i = 0
+        key_value = []
+        tokens = args.split(" ")
+        if len(tokens) > 0:
+            for parameters in tokens:
+                key_value.append(parameters.split("="))
+                if i > 0:
+                    key_value[i][1] = key_value[i][1].strip('"')
+                i += 1
+            modelo = ''.join(key_value[0])
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        if modelo not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[modelo]()
+        ''' setear el value '''
+        if i > 1:
+            for j in range(1, i):
+                setattr(new_instance, key_value[j][0], key_value[j][1])
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +333,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
