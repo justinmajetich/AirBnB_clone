@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+!/usr/bin/python3
 """ Console Module """
 import cmd
 import sys
@@ -21,16 +21,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review, 'State': State
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review, 'State': State
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -128,13 +128,14 @@ class HBNBCommand(cmd.Cmd):
                     list_split = index.split("=")
                     if list_split[1][0] == "\"":
                         list_split[1] = list_split[1][1:-1]
-                        list_split[1] = list_split[1].replace('_', ' ').replace('"', '\\"')
+                        list_split[1] = list_split[1].replace('_', ' ') \
+                                                     .replace('"', '\\"')
                     elif list_split[1].isdigit():
                         list_split[1] = int(list_split[1])
                     else:
                         list_split[1] = float(list_split[1])
                     setattr(object1, list_split[0], list_split[1])
-             
+
             object1.save()
             print("{}".format(object1.id))
         except SyntaxError:
