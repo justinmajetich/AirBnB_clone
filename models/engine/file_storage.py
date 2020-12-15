@@ -12,7 +12,7 @@ class FileStorage:
         """Delete in a currently in storage"""
         try:
             if obj:
-                elim = "{}.{}".format(obj.__name__, obj.id)
+                elim = "{}.{}".format(type(obj).__name__, obj.id)
                 x = self.__objects
                 del x[elim]
                 self.save()
