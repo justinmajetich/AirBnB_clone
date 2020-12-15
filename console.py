@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['create','all', 'count', 'show', 'destroy', 'update']
+    dot_cmds = ['create', 'all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
@@ -144,11 +144,11 @@ class HBNBCommand(cmd.Cmd):
                         value = float(value)
                     else:
                         value = int(value)
+                    print(type(value))
                     setattr(new_instance, key, value)
-                print(dict_t)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
