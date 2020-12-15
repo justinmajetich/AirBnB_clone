@@ -34,7 +34,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Return all dbstorage """
-        queryClass = [City, State]
+        queryClass = [City, State, User, Place]
         queryList_Output = []
         queryDict_Output = {}
         if cls in queryClass:
