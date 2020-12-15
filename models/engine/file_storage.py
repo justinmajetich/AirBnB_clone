@@ -15,6 +15,7 @@ class FileStorage:
                 elim = "{}.{}".format(obj.__name__, obj.id)
                 x = self.__objects
                 del x[elim]
+                self.save()
         except:
             return
 
