@@ -4,15 +4,15 @@
 from models.base_model import BaseModel, Base
 from models.state import state
 from sqlalchemy import Column, String, ForeignKey, DateTime
-form models.city import city
+from models.city import city
 from os import getenv
 
-class DBStorage
+class DBStorage:
     """ DB Storage """
     __engine = None
     __session = None
 
-    def __init__(self)
+    def __init__(self):
         """ Method """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                             getenv('HBNB_MYSQL_USER'),
@@ -22,7 +22,7 @@ class DBStorage
                             pool_pre_ping=True)
         
         if getenv('HBNB_ENV') == 'test'
-            Base.metadata.drop_all(self.__engine)
+                    Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None)
         if cls is not None:
@@ -34,4 +34,4 @@ class DBStorage
             self.__session.query(Amenity).all()
             self.__session.query(Place).all()
             self.__session.query(Review).all()
-        
+
