@@ -58,7 +58,7 @@ class FileStorage:
     def delete(self, obj=None):
         if obj is not None:
             obj_class = obj.__class__.__name__
-            key = obj_class + '.' + obj.id
+            key = "{}.{}".format(obj_class, obj.id)
             try:
                 objs = self.__objects
                 if key in objs:
