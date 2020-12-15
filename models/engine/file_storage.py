@@ -9,10 +9,24 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
+
+    def delete(self, obj=None):
+        """delete function"""
+        try:
+            if obj:
+
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                objs = self.__objects
+                if key in objs:
+                    del objs[key]
+                    self.save()
+        except:
+            return
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
@@ -40,7 +54,7 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-            
+
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -54,17 +68,3 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    def delete(self, obj=None):
-        if obj is not None:
-            obj_class = type(obj)
-            key = "{}.{}".format(obj_class, obj.id)
-            try:
-                objs = self.__objects
-                if key in objs:
-                    objs.pop(key)
-                    self.save()
-                else:
-                    raise KeyError
-            except KeyError:
-                print("** no instance found **")
