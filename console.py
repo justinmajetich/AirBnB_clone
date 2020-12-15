@@ -133,6 +133,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 try:
                     int(v)
+                except:
+                    pass
+                try:
                     float(v)
                 except:
                     pass
