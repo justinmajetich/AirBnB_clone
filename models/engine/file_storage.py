@@ -62,7 +62,7 @@ class FileStorage:
             try:
                 objs = self.__objects
                 if key in objs:
-                    del objs[key]
+                    objs.pop(key)
                     self.save()
                 else:
                     raise KeyError
