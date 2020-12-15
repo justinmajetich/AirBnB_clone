@@ -57,12 +57,10 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """new public instance method to delete obj from __objects if it’s inside
-        """
+        """instance method to delete obj from __objects if it’s inside"""
         if obj is None:
             pass
         else:
             str1 = "{}.{}".format(obj.__class__.__name__, obj.id)
-
-        if str1 in self.__objects:
-            del(self.__objects[str1])
+            if str1 in self.__objects:
+                del(self.__objects[str1])
