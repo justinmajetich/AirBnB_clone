@@ -22,14 +22,14 @@ class DBStorage:
 
     def __init__(self):
         """ Method """
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                                      .format(getenv("HBNB_MYSQL_USER"),
-                                              getenv("HBNB_MYSQL_PWD"),
-                                              getenv("HBNB_MYSQL_HOST"),
-                                              getenv("HBNB_MYSQL_DB")),
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(getenv('HBNB_MYSQL_USER'),
+                                              getenv('HBNB_MYSQL_PWD'),
+                                              getenv('HBNB_MYSQL_HOST'),
+                                              getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(bind=self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """method all"""
@@ -37,12 +37,12 @@ class DBStorage:
         if cls:
             if cls in classes.keys():
                 for i in self.__session.query(classes[cls]).all():
-                    key = str(i._class.name_) + "." + str(i.id)
+                    key = str(i.__class.name__.__name__) + "." + str(i.id)
                     clsdict[key] = i
         else:
             for k, v in classes.items():
                 for i in self.__session.query(v).all():
-                    key = str(i._class.name_) + "." + str(i.id)
+                    key = str(i.__class.name__.__name__) + "." + str(i.id)
                     clsdict[key] = i
         return clsdict
 
