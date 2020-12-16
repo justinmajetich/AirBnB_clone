@@ -68,6 +68,6 @@ class DBStorage:
         Session = scoped_session(ses_fact)
         self.__session = Session()
 
-    # def close(self):
-    #     """to end session"""
-    #     self.__session.close()
+    def close(self):
+        """to end session"""
+        self.__session.close()
