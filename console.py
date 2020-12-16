@@ -2,15 +2,15 @@
 """ Console Module """
 import cmd
 import sys
+from models.base_model import BaseModel
 from models.__init__ import storage
-from datetime import datetime
-from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -116,11 +116,11 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
-            print("* class name missing *")
+            print("** class name missing **")
             return
         arg_list = args.split(" ")
         if arg_list[0] not in HBNBCommand.classes:
-            print("* class doesn't exist *")
+            print("** class doesn't exist **")
             return
         obj = eval("{}()".format(arg_list[0]))
         for i in range(1, len(arg_list)):

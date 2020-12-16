@@ -11,13 +11,15 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state",
                           cascade="all, delete-orphan")
+
     @property
     def cities(self):
         """document"""
         from models import storage
         if getenv("HBNB_TYPE_STORAGE") != "db":
             """Get a list of all related City objects."""
-            cities_list= storage.all(City)
+
+            cities_list = storage.all(City)
             all_cities = []
             for value in cities_list.items():
                 for val in storage.all(State).items():
