@@ -9,9 +9,9 @@ from models import storage
 
 class State(BaseModel, Base):
     """ State class """
-    name = Column(String(128), nullable=False) #NUEVO REVISAR
     __tablename__ = 'states'
-    cities = relationship("City", cascade="all, delete, backref="state") #NEW REVISAR
+    name = Column(String(128), nullable=False) #NUEVO REVISAR
+    cities = relationship("City", cascade="all, delete", backref="state") #NEW REVISAR
 
     @property #NUEVO REVISAR
     def cities(self)

@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             pass
                 #if flagg == 0:
-                    setattr(new_instance, key, value)
+                setattr(new_instance, key, value)
         print(new_instance.id)
         storage.save()
 
