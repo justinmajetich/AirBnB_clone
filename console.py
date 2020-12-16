@@ -144,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
                         value = float(value)
                     else:
                         value = int(value)
-                    print(type(value))
                     setattr(new_instance, key, value)
             storage.save()
             print(new_instance.id)
