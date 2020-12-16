@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ Console Module """
-
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -38,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -117,21 +115,21 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
-            print("** class name missing **")
+            print("* class name missing *")
             return
-        arg_list = args.split(" ")
-        if arg_list[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        plist = args.split(" ")
+        if plist[0] not in HBNBCommand.classes:
+            print("* class doesn't exist *")
             return
-        obj = eval("{}()".format(arg_list[0]))
-        for i in range(1, len(arg_list)):
-            key_value = arg_list[i].split('=')
-            k = key_value[0]
-            v = key_value[1]
-            if v[0] == '"':
-                v = v.replace('"', '')
-                v = v.replace('_', ' ')
-            setattr(obj, k, v)
+        obj = eval("{}()".format(plist[0]))
+        for cont in range(1, len(plist)):
+            kvalue = plist[cont].split('=')
+            ky = kvalue[0]
+            va = kvalue[1]
+            if va[0] == '"':
+                va = va.replace('"', '')
+                va = va.replace('_', ' ')
+            setattr(obj, ky, va)
         obj.save()
         print("{}".format(obj.id))
 
@@ -215,7 +213,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._all().items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
