@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
 
     def help_create(self):
-        """ Help information for the create method """
+        """ Help information for the create metho """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
 
