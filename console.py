@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arguments) > 1:
             new_instance = HBNBCommand.classes[arguments[0]]()
             for parameter in arguments[1:]:
-                #flagg = 0
+                # flagg = 0
                 key, value = parameter.split("=")
                 if value[0] == '"' and value[-1] == '"':
                     value = value[1:-1].replace('_', ' ').replace('"', '')
@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                             value = float(value)
                         except ValueError:
                             pass
-                #if flagg == 0:
+                # if flagg == 0:
                 setattr(new_instance, key, value)
         print(new_instance.id)
         new_instance.save()

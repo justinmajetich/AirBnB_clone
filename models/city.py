@@ -7,6 +7,7 @@ from models.base_model import BaseModel, Base
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    __tablename__ = 'cities' #NUEVO REVISAR
-    state_id = Column(String(60), ForeignKey('states.id'), nullable=False) #NUEVO REVISAR
-    name = Column(String(128), nullable=False) #NUEVO REVISAR
+    __tablename__ = 'cities'  # NUEVO REVISAR
+    state_id = Column(String(60), ForeignKey(
+        'states.id'), nullable=False)  # NUEVO REVISAR
+    name = Column(String(128), nullable=False)  # NUEVO REVISAR
