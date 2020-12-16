@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ Console Module """
-import re
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -134,6 +133,7 @@ class HBNBCommand(cmd.Cmd):
             value = None
             if "\"" in raw:
                 value = raw[1:-1]
+                value = value.replace("_", " ")
             elif "." in raw:
                 value = float(raw)
             else:
