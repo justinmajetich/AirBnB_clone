@@ -3,10 +3,10 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, metadata
 
 Base = declarative_base()
-
+metadata = MetaData()
 
 class BaseModel:
     """A base class for all hbnb models"""

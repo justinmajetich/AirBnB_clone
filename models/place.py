@@ -5,6 +5,11 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
 
+place_amenity = Table('association', Base.metadata,
+    Column('place_id', Integer, ForeignKey('place.id'), primary_key=True, nullable = False),
+    Column('amenity_id', Integer, ForeignKey('amenity.id'), primary_key=True, nullable = False)
+)
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
