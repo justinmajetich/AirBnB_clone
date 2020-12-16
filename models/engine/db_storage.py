@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 """ Storages """
-
 from models.base_model import BaseModel, Base
 from models.state import state
 from sqlalchemy import Column, String, ForeignKey, DateTime
-form models.city import city
+from models.city import city
 from os import getenv
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
-class DBStorage
+
+class DBStorage:
     """ DB Storage """
     __engine = None
     __session = None
 
-    def __init__(self)
+    def __init__(self):
         """ Method """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                             getenv('HBNB_MYSQL_USER'),
@@ -22,10 +22,10 @@ class DBStorage
                             getenv('HBNB_MYSQL_HOST'),
                             getenv('HBNB_MYSQL_DB')),
                             pool_pre_ping=True)
-        if getenv('HBNB_ENV') == 'test'
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
-    def all(self, cls=None)
+    def all(self, cls=None):
         querys_dic = {}
         if cls is not None:
             i_query = self.__session.query(eval(cls)).all()
@@ -40,11 +40,11 @@ class DBStorage
             key = '{}.{}'.format(type(item).__name__, item.id)
             querys_dic[item] = key
         return querys_dic
-    
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
