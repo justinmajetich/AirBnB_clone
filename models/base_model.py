@@ -56,7 +56,8 @@ class BaseModel:
         try:
             del dictionary["_sa_instance_state"]
         except:
-            return dictionary
+            pass
+        return dictionary
 
     def delete(self):
         """ delete instance """
