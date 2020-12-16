@@ -14,7 +14,7 @@ class FileStorage:
             return FileStorage.__objects
         class_dict = {}
         for key, value in FileStorage.__objects.items():
-            if value.__class__ == cls:
+            if type(value) == cls:
                 class_dict[key] = value
         return class_dict
 
@@ -61,9 +61,9 @@ class FileStorage:
         """
         if obj is None:
             return
-        obj_and_id = obj.__class__.__name__ + "." + str(obj.id)
+        obj_and_id = type(obj).__name__ + "." + str(obj.id)
         for key, value in FileStorage.__objects.items():
-            if key == obj_and_id:
+            if key in obj_and_id:
                 a = 1
         if a == 1:
             del FileStorage.__objects[key]
