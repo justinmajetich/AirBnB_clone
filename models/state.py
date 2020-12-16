@@ -19,7 +19,6 @@ class State(BaseModel, Base):
                               backref="state")
     else:
         @property
-        """If we are on file storage"""
         def cities(self):
             """Get a list of cities and their states"""
             cities = []
