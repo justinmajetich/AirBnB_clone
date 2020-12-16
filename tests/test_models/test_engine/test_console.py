@@ -17,7 +17,10 @@ class console_test(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-
     def do_create_test(self):
         """Tests the do_create function"""
         return HBNBCommand()
+
+    
+
+
