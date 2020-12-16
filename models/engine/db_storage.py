@@ -7,6 +7,7 @@ from models.city import city
 from os import getenv
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 
 class DBStorage:
