@@ -13,11 +13,7 @@ from os import getenv
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
- classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-            }
+classes = {'State': 'State', 'City': 'City', 'User': 'User'}
 
 class DBStorage:
     """Storage"""
@@ -43,27 +39,29 @@ class DBStorage:
         new_dict = {}
         if cls:
             for i in self.__session.query(classes[cls]).all():
-                key = str(i._class.name_) + "." + str(i.id)
-                    val = i
-                    dbobjects[key] = val
+                key = str(i.__class__.__name__) + "." + str(i.id)
+                new_dict[key] = i
         else:
             for k, v in classes.items():
                 for i in self.__session.query(v).all():
-                    key = str(v.__name__) + "." + str(i.id)
-                    dbobjects[key] = i
+                    key = str(v.__class__.__name__) + "." + str(i.id)
+                    new_dict[key] = i
+        return new_dict
     
     def new(self, obj):
         """add the object to the current database session"""
-        self.__session.add(obj)
+        if obj:
+            self.__session.add(obj)
     
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
     
-    def delete(self, obj=None)
+    def delete(self, obj=None):
         """" delete from the current database session"""
         if obj is not None:
-            self.session.delete(obj)
+            self.__session.delete(obj)
+            self.save()
     
     def reload(self):
         """reload method"""
