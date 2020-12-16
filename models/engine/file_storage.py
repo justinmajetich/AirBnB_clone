@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-from models.base_model import BaseModel
+
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -14,20 +14,21 @@ class FileStorage:
             if obj:
                 elim = "{}.{}".format(type(obj).__name__, obj.id)
                 x = self.__objects
-                del x[elim]
-                self.save()
+                if elim in x:
+                    del x[elim]
+                    self.save()
         except:
             return
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is None:
-            return FileStorage.__objects
+            return self.__objects
         else:
             dict1 = {}
-            for key, value in self.__objects.items():
-                if type(value) == cls:
-                    dict1[key] = value
+            for key, val in self.__objects.items():
+                if cls.__name__ in key:
+                    dict1[key] = val
             return dict1
 
     def new(self, obj):
@@ -52,6 +53,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+            
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
