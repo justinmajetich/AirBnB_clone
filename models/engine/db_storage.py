@@ -19,7 +19,7 @@ class DBStorage:
     This class serializes instances to a JSON file and
     deserializes JSON file to instances
     Attributes:
-        __engine path to the JSON file
+        __engine path to the JSON files
         __session: objects will be stored
     """
     __engine = None
