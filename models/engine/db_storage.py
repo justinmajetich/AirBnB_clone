@@ -27,7 +27,7 @@ class DBStorage:
 
     def __init__(self):
         """ Constructor of the database """
-        config_db = 'mysql+mysqldb://{}:{}@{}:3306/{}'
+        config_db = 'mysql+mysqldb://{}:{}@{}:/{}'
         password = getenv('HBNB_MYSQL_PWD')
         database = getenv('HBNB_MYSQL_DB')
         user = getenv('HBNB_MYSQL_USER')
@@ -39,7 +39,7 @@ class DBStorage:
             pool_pre_ping=True)
 
         if hbnb_env == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """
