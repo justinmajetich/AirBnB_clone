@@ -13,7 +13,7 @@ from os import getenv
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {'State': 'State', 'City': 'City', 'User': 'User'}
+classes = {'State': State, 'City': City, 'User': User, 'Place': Place}
 
 class DBStorage:
     """Storage"""
@@ -38,13 +38,14 @@ class DBStorage:
         """method all"""
         new_dict = {}
         if cls:
-            for i in self.__session.query(classes[cls]).all():
-                key = str(i.__class__.__name__) + "." + str(i.id)
-                new_dict[key] = i
+            if cls in classes.keys():
+                for i in self.__session.query(classes[cls]).all():
+                    key = str(i.__class__.__name__) + "." + str(i.id)
+                    new_dict[key] = i
         else:
             for k, v in classes.items():
                 for i in self.__session.query(v).all():
-                    key = str(v.__class__.__name__) + "." + str(i.id)
+                    key = str(i.__class__.__name__) + "." + str(i.id)
                     new_dict[key] = i
         return new_dict
     
