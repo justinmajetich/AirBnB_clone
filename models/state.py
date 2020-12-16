@@ -16,7 +16,7 @@ class State(BaseModel, Base):
     def cities(self):
         """document"""
         from models import storage
-        if getenv("HBNB_TYPE_STORAGE") != "db":
+        if getenv("HBNB_TYPE_STORAGE") != 'db':
             """Get a list of all related City objects."""
 
             cities_list = storage.all(City)
