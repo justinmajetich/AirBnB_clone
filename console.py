@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+import re
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -113,15 +114,32 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args = arg.split()
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[args[0]]()
+
+        for x in args:
+            if "=" not in x:
+                continue
+            temp = x.split("=")
+            key = temp[0]
+            raw = temp[1]
+            value = None
+            if "\"" in raw:
+                value = raw[1:-1]
+            elif "." in raw:
+                value = float(raw)
+            else:
+                value = int(raw)
+            setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
