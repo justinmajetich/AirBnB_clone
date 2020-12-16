@@ -13,11 +13,11 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            _instance = {}
+            object_class = {}
             for key, value in self.__objects.items():
                 if cls == value.__class__:
-                    _instance[key] = value
-            return _instance
+                    object_class[key] = value
+            return object_class
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -43,21 +43,21 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """instance method to delete obj from __objects if it’s inside"""
+        """ Delete an object from __objects"""
         if obj is None:
             pass
         else:
