@@ -46,7 +46,6 @@ class DBStorage:
         Query of object depending of the class name
          if cls=none query of all type of objects
         """
-        my_session = self.__session
         dic = {}
 
         if instance(cls, str):
@@ -54,7 +53,7 @@ class DBStorage:
         else:
             class_print = cls.__name__
 
-        for x in my_session.query(eval(class_print)).all():
+        for x in self.__session.query(eval(class_print)).all():
             class_type = x.__class__.__name__
 
             if class_type == class_print:
@@ -89,7 +88,7 @@ class DBStorage:
         """
         Delete obj from __objects if it’s inside
         """
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def close(self):
