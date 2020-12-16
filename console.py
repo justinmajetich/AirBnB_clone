@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    dot_cmds = ['create','all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
@@ -118,10 +118,34 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
+        else:
+            arg_lst = args.split()
+            class_name = arg_lst[0]
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[arg_lst[0]]()
+            if len(arg_lst) > 1:
+                dict_t = {}
+                i = 0
+                for parameter in arg_lst:
+                    if i == 0:
+                        i += 1
+                        continue
+                    else:
+                        str_obj = parameter.split("=")
+                        dict_t[str_obj[0]] = str_obj[1]
+                for key, value in dict_t.items():
+                    if value[0] == '"':
+                        value = value[1:-1]
+                        value = value.replace('"', '\\')
+                        value = value.replace('_', ' ')
+                    elif "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    setattr(new_instance, key, value)
+                print(dict_t)
         storage.save()
         print(new_instance.id)
         storage.save()
