@@ -15,6 +15,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {'State': State, 'City': City, 'User': User, 'Place': Place}
 
+
 class DBStorage:
     """Storage"""
     __engine = None
@@ -48,30 +49,25 @@ class DBStorage:
                     key = str(i.__class__.__name__) + "." + str(i.id)
                     new_dict[key] = i
         return new_dict
-    
+
     def new(self, obj):
         """add the object to the current database session"""
         if obj:
             self.__session.add(obj)
-    
+
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """" delete from the current database session"""
         if obj is not None:
             self.__session.delete(obj)
             self.save()
-    
+
     def reload(self):
         """reload method"""
         Base.metadata.create_all(self.__engine)
         fact = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(fact)
         self.__session = Session()
-    
-
-
-
-
