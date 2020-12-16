@@ -62,5 +62,5 @@ class FileStorage:
         else:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if key in self.__objects:
-                v = self.__objects.pop(key)
+                self.__objects.pop(key)
             self.save()
