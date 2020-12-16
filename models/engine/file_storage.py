@@ -63,7 +63,7 @@ class FileStorage:
             return
         obj_and_id = type(obj).__name__ + "." + str(obj.id)
         for key, value in FileStorage.__objects.items():
-            if key == obj_and_id: # REVISAR CON in
+            if key == obj_and_id:  # REVISAR CON in
                 flagg = 1
         if flagg == 1:
             del FileStorage.__objects[key]

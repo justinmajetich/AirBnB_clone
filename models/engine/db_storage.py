@@ -37,24 +37,26 @@ class DBStorage():
             for key, value in classes.items():
                 query_list = self.__session.query(value).all()
                 for obj in query_list:
-                    classdb_dict[obj.__class__.__name__ + "." + str(obj.id)] = obj #REVISAR SI FUNCIONA obj.__class__.__name__
+                    classdb_dict[obj.__class__.__name__ + "." + str(
+                        obj.id)] = obj
         else:
             query_list = self.__session.query(cls).all()
             for obj in query_list:
-                classdb_dict[obj.__class__.__name__ + "." + obj.id] = obj #REVISAR type(cls)
+                classdb_dict[obj.__class__.__name__ + "." + obj.id] = obj
         return classdb_dict
 
     def new(self, obj):
-        self.__session.add(obj) #REVISAR
-    
+        self.__session.add(obj)  # REVISAR
+
     def save(self):
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         if obj is not None:
             self.__session.delete(obj)
 
-    def reload(self): #REVISAR NUEVO
+    def reload(self):  # REVISAR NUEVO
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         self.__session = scoped_session(session_factory)

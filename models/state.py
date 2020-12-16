@@ -8,10 +8,10 @@ from sqlalchemy.orm import relationship
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False) #NUEVO REVISAR
-    cities = relationship("City", cascade="all, delete", backref="state") #NEW REVISAR
+    name = Column(String(128), nullable=False)  # NUEVO REVISAR
+    cities = relationship("City", cascade="all, delete", backref="state")
 
-    @property #NUEVO REVISAR
+    @property  # NUEVO REVISAR
     def cities(self):
         from models.__init__ import storage
         city_list = []
