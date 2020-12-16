@@ -57,7 +57,5 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deletes object from storage dictionary"""
-    def delete(self, obj=None):
-        """Deletes object from storage dictionary"""
         if obj.id in FileStorage.__objects.keys():
             del(FileStorage.__objects[obj.id])
