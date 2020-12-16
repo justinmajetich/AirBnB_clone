@@ -61,4 +61,4 @@ class FileStorage:
         unwanted = obj.__class__.__name__ + "." + obj.id
         if unwanted in FileStorage.__objects.keys():
             del(FileStorage.__objects[unwanted])
-                self.save()
+            self.save()
