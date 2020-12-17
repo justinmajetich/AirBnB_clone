@@ -15,20 +15,20 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
-    # determines prompt for interactive/non-interactive modess
+    # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review, 'State': State,
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -72,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,37 +112,34 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            list = args.split(" ")
-            object1 = eval("{}()".format(list[0]))
-
-            for index in list[1:]:
-                if "=" in index:
-                    list_split = index.split("=")
-                    if list_split[1][0] == "\"":
-                        list_split[1] = list_split[1][1:-1]
-                        list_split[1] = list_split[1].replace('_', ' ') \
-                                                     .replace('"', '\\"')
-                    elif list_split[1].isdigit():
-                        list_split[1] = int(list_split[1])
-                    else:
-                        list_split[1] = float(list_split[1])
-                    setattr(object1, list_split[0], list_split[1])
-
-            object1.save()
-            print("{}".format(object1.id))
-        except SyntaxError:
+        if not line:
             print("** class name missing **")
-        except NameError:
+            return
+        elements = line.split(" ")
+
+        if elements[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        #new_instance = HBNBCommand.classes[args]()
-        #storage.save()
-        #print(new_instance.id)
-        #storage.save()
+            return
+
+        new_instance = HBNBCommand.classes[elements[0]]()
+
+        for attrs in range(1, len(elements)):
+
+            attr = elements[attrs].split('=')[0]
+            val = elements[attrs].split('=')[1]
+            val = val.replace('_', ' ')
+
+            if val[0] == '"':
+                val = val.strip('"')
+            else:
+                val = eval(val)
+
+            setattr(new_instance, attr, val)
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -218,18 +215,17 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
+            objects = storage.all(eval(args))
             args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            if args not in self.classes.keys():
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for key in objects.keys():
+                print_list.append(str(objects[key]))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for key in storage._FileStorage__objects.keys():
+                print_list.append(str(storage._FileStorage__objects[key]))
 
         print(print_list)
 
@@ -337,6 +333,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
