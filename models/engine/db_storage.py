@@ -2,13 +2,6 @@
 """DBStorage Engine"""
 from sqlalchemy import create_engine
 import os
-from models.base_model import BaseModel, Base
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 
 
@@ -19,6 +12,7 @@ class DBStorage():
     __session = None
 
     def __init__(self):
+        from models.base_model import BaseModel, Base
         """Constructor"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
                                       .format(os.getenv("HBNB_MYSQL_USER"),
@@ -33,6 +27,12 @@ class DBStorage():
         """query on the current database session all objects
         Return a dictionary
         """
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
         if cls is None:
             ob = self.__session.query(User).all()
             ob.append(self.__session.query(State).all())
