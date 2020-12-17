@@ -28,9 +28,10 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    amenity_ids = {}  # nuevo
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review",
-                               cascade="all, delete",
+                               cascade="all, delete, delete-orphan",
                                backref="place")
         amenities = relationship('Amenity',
                                  secondary=place_amenity,
@@ -43,7 +44,7 @@ class Place(BaseModel, Base):
             review_list = []
             review_dict = storage.all(Review)
             for key, obj in review_dict.items():
-                if self.id == obj.place_id:
+                if self.id == obj.state_id:  # if self.id == obj.place_id:
                     review_list.append(obj)
             return review_list
 
@@ -55,14 +56,15 @@ class Place(BaseModel, Base):
             amenity_list = []
             amenity_dict = storage.all(Amenity)
             for obj in amenity_dict.values():
-                if self.id == obj.amenity_ids:
+                if self.id == obj.place_id:  # if self.id == obj.amenity_ids:
                     amenity_list.append(obj)
             return amenity_list
 
         @amenities.setter
-        def amenities(self, value):
+        def amenities(self, value=None):
             """setter"""
             from models import storage
             from models.amenity import Amenity
-            if type(value) == Amenity:
-                self.append(value)
+            if value and value.__class__.name == "Amenity":
+                # if type(value) == Amenity:
+                self.amenity_ids.append(value.id)  # self.append(value)
