@@ -35,7 +35,7 @@ class Place(BaseModel, Base):
             review_list = []
             review_dict = storage.all(Review)
             for key, obj in review_dict.items():
-                if self.id == obj['place_id']:
+                if self.id == obj.place_id:
                     review_list += obj
             return review_list
 
@@ -46,7 +46,7 @@ class Place(BaseModel, Base):
             amenity_list = []
             amenity_dict = storage.all(Amenity)
             for obj in amenity_dict.values():
-                if self.amenity_ids == obj.id:
+                if self.id == obj.amenity_ids:
                     amenity_list += obj
             return amenity_list
 
