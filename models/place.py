@@ -41,6 +41,8 @@ class Place(BaseModel, Base):
     amenities = relationship('Amenity', secondary=place_amenity,
                              backref='places', viewonly=False)
 
+
+if getenv('HBNB_TYPE_STORAGE') != "db":
     @property
     def reviews(self):
         """class property getter for reviews associated to Place """
