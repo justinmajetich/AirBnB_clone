@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """DBStorage Engine"""
-import sqlachemy import create_engine
+from sqlalchemy import create_engine
 import os
 from models.base_model import BaseModel, Base
 from models.user import User
@@ -9,7 +9,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy.orm import sessionmaker, scoped-session
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage():
@@ -40,8 +40,8 @@ class DBStorage():
             ob.append(self.__session.query(Amenity).all())
             ob.append(self.__session.query(Place).all())
             ob.append(self.__session.query(Review).all())
-       else:
-           ob = self.__session.query(cls).all()
+        else:
+            ob = self.__session.query(cls).all()
         new = {}
         for object in ob:
             key = "{}.{}".format(object.__class__.__name__, object.id)

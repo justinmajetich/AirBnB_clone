@@ -3,7 +3,7 @@
 from sqlalchemy import Column, ForeignKey, String, Integer, Float
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-#from models.engine import FileStorage
+import models
 
 
 class Place(BaseModel, Base):
@@ -21,3 +21,12 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship('Review', cascade="all, delete", backref="place")
+
+@property
+def reviews(self):
+    """ returns list of Reviews """
+    lower = []
+    for key, value in models.storage.__objects.items():
+        if value.place_id == self.id:
+            lower.append(value)
+    return(lower)
