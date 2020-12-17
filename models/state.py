@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This is the state class
+This is the state class without marge
 """
 from models.base_model import BaseModel, Base
 from models.city import City
