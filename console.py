@@ -133,14 +133,14 @@ class HBNBCommand(cmd.Cmd):
                 if spl[1][0] == "-":
                     if spl[1][1:].replace(".", "").isdigit():
                         new_instance.__dict__[spl[0]] = float(spl[1])
-                
+
                 elif spl[1].replace(".", "").isdigit():
                     new_instance.__dict__[spl[0]] = float(spl[1])
             else:
                 pass
         new_instance.save()
         print(new_instance.id)
-      #  storage.save()
+        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
