@@ -56,13 +56,14 @@ if getenv('HBNB_TYPE_STORAGE') != "db":
     @property
     def amenities(self):
         """A getter for amenities"""
-        return self.__amenity_ids
-
-    @amenities.setter
-    def amenities(self, amenity_ids):
-        """A setter for amenities"""
         amenity_list = []
         amenities = models.storage.all(Amenity)
         for amenity in amenities.values():
             if amenity.place_id == self.id:
                 amenity_ids.append(amenity.id)
+        return amenity_list
+
+    @amenities.setter
+    def amenities(self, value):
+        if isinstance(value, Amenity):
+            self.amenitiy_ids.append(value.id)
