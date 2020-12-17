@@ -32,7 +32,10 @@ class DBStorage():
     def all(self, cls=None):
         classdb_dict = {}
         classes = {"State": State,
-                   "City": City}
+                   "City": City,
+                   "User": User,
+                   "Place": Place,
+                   "Review": Review}
         if cls is None:
             for key, value in classes.items():
                 query_list = self.__session.query(value).all()
