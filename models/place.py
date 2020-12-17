@@ -6,8 +6,9 @@ from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy import ForeignKey, MetaData
 from sqlalchemy.orm import relationship, backref
 import models
-import os
+from os import getenv
 from sqlalchemy import Table
+
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
@@ -43,8 +44,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    reviews = relationship("Review", backref="place", cascade="all, delete")
 
-    if os.getenv('HBNB_TYPE_STORAGE') == "db":
+    if getenv('HBNB_TYPE_STORAGE') == "db":
         reviews = relationship("Review",
                                backref='place',
                                cascade='all, delete')
@@ -55,16 +57,16 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-        """
-        Return the list of review instances with
-        """
-        from models import engine
-        list = []
-        places = engine.all(Review)
-        for reviews in places.values():
-            if reviews.place_id == self.id:
-                list.append(reviews)
-        return(list)
+            """
+            Return the list of review instances with
+            """
+            from models import engine
+            list = []
+            places = engine.all(Review)
+            for reviews in places.values():
+                if reviews.place_id == self.id:
+                    list.append(reviews)
+                    return(list)
 
         @property
         def amenities(self):
