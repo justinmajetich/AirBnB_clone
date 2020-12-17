@@ -46,21 +46,20 @@ class DBStorage:
         Query of object depending of the class name
          if cls=none query of all type of objects
         """
-        my_session = self.__session
         dic = {}
+        if cls in None:
+            dictionar = self.__session.query(User, State, City,  Amenity,
+                                             Place, Review)
+            for x in dictionar:
+                key = type(x).__name__ + "." + str(x.id)
+                dic[key] = x
+            else:
+                dictionar = self.__session.query(eval(cls)).all()
+                for x in dictionar:
+                    key = type(obj).__name__ + "." + str(x.id)
+                    dic[key] = x
 
-        if instance(cls, str):
-            class_print = cls
-        else:
-            class_print = cls.__name__
-
-        for x in my_session.query(eval(class_print)).all():
-            class_type = x.__class__.__name__
-
-            if class_type == class_print:
-                dic[class_type + "." + x.id] = x
-
-        return dic
+            return dic
 
     def new(self, obj):
         """
