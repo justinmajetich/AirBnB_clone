@@ -28,7 +28,8 @@ class DBStorage:
     """
     __engine = None
     __session = None
-def __init__(self):
+
+    def __init__(self):
         """ Constructor of the database """
         user = getenv('HBNB_MYSQL_USER')
         password = getenv('HBNB_MYSQL_PWD')
@@ -66,7 +67,8 @@ def __init__(self):
                     key = row.__class__.__name__ + '.' + row.id
                     new_dict[key] = row
         return new_dict
-def new(self, obj):
+
+    def new(self, obj):
         """
         Add new obj
         Args:
