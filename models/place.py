@@ -7,8 +7,13 @@ from sqlalchemy.orm import relationship
 from os import getenv
 
 place_amenity = Table('place_amenity', Base.metadata,
-                        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)) #Punto 10
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -24,8 +29,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade="all, delete", backref="place")
-        amenities = relationship('Amenity', secondary=place_amenity, viewonly=False) #punto 10
+        reviews = relationship("Review",
+                               cascade="all, delete",
+                               backref="place")
+        amenities = relationship('Amenity',
+                                 secondary=place_amenity,
+                                 viewonly=False)
 
     else:
         @property
@@ -58,4 +67,3 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             if type(value) == Amenity:
                 self.append(value)
-
