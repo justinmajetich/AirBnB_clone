@@ -128,12 +128,8 @@ class HBNBCommand(cmd.Cmd):
             for parameter in arguments[1:]:
                 # flagg = 0
                 key, value = parameter.split("=")
-                if value[0] == '"' and value[-1] == '"':
+                if value[0] == '"':  # and value[-1] == '"':
                     value = value[1:-1].replace('_', ' ').replace('"', '')
-                    """for i in range(len(value[1: -1])):
-                        if value[i] == '"':
-                            if value[i - 1] != "\\":
-                                flagg = 1"""
                 else:
                     try:
                         value = int(value)
