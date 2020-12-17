@@ -32,17 +32,32 @@ class DBStorage():
     def all(self, cls=None):
         """ Retrieve all in a Dict or depending of parameter class"""
 
-        if cls is None:
+        if cls:
+            objs = self.__session.query(self.classes()[cls])
+        else:
+            objs = self.__session.query(State).all()
+            objs += self.__session.query(City).all()
+            """objs += self.__session.query(User).all()
+            objs += self.__session.query(Place).all()
+            objs += self.__session.query(Amenity).all()
+            objs += self.__session.query(Review).all()
+            """
+        dic = {}
+        for obj in objs:
+            k = '{}.{}'.format(type(obj).__name__, obj.id)
+            dic[k] = obj
+        return dic
+        """if cls is None:
             list_obj = self.__session.query(State, Place, User,
                                             City, Amenity, Review)
         else:
             list_obj = self.__session.query(cls).all()
 
         dict_1 = {}
-        for obj in list_ob:
+        for obj in list_obj:
             key = "{}.{}".format(type(obj.__class__.__name__, obj.id))
             dict_1[key] = obj
-        return dict_1
+        return dict_1"""
 
     def new(self, obj):
         """New object in database"""

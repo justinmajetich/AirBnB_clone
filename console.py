@@ -145,9 +145,9 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         value = int(value)
                     setattr(new_instance, key, value)
-            storage.save()
             print(new_instance.id)
             storage.save()
+            new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -224,6 +224,7 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
+        print_list = []
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
@@ -235,7 +236,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
-
         print(print_list)
 
     def help_all(self):

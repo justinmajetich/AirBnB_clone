@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, Column
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
+
 Base = declarative_base()
 
 
@@ -54,10 +55,11 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dictionary.keys():
-            dictionary.pop('_sa_instance_state')
-        """ try:
-            dictionary.pop('_sa_instance_state')
-        except Exception:
-            pass """
+
+        if '_sa_instance_state' in dictionary:
+            del dictionary['_sa_instance_state']
         return dictionary
+
+        def delete(self):
+            """to delete the current instance from the storage"""
+            storage.delete(self)
