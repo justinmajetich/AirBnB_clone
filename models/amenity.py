@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 
 
 class Amenity(BaseModel, Base):
+    """Amenity class"""
     from models.place import Place, place_amenity
     __tablename__ = 'amenities'  # punto 10
     name = Column(String(128), nullable=False)  # punto 10
