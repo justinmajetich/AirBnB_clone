@@ -4,10 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
-import os
-from sqlalchemy import Table
-from models.review import Review
-import models.amenity
+
 
 
 class Place(BaseModel, Base):
