@@ -25,16 +25,17 @@ class State(BaseModel, Base):
                               backref="state",
                               cascade="all, delete")
 
-    @property
-    def cities(self):
-        """
-        Returns the list of City instances with
-        state_id == current State.id
-        """
-        all_cities = models.engine.all(City)
-        state_cities = []
-        for city_ins in all_cities.values():
-            if city_ins.state_id == self.id:
-                state_cities.append(city_ins)
+    else:
+        @property
+        def cities(self):
+            """
+            Returns the list of City instances with
+            state_id == current State.id
+            """
+            all_cities = models.engine.all(City)
+            state_cities = []
+            for city_ins in all_cities.values():
+                if city_ins.state_id == self.id:
+                    state_cities.append(city_ins)
 
-        return state_cities
+            return state_cities
