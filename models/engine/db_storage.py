@@ -37,8 +37,8 @@ class DBStorage():
         else:
             objs = self.__session.query(State).all()
             objs += self.__session.query(City).all()
-            """objs += self.__session.query(User).all()
-            objs += self.__session.query(Place).all()
+            objs += self.__session.query(User).all()
+            """objs += self.__session.query(Place).all()
             objs += self.__session.query(Amenity).all()
             objs += self.__session.query(Review).all()
             """
