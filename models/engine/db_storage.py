@@ -2,16 +2,19 @@
 """
 It’s time to change your storage engine and use SQLAlchemy
 """
-from models.base_model import Base, BaseModel
-from models.state import State
-from models.city import City
+import models
+from models.base_model import BaseModel, Base
 from models.amenity import Amenity
-from models.user import User
+from models.city import City
 from models.place import Place
 from models.review import Review
-from os import getenv
+from models.state import State
+from models.user import User
+import sqlalchemy
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session
+from os import getenv
 
 
 class DBStorage:
@@ -28,18 +31,15 @@ class DBStorage:
 
     def __init__(self):
         """ Constructor of the database """
-        config_db = 'mysql+mysqldb://{}:{}@{}:3306/{}'
-        password = getenv('HBNB_MYSQL_PWD')
-        database = getenv('HBNB_MYSQL_DB')
         user = getenv('HBNB_MYSQL_USER')
+        password = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
-        hbnb_env = getenv('HBNB_ENV')
+        database = getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine(
-            config_db.format(user, password, host, database),
-            pool_pre_ping=True)
-
-        if hbnb_env == "test":
+            'mysql+mysqldb://{}:{}@{}/{}'.
+            format(user, password, host, database), pool_pre_ping=True)
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -47,13 +47,30 @@ class DBStorage:
         Query of object depending of the class name
          if cls=none query of all type of objects
         """
+<<<<<<< HEAD
         obj = {}
         if cls:
             session = self.__session.query(cls)
             for row in session.all():
                 key = "{}.{}".format(cls.__name__, row.id)
                 obj[key] = row
+||||||| merged common ancestors
+        my_session = self.__session
+        dic = {}
+
+        if instance(cls, str):
+            class_print = cls
+=======
+        to_query = []
+        new_dict = {}
+        if cls is not None:
+            results = self.__session.query(eval(cls.__name__)).all()
+            for row in results:
+                key = row.__class__.__name__ + '.' + row.id
+                new_dict[key] = row
+>>>>>>> 8e926373d6b88cd89d353d22ec94fe3992150c94
         else:
+<<<<<<< HEAD
             for table in self.__talbes:
                 session = self.__session.query(table)
                 for row in query.all():
@@ -67,6 +84,30 @@ class DBStorage:
        #         cls = eval(cls)
        #     object1 = self.__session.query(cls)
        # return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in object1}
+||||||| merged common ancestors
+            class_print = cls.__name__
+
+        for x in my_session.query(eval(class_print)).all():
+            class_type = x.__class__.__name__
+
+            if class_type == class_print:
+                dic[class_type + "." + x.id] = x
+
+        return dic
+=======
+            for key, value in models.classes.items():
+                try:
+                    self.__session.query(models.classes[key]).all()
+                    to_query.append(models.classes[key])
+                except BaseException:
+                    continue
+            for classes in to_query:
+                results = self.__session.query(classes).all()
+                for row in results:
+                    key = row.__class__.__name__ + '.' + row.id
+                    new_dict[key] = row
+        return new_dict
+>>>>>>> 8e926373d6b88cd89d353d22ec94fe3992150c94
 
     def new(self, obj):
         """
