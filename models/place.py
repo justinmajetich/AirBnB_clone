@@ -6,8 +6,15 @@ from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy import ForeignKey, MetaData
 from sqlalchemy.orm import relationship, backref
 import models
-from os import getenv
+import os
 from sqlalchemy import Table
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -36,10 +43,18 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", backref="place", cascade="all, delete")
 
-    @property
-    def reviews(self):
+    if os.getenv('HBNB_TYPE_STORAGE') == "db":
+        reviews = relationship("Review",
+                               backref='place',
+                               cascade='all, delete')
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 viewonly=False)
+
+    else:
+        @property
+        def reviews(self):
         """
         Return the list of review instances with
         """
@@ -50,3 +65,21 @@ class Place(BaseModel, Base):
             if reviews.place_id == self.id:
                 list.append(reviews)
         return(list)
+
+        @property
+        def amenities(self):
+            """ Returns amenities """
+            all_amenities = models.storage.all(Amenity)
+            places_amenities = []
+            for ame_ins in all_amenities.values():
+                if ame_ins.place_id == self.id:
+                    places_amenities.append(ame_ins)
+            return places_amenities
+
+        @amenities.setter
+        def amenities(self, amenity_obj):
+            """handles append method for adding an
+            Amenity.id to the attribute amenity_ids"""
+            str_obj = amenity_obj.__class__.__name__
+            if str_obj == "Amenity":
+                self.amenity_ids.append(str(amenity_obj.id))
