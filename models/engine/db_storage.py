@@ -24,6 +24,7 @@ class DBStorage:
     """
     __engine = None
     __session = None
+    __tables = [State, City]
 
     def __init__(self):
         """ Constructor of the database """
@@ -46,21 +47,26 @@ class DBStorage:
         Query of object depending of the class name
          if cls=none query of all type of objects
         """
-        my_session = self.__session
-        dic = {}
-
-        if instance(cls, str):
-            class_print = cls
+        obj = {}
+        if cls:
+            session = self.__session.query(cls)
+            for row in session.all():
+                key = "{}.{}".format(cls.__name__, row.id)
+                obj[key] = row
         else:
-            class_print = cls.__name__
-
-        for x in my_session.query(eval(class_print)).all():
-            class_type = x.__class__.__name__
-
-            if class_type == class_print:
-                dic[class_type + "." + x.id] = x
-
-        return dic
+            for table in self.__talbes:
+                session = self.__session.query(table)
+                for row in query.all():
+                    key = "{}.{}".format(table.__name__, row.id)
+                    obj[key] = row
+        return(obj)
+       # if cls is None:
+       #     object1 = self.__session.query(State).all()
+       # else:
+       #     if type(cls) == str:
+       #         cls = eval(cls)
+       #     object1 = self.__session.query(cls)
+       # return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in object1}
 
     def new(self, obj):
         """
