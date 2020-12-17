@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
             amenity_list = []
             amenity_dict = storage.all(Amenity)
             for obj in amenity_dict.values():
-                if self.amenity_ids == obj.id:
+                if self.id == obj.amenity_ids:
                     amenity_list.append(obj)
             return amenity_list
 
