@@ -44,11 +44,11 @@ class Place(BaseModel, Base):
         def reviews(self):
             """ Get a list of all related Review current Place"""
             reviews = models.storage.all(Review)
-            listReviews = []
+            l_revw = []
             for review in reviews.items():
                 if review.place_id == self.id:
-                    listReviews.append(review)
-            return listReviews
+                    l_revw.append(review)
+            return l_revw
 
         @property
         def amenities(self):
@@ -57,11 +57,11 @@ class Place(BaseModel, Base):
             Place"""
             from models.amenity import Amenity
             amenities = models.storage.all(Amenity)
-            listAmenities = []
+            l_Ame = []
             for classId, amenity in amenities.items():
                 if amenity.place_id == self.id:
-                    listAmenities.append(amenity)
-            return listAmenities
+                    l_Ame.append(amenity)
+            return l_Ame
 
         @amenities.setter
         def amenities(self, value):
