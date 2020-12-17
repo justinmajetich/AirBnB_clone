@@ -32,10 +32,9 @@ class State(BaseModel, Base):
             Returns the list of City instances with
             state_id == current State.id
             """
-            all_cities = models.engine.all(City)
-            state_cities = []
-            for city_ins in all_cities.values():
-                if city_ins.state_id == self.id:
-                    state_cities.append(city_ins)
-
-            return state_cities
+            instance_list = []
+            for key, obj in models.storage.all().items():
+                if obj.__class__.__name__ == 'City':
+                    if obj.state_id == self.id:
+                        instance_list.append(obj)
+            return instance_list
