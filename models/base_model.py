@@ -2,7 +2,7 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import String, DateTime, Column
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 Base = declarative_base()
@@ -11,8 +11,8 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), unique=True, primary_key=True, nullable=False)
-    created_at = Column(Datetime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(Datetime, default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -26,32 +26,13 @@ class BaseModel:
                 if key == created_at or updated_at:
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != '__class__':
-                    setattr(self, key, value )
+                    setattr(self, key, value)
             if 'id' not in kwargs.keys():
                 setattr(self, "id", str(uuid.uuid4()))
             if 'created_at' not in kwargs.keys():
                 setattr(self, "created_at", datetime.now())
             if 'updated_at' not in kwargs.keys():
                 setattr(self, "updated_at", datetime.now())
-            """ kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs) """
-
-            """ try:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-            except Exception:
-                self.__init__()
-            try:
-                del kwargs['__class__']
-            except Exception:
-                pass
-            self.__dict__.update(kwargs) """
 
     def __str__(self):
         """Returns a string representation of the instance"""
