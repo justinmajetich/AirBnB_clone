@@ -7,4 +7,3 @@ class DBStorage:
 	__session = None
 
 	def __init__(self):
-		
