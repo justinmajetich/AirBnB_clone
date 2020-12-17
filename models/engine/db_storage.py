@@ -17,7 +17,7 @@ classes = {'State': State, 'City': City, 'User': User, 'Place': Place}
 
 
 class DBStorage:
-    """Storage"""
+    """This is Storage for SQLAlchemy"""
     __engine = None
     __session = None
 
@@ -36,7 +36,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """method all"""
+        """this is the method all"""
         new_dict = {}
         if cls:
             if cls in classes.keys():
@@ -66,12 +66,12 @@ class DBStorage:
             self.save()
 
     def reload(self):
-        """reload method"""
+        """reload method create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         fact = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(fact)
         self.__session = Session()
 
     def close(self):
-        """close session"""
+        """this method closes the session"""
         self.__session.close()   

@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def delete(self, obj=None):
-        """delete function"""
+        """this is function to delete an object"""
         try:
             if obj:
 

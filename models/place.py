@@ -18,7 +18,7 @@ place_amenity = Table('place_amenity', metadata,
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """this is representation of place"""
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'),  nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
     else:
         @property
         def amenities(self):
-            """return list"""
+            """this is the getter for amenity"""
             lis = storage.all(Amenity)
             list_ame = []
             for i in lis.values():
@@ -48,6 +48,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, obj):
-            """amenity ids"""
+            """this is the setter for amenity ids"""
             if isinstance(obj, Amenity):
                 self.amenity_ids.append(obj.id)
