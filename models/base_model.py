@@ -23,11 +23,11 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             if 'updated_at' in kwargs.keys():
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-\
-                                                         %m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f')
             if 'created_at' in kwargs.keys():
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-\
-                                                         %m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f')
             if "id" not in kwargs.keys():
                 self.id = str(uuid.uuid4())
             for key, value in kwargs.items():  # Nuevo, revisar
