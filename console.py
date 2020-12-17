@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         if len(arguments) > 1:
-            new_instance = HBNBCommand.classes[arguments[0]]()
+            new_instance = eval("{}()".format(arguments[0]))  # HBNBCommand.classes[arguments[0]]()
             for parameter in arguments[1:]:
                 # flagg = 0
                 key, value = parameter.split("=")
