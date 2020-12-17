@@ -11,11 +11,9 @@ metadata = Base.metadata
 place_amenity = Table('place_amenity', metadata,
                       Column('place_id', String(60),
                              ForeignKey('places.id'),
-                             primary_Key=True,
                              nullable=False),
                       Column('amenity_id', String(60),
                              ForeignKey('amenities.id'),
-                             primary_Key=True,
                              nullable=False))
 
 
@@ -35,31 +33,21 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        amenities = relationship("Amenity", secondary=place_amenity,
-                                 viewonly=False,
-                                 back_populates="place_amenities"))
+        amenities = relationship('Amenity', secondary=place_amenity,
+                                 viewonly=False)
     else:
         @property
-        def reviews(self):
-            """ Returns review objects
-            """
-            newlist = []
-            for review in models.storage.all(Review):
-                if review.place_id == self.id:
-                    newlist.append(review)
-            return newlist
-
-        @property
         def amenities(self):
-            """ Returns amenities objects
-            """
-            newlist = []
-            for amenity in models.storage.all(Amenity):
-                if amenity.id in amenity_ids:
-                    newlist.append(amenity)
-            return newlist
+            """this is the getter for amenity"""
+            lis = storage.all(Amenity)
+            list_ame = []
+            for i in lis.values():
+                if i.id in self.amenity_ids:
+                    list_ame.append(i)
+            return lis
 
         @amenities.setter
         def amenities(self, obj):
-            if type(obj) == Amenity:
-                amenity_ids.append(obj.id)
+            """this is the setter for amenity ids"""
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)

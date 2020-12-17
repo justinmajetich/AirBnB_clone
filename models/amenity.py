@@ -9,8 +9,9 @@ from os import getenv
 
 class Amenity(BaseModel, Base):
     """this is Amenity representation"""
-     __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
+    __tablename__ = 'amenities'
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        place_amenities = relationship("Place", secondary=Place.place_amenity,
-                                       back_populates="amenities")
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship('Place', secondary=place_amenity)
+    else:
+        name = ''
