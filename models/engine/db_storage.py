@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 It’s time to change your storage engine and use SQLAlchemy
+adding db storage as a new storage
 """
 import models
 from models.base_model import BaseModel, Base
