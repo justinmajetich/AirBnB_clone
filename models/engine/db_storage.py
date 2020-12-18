@@ -8,8 +8,9 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from sqlalchemy import create_engine
-import os
+from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
+import json
 
 
 class DBStorage():
@@ -21,13 +22,22 @@ class DBStorage():
     def __init__(self):
         """Constructor"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                                      .format(os.getenv("HBNB_MYSQL_USER"),
-                                              os.getenv("HBNB_MYSQL_PWD"),
-                                              os.getenv("HBNB_MYSQL_HOST"),
-                                              os.getenv("HBNB_MYSQL_DB")),
+                                      .format(getenv("HBNB_MYSQL_USER"),
+                                              getenv("HBNB_MYSQL_PWD"),
+                                              getenv("HBNB_MYSQL_HOST"),
+                                              getenv("HBNB_MYSQL_DB")),
                                       pool_pre_ping=True)
-        if os.getenv("HBNB_ENV") == "test":
+        if getenv("HBNB_ENV") == "test":
             Base.metada.drop_all(self.__engine)
+            
+    def reload(self):
+        """Create all tables in the database"""
+        from sqlalchemy.orm import sessionmaker, scoped_session
+        Base.metadata.create_all(self.__engine)
+        sessionM = sessionmaker(bind=self.__engine,
+                                      expire_on_commit=False)
+        Session = scoped_session(sessionM)
+        self.__session = Session()
 
     def all(self, cls=None):
         """query on the current database session all objects
@@ -61,11 +71,3 @@ class DBStorage():
         """delete from the current database session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
-
-    def reload(self):
-        """Create all tables in the database"""
-        Base.metada.create_all(self.__engine)
-        self.__session = sessionmaker(bind=self.__engine,
-                                      expire_on_commit=False)
-        Session = scoped_session(self.__session)
-        self.__session = Session()
