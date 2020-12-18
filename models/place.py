@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.review import Review
 from models.amenity import Amenity
-from models import storage
+import models
 
 place_amenity = Table('place_amenity',
                       Base.metadata,
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
 
     @amenities.setter
     def amenities(self, amenity_ids):
-        amenities = storage.all(Amenity)
+        amenities = models.storage.all(Amenity)
         for amenity in amenities.values():
             if amenity.place_id == self.id:
                 amenity_ids.append(amenity.id)
