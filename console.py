@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,35 +118,27 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        else:
-            argsList = args.split(" ")
-            if argsList[0] not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            else:
-                argsClass = argsList.pop(0)
-                i = 0
-                addDict = {}
-                while i < len(argsList):
-                    keyValue = argsList[i].split("=")
-                    addDict[keyValue[0]] = keyValue[1]
-                    i += 1
+        argsClass = args.split(" ")[0]
+        if argsClass not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        addDict = {}
+        if ' ' in args and '=' in args:
+            argsList = args.split(' ')
+            for arg in argsList[1:]:
+                keyValue = arg.split("=")
+                if '"' in keyValue[1]:
+                    keyValue[1] = keyValue[1].replace('_', ' ').strip('"')
+                elif '.' in keyValue[1]:
+                    keyValue[1] = float(keyValue[1])
+                else:
+                    keyValue[1] = int(keyValue[1])
+                addDict.update({keyValue[0]: keyValue[1]})
         new_instance = HBNBCommand.classes[argsClass]()
-        if addDict:
-            for key, value in addDict.items():
-                try:
-                    value = int(value)
-                except ValueError:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        value = value.replace("_", " ")
-                        value = value[1:-1]
-                        print(value)
-                setattr(new_instance, key, value)
-        storage.save()
+        for key, value in addDict.items():
+            setattr(new_instance, key, value)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -341,6 +333,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
