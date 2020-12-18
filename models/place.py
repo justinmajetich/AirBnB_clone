@@ -31,8 +31,8 @@ class Place(BaseModel, Base):
     amenity_ids = []  # nuevo
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review",
-                               cascade="all, delete, delete-orphan",
-                               backref="place")
+                               backref="place",
+                               cascade="all, delete, delete-orphan")
         amenities = relationship('Amenity',
                                  secondary=place_amenity,
                                  viewonly=False)
