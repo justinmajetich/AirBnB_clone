@@ -29,13 +29,12 @@ class DBStorage():
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metada.drop_all(self.__engine)
-            
+
     def reload(self):
         """Create all tables in the database"""
         from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
-        sessionM = sessionmaker(bind=self.__engine,
-                                      expire_on_commit=False)
+        sessionM = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sessionM)
         self.__session = Session()
 
