@@ -63,6 +63,6 @@ class Place(BaseModel, Base):
             """setter"""
             from models import storage
             from models.amenity import Amenity
-            if type(amenity) == Amenity:
+            if type(value) == Amenity:
                 # if type(value) == Amenity:
-                self.append(amenity)  # self.append(value)
+                self.append(value)  # self.append(value)
