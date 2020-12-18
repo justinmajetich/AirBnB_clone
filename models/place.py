@@ -22,6 +22,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     reviews = relationship('Review', cascade="all, delete", backref="place")
 
+
 @property
 def reviews(self):
     """ returns list of Reviews """
