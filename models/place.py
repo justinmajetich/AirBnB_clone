@@ -51,10 +51,12 @@ class Place(BaseModel, Base):
 
     @property
     def amenities(self):
+		"""amenitites getter"""
         return self.amenity_ids
 
     @amenities.setter
     def amenities(self, amenity_ids):
+		"""amentities setter"""
         amenities = models.storage.all(Amenity)
         for amenity in amenities.values():
             if amenity.place_id == self.id:
