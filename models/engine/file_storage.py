@@ -15,8 +15,7 @@ class FileStorage:
         else:
             new = {}
             for key, value in self.__objects.items():
-                clsval = type(value)
-                if cls == clsval:
+                if isinstance(value, cls):
                     new[key] = value
             return new
 
@@ -60,8 +59,9 @@ class FileStorage:
     def delete(self, obj=None):
         """to delete obj from __objects if its inside
         if obj is equal to None, not do anything"""
-        if obj:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
-            self.save()
+        if obj is None:
+            return
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
+        self.save()
