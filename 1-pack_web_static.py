@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 def do_pack():
-    """COmpresses
+    """docstring
     """
     filename = 'web_static_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.tgz'
     try:
