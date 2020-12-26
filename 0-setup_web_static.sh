@@ -11,8 +11,8 @@ echo "<html>
     Holberton School
   </body>
 </html>" > /data/web_static/releases/test/index.html
-
-if [[ -d /data/web_static/current ]]
+directory=/data/web_static/current
+if [[ -d $directory ]]
 then
 	sudo rm -r /data/web_static/current
 	ln -sf /data/web_static/releases/test $directory
