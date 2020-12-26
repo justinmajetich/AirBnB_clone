@@ -10,6 +10,14 @@ from os import getenv
 from sqlalchemy import Table
 
 
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -38,15 +46,42 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="all, delete")
 
-    @property
-    def reviews(self):
-        """
-        Return the list of review instances with
-        """
-        from models import engine
-        list = []
-        places = engine.all(Review)
-        for reviews in places.values():
-            if reviews.place_id == self.id:
-                list.append(reviews)
-        return(list)
+    if getenv('HBNB_TYPE_STORAGE') == "db":
+        reviews = relationship("Review",
+                               backref='place',
+                               cascade='all, delete')
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 viewonly=False)
+
+    else:
+        @property
+        def reviews(self):
+            """
+            Return the list of review instances with
+            """
+            from models import engine
+            list = []
+            places = engine.all(Review)
+            for reviews in places.values():
+                if reviews.place_id == self.id:
+                    list.append(reviews)
+                    return(list)
+
+        @property
+        def amenities(self):
+            """ Returns amenities """
+            all_amenities = models.storage.all(Amenity)
+            places_amenities = []
+            for ame_ins in all_amenities.values():
+                if ame_ins.place_id == self.id:
+                    places_amenities.append(ame_ins)
+            return places_amenities
+
+        @amenities.setter
+        def amenities(self, amenity_obj):
+            """handles append method for adding an
+            Amenity.id to the attribute amenity_ids"""
+            str_obj = amenity_obj.__class__.__name__
+            if str_obj == "Amenity":
+                self.amenity_ids.append(str(amenity_obj.id))
