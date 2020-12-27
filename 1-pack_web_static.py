@@ -11,7 +11,7 @@ def do_pack():
     """
     that fenerates a .tgz archive from the contents of the web_static folder
     """
-    dt = datetime.utchnow()
+    dt = datetime.utcnow()
     file = "versions/web_statis_{}{}{}{}{}{}.tgz".fotmat(dt.year,
                                                          dt.month,
                                                          dt.day,
@@ -21,6 +21,6 @@ def do_pack():
     if os.path.isdir("versions") is false:
         if local("mkdir -p versions").failed is True:
             return None
-    if local("tar - cvzf {} web_static".format(file)).failed is True:
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
     return file
