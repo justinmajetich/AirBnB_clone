@@ -1,57 +1,53 @@
 #!/usr/bin/python3
 """Write a Fabric script
 """
-
-
-from fabric.operations import local, run, put, env
-import os
+from fabric.api import local, env, run, put
 from datetime import datetime
-
-
+from os.path import exists
 env.hosts = ['34.73.206.102', '35.237.118.88']
-env.user = 'ubuntu'
 
 
 def do_pack():
-    """docstring
-    """
-    filename = 'web_static_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.tgz'
-    try:
-        if not os.path.isdir('versions'):
-            local('mkdir versions')
-
-        return local('tar -cvzf versions/{} web_static'.format(filename))
-    except Exception:
-        return None
+    """ function that packs archives """
+    local('mkdir -p versions')
+    date = datetime.now()
+    file = local('tar -cvzf versions/web_static_{}{}{}{}{}{}.tgz web_static'
+                 .format(date.year, date.month, date.day,
+                         date.hour, date.minute, date.second), capture=True)
+    if file.succeeded:
+        return file
+    return None
 
 
 def do_deploy(archive_path):
-    """
-    docstring
-    """
-
-    if not os.path.exists(archive_path):
+    """[summary]"""
+    if exists(archive_path):
+        file_path = archive_path.split("/")[1]
+        file_srvr = "/data/web_static/releases/{}".format(
+            file_path.replace(".tgz", ""))
+        put('{}'.format(archive_path), '/tmp/')
+        run('mkdir -p {}'.format(file_srvr))
+        run('tar -xzf /tmp/{} -C {}/'.format(
+            file_path,
+            file_srvr))
+        run('rm /tmp/{}'.format(file_path))
+        run('mv -f {}/web_static/* {}/'.format(file_srvr, file_srvr))
+        run('rm -rf {}/web_static'.format(
+            file_srvr))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {} /data/web_static/current'.format(
+            file_srvr))
+        return True
+    else:
         return False
-
-    name = archive_path.split('/')[-1]
-
-    untar = "/data/web_static/releases/{}".format(name.replace('.tgz', ''))
-
-    put(archive_path, '/tmp')
-    run('mkdir -p ' + untar)
-    run('tar -xzf /tmp/{} -C {}'.format(name, untar))
-    run('rm /tmp/{}'.format(name))
-    run("mv {}/web_static/* {}".format(untar, untar))
-    run("rm -rf {}/web_static".format(untar))
-    run("rm -rf /data/web_static/current")
-    run("ln -s {} /data/web_static/current".format(untar))
-    return True
 
 
 def deploy():
-    """docstring
-    """
-    p = do_pack()
-    if not p:
+    """ Summary """
+    archive = do_pack()
+    if archive is None:
         return False
-    return do_deploy(p)
+    else:
+        value = archive.__dict__["command"].split(" ")[-2]
+        print(value)
+        return do_deploy(value)
