@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 #web servers for the deployment 
-
-sudo apt-get -y update
-sudo apt-get -y install nginx
-mkdir -p /data/web_static/shared/
+apt-get -y update
+apt-get -y install nginx
+mkdir -p /data/web_static/
 mkdir -p /data/web_static/releases/test/
-echo "create files" > /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+mkdir -p /data/web_static/shared/
+echo "<html>
+  <head>
+  </head>
+  <body>
+    Test Code
+  </body>
+</html>" > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test /data/web_static/current
 chown -R ubuntu:ubuntu /data
-sed -i "/^\tlocation \/ {$/ i\\location /hbnb_static {\nalias /data/web_static/current;\n}" /etc/nginx/sites-available/default
+sed -i '/listen 80 default_server/a location /hbnb_static/ { alias /data/web_static/current/;}' /etc/nginx/sites-available/default
 service nginx restart
+exit 0
