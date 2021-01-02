@@ -37,7 +37,7 @@ def do_deploy(archive_path):
     file = archive_path.replace('.tgz', '')
     file = file.replace('versions/', '')
     run('mkdir -p /data/web_static/releases/{}/'.format(file))
-    run('tar -xzf /tmp/{}.tgz -C /data/we_static/releases/{}/'
+    run('tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/'
         .format(file, file))
     run('rm /tmp/{}.tgz'.format(file))
     run('mv /data/web_static/releases/{}/'.format(file))
