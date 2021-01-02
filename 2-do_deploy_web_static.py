@@ -24,6 +24,7 @@ def do_pack():
         return None
     return 'versions/{}'.format(file)
 
+
 def do_deploy(archive_path):
     """
     Fabric script (based on the file 1-pack_web_static.py)
@@ -32,7 +33,6 @@ def do_deploy(archive_path):
     """
     if not isfile(archive_path):
         return False
-    print (archive_path)
     put(archive_path, '/tmp/')
     file = archive_path.replace('.tgz', '')
     file = file.replace('versions/', '')
