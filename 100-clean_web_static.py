@@ -61,6 +61,7 @@ def deploy():
         return False
     return do_deploy(archive_path)
 
+
 def do_clean(number=0):
     """
     Fabric script (based on the file 3-deploy_web_static.py)
@@ -73,14 +74,8 @@ def do_clean(number=0):
         return None
     if number < 0:
         return None
- 
-    if number == 0 or number == 1:
-        number = 2
-    else:
-        number + 1
+    number = 2 if (number == 0 or number == 1) else (number + 1)
     with lcd("./versions"):
-        local('ls -t | tail -n +{:d} | xargs rm -rf --'.
-            format(number))
+        local('ls -t | tail -n +{:d} | xargs rm -rf --'.format(number))
     with cd("/data/web_static/releases"):
-        run('ls -t | tail -n +{:d} | xargs rm -rf --'.
-            format(number))
+        run('ls -t | tail -n +{:d} | xargs rm -rf --'.format(number))
