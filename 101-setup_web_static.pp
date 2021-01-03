@@ -25,7 +25,7 @@ package {'nginx':
     provider => 'apt'
 } ->
 file {'/data':
-    ensure => 'derectory'
+    ensure => 'directory'
 } ->
 file {'/data/web_static':
     ensure => 'diretory'
