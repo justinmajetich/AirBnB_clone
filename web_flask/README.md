@@ -1,5 +1,7 @@
 # 0x04. AirBnB clone - Web framework
 
+![image](https://buttercms.com/static/images/tech_banners/Flask.png)
+
 For this project, students are expected to look at this concept:
 
 - [AirBnB clone](https://intranet.hbtn.io/concepts/74)
