@@ -33,11 +33,10 @@ def anyTextWithPython(text='is cool'):
     return 'Python {}'.format(text)
 
 
-@app.route('/number/<n>', strict_slashes=False)
-def is_a_number(n):
+@app.route('/number/<int:number>', strict_slashes=False)
+def is_a_number(number):
     """Is a number"""
-    n = int(n)
-    return '{} is a number'.format(n)
+    return '{} is a number'.format(escape(number))
 
 
 if __name__ == '__main__':
