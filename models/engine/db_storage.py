@@ -37,12 +37,12 @@ class DBStorage:
         if cls:
             if cls in classes.keys():
                 for i in self.__session.query(classes[cls]).all():
-                    key = str(i.__class__.__name__) + "." + str(i.id) #se cambio _ por __
+                    key = str(i.__class__.__name__) + "." + str(i.id)
                     clsdict[key] = i
         else:
             for k, v in classes.items():
                 for i in self.__session.query(v).all():
-                    key = str(i.__class__.__name__) + "." + str(i.id) #se cambio _ por __
+                    key = str(i.__class__.__name__) + "." + str(i.id)
                     clsdict[key] = i
         return clsdict
 
