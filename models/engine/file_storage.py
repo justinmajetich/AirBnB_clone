@@ -64,3 +64,7 @@ class FileStorage:
         if obj_to_del in FileStorage.__objects:
             FileStorage.__objects.pop(obj_to_del)
             self.save()
+
+    def close(self):
+        """Function close"""
+        self.reload()
