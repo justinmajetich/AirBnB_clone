@@ -48,3 +48,34 @@ def do_deploy(archive_path):
         .format(file))
     print('New version deployed!')
     return True
+
+
+def deploy():
+    """
+    Fabric script (based on the file 2-do_deploy_web_static.py)
+    that creates and distributes an archive to your web servers,
+    using the function deploy:
+    """
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
+    return do_deploy(archive_path)
+
+
+def do_clean(number=0):
+    """
+    Fabric script (based on the file 3-deploy_web_static.py)
+    that deletes out-of-date archives, using the function
+    do_clean:
+    """
+    try:
+        number = int(number)
+    except:
+        return None
+    if number < 0:
+        return None
+    number = 2 if (number == 0 or number == 1) else (number + 1)
+    with lcd("./versions"):
+        local('ls -t | tail -n +{:d} | xargs rm -rf --'.format(number))
+    with cd("/data/web_static/releases"):
+        run('ls -t | tail -n +{:d} | xargs rm -rf --'.format(number))
