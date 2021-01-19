@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String
+from os import environ as env
+import models
 
 
 class State(BaseModel, Base):
