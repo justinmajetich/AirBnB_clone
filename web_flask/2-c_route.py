@@ -22,7 +22,5 @@ def c(text):
     replace1 = replace.replace("_", " ")
     return replace1
 
-
-
 if __name__ == "__main__":
     app.run(debug=True)
