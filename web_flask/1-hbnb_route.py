@@ -13,3 +13,6 @@ def index():
 @app.route("/hbnb")
 def hbnb():
     return "HBNB"
+
+if __name__ == "__main__":
+    app.run(debug=True)
