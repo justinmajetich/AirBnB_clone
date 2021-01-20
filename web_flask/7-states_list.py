@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def teardown_session(self)
+def teardown_session(self):
     """ close storage """
     storage.close()
 
@@ -18,7 +18,8 @@ def teardown_session(self)
 def states_list_route():
     """ varible sends a numeric in HTML """
     storage.close()
-    return (render_template("7-states_list.html", states=storage.all("State").values()))
+    return (render_template("7-states_list.html",
+                            states=storage.all("State").values()))
 
 
 if __name__ == "__main__":
