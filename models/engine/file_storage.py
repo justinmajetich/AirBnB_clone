@@ -1,4 +1,4 @@
-##!/usr/bin/python3
+#!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
@@ -9,21 +9,19 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns all the objects
-        If a class is specified, the method only
-        returns the objects of same type.
-        """
-
+        """Returns a dictionary of models currently in storage"""
         if cls:
-            same_type = dict()
+            return {k: v for k, v in self.__objects.items() if type(v) == cls}
+        return FileStorage.__objects
 
-            for key, obj in self.__objects.items():
-                if obj.__class__ == cls:
-                    same_type[key] = obj
-
-            return same_type
-
-        return self.__objects
+    def delete(self, obj=None):
+        """Deletes obj from __object
+        """
+        if obj:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -49,30 +47,20 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
-    def delete(self, obj=None):
-        """ Delete obj if its inside """
-        if not obj:
-            return
-
-        k = "{}.{}".format(type(obj).__name__, obj.id)
-
-        if k in self.__objects:
-            del self.__objects[k]
-            self.save()
-
     def close(self):
-        '''metod reload'''
+        """reload"""
         self.reload()
+
