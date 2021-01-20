@@ -62,6 +62,3 @@ class FileStorage:
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects.pop(key)
-
-    def close(self):
-        self.reload()
