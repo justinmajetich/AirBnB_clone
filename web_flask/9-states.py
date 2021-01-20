@@ -29,6 +29,7 @@ def lists(id=None):
     else:
         return render_template('9-states.html', states=list(lili.values()))
 
+
 if __name__ == '__main__':
     storage.reload()
     app.run('0.0.0.0', 5000)

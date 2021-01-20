@@ -21,6 +21,7 @@ def lists():
     lili = list(storage.all(State).values())
     return render_template('8-cities_by_states.html', states=lili)
 
+
 if __name__ == '__main__':
     storage.reload()
     app.run('0.0.0.0', 5000)
