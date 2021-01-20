@@ -22,7 +22,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Return list of city"""
-            city_list = [value for key, value in
-                         models.storage.all(City).items()
-                         if value.state_id == self.id]
+            obj = models.storage.all(City)
+            ls = []
+            for city in obj.values():
+                if city.state_id == self.id:
+                    city_list.append(city)
             return city_list
