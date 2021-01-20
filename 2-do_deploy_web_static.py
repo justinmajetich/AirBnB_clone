@@ -8,14 +8,14 @@ env.hosts = ['34.73.206.102', '35.237.118.88']
 
 
 def do_pack():
-    """[summary]"""
+    """ function that packs archives """
     local('mkdir -p versions')
-    file_tar = local("tar -czvf versions/web_static_{}.tgz web_static/"
-                     .format((datetime.strftime(datetime.now(),
-                                                "%Y%m%d%H%M%S"))),
-                     capture=True)
-    if file_tar.succeeded:
-        return file_tar
+    date = datetime.now()
+    t_file = local('tar -cvzf versions/web_static_{}{}{}{}{}{}.tgz web_static'
+                   .format(date.year, date.month, date.day,
+                           date.hour, date.minute, date.second), capture=True)
+    if t_file.succeeded:
+        return t_file
     return None
 
 
@@ -23,20 +23,20 @@ def do_deploy(archive_path):
     """[summary]"""
     if exists(archive_path):
         file_path = archive_path.split("/")[1]
-        file_srvr = "/data/web_static/releases/{}".format(
+        serv_path = "/data/web_static/releases/{}".format(
             file_path.replace(".tgz", ""))
         put('{}'.format(archive_path), '/tmp/')
-        run('mkdir -p {}'.format(file_srvr))
+        run('mkdir -p {}'.format(serv_path))
         run('tar -xzf /tmp/{} -C {}/'.format(
             file_path,
-            file_srvr))
+            serv_path))
         run('rm /tmp/{}'.format(file_path))
-        run('mv -f {}/web_static/* {}/'.format(file_srvr, file_srvr))
+        run('mv -f {}/web_static/* {}/'.format(serv_path, serv_path))
         run('rm -rf {}/web_static'.format(
-            file_srvr))
+            serv_path))
         run('rm -rf /data/web_static/current')
         run('ln -s {} /data/web_static/current'.format(
-            file_srvr))
+            serv_path))
         return True
     else:
         return False
