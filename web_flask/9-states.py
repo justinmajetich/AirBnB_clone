@@ -8,7 +8,7 @@ from models.city import City
 app = Flask(__name__)
 
 
-@app.route("/states", strict_slashes=False")
+@app.route("/states", strict_slashes=False)
 @app.route("/states/<id>", strict_slashes=False)
 def states(id='0'):
         return render_template('9-states.html',
