@@ -1,24 +1,34 @@
 #!/usr/bin/python3
-"""Start a flask app"""
-from flask import Flask, render_template
+"""Start Flask application"""
+
 from models import storage
-from models.state import State
+from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
-    """display states"""
-    states = storage.all(State)
-    return render_template("7-states_list.html", states=states)
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<id>', strict_slashes=False)
+def states_id(id=None):
+    """ displays a state with specified id  """
+    states = storage.all('State')
+    if id:
+        key = 'State.' + id
+        if key in states:
+            states = states[key]
+        else:
+            states = None
+    else:
+        states = states.values()
+    return render_template('9-states.html', states=states,
+                           id=id)
 
 
 @app.teardown_appcontext
-def close_storage(exception):
-    """remove the current SQLAlchemy session"""
+def teardown(self):
+    """Remove session"""
     storage.close()
 
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
