@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route("/states/<id>", strict_slashes=False)
 def states(id='0'):
         return render_template('9-states.html',
-                               states=storage.all(State).values())
+                               states=storage.all(State).values(), id=id)
 
 
 @app.teardown_appcontext
