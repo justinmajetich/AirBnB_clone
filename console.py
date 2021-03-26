@@ -116,9 +116,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         argv = args.split()
-        print(argv)
         class_name = argv[0]
-        print(class_name)
         if not class_name:
             print("** class name missing **")
             return
@@ -226,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v)[1:-1])
+                print_list.append(str(v))
 
         print(print_list)
 
