@@ -115,13 +115,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        argv = args.split()
+        print(argv)
+        class_name = argv[0]
+        print(class_name)
+        if not class_name:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        kwargs = {}
+        if len(argv) > 1:
+            i = 1
+            while (i < len(argv)):
+                key = argv[i].split('=')[0]
+                val = argv[i].split('=')[1].replace('_', ' ')
+                if val[0] is '\"' or val[0] is "'":
+                    val = val[1:-1]
+                kwargs[key] = val
+                i += 1
+        new_instance = HBNBCommand.classes[class_name]()
+        new_instance.__dict__.update(kwargs)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -211,7 +226,7 @@ class HBNBCommand(cmd.Cmd):
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+                print_list.append(str(v)[1:-1])
 
         print(print_list)
 
