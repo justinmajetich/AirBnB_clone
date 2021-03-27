@@ -29,6 +29,17 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    errors = {
+        "ClassMissing": "** class name missing **",
+        "ClassUnknown": "** class doesn't exist **",
+        "IdMissing": "** instance id missing **",
+        "IdUnknown": "** no instance found **",
+        "AttrMissing": "** attribute name missing **",
+        "ValueMissing": "** value missing **",
+        "MethodUnknown": "** method unknown **",
+        "InvalidInput": "** invalid input **"
+    }
+
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -114,17 +125,42 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        """
+        Command syntax: create <Class name> <param 1> <param 2> <param 3>...
+        Param syntax: <key name>=<value>
+        """
+        try:
+            if not args:
+                raise SyntaxError()
+            line = args.split(" ")
+            cName = line[0]
+            if cName not in HBNBCommand.classes:
+                raise NameError()
+
+            obj = eval(cName)()
+            for each in line[1:]:
+                if "=" not in each:
+                    continue
+                k, v = each.split('=')
+                v = v.replace('_', ' ')
+                if hasattr(obj, k):
+                    setattr(obj, k, eval(v))
+            obj.save()
+            print("{}".format(obj.id))
+            """
+            new_instance = HBNBCommand.classes[cName]()
+
+            stor_a = storage.all()
+            key = cName + "." + new_instance.id
+            if key in stor_a:
+                setattr(stor_a[key], line[1], line[2])
+                storage.save()
+                print(new_instance.id)
+            """
+        except SyntaxError:
+            return (print(self.errors["ClassMissing"]))
+        except NameError:
+            return (print(self.errors["ClassUnknown"]))
 
     def help_create(self):
         """ Help information for the create method """
