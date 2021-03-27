@@ -19,6 +19,14 @@ class FileStorage:
         else:
             return self.__objects
 
+    def delete(self, obj=None):
+        """Deletes an object from __objects if obj exists"""
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            if key in self.__objects:
+                del(self.__objects[key])
+                self.save()
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
