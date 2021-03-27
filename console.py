@@ -115,13 +115,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        # delimate by space
+        # look at first command as class
+        # rest should be dictionary passed to init
+        inpt = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif inpt[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[inpt[0]]()
+        # arg[1] = class
+        # arg[2]... is things to initialize when creating
         storage.save()
         print(new_instance.id)
         storage.save()
