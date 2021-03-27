@@ -116,20 +116,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pre_list = args.split()
-        class_name = pre_list[0]
-        attr_list = pre_list[1:]
-        print(class_name)
-        print(attr_list)
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        keys = []
+        values = []
+        attr_dict = {}
+        pre_list = args.split()
+        class_name = pre_list[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        attr_list = pre_list[1:]
+        for element in attr_list:
+            keys.append(element.split('=')[0])
+            values.append(element.split('=')[1].replace('_', ' '))
+        attr_dict = dict(zip(keys, values))
         new_instance = HBNBCommand.classes[class_name]()
-        storage.save()
         print(new_instance.id)
+        for key, value in attr_dict.items():
+            self.do_update(" ".join((class_name, new_instance.id, key, value)))
         storage.save()
 
     def help_create(self):
@@ -313,12 +319,12 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
-
-                # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
-
+                try:
+                    if att_name in HBNBCommand.types:
+                        att_val = HBNBCommand.types[att_name](att_val)
+                    new_dict.__dict__.update({att_name: att_val})
+                except ValueError:
+                    pass
         new_dict.save()  # save updates to file
 
     def help_update(self):
