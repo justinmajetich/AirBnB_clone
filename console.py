@@ -42,50 +42,52 @@ class HBNBCommand(cmd.Cmd):
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
-        _cmd = _cls = _id = _args = ''  # initialize line elements
+        # Make a copy of line
+        cp = line[:]
+        cp2 = line.split('.', 1)
+        if len(cp2) < 2:
+            return cp
+        else:
+            count1, count2 = cp.count(')'), cp.count('(')
+            endp_p = len(cp)-1
 
-        # scan for general formating - i.e '.', '(', ')'
-        if not ('.' in line and '(' in line and ')' in line):
-            return line
+            # Ask if there are more than one parenthesis ocurrence
+            if count1 != 1 or count2 != 1 or ')' != cp[endp_p]:
+                return cp
+            # Check if there no alpha character before (
+            idx = cp.index('(')
+            if cp[idx-1].isalpha() is False:
+                return cp
 
-        try:  # parse line left to right
-            pline = line[:]  # parsed line
+            # Save "class" name as str
+            mycls = cp2[0]
 
-            # isolate <class name>
-            _cls = pline[:pline.find('.')]
+            cp2[1] = cp2[1].replace('(', ', ')
 
-            # isolate and validate <command>
-            _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
-                raise Exception
+            cp2[1] = cp2[1].replace(')', '')
 
-            # if parantheses contain arguments, parse them
-            pline = pline[pline.find('(') + 1:pline.find(')')]
-            if pline:
-                # partition args: (<id>, [<delim>], [<*args>])
-                pline = pline.partition(', ')  # pline convert to tuple
+            # Save "command" as str
+            mycmd = cp2[1].split(', ', 1)[0]
+            count1, count2 = cp2[1].count('}'), cp2[1].count('{')
+            endp_p = len(cp2[1])-1
+            if mycmd == "update":
+                myargs = cp2[1].split(', ', 1)[1]
+                if count1 == 1 and count2 == 1 and '}' == cp2[1][endp_p]:
 
-                # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
+                    myargs = myargs.split(', ', 1)
+                    # Save ID as str
+                    myid = myargs[0]
+                    mydict = eval(myargs[1])
+                    for key, value in mydict.items():
+                        ucmd = mycls+' '+myid+' '+key+' '+'\"'+str(value)+'\"'
+                        self.do_update(ucmd)
+                    return " "
 
-                # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
-                if pline:
-                    # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
-            line = ' '.join([_cmd, _cls, _id, _args])
+            mycmd += ' '+mycls+' '+cp2[1].split(', ', 1)[1]
+            mycmd = mycmd.replace(',', '')
 
-        except Exception as mess:
-            pass
-        finally:
-            return line
+            return mycmd
+
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
