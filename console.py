@@ -20,11 +20,11 @@ def frickinFunction(numStr, neg):
     elif numStr.isnumeric():
         return (True)
 
-def escapedQuotes(str):
+def escapedQuotes(string):
     """Checks that all "s in a string are escaped"""
-    for index, char in enumerate(str):
+    for index, char in enumerate(string):
         if char == '"':
-            if noQuote[index - 1] != '\\':
+            if string[index - 1] != '\\':
                 return False
     return True
 
@@ -144,8 +144,8 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
         else:
+            new_instance = HBNBCommand.classes[params[0]]()
             for thePs in params[1:]:
-                new_instance = HBNBCommand.classes[params[0]]()
                 something = thePs.split("=", 1)
                 key = something[0]
                 if len(something) > 1:
@@ -155,16 +155,19 @@ class HBNBCommand(cmd.Cmd):
                 if len(something) > 1:
                     number = value.split(".")
                     if frickinFunction(value, 1):
-                        setattr(new_instance, key, int(value))
+                        new_instance.__dict__[key] = int(value)
                     elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
                         
-                        setattr(new_instance, key, float(value))
+                        new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):
                         noQuote = value[1:-1]
                         if escapedQuotes(noQuote):
                             noQuote = noQuote.replace('_', ' ')
-                            setattr(new_instance, key, noQuote)
-            print(new_instance.__dict__) 
+                            print(noQuote)
+                            noQuote = noQuote.replace("\"", '"')
+                            print("new: " + noQuote)
+                            new_instance.__dict__[key] = noQuote
+            print(new_instance.id)
             storage.save()
 
     def help_create(self):

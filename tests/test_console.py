@@ -40,12 +40,12 @@ class TestConsoleClass(unittest.TestCase):
     def test_quit(self):
         """ Method to test quit """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertEquals("", f.getvalue())
+            self.assertEqual("", f.getvalue())
 
     def test_EOF(self):
         """ Method to test EOF """
         with patch('sys.stdout', new=StringIO()) as f:
-             self.assertEquals("", f.getvalue())
+             self.assertEqual("", f.getvalue())
     
     @unittest.skip("because help docs are different")
     def test_help_documentation(self):
@@ -118,13 +118,32 @@ class TestConsoleClass(unittest.TestCase):
             self.assertTrue(os.path.isfile)
         
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd('create User first_name="ben" last_name="dosch" password="pass_word')
-            for key in storage.keys:
-                if key == "User." + f.getvalue():
-                    print(key)
-
-        
-
+            self.assertFalse(HBNBCommand().onecmd('create User str_test1="" str_test2="dosch" str_test3="pass_word" \
+                str_test4="in_\"the\"_middle" str_test5="Bad space" str_test6="bad"quote"" \
+                int_test1=5 int_test2=0 int_test3=-16 int_test4=+5 int_test5=645af \
+                float_test1=4.5 float_test2=0.0 float_test3=-67.2 float_test4=54.-3 float_test5=4a.56 float_test6=53.6a'))
+            id = f.getvalue()
+            self.assertFalse(HBNBCommand().onecmd('all User'))
+            check_id = f.getvalue()
+            self.assertIn(id, check_id)
+            self.assertIn("", check_id)
+            self.assertIn("dosch", check_id)
+            self.assertIn("pass word", check_id)
+            self.assertIn('in "the" middle', check_id)
+            self.assertNotIn("Bad space", check_id)
+            self.assertNotIn('bad"quote"', check_id)
+            self.assertIn("int_test1", check_id)
+            self.assertIn("int_test2", check_id)
+            self.assertIn("int_test3", check_id)
+            self.assertNotIn("int_test4", check_id)
+            self.assertNotIn("int_test5", check_id)
+            self.assertIn("float_test1", check_id)
+            self.assertIn("float_test2", check_id)
+            self.assertIn("float_test3", check_id)
+            self.assertNotIn("float_test4", check_id)
+            self.assertNotIn("float_test5", check_id)
+            self.assertNotIn("float_test6", check_id)
+            
     def test_show(self):
         """ Method to test show method  """
 
