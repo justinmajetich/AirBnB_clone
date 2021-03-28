@@ -58,6 +58,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """Deletes Given Object"""
         if obj is not None:
             args = str(obj).split(" ")
             name = args[0][slice(1, -1)]
