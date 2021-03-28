@@ -13,9 +13,10 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state",
+    if (type_storage == 'db'):
+        cities = relationship("City", backref="states",
                           cascade="all, delete")
-    if (type_storage != 'db'):
+    else:
         @property
         def cities(self):
             city_dict = models.FileStorage.all(City)
