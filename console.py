@@ -70,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
+                pline = pline[2].strip()  # pline is now numStr
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] is '{' and pline[-1] is'}'\
@@ -94,6 +94,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
+        print()
         exit()
 
     def help_quit(self):
@@ -118,13 +119,42 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        params = args.split()
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        elif len(params) == 1:
+            new_instance = HBNBCommand.classes[params[0]]()
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+        else:
+            for thePs in params[1:]:
+                new_instance = HBNBCommand.classes[params[0]]()
+                something = thePs.split("=", 1)
+                if len(something) > 1:
+                    number = something[1].split(".")
+                    if frickinFunction(something[1], 1):
+                        print(int(something[1]))
+                    elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
+                        print(float(something[1]))
+                    elif something[1].startswith('"') and something[1].endswith('"'):
+                        noQuote = something[1][1:-1]
+                        for index, char in enumerate(noQuote):
+                            print(char, index)
+                            if char == '"':
+                                print("found char", char)
+                                if noQuote[index - 1] != '\\':
+                                    print("no backslash")
+                                    return
+                                    '''convert underscores. dict of acceptable params. make object'''
+def frickinFunction(numStr, neg):    
+    if neg == 1 and numStr.startswith("-"):
+        if numStr[1:].isnumeric():
+            return (True, numStr)
+    elif numStr.isnumeric():
+        return (True)
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -208,10 +238,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(numStr(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+                print_list.append(numStr(v))
 
         print(print_list)
 
