@@ -56,6 +56,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """Deletes an object if exists in current dictionary"""
         if (obj in FileStorage.__objects.values()):
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             del(self.__objects[key])
