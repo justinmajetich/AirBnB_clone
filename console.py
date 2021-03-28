@@ -18,17 +18,15 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
-              }
+               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
+    types = {'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
-            }
+             }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -128,29 +126,30 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args[0]]()
         if len(args) > 1:
             for index in range(1, len(args)):
-                if '=' not in args[index]:
-                    continue
-                #seperate key value for each arg
-                att_key, att_value = args[index].split('=')
-                # check if there's double quotes at the beginning/end of value
-                if att_value[0] == '"' and att_value[len(att_value) - 1] == '"':
-                    # value = everything inside the quotes
-                    att_value = att_value[2:len(att_value) - 1]
-                    # check for '_' and replace with ' '
-                    if '_' in att_value:
-                        att_value = att_value.replace('_', ' ')
-                    att_value = str(att_value)
-                #check if value is float
-                elif '.' in att_value:
-                    att_value = float(att_value)
-                #check if value is int
-                elif isinstance(eval(att_value), int):
-                    att_value = int(att_value)
+                try:
+                    if '=' not in args[index]:
+                        continue
+                    #seperate key value for each arg
+                    att_key, att__val = args[index].split('=')
+                    # check if there's double quotes at the beginning/end of value
+                    if att__val[0] == '"' and att__val[len(att__val) - 1] == '"':
+                        # value = everything inside the quotes
+                        att__val = att__val[2:len(att__val) - 1]
+                        # check for '_' and replace with ' '
+                        if '_' in att__val:
+                            att__val = att__val.replace('_', ' ')
+                        att__val = str(att__val)
+                    #check if value is float
+                    elif '.' in att__val:
+                        att__val = float(att__val)
+                    #check if value is int
+                    elif isinstance(eval(att__val), int):
+                        att__val = int(att__val)
                 #skip
-                else:
+                except:
                     continue
                 #set attributes
-                setattr(new_instance, att_key, att_value)
+                setattr(new_instance, att_key, att__val)
 
         print(new_instance.id)
         storage.save()
@@ -332,7 +331,7 @@ class HBNBCommand(cmd.Cmd):
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
-                if not att_val:  # check for att_value
+                if not att_val:  # check for att__val
                     print("** value missing **")
                     return
                 # type cast as necessary
