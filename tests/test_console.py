@@ -44,12 +44,12 @@ class Test_console(unittest.TestCase):
         if os.path.exists("file.json"):
             os.remove("file.json")
 
-    def test_create_invalid_syntax(self):
-        correct = "*** Unknown syntax: Myodel.create()"
-        with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("MyModel.create()"))
-            self.assertEqual(correct, output.getvalue().strip())
-        correct = "*** Unknown syntax: BaseModel.create()"
-        with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("BaseModel.create()"))
-            self.assertEqual(correct, output.getvalue().strip())
+    def test_create(self):
+        """Test for create command
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            command = "create State name=\"California\""
+            HBNBCommand().onecmd(command)
+            _id = f.getvalue().strip()
+            key = "State" + "." + _id
+            self.assertTrue(key in storage.all().keys())
