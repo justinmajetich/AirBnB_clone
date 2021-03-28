@@ -23,7 +23,6 @@ def frickinFunction(numStr, neg):
 def escapedQuotes(str):
     """Checks that all "s in a string are escaped"""
     for index, char in enumerate(str):
-        print(char, index)
         if char == '"':
             if noQuote[index - 1] != '\\':
                 return False
@@ -87,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
                 # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now numStr
+                pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] is '{' and pline[-1] is'}'\
@@ -145,25 +144,26 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
         else:
-            acceptable = {}
             for thePs in params[1:]:
                 new_instance = HBNBCommand.classes[params[0]]()
                 something = thePs.split("=", 1)
                 key = something[0]
-                value = something[1]
+                if len(something) > 1:
+                    value = something[1]
+                else:
+                    continue
                 if len(something) > 1:
                     number = value.split(".")
                     if frickinFunction(value, 1):
-                        acceptable[key] = int(value)
+                        setattr(new_instance, key, int(value))
                     elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
-                        acceptable[key] = float(value)
+                        setattr(new_instance, key, float(value))
                     elif value.startswith('"') and value.endswith('"'):
                         noQuote = value[1:-1]
                         if escapedQuotes(noQuote):
                             noQuote = noQuote.replace('_', ' ')
-                            acceptable[key] = noQuote
-            new_instance = HBNBCommand.classes[params[0]](acceptable)
-            print(new_instance.id)
+                            setattr(new_instance, key, noQuote)
+            print(new_instance.__dict__) 
             storage.save()
 
     def help_create(self):
@@ -248,10 +248,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
-                    print_list.append(numStr(v))
+                    print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(numStr(v))
+                print_list.append(str(v))
 
         print(print_list)
 
