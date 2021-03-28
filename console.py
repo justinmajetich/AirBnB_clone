@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                     # check if there's double quotes at the beginning/end of value
                     if att__val[0] == '"' and att__val[len(att__val) - 1] == '"':
                         # value = everything inside the quotes
-                        att__val = att__val[2:len(att__val) - 1]
+                        att__val = att__val[1:-1]
                         # check for '_' and replace with ' '
                         if '_' in att__val:
                             att__val = att__val.replace('_', ' ')
