@@ -132,6 +132,7 @@ class HBNBCommand(cmd.Cmd):
             values.append(element.split('=')[1].replace('_', ' '))
         attr_dict = dict(zip(keys, values))
         new_instance = HBNBCommand.classes[class_name]()
+        storage.new(new_instance)
         print(new_instance.id)
         for key, value in attr_dict.items():
             self.do_update(" ".join((class_name, new_instance.id, key, value)))
