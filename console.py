@@ -12,6 +12,23 @@ from models.amenity import Amenity
 from models.review import Review
 
 
+def frickinFunction(numStr, neg):
+    """Checks if the numStr is an integer"""    
+    if neg == 1 and numStr.startswith("-"):
+        if numStr[1:].isnumeric():
+            return (True, numStr)
+    elif numStr.isnumeric():
+        return (True)
+
+def escapedQuotes(str):
+    """Checks that all "s in a string are escaped"""
+    for index, char in enumerate(str):
+        print(char, index)
+        if char == '"':
+            if noQuote[index - 1] != '\\':
+                return False
+    return True
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -125,36 +142,29 @@ class HBNBCommand(cmd.Cmd):
             return
         elif len(params) == 1:
             new_instance = HBNBCommand.classes[params[0]]()
-            storage.save()
             print(new_instance.id)
             storage.save()
         else:
+            acceptable = {}
             for thePs in params[1:]:
                 new_instance = HBNBCommand.classes[params[0]]()
                 something = thePs.split("=", 1)
+                key = something[0]
+                value = something[1]
                 if len(something) > 1:
-                    number = something[1].split(".")
-                    if frickinFunction(something[1], 1):
-                        print(int(something[1]))
+                    number = value.split(".")
+                    if frickinFunction(value, 1):
+                        acceptable[key] = int(value)
                     elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
-                        print(float(something[1]))
-                    elif something[1].startswith('"') and something[1].endswith('"'):
-                        noQuote = something[1][1:-1]
-                        for index, char in enumerate(noQuote):
-                            print(char, index)
-                            if char == '"':
-                                print("found char", char)
-                                if noQuote[index - 1] != '\\':
-                                    print("no backslash")
-                                    return
-                                    '''convert underscores. dict of acceptable params. make object'''
-def frickinFunction(numStr, neg):    
-    if neg == 1 and numStr.startswith("-"):
-        if numStr[1:].isnumeric():
-            return (True, numStr)
-    elif numStr.isnumeric():
-        return (True)
-
+                        acceptable[key] = float(value)
+                    elif value.startswith('"') and value.endswith('"'):
+                        noQuote = value[1:-1]
+                        if escapedQuotes(noQuote):
+                            noQuote = noQuote.replace('_', ' ')
+                            acceptable[key] = noQuote
+            new_instance = HBNBCommand.classes[params[0]](acceptable)
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
