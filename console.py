@@ -155,6 +155,13 @@ def frickinFunction(numStr, neg):
     elif numStr.isnumeric():
         return (True)
 
+    def frickinFunction(numStr, neg):
+        '''Method that looks for dash after delimeter'''
+        if neg == 1 and numStr.startswith("-"):
+            if numStr[1:].isnumeric():
+                return (True, numStr)
+        elif numStr.isnumeric():
+            return (True)
 
     def help_create(self):
         """ Help information for the create method """
