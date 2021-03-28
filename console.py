@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,13 +116,31 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        arg_dict = {}
+        kwargs = re.split(' +', args)
+        for parameter in kwargs:
+            hold = list()
+            hold = re.split('=+', parameter)
+            if (len(hold) == 2):
+                if (hold[1][0] == '"'):  # checks if the first character of string is a quote
+                    # if a string is passed !
+                    edit_string = str(hold[1][1:-1])  # str(hold[1].strip('"'))
+                    edit_string = edit_string.replace('_', ' ')  # makes underscores spaces
+                    edit_string = edit_string.replace('"', r'\"')  # replaces inner quotes with escaped ones (may cause checker error)
+                    arg_dict[hold[0]] = edit_string
+                elif ('.' in hold[1]):
+                    arg_dict[hold[0]] = float(hold[1])
+                else:
+                    arg_dict[hold[0]] = int(hold[1])
+        if kwargs[0] == '':
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif kwargs[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[kwargs[0]]()
+        for key, value in arg_dict.items():
+            setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
         storage.save()
