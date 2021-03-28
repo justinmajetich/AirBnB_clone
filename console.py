@@ -157,6 +157,7 @@ class HBNBCommand(cmd.Cmd):
                     if frickinFunction(value, 1):
                         setattr(new_instance, key, int(value))
                     elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
+                        
                         setattr(new_instance, key, float(value))
                     elif value.startswith('"') and value.endswith('"'):
                         noQuote = value[1:-1]
