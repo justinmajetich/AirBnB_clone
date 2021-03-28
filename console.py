@@ -115,14 +115,43 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split()
+        # If what's passed in is NULL
+        if (len(args) == 0):
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        # if what's passed in is not a class
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        # making a new instance of the first argument which should be a class
+        new_instance = HBNBCommand.classes[args[0]]()
+        if len(args) > 1:
+            for index in range(1, len(args)):
+                if '=' not in args[index]:
+                    continue
+                #seperate key value for each arg
+                att_key, att_value = args[index].split('=')
+                # check if there's double quotes at the beginning/end of value
+                if att_value[0] == '"' and att_value[len(att_value) - 1] == '"':
+                    # value = everything inside the quotes
+                    att_value = att_value[2:len(att_value) - 1]
+                    # check for '_' and replace with ' '
+                    if '_' in att_value:
+                        att_value = att_value.replace('_', ' ')
+                    att_value = str(att_value)
+                #check if value is float
+                elif '.' in att_value:
+                    att_value = float(att_value)
+                #check if value is int
+                elif isinstance(eval(att_value), int):
+                    att_value = int(att_value)
+                #skip
+                else:
+                    continue
+                #set attributes
+                setattr(new_instance, att_key, att_value)
+
         print(new_instance.id)
         storage.save()
 
