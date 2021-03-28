@@ -147,16 +147,6 @@ class HBNBCommand(cmd.Cmd):
                     setattr(obj, k, eval(v))
             obj.save()
             print("{}".format(obj.id))
-            """
-            new_instance = HBNBCommand.classes[cName]()
-
-            stor_a = storage.all()
-            key = cName + "." + new_instance.id
-            if key in stor_a:
-                setattr(stor_a[key], line[1], line[2])
-                storage.save()
-                print(new_instance.id)
-            """
         except SyntaxError:
             return (print(self.errors["ClassMissing"]))
         except NameError:
