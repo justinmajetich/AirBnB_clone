@@ -1,3 +1,5 @@
+-- Creates database and users
+-- Assigns users privileges
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 DROP USER 'hbnb_dev'@'localhost';
 CREATE USER 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
