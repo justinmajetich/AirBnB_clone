@@ -122,11 +122,10 @@ class HBNBCommand(cmd.Cmd):
             hold = list()
             hold = re.split('=+', parameter)
             if (len(hold) == 2):
-                if (hold[1][0] == '"'):  # checks if the first character of string is a quote
-                    # if a string is passed !
-                    edit_string = str(hold[1][1:-1])  # str(hold[1].strip('"'))
-                    edit_string = edit_string.replace('_', ' ')  # makes underscores spaces
-                    edit_string = edit_string.replace('"', r'\"')  # replaces inner quotes with escaped ones (may cause checker error)
+                if (hold[1][0] == '"'):
+                    edit_string = str(hold[1][1:-1])
+                    edit_string = edit_string.replace('_', ' ')
+                    edit_string = edit_string.replace('"', r'\"')
                     arg_dict[hold[0]] = edit_string
                 elif ('.' in hold[1]):
                     arg_dict[hold[0]] = float(hold[1])
