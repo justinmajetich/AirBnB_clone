@@ -42,7 +42,7 @@ class DBStorage:
     def all(self, cls=None):
         objs = {}
         if cls:
-            my_query = self.__session.query(cls).all()
+            my_query = self.__session.query(self.classes[cls]).all()
             for obj in my_query:
                 objs[cls + "." + obj.id] = obj
         else:

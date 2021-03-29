@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
 
             setattr(new_instance, arg[0], val)
 
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -223,7 +223,9 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if getenv('HBNB_TYPE_STORAGE') == 'db':
-            print_list = storage.all(args)
+            objects = storage.all(args)
+            for v in objects.values():
+                print_list.append(str(v))
         else:
             if args:
                 args = args.split(' ')[0]  # remove possible trailing args
