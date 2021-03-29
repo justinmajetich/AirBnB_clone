@@ -3,8 +3,10 @@
 import cmd
 import sys
 import json
+import shlex
+from os import getenv
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.__init__ import storage, type_storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -15,7 +17,6 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-    obj_dict = storage.all()
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -118,6 +119,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+
         keys = []
         values = []
         attr_dict = {}
@@ -127,23 +129,26 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         attr_list = pre_list[1:]
+
+        attr_list = " ".join(attr_list)
+        attr_list = shlex.split(attr_list)
+
         for element in attr_list:
             keys.append(element.split('=')[0])
             values.append(element.split('=')[1].replace('_', ' '))
         attr_dict = dict(zip(keys, values))
+        # casting values
+        for key, value in attr_dict.items():
+            try:
+                if (key in HBNBCommand.types):
+                    value = HBNBCommand.types[key](value)
+                    attr_dict[key] = value
+            except ValueError:
+                pass
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(attr_dict)
         storage.new(new_instance)
         storage.save()
-        #if type_storage != 'db':
-        #    storage.new(new_instance)
-        #    for key, value in attr_dict.items():
-        #        self.do_update(" ".join((class_name, new_instance.id, key,
-        #                                 value)))
-        #else:
-        #    new_instance.__dict__.update(attr_dict)
-        #    storage.new(new_instance)
-        #    storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -219,6 +224,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        obj_dict = storage.all()
         print_list = []
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -226,12 +232,17 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             else:
-                for k, v in self.obj_dict.items():
+                if (type_storage == 'db'):
+                    obj_dict = storage.all(eval(args))
+                for k, v in obj_dict.items():
                     if k.split('.')[0] == args:
+                        v.__dict__.pop('_sa_instance_state', None)
                         print_list.append(str(v))
         else:
-            for k, v in self.obj_dict.items():
+            for k, v in obj_dict.items():
                 print_list.append(str(v))
+#        for obj in print_list:
+#            print("[{}]".format(obj))
         print(print_list)
 
     def help_all(self):
