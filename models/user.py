@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from os import getenv
+from sqlalchemy.orm import relationship
 
 type_storage = getenv('HBNB_TYPE_STORAGE')
 
@@ -14,6 +15,8 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
     last_name = Column(String(128))
+    places = relationship('Place', backref='user',
+                          cascade='delete')
     if (type_storage != 'db'):
         email = ''
         password = ''
