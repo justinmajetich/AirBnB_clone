@@ -130,26 +130,26 @@ class HBNBCommand(cmd.Cmd):
                     if '=' not in args[index]:
                         continue
                     #seperate key value for each arg
-                    att_key, att__val = args[index].split('=')
-                    # check if there's double quotes at the beginning/end of value
-                    if att__val[0] == '"' and att__val[len(att__val) - 1] == '"':
+                    att_key, value = args[index].split('=')
+                    # check if there's double quotes at beginning/end of value
+                    if value[0] == '"' and value[len(value) - 1] == '"':
                         # value = everything inside the quotes
-                        att__val = att__val[1:-1]
+                        value = value[1:-1]
                         # check for '_' and replace with ' '
-                        if '_' in att__val:
-                            att__val = att__val.replace('_', ' ')
-                        att__val = str(att__val)
+                        if '_' in value:
+                            value = value.replace('_', ' ')
+                        value = str(value)
                     #check if value is float
-                    elif '.' in att__val:
-                        att__val = float(att__val)
+                    elif '.' in value:
+                        value = float(value)
                     #check if value is int
-                    elif isinstance(eval(att__val), int):
-                        att__val = int(att__val)
+                    elif isinstance(eval(value), int):
+                        value = int(value)
                 #skip
                 except:
                     continue
                 #set attributes
-                setattr(new_instance, att_key, att__val)
+                setattr(new_instance, att_key, value)
 
         print(new_instance.id)
         storage.save()
@@ -331,7 +331,7 @@ class HBNBCommand(cmd.Cmd):
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
-                if not att_val:  # check for att__val
+                if not att_val:  # check for value
                     print("** value missing **")
                     return
                 # type cast as necessary
