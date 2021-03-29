@@ -18,6 +18,7 @@ class State(BaseModel, Base):
     if (type_storage != 'db'):
         @property
         def cities(self):
+            """Puto el que lo lea"""
             city_dict = models.FileStorage.all(City)
             city_list = []
             for city in city_dict.values():

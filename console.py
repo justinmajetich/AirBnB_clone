@@ -231,12 +231,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            else:
-                if (type_storage == 'db'):
-                    obj_dict = storage.all(eval(args))
-                for k, v in obj_dict.items():
-                    if k.split('.')[0] == args:
-                        obj_list.append(str(v))
+            if (type_storage == 'db'):
+                obj_dict = storage.all(eval(args))
+            for k, v in obj_dict.items():
+                if k.split('.')[0] == args:
+                    obj_list.append(str(v))
         else:
             for k, v in obj_dict.items():
                 obj_list.append(str(v))
@@ -256,7 +255,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """ help info for count command """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
