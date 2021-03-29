@@ -128,9 +128,10 @@ class HBNBCommand(cmd.Cmd):
             i = 1
             while (i < len(argv)):
                 key = argv[i].split('=')[0]
-                val = argv[i].split('=')[1].replace('_', ' ')
+                val = argv[i].split('=')[1]
                 if val[0] is '\"' or val[0] is "'":
-                   val = val[1:-1]
+                    val = val.replace('_', ' ')
+                    val = val[1:-1]
                 elif '.' in val:
                     val = float(val)
                 else:
