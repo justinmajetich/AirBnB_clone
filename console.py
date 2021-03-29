@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                 i += 1
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(kwargs)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
         storage.save()
 

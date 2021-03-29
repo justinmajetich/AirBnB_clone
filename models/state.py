@@ -14,5 +14,3 @@ class State(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship("City", back_populates="state",
                               cascade="all, delete")
-    else:
-        cities
