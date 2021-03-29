@@ -166,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
                         noQuote = value[1:-1]
                         if escapedQuotes(noQuote):
                             noQuote = noQuote.replace('_', ' ')
-                            noQuote = noQuote.replace("\"", '"')
+                            noQuote = noQuote.replace('\"', ")
                             new_instance.__dict__[key] = noQuote
             print(new_instance.id)
             storage.save()
