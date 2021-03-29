@@ -15,7 +15,7 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-
+    obj_dict = storage.all()
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -132,11 +132,19 @@ class HBNBCommand(cmd.Cmd):
             values.append(element.split('=')[1].replace('_', ' '))
         attr_dict = dict(zip(keys, values))
         new_instance = HBNBCommand.classes[class_name]()
+        new_instance.__dict__.update(attr_dict)
         storage.new(new_instance)
-        print(new_instance.id)
-        for key, value in attr_dict.items():
-            self.do_update(" ".join((class_name, new_instance.id, key, value)))
         storage.save()
+        #if type_storage != 'db':
+        #    storage.new(new_instance)
+        #    for key, value in attr_dict.items():
+        #        self.do_update(" ".join((class_name, new_instance.id, key,
+        #                                 value)))
+        #else:
+        #    new_instance.__dict__.update(attr_dict)
+        #    storage.new(new_instance)
+        #    storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -212,19 +220,18 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            else:
+                for k, v in self.obj_dict.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in self.obj_dict.items():
                 print_list.append(str(v))
-
         print(print_list)
 
     def help_all(self):
@@ -325,7 +332,7 @@ class HBNBCommand(cmd.Cmd):
                     new_dict.__dict__.update({att_name: att_val})
                 except ValueError:
                     pass
-        new_dict.save()  # save updates to file
+            new_dict.save()  # save updates to file
 
     def help_update(self):
         """ Help information for the update class """

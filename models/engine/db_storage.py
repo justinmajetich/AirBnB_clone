@@ -11,9 +11,7 @@ from models.state import State
 from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
 usr = getenv('HBNB_MYSQL_USER')
 pwd = getenv('HBNB_MYSQL_PWD')
 host = getenv('HBNB_MYSQL_HOST')
@@ -30,7 +28,7 @@ class DBStorage:
     def __init__(self):
         """DBStorage constructor"""
         self.__engine = DBStorage.connection()
-        if (env is 'test'):
+        if (env == 'test'):
             Base.metadata.drop_all(self.engine)
 
     @staticmethod
@@ -45,7 +43,7 @@ class DBStorage:
         result = []
         if (cls is None):
             for t in dbtables:
-                result.append = self.__session.query(t).all()
+                result.extend = self.__session.query(t).all()
         else:
             result = self.__session.query(cls).all()
         for obj in result:
