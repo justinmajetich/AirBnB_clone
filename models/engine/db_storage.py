@@ -17,7 +17,7 @@ pwd = getenv('HBNB_MYSQL_PWD')
 host = getenv('HBNB_MYSQL_HOST')
 db = getenv('HBNB_MYSQL_DB')
 env = getenv('HBNB_ENV')
-dbtables = Base.metadata.tables.keys()
+dbtables = [State, City]
 
 
 class DBStorage:
@@ -35,7 +35,7 @@ class DBStorage:
     def connection():
         """Connection to database function"""
         conn = 'mysql+mysqldb://{}:{}@{}/{}'.format(usr, pwd, host, db)
-        return create_engine(conn, pool_pre_ping=True)
+        return create_engine(conn, pool_pre_ping=True, echo=True)
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -43,7 +43,7 @@ class DBStorage:
         result = []
         if (cls is None):
             for t in dbtables:
-                result.extend = self.__session.query(t).all()
+                result.extend(self.__session.query(t).all())
         else:
             result = self.__session.query(cls).all()
         for obj in result:
@@ -54,6 +54,7 @@ class DBStorage:
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
+        
 
     def save(self):
         """commit all changes of the current database session"""

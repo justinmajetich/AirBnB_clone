@@ -3,8 +3,9 @@
 import cmd
 import sys
 import json
+from os import getenv
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.__init__ import storage, type_storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -13,9 +14,9 @@ from models.amenity import Amenity
 from models.review import Review
 
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-    obj_dict = storage.all()
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -219,6 +220,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        obj_dict = storage.all()
         print_list = []
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -226,11 +228,13 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             else:
-                for k, v in self.obj_dict.items():
+                if (type_storage == 'db'):
+                    obj_dict = storage.all(eval(args))
+                for k, v in obj_dict.items():
                     if k.split('.')[0] == args:
                         print_list.append(str(v))
         else:
-            for k, v in self.obj_dict.items():
+            for k, v in obj_dict.items():
                 print_list.append(str(v))
         print(print_list)
 
