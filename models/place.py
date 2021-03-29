@@ -52,8 +52,6 @@ class Place(BaseModel, Base):
     @amenities.setter
     def amenities(self, obj):
         """amenities setter"""
-        values = models.storage.all()
-            for key, value in values.items():
-                keys = entry.split('.')
-                if keys[1] == Amenity.id:
-                    amenity_ids.append(value)
+        from models.amenity import Amenity
+        if not isinstance(obj, Amenity):
+            return
