@@ -142,14 +142,13 @@ class HBNBCommand(cmd.Cmd):
                     value = HBNBCommand.types[key](value)
                 attr_dict[key] = value
             except ValueError:
-                keys_delete.append(key)
+                pass
         for key in keys_delete:
             del attr_dict[key]
         new_instance = HBNBCommand.classes[class_name]()
-        new_instance.save()
+        print(new_instance.id)
         new_instance.__dict__.update(attr_dict)
         new_instance.save()
-        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
