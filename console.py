@@ -144,9 +144,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[parameters[0]]()
 
         for key, value in dictionary.items():
-            new_instance.key = value
-
-        storage.save()
+            new_instance.__dict__[key] = value
         print(new_instance.id)
         storage.save()
 
