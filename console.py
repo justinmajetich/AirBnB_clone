@@ -117,41 +117,45 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        print(args)
+        if not args:
+            print("** class name missing **")
+            return
+        argv = args.split()
+        if argv[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[argv[0]]()
 
-        try:
-            if not args:
-                raise SyntaxError()
+        if argv[1]:
+            for param in argv[1:]:
+                parameter = param.split('=')
+                value = parameter[1]
 
-            argv = args.split()
-            parameter = argv[1].split('=')
-            new_instance = HBNBCommand.classes[argv[0]]()
+                float_check = 0
+                if not value.isnumeric():
+                    try:
+                        float(value)
+                        float_check = True
+                    except ValueError:
+                        float_check = False
 
-            value = parameter[1]
-
-            float_check = value.replace('.', '').isnumeric()
-            print(float_check)
-
-            if value.isnumeric() or float_check:
-                if '.' in value:
-                    value_result = float(value)
+                if (value.isnumeric() or value.startswith("-") and
+                   (value[1:].isnumeric() or float_check) or float_check):
+                    if '.' in value:
+                        value_result = float(value)
+                    else:
+                        value_result = int(value)
                 else:
-                    value_result = int(value)
-            else:
-                # value = parameter[1][1:-1].replace('"','\\"')
-                if '_' in value:
-                    value = value.replace('_', ' ')
-                value_result = shlex.split(value)[0]
+                    # value = parameter[1][1:-1].replace('"','\\"')
+                    if '_' in value:
+                        value = value.replace('_', ' ')
+                    value_result = shlex.split(value)[0]
 
-            setattr(new_instance, parameter[0], value_result)
+                setattr(new_instance, parameter[0], value_result)
 
             storage.save()
             print(new_instance.id)
-
-        except SyntaxError:
-            print("** class name missing **")
-
-        except NameError:
-            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
