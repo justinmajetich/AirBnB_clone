@@ -118,10 +118,23 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        list_arg = args.split(" ")
+        if list_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[list_arg[0]]()
+        if len(list_arg) > 1:
+            for i in list_arg[1:]:
+                key = i.split('=')[0]
+                val = i.split('=')[1]
+                if val[0] is '\"' or val[0] is "'":
+                    val = val.replace('_', ' ')
+                    val = val[1:-1]
+                elif "." in val:
+                    val = float(val)
+                else:
+                    val = int(val)
+                setattr(new_instance, key, val)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -201,19 +214,21 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
+        __objects = storage.all()
+
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in __objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in __objects.items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print('[%s]' % ', '.join(map(str, print_list)))
 
     def help_all(self):
         """ Help information for the all command """
