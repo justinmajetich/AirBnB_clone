@@ -20,8 +20,8 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
+    amenity_ids = []
     if type_storage != 'db':
-        amenity_ids = []
         city_id = ""
         user_id = ""
         name = ""
