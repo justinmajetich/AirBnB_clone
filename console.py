@@ -119,20 +119,18 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-
         keys = []
         values = []
         attr_dict = {}
+        keys_delete = []
         pre_list = args.split()
         class_name = pre_list[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         attr_list = pre_list[1:]
-
         attr_list = " ".join(attr_list)
         attr_list = shlex.split(attr_list)
-
         for element in attr_list:
             keys.append(element.split('=')[0])
             values.append(element.split('=')[1].replace('_', ' '))
@@ -144,7 +142,9 @@ class HBNBCommand(cmd.Cmd):
                     value = HBNBCommand.types[key](value)
                     attr_dict[key] = value
             except ValueError:
-                pass
+                keys_delete.append(key)
+        for key in keys_delete:
+            del attr_dict[key]
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(attr_dict)
         storage.new(new_instance)
