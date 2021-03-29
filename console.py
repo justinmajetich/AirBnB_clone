@@ -127,18 +127,17 @@ class HBNBCommand(cmd.Cmd):
         if len(argv) > 1:
             i = 1
             while (i < len(argv)):
-                key = argv[i].split('=')[0]
-                val = argv[i].split('=')[1]
-                if key == 'id':
-                    val = str(val)
-                if val[0] is '\"' or val[0] is "'":
-                    val = val.replace('_', ' ')
-                    val = val[1:-1]
-                elif '.' in val:
-                    val = float(val)
-                else:
-                    val = int(val)
-                kwargs[key] = val
+                if '=' in argv:
+                    key = argv[i].split('=')[0]
+                    val = argv[i].split('=')[1]
+                    if val[0] is '\"' or val[0] is "'":
+                        val = val.replace('_', ' ')
+                        val = val[1:-1]
+                    elif '.' in val:
+                        val = float(val)
+                    else:
+                        val = int(val)
+                    kwargs[key] = val
                 i += 1
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(kwargs)
