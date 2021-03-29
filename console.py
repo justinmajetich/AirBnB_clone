@@ -15,7 +15,6 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
     # determines prompt for interactive/non-interactive modes
@@ -142,12 +141,12 @@ class HBNBCommand(cmd.Cmd):
         new_instance.__dict__.update(attr_dict)
         storage.new(new_instance)
         storage.save()
-        #if type_storage != 'db':
+        # if type_storage != 'db':
         #    storage.new(new_instance)
         #    for key, value in attr_dict.items():
         #        self.do_update(" ".join((class_name, new_instance.id, key,
         #                                 value)))
-        #else:
+        # else:
         #    new_instance.__dict__.update(attr_dict)
         #    storage.new(new_instance)
         #    storage.save()
