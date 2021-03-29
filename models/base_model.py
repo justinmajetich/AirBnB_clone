@@ -37,8 +37,7 @@ class BaseModel:
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         dic = self.__dict__
-        if getenv('HBNB_TYPE_STORAGE'):
-            dic.pop('_sa_instance_state')
+        dic.pop('_sa_instance_state', None)
         return '[{}] ({}) {}'.format(cls, self.id, dic)
 
     def save(self):
@@ -56,6 +55,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.pop('_sa_instance_state', None)
         return dictionary
 
     def delete(self):
