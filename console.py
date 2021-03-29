@@ -130,8 +130,8 @@ class HBNBCommand(cmd.Cmd):
             return
         attr_list = pre_list[1:]
 
-#        attr_list = " ".join(attr_list)
-#        attr_list = shlex.split(attr_list)
+        attr_list = " ".join(attr_list)
+        attr_list = shlex.split(attr_list)
 
         for element in attr_list:
             keys.append(element.split('=')[0])
@@ -231,12 +231,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            else:
-                if (type_storage == 'db'):
-                    obj_dict = storage.all(eval(args))
-                for k, v in obj_dict.items():
-                    if k.split('.')[0] == args:
-                        obj_list.append(str(v))
+            if (type_storage == 'db'):
+                obj_dict = storage.all(eval(args))
+            for k, v in obj_dict.items():
+                if k.split('.')[0] == args:
+                    obj_list.append(str(v))
         else:
             for k, v in obj_dict.items():
                 obj_list.append(str(v))
