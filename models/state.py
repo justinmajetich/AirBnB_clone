@@ -14,6 +14,7 @@ class State(BaseModel, Base):
     
     @property
     def cities(self):
+        """ this is a temp comment """
         city_list = []
         city_obj = models.storage.all(City)  # gets city objs from storage
         for key, value in city_obj.items():
