@@ -1,5 +1,5 @@
---Create the DB hbnb_test_db and the user hbnb_test , the passwd hbnb_test_pwd
---grant privileges and grant select for the user hbnb_test
+-- Create the DB hbnb_test_db and the user hbnb_test , the passwd hbnb_test_pwd
+-- grant privileges and grant select for the user hbnb_test
 
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost'
