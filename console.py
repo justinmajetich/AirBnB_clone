@@ -13,12 +13,13 @@ from models.review import Review
 
 
 def frickinFunction(numStr, neg):
-    """Checks if the numStr is an integer"""    
+    """Checks if the numStr is an integer"""
     if neg == 1 and numStr.startswith("-"):
         if numStr[1:].isnumeric():
             return (True, numStr)
     elif numStr.isnumeric():
         return (True)
+
 
 def escapedQuotes(string):
     """Checks that all "s in a string are escaped"""
@@ -27,6 +28,7 @@ def escapedQuotes(string):
             if string[index - 1] != '\\':
                 return False
     return True
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -156,16 +158,15 @@ class HBNBCommand(cmd.Cmd):
                     number = value.split(".")
                     if frickinFunction(value, 1):
                         new_instance.__dict__[key] = int(value)
-                    elif len(number) > 1 and frickinFunction(number[0], 1) and frickinFunction(number[1], 0):
-                        
+                    elif len(number) > 1 and frickinFunction(number[0], 1) and
+                    frickinFunction(number[1], 0):
+
                         new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):
                         noQuote = value[1:-1]
                         if escapedQuotes(noQuote):
                             noQuote = noQuote.replace('_', ' ')
-                            print(noQuote)
                             noQuote = noQuote.replace("\"", '"')
-                            print("new: " + noQuote)
                             new_instance.__dict__[key] = noQuote
             print(new_instance.id)
             storage.save()

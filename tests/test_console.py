@@ -24,7 +24,6 @@ class TestConsoleClass(unittest.TestCase):
         "        format: [classname, instid, attr, value]\n"
     )
 
-    
     @unittest.skipIf(AssertionError, "Advanced Tasks")
     def test_has_attr(self):
         """ Method to test if attr exist """
@@ -45,8 +44,8 @@ class TestConsoleClass(unittest.TestCase):
     def test_EOF(self):
         """ Method to test EOF """
         with patch('sys.stdout', new=StringIO()) as f:
-             self.assertEqual("", f.getvalue())
-    
+            self.assertEqual("", f.getvalue())
+
     @unittest.skip("because help docs are different")
     def test_help_documentation(self):
         """ Mehtod to test help """
@@ -64,7 +63,7 @@ class TestConsoleClass(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help quit"))
             self.assertRegex(f.getvalue(), "Exits the program with formatting")
-        
+
         with patch('sys.stdout', new=StringIO()) as f:
 
             self.assertFalse(HBNBCommand().onecmd("help"))
@@ -116,12 +115,16 @@ class TestConsoleClass(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create User"))
             keepOutput = f.getvalue()
             self.assertTrue(os.path.isfile)
-        
+
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd('create User str_test1="" str_test2="dosch" str_test3="pass_word" \
-                str_test4="in_\"the\"_middle" str_test5="Bad space" str_test6="bad"quote"" \
-                int_test1=5 int_test2=0 int_test3=-16 int_test4=+5 int_test5=645af \
-                float_test1=4.5 float_test2=0.0 float_test3=-67.2 float_test4=54.-3 float_test5=4a.56 float_test6=53.6a'))
+            self.assertFalse(HBNBCommand().onecmd('create User str_test1="" \
+                str_test2="dosch" str_test3="pass_word" \
+                str_test4="in_\"the\"_middle" str_test5="Bad space" \
+                str_test6="bad"quote"" \
+                int_test1=5 int_test2=0 int_test3=-16 int_test4=+5 \
+                int_test5=645af \
+                float_test1=4.5 float_test2=0.0 float_test3=-67.2 \
+                float_test4=54.-3 float_test5=4a.56 float_test6=53.6a'))
             id = f.getvalue()
             self.assertFalse(HBNBCommand().onecmd('all User'))
             check_id = f.getvalue()
@@ -143,7 +146,7 @@ class TestConsoleClass(unittest.TestCase):
             self.assertNotIn("float_test4", check_id)
             self.assertNotIn("float_test5", check_id)
             self.assertNotIn("float_test6", check_id)
-            
+
     def test_show(self):
         """ Method to test show method  """
 
@@ -209,6 +212,3 @@ class TestConsoleClass(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("all"))
             self.assertIs(list, type(f.getvalue()))
         """
-    
-
-            
