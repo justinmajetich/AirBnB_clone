@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 if (key in HBNBCommand.types):
                     value = HBNBCommand.types[key](value)
-                    attr_dict[key] = value
+                attr_dict[key] = value
             except ValueError:
                 keys_delete.append(key)
         for key in keys_delete:
