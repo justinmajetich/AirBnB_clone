@@ -127,17 +127,17 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             new_instance = HBNBCommand.classes[inpt[0]]()
-            try:
-                for i in range(1, len(inpt)):
-                    attr = inpt[i].split('=')
-                    # need to handle type of input
-                    # Need to split by space as indicated below
+            for i in range(1, len(inpt)):
+                attr = inpt[i].split('=')
+                # need to handle type of input
+                """ Issue is that it's splitting too many things. We only want
+                to split the first space and then check the rest of
+                the user input """
+                if (len(attr) == 2):
                     self.do_update("{} {} {} {}".format(
                         new_instance.__class__.__name__,
-                        new_instance.id, attr[0], attr[1]).replace("_", " "))
-                    storage.save()
-            except:
-                pass
+                        new_instance.id, attr[0], attr[1].replace("_", " ")))
+            storage.save()
             print(new_instance.id)
             storage.save()
 
@@ -228,7 +228,7 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print('[%s]' % ', '.join(map(str, print_list)))
 
     def help_all(self):
         """ Help information for the all command """
