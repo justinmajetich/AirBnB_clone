@@ -127,25 +127,19 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             new_instance = HBNBCommand.classes[inpt[0]]()
-            for i in range(1, len(inpt)):
-                attr = inpt[i].split('=')
-                # need to handle type of input
-                # Need to split by space as indicated below
-                self.do_update("{} {} {} {}".format(
-                    new_instance.__class__.__name__,
-                    new_instance.id, attr[0], attr[1]).replace("_", " "))
-        """ else:
-            for i in inpt[1:]:
-                inpt2 = i.split('=', 1)
-        inpt2 = inpt2.replace("_", " ") """
-        # delimate by =
-        # Once this works, handle converting _ to space
-        # everything on left is key, right is value
-        # check if formatted to an int, float, string
-        # pass in newinstance.__dict__[key] = value
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            try:
+                for i in range(1, len(inpt)):
+                    attr = inpt[i].split('=')
+                    # need to handle type of input
+                    # Need to split by space as indicated below
+                    self.do_update("{} {} {} {}".format(
+                        new_instance.__class__.__name__,
+                        new_instance.id, attr[0], attr[1]).replace("_", " "))
+                    storage.save()
+            except:
+                pass
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
