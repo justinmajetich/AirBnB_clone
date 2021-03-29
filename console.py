@@ -16,6 +16,7 @@ from models.review import Review
 
 type_storage = getenv('HBNB_TYPE_STORAGE')
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
     # determines prompt for interactive/non-interactive modes
