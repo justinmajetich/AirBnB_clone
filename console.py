@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             # Need to split by space as indicated below
             self.do_update("{} {} {} {}".format(
                 new_instance.__class__.__name__,
-                new_instance.id, attr[0], attr[1]))
+                new_instance.id, attr[0], attr[1]).replace("_", " "))
         """ else:
             for i in inpt[1:]:
                 inpt2 = i.split('=', 1)
