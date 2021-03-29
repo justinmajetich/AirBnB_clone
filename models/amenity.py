@@ -4,4 +4,10 @@ from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    name = ""
+    name = "bidon"
+
+    def __init__(self, *args, **kwargs):
+        """
+        constructor
+        """
+        super().__init__(*args, **kwargs)
