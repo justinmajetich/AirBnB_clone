@@ -131,6 +131,10 @@ class HBNBCommand(cmd.Cmd):
                 val = argv[i].split('=')[1].replace('_', ' ')
                 if val[0] is '\"' or val[0] is "'":
                    val = val[1:-1]
+                elif '.' in val:
+                    val = float(val)
+                else:
+                    val = int(val)
                 kwargs[key] = val
                 i += 1
         new_instance = HBNBCommand.classes[class_name]()
@@ -219,11 +223,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in __objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in __objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
