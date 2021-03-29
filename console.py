@@ -122,7 +122,6 @@ class HBNBCommand(cmd.Cmd):
         keys = []
         values = []
         attr_dict = {}
-        keys_delete = []
         pre_list = args.split()
         class_name = pre_list[0]
         if class_name not in HBNBCommand.classes:
@@ -143,8 +142,6 @@ class HBNBCommand(cmd.Cmd):
                 attr_dict[key] = value
             except ValueError:
                 pass
-        for key in keys_delete:
-            del attr_dict[key]
         new_instance = HBNBCommand.classes[class_name]()
         print(new_instance.id)
         new_instance.__dict__.update(attr_dict)
