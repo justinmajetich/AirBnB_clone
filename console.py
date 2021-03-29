@@ -126,8 +126,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[inpt[0]]()
-        # arg[1] = class
-        # arg[2]... is things to initialize when creating
+        # turn commands into dictionary
+        # delimate by =
+        # Once this works, handle converting _ to space
+        # everything on left is key, right is value
+        # pass in newinstance.key = value
         storage.save()
         print(new_instance.id)
         storage.save()
