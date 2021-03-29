@@ -3,6 +3,7 @@
 import cmd
 import sys
 import json
+import shlex
 from os import getenv
 from models.base_model import BaseModel
 from models.__init__ import storage, type_storage
@@ -119,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+
         keys = []
         values = []
         attr_dict = {}
@@ -128,6 +130,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         attr_list = pre_list[1:]
+
+        attr_list = " ".join(attr_list)
+        attr_list = shlex.split(attr_list)
+
         for element in attr_list:
             keys.append(element.split('=')[0])
             values.append(element.split('=')[1].replace('_', ' '))
@@ -232,11 +238,14 @@ class HBNBCommand(cmd.Cmd):
                     obj_dict = storage.all(eval(args))
                 for k, v in obj_dict.items():
                     if k.split('.')[0] == args:
+                        v.__dict__.pop('_sa_instance_state', None)
                         print_list.append(str(v))
         else:
             for k, v in obj_dict.items():
                 print_list.append(str(v))
-        print(print_list)
+        for obj in print_list:
+            print("[{}]".format(obj))
+#        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """

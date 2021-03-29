@@ -35,7 +35,7 @@ class DBStorage:
     def connection():
         """Connection to database function"""
         conn = 'mysql+mysqldb://{}:{}@{}/{}'.format(usr, pwd, host, db)
-        return create_engine(conn, pool_pre_ping=True, echo=True)
+        return create_engine(conn, pool_pre_ping=True, echo=False)
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -54,7 +54,6 @@ class DBStorage:
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
-        
 
     def save(self):
         """commit all changes of the current database session"""
