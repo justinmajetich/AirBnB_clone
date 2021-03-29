@@ -137,19 +137,18 @@ class HBNBCommand(cmd.Cmd):
             keys.append(element.split('=')[0])
             values.append(element.split('=')[1].replace('_', ' '))
         attr_dict = dict(zip(keys, values))
+        # casting values
+        for key, value in attr_dict.items():
+            try:
+                if (key in HBNBCommand.types):
+                    value = HBNBCommand.types[key](value)
+                    attr_dict[key] = value
+            except ValueError:
+                pass
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(attr_dict)
         storage.new(new_instance)
         storage.save()
-        # if type_storage != 'db':
-        #    storage.new(new_instance)
-        #    for key, value in attr_dict.items():
-        #        self.do_update(" ".join((class_name, new_instance.id, key,
-        #                                 value)))
-        # else:
-        #    new_instance.__dict__.update(attr_dict)
-        #    storage.new(new_instance)
-        #    storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -244,7 +243,8 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
         for obj in print_list:
             print("[{}]".format(obj))
-#        print(print_list)
+        print(print_list)
+
 
     def help_all(self):
         """ Help information for the all command """
