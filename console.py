@@ -118,19 +118,25 @@ class HBNBCommand(cmd.Cmd):
         # delimate by space
         # look at first command as class
         # rest should be dictionary passed to init
+        inpt = args.split()
         if not args:
             print("** class name missing **")
             return
-        inpt = args.split()
         elif inpt[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[inpt[0]]()
-        else:
+        for i in range(1, len(inpt)):
+            attr = inpt[i].split('=')
+            # need to handle type of input
+            # Need to split by space as indicated below
+            self.do_update("{} {} {} {}".format(
+                new_instance.__class__.__name__,
+                new_instance.id, attr[0], attr[1]))
+        """ else:
             for i in inpt[1:]:
                 inpt2 = i.split('=', 1)
-        inpt2 = inpt2.replace("_", " ")
-        if ():
+        inpt2 = inpt2.replace("_", " ") """
         # delimate by =
         # Once this works, handle converting _ to space
         # everything on left is key, right is value
