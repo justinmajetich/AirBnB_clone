@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -147,8 +147,7 @@ class HBNBCommand(cmd.Cmd):
             del attr_dict[key]
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(attr_dict)
-        storage.new(new_instance)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
