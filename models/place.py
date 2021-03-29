@@ -4,7 +4,6 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 
-
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
                              ForeignKey("places.id"),
@@ -48,18 +47,13 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """amenities getter"""
-        from models.__init__ import storage
-
-        return_list = []
-        amenity_objs = storage.all(Amenity)
-        for obj in amenity_objs.values():
-            if obj.id in amenity_ids:
-                return_list.append(obj)
-        return return_list
+        return self.amenity_ids
 
     @amenities.setter
     def amenities(self, obj):
-        from models.amenity import Amenity
         """amenities setter"""
-        if isinstance(obj, Amenity) is True:
-            self.amenity_ids.append(obj.id)
+        from models.amenity import Amenity
+        if not isinstance(obj, Amenity):
+            return
+        else:
+            self.amenity_ids.append(Amenity)
