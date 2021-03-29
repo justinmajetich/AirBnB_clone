@@ -30,7 +30,7 @@ class DBStorage:
     def all(self, cls=None):
         """Runs a query that returns a dictionary of objects"""
         return_dict = {}
-        class_list = [State, City]
+        class_list = [State, City, User, Place, Review]
         if (cls is not None):
             results = self.__session.query(cls).all()
             for obj in results:
