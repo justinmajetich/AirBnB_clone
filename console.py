@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         value_result = int(value)
                 else:
-                    # value = parameter[1][1:-1].replace('"','\\"')
+                    #value_result = parameter[1][1:-1].replace('"','\\"')
                     if '_' in value:
                         value = value.replace('_', ' ')
                     value_result = shlex.split(value)[0]
