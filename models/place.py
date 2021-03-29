@@ -55,3 +55,5 @@ class Place(BaseModel, Base):
         from models.amenity import Amenity
         if not isinstance(obj, Amenity):
             return
+        else:
+            self.amenity_ids.append(Amenity)
