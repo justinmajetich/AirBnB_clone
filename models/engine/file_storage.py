@@ -13,10 +13,11 @@ class FileStorage:
         if cls:
             temp = {}
             for key in FileStorage.__objects.keys():
-                if cls.name in key:
+                if cls.__name__ in key:
                     temp[key] = FileStorage.__objects[key]
             return temp
-        return FileStorage.__objects
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
