@@ -241,10 +241,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             for k, v in obj_dict.items():
                 print_list.append(str(v))
-        for obj in print_list:
-            print("[{}]".format(obj))
         print(print_list)
-
 
     def help_all(self):
         """ Help information for the all command """
