@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseMode, Base
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
+from os import getenv
 
 type_storage = getenv('HBNB_TYPE_STORAGE')
 
