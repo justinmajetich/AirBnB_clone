@@ -5,7 +5,9 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, String
 
+
 Base = declarative_base()
+
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -13,11 +15,11 @@ class BaseModel:
         """Instatntiates a new model"""
         if not kwargs:
             self.id = Column(String(60), default=str(uuid.uuid4()),
-   		             primary_key=True)
+                             primary_key=True)
             self.created_at = Column(DateTime, default=datetime.utcnow(),
-   			             nullable=False)
+                                     nullable=False)
             self.updated_at = Column(DateTime, default=datetime.utcnow(),
-   			             nullable=False)
+                                     nullable=False)
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
@@ -48,6 +50,6 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
 
-    def delete():
+    def delete(self):
         from models import storage
         storage.delete(self)

@@ -2,7 +2,7 @@
 
 from os import getenv
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import session, sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -29,25 +29,28 @@ class DBStorage:
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
+    def new(self, obj):
+        self.__session.add(obj)
+
     def all(self, cls=None):
-    	if not obj:
-    		c = self.__session.query().filter().all()
-    	else:
-    		c = self.__session.query(cls).filter.all()
-    	for i in c:
-    		print(i)
-    	return None
+        if not cls:
+            c = self.__session.query().filter().all()
+        else:
+            c = self.__session.query(cls).filter.all()
+        for i in c:
+            print(i)
+        return None
 
     def save(self):
-    	self.__session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
-    	if obj:
-    		self.__session.delete(obj)
+        if obj:
+            self.__session.delete(obj)
 
     def reload(self):
-    	Base.metadata.create_all(self.__engine)
-    	session_factory = sessionmarker(self.__engine,
-    					expire_on_commit=False)
-    	Session = scoped_session(session_factory)
-    	self.__session = Session()
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
