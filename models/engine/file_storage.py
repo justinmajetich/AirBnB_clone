@@ -10,6 +10,12 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        if cls:
+            temp = {}
+            for key in FileStorage.__objects.keys():
+                if cls.name in key:
+                    temp[key] = FileStorage.__objects[key]
+            return temp
         return FileStorage.__objects
 
     def new(self, obj):
@@ -51,7 +57,8 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deletes an object from __objects, does nothing if obj is None"""
-        for key in self.__objects:
-            if self.__objects[key] == obj:
-                del self.__objects[key]
-                return
+        if obj:
+            for key in self.__objects:
+                if self.__objects[key] == obj:
+                    del self.__objects[key]
+                    return
