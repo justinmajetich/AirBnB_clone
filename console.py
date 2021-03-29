@@ -130,8 +130,8 @@ class HBNBCommand(cmd.Cmd):
             return
         attr_list = pre_list[1:]
 
-        attr_list = " ".join(attr_list)
-        attr_list = shlex.split(attr_list)
+#        attr_list = " ".join(attr_list)
+#        attr_list = shlex.split(attr_list)
 
         for element in attr_list:
             keys.append(element.split('=')[0])
