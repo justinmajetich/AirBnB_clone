@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         if len(argv) > 1:
             i = 1
             while (i < len(argv)):
-                if '=' in argv:
+                if '=' in argv[i]:
                     key = argv[i].split('=')[0]
                     val = argv[i].split('=')[1]
                     if val[0] is '\"' or val[0] is "'":
