@@ -158,9 +158,8 @@ class HBNBCommand(cmd.Cmd):
                     number = value.split(".")
                     if frickinFunction(value, 1):
                         new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and
-                    frickinFunction(number[0], 1) and
-                    frickinFunction(number[1], 0)):
+                    elif (len(number) > 1 and frickinFunction(number[0], 1) and
+                          frickinFunction(number[1], 0)):
 
                         new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):
