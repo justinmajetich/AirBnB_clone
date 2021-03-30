@@ -46,3 +46,16 @@ class test_statev2(unittest.TestCase):
         state = State()
         if (type_storage == 'db'):
             self.assertTrue(state.name is None)
+
+    def test004(self):
+        """ Check to_dict() function """
+        state = State()
+        state_dict = state.to_dict()
+        self.assertTrue(type(state_dict) is dict)
+        self.assertFalse("_sa_instance_state" in state_dict)
+
+    def test005(self):
+        """ Check save() """
+        state = State()
+        state.save()
+        self.assertNotEqual(state.created_at, state.updated_at)

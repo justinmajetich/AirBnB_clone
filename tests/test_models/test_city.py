@@ -45,12 +45,14 @@ class test_city_v2(unittest.TestCase):
         self.assertTrue(hasattr(city, "updated_at"))
         self.assertTrue(hasattr(city, "name"))
         self.assertTrue(city.name is "")
+        self.assertTrue(city.state_id is "")
 
     def test003(self):
         """ Check State when type storage is db"""
         city = City()
         if (type_storage == 'db'):
             self.assertTrue(city.name is None)
+            self.assertTrue(city.state_id is None)
 
     def test004(self):
         """ Check to_dict() function """
@@ -58,3 +60,9 @@ class test_city_v2(unittest.TestCase):
         city_dict = city.to_dict()
         self.assertTrue(type(city_dict) is dict)
         self.assertFalse("_sa_instance_state" in city_dict)
+
+    def test005(self):
+        """ Check save() """
+        city = City()
+        city.save()
+        self.assertNotEqual(city.created_at, city.updated_at)
