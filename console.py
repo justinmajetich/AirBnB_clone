@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -144,6 +145,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(params) == 1:
             new_instance = HBNBCommand.classes[params[0]]()
             print(new_instance.id)
+            storage.new()
             storage.save()
         else:
             new_instance = HBNBCommand.classes[params[0]]()
@@ -158,9 +160,8 @@ class HBNBCommand(cmd.Cmd):
                     number = value.split(".")
                     if frickinFunction(value, 1):
                         new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and
-                    frickinFunction(number[0], 1) and
-                    frickinFunction(number[1], 0)):
+                    elif (len(number) > 1 and frickinFunction(number[0], 1) and
+                          frickinFunction(number[1], 0)):
 
                         new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):
@@ -170,6 +171,7 @@ class HBNBCommand(cmd.Cmd):
                             noQuote = noQuote.replace('\"', '"')
                             new_instance.__dict__[key] = noQuote
             print(new_instance.id)
+            storage.new(new_instance)
             storage.save()
 
     def help_create(self):
@@ -249,15 +251,25 @@ class HBNBCommand(cmd.Cmd):
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
+
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                for k in storage.all(args):
+                    if k.split('.')[0] == args:
+                        print_list.append(str(k))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                for k in storage.all():
+                    print_list.append(str(k))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    print_list.append(str(v))
 
         print(print_list)
 
