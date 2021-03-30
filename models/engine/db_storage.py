@@ -21,11 +21,12 @@ class DBStorage:
 
     def __init__(self):
         '''Instantiates an engine'''
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}\
-        '.format(getenv('HBNB_MYSQL_USER'),
-                 getenv('HBNB_MYSQL_PWD'),
-                 getenv('HBNB_MYSQL_HOST'),
-                 getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
+        self.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'
+            .format(getenv('HBNB_MYSQL_USER'),
+                    getenv('HBNB_MYSQL_PWD'),
+                    getenv('HBNB_MYSQL_HOST'),
+                    getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
         if getenv('HBNB_ENV') is 'test':
             self.__engine.drop_all()
 
