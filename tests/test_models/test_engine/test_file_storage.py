@@ -128,3 +128,4 @@ class test_fileStorage(unittest.TestCase):
         self.assertEqual(len(storage.all()), 1)
         storage.delete()
         self.assertEqual(len(storage.all()), 1)
+        
