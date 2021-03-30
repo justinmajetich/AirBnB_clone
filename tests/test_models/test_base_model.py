@@ -101,13 +101,14 @@ class test_basemodel(unittest.TestCase):
         new.save()
         self.assertFalse(new.created_at == new.updated_at)
 
-
     def test_save_BaseModeldb(self):
         """empty test """
         pass
 
+
 class test_base_model_v2(unittest.TestCase):
     """ New test class """
+
     def test001(self):
         """Check if city is child of BaseModel"""
         city = BaseModel()
@@ -127,7 +128,7 @@ class test_base_model_v2(unittest.TestCase):
         self.assertTrue(type(city_dict) is dict)
         self.assertFalse("_sa_instance_state" in city_dict)
 
-    @unittest.skipIf(type_storage != 'db',"test not possible")
+    @unittest.skipIf(type_storage != 'db', "test not possible")
     def test005(self):
         """ Check save() """
         city = BaseModel()
@@ -138,3 +139,5 @@ class test_base_model_v2(unittest.TestCase):
         """ Check delete """
         base = BaseModel()
         base.save()
+        base.delete()
+        self.assertEqual(1, 1)
