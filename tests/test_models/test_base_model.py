@@ -98,6 +98,7 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
+        new.save()
         self.assertFalse(new.created_at == new.updated_at)
 
     @unittest.skipIf(type_storage != 'db',
@@ -109,7 +110,7 @@ class test_basemodel(unittest.TestCase):
 class test_base_model_v2(unittest.TestCase):
     """ New test class """
     def test001(self):
-        """Check if City is child of BaseModel"""
+        """Check if city is child of BaseModel"""
         city = BaseModel()
         self.assertIsInstance(city, BaseModel)
 
@@ -132,3 +133,17 @@ class test_base_model_v2(unittest.TestCase):
         city = BaseModel()
         city.save()
         self.assertNotEqual(city.created_at, city.updated_at)
+
+    def test_pep8_BaseModel(self):
+        """Testing for pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/base_model.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
+
+    def test_checking_for_docstring_BaseModel(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(BaseModel.__doc__)
+        self.assertIsNotNone(BaseModel.__init__.__doc__)
+        self.assertIsNotNone(BaseModel.__str__.__doc__)
+        self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.to_dict.__doc__)
