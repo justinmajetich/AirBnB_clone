@@ -54,7 +54,7 @@ class DBStorage:
             obj_list = self.__session.query(eval(cls)).all()
             if obj_list is not None:
                 for obj in obj_list:
-                    key = type(obj).__name + '.' + obj.__dict__['id']
+                    key = cls + '.' + obj.__dict__['id']
                     dict_class[key] = obj
             return dict_class
 
@@ -77,5 +77,4 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
 
         c_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(c_session)
-        self.__session = Session()
+        self.__session = scoped_session(c_session)
