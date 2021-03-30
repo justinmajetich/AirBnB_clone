@@ -13,6 +13,7 @@ class BaseModel:
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -46,7 +47,7 @@ class BaseModel:
         dictionary.update(self.__dict__)
         if '_sa_instance_state' in dictionary.keys():
             print("IT'S STILL HERE!!!")
-        dictionary.pop('_sa_instance_state', None)
+            dictionary.pop('_sa_instance_state', None)
         if '_sa_instance_state' in dictionary.keys():
             print("Failed again")
         else:
