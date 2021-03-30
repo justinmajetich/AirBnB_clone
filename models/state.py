@@ -13,7 +13,7 @@ class State(BaseModel):
     name = Column(String(128), nullable=False)
     
 
-    if environ.get("HBNB_TYPE_STORAGE") == 'db':
+    if environ.getenv("HBNB_TYPE_STORAGE") == 'db':
         cities = relationship('City', cascade="all, delete", backref='state')
     else:
         @property
@@ -21,7 +21,7 @@ class State(BaseModel):
             ''' getter for FileStorage cities-state '''
             from models import storage
             load = []
-            for value in storage.all(City).values():
-                if value.state_id == self.id:
+            for value in storage.all(City).items():
+                if self.state_id == value.id:
                     load.append(value)
             return load
