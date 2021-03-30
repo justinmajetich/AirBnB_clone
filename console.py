@@ -256,9 +256,15 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             if os.getenv('HBNB_TYPE_STORAGE') == "db":
-                for k in storage.all(args):
+                storDict = storage.all(args)
+                for k in storDict.keys():
+                    key = k.split('.')[0]
+                    id = k.split('.')[1]
+                    objDict = storDict[k]
                     if k.split('.')[0] == args:
-                        print_list.append(str(k))
+                        print_list.append('[{}] ({}) {}'.format(key, id,
+                                                                objDict))
+
             else:
                 for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
@@ -271,7 +277,7 @@ class HBNBCommand(cmd.Cmd):
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
 
-        print(print_list)
+        print('[%s]' % ', '.join(map(str, print_list)))
 
     def help_all(self):
         """ Help information for the all command """
