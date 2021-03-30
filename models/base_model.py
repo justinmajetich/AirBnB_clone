@@ -4,7 +4,6 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-#from models import storage
 import models
 
 
@@ -24,16 +23,16 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            for key, value in  kwargs.items():
+            for key, value in kwargs.items():
                 if key == "__class__":
                     pass
                 elif key == "created_at" or key == "updated_at":
                     setattr(self, key,
-                            datetime.strptime(value,'%Y-%m-%dT%H:%M:%S.%f' ))
+                            datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f'))
                 else:
                     setattr(self, key, value)
-            #del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            # del kwargs['__class__']
+            # self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -61,4 +60,3 @@ class BaseModel:
     def delete(self):
         """ Method To Delete Current Instance (No hemos guardado) """
         storage.delete(self)
-

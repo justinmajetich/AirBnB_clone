@@ -2,10 +2,10 @@
 """ State Module for HBNB project """
 import models
 from models.base_model import BaseModel, Base
-from models.city import City
+# from models.city import City
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlachemy.orm import relationship
+from sqlalchemy.orm import relationship
 from os import getenv
 
 
@@ -26,4 +26,3 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     cityList.append(city)
             return cityList
-

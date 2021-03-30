@@ -17,9 +17,10 @@ class DBStorage:
 
     def __init__(self):
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                         getenv("HBNB_MYSQL_USER"),getenv("HBNB_MYSQL_PWD"),
-                         getenv("HBNB_MYSQL_HOST"), getenv("HBNB_MYSQL_DB")),
-                         pool_pre_ping=True)
+            getenv("HBNB_MYSQL_USER"), getenv("HBNB_MYSQL_PWD"),
+            getenv("HBNB_MYSQL_HOST"), getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
+
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -31,7 +32,7 @@ class DBStorage:
             listClasses = self.__session.query(cls)
         else:
             for item in allClasses:
-                listClasses +=  self.__session.query(item)
+                listClasses += self.__session.query(item)
         for classObject in listClasses:
             key = classObject.__class__.__name__ + "." + classObject.id
             dictClasses[key] = classObject
@@ -51,5 +52,5 @@ class DBStorage:
     def reload(self):
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine,
-            expire_on_commit=False))
+                                              expire_on_commit=False))
         Self__session = Session()
