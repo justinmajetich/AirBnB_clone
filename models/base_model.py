@@ -54,7 +54,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if "_sa_instance_state" in dictionary.keys(): #NEW
-            dictionary.pop("_sa_instance_state") #NEW
+            del dictionary["_sa_instance_state"] #NEW
         return dictionary
     
     def delete(self): #NEW
