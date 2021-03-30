@@ -1,53 +1,72 @@
 #!/usr/bin/python3
 """Module with new DBStorage"""
-import os
-from sqlalchemy import create engine
-from sqlalchemy.schema import MetaData
-from sqlalchemy import sessionmaker
 
-class DBStorage:
-"""Class that represents DBStorage"""
-    self.__engine = None
-    self.__session= None
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.schema import MetaData
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
+
+class DBStorage():
+    """Class that represents DBStorage"""
+
+    '''** CAN WE EVEN USE SELF HERE WHEN IT WASN'T PASSED IN FOR CLASS DBSTORAGE **'''
+    __engine = None
+    __session= None
 
     def __init__(self):
         """Method to instantiate class DBStorage attributes"""
         
-        theUser = os.getenv(HBNB_MYSQL_USER)
-        thePwd = os.getenv(HBNB_MYSQL_PWD)
-        theHost = os.getenv(HBNB_MYSQL_HOST)
-        theDB = os.getenv(HBNB_MYSQL_DB)
+        theUser = os.getenv('HBNB_MYSQL_USER')
+        thePwd = os.getenv('HBNB_MYSQL_PWD')
+        theHost = os.getenv('HBNB_MYSQL_HOST')
+        theDB = os.getenv('HBNB_MYSQL_DB')
+        theEnv = os.getenv('HBNB_ENV')
 
-        self.__engine = theEngine(vroom = 'mysql+mysqldb://{}:{}@localhost/{}'\
-            .format(theUser, thePwd, theHost), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
+            .format(theUser, thePwd, theHost, theDB), pool_pre_ping=True)
 
-        if os.getenv(HBNB_ENV) == "test":
-            MetaData.drop_all(theEngine)
+
+        '''** add Base to metadata and change theEngine to self.__engine **'''
+        if theEnv == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Method to retrieve all objects depending of the class name"""
-
+        from models.user import User
+        from models.place import Place
+        from models.city import City
+        from models.base_model import BaseModel
+        from models.state import State
+        from models.review import Review
+        from models.amenity import Amenity
+        
+        classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
         if cls:
             newDict = {}
-            allClassObjs = self.__session.query(cls).all()
+            allClassObjs = self.__session.query(classes[cls]).all()
             for obj in allClassObjs:
+                print(obj)
                 key = obj.__name__ + "." + obj.id
                 value = obj.__dict__
                 newDict[key] = value
-            self.__session.close()
             return (newDict)
         else:
             allDicts = {}
             
-            dictList = [
-            User = self.all(User),
-            State = self.all(State),
-            City = self.all(City),
-            Amenity = self.all(Amenity),
-            Place = self.all(Place),
-            Review = self.all(Review),
-            ]
-            
+            dictList = []
+            dictList.append(
+            User = self.all('User'),
+            State = self.all('State'),
+            City = self.all('City'),
+            Amenity = self.all('Amenity'),
+            Place = self.all('Place'),
+            Review = self.all('Review'))
+
             for dicts in dictList:
                 allDicts.update(dicts)
           
