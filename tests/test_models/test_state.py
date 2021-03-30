@@ -4,6 +4,7 @@ from tests.test_models.test_base_model import test_basemodel
 from models.state import State
 import unittest
 import os
+from models.base_model import BaseModel
 
 type_storage = os.getenv('HBNB_TYPE_STORAGE')
 
@@ -39,7 +40,7 @@ class test_statev2(unittest.TestCase):
         self.assertTrue(hasattr(state, "updated_at"))
         self.assertTrue(hasattr(state, "name"))
         self.assertTrue(state.name is "")
-    
+
     def test003(self):
         """ Check State when type storage is db"""
         state = State()

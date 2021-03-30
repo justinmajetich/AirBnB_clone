@@ -2,6 +2,11 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+from models.base_model import BaseModel
+import unittest
+import os
+
+type_storage = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class test_City(test_basemodel):
@@ -33,7 +38,7 @@ class test_city_v2(unittest.TestCase):
         self.assertIsInstance(city, BaseModel)
 
     def test002(self):
-        """ Check State default attributes """
+        """ Check City default attributes """
         city = City()
         self.assertTrue(hasattr(city, "id"))
         self.assertTrue(hasattr(city, "created_at"))
