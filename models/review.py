@@ -4,10 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from os import getenv
 
-type_storage = getenv('HBNB_TYPE_STORAGE')
 
-
-class Review(BaseModel, Base):
+class Review(BaseModel):
     """ Review classto store review information """
     __tablename__ = 'reviews'
     if type_storage == 'db':
