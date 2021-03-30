@@ -105,3 +105,30 @@ class test_basemodel(unittest.TestCase):
     def test_save_BaseModeldb(self):
         """empty test """
         pass
+
+class test_base_model_v2(unittest.TestCase):
+    """ New test class """
+    def test001(self):
+        """Check if City is child of BaseModel"""
+        city = BaseModel()
+        self.assertIsInstance(city, BaseModel)
+
+    def test002(self):
+        """ Check City default attributes """
+        city = BaseModel()
+        self.assertTrue(hasattr(city, "id"))
+        self.assertTrue(hasattr(city, "created_at"))
+        self.assertTrue(hasattr(city, "updated_at"))
+
+    def test004(self):
+        """ Check to_dict() function """
+        city = BaseModel()
+        city_dict = city.to_dict()
+        self.assertTrue(type(city_dict) is dict)
+        self.assertFalse("_sa_instance_state" in city_dict)
+
+    def test005(self):
+        """ Check save() """
+        city = BaseModel()
+        city.save()
+        self.assertNotEqual(city.created_at, city.updated_at)
