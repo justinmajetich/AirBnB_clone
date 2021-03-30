@@ -7,27 +7,31 @@ from sqlalchemy.schema import MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
+
 class DBStorage():
     """Class that represents DBStorage"""
 
-    '''** CAN WE EVEN USE SELF HERE WHEN IT WASN'T PASSED IN FOR CLASS DBSTORAGE **'''
+    '''** CAN WE EVEN USE SELF HERE WHEN IT WASN'T PASSED IN
+    FOR CLASS DBSTORAGE **'''
     __engine = None
-    __session= None
+    __session = None
 
     def __init__(self):
         """Method to instantiate class DBStorage attributes"""
-        
+
         theUser = os.getenv('HBNB_MYSQL_USER')
         thePwd = os.getenv('HBNB_MYSQL_PWD')
         theHost = os.getenv('HBNB_MYSQL_HOST')
         theDB = os.getenv('HBNB_MYSQL_DB')
         theEnv = os.getenv('HBNB_ENV')
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
-            .format(theUser, thePwd, theHost, theDB), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(theUser, thePwd,
+                                              theHost, theDB),
+                                      pool_pre_ping=True)
 
-
-        '''** add Base to metadata and change theEngine to self.__engine **'''
+        '''** add Base to metadata and change
+        theEngine to self.__engine **'''
         if theEnv == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -40,7 +44,7 @@ class DBStorage():
         from models.state import State
         from models.review import Review
         from models.amenity import Amenity
-        
+
         classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
@@ -56,13 +60,13 @@ class DBStorage():
             return (newDict)
         else:
             allDicts = {}
-            
+
             dictList = []
             State = self.all('State')
             City = self.all('City')
             dictList.append(State)
             dictList.append(City)
-            
+
             '''
             User = self.all('User'),
             Amenity = self.all('Amenity'),
@@ -71,22 +75,22 @@ class DBStorage():
 
             for dicts in dictList:
                 allDicts.update(dicts)
-          
+
             return(allDicts)
 
     def new(self, obj):
         """ add the object to current database session"""
-        
+
         self.__session.add(obj)
 
     def save(self):
         """Commits all changes of current database session"""
-        
+
         self.__session.commit()
 
     def delete(self, obj=None):
         """Method that deletes from current database session"""
-        
+
         if obj:
             self.__session.delete(obj)
 
@@ -99,9 +103,10 @@ class DBStorage():
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-        
+
         Base.metadata.create_all(self.__engine)
-        
-        sessionFactory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+
+        sessionFactory = sessionmaker(bind=self.__engine,
+                                      expire_on_commit=False)
         Session = scoped_session(sessionFactory)
         self.__session = Session()
