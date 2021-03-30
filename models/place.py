@@ -48,10 +48,10 @@ class Place(BaseModel, Base):
         temp = [] #NEW
         dictio = storage.all(Amenity) #NEW
         for value in dictio.values(): #NEW
-            if value.amenity_id == self.id: #NEW
+            if value.id == self.id: #NEW NEW2 hhhhhhhhh
                 temp.append(value) #NEW
         return temp #NEW
-    
+
     @amenities.setter
     def amenities(self, value):
         from models.amenity import Amenity

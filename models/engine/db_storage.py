@@ -23,7 +23,7 @@ class DBStorage():
     def all(self, cls=None):
         temp_dict = {}
         obj_list = []
-        classes = [State, City, User, Place]
+        classes = [State, City, User, Place, Review, Amenity]
         if cls is not None:
             obj_list = self.__session.query(cls).all()
         else:
