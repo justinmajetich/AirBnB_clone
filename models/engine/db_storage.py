@@ -28,28 +28,30 @@ class DBStorage:
             ),
             pool_pre_ping=True)
 
+        self.reload()
+
         if os.environ.get('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
-
-        #self.reload()
 
     def all(self, cls=None):
         """ class all """
         class_list = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
 
         dict_class = {}
-        if cls is None:
+        if cls == None:
             obj_list = []
+            print('-----------------None--------------------------------')
             for class_name in class_list:
-                obj_list = self.__session.query((class_name).all())
-                if len(obj_list) > 0:
+                obj_list = self.__session.query(class_name).all()
+                if obj_list is not None:
                     for obj in obj_list:
                         key = class_name + '.' + obj.__dict__['id']
                         dict_class[key] = obj
             return dict_class
         else:
+            print('-----------------Not None--------------------------------')
             obj_list = self.__session.query(cls).all()
-            if len(obj_list) > 0:
+            if obj_list is not None:
                 for obj in obj_list:
                     key = type(obj).__name + '.' + obj.__dict__['id']
                     dict_class[key] = obj
@@ -73,6 +75,6 @@ class DBStorage:
         """ create all tables in the database (feature of SQLAlchemy) """
         Base.metadata.create_all(self.__engine)
 
-        current_session = sessionmaker(
-            bin=self.__session, expire_on_commit=False)
-        self.__session = scoped_session(current_session)
+        c_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(c_session)
+        self.__session = Session()
