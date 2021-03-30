@@ -147,6 +147,7 @@ class TestConsoleClass(unittest.TestCase):
             self.assertNotIn("float_test4", check_id)
             self.assertNotIn("float_test5", check_id)
             self.assertNotIn("float_test6", check_id)
+
     @unittest.skip("Comeback later")
     def test_show(self):
         """ Method to test show method  """

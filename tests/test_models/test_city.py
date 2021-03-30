@@ -13,7 +13,7 @@ class test_City(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "City"
         self.value = City
-        
+
     @unittest.skip("FileStorage")
     def test_state_id(self):
         """ """
