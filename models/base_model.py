@@ -46,16 +46,16 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         if '_sa_instance_state' in dictionary.keys():
-            print("IT'S STILL HERE!!!")
             dictionary.pop('_sa_instance_state', None)
         if '_sa_instance_state' in dictionary.keys():
-            print("Failed again")
-        else:
-            print("It's gone!")
+            print("IT'S STILL HERE")
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in dictionary.keys():
+            print('Got it!')
+            dictionary.pop('_sa_instance_state')
         return dictionary
 
     def delete(self):
