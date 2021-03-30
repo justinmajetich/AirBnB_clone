@@ -26,12 +26,12 @@ class DBStorage:
         HBNB_ENV = getenv('HBNB_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-            .format(
-                    HBNB_MYSQL_USER,
-                    HBNB_MYSQL_PWD,
-                    HBNB_MYSQL_HOST,
-                    HBNB_MYSQL_DB,
-                    ), pool_pre_ping=True)
+                                      .format(
+                                          HBNB_MYSQL_USER,
+                                          HBNB_MYSQL_PWD,
+                                          HBNB_MYSQL_HOST,
+                                          HBNB_MYSQL_DB,
+                                      ), pool_pre_ping=True)
 
         if HBNB_ENV == 'test':
             Base.metadata.drop_all(bind=self.__engine)
@@ -41,7 +41,7 @@ class DBStorage:
         class_list = ['State', 'City']
 
         dict_class = {}
-        if cls == None:
+        if cls is None:
             obj_list = []
             for class_name in class_list:
                 obj_list = self.__session.query(eval(class_name)).all()
