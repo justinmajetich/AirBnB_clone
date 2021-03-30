@@ -101,8 +101,7 @@ class test_basemodel(unittest.TestCase):
         new.save()
         self.assertFalse(new.created_at == new.updated_at)
 
-    @unittest.skipIf(type_storage != 'db',
-                     "test not possible")
+
     def test_save_BaseModeldb(self):
         """empty test """
         pass
@@ -128,22 +127,14 @@ class test_base_model_v2(unittest.TestCase):
         self.assertTrue(type(city_dict) is dict)
         self.assertFalse("_sa_instance_state" in city_dict)
 
+    @unittest.skipIf(type_storage != 'db',"test not possible")
     def test005(self):
         """ Check save() """
         city = BaseModel()
         city.save()
         self.assertNotEqual(city.created_at, city.updated_at)
 
-    def test_pep8_BaseModel(self):
-        """Testing for pep8"""
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(['models/base_model.py'])
-        self.assertEqual(p.total_errors, 0, "fix pep8")
-
-    def test_checking_for_docstring_BaseModel(self):
-        """checking for docstrings"""
-        self.assertIsNotNone(BaseModel.__doc__)
-        self.assertIsNotNone(BaseModel.__init__.__doc__)
-        self.assertIsNotNone(BaseModel.__str__.__doc__)
-        self.assertIsNotNone(BaseModel.save.__doc__)
-        self.assertIsNotNone(BaseModel.to_dict.__doc__)
+    def test006(self):
+        """ Check delete """
+        base = BaseModel()
+        base.save()
