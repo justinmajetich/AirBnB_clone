@@ -28,3 +28,17 @@ class DBStorage:
                 # Drop all tables if env is test
                 if HBNB_ENV == 'test':
                         drop_all(self.__engine)
+                
+        def all(self, cls=None):
+                """ query on the current database session (self.__session) all objects depending of the class name (argument cls); returns dict """
+                printf("In all")
+                Session = sessionmaker(bind=self.__engine)
+                session = Session()
+                if cls == None:
+                        # equal to show all?
+                        for instance in session:
+                                print("{}: {}".format(instance.id, instance.name))
+                else:
+                        print("Not set up yet")
+                        # query based on cls
+
