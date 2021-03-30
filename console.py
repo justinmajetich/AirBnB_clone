@@ -188,7 +188,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage.torage__objects[key])
+            print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -246,7 +246,7 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage.all(None).items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print('[%s]' % ', '.join(map(str, print_list)))
 
     def help_all(self):
         """ Help information for the all command """

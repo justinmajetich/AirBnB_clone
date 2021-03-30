@@ -13,11 +13,12 @@ class State(BaseModel, Base):
     """ if the system have a env var its gonna use de database """
 
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        name = Column(String(128), nullable=False)
         cities = relationship("City", backref='state',
                               cascade="all, delete-orphan")
     else:
+        name = ""
         @property
         def cities(self):
             cities_instances = FileStorage.all(City)

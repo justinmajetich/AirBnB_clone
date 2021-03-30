@@ -33,6 +33,9 @@ class BaseModel:
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        dct1 = self.__dict__
+        if('_sa_instance_state' in dct1.keys()):
+            del dct1['_sa_instance_state']
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):

@@ -13,7 +13,8 @@ class FileStorage:
         if cls is not None:
             tmp = {}
             for key, value in FileStorage.__objects.items():
-                if cls in key:
+                name = key.split('.')[0]
+                if cls.__name__ == name:
                     tmp.update({key: value})
             return tmp
         else:
