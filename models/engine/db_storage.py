@@ -43,13 +43,13 @@ class DBStorage():
         Return a dictionary
         """
         object_cls = {}
-        query_sum = []
+        query_s = []
         if cls:
             if cls is str:
                 quer = self.__session.query(eval(cls)).all()
             else:
                 quer = self.__session.query(cls).all()
-            query_sum.extend(quer)
+            query_s.extend(quer)
         else:
             classes = ['State', 'City', 'User', 'Place', 'Review']
             for clas in classes:
@@ -57,8 +57,8 @@ class DBStorage():
                     quer = self.__session.query(eval(clas)).all()
                 else:
                     quer = self.__session.query(clas).all()
-                query_sum.extend(quer)
-        for instance in query_sum:
+                query_s.extend(quer)
+        for instance in query_s:
             if cls is str:
                 key = cls + '.' + instance.id
             else:
@@ -76,5 +76,5 @@ class DBStorage():
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
