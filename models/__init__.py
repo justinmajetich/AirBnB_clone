@@ -11,10 +11,10 @@ from models.place import Place
 from models.review import Review
 import os
 
-if os.getenv('HBNB_TYPE_STORAGE') == 'fs':
-    storage = FileStorage()
 
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = DBStorage()
+else:
+    storage = FileStorage()
 
 storage.reload()
