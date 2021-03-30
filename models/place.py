@@ -1,11 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from models.amenity import Amenity
+from models.review import Review
+from sqlalchemy import Table, Column, Integer, Float, String, ForeignKey
 from os import getenv
 from sqlalchemy.orm import relationship
 
 type_storage = getenv('HBNB_TYPE_STORAGE')
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
+                             nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -22,6 +31,8 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     reviews = relationship('Review', backref='place', cascade='delete')
+    amenities = relationship('Amenity', secondary='place_amenity',
+                             viewonly=False)
     amenity_ids = []
     if type_storage != 'db':
         city_id = ""
@@ -38,9 +49,25 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """Getter of reviews attribute"""
-            reviews_dict = models.FileStorage.all(City)
+            reviews_dict = models.FileStorage.all(Review)
             reviews_list = []
             for review in reviews_dict.values():
                 if (review.place_id == self.id):
                     reviews_list.append(review)
             return reviews_list
+
+        @property
+        def amenities(self):
+            """Getter of amenities attribute"""
+            amenities_dict = models.FileStorage.all(Amenity)
+            amenities_list = []
+            for amenity in amenities_dict.values():
+                if (amenity.id == self.amenity_ids):
+                    reviews_list.append(review)
+            return amenities_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """Setter of amenities attribute"""
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
