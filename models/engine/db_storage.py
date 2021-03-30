@@ -3,6 +3,7 @@
 import os
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import (create_engine)
+from models.base_model import Base
 
 """ Setting env variables """
 HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
@@ -24,21 +25,23 @@ class DBStorage:
                                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                                 HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                         pool_pre_ping=True)
+                Session = sessionmaker(bind=self.__engine)
+                self.__session = Session()
 
                 # Drop all tables if env is test
                 if HBNB_ENV == 'test':
-                        drop_all(self.__engine)
+                        Base.metadata.drop_all(self.__engine)
                 
         def all(self, cls=None):
                 """ query on the current database session (self.__session) all objects depending of the class name (argument cls); returns dict """
-                printf("In all")
-                Session = sessionmaker(bind=self.__engine)
-                session = Session()
+                print("In all")
                 if cls == None:
                         # equal to show all?
-                        for instance in session:
-                                print("{}: {}".format(instance.id, instance.name))
+                        print("Not yet set up")
+                        """for instance in session:
+                                print("{}: {}".format(instance.id, instance.name))"""
                 else:
-                        print("Not set up yet")
+                        for instance in self.__session.query(State).order_by(State.id):
+                                print("{}: {}".format(instance.id, instance.name))
                         # query based on cls
 
