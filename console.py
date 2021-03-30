@@ -155,6 +155,7 @@ class HBNBCommand(cmd.Cmd):
 
                 setattr(new_instance, parameter[0], value_result)
 
+            storage.new(new_instance)
             storage.save()
             print(new_instance.id)
 
@@ -235,8 +236,6 @@ class HBNBCommand(cmd.Cmd):
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
-            print("--------------------------------")
-            print(type(args))
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return

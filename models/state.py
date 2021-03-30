@@ -5,14 +5,14 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.engine.file_storage import FileStorage
 from models.city import City
-import os
+from os import getenv
 
 
 
 class State(BaseModel, Base):
     """ State class """
     """ if the system have a env var its gonna use de database """
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
 

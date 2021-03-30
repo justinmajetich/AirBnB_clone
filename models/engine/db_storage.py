@@ -3,7 +3,7 @@
 from sqlalchemy import create_engine
 from models.state import Base
 from sqlalchemy.orm import Session, sessionmaker, scoped_session
-import os
+from os import getenv
 from models.user import User
 from models.state import State
 from models.city import City
@@ -18,39 +18,40 @@ class DBStorage:
 
     def __init__(self):
         """ constructor """
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'
+
+        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
+        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
+        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
+        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
+        HBNB_ENV = getenv('HBNB_ENV')
+
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
             .format(
-                os.environ.get('HBNB_MYSQL_USER'),
-                os.environ.get('HBNB_MYSQL_PWD'),
-                os.environ.get('HBNB_MYSQL_HOST'),
-                os.environ.get('HBNB_MYSQL_DB'),
-            ),
-            pool_pre_ping=True)
+                    HBNB_MYSQL_USER,
+                    HBNB_MYSQL_PWD,
+                    HBNB_MYSQL_HOST,
+                    HBNB_MYSQL_DB,
+                    ), pool_pre_ping=True)
 
-        self.reload()
-
-        if os.environ.get('HBNB_ENV') == 'test':
+        if HBNB_ENV == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """ class all """
-        class_list = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
+        class_list = ['State', 'City']
 
         dict_class = {}
         if cls == None:
             obj_list = []
-            print('-----------------None--------------------------------')
             for class_name in class_list:
-                obj_list = self.__session.query(class_name).all()
+                obj_list = self.__session.query(eval(class_name)).all()
                 if obj_list is not None:
                     for obj in obj_list:
                         key = class_name + '.' + obj.__dict__['id']
                         dict_class[key] = obj
             return dict_class
         else:
-            print('-----------------Not None--------------------------------')
-            obj_list = self.__session.query(cls).all()
+            obj_list = self.__session.query(eval(cls)).all()
             if obj_list is not None:
                 for obj in obj_list:
                     key = type(obj).__name + '.' + obj.__dict__['id']
