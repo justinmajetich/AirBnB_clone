@@ -51,7 +51,7 @@ class DBStorage():
             allClassObjs = self.__session.query(classes[cls]).all()
             for obj in allClassObjs:
                 print(obj)
-                key = obj.__name__ + "." + obj.id
+                key = type(obj).__class__.__name__ + "." + obj.id
                 value = obj.__dict__
                 newDict[key] = value
             return (newDict)
@@ -59,13 +59,16 @@ class DBStorage():
             allDicts = {}
             
             dictList = []
-            dictList.append(
+            State = self.all('State')
+            City = self.all('City')
+            dictList.append(State)
+            dictList.append(City)
+            
+            '''
             User = self.all('User'),
-            State = self.all('State'),
-            City = self.all('City'),
             Amenity = self.all('Amenity'),
             Place = self.all('Place'),
-            Review = self.all('Review'))
+            Review = self.all('Review'))'''
 
             for dicts in dictList:
                 allDicts.update(dicts)

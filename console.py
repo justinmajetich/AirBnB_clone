@@ -145,6 +145,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(params) == 1:
             new_instance = HBNBCommand.classes[params[0]]()
             print(new_instance.id)
+            storage.new()
             storage.save()
         else:
             new_instance = HBNBCommand.classes[params[0]]()
@@ -170,6 +171,7 @@ class HBNBCommand(cmd.Cmd):
                             noQuote = noQuote.replace('\"', '"')
                             new_instance.__dict__[key] = noQuote
             print(new_instance.id)
+            storage.new(new_instance)
             storage.save()
 
     def help_create(self):
@@ -254,17 +256,17 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             if os.getenv('HBNB_TYPE_STORAGE') == "db":
-                for k, v in storage.all(args):
+                for k in storage.all(args):
                     if k.split('.')[0] == args:
-                        print_list.append(str(v))
+                        print_list.append(str(k))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
                         print_list.append(str(v))
         else:
             if os.getenv('HBNB_TYPE_STORAGE') == "db":
-                for k, v in storage.all():
-                    print_list.append(str(v))
+                for k in storage.all():
+                    print_list.append(str(k))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
