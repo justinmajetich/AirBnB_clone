@@ -6,11 +6,13 @@ from models import storage
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column('id', String(60), primary_key=True, nullable=False)
     created_at = Column('created_at', nullable=False, default=datetime.now())
     updated_at = Column('updated_at', nullable=False, default=datetime.now())
+
     def __init__(self, *args, **kwargs):
         """init"""
         if len(kwargs) == 0:
