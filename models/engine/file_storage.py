@@ -9,6 +9,7 @@ class FileStorage:
     __objects = {}
 
     def delete(self, obj=None):
+        """deletes obj from __objects"""
         if obj is None:
             return
         key = '{}.{}'.format(str(obj.__class__.__name__), str(obj.id))

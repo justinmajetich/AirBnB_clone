@@ -27,12 +27,13 @@ class DBStorage:
                     getenv('HBNB_MYSQL_PWD'),
                     getenv('HBNB_MYSQL_HOST'),
                     getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
-        if getenv('HBNB_ENV') is 'test':
+        if getenv('HBNB_ENV') == 'test':
             self.__engine.drop_all()
 
     def all(self, cls=None):
+        """queries current db session for all objs depending on cls"""
         objects = {}
-        if cls is None:
+        if cls == None:
             for obj in self.__session.query().all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                 objects[key] = obj
@@ -43,17 +44,22 @@ class DBStorage:
         return objects
 
     def new(self, obj):
+        """add obj to current db"""
         self.__session.add(obj)
 
     def save(self):
+        """commit all changes of the current db session"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """delete from the current db session"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
+        """create all tables in the db and current db session from engine"""
         Base.metadata.create_all(self.__engine)
-        session_store = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_store = sessionmaker(bind=self.__engine,
+                                     expire_on_commit=False)
         our_session = scoped_session(session_store)
         self.__session = our_session()
