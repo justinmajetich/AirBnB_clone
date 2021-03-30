@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 import json
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage():
@@ -32,7 +33,6 @@ class DBStorage():
 
     def reload(self):
         """Create all tables in the database"""
-        from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
         sessionM = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sessionM)
