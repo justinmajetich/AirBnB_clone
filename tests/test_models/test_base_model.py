@@ -7,6 +7,8 @@ from uuid import UUID
 import json
 import os
 
+type_storage = os.getenv('HBNB_TYPE_STORAGE')
+
 
 class test_basemodel(unittest.TestCase):
     """ """
@@ -97,3 +99,9 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    @unittest.skipIf(type_storage != 'db',
+                     "test not possible")
+    def test_save_BaseModeldb(self):
+        """empty test """
+        pass
