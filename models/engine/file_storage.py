@@ -37,7 +37,6 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            print(temp)
             json.dump(temp, f)
 
     def reload(self):
