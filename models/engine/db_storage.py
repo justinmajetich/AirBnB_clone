@@ -33,7 +33,7 @@ class DBStorage:
     def all(self, cls=None):
         """queries current db session for all objs depending on cls"""
         objects = {}
-        if cls is None:
+        if cls == None:
             for obj in self.__session.query().all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                 objects[key] = obj
