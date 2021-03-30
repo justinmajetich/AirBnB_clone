@@ -13,6 +13,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 import json
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+clas = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class DBStorage():
     """Class DBStorage"""
@@ -37,34 +39,19 @@ class DBStorage():
         sessionM = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sessionM)
         self.__session = Session()
-
+    
     def all(self, cls=None):
         """query on the current database session all objects
         Return a dictionary
         """
-        object_cls = {}
-        query_s = []
-        if cls:
-            if cls is str:
-                quer = self.__session.query(eval(cls)).all()
-            else:
-                quer = self.__session.query(cls).all()
-            query_s.extend(quer)
-        else:
-            classes = ['State', 'City', 'User', 'Place', 'Review']
-            for clas in classes:
-                if cls is str:
-                    quer = self.__session.query(eval(clas)).all()
-                else:
-                    quer = self.__session.query(clas).all()
-                query_s.extend(quer)
-        for instance in query_s:
-            if cls is str:
-                key = cls + '.' + instance.id
-            else:
-                key = cls.__name__ + '.' + instance.id
-            object_cls[key] = instance
-        return object_cls
+        new_dict = {}
+        for clss in clas:
+            if cls is None or cls is clas[clss] or cls is clss:
+                objs = self.__session.query(clas[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """add the object to the current database session"""
