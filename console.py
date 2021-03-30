@@ -108,6 +108,7 @@ class HBNBCommand(cmd.Cmd):
                     if len(p) == 2:
                         setattr(obj, p[0], cast(p[1].replace("_", " ")))
             print(obj.id)
+            storage.new(obj)
             storage.save()
 
     def do_show(self, arg):
