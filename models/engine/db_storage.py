@@ -51,10 +51,15 @@ class DBStorage:
                         dict_class[key] = obj
             return dict_class
         else:
-            obj_list = self.__session.query(eval(cls)).all()
+            if isinstance(cls, str):
+                cls_tmp = eval(cls)
+            else:
+                cls_tmp = cls
+
+            obj_list = self.__session.query(cls_tmp).all()
             if obj_list is not None:
                 for obj in obj_list:
-                    key = cls + '.' + obj.__dict__['id']
+                    key = type(obj).__name__ + '.' + obj.__dict__['id']
                     dict_class[key] = obj
             return dict_class
 
