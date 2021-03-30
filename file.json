@@ -1,1 +1,23 @@
-{"State.355cabbc-2c64-4cf7-8b24-4ca25af059ff": {"name": "Nevada", "id": "355cabbc-2c64-4cf7-8b24-4ca25af059ff", "created_at": "2021-03-29T15:23:24.533493", "__class__": "State", "updated_at": "2021-03-29T15:23:24.533504"}, "State.e6ccf9fa-6265-4a4e-8838-7a757bed31e8": {"name": "California", "id": "e6ccf9fa-6265-4a4e-8838-7a757bed31e8", "created_at": "2021-03-29T15:23:24.532930", "__class__": "State", "updated_at": "2021-03-29T15:23:24.532944"}}
+{
+	"User.9991f62c-eddf-4e80-b298-b6939d3b2432": {
+		"id": "9991f62c-eddf-4e80-b298-b6939d3b2432",
+		"__class__": "User",
+		"created_at": "2021-03-29T16:41:48.388832",
+		"name": "hey",
+		"updated_at": "2021-03-29T16:41:48.388851"
+	},
+	"State.8c09714a-e05e-441b-999d-ff59b1a8a5b8": {
+		"updated_at": "2021-03-29T16:38:06.867281",
+		"__class__": "State",
+		"created_at": "2021-03-29T16:38:06.867257",
+		"name": "eooo",
+		"id": "8c09714a-e05e-441b-999d-ff59b1a8a5b8"
+	},
+	"State.3e0323b4-f255-4f2c-b8e3-8a5dcca1561b": {
+		"updated_at": "2021-03-29T16:38:19.644867",
+		"__class__": "State",
+		"created_at": "2021-03-29T16:38:19.644848",
+		"name": "eooo",
+		"id": "3e0323b4-f255-4f2c-b8e3-8a5dcca1561b"
+	}
+}

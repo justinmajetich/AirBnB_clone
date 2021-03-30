@@ -31,7 +31,7 @@ class DBStorage:
         if os.environ.get('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
-        self.reload()
+        #self.reload()
 
     def all(self, cls=None):
         """ class all """
@@ -73,7 +73,6 @@ class DBStorage:
         """ create all tables in the database (feature of SQLAlchemy) """
         Base.metadata.create_all(self.__engine)
 
-        
         current_session = sessionmaker(
             bin=self.__session, expire_on_commit=False)
         self.__session = scoped_session(current_session)
