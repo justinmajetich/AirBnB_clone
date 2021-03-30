@@ -52,8 +52,9 @@ class BaseModel():
 
     def __str__(self):
         """ String method"""
-        return ("[{}] ({}) {}"
-                .format(self.__class__.__name__, self.id, self.__dict__))
+        dic = self.__dict__.copy()
+        dic.pop("_sa_instance_state", None)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, dic)
 
     def delete(self):
         """
