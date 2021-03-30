@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
                     if '_' in value:
                         value = value.replace('_', ' ')
                     # value_result = value[1:-1].replace('"', '\\"')
-                    value_result = shlex.split(value_result)[0]
+                    value_result = shlex.split(value)[0]
 
                 setattr(new_instance, parameter[0], value_result)
 
