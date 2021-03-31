@@ -53,7 +53,5 @@ class Place(BaseModel, Base):
     def amenities(self, obj):
         """amenities setter"""
         from models.amenity import Amenity
-        if not isinstance(obj, Amenity):
-            return
-        else:
-            self.amenity_ids.append(Amenity)
+        if isinstance(obj, Amenity) is True:
+            self.amenity_ids.append(obj.id)
