@@ -5,7 +5,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import (create_engine)
-from models import storage
 import os
 
 """ Setting env variables """
@@ -17,7 +16,7 @@ HBNB_ENV = os.getenv('HBNB_ENV')
 
 class State(BaseModel, Base):
     """ State class """
-    __tablename__ = "state"
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state")
 
