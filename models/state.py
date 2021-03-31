@@ -22,7 +22,15 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        """ returns the list of City instances with state_id
+        """ getter for cities """
+        cities = []
+        allcities = models.storage.all(City)
+        for item in allcities.values():
+            if item.state_id == self.id:
+                cities.append(item)
+        return cities
+
+""" returns the list of City instances with state_id
         == the current State.id """
 
         """ Since this is working with file storage, we're assuming that this is
@@ -38,8 +46,8 @@ class State(BaseModel, Base):
         print(places)"""
 
         #check city id where state_id == self.id
-        allcities = storage.all(State)
-        print(allcities)
+        #allcities = storage.all(State)
+        #print(allcities)
         """ statecities = []"""
         """for key, value in allcities:
             if (i.id == self.id)
