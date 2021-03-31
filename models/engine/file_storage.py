@@ -22,7 +22,7 @@ class FileStorage:
             return FileStorage.__objects
         objects = {}
         for key, val in FileStorage.__objects.items():
-            if obj.__class__.__name__ == cls:
+            if val.__class__ == cls:
                 objects[key] = val
         return objects
 
