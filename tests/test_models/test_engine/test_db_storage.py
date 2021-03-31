@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Module for testing database storage"""
+
 import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.schema import MetaData
@@ -27,6 +28,7 @@ class test_dbStorage(unittest.TestCase):
         os.environ['HBNB_MYSQL_HOST'] = "localhost"
         os.environ['HBNB_MYSQL_DB'] = "hbnb_test_db"
         os.environ['HBNB_TYPE_STORAGE'] = "db"
+
         self.storage = DBStorage()
         self.storage.reload()
 
@@ -39,6 +41,7 @@ class test_dbStorage(unittest.TestCase):
         """ docstring"""
         self.assertIsInstance(self.storage, DBStorage)
 
+    @unittest.skip("For now")
     def test_city(self):
         """ Testing cities in the database """
         bark = State(**{'id': '4f33f621-7fdd-436a-8e9e-933c5f363724',
