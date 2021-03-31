@@ -26,12 +26,12 @@ class BaseModel:
             self.updated_at = datetime.now()
 
         else:
-            if os.getenv('HBNB_TYPE_STORAGE') != "db":
-                kwargs['updated_at'] = datetime.strptime(
-                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(
-                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
-                del kwargs['__class__']
+            '''if os.getenv('HBNB_TYPE_STORAGE') != "db":'''
+            kwargs['updated_at'] = datetime.strptime(
+                kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(
+                kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            del kwargs['__class__']
 
             self.__dict__.update(kwargs)
 
@@ -51,6 +51,7 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
+
         dictionary.update({'__class__':
                            (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
