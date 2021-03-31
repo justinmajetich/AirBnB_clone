@@ -79,7 +79,14 @@ class DBStorage:
 
         def new(self, obj):
                 """ add the object to the current database session """
-                self.__session.add(obj)
+                # Needs to create an instance before saving it
+                print("In new")
+                for key, value in classdict.items():
+                        if key == obj:
+                                new = value()
+                self.__session.add(new)
+                print("New item is {}".format(new))
+                self.save()
 
         def save(self):
                 """ Commits all changes of the current database session """
@@ -89,3 +96,4 @@ class DBStorage:
                 """ Deletes from current session if obj not None """
                 if obj is not None:
                         self.__session.delete(obj)
+                self.save()
