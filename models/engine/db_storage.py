@@ -3,14 +3,13 @@
 from sqlalchemy import create_engine as create
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm.session import Session
 from models.base_model import Base
 from os import getenv as env
 from models.user import User
 from models.state import State
 from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+# from models.amenity import Amenity
+# from models.review import Review
 from models.place import Place
 
 
@@ -23,12 +22,12 @@ class DBStorage():
     def __init__(self):
         '''__init__'''
         test = env('HBNB_ENV')
-        self.__engine = create('mysql+mysqldb://{}:{}@{}/{}'.format( \
-                                    env('HBNB_MYSQL_USER'),
-                                    env('HBNB_MYSQL_USER'),
-                                    env('HBNB_MYSQL_USER'),
-                                    env('HBNB_MYSQL_USER'),
-                                    pool_pre_pring=True))
+        self.__engine = create('mysql+mysqldb://{}:{}@{}/{}'.format(
+                               env('HBNB_MYSQL_USER'),
+                               env('HBNB_MYSQL_PWD'),
+                               env('HBNB_MYSQL_HOST'),
+                               env('HBNB_MYSQL_DB'),
+                               pool_pre_pring=True))
         if test == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
@@ -36,14 +35,20 @@ class DBStorage():
         '''all'''
         new_dict = {}
         objs = []
-
-        if cls == None:
+        if cls is None:
             objs += (self.__session.query(User).all())
             objs += (self.__session.query(City).all())
             objs += (self.__session.query(State).all())
-            objs += (self.__session.query(Amenity).all())
+            # try:
+            #     objs += (self.__session.query(Amenity).all())
+            # except:
+            #     print("Amen")
             objs += (self.__session.query(Place).all())
-            objs += (self.__session.query(Review).all())
+            # try:
+            #     objs += (self.__session.query(Review).all())
+            # except:
+            #     print("Rev")
+
         else:
             objs = self.__session.query(cls).all()
         for obj in objs:
@@ -62,7 +67,7 @@ class DBStorage():
     def delete(self, obj=None):
         '''delete'''
         #delete from current db session obj if not None
-        if obj != None:
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
@@ -71,6 +76,6 @@ class DBStorage():
         #create current db session using sessionmaker
         Base.metadata.create_all(self.__engine)
 
-        Session = sessionmaker(bind=self.__engine,expire_on_commit=False)
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         session = scoped_session(Session)
         self.__session = session()
