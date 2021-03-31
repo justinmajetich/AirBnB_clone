@@ -22,9 +22,9 @@ HBNB_ENV = os.getenv('HBNB_ENV')
 classdict = {'User': User,
              'State': State,
              'City': City,
-             #'Amenity': Amenity,
+             # 'Amenity': Amenity,
              'Place': Place,
-             #'Review': Review
+             # 'Review': Review
              }
 
 
@@ -43,18 +43,22 @@ class DBStorage:
 
                 # Drop all tables if env is test
                 if HBNB_ENV == 'test':
-                        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+                        Session = sessionmaker(
+                                bind=self.__engine, expire_on_commit=False)
                         session_scoped = scoped_session(Session)
                         self.__session = session_scoped()
                         Base.metadata.create_all(self.__engine)
-                
+
         def all(self, cls=None):
-                """ query on the current database session (self.__session) all objects depending of the class name (argument cls); returns dict """
+                """ query on the current database session (self.__session)
+                all objects depending of the class name (argument cls);
+                returns dict """
                 self.reload()
-                if cls == None:
+                if cls is None:
                         retdict = {}
                         for key, value in classdict.items():
-                                for u in self.__session.query(classdict[key]).all():
+                                for u in self.__session.query(
+                                        classdict[key]).all():
                                         print(u)
                                         retdict[value.id] = u.__dict__
                         return retdict
@@ -67,7 +71,8 @@ class DBStorage:
 
         def reload(self):
                 """ creates all tables in the database """
-                Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+                Session = sessionmaker(
+                        bind=self.__engine, expire_on_commit=False)
                 session_scoped = scoped_session(Session)
                 self.__session = session_scoped()
                 Base.metadata.create_all(self.__engine)
@@ -75,8 +80,12 @@ class DBStorage:
         def new(self, obj):
                 """ add the object to the current database session """
                 self.__session.add(obj)
-        
+
         def save(self):
                 """ Commits all changes of the current database session """
                 self.__session.commit()
 
+        def delete(self, obj=None):
+                """ Deletes from current session if obj not None """
+                if obj is not None:
+                        self.__session.delete(obj)
