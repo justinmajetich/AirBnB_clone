@@ -14,21 +14,23 @@ from models.review import Review
 
 def parse(text_args):
     """Parse all argurments for the console"""
+    # print("============")
+    text_args = text_args.replace('"', '\\"')
+    # print(text_args)
     return split(text_args)
 
 
 def cast(text_value):
     """Cast in int or float a value"""
-
-    if text_value[0] == '0' and len(text_value) > 1:
-        return text_value
+    if text_value[0] == '"' and text_value[-1] == '"':
+        return text_value[1:-1]
     elif text_value.isnumeric():
         return int(text_value)
     else:
         try:
             return float(text_value)
         except:
-            return text_value
+            return None
 
 
 def get_arg(met):
@@ -106,7 +108,10 @@ class HBNBCommand(cmd.Cmd):
                 params = [tp.split("=") for tp in l_args[1:] if " " not in tp]
                 for p in params:
                     if len(p) == 2:
-                        setattr(obj, p[0], cast(p[1].replace("_", " ")))
+                        key, tex_value = p
+                        value = cast(tex_value.replace("_", " "))
+                        if value is not None:
+                            setattr(obj, key, value)
             print(obj.id)
             storage.new(obj)
             storage.save()
@@ -220,7 +225,10 @@ class HBNBCommand(cmd.Cmd):
             for obj in val_obj:
                 if flt(obj):
                     text += str(obj) + ", "
-            text = text[0:-2] + "]"
+            if text[0:-2] == ", ":
+                text = text[0:-2] + "]"
+            else:
+                text += "]"
             print(text)
 
     def do_update(self, arg):
