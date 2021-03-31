@@ -271,8 +271,13 @@ class HBNBCommand(cmd.Cmd):
                         print_list.append(str(v))
         else:
             if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                storDict = storage.all(args)
                 for k in storage.all():
-                    print_list.append(str(k))
+                    key = k.split('.')[0]
+                    id = k.split('.')[1]
+                    objDict = storDict[k]
+                    print_list.append('[{}] ({}) {}'.format(key, id,
+                                                            objDict))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))

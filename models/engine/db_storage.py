@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
 
-class DBStorage():
+class DBStorage:
     """Class that represents DBStorage"""
 
     '''** CAN WE EVEN USE SELF HERE WHEN IT WASN'T PASSED IN
