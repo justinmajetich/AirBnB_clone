@@ -30,6 +30,7 @@ class BaseModel():
                     setattr(self, k, datetime.strptime(v, fmt))
                 elif k != "__class__":
                     setattr(self, k, v)
+            self.id = str(uuid.uuid4())
 
     def save(self):
         """ Save Method """
