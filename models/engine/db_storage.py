@@ -30,8 +30,6 @@ class DBStorage:
                                               theHost, theDB),
                                       pool_pre_ping=True)
 
-        '''** add Base to metadata and change
-        theEngine to self.__engine **'''
         if theEnv == "test":
             Base.metadata.drop_all(self.__engine)
 

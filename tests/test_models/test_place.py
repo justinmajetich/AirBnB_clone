@@ -2,8 +2,12 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
+from models.review import Review
+import unittest
+from models import storage
 
 
+@unittest.skip("For now")
 class test_Place(test_basemodel):
     """ """
 
@@ -67,3 +71,12 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+    """
+    def test_print_changes(self):
+       Method to test that getter changes places
+
+        aPlace = Place(id="11")
+        aReview = Review(place_id='11')
+        print(aPlace)
+        print(aReview)
+        aPlace.get_reviews()"""
