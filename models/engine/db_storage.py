@@ -34,8 +34,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Shows all instances of the given class or all all classes"""
-        # allClasses = ["State", "Place", "User", "Amenity", "Review", "City"]
-        allClasses = ["State", "City", "User", "Place", "Review"]
+        allClasses = ["State", "City", "User", "Place", "Review", "Amenity"]
         listClasses = []
         dictClasses = {}
         if cls is not None and cls in allClasses:
