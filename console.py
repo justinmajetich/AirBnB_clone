@@ -126,7 +126,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         else:
-            new_instance = HBNBCommand.classes[inpt[0]]()
+            new_instance = storage.new(inpt[0])()
+            storage.save()
             for i in range(1, len(inpt)):
                 attr = inpt[i].split('=')
                 # need to handle type of input
@@ -170,8 +171,9 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
+            print("Error test: In show")
             print("** no instance found **")
 
     def help_show(self):
@@ -205,6 +207,7 @@ class HBNBCommand(cmd.Cmd):
             del(storage.all()[key])
             storage.save()
         except KeyError:
+            print("Error test: In destroy")
             print("** no instance found **")
 
     def help_destroy(self):
@@ -275,6 +278,8 @@ class HBNBCommand(cmd.Cmd):
 
         # determine if key is present
         if key not in storage.all():
+            print(storage.all())
+            print("Error test: In update")
             print("** no instance found **")
             return
 
