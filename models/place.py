@@ -18,3 +18,14 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     __tablename__ = 'places'
+    reviews = relationship("Review", backref="place")
+
+    @property
+    def reviews(self):
+        """ getter for reviews """
+        reviews = []
+        allreviews = models.storage.all(Review)
+        for item in allreviews.values():
+            if item.place_id == self.id:
+                reviews.append(item)
+        return reviews
