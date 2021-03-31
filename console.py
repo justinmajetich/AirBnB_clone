@@ -229,9 +229,13 @@ class HBNBCommand(cmd.Cmd):
                 return
             objects = storage.all(args)
             for obj in objects:
+                if objects[obj].__dict__['_sa_instance_state']:
+                    objects[obj].__dict__.pop('_sa_instance_state')
                 print([objects[obj].__str__()])
         else:
             for obj in objects:
+                if objects[obj].__dict__['_sa_instance_state']:
+                    objects[obj].__dict__.pop('_sa_instance_state')
                 print([objects[obj].__str__()])
 
     def help_all(self):
