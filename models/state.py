@@ -30,26 +30,3 @@ class State(BaseModel, Base):
                 cities.append(item)
         return cities
 
-""" returns the list of City instances with state_id
-        == the current State.id """
-
-        """ Since this is working with file storage, we're assuming that this is
-        not using the db """
-        """engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB), pool_pre_ping=True)
-        Base.metadata.create_all(engine)
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        places = session.query(State, City).filter(
-            State.id, State.id == City.state_id).order_by(City.id)
-        print(places)"""
-
-        #check city id where state_id == self.id
-        #allcities = storage.all(State)
-        #print(allcities)
-        """ statecities = []"""
-        """for key, value in allcities:
-            if (i.id == self.id)
-                statecities.append(i)"""
-
