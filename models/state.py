@@ -13,6 +13,7 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
+    cities = relationship("City",  backref="state", cascade="delete")
 
     # Database storage
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
