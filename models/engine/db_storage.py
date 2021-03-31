@@ -32,12 +32,13 @@ class DBStorage:
                                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                                 HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                         pool_pre_ping=True)
-                print(self.__engine)
 
                 # Drop all tables if env is test
                 if HBNB_ENV == 'test':
-                        Base.metadata.drop_all(self.__engine)
-                        print("Env is test")
+                        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+                        session_scoped = scoped_session(Session)
+                        self.__session = session_scoped()
+                        Base.metadata.create_all(self.__engine)
                 
         def all(self, cls=None):
                 """ query on the current database session (self.__session) all objects depending of the class name (argument cls); returns dict """
