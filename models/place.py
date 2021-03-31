@@ -43,6 +43,7 @@ class Place(BaseModel, Base):
         for key, value in storage.all(Review).items():
             if value.to_dict()["place_id"] == self.id:
                 new[key] = value
+        return new
 
     @property
     def amenities(self):
@@ -53,5 +54,5 @@ class Place(BaseModel, Base):
     def amenities(self, obj):
         """amenities setter"""
         from models.amenity import Amenity
-        if isinstance(obj, Amenity) is True:
+        if obj is type(Amenity):
             self.amenity_ids.append(obj.id)
