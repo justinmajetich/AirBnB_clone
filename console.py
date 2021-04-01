@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 attr = inpt[i].split('=')
                 if (len(attr) == 2):
                     setattr(new_instance, attr[0], attr[1])
-            storage.save()
+            new_instance.save()
             print(new_instance.id)
             storage.save()
 
