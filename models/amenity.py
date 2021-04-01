@@ -10,5 +10,4 @@ class Amenity(BaseModel, Base):
     """amenity class for them sweet sweet amenities"""
     __tablename__ = 'amenities'
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place', secondary=place_amenity,
-                                   backref='amenities')
+    place_amenities = relationship('Place', secondary=place_amenity)
