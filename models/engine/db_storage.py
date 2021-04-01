@@ -22,7 +22,7 @@ HBNB_ENV = os.getenv('HBNB_ENV')
 classdict = {'User': User,
              'State': State,
              'City': City,
-             # 'Amenity': Amenity,
+             'Amenity': Amenity,
              'Place': Place,
              # 'Review': Review
              }
@@ -74,10 +74,11 @@ class DBStorage:
         def new(self, obj):
                 """ add the object to the current database session """
                 # Needs to create an instance before saving it
+                new = None
                 for key, value in classdict.items():
                         if key == obj:
                                 new = value(name="Placeholder")
-                self.__session.add(new)
+                                self.__session.add(new)
                 self.save()
                 return new()
 
