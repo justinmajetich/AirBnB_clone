@@ -3,9 +3,9 @@
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
 import unittest
+import os
 
 
-@unittest.skip("For now")
 class test_Amenity(test_basemodel):
     """ """
 
@@ -15,6 +15,7 @@ class test_Amenity(test_basemodel):
         self.name = "Amenity"
         self.value = Amenity
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != "db", "FileStorage")
     def test_name2(self):
         """ """
         new = self.value()

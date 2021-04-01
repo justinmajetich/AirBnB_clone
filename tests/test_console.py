@@ -24,7 +24,6 @@ class TestConsoleClass(unittest.TestCase):
         "        format: [classname, instid, attr, value]\n"
     )
 
-    @unittest.skipIf(AssertionError, "Advanced Tasks")
     def test_has_attr(self):
         """ Method to test if attr exist """
         self.assertTrue(hasattr(HBNBCommand, "do_create"))
@@ -209,8 +208,7 @@ class TestConsoleClass(unittest.TestCase):
 
         if os.path.exists("file.json"):
             os.remove("file.json")
-        """
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("all"))
-            self.assertIs(list, type(f.getvalue()))
-        """
+            self.assertIs(str, type(f.getvalue()))

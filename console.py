@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-def frickinFunction(numStr, neg):
+def checkInt(numStr, neg):
     """Checks if the numStr is an integer"""
     if neg == 1 and numStr.startswith("-"):
         if numStr[1:].isnumeric():
@@ -158,10 +158,10 @@ class HBNBCommand(cmd.Cmd):
                     continue
                 if len(something) > 1:
                     number = value.split(".")
-                    if frickinFunction(value, 1):
+                    if checkInt(value, 1):
                         new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and frickinFunction(number[0], 1) and
-                          frickinFunction(number[1], 0)):
+                    elif (len(number) > 1 and checkInt(number[0], 1) and
+                          checkInt(number[1], 0)):
 
                         new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):

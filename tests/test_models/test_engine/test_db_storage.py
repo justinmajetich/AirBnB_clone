@@ -41,23 +41,12 @@ class test_dbStorage(unittest.TestCase):
         """ docstring"""
         self.assertIsInstance(self.storage, DBStorage)
 
-    @unittest.skip("For now")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != "db", "FileStorage")
     def test_city(self):
         """ Testing cities in the database """
-        bark = State(**{'id': '4f33f621-7fdd-436a-8e9e-933c5f363724',
-                        'name': 'Mishagain',
-                        'created_at': datetime.datetime(2021, 3, 31, 2,
-                                                        46, 58, 325269),
-                        'updated_at': datetime.datetime(2021, 3, 31, 2,
-                                                        46, 58, 325285)})
+        bark = State(**{'name': 'Michigan'})
         bark.save()
-        meow = City(**{'id': '68dd7376-b89f-47ee-ac09-96f6211f9e8d',
-                       'name': 'Lansing',
-                       'state_id': '4f33f621-7fdd-436a-8e9e-933c5f363724',
-                       'updated_at': datetime.datetime(2021, 3, 31, 2,
-                                                       15, 14, 882874),
-                       'created_at': datetime.datetime(2021, 3, 31, 2,
-                                                       15, 14, 882858)})
+        meow = City(**{'state_id': bark.id})
         meow.save()
         storage.save()
         self.assertIn("City." + meow.id, storage.all())

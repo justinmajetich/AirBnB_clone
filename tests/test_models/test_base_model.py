@@ -48,7 +48,6 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    @unittest.skipIf(os.getenv("HBNB_ENV") is not None, "Testing DBStorage")
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -76,7 +75,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    @unittest.skip("Due to changes to __innit__")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != "db", "FileStorage")
     def test_kwargs_one(self):
         """ Method to test on kwarg """
         n = {'Name': 'test'}
