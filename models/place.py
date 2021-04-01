@@ -9,10 +9,11 @@ from sqlalchemy.schema import MetaData
 import os
 from models import storage
 
+metadata = Base.metadata
 
 place_amenity = Table(
     'place_amenity',
-    Base.metadata,
+    metadata,
     Column(
         'place_id',
         String(60),
@@ -48,7 +49,6 @@ class Place(BaseModel, Base):
             'Amenity',
             secondary=place_amenity,
             viewonly=False)
-
     else:
         @property
         def reviews(self):
