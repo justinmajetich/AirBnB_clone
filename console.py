@@ -127,16 +127,11 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             new_instance = HBNBCommand.classes[inpt[0]]()
+            storage.save()
             for i in range(1, len(inpt)):
                 attr = inpt[i].split('=')
-                # need to handle type of input
-                """ Issue is that it's splitting too many things. We only want
-                to split the first space and then check the rest of
-                the user input """
                 if (len(attr) == 2):
-                    self.do_update("{} {} {} {}".format(
-                        new_instance.__class__.__name__,
-                        new_instance.id, attr[0], attr[1].replace("_", " ")))
+                    setattr(new_instance, attr[0], attr[1])
             storage.save()
             print(new_instance.id)
             storage.save()
@@ -170,7 +165,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -221,14 +216,14 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(v.__str__())
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
+            for k, v in storage.all(args).items():
+                print_list.append(v.__str__())
         print('[%s]' % ', '.join(map(str, print_list)))
+        return
 
     def help_all(self):
         """ Help information for the all command """
