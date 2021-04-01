@@ -7,9 +7,9 @@ from sqlalchemy import *
 
 
 metadata = Base.metadata
-place_amenity = Table("place_amenity", metadata
+place_amenity = Table("place_amenity", metadata,
                       Column('place_id', String(60), ForeignKey(
-                          'places.id'), primary_key=True, nullable=False)
+                          'places.id'), primary_key=True, nullable=False),
                       Column('amenity_id', String(60), ForeignKey(
                           'amenities.id'), primary_key=True, nullable=False)
 )
@@ -41,3 +41,18 @@ class Place(BaseModel, Base):
             if item.place_id == self.id:
                 reviews.append(item)
         return reviews
+
+    @property
+    def amenities(self):
+        """ getter for amenities """
+        amenities = []
+        allamen = models.storage.all(Amenity)
+        for item in allamen.values():
+            if item.amenity_ids == self.id:
+                amenities.append(item)
+        return amenities
+
+    @amenities.setter
+    def amenities(self):
+        """ setter for amenities """
+        self.amenity_ids.append(Amenity.id)
