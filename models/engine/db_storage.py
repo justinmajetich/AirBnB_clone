@@ -34,10 +34,11 @@ class DBStorage:
         """queries current db session for all objs depending on cls"""
         objects = {}
         if cls is None:
-            for obj in self.__session.query(User, State, City, Amenity,
-                                            Place, Review).all():
-                key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-                objects[key] = obj
+            classes = [Amenity, City, Place, Review, State, User]
+            for kls in classes:
+                for obj in self.__session.query(kls).all():
+                    key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+                    objects[key] = obj
         else:
             for obj in self.__session.query(cls).all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
