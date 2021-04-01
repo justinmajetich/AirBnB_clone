@@ -1,6 +1,6 @@
 <h1 align="center">
   <p align="center"><img src="https://assets.holbertonschool.com/media_images/files/000/001/247/original/header-logo-700.png" width="500">
-  <p align="center"><img src="https://logodownload.org/wp-content/uploads/2016/10/airbnb-logo-10.png" width="500">
+  <p align="center"><img src="https://logodownload.org/wp-content/uploads/2016/10/airbnb-logo-10.png" width="300">
     
     HBNB - The Console
     
