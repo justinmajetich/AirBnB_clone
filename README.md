@@ -1,13 +1,11 @@
 <h1 align="center">
   <p align="center"><img src="https://assets.holbertonschool.com/media_images/files/000/001/247/original/header-logo-700.png" width="500">
-  <p align="center"><img src="https://logodownload.org/wp-content/uploads/2016/10/airbnb-logo-10.png" width="100">
+  <p align="center"><img src="https://logodownload.org/wp-content/uploads/2016/10/airbnb-logo-10.png" width="500">
     
-    0x1B. C - Sorting algorithms & Big O
+    HBNB - The Console
     
   </p>
 </h1>
-
-<center> <h1>HBNB - The Console</h1> </center>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
