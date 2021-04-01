@@ -46,14 +46,14 @@ class Place(BaseModel, Base):
                     review_related.append(val)
             return review_related
 
-            @property
-            def amenities(self):
-                """returns list of amenity instances based on amenity_ids"""
-                return self.amenity_ids
+        @property
+        def amenities(self):
+            """returns list of amenity instances based on amenity_ids"""
+            return self.amenity_ids
 
-            @amenities.setter
-            def amenities(self, obj):
-                """appends Amenity.ids to amenity_ids"""
-                from models.amenity import Amenity
-                if type(obj) == Amenity:
-                    amenity_ids.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj):
+            """appends Amenity.ids to amenity_ids"""
+            from models.amenity import Amenity
+            if type(obj) == Amenity:
+                amenity_ids.append(obj.id)
