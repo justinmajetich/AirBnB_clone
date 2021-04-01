@@ -28,16 +28,17 @@ class DBStorage:
                     getenv('HBNB_MYSQL_HOST'),
                     getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
-            self.__engine.drop_all()
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """queries current db session for all objs depending on cls"""
         objects = {}
         if cls is None:
-            for obj in self.__session.query(User, State, City, Amenity,
-                                            Place, Review).all():
-                key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-                objects[key] = obj
+            classes = [Amenity, City, Place, Review, State, User]
+            for kls in classes:
+                for obj in self.__session.query(kls).all():
+                    key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+                    objects[key] = obj
         else:
             for obj in self.__session.query(cls).all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
@@ -62,5 +63,5 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_store = sessionmaker(bind=self.__engine,
                                      expire_on_commit=False)
-        our_session = scoped_session(session_store)
-        self.__session = our_session()
+        Session = scoped_session(session_store)
+        self.__session = Session()
