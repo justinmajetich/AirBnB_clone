@@ -28,10 +28,10 @@ class test_fileStorage(unittest.TestCase):
         """ __objects is initially empty """
         self.assertEqual(len(storage.all()), 0)
 
-    @unittest.skip("FileStorage")
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        new.save()
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is obj)
@@ -61,7 +61,7 @@ class test_fileStorage(unittest.TestCase):
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
 
-    @unittest.skip("FileStorage")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != "db", "FileStorage")
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
@@ -96,7 +96,7 @@ class test_fileStorage(unittest.TestCase):
         """ Confirm __objects is a dict """
         self.assertEqual(type(storage.all()), dict)
 
-    @unittest.skip("FileStorage")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != "db", "FileStorage")
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
@@ -111,20 +111,20 @@ class test_fileStorage(unittest.TestCase):
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
-    @unittest.skip("All")
     def test_delete(self):
         """ Delete FileStorage object """
         self.assertEqual(len(storage.all()), 0)
         new = BaseModel()
+        new.save()
         self.assertEqual(len(storage.all()), 1)
         storage.delete(new)
         self.assertEqual(len(storage.all()), 0)
 
-    @unittest.skip("All")
     def test_delete_none(self):
         """ Delete "None" FileStorage object """
         self.assertEqual(len(storage.all()), 0)
         new = BaseModel()
+        new.save()
         self.assertEqual(len(storage.all()), 1)
         storage.delete()
         self.assertEqual(len(storage.all()), 1)
