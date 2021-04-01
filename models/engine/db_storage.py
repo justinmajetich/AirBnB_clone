@@ -80,7 +80,7 @@ class DBStorage:
                                 new = value(name="Placeholder")
                                 self.__session.add(new)
                 self.save()
-                return new()
+                return
 
         def save(self):
                 """ Commits all changes of the current database session """
