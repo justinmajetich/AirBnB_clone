@@ -28,7 +28,7 @@ class DBStorage:
                     getenv('HBNB_MYSQL_HOST'),
                     getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
-            self.__engine.drop_all()
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """queries current db session for all objs depending on cls"""
