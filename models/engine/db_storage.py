@@ -54,20 +54,14 @@ class DBStorage:
                 all objects depending of the class name (argument cls);
                 returns dict """
                 self.reload()
-                if cls is None:
+                for key, value in classdict.items():
                         retdict = {}
-                        for key, value in classdict.items():
+                        if cls is None or cls == key:
                                 for u in self.__session.query(
                                         classdict[key]).all():
-                                        print(u)
-                                        retdict[value.id] = u.__dict__
+                                        k = u.__class__.__name__ + "." + u.id
+                                        retdict[k] = u
                         return retdict
-                else:
-                        for key, value in classdict.items():
-                                if cls == key:
-                                        name = value
-                                        get = value.id
-                        return (self.__session.query(name).order_by(get))
 
         def reload(self):
                 """ creates all tables in the database """
@@ -83,10 +77,11 @@ class DBStorage:
                 print("In new")
                 for key, value in classdict.items():
                         if key == obj:
-                                new = value()
+                                new = value(name="Placeholder")
                 self.__session.add(new)
                 print("New item is {}".format(new))
                 self.save()
+                return new()
 
         def save(self):
                 """ Commits all changes of the current database session """
