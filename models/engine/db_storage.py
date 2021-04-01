@@ -74,12 +74,10 @@ class DBStorage:
         def new(self, obj):
                 """ add the object to the current database session """
                 # Needs to create an instance before saving it
-                print("In new")
                 for key, value in classdict.items():
                         if key == obj:
                                 new = value(name="Placeholder")
                 self.__session.add(new)
-                print("New item is {}".format(new))
                 self.save()
                 return new()
 
