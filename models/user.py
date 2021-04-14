@@ -3,15 +3,22 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
-from models.place import Place
+from os import getenv
 
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
     __tablename__ = 'users'
-    places = relationship("Place", backref="user")
-    #reviews = relationship("Review", backref="user")
+
+    if getenv("HBNB_TYPE_STORAGE", "fs") != "db":
+        email = ''
+        password = ''
+        first_name = ''
+        last_name = ''
+    else:
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=False)
+        last_name = Column(String(128), nullable=False)
+        places = relationship("Place", backref="user")
+        reviews = relationship("Review", backref="user")

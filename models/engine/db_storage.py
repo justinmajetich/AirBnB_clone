@@ -24,7 +24,7 @@ classdict = {'User': User,
              'City': City,
              'Amenity': Amenity,
              'Place': Place,
-             # 'Review': Review
+             'Review': Review
              }
 
 
@@ -80,7 +80,7 @@ class DBStorage:
                                 new = value(name="Placeholder")
                                 self.__session.add(new)
                 self.save()
-                return new()
+                return
 
         def save(self):
                 """ Commits all changes of the current database session """
