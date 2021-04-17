@@ -53,6 +53,3 @@ def deploy():
         return False
     val = do_deploy(file_path)
     return val
-
-
-deploy()
