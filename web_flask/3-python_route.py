@@ -22,8 +22,8 @@ def HBNB():
 def C(text):
     """/c/<text>: display “C ” followed by the value of the text variable
     """
-    text = text.replace("_", " ")
-    return 'C %s' % escape(text)
+    
+    return 'C %s' % text.replace(text)
 
 
 @app.route('/python', strict_slashes=False)
