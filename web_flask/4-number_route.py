@@ -40,11 +40,10 @@ def python_text(text='is cool'):
         return "Python %s" % text.replace("_", " ")
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
         """Display n is a number, ony if n is number"""
-        if int(n):
-                return "%d is a number" % int(n)
+        return "%d is a number" % int(n)
 
 
 if __name__ == '__main__':
