@@ -28,7 +28,7 @@ def C(text):
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def PYTHON(text = 'is cool'):
+def PYTHON(text = "is cool"):
     """
     /python/(<text>): display “Python ”, followed by the value of the text variable
     """
