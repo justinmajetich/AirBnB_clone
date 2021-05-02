@@ -9,15 +9,16 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
+        """ Returns the list of objects of one type of class"""
+        if cls:
+            object_cls = {}
+            for key in self.__objects:
+                class_name = key.split(".")
+                if class_name[0] == cls.__name__:
+                    object_cls.update({key: self.__objects[key]})
+            return object_cls
         else:
-            new = {}
-            for k, value in self.__objects.items():
-                if isinstance(value, cls):
-                    new[k] = value
-            return new
+            return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -52,21 +53,20 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """to delete obj from __objects if its inside
-        if obj is equal to None, not do anything"""
-        if obj is None:
-            return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
+        """ delete obj from __objects if its inside
+        - if obj is equal to None, the method should
+        not do anything """
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
-        self.save()
 
     def close(self):
         """ improving engines before using FLASK to display
-        data on HBNB. """
+        data on HBNB. close method call reload()
+        for deserializing the JSON file to objects """
         self.reload()
