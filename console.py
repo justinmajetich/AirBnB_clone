@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,24 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+def checkInt(numStr, neg):
+    """Checks if the numStr is an integer"""
+    if neg == 1 and numStr.startswith("-"):
+        if numStr[1:].isnumeric():
+            return (True, numStr)
+    elif numStr.isnumeric():
+        return (True)
+
+
+def escapedQuotes(string):
+    """Checks that all "s in a string are escaped"""
+    for index, char in enumerate(string):
+        if char == '"':
+            if string[index - 1] != '\\':
+                return False
+    return True
 
 
 class HBNBCommand(cmd.Cmd):
@@ -94,6 +113,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
+        print()
         exit()
 
     def help_quit(self):
@@ -118,13 +138,41 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        params = args.split()
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        elif len(params) == 1:
+            new_instance = HBNBCommand.classes[params[0]]()
+            print(new_instance.id)
+            storage.new(new_instance)
+            storage.save()
+        else:
+            new_instance = HBNBCommand.classes[params[0]]()
+            for thePs in params[1:]:
+                something = thePs.split("=", 1)
+                key = something[0]
+                if len(something) > 1:
+                    value = something[1]
+                else:
+                    continue
+                if len(something) > 1:
+                    number = value.split(".")
+                    if checkInt(value, 1):
+                        new_instance.__dict__[key] = int(value)
+                    elif (len(number) > 1 and checkInt(number[0], 1) and
+                          checkInt(number[1], 0)):
+
+                        new_instance.__dict__[key] = float(value)
+                    elif value.startswith('"') and value.endswith('"'):
+                        noQuote = value[1:-1]
+                        if escapedQuotes(noQuote):
+                            noQuote = noQuote.replace('_', ' ')
+                            noQuote = noQuote.replace('\"', '"')
+                            new_instance.__dict__[key] = noQuote
+            print(new_instance.id)
+            storage.new(new_instance)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -203,17 +251,38 @@ class HBNBCommand(cmd.Cmd):
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
+
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                storDict = storage.all(args)
+                for k in storDict.keys():
+                    key = k.split('.')[0]
+                    id = k.split('.')[1]
+                    objDict = storDict[k]
+                    if k.split('.')[0] == args:
+                        print_list.append('[{}] ({}) {}'.format(key, id,
+                                                                objDict))
 
-        print(print_list)
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+        else:
+            if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                storDict = storage.all(args)
+                for k in storage.all():
+                    key = k.split('.')[0]
+                    id = k.split('.')[1]
+                    objDict = storDict[k]
+                    print_list.append('[{}] ({}) {}'.format(key, id,
+                                                            objDict))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    print_list.append(str(v))
+
+        print('[%s]' % ', '.join(map(str, print_list)))
 
     def help_all(self):
         """ Help information for the all command """
@@ -229,7 +298,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """ Help Information for do_count """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
