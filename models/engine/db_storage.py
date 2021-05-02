@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """DBStorage Engine"""
+from os import getenv
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
@@ -8,7 +9,6 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from sqlalchemy import create_engine
-import os
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 from sqlalchemy.orm import sessionmaker, scoped_session
 
@@ -27,8 +27,8 @@ class DBStorage():
                                               getenv("HBNB_MYSQL_HOST"),
                                               getenv("HBNB_MYSQL_DB")),
                                       pool_pre_ping=True)
-        if os.getenv("HBNB_ENV") == "test":
-            Base.metada.drop_all(self.__engine)
+        if getenv("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """query on the current database session all objects
@@ -68,3 +68,7 @@ class DBStorage():
         Session = scoped_session(sessionmaker(bind=self.__engine,
                                               expire_on_commit=False))
         self.__session = Session()
+
+    def close(self):
+        """ method used for sesssion closing """
+        self.__session.close()

@@ -66,3 +66,7 @@ class FileStorage:
             del self.__objects[key]
         self.save()
 
+    def close(self):
+        """ improving engines before using FLASK to display
+        data on HBNB. """
+        self.reload()
