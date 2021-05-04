@@ -18,8 +18,8 @@ def teardown(self):
 @app.route('/hbnb_filters', strict_slashes=False)
 def hbnb_filters():
     """Display airbnb page until filters construct"""
-    states = storage.all(State)
-    amenities = storage.all(Amenity)
+    states = storage.all('State')
+    amenities = storage.all('Amenity')
     return render_template('10-hbnb_filters.html',
                             states=states, amenities=amenities)
 

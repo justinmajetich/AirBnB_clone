@@ -8,17 +8,10 @@
 }
 
 .locations {
-	display: inline;
-	vertical-align: middle;
-	float: left;
-	height: 100%;
-	width: 25%;
-
-	line-height: 20px;
 	border-right: 1px solid #DDDDDD;
 }
 
-.amenities {
+.amenities, .locations {
 	display: inline;
 	vertical-align: middle;
 	height: 100%;
@@ -49,12 +42,9 @@
 	width: 0;
 }
 
-.locations:hover .popover {
-	display: inline-block;
-}
-
+.locations:hover .popover,
 .amenities:hover .popover {
-	display: block;
+	display: inline-block;
 }
 
 ul {
