@@ -65,4 +65,3 @@ class FileStorage:
 
         if k in self.__objects:
             del self.__objects[k]
-    
