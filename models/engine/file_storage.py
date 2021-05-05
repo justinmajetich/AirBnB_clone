@@ -13,7 +13,7 @@ class FileStorage:
         if cls is not None:
             obj_list = {}
             for obj, value in self.__objects.items():
-                if cls.__name__ == type(value).__name__:
+                if cls == value.__class__:
                     obj_list[obj] = value
             return obj_list
         else:
@@ -61,6 +61,8 @@ class FileStorage:
         if obj is None:
             return
 
-        check = obj.__class__.__name__ + "." + str(obj.id)
-        del self.__objects[check]
-        self.save
+        k = "{}.{}".format(type(obj).__name__, obj.id)
+
+        if k in self.__objects:
+            del self.__objects[k]
+    
