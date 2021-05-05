@@ -19,13 +19,13 @@ def hbnb_route():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_replace(text):
-    return "C " + text.replace("_", " ")
+    return "C " + "%s" %text.replace("_", " ")
 
 
 @app.route('/python/',strict_slashes=False, defaults={'text': 'is cool'})
 @app.route('/python/(<text>)', strict_slashes=False)
 def python(text):
-    return "Python" + text.repalce("_", " ")
+    return "Python %s" text.replace("_", " ")
 
 
 if __name__ == '__main__':
