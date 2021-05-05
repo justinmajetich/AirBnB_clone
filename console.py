@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -115,16 +115,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        my_args_list = args.split(" ")
+        if len(my_args_list) == 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif my_args_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        else:
+            # Create new object
+            new_instance = HBNBCommand.classes[my_args_list[0]]()
+            # Loop for setting attributes.
+            for i in range(1, len(my_args_list)):
+                attr = my_args_list[i].split("=")
+                key = attr[0]
+                value = attr[1]
+                if value[0] == '"':
+                    value = value[1:-1]
+                    str_list = []
+                    new_str = ""
+                    for char in value:
+                        str_list.append(char)
+                    for char in range(len(str_list)):
+                        if str_list[char] == '"':
+                            str_list[char] = '\"'
+                    for char in str_list:
+                        new_str += char
+                    value = new_str
+                    value = value.replace('_', ' ')
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, key, value)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
