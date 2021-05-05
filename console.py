@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -37,7 +39,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -115,41 +116,44 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        my_args_list = args.split(" ")
-        if len(my_args_list) == 0:
+
+        if not args:
             print("** class name missing **")
             return
-        elif my_args_list[0] not in HBNBCommand.classes:
+        command_syntax = args.split(" ")
+        class_name = command_syntax[0]
+        parameters = command_syntax[1:]
+        parameters_dict = {}
+        for items in parameters:
+            parameter_split = items.split("=")
+            # check if it is string
+            if parameter_split[1][0] == "\"":
+                underscore = re.compile('[_]')
+                if underscore.search(parameter_split[1]):
+                    replaced = parameter_split[1].replace("_", " ")
+                    parameters_dict[parameter_split[0]] = replaced.strip('"')
+                    continue
+                else:
+                    parameters_dict[parameter_split[0]] = \
+                                    parameter_split[1].strip('"')
+                continue
+            dot = re.compile('[.]')
+            # check if it is float
+            if dot.search(parameter_split[1]):
+                parameters_dict[parameter_split[0]] = float(parameter_split[1])
+                continue
+            # for interger
+        else:
+                parameters_dict[parameter_split[0]] = parameter_split[1]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        else:
-            # Create new object
-            new_instance = HBNBCommand.classes[my_args_list[0]]()
-            # Loop for setting attributes.
-            for i in range(1, len(my_args_list)):
-                attr = my_args_list[i].split("=")
-                key = attr[0]
-                value = attr[1]
-                if value[0] == '"':
-                    value = value[1:-1]
-                    str_list = []
-                    new_str = ""
-                    for char in value:
-                        str_list.append(char)
-                    for char in range(len(str_list)):
-                        if str_list[char] == '"':
-                            str_list[char] = '\"'
-                    for char in str_list:
-                        new_str += char
-                    value = new_str
-                    value = value.replace('_', ' ')
-                elif '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                setattr(new_instance, key, value)
+        new_instance = HBNBCommand.classes[class_name]()
+        for key, value in parameters_dict.items():
+            setattr(new_instance, key, value)
+        storage.save()
         print(new_instance.id)
-        new_instance.save()
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -222,23 +226,22 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, arg):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        args = shlex.split(arg)
+        obj_list = []
+        if len(args) == 0:
+            obj_dict = storage.all()
+        elif args[0] in HBNBCommand.classes:
+            obj_dict = storage.all(HBNBCommand.classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
@@ -345,5 +348,6 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
