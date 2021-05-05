@@ -2,47 +2,47 @@
 """ Test delete feature
 """
 from models.engine.file_storage import FileStorage
-from models.state import State
+from models.user import User
 
 fs = FileStorage()
 
 # All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+all_users = fs.all(User)
+print("All Users: {}".format(len(all_users.keys())))
+for user_key in all_users.keys():
+    print(all_users[user_key])
 
 # Create a new State
-new_state = State()
-new_state.name = "California"
-fs.new(new_state)
+new_user = User()
+new_user.name = "Robert"
+fs.new(new_user)
 fs.save()
-print("New State: {}".format(new_state))
+print("New User: {}".format(new_user))
 
 # All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+all_users = fs.all(User)
+print("All Users: {}".format(len(all_users.keys())))
+for user_key in all_users.keys():
+    print(all_users[user_key])
 
 # Create another State
-another_state = State()
-another_state.name = "Nevada"
-fs.new(another_state)
+new_user = User()
+new_user.name = "Pedro"
+fs.new(new_user)
 fs.save()
-print("Another State: {}".format(another_state))
+print("New User: {}".format(new_user))
 
 # All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])        
+all_users = fs.all(User)
+print("All Users: {}".format(len(all_users.keys())))
+for user_key in all_users.keys():
+    print(all_users[user_key])
 
 # Delete the new State
-fs.delete(new_state)
+fs.delete(new_user)
 
 # All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+all_users = fs.all(User)
+print("All Users: {}".format(len(all_users.keys())))
+for user_key in all_users.keys():
+    print(all_users[user_key])
