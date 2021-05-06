@@ -4,7 +4,7 @@ Intiatiate flask script application
 display Integer
 """
 from flask import Flask
-from flask import render_templates
+from flask import render_template
 app = Flask(__name__)
 
 
