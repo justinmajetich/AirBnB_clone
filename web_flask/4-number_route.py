@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 Intiatiate flask script application
-display Python is magic
+display Integer
 """
 from flask import Flask
 app = Flask(__name__)
@@ -32,7 +32,7 @@ def p_text(text):
     return ('Python %s' % text.replace("_", " "))
 
 
-@app.return('/number/<int:n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def show_int(n):
     return "{} is a number".format(n)
 
