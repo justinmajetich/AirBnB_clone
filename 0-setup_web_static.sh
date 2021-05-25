@@ -1,9 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env bash
 # sets up web server for the deployment of web static
 
 #install Nginx
-sudo apt-get update
-sudo apt-install -y nginx
+sudo apt update
+sudo apt install -y nginx
 
 #create the folders
 mkdir -p /data/
