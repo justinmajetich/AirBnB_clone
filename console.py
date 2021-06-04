@@ -118,13 +118,44 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        try:
+            splt = args.split()
+            # lst = []
+            # for x in range(len(splt)):
+            #     lst.append(splt[x].split("="))
+            #     lstdct = {lst[i]: lst[i + 1] for i in range(1, len(lst) - 1, 2)}
+            #     for key, value in lstdct.items():
+            #         if key in HBNBCommand.classes():
+            #             if value[0] == '"' and value[len(value) - 1] == '"':
+            #                 value = value[1:len(value) - 1]
+            #                 value = value.replace('_', ' ')
+            #                 value = str(value)
+            #             elif isinstance(value, float):
+            #                 value = float(value)
+            #             elif isinstance(value, int):
+            #                 value = int(value)
+            #             else:
+            #                 continue
+            res = []
+            for sub in splt[1:]:
+                if '=' in sub:
+                    sub = sub.replace('"', '')
+                    res.append(map(str.strip, sub.split('=', 1)))
+            res = dict(res)
+            for keys in res.keys():
+                res[keys] = res[keys].replace('_', ' ')
+            new_instance = HBNBCommand.classes[splt[0]]()
+            new_instance.save()
+            # setattr(new_instance, key, value)
+            self.do_update(splt[0] + " " + str(new_instance.id) + " " + str(res))
+
+            new_instance.save()
+            print(new_instance.id)
+            return
+        except Exception as e:
+            print(e)
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
