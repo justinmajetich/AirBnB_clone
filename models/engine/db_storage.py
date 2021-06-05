@@ -1,25 +1,39 @@
 #!/usr/bin/env python3
 
-
-from sqlalchemy import (create_engine)
+from os import getenv
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 
 
 class db_storage:
     """A method of storage???"""
     __engine = None
     __session = None
+    user = getenv('HBNB_MYSQL_USER')
+    password = getenv('HBNB_MYSQL_PWD')
+    host = getenv('HBNB_MYSQL_HOST')
+    database = getenv('HBNB_MYSQL_DB')
 
-    __init__(self):
-        self.__engine =  create_engine('mysql+mysqldb://'
-                                        'HBNB_MYSQL_USER:HBNB_MYSQL_PWD@'
-                                        'localhost/HBNB_MYSQL_DB',
+    def __init__(self):
+        """Instantiation of self"""
+        self.__engine =  create_engine('mysql+mysqldb://{}:{}@localhost/{}'
+                                        .format(
+                                        self.user, 
+                                        self.password, 
+                                        self.database), 
                                         pool_pre_ping=True)
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
+        tediousvariable = self.__session.query()
+
+        if (self.database == 'hbnb_test_db'):
+            cur = self.__engine.cursor()
+            cur.execute("DROP TABLES")
+
+    def all(self, cls=None):
 
 
-don’t forget the option pool_pre_ping=True when you call create_engine
-drop all tables if the environment variable HBNB_ENV is equal to test
-all(self, cls=None):
 query on the current database session (self.__session) all objects depending of the class name (argument cls)
 if cls=None, query all types of objects (User, State, City, Amenity, Place and Review)
 this method must return a dictionary: (like FileStorage)
