@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             # lst = []
             # for x in range(len(splt)):
             #     lst.append(splt[x].split("="))
-            #     lstdct = {lst[i]: lst[i + 1] for 
+            #     lstdct = {lst[i]: lst[i + 1] for
             # (i in range(1, len(lst) - 1, 2)})
             #     for key, value in lstdct.items():
             #         if key in HBNBCommand.classes():
@@ -147,7 +147,8 @@ class HBNBCommand(cmd.Cmd):
             new_instance = HBNBCommand.classes[splt[0]]()
             new_instance.save()
             # setattr(new_instance, key, value)
-            self.do_update(splt[0] + " " + str(new_instance.id) + " " + str(res))
+            self.do_update(splt[0] + " " + str(new_instance.id) +
+                           " " + str(res))
 
             new_instance.save()
             print(new_instance.id)

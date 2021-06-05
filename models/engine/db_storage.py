@@ -10,6 +10,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models.base_model import BaseModel
+
+
 classes = {
           'BaseModel': BaseModel, 'User': User, 'Place': Place,
           'State': State, 'City': City, 'Amenity': Amenity,
@@ -28,15 +30,13 @@ class db_storage:
 
     def __init__(self):
         """Instantiation of self"""
-        self.__engine =  create_engine('mysql+mysqldb://{}:{}@localhost/{}'
-                                        .format(
-                                        self.user, 
-                                        self.password, 
-                                        self.database), 
-                                        pool_pre_ping=True)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
-        tdsvrbl = self.__session.query()
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(
+                                          self.user,
+                                          self.password,
+                                          self.host,
+                                          self.database),
+                                      pool_pre_ping=True)
 
         if (self.database == 'hbnb_test_db'):
             cur = self.__engine.cursor()
@@ -52,7 +52,7 @@ class db_storage:
                 for instance in tdsvrbl:
                     dict[cls.__name__ + '.' + self.id] = instance
                 return dict
-            
+
         else:
             for x in classes:
                 womp = self.__session.query(x).all()
@@ -60,7 +60,7 @@ class db_storage:
                     dict[x.__class__.__name__ + '.' + self.id] = y
             return dict
 
-    def new(self, obj): 
+    def new(self, obj):
         """add object to current db sesh: self.__session"""
         from models import FileStorage
         self.__session.add(obj)
@@ -75,9 +75,7 @@ class db_storage:
             del obj
 
     def reload(self):
-        """create all tables in the database (feature of SQLAlchemy)""" 
-        """(WARNING: all classes who inherit from Base must be imported""" 
-        """before calling Base.metadata.create_all(engine))"""
+        """create all tables in the database (feature of SQLAlchemy)"""
         from models.base_model import BaseModel, Base
         from models.user import User
         from models.place import Place
@@ -88,6 +86,7 @@ class db_storage:
 
         Base.metadata.create_all(self.__engine)
 
-        deobfuscation_var = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(deobfuscation_var)
-        
+        engine = sessionmaker(bind=self.__engine,
+                              expire_on_commit=False)
+        Session = scoped_session(engine)
+        self.__session = Session()

@@ -10,11 +10,13 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 classes = {
           'BaseModel': BaseModel, 'User': User, 'Place': Place,
           'State': State, 'City': City, 'Amenity': Amenity,
           'Review': Review
           }
+
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -29,7 +31,6 @@ class FileStorage:
                 if cls.__name__ in key:
                     dict[key] = FileStorage.__objects[key]
             return dict
-            
         else:
             return FileStorage.__objects
 
@@ -56,7 +57,7 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-    
+
     def delete(self, obj=None):
         """ Deletes obj if exists """
         if obj:
