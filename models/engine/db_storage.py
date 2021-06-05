@@ -2,8 +2,19 @@
 
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.base_model import BaseModel
+classes = {
+          'BaseModel': BaseModel, 'User': User, 'Place': Place,
+          'State': State, 'City': City, 'Amenity': Amenity,
+          'Review': Review
+          }
 
 
 class db_storage:
@@ -25,23 +36,58 @@ class db_storage:
                                         pool_pre_ping=True)
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
-        tediousvariable = self.__session.query()
+        tdsvrbl = self.__session.query()
 
         if (self.database == 'hbnb_test_db'):
             cur = self.__engine.cursor()
             cur.execute("DROP TABLES")
 
     def all(self, cls=None):
+        """query current db sesh: all objects of class.name"""
+        """if cls=None, query all: User, State, City, etc."""
+        dict = {}
+        for x in classes:
+            if cls == x:
+                tdsvrbl = self.__session.query(cls).all()
+                for instance in tdsvrbl:
+                    dict[cls.__name__ + '.' + self.id] = instance
+                return dict
+            
+        else:
+            for x in classes:
+                womp = self.__session.query(x).all()
+                for y in womp:
+                    dict[x.__class__.__name__ + '.' + self.id] = y
+            return dict
 
+    def new(self, obj): 
+        """add object to current db sesh: self.__session"""
+        from models import FileStorage
+        self.__session.add(obj)
 
-query on the current database session (self.__session) all objects depending of the class name (argument cls)
-if cls=None, query all types of objects (User, State, City, Amenity, Place and Review)
-this method must return a dictionary: (like FileStorage)
-key = <class-name>.<object-id>
-value = object
-new(self, obj): add the object to the current database session (self.__session)
-save(self): commit all changes of the current database session (self.__session)
-delete(self, obj=None): delete from the current database session obj if not None
-reload(self):
-create all tables in the database (feature of SQLAlchemy) (WARNING: all classes who inherit from Base must be imported before calling Base.metadata.create_all(engine))
-create the current database session (self.__session) from the engine (self.__engine) by using a sessionmaker - the option expire_on_commit must be set to False ; and scoped_session - to make sure your Session is thread-safe
+    def save(self):
+        """commit all chgs of cur db sesh: self.__session"""
+        self.__session.commit
+
+    def delete(self, obj=None):
+        """delete from curr db sesh obj: !=None"""
+        if obj:
+            del obj
+
+    def reload(self):
+        """create all tables in the database (feature of SQLAlchemy)""" 
+        """(WARNING: all classes who inherit from Base must be imported""" 
+        """before calling Base.metadata.create_all(engine))"""
+        from models.base_model import BaseModel, Base
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        Base.metadata.create_all(self.__engine)
+
+        deobfuscation_var = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(deobfuscation_var)
+        
