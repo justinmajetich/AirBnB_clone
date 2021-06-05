@@ -62,6 +62,5 @@ class FileStorage:
         if obj:
             for key in FileStorage.__objects.keys():
                 if obj.id in key:
-                    print(FileStorage.__objects[key])
                     del FileStorage.__objects[key]
                     return
