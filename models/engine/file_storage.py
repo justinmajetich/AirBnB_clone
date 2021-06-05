@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models of class 'cls' currently in storage"""
+        """Returns a dictionary of models of class 'cls' from __objects"""
         if cls:
             d = {}
             for k, v in FileStorage.__objects.items():

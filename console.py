@@ -125,7 +125,8 @@ class HBNBCommand(cmd.Cmd):
                 for pear in largs[1:]:
                     pair = pear.split('=')
                     if pair[1][0] == '"':
-                        setattr(new_instance, pair[0], pair[1][1: -1].replace('_', ' '))
+                        setattr(new_instance, pair[0],
+                                pair[1][1: -1].replace('_', ' '))
                     elif '.' in pair[1]:
                         try:
                             setattr(new_instance, pair[0], float(pair[1]))
