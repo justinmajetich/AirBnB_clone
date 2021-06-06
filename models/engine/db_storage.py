@@ -19,7 +19,6 @@ database = os.environ['HBNB_MYSQL_DB']
 envi = os.getenv('HBNB_ENV')
 
 
-
 class DBStorage:
     """"This class manages storage of hbnb models in a MySQL Database"""
     __engine = None
@@ -27,7 +26,8 @@ class DBStorage:
 
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.format
-                        (user, passwd, host, database), pool_pre_ping=True)
+                                      (user, passwd, host, database),
+                                      pool_pre_ping=True)
         if envi == 'test':
             Base.metadata.drop_all(self.__engine)
 

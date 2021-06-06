@@ -21,7 +21,7 @@ class test_console(unittest.TestCase):
     def test_create_state(self):
         if os.path.exists(fs._FileStorage__file_path):
             os.remove(fs._FileStorage__file_path)
-        with patch('sys.stdout', new = StringIO()) as boy:
+        with patch('sys.stdout', new=StringIO()) as boy:
             HBNBCommand().onecmd("create State")
             state_id = boy.getvalue()[:-1]
         with open(fs._FileStorage__file_path, 'r') as guy:
