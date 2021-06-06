@@ -9,7 +9,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 
 
 classes = {
@@ -58,7 +58,7 @@ class db_storage:
                 return dict
 
         else:
-            for x in tables:
+            for x in Base.__subclasses__():
                 womp = self.__session.query(x)
                 for y in womp:
                     dict[y.__class__.__name__ + '.' + y.id] = y
@@ -71,7 +71,7 @@ class db_storage:
 
     def save(self):
         """commit all chgs of cur db sesh: self.__session"""
-        self.__session.commit
+        self.__session.commit()
 
     def delete(self, obj=None):
         """delete from curr db sesh obj: !=None"""
