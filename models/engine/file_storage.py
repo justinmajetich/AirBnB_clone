@@ -12,12 +12,13 @@ class FileStorage:
         """Returns a list of objects of type cls"""
         if cls:
             temp_d = {}
-            for k, v in Filestorage.__objects.items():
+            for k, v in self.__objects.items():
                 if type(v) is cls:
                     temp_d[k] = v
             return temp_d
         else:
             return FileStorage.__objects
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
@@ -58,8 +59,8 @@ class FileStorage:
     def delete(self, obj=None):
         """to delete obj from __objects if it is inside"""
         if obj:
-            for k, v in Filestorage.__objects.items():
-                if type(v) is obj:
-                    del Filestorage.__objects[k]
+            for k, v in FileStorage.__objects.items():
+                if v == obj:
+                    self.all().pop(k)
                     break
             self.save()
