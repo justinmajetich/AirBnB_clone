@@ -21,9 +21,15 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = []
     reviews = relationship("Review", backref="place")
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
 
     @property
     def reviews(self):
         """Returns list of <Review> instances with <place_id> equals
         to the current <Place.id>"""
         return self.reviews
+
+    # setter
+
+    # getter
