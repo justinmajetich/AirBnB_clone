@@ -12,10 +12,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-user = os.environ['HBNB_MYSQL_USER']
-passwd = os.environ['HBNB_MYSQL_PWD']
-host = os.environ['HBNB_MYSQL_HOST']
-database = os.environ['HBNB_MYSQL_DB']
+user = os.getenv('HBNB_MYSQL_USER')
+passwd = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+database = os.getenv('HBNB_MYSQL_DB')
 envi = os.getenv('HBNB_ENV')
 
 
@@ -25,13 +25,14 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.format
-                                      (user, passwd, host, database),
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'
+                                      .format(user, passwd, host, database),
                                       pool_pre_ping=True)
         if envi == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """Returns a dictionary of all objects of cls or all objects if None"""
         classes = {
                     'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -55,16 +56,20 @@ class DBStorage:
         return d
 
     def new(self, obj):
+        """Adds the obj to session"""
         self.__session.add(obj)
 
     def save(self):
+        """Saves session changes to database"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """Deletes obj from session if it exists"""
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
+        """Loads the tables from database"""
         Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(factory)
