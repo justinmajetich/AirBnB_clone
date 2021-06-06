@@ -20,3 +20,10 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
+    reviews = relationship("Review", backref="place")
+
+    @property
+    def reviews(self):
+        """Returns list of <Review> instances with <place_id> equals
+        to the current <Place.id>"""
+        return self.reviews
