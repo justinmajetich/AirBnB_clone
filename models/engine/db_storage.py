@@ -12,10 +12,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-user = os.environ['HBNB_MYSQL_USER']
-passwd = os.environ['HBNB_MYSQL_PWD']
-host = os.environ['HBNB_MYSQL_HOST']
-database = os.environ['HBNB_MYSQL_DB']
+user = os.getenv('HBNB_MYSQL_USER')
+passwd = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+database = os.getenv('HBNB_MYSQL_DB')
 envi = os.getenv('HBNB_ENV')
 
 
