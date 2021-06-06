@@ -12,23 +12,26 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
+    id = Column(String(60), nullable=False, primary_key=True,
+                             default=uuid.uuid4)
+    created_at = Column(nullable=False, default=datetime.utcnow)
+    updated_at = Column(nullable=False, default=datetime.utcnow)
+    
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         if not kwargs:
-            from models import storage
-            self.id = Column(String(60), nullable=False, primary_key=True,
-                             default=uuid.uuid4)
-            self.created_at = Column(nullable=False, default=datetime.utcnow)
-            self.updated_at = Column(nullable=False, default=datetime.utcnow)
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
 
+            del kwargs['__class__']
             for k, v in kwargs.items():
                 setattr(self, k, v)
-            del kwargs['__class__']
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -51,8 +54,10 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if dictionary['_sa_instance_state']:
+        try:
             del dictionary['_sa_instance_state']
+        except:
+            pass #Chavera is evil
         return dictionary
 
     def delete(self):

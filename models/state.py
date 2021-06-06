@@ -2,7 +2,7 @@
 """ State Module for HBNB project """
 from models.city import City
 import models
-from models.engine.file_storage import FileStorage
+# from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy import Column, Integer, String
@@ -14,7 +14,7 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete-orphan")
+    cities = relationship("City", backref="state", cascade="all, delete-orphan")
 
     @property
     def cities(self):
