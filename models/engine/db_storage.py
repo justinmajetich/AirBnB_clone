@@ -45,19 +45,23 @@ class db_storage:
     def all(self, cls=None):
         """query current db sesh: all objects of class.name"""
         """if cls=None, query all: User, State, City, etc."""
+        tables = {
+                  User: 'users', Place: 'places', State: 'states',
+                  City: 'cities', Amenity: 'amenities', Review: 'reviews'
+                 }
         dict = {}
         for x in classes:
             if cls == x:
-                tdsvrbl = self.__session.query(cls).all()
+                tdsvrbl = self.__session.query(tables[cls])
                 for instance in tdsvrbl:
-                    dict[cls.__name__ + '.' + self.id] = instance
+                    dict[cls.__name__ + '.' + instance.id] = instance
                 return dict
 
         else:
-            for x in classes:
-                womp = self.__session.query(x).all()
+            for x in tables:
+                womp = self.__session.query(x)
                 for y in womp:
-                    dict[x.__class__.__name__ + '.' + self.id] = y
+                    dict[y.__class__.__name__ + '.' + y.id] = y
             return dict
 
     def new(self, obj):
