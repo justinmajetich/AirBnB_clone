@@ -7,17 +7,15 @@ Unittesting for console in interactive and non-interacitve
 import unittest
 import os
 from models.base_model import BaseModel
-from models import storage
 from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
 
 
-fs = FileStorage()
-
-
 class test_console(unittest.TestCase):
     """Console unit tests"""
+    from models import storage
+    fs = storage
     def test_create_state(self):
         if os.path.exists(fs._FileStorage__file_path):
             os.remove(fs._FileStorage__file_path)
