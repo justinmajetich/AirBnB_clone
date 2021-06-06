@@ -118,7 +118,6 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        
         try:
             splt = args.split()
             lst = []
@@ -132,7 +131,8 @@ class HBNBCommand(cmd.Cmd):
                 temp = splt[x].split("=")
                 for y in range(len(temp)):
                     lst.append(temp[y])
-                    lstdct = {lst[i]: lst[i + 1] for i in range(0, len(lst) - 1, 2)}
+                    lstdct = {lst[i]: lst[i + 1]
+                              for i in range(0, len(lst) - 1, 2)}
             new_instance = HBNBCommand.classes[splt[0]]()
             for key, value in lstdct.items():
                 if value.startswith('"') and value.endswith('"'):
@@ -205,7 +205,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(models.storage._FileStorage__objects[key])
+            print(models.storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -256,11 +256,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in models.storage._FileStorage__objects.items():
+            for k, v in models.storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in models.storage._FileStorage__objects.items():
+            for k, v in models.storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -273,7 +273,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in models.storage._FileStorage__objects.items():
+        for k, v in models.storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)

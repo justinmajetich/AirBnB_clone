@@ -14,9 +14,9 @@ class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), nullable=False, primary_key=True,
                              default=uuid.uuid4)
-    created_at = Column(nullable=False, default=datetime.utcnow)
-    updated_at = Column(nullable=False, default=datetime.utcnow)
-    
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         if not kwargs:
@@ -30,8 +30,6 @@ class BaseModel:
                                                      '%Y-%m-%dT%H:%M:%S.%f')
 
             del kwargs['__class__']
-            for k, v in kwargs.items():
-                setattr(self, k, v)
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -57,7 +55,7 @@ class BaseModel:
         try:
             del dictionary['_sa_instance_state']
         except:
-            pass #Chavera is evil
+            pass
         return dictionary
 
     def delete(self):
