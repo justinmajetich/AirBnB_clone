@@ -123,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
         #    return
     #    new_instance = HBNBCommand.classes[args]()
         if args:
-            print(args) 
             split_line = args.split(' ')
             split_instance = eval("{}()".format(split_line[0]))
             param = []
@@ -134,8 +133,8 @@ class HBNBCommand(cmd.Cmd):
                     value = param[1]
                     value = value.replace("_", " ")
                     if hasattr(split_instance, key):
-                        setattr(split_instance, key, value)
-                    print(value)
+                        setattr(split_instance, key, eval(value))
+
 
 #                print(item)
  #               for i in param:
@@ -145,10 +144,9 @@ class HBNBCommand(cmd.Cmd):
 		    # i 0 = attr 1 = value
                     # accomodate for "<value>"
 #                    print(i)
-        print(split_instance)
+#        print(split_instance)
         storage.save()
        #  print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
