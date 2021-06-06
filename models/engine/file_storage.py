@@ -12,10 +12,17 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         #return FileStorage.__objects
 
-    def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-
+    def all(self, cls=None):
+        """Returns a list of objects of type cls"""
+        if cls:
+            temp_d = {}
+            for k, v in Filestorage.__objects.items():
+                if type(v) is cls:
+                    temp_d[k] = v
+            return temp_d
+        else:
+            return FileStorage.__objects
+            
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
