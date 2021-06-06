@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.sql.schema import ForeignKey
-
+from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
     """ A place to stay """
