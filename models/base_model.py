@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True)
@@ -47,8 +48,10 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if dictionary['_sa_instance_state']:
+        try:
             del dictionary['_sa_instance_state']
+        except:
+            pass
         return dictionary
 
     def delete(self):

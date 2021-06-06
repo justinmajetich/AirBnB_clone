@@ -18,7 +18,9 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            """Returns the list of Cities with state_id equal to current State.id"""
+            """Returns the list of Cities with state_id equal
+            to current State.id
+            """
             from models import storage
             l = []
             for v in storage.all().values():
