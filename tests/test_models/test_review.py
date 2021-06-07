@@ -2,6 +2,10 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
+from tests.test_models.test_place import new as new_P
+from tests.test_models.test_user import new as new_U
+
+new = Review(place_id=new_P.id, user_id=new_U.id, text='bla')
 
 
 class test_review(test_basemodel):

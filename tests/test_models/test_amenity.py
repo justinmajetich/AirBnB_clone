@@ -2,6 +2,9 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
+import os
+
+new = Amenity(name='Toaster')
 
 
 class test_Amenity(test_basemodel):
@@ -15,5 +18,10 @@ class test_Amenity(test_basemodel):
 
     def test_name2(self):
         """ """
-        new = self.value()
         self.assertEqual(type(new.name), str)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
+                     DBStorage")
+    def test_place_amenities(self):
+        """ """
+        self.assertEqual(type(new.place_amenities), list)

@@ -2,6 +2,10 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+from models.state import State
+import os
+
+new = City(name='City_1', state_id=State(name='Oregon').id)
 
 
 class test_City(test_basemodel):
@@ -15,10 +19,14 @@ class test_City(test_basemodel):
 
     def test_state_id(self):
         """ """
-        new = self.value()
         self.assertEqual(type(new.state_id), str)
 
     def test_name(self):
         """ """
-        new = self.value()
         self.assertEqual(type(new.name), str)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
+                     DBStorage")
+    def test_places(self):
+        """ """
+        self.assertEqual(type(new.places), list)
