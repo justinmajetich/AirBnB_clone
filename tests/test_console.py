@@ -16,6 +16,7 @@ class test_console(unittest.TestCase):
     """Console unit tests"""
     from models import storage
     fs = storage
+
     def test_create_state(self):
         if os.path.exists(fs._FileStorage__file_path):
             os.remove(fs._FileStorage__file_path)
