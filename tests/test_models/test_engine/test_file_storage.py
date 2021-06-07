@@ -3,7 +3,7 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
-from os import getenv
+import os
 
 
 class test_fileStorage(unittest.TestCase):

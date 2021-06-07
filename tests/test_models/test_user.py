@@ -10,8 +10,8 @@ class test_User(test_basemodel):
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+        self.value = User(email="john69@hotmail.com", password="4201337",
+                          first_name="John", last_name="Hancock")
 
     def test_first_name(self):
         """ """
