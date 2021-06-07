@@ -38,19 +38,14 @@ class DBStorage:
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
         }
-        tables = {
-                    User: 'users', Place: 'places', State: 'states',
-                    City: 'cities', Amenity: 'amenities', Review: 'reviews'
-        }
         d = {}
         if not cls:
-            tables = Base.__subclasses__()
-            for table in tables:
+            for table in classes.values():
                 for instance in self.__session.query(table):
                     key = instance.__class__.__name__ + '.' + instance.id
                     d[key] = instance
         else:
-            for instance in self.__session.query(tables[cls]):
+            for instance in self.__session.query(cls):
                 key = instance.__class__.__name__ + '.' + instance.id
                 d[key] = instance
         return d
