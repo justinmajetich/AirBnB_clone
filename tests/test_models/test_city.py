@@ -4,6 +4,7 @@ from tests.test_models.test_base_model import test_basemodel
 from models.city import City
 from models.state import State
 import os
+import unittest
 
 new = City(name='City_1', state_id=State(name='Oregon').id)
 

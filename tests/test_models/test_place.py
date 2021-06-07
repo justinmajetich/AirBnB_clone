@@ -5,6 +5,7 @@ from models.place import Place
 from tests.test_models.test_city import new as new_C
 from tests.test_models.test_user import new as new_U
 import os
+import unittest
 
 new = Place(city_id=new_C.id, user_id=new_U.id, name='KFC',
             description='Fried', number_rooms=2,
