@@ -14,9 +14,10 @@ from io import StringIO
 
 class test_console(unittest.TestCase):
     """Console unit tests"""
-    from models import storage
-    fs = storage
+    import models
+    fs = models.storage
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE", "FileStorage"))
     def test_create_state(self):
         if os.path.exists(fs._FileStorage__file_path):
             os.remove(fs._FileStorage__file_path)
