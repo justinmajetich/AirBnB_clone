@@ -5,7 +5,6 @@ from models.place import Place
 from tests.test_models.test_city import new as new_C
 from tests.test_models.test_user import new as new_U
 import os
-import unittest
 
 new = Place(city_id=new_C.id, user_id=new_U.id, name='KFC',
             description='Fried', number_rooms=2,
@@ -61,21 +60,3 @@ class test_Place(test_basemodel):
     def test_longitude(self):
         """ """
         self.assertEqual(type(new.latitude), float)
-
-"""    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE"), "Using FileStorage")
-    def test_amenity_ids(self):
-        """ """
-        self.assertEqual(type(new.amenity_ids), list)
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
-                     DBStorage")
-    def test_amenities(self):
-        """ """
-        self.assertEqual(type(new.amenities), list)
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
-                     DBStorage")
-    def test_reviews(self):
-        """ """
-        self.assertEqual(type(new.reviews), list)
-"""
