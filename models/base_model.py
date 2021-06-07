@@ -35,7 +35,10 @@ class BaseModel:
                 self.created_at = datetime.now()
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
-            del kwargs['__class__']
+            try:
+                del kwargs['__class__']
+            except:
+                pass
             self.__dict__.update(kwargs)
 
     def __str__(self):
