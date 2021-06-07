@@ -62,7 +62,7 @@ class test_Place(test_basemodel):
         """ """
         self.assertEqual(type(new.latitude), float)
 
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE"), "Using FileStorage")
+"""    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE"), "Using FileStorage")
     def test_amenity_ids(self):
         """ """
         self.assertEqual(type(new.amenity_ids), list)
@@ -78,3 +78,4 @@ class test_Place(test_basemodel):
     def test_reviews(self):
         """ """
         self.assertEqual(type(new.reviews), list)
+"""

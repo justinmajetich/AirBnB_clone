@@ -21,8 +21,9 @@ class test_Amenity(test_basemodel):
         """ """
         self.assertEqual(type(new.name), str)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
+"""    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
                      DBStorage")
     def test_place_amenities(self):
         """ """
         self.assertEqual(type(new.place_amenities), list)
+"""

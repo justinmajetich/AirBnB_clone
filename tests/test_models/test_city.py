@@ -26,8 +26,9 @@ class test_City(test_basemodel):
         """ """
         self.assertEqual(type(new.name), str)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
+"""    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
                      DBStorage")
     def test_places(self):
         """ """
         self.assertEqual(type(new.places), list)
+"""

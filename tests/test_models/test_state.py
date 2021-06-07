@@ -20,7 +20,7 @@ class test_state(test_basemodel):
         """ """
         self.assertEqual(type(new.name), str)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
+"""    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
                      DBStorage")
     def test_cities(self):
         """ """
@@ -31,3 +31,4 @@ class test_state(test_basemodel):
     def test_cities(self):
         """ """
         self.assertEqual(type(new.cities()), list)
+"""
