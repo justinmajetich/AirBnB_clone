@@ -31,15 +31,3 @@ class test_User(test_basemodel):
     def test_password(self):
         """ """
         self.assertEqual(type(new.password), str)
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
-                     DBStorage")
-    def test_places(self):
-        """ """
-        self.assertEqual(type(new.places), list)
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using \
-                     DBStorage")
-    def test_reviews(self):
-        """ """
-        self.assertEqual(type(new.reviews), list)
