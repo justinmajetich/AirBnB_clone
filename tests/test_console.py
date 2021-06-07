@@ -31,7 +31,7 @@ class test_console(unittest.TestCase):
     def test_create_state_db(self):
         with patch('sys.stdout', new=StringIO()) as duck:
             HBNBCommand().onecmd('create State name="California"')
-            state_id = duck.getvalue()[:-1]
+            state_id = duck.getvalue()[:-1].copy()
             HBNBCommand().onecmd('create City name="San_Francisco" state_id={}'
                                  .format(state_id))
             city_id = duck.getvalue()[:-1]

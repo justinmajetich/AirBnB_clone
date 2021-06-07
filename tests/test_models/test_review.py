@@ -4,9 +4,11 @@ from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
 from models.place import Place
 from models.user import User
+from models.city import City
 
 newU = User(email="john69@hotmail.com", password="4201337",
            first_name="John", last_name="Hancock")
+newC = City(name='City_1', state_id=State(name='Oregon').id)
 newP = Place(city_id=new_C.id, user_id=new_U.id, name='KFC',
             description='Fried', number_rooms=2,
             number_bathrooms=1, max_guest=30,
