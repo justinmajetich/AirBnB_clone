@@ -2,10 +2,13 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
-from tests.test_models.test_city import new as new_C
-from tests.test_models.test_user import new as new_U
+from models.city import City
+from models.user import User
 import os
 
+new_C = City(name='City_1', state_id=State(name='Oregon').id)
+new_U = User(email="john69@hotmail.com", password="4201337",
+           first_name="John", last_name="Hancock")
 new = Place(city_id=new_C.id, user_id=new_U.id, name='KFC',
             description='Fried', number_rooms=2,
             number_bathrooms=1, max_guest=30,
