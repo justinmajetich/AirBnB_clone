@@ -13,7 +13,7 @@ from models.base_model import BaseModel, Base
 
 
 classes = {
-          'BaseModel': BaseModel, 'User': User, 'Place': Place,
+          'User': User, 'Place': Place,
           'State': State, 'City': City, 'Amenity': Amenity,
           'Review': Review
           }
@@ -46,9 +46,9 @@ class db_storage:
         """query current db sesh: all objects of class.name"""
         """if cls=None, query all: User, State, City, etc."""
         dict = {}
-        for x in classes:
+        for x in classes.values():
             if cls == x:
-                tdsvrbl = self.__session.query(classes[cls])
+                tdsvrbl = self.__session.query(cls)
                 for instance in tdsvrbl:
                     dict[cls.__name__ + '.' + instance.id] = instance
                 return dict
