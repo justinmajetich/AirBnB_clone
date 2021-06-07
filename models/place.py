@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
-                             nullable=False, primary_key=True)
+                             nullable=False, primary_key=True),
                       Column('amenity_id', String(60),
                              ForeignKey('amenities.id'), nullable=False,
                              primary_key=True))
@@ -28,9 +28,9 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
-    reviews = relationship("Review", backref="place")
-    amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False)
+    reviews = relationship("Review", backref="place", cascade='all, delete')
+    amenities = relationship("Amenity", secondary=place_amenity,
+                             backref='place', viewonly=False)
 
     @property
     def reviews(self):
@@ -39,5 +39,8 @@ class Place(BaseModel, Base):
         return self.reviews
 
     # setter
-
+    def amenities(self, amenity):
+        self.amenity_ids.append(amenity)
     # getter
+    def amenities(self):
+        return self.amenity_ids
