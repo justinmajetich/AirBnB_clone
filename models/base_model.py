@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
-from uuid import uuid4
+import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
@@ -16,24 +16,19 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        if kwargs and len(kwargs):
-            for key in kwargs.keys():
-                if key != "__class__":
-                    if key == "created_at" or key == "updated_at":
-                        setattr(self, key, datetime.
-                                strptime(kwargs[key], "%Y-%m-%dT%H:%M:%S.%f"))
-                    else:
-                        setattr(self, key, kwargs[key])
-            if 'id' not in kwargs:
-                self.id = str(uuid4())
-            if 'created_at' not in kwargs:
-                self.created_at = datetime.now()
-            if 'updated_at' not in kwargs:
-                self.updated_at = datetime.now()
-        else:
-            self.id = str(uuid4())
+        if not kwargs:
+            self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            if 'id' not in kwargs:
+                self.id = str(uuid.uuid4())
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
