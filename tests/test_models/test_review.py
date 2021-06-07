@@ -11,7 +11,7 @@ newP = Place(city_id=new_C.id, user_id=new_U.id, name='KFC',
             description='Fried', number_rooms=2,
             number_bathrooms=1, max_guest=30,
             price_by_night=5, latitude=1.2, logitude=3.4)
-new = Review(place_id=newU.id, user_id=User().id, text='bla')
+new = Review(place_id=newP.id, user_id=newU.id, text='bla')
 
 
 class test_review(test_basemodel):

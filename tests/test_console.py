@@ -32,8 +32,6 @@ class test_console(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as duck:
             HBNBCommand().onecmd('create State name="California"')
             state_id = duck.getvalue()[:-1]
-        self.assertTrue(state_id)
-        with patch('sys.stdout', new=StringIO()) as duck:
             HBNBCommand().onecmd('create City name="San_Francisco" state_id={}'
                                  .format(state_id))
             city_id = duck.getvalue()[:-1]
