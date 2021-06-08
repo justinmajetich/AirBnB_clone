@@ -6,6 +6,7 @@ import datetime
 from uuid import UUID
 import json
 import os
+import time
 
 
 class test_basemodel(unittest.TestCase):
@@ -91,10 +92,13 @@ class test_basemodel(unittest.TestCase):
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE"), "Using FileStorage")
     def test_updated_at(self):
         """ """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
+        time.sleep(0.01)
+        new.save()
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
