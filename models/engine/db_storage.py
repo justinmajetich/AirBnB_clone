@@ -12,6 +12,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 
+
 class DBStorage:
     """new engine DBStorage"""
     __engine = None
@@ -26,8 +27,8 @@ class DBStorage:
         host = os.getenv('HBNB_MYSQL_HOST')
         database = os.getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                        .format(user, password, host,
-                                        database), pool_pre_ping=True)
+                                      .format(user, password, host,
+                                              database), pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
@@ -37,7 +38,10 @@ class DBStorage:
         if cls is not None:
             for values in self.classname.values():
                 for keys in self.__session.query(values):
-                    new_dict[keys.__class__.__name__ + '.' + keys.id] = values
+                    new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
+        elif cls in self.classname.values():
+            for keys in self.__session.query(values):
+                new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
         return new_dict
 
     def new(self, obj):
@@ -51,3 +55,10 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         self.__session.delete(obj)
+
+    def reload(self):
+        """create all tables in the database, create current database session"""
+        Base.metadata.create_all(engine)
+        new_sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(new_sess)
+        self.__session = Session()
