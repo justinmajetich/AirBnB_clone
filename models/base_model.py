@@ -43,6 +43,11 @@ class BaseModel:
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
+    def delete(self):
+        """delete from storage????"""
+        from models import storage
+        storage.delete(self)
+
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
@@ -58,8 +63,8 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        try:
-            del dictionary['_sa_instance_state']
-        except:
-            pass
+        # try:
+        #     del dictionary['_sa_instance_state']
+        # except:
+        #     pass
         return dictionary
