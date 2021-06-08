@@ -30,7 +30,7 @@ class test_console(unittest.TestCase):
         with open(fs._FileStorage__file_path, 'r') as guy:
             self.assertIn(state_id, guy.read())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") is None, "Using DBStorage")
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != 'db', "Using DBStorage")
     def test_create_state_db(self):
         db = MySQLdb.connect(host, user, passwd, database)
         cursor = db.cursor()
