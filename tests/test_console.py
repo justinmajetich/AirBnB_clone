@@ -22,15 +22,15 @@ class test_console(unittest.TestCase):
     """Console unit tests"""
 
     def test_create_state_fs(self):
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+        with patch('sys.stdout', new=StringIO()) as boy:
+            HBNBCommand().onecmd("create State name=\"Hawaii\"")
+            state_id = boy.getvalue()[:-1]
         if type(fs) != FileStorage:
             with self.assertRaises(Exception):
-                open(fs.__FileStorage__file_path, 'r')
+                open(fs._FileStorage__file_path, 'r')
         else:
-            if os.path.exists(fs._FileStorage__file_path):
-                os.remove(fs.__FileStorage__file_path)
-            with patch('sys.stdout', new=StringIO()) as boy:
-                HBNBCommand().onecmd("create State name=\"Hawaii\"")
-                state_id = boy.getvalue()[:-1]
             with open(fs._FileStorage__file_path, 'r') as guy:
                 self.assertIn(state_id, guy.read())
 
