@@ -12,6 +12,11 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 
+user = os.getenv('HBNB_MYSQL_USER')
+password = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+database = os.getenv('HBNB_MYSQL_DB')
+
 
 class DBStorage:
     """new engine DBStorage"""
@@ -22,10 +27,6 @@ class DBStorage:
 
     def __init__(self):
         """Initiation"""
-        user = os.getenv('HBNB_MYSQL_USER')
-        password = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        database = os.getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, password, host,
                                               database), pool_pre_ping=True)
@@ -35,7 +36,7 @@ class DBStorage:
     def all(self, cls=None):
         """query on the current database session for all objects"""
         new_dict = {}
-        if cls is not None:
+        if !cls:
             for values in self.classname.values():
                 for keys in self.__session.query(values):
                     new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
