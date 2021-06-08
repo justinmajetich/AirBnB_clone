@@ -137,9 +137,8 @@ class HBNBCommand(cmd.Cmd):
         for j in range(len(key_name_str)):
             dict_attr[key_name_str[j]] = value_str[j]
             setattr(new_instance, key_name_str[j], value_str[j])
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
