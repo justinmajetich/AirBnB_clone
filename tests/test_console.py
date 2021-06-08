@@ -27,14 +27,12 @@ class test_console(unittest.TestCase):
                 open(fs.__FileStorage__file_path, 'r')
         else:
             if os.path.exists(fs._FileStorage__file_path):
-                os.remove(fs.FileStorage__file_path)
+                os.remove(fs.__FileStorage__file_path)
             with patch('sys.stdout', new=StringIO()) as boy:
                 HBNBCommand().onecmd("create State name=\"Hawaii\"")
                 state_id = boy.getvalue()[:-1]
             with open(fs._FileStorage__file_path, 'r') as guy:
                 self.assertIn(state_id, guy.read())
-
-
 
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != 'db', "Using DBStorage")
     def test_create_state_db(self):
