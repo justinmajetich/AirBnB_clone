@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 newlist = list_args[i].replace("_", " ")
                 new_list = newlist.replace("\"", "")
                 value_str.append(new_list)
-         for j in range(len(key_name_str)):
+        for j in range(len(key_name_str)):
             dict_attr[key_name_str[j]] = value_str[j]
             setattr(new_instance, key_name_str[j], value_str[j])
         storage.save()
