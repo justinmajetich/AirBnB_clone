@@ -13,7 +13,7 @@ class FileStorage:
         if cls:
             temp_d = {}
             for k, v in self.__objects.items():
-                if type(v) is cls:
+                if cls.__name__ in k:
                     temp_d[k] = v
             return temp_d
         else:

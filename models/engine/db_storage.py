@@ -2,7 +2,7 @@
 """ """
 import sys
 import os
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.user import User
@@ -40,7 +40,7 @@ class DBStorage:
             for values in self.classname.values():
                 for keys in self.__session.query(values):
                     new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
-        elif cls in self.classname.values():
+        if len(cls) > 0 and cls in self.classname.values():
             for keys in self.__session.query(values):
                 new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
         return new_dict
@@ -59,7 +59,7 @@ class DBStorage:
 
     def reload(self):
         """create all tables in the database, create current database session"""
-        Base.metadata.create_all(engine)
+        Base.metadata.create_all(self.__engine)
         new_sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(new_sess)
         self.__session = Session()
