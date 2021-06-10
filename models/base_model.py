@@ -21,13 +21,12 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if len(kwargs) > 0:
-            self.__dict__ = kwargs
             if 'updated_at' in kwargs:
                 self.updated_at = datetime.strptime(kwargs.get("updated_at"),
                                                     '%Y-%m-%dT%H:%M:%S.%f')
             if 'created_at' in kwargs:
                 self.created_at = datetime.strptime(kwargs.get("created_at"),
-                                                    '%Y-%m-%dT%H:%M:%S.%f')
+                                                    '%Y-%m-%dT%H:%M:%S.%f')                         
             self.__dict__.update(kwargs)
             """
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
@@ -62,8 +61,8 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        # try:
-        #     del dictionary['_sa_instance_state']
-        # except:
-        #     pass
+        try:
+            del dictionary['_sa_instance_state']
+        except:
+            pass
         return dictionary

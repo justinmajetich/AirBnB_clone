@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         list_args = no_equal_args.split()
         if not list_args[0]:
             print("** class name missing **")
-            return
+            return False
         elif list_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -128,18 +128,18 @@ class HBNBCommand(cmd.Cmd):
         value_str = []
         dict_attr = {}
         for i in range(1, len(list_args)):
-            if i % 2 > 0:
+            if i % 2 != 0: # update key
                 key_name_str.append(list_args[i])
-            elif type(list_args[i]) is str:
+            elif type(list_args[i]) is str: #  update value
                 newlist = list_args[i].replace("_", " ")
                 new_list = newlist.replace("\"", "")
                 value_str.append(new_list)
         for j in range(len(key_name_str)):
             dict_attr[key_name_str[j]] = value_str[j]
             setattr(new_instance, key_name_str[j], value_str[j])
-        storage.save()
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
+        return
 
     def help_create(self):
         """ Help information for the create method """
