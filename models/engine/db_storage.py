@@ -4,7 +4,7 @@ import sys
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.city import City
 from models.amenity import Amenity
@@ -18,7 +18,7 @@ host = os.getenv('HBNB_MYSQL_HOST')
 database = os.getenv('HBNB_MYSQL_DB')
 
 
-class DBStorage:
+class DBStorage():
     """new engine DBStorage"""
     __engine = None
     __session = None
