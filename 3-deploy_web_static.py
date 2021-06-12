@@ -13,7 +13,7 @@ def deploy():
 
     archive = do_pack()
     if not archive:
-        return
+        return False
     return do_deploy(archive)
 
 
