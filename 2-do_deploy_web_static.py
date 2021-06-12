@@ -39,12 +39,16 @@ def do_deploy(archive_path):
 def do_pack():
     """Pack up web_static"""
 
-    currentTime = datetime.now()
+    try:
+        currentTime = datetime.now()
 
-    tarArchiveName = "web_static_" + \
-                     currentTime.strftime("%Y%m%d%HM%S") + ".tgz"
-    tarArchivePath = "versions/" + tarArchiveName
+        tarArchiveName = "web_static_" + \
+                         currentTime.strftime("%Y%m%d%H%M%S") + ".tgz"
+        tarArchivePath = "versions/" + tarArchiveName
 
-    local("mkdir -p versions")
+        local("mkdir -p versions")
 
-    local("tar -czvf " + tarArchivePath + " web_static")
+        local("tar -czvf " + tarArchivePath + " web_static")
+        return tarArchivePath
+    except:
+        return None
