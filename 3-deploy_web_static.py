@@ -38,7 +38,7 @@ def do_deploy(archive_path):
         run("rm -f /data/web_static/current")
         run("ln -sf " + newPathDir +
             archiveNameWithoutExtension +
-            " /data/web_static/current/")
+            " /data/web_static/current")
 
         return True
     except:
