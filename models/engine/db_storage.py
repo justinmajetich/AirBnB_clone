@@ -38,11 +38,11 @@ class DBStorage():
         new_dict = {}
         if not cls:
             for values in self.classname.values():
-                for keys in self.__session.query(values):
-                    new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
-        if len(cls) > 0 and cls in self.classname.values():
-            for keys in self.__session.query(values):
-                new_dict[(keys.__class__.__name__ + '.' + keys.id)] = values
+                for objs in self.__session.query(values):
+                    new_dict[(objs.__class__.__name__ + '.' + objs.id)] = objs
+        else:
+            for objs in self.__session.query(cls):
+                new_dict[(objs.__class__.__name__ + '.' + objs.id)] = objs
         return new_dict
 
     def new(self, obj):

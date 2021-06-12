@@ -21,11 +21,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-
+    """
     @property
     def amenities(self):
-        """getter for amenities for FileStorage"""
+        getter for amenities for FileStorage
         return self.amenity_ids
 
     def amenities(self, amenity_ids):
-        """setter for amenities for FileStorage"""
+        setter for amenities for FileStorage
+    """
