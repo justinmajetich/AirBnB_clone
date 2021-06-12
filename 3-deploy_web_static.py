@@ -8,6 +8,15 @@ import os.path
 env.hosts = ['34.227.228.210', '3.80.186.246']
 
 
+def deploy():
+    """calling functions to pack or deploy files"""
+
+    archive = do_pack()
+    if not archive:
+        return
+    return do_deploy(archive)
+
+
 def do_deploy(archive_path):
     """deploy an archive"""
 
