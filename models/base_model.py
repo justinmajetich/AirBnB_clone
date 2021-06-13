@@ -29,13 +29,6 @@ class BaseModel:
                 self.created_at = datetime.strptime(kwargs.get("created_at"),
                                                     '%Y-%m-%dT%H:%M:%S.%f')
             self.__dict__.update(kwargs)
-            """
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            """
             
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -43,7 +36,7 @@ class BaseModel:
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def delete(self):
-        """delete from storage????"""
+        """delete the current instance from model.storage"""
         from models import storage
         storage.delete(self)
 
@@ -62,8 +55,6 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        # try:
-        #     del dictionary['_sa_instance_state']
-        # except:
-        #     pass
+        if '_sa_instance_state' in dictionary.keys():
+            del dictionary['_sa_instance_state']
         return dictionary
