@@ -4,7 +4,7 @@ from tests.test_models.test_base_model import test_basemodel
 from models.city import City
 from models.state import State
 
-tst =  City(name='Tulsa', state_id=State(name='Oklahoma').id) 
+test =  City(name='Tulsa', state_id=State(name='Oklahoma').id) 
 
 class test_City(test_basemodel):
     """ """
@@ -17,8 +17,8 @@ class test_City(test_basemodel):
 
     def test_state_id(self):
         """ """
-        self.assertEqual(type(new.state_id), str)
+        self.assertEqual(type(test.state_id), str)
 
     def test_name(self):
         """ """
-        self.assertEqual(type(new.name), str)
+        self.assertEqual(type(test.name), str)

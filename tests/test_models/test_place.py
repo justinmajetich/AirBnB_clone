@@ -20,7 +20,7 @@ class test_Place(test_basemodel):
 
     def test_user_id(self):
         """ """
-        new = self.value("user_id=11")
+        new = self.value(user_id="11")
         self.assertEqual(type(new.user_id), str)
 
     def test_name(self):
@@ -30,7 +30,7 @@ class test_Place(test_basemodel):
 
     def test_description(self):
         """ """
-        new = self.value(descrtiption="oolala")
+        new = self.value(description="oolala")
         self.assertEqual(type(new.description), str)
 
     def test_number_rooms(self):
@@ -45,7 +45,7 @@ class test_Place(test_basemodel):
 
     def test_max_guest(self):
         """ """
-        new = self.value(max_guest="3")
+        new = self.value(max_guest=3)
         self.assertEqual(type(new.max_guest), int)
 
     def test_price_by_night(self):
