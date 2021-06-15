@@ -21,11 +21,13 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if len(kwargs) > 0:
-            self.__dict__ = kwargs
-            if 'updated_at' in kwargs:
+            # self.__dict__ = kwargs
+            if '__class__' in kwargs.keys():
+                del kwargs['__class__']
+            if 'updated_at' in kwargs.keys():
                 self.updated_at = datetime.strptime(kwargs.get("updated_at"),
                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            if 'created_at' in kwargs:
+            if 'created_at' in kwargs.keys():
                 self.created_at = datetime.strptime(kwargs.get("created_at"),
                                                     '%Y-%m-%dT%H:%M:%S.%f')
             self.__dict__.update(kwargs)
@@ -49,12 +51,12 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
+        the_dict = {}
+        the_dict.update(self.__dict__)
+        the_dict.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dictionary.keys():
-            del dictionary['_sa_instance_state']
-        return dictionary
+        the_dict['created_at'] = self.created_at.isoformat()
+        the_dict['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in the_dict.keys():
+            del the_dict['_sa_instance_state']
+        return the_dict
