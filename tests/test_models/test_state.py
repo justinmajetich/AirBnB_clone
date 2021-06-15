@@ -3,7 +3,6 @@
 from tests.test_models.test_base_model import test_basemodel
 from models.state import State
 
-new = State(name='Oklahom')
 
 class test_state(test_basemodel):
     """ """
@@ -16,4 +15,5 @@ class test_state(test_basemodel):
 
     def test_name3(self):
         """ """
+        new = State(name='Oklahom')
         self.assertEqual(type(new.name), str)
