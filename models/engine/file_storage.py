@@ -2,7 +2,6 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
-
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -61,6 +60,5 @@ class FileStorage:
         if obj:
             for k, v in FileStorage.__objects.items():
                 if v == obj:
-                    self.all().pop(k)
-                    break
-            self.save()
+                    del FileStorage.__objects[k]
+                    return
