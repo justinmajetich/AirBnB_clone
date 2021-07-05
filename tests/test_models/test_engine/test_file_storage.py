@@ -1,13 +1,37 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
-import unittest
-from models.base_model import BaseModel
 from models import storage
+import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+import unittest
+import pep8
 import os
+from models.engine.file_storage import FileStorage
 
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
+
+    def test_pep8_conformance(self):
+        """Test that we conform to PEP8."""
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(['models/engine/file_storage.py'])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings).")
+
+    def test_documentation(self):
+        """ Verify the documentation """
+        self.assertTrue(len(FileStorage.__doc__) > 1)
+        self.assertTrue(len(FileStorage.all.__doc__) > 1)
+        self.assertTrue(len(FileStorage.new.__doc__) > 1)
+        self.assertTrue(len(FileStorage.save.__doc__) > 1)
+        self.assertTrue(len(FileStorage.reload.__doc__) > 1)
 
     def setUp(self):
         """ Set up test environment """
@@ -33,7 +57,7 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         for obj in storage.all().values():
             temp = obj
-        self.assertTrue(temp is obj)
+            self.assertTrue(temp is obj)
 
     def test_all(self):
         """ __objects is properly returned """
@@ -67,7 +91,7 @@ class test_fileStorage(unittest.TestCase):
         storage.reload()
         for obj in storage.all().values():
             loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+            self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_reload_empty(self):
         """ Load from an empty file """
@@ -100,7 +124,7 @@ class test_fileStorage(unittest.TestCase):
         _id = new.to_dict()['id']
         for key in storage.all().keys():
             temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+            self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
