@@ -2,14 +2,15 @@
 """ Console Module """
 import cmd
 import sys
-from models.base_model import BaseModel
 from models.__init__ import storage
+from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from os import getenv
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,13 +119,27 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        argsClass = args.split(" ")[0]
+        if argsClass not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        addDict = {}
+        if ' ' in args and '=' in args:
+            argsList = args.split(' ')
+            for arg in argsList[1:]:
+                keyValue = arg.split("=")
+                if '"' in keyValue[1]:
+                    keyValue[1] = keyValue[1].replace('_', ' ').strip('"')
+                elif '.' in keyValue[1]:
+                    keyValue[1] = float(keyValue[1])
+                else:
+                    keyValue[1] = int(keyValue[1])
+                addDict.update({keyValue[0]: keyValue[1]})
+        new_instance = HBNBCommand.classes[argsClass]()
+        for key, value in addDict.items():
+            setattr(new_instance, key, value)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -200,17 +215,20 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
+        if args and getenv('HBNB_TYPE_STORAGE') == 'db':
+            objs = storage.all(args)
+        else:
+            objs = storage.all()
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in objs.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in objs.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -319,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
