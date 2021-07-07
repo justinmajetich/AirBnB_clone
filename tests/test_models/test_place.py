@@ -67,3 +67,20 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    def test_init(self):
+        """place initialization"""
+        self.assertIsInstance(self.place, Place)
+
+    def test_save_Place(self):
+        """test save()"""
+        self.place.save()
+        self.assertNotEqual(self.place.created_at, self.place.updated_at)
+
+    def test_to_dict_Place(self):
+        """test to_dict()"""
+        self.assertEqual('to_dict' in dir(self.place), True)
+
+if __name__ == "__main__":
+    unittest.main()
