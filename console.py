@@ -3,25 +3,26 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
-    # determines prompt for interactive/non-interactive modes
+    # determines prompt for interactive/non-interactive modess
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
+               'Review': Review, 'State': State,
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -37,7 +38,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -115,16 +115,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        try:
+            if not args:
+                raise SyntaxError()
+            list = args.split(" ")
+            object1 = eval("{}()".format(list[0]))
+
+            for index in list[1:]:
+                if "=" in index:
+                    list_split = index.split("=")
+                    if list_split[1][0] == "\"":
+                        list_split[1] = list_split[1][1:-1]
+                        list_split[1] = list_split[1].replace('_', ' ') \
+                                                     .replace('"', '\\"')
+                    elif list_split[1].isdigit():
+                        list_split[1] = int(list_split[1])
+                    else:
+                        list_split[1] = float(list_split[1])
+                    setattr(object1, list_split[0], list_split[1])
+
+            object1.save()
+            print("{}".format(object1.id))
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        #new_instance = HBNBCommand.classes[args]()
+        #storage.save()
+        #print(new_instance.id)
+        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -199,21 +218,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        line = args.split(" ")
         print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        all_objs = storage.all()
+        if len(line[0]) == 0:
+            for key, obj in all_objs.items():
+                print_list.append(obj.__str__())
+            print(print_list)
+        elif line[0] not in self.classes:
+            print("** class doesn't exist **")
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            for key, obj in all_objs.items():
+                print_list.append(obj.__str__())
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
