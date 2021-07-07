@@ -18,17 +18,15 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
-              }
+               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
+    types = {'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
-            }
+             }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -115,16 +113,46 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split()
+        # If what's passed in is NULL
+        if (len(args) == 0):
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        # if what's passed in is not a class
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        # making a new instance of the first argument which should be a class
+        new_instance = HBNBCommand.classes[args[0]]()
+        if len(args) > 1:
+            for index in range(1, len(args)):
+                try:
+                    if '=' not in args[index]:
+                        continue
+                    #seperate key value for each arg
+                    att_key, value = args[index].split('=')
+                    # check if there's double quotes at beginning/end of value
+                    if value[0] == '"' and value[len(value) - 1] == '"':
+                        # value = everything inside the quotes
+                        value = value[1:-1]
+                        # check for '_' and replace with ' '
+                        if '_' in value:
+                            value = value.replace('_', ' ')
+                        value = str(value)
+                    #check if value is float
+                    elif '.' in value:
+                        value = float(value)
+                    #check if value is int
+                    elif isinstance(eval(value), int):
+                        value = int(value)
+                #skip
+                except:
+                    continue
+                #set attributes
+                setattr(new_instance, att_key, value)
+
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -206,11 +234,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -303,7 +331,7 @@ class HBNBCommand(cmd.Cmd):
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
-                if not att_val:  # check for att_value
+                if not att_val:  # check for value
                     print("** value missing **")
                     return
                 # type cast as necessary
