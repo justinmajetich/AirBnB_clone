@@ -1,4 +1,11 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<h1 align="center">
+  <p align="center"><img src="https://assets.holbertonschool.com/media_images/files/000/001/247/original/header-logo-700.png" width="500">
+  <p align="center"><img src="https://logodownload.org/wp-content/uploads/2016/10/airbnb-logo-10.png" width="300">
+    
+    HBNB - The Console
+    
+  </p>
+</h1>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
@@ -108,12 +115,14 @@ Usage: update <class_name> <_id>
 ```
 <h3>Alternative Syntax</h3>
 
+
 ###### Example 0: Show all User objects
 Usage: <class_name>.all()
 ```
 (hbnb) User.all()
 ["[User] (99f45908-1d17-46d1-9dd2-b7571128115b) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92071), 'id': '99f45908-1d17-46d1-9dd2-b7571128115b', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92056)}", "[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
+
 
 ###### Example 1: Destroy a User
 Usage: <class_name>.destroy(<_id>)
@@ -123,6 +132,7 @@ Usage: <class_name>.destroy(<_id>)
 (hbnb) User.all()
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
+
 ###### Example 2: Update User (by attribute)
 Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
 ```
