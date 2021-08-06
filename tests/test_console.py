@@ -34,6 +34,10 @@ class ConsoleCreateTest(unittest.TestCase):
         except IOError:
             pass
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testCreateMissingClass(self):
         """
             create() missing class
@@ -42,6 +46,10 @@ class ConsoleCreateTest(unittest.TestCase):
             HBNBCommand().onecmd("create")
             self.assertEqual(output.getvalue(), "** class name missing **\n")
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testInvalidClass(self):
         """
             create() invalid class
@@ -50,6 +58,10 @@ class ConsoleCreateTest(unittest.TestCase):
             HBNBCommand().onecmd("create toto")
             self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testCreateInstance(self):
         """
             create()
@@ -57,6 +69,10 @@ class ConsoleCreateTest(unittest.TestCase):
         for prmClassName in self.__classes:
             self.__testCreateObject(prmClassName)
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testCreateInstanceWithParameter(self):
         """
             create()
@@ -64,6 +80,10 @@ class ConsoleCreateTest(unittest.TestCase):
         for prmClassName in self.__classes:
             self.__testCreateObjectWithParameter(prmClassName)
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testInvalidParameter(self):
         """
             create()
@@ -71,6 +91,10 @@ class ConsoleCreateTest(unittest.TestCase):
         for prmClassName in self.__classes:
             self.__testCreateObjectWithInvalidParameter(prmClassName)
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testWithMixedValidityParameter(self):
         """
             create()
@@ -78,6 +102,10 @@ class ConsoleCreateTest(unittest.TestCase):
         for prmClassName in self.__classes:
             self.__testMixedValidityParameter(prmClassName)
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def testWithMixedTypeParameter(self):
         """
             create()
@@ -122,7 +150,6 @@ class ConsoleCreateTest(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "{}.destroy({})".format(prmClassName, id)))
-                
 
     def __testMixedValidityParameter(self, prmClassName):
         with patch('sys.stdout', new=StringIO()) as output:
@@ -141,7 +168,6 @@ class ConsoleCreateTest(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "{}.destroy({})".format(prmClassName, id)))
-            
 
     def __testMixedTypeParameter(self, prmClassName):
         with patch("sys.stdout", new=StringIO()) as output:
