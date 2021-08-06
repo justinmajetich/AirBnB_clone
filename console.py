@@ -138,9 +138,9 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[argList[0]]()
 
         for param in argList[1:]:
-            keyName, value = param.split('=')
-            
-            setattr(new_instance, keyName, self.__type(value))
+            if param.find("=") > 0:
+            	keyName, value = param.split('=')
+            	setattr(new_instance, keyName, self.__type(value))
 
         storage.save()
         print(new_instance.id)
