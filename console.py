@@ -78,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
+                        _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -120,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 return float(prmStr)
             except Exception:
-                string = str(prmStr)
+                string = str(prmStr).replace('"', "").replace("'", "")
                 return (string)
 
     def do_create(self, args):
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         argList = args.split()
-
+ 
         if argList[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -139,6 +139,7 @@ class HBNBCommand(cmd.Cmd):
 
         for param in argList[1:]:
             keyName, value = param.split('=')
+            
             setattr(new_instance, keyName, self.__type(value))
 
         storage.save()
