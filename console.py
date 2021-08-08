@@ -123,7 +123,8 @@ class HBNBCommand(cmd.Cmd):
             try:
                 return float(prmStr)
             except Exception:
-                string = str(prmStr).replace('"', "").replace("'", "")
+                string = str(prmStr).replace('"', "").replace(
+                    "'", "").replace("_", " ")
                 return (string)
 
     def do_create(self, args):

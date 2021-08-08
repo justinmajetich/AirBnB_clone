@@ -114,6 +114,17 @@ class ConsoleCreateTest(unittest.TestCase):
         for prmClassName in self.__classes:
             self.__testMixedTypeParameter(prmClassName)
 
+    @unittest.skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
+    def testStringParameterWithUnderscore(self):
+        """
+            create()
+        """
+        for prmClassName in self.__classes:
+            self.__testStringWithUnderscore(prmClassName)
+
     def __testCreateObject(self, prmClassName):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
@@ -135,6 +146,27 @@ class ConsoleCreateTest(unittest.TestCase):
             obj = self.__getObj(prmClassName, id)
             self.assertIn('name', obj.to_dict())
             self.assertEqual(obj.to_dict()['name'], 'California')
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd(
+                "{}.destroy({})".format(prmClassName, id)))
+
+    def __testStringWithUnderscore(self, prmClassName):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(
+                HBNBCommand().onecmd(
+                    "create {} {}={}".format(
+                        prmClassName,
+                        'name',
+                        'My_little_house'
+                    )
+                )
+            )
+            id = output.getvalue().strip()
+            key = "{}.{}".format(prmClassName, id)
+            self.assertIn(key, storage.all().keys())
+            obj = self.__getObj(prmClassName, id)
+            self.assertIn('name', obj.to_dict())
+            self.assertEqual(obj.to_dict()['name'], 'My little house')
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "{}.destroy({})".format(prmClassName, id)))
