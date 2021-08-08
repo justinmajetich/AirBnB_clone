@@ -10,6 +10,7 @@ from console import HBNBCommand
 from models import storage
 import os
 
+
 class ConsoleCreateTest(unittest.TestCase):
     __classes = [
         'BaseModel', 'User', 'State', 'City', 'Amenity', 'Place', 'Review'
@@ -171,8 +172,19 @@ class ConsoleCreateTest(unittest.TestCase):
 
     def __testMixedTypeParameter(self, prmClassName):
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd(
-                "create {} {}={} {}={} {}={}".format(prmClassName, 'age', 3, 'name', "California", 'latitude', 8.6545)))
+            self.assertFalse(
+                HBNBCommand().onecmd(
+                    "create {} {}={} {}={} {}={}".format(
+                        prmClassName,
+                        'age',
+                        3,
+                        'name',
+                        "California",
+                        'latitude',
+                        8.6545
+                    )
+                )
+            )
             id = output.getvalue().strip()
             key = "{}.{}".format(prmClassName, id)
             self.assertIn(key, storage.all().keys())
