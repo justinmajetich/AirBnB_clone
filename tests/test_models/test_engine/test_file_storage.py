@@ -112,8 +112,12 @@ class test_fileStorage(unittest.TestCase):
         self.assertEqual(type(storage), FileStorage)
 
     def testSpecificAll(self):
-        for prmClassName in self.__classes:
-            self.__testSpecificAll(prmClassName)
+        self.__testSpecificAll("Amenity", "User")
+        self.__testSpecificAll("City", "User")
+        self.__testSpecificAll("Place", "User")
+        self.__testSpecificAll("Review", "User")
+        self.__testSpecificAll("State", "User")
+        self.__testSpecificAll("User", "Amenity")
 
     def testObjectDeletion(self):
         for prmClassName in self.__classes:
@@ -128,7 +132,6 @@ class test_fileStorage(unittest.TestCase):
         other = eval(prmOtherClassName)()
         fs.new(instance)
         fs.new(other)
-        fs.save()
         keyInstance = self.__keyFromInstance(instance)
         keyOther = self.__keyFromInstance(other)
         self.assertIn(keyInstance, fs.all(type(instance)))
@@ -144,7 +147,6 @@ class test_fileStorage(unittest.TestCase):
         len = self.__rowLenFromDict(fs.all(eval(prmClassName)))
         instance = eval(prmClassName)()
         fs.new(instance)
-        fs.save()
         newLen = self.__rowLenFromDict(fs.all(eval(prmClassName)))
         self.assertEqual(newLen, len + 1)
         fs.delete(instance)
