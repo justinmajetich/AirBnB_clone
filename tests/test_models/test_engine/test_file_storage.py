@@ -8,6 +8,9 @@ import os
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
+    __classes = [
+        'BaseModel', 'User', 'State', 'City', 'Amenity', 'Place', 'Review'
+    ]
 
     def setUp(self):
         """ Set up test environment """
@@ -107,3 +110,51 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def testSpecificAll(self):
+        self.__testSpecificAll("Amenity", "User")
+        self.__testSpecificAll("City", "User")
+        self.__testSpecificAll("Place", "User")
+        self.__testSpecificAll("Review", "User")
+        self.__testSpecificAll("State", "User")
+        self.__testSpecificAll("User", "Amenity")
+
+    def testObjectDeletion(self):
+        for prmClassName in self.__classes:
+            self.__testOjectDeletion(prmClassName)
+
+    def __testSpecificAll(self, prmClassName, prmOtherClassName):
+        """ __objects only for specific class returned """
+        from models.engine.file_storage import FileStorage
+
+        fs = FileStorage()
+        instance = eval(prmClassName)()
+        other = eval(prmOtherClassName)()
+        fs.new(instance)
+        fs.new(other)
+        keyInstance = self.__keyFromInstance(instance)
+        keyOther = self.__keyFromInstance(other)
+        self.assertIn(keyInstance, fs.all(type(instance)))
+        self.assertNotIn(keyOther, fs.all(type(instance)))
+        del fs.all()[keyInstance]
+        del fs.all()[keyOther]
+
+    def __testOjectDeletion(self, prmClassName):
+        """ object from __objects is deleted """
+        from models.engine.file_storage import FileStorage
+
+        fs = FileStorage()
+        len = self.__rowLenFromDict(fs.all(eval(prmClassName)))
+        instance = eval(prmClassName)()
+        fs.new(instance)
+        newLen = self.__rowLenFromDict(fs.all(eval(prmClassName)))
+        self.assertEqual(newLen, len + 1)
+        fs.delete(instance)
+        newLen = self.__rowLenFromDict(fs.all(eval(prmClassName)))
+        self.assertEqual(newLen, len)
+
+    def __keyFromInstance(prmInstance):
+        return "{}.{}".format(type(prmInstance), prmInstance.id)
+
+    def __rowLenFromDict(prmDict):
+        return len(prmDict.keys())
