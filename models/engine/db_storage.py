@@ -15,6 +15,7 @@ import os
 
 
 class DBStorage:
+    """class Data Base storage"""
     __engine = None
     __session = None
 
