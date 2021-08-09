@@ -146,6 +146,7 @@ class HBNBCommand(cmd.Cmd):
                 keyName, value = param.split('=')
                 setattr(new_instance, keyName, self.__type(value))
 
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -230,12 +231,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for obj in storage.all(args).values():
+                print_list.append(str(obj))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for obj in storage.all().values():
+                print_list.append(str(obj))
 
         print(print_list)
 
@@ -247,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
