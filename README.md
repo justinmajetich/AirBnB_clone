@@ -1,4 +1,4 @@
-<center> <h1AirBnB Clone - The Console</h1> </center>
+<center> <h1>AirBnB Clone - The Console</h1> </center>
 
 The Airbnb clone project for which we are creating a copy of the Airbnb. Only some features will be implemented and will be listed below once completed.
 
