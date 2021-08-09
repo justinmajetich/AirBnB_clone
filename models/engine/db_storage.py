@@ -1,76 +1,96 @@
 #!/usr/bin/python3
-"""
-Contains the class DBStorage
-"""
-
+'''
+    Declaration for database storage
+'''
 import models
-from models.amenity import Amenity
-from models.base_model import BaseModel, Base
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, create_engine
+from models.base_model import Base
 from models.user import User
-from os import getenv
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from sqlalchemy.orm import sessionmaker, scoped_session, exc
+import os
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
-
-class DBStorage:
-    """interaacts with the MySQL database"""
+class DBStorage():
+    '''
+    Database storage class
+    '''
     __engine = None
     __session = None
 
     def __init__(self):
-        """Instantiate a DBStorage object"""
-        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
-        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
-        HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER,
-                                             HBNB_MYSQL_PWD,
-                                             HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
-        if HBNB_ENV == "test":
+        '''
+        Creates engine connection
+        '''
+        username = os.getenv('HBNB_MYSQL_USER', default=None)
+        password = os.getenv('HBNB_MYSQL_PWD', default=None)
+        localhost = os.getenv('HBNB_MYSQL_HOST', default=None)
+        db_name = os.getenv('HBNB_MYSQL_DB', default=None)
+        connection = 'mysql+mysqldb://{}:{}@localhost/{}'
+        self.__engine = create_engine(connection.format(
+            username, password, db_name), pool_pre_ping=True)
+        if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session"""
+        '''
+        Queries current database session based on class.
+        Returns a dictionary representation of the query.
+        '''
+        result = []
         new_dict = {}
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                objs = self.__session.query(classes[clss]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    new_dict[key] = obj
-        return (new_dict)
+        if cls is not None:
+            result = self.__session.query(eval(cls)).all()
+            for item in result:
+                key = item.__class__.__name__ + '.' + item.id
+                new_dict[key] = item
+        else:
+            classes = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
+            for class_name in classes:
+                try:
+                    result = (self.__session.query(eval(class_name)).all())
+                    for item in result:
+                        key = item.__class__.__name__ + '.' + item.id
+                        new_dict[key] = item
+                except Exception:
+                    continue
+        return new_dict
 
     def new(self, obj):
-        """add the object to the current database session"""
+        '''
+        Adds the object to the current database session
+        '''
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
+        '''
+        Commits all changes of the current database session
+        '''
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+        '''
+        Deletes from the current database session obj if not None
+        '''
         if obj is not None:
             self.__session.delete(obj)
+            self.save()
 
     def reload(self):
-        """reloads data from the database"""
+        '''
+        Creates all tables in the database.
+        '''
         Base.metadata.create_all(self.__engine)
-        sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(sess_factory)
-        self.__session = Session
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
 
     def close(self):
-        """call remove() method on the private session attribute"""
-        self.__session.remove()
+        ''' closes a session'''
+        self.__session.close()
