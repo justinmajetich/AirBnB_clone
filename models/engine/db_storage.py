@@ -19,6 +19,9 @@ class DBStorage:
     __session = None
 
     def __init__(self) -> None:
+        """
+            Constructor
+        """
         user = os.environ.get('HBNB_MYSQL_USER')
         pwd = os.environ.get('HBNB_MYSQL_PWD')
         db = os.environ.get('HBNB_MYSQL_DB')
