@@ -18,17 +18,14 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+    classes = ["BaseModel", "User", "Place",
+               "State", "City", "Amenity", "Review"]
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
+
+    types = {'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+             'latitude': float, 'longitude': float}
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -115,14 +112,40 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+
+        args = args.split()
+
+        if len(args) is 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        try:
+            eval(args[0])
+        except:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = eval(args[0])()
+        if len(args) > 1:
+            for arg in args:
+                attr = arg.split("=")
+                if len(attr) == 2:
+                    if attr[1].startswith('"') and attr[1].endswith('"'):
+                        attr[1] = attr[1][1:-1]
+                        attr[1] = attr[1].replace("_", " ")
+                    elif "." in attr[1]:
+                        try:
+                            attr[1] = float(attr[1])
+                        except:
+                            continue
+                    else:
+                        try:
+                            attr[1] = int(attr[1])
+                        except:
+                            continue
+
+                    setattr(new_instance, attr[0], attr[1])
+
         print(new_instance.id)
         storage.save()
 
