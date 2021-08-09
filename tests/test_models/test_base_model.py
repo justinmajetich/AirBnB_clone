@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 """ """
+from models.amenity import Amenity
+from unittest.case import skipIf
 from models.base_model import BaseModel
 import unittest
 import datetime
 from uuid import UUID
 import json
 import os
+from models import storage
 
 
 class test_basemodel(unittest.TestCase):
@@ -47,8 +50,12 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    def test_save(self):
-        """ Testing save """
+    @skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
+    def test_save_file(self):
+        """ Testing save using file storage"""
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -60,7 +67,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                         i.to_dict()))
 
     def test_todict(self):
         """ """
@@ -97,3 +104,6 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def __keyFromInstance(self, prmInstance):
+        return "{}.{}".format(prmInstance.__class__.__name__, prmInstance.id)
