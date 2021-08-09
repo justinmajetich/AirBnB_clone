@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 '''
-   Contains class BaseModel
+    This module defines the BaseModel class
 '''
 import os
 import uuid
 from datetime import datetime
+import models
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
