@@ -1,25 +1,25 @@
 #!/usr/bin/python3
-"""
-    Engine: DBStorage
-"""
-import os
+'''
+    Declaration for database storage
+'''
+import models
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, create_engine
 from models.base_model import Base
 from models.user import User
-from models.state import State
 from models.place import Place
+from models.state import State
+from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models.city import City
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, scoped_session, exc
+import os
 
 
 class DBStorage():
-    """
-        DBStorage class to manage database storage
-    """
+    '''
+    Database storage class
+    '''
     __engine = None
     __session = None
 

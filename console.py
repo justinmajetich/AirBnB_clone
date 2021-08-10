@@ -34,7 +34,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -145,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
                             continue
 
                     setattr(new_instance, attr[0], attr[1])
-
         print(new_instance.id)
         storage.save()
 
