@@ -23,8 +23,8 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """
-                Getter method that returns list of city 
-                instances with state_id == State.id 
+                Getter method that returns list of city
+                instances with state_id == State.id
                 FileStorage Relationship between State and City
             """
             cities_dict = models.storage.all(City)

@@ -33,7 +33,7 @@ class DBStorage():
         db = os.getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.
                                       format(user, passwd, db),
-                        pool_pre_ping=True)
+                                      pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadat.drop_all(self.__engine)
 
@@ -80,6 +80,7 @@ class DBStorage():
             creates all tables in the database
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()

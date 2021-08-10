@@ -81,19 +81,17 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = dict(self.__dict__)
+        dicti = dict(self.__dict__)
 
         try:
-            del dictionary['_sa_instance_state']
+            del dicti['_sa_instance_state']
         except KeyError:
             pass
 
-        dictionary['__class__'] = self.__class__.__name__
-        dictionary['created_at'] = self.created_at.\
-                                   strftime('%Y-%m-%dT%H:%M:%D.%f')
-        dictionary['updated_at'] = self.updated_at.\
-                                   strftime('%Y-%m-%dT%H:%M:%D.%f')
-        return dictionary
+        dicti['__class__'] = self.__class__.__name__
+        dicti['created_at'] = self.created_at.strftime('%Y-%m-%dT%H:%M:%D.%f')
+        dicti['updated_at'] = self.updated_at.strftime('%Y-%m-%dT%H:%M:%D.%f')
+        return dicti
 
     def delete(self):
         '''
