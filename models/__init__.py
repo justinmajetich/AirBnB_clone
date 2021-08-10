@@ -14,7 +14,7 @@ import os
 
 origin_data = os.getenv("HBNB_TYPE_STORAGE")
 if origin_data == "db":
-    engine_store = DBStorage()
+    storage = DBStorage()
 else:
-    engine_store = FileStorage()
-engine_store.reload()
+    storage = FileStorage()
+storage.reload()
