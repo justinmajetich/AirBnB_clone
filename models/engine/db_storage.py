@@ -7,9 +7,10 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-from models.user import Use
+from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+import os
 
 # save the data for the access to the databases in the engine
 user = os.getenv("HBNB_MYSQL_USER")
