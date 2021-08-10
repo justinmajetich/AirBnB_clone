@@ -155,23 +155,7 @@ class ConsoleCreateTest(unittest.TestCase):
             self.assertEqual(state.to_dict()['name'], 'California')
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
-                "create {} {}='{}' {}='{}'".format('City', 'name',
-                                                   'San Francisco', 'state_id',
-                                                   stateId)))
-            cityId = output.getvalue().strip()
-            cityKey = "{}.{}".format('City', cityId)
-            self.assertIn(cityKey, storage.all(City).keys())
-            city = self.__getObj('City', cityId)
-            self.assertIn('name', city.to_dict())
-            self.assertEqual(city.to_dict()['name'], 'San Francisco')
-            self.assertIn('state_id', city.to_dict())
-            self.assertEqual(city.to_dict()['city_id'], cityId)
-        with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd(
                 "{}.destroy({})".format('State', stateId)))
-        with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd(
-                "{}.destroy({})".format('City', cityId)))
 
     def __testCreateObject(self, prmClassName):
         """
