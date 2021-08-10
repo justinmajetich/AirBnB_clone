@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
                 value = '"' + value[1:-1].replace('"', '\""') + '"'
             try:
                 value = eval(value)
-            except BaseException:
+            except:
                 raise Exception
             dict_args[key] = value
 
