@@ -49,7 +49,7 @@ class DBStorage:
         if cls is None:
             for cls in (City, Place, State, User):
                 for obj in self.__session.query(cls).all():
-                    key = "{}.{}".format(type(obj), obj.id)
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
                     list[key] = obj
         else:
             query = self.__session.query(cls)
