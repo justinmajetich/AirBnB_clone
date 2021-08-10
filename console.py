@@ -2,18 +2,15 @@
 """ Console Module """
 import cmd
 import sys
-import shlex
-import json
-from models import storage
-from shlex import split
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.__init__ import engine_store
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from shlex import split
 
 
 def parse(text_args):
