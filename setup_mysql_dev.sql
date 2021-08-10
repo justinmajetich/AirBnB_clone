@@ -1,6 +1,6 @@
 -- prepares a mysql server by creating a db and a user
 -- assigns all privileges to the user on the database hbnb_dev_db
--- assings SELECT on the database performance_schema
+-- assigns SELECT on the database performance_schema
 
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
