@@ -43,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
-        # scan for general formating - i.e '.', '(', ')'
+        # scan for general formating - idx.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
 
@@ -122,19 +122,21 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        # chek the args from input
+        # check the class
         new_instance = HBNBCommand.classes[args[0]]()
-        for i in args[1:]:
-            i = i.split('=')
-            if i[0] in dir(new_instance):
-                if i[0] in HBNBCommand.types:
-                    i[1] = i[1].replace(',', '.')
-                    i[1] = HBNBCommand.types[i[0]](i[1])
-                    exec('new_instance.{} = {}'.format(i[0], i[1]))
+        # check the extra parameters
+        for idx in args[1:]:
+            idx = idx.split('=')
+            if idx[0] in dir(new_instance):
+                if idx[0] in HBNBCommand.types:
+                    idx[1] = idx[1].replace(',', '.')
+                    idx[1] = HBNBCommand.types[idx[0]](idx[1])
+                    exec('new_instance.{} = {}'.format(idx[0], idx[1]))
                 else:
-                    i[1] = i[1].replace('_', ' ')
-                    exec('new_instance.{} = "{}"'.format(i[0], i[1]))
-        # Use the instance save method becouse use
-        # new and save depending on the storage system.
+                    idx[1] = idx[1].replace('_', ' ')
+                    exec('new_instance.{} = "{}"'.format(idx[0], idx[1]))
+        # upload the data
         new_instance.save()
         print(new_instance.id)
 
@@ -308,10 +310,10 @@ class HBNBCommand(cmd.Cmd):
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
-        for i, att_name in enumerate(args):
+        for idx, att_name in enumerate(args):
             # block only runs on even iterations
-            if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
+            if (idx % 2 == 0):
+                att_val = args[idx + 1]  # following item is value
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return

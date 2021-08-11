@@ -25,10 +25,12 @@ class DBStorage():
 
     def __init__(self):
         """ Constructor method that create a session and engine """
+        # create engine with args from input
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, passwd, host, data_b),
                                       pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
+        # use the test env if required
         if (hbnb_env == 'test'):
             Base.metadata.drop_all(self.__engine)
 
@@ -36,17 +38,22 @@ class DBStorage():
         """ Method that return a dictionary with all cls objects
             or if cls is None, all objects in the database.
         """
+        # check the class from input
         if type(cls) == str:
             cls = eval(cls)
-        mods = [State, City, User, Place, Review]
+        classes = [State, City, User, Place, Review]
         if cls is None:
-            info = []
-            for icls in mods:
-                info.extend(self.__session.query(icls).all())  # Make sure!
+            # lobj == list_objects
+            lobj = []
+            for idx_classes in classes:
+                lobj.extend(self.__session.query(idx_classes).all())
         else:
-            info = self.__session.query(cls)
-        return {"{}.{}".format(j.__class__.__name__, j.id): j for j in info}
+            lobj = self.__session.query(cls)
+        return {
+            "{}.{}".format(obj.__class__.__name__, obj.id): obj for obj in lobj
+            }
 
+    # ORM methods... check documentation of SQLAlchemy
     def new(self, obj):
         """ Add the object to the current database session """
         self.__session.add(obj)
@@ -62,12 +69,18 @@ class DBStorage():
         if obj is not None:
             self.__session.delete(obj)
 
+    #
     def reload(self):
         """ Reload objects from DB"""
+        # check the documentation for sessionmaker
+        # open the engine
         Base.metadata.create_all(self.__engine)
+        # open session
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
+        # use scoped session
+        # __session is an instance of Session
         self.__session = Session()
 
     def close(self):
