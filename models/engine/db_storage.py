@@ -47,7 +47,7 @@ class DBStorage:
         if type(cls) == str:
             cls = eval(cls)
         if cls is None:
-            for cls in ["City", "Place", "State", "User", "Amenity", "Review"]:
+            for cls in (City, Place, State, User, Amenity, Review):
                 for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(type(obj).__name__, obj.id)
                     list[key] = obj
