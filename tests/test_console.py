@@ -41,10 +41,6 @@ class ConsoleCreateTest(unittest.TestCase):
         except IOError:
             pass
 
-    @unittest.skipIf(
-        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
-        "File storage tests only"
-    )
     def testCreateMissingClass(self):
         """
             create() missing class
@@ -53,10 +49,6 @@ class ConsoleCreateTest(unittest.TestCase):
             HBNBCommand().onecmd("create")
             self.assertEqual(output.getvalue(), "** class name missing **\n")
 
-    @unittest.skipIf(
-        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
-        "File storage tests only"
-    )
     def testInvalidClass(self):
         """
             create() invalid class
