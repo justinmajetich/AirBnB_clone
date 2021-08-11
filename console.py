@@ -128,10 +128,10 @@ class HBNBCommand(cmd.Cmd):
         for i in range(0, len(params)):
             key, value = params[i].split('=')
             if value[0] == '"' and value[-1] == '"':
-                value = '"' + value[1:-1].replace('"', '\""') + '"'
+                value = '"' + value[1:-1].replace('"', '\"') + '"'
             try:
                 value = eval(value)
-            except:
+            except BaseException:
                 raise Exception
             dict_args[key] = value
 
@@ -226,11 +226,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            else:
+                for k, v in storage.all().items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 print_list.append(str(v))
 
         print(print_list)
