@@ -67,7 +67,8 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         new.number_rooms = 2
-        self.assertIn("'number_rooms': {:d}".format(new.number_rooms), str(new))
+        self.assertIn("'number_rooms': {:d}".format(
+            new.number_rooms), str(new))
         # self.assertEqual(type(new.number_rooms), int)
 
     @skipIf(
@@ -78,7 +79,8 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         new.number_bathrooms = 5
-        self.assertIn("'number_bathrooms': {:d}".format(new.number_bathrooms), str(new))
+        self.assertIn("'number_bathrooms': {:d}".format(
+            new.number_bathrooms), str(new))
         # self.assertEqual(type(new.number_bathrooms), int)
 
     @skipIf(
@@ -100,7 +102,8 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         new.price_by_night = 120
-        self.assertIn("'price_by_night': {:d}".format(new.price_by_night), str(new))
+        self.assertIn("'price_by_night': {:d}".format(
+            new.price_by_night), str(new))
         # self.assertEqual(type(new.price_by_night), int)
 
     @skipIf(
