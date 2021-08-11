@@ -3,14 +3,13 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-
 from models.state import State
 from models.city import City
 from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 
 # save the data for the access to the databases in the engine
 user = os.getenv("HBNB_MYSQL_USER")
@@ -40,16 +39,18 @@ class DBStorage:
         """Returns a dictionary of models currently in storage"""
         objects = {}
         classes = [City, State, User, Place, Amenity, Review]
+
         if cls is None:
-            list_objs = []
-            for idxclass in classes:
-                list_objs.extend(self.__session.query(idxclass).all())
+            l_objs = []
+            [l_objs.extend(self.__session.query(c).all()) for c in classes]
         else:
             if type(cls) == str:
                 cls = eval(cls)
             l_objs = self.__session.query(cls).all()
-        for obj in l_objs:
-            objects.update({"{}.{}".format(type(obj).__name__, obj.id): obj})
+
+        [objects.update({"{}.{}"
+                         .format(type(obj).__name__, obj.id): obj})
+         for obj in l_objs]
         return objects
 
     # ORM methods... check documentation of SQLAlchemy
