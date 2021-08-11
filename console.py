@@ -29,6 +29,7 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -72,8 +73,8 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) == dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -114,52 +115,23 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        s_args = args.split(' ') #splits arguments into parsable data
+        #splits arguments into parsable data
+        s_args = args.split(' ')
         if not s_args[0]:
             print("** class name missing **")
             return
         elif s_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        t_vals = {} #new dictionary to front updated data for new instance
+
+        t_vals = eval("{}()".format(s_args[0]))
         for item in s_args[1:]: #starts at first argument past c_name
-            if '=' in item:
-                a_split = item.split('=') #splits argument into k/v
-                if len(a_split) == 2: #if number of indices in split are 2
-                    fail = 0;
-                    #checks for int type and casts
-                    if a_split[1].isnumeric is True:
-                        try:
-                            a_split[1] = int(a_split[1])
-                        except TypeError:
-                            fail = 1
-                    #checks for float type and casts
-                    if a_split[1].count('.') == 1:
-                        try:
-                            a_split[1] = float(a_split[1])
-                        except ValueError:
-                            fail = 1
-                    #checks for string type and casts
-                    if type(a_split[1]) != int and type(\
-                                   a_split[1]) != float:
-                        if '\"' in a_split[1][0] and '\"' in a_split[1][:-1]:
-                            esc_ck = a_split[1][1:len(a_split[1]) - 1]
-                            for char in esc_ck: #checks for escaped quotes
-                                esc_loc = esc_ck.find(char) - 1
-                                if char == '\"' and esc_ck[esc_loc] != '\\':
-                                    fail = 1
-                                    break
-                        if fail == 0:
-                                a_split[1] = str(a_split[1])
-                                a_split[1] = a_split[1].replace('_', ' ')
-                    if fail == 0:
-                        t_vals['{}'.format(a_split[0])] = \
-                                    a_split[1] #creates a key/value
-        new_instance = HBNBCommand.classes[s_args[0]]()
-        print(t_vals)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            a_split = item.split('=') #splits argument into k/v
+            a_split[1] = a_split[1].replace('_', ' ')
+            setattr(t_vals, a_split[0], eval(a_split[1]))
+
+        t_vals.save()
+        print("{}".format(t_vals.id))
 
     def help_create(self):
         """ Help information for the create method """
@@ -307,7 +279,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -315,10 +287,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
