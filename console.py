@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
                     if a_split[1].isnumeric is True:
                         try:
                             a_split[1] = int(a_split[1])
-                        except ValueError:
+                        except TypeError:
                             fail = 1
                     #checks for float type and casts
                     if a_split[1].count('.') == 1:
@@ -140,8 +140,8 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             fail = 1
                     #checks for string type and casts
-                    if type(a_split[1]) is not int and type(\
-                                   a_split[1]) is not float:
+                    if type(a_split[1]) != int and type(\
+                                   a_split[1]) != float:
                         if '\"' in a_split[1][0] and '\"' in a_split[1][:-1]:
                             esc_ck = a_split[1][1:len(a_split[1]) - 1]
                             for char in esc_ck: #checks for escaped quotes
@@ -155,10 +155,8 @@ class HBNBCommand(cmd.Cmd):
                     if fail == 0:
                         t_vals['{}'.format(a_split[0])] = \
                                     a_split[1] #creates a key/value
-        print(t_vals)
         new_instance = HBNBCommand.classes[s_args[0]]()
-        s_args.insert(1, new_instance.id)
-        update(s_args)
+        print(t_vals)
         storage.save()
         print(new_instance.id)
         storage.save()
