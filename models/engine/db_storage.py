@@ -36,22 +36,19 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-        objects = {}
-        classes = [City, State, User, Place, Amenity, Review]
-
+        """ Method that return a dictionary with all cls objects
+            or if cls is None, all objects in the database.
+        """
+        if type(cls) == str:
+            cls = eval(cls)
+        mods = [State, City, User, Place, Review]
         if cls is None:
-            l_objs = []
-            [l_objs.extend(self.__session.query(c).all()) for c in classes]
+            info = []
+            for icls in mods:
+                info.extend(self.__session.query(icls).all())  # Make sure!
         else:
-            if type(cls) == str:
-                cls = eval(cls)
-            l_objs = self.__session.query(cls).all()
-
-        [objects.update({"{}.{}"
-                         .format(type(obj).__name__, obj.id): obj})
-         for obj in l_objs]
-        return objects
+            info = self.__session.query(cls)
+        return {"{}.{}".format(j.__class__.__name__, j.id): j for j in info}
 
     # ORM methods... check documentation of SQLAlchemy
     def new(self, obj):
