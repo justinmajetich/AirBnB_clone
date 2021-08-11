@@ -63,7 +63,7 @@ class Place(BaseModel, Base):
             placeAmenities = []
 
             for objAmenity in list(allAmenities.values()):
-                if objAmenity.place_id == self.id:
+                if objAmenity.id in self.amenity_ids:
                     placeAmenities.append(objAmenity)
 
             return (placeAmenities)
