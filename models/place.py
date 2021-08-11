@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.amenities import Amenity
+from models.amenity import Amenity
+from models.reviews import Review
 from models.base_model import BaseModel, Base
+from sqlalchemy import *
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
@@ -37,7 +39,6 @@ class Place(BaseModel, Base):
 
     else:
         from models import storage
-        from models.reviews import Review
 
         @property
         def reviews(self):
