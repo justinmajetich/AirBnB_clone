@@ -45,7 +45,7 @@ class DBStorage:
         if cls is None:
             info = []
             for icls in mods:
-                info.extend(self.__session.query(icls).all())  # Make sure!
+                info.extend(self.__session.query(icls).all())
         else:
             info = self.__session.query(cls)
         return {"{}.{}".format(j.__class__.__name__, j.id): j for j in info}
