@@ -1,27 +1,56 @@
 #!/usr/bin/python3
-""" """
-import os
-from unittest.case import skipIf
-from tests.test_models.test_base_model import test_basemodel
+""" Modules for tests amenity """
 from models.amenity import Amenity
+from models.base_model import BaseModel
+import os
+import unittest
 
 
-class test_Amenity(test_basemodel):
-    """ """
+class test_Amenity(unittest.TestCase):
+    """ Tests for amenity """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    @classmethod
+    def setUpClass(cls):
+        """ set up for test """
+        cls.amenity = Amenity()
+        cls.amenity.name = "Breakfast"
 
-    @skipIf(
-        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
-        "File storage tests only"
-    )
-    def test_name2(self):
-        """ """
-        new = self.value()
-        new.name = "San Francisco"
-        self.assertIn("'name': '{}'".format(new.name), str(new))
-        # self.assertEqual(type(new.name), str)
+    @classmethod
+    def teardown(cls):
+        """ at the end of the test this will tear it down """
+        del cls.amenity
+
+    def test_checking_for_docstring_Amenity(self):
+        """ checking for docstrings """
+        self.assertIsNot(Amenity.__doc__, None)
+
+    def test_is_subclass_Amenity(self):
+        """ test if Amenity is subclass of Basemodel """
+        self.assertTrue(issubclass(self.amenity.__class__, BaseModel), True)
+
+    def test_attribute_types_Amenity(self):
+        """ test attribute type for Amenity """
+        self.assertEqual(type(self.amenity.name), str)
+
+    def test_attributes_Amenity(self):
+        """ chekcing if amenity have attributes """
+        self.assertTrue('id' in self.amenity.__dict__)
+        self.assertTrue('created_at' in self.amenity.__dict__)
+        self.assertTrue('updated_at' in self.amenity.__dict__)
+        self.assertTrue('name' in self.amenity.__dict__)
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        " This test only work in Filestorage ")
+    def test_save_Amenity(self):
+        """ test if the save works """
+        self.amenity.save()
+        self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
+
+    def test_to_dict_Amenity(self):
+        """ test if dictionary works """
+        self.assertEqual('to_dict' in dir(self.amenity), True)
+
+
+if __name__ == "__main__":
+    unittest.main()
