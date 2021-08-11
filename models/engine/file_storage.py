@@ -12,7 +12,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls is None:
             return self.__objects
-        
+
         objs = self.__objects.items()
         filter_objs = {k: v for k, v in objs if cls == type(v)}
         return filter_objs
