@@ -12,7 +12,6 @@ class State(BaseModel, Base):
     """State class"""
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-
     # check if the origin of the data is from db
     origin_data = os.getenv("HBNB_TYPE_STORAGE")
     # if come from db_storage
