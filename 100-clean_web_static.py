@@ -6,6 +6,7 @@
 
 from fabric.api import local, put, run, env
 import time
+import os
 
 env.hosts = ['34.138.56.48', '34.74.249.41']
 
