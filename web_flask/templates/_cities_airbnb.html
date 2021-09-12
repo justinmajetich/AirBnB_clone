@@ -1,0 +1,5 @@
+<ul>
+    {% for city in cities|sort(attribute='name') -%}
+        <li><h4>{{ city.name }}</h4></li>
+    {%- endfor %}
+</ul>
