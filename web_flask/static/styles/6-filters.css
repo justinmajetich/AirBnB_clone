@@ -29,27 +29,35 @@
 }
 
 .popover {
+	position: relative;
 	list-style-type: none;
 	display: none;
 	background-color: #FAFAFA;
 	width: 100%;
 
 	margin-left: -1px;
-	margin-top: 8px;
+	margin-top: 13px;
 	padding: 25px 0px;
 
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
 	max-height: 300px;
 	overflow-y: scroll;
+	z-index: 1;
+}
+
+.popover h2 {
+	font-size: 2em;
+	margin-top: 20px;
+	margin-bottom: 30px;
 }
 
 .locations:hover .popover {
-	display: inline-block;
+	display: block;
 }
 
 .amenities:hover .popover {
-	display: inline-block;
+	display: block;
 }
 
 ul {
