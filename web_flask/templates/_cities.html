@@ -1,0 +1,5 @@
+<UL>
+    {% for city in cities|sort(attribute='name') %}
+                        <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+    {% endfor %}
+                    </UL>
