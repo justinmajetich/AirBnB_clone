@@ -67,3 +67,9 @@ class FileStorage:
             key = "{}.{}".format(prmObj.__class__.__name__, prmObj.id)
             if key in storage.all():
                 del storage.all()[key]
+
+    def close(self):
+        """
+            deserializing the JSON file to objects
+        """
+        self.reload()
