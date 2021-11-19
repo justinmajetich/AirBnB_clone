@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
                 except Exception:
                     pass
         new_instance = HBNBCommand.classes[arg_list[0]](**input_dict)
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
