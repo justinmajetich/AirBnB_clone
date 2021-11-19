@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        regex_str = r"(.+)=[\"]?(.+)[\"]"
+        #regex_str = r"(.+)=[\"]?(.+)[\"]"
         arg_list = args.split(" ")
         if len(arg_list) == 0:
             print("** class name missing **")
@@ -128,15 +128,18 @@ class HBNBCommand(cmd.Cmd):
         for item in arg_list[1:]:
             key, val = item.split("=", 1)
             if "\"" in val:
-                setattr(input_dict, key, val.replace("_", " "))
+                try:
+                    input_dict.update({key: val.replace("_", " ").strip("\"")})
+                except Exception:
+                    pass
             elif "." in val:
                 try:
-                    setattr(input_dict, key, float(val))
+                    input_dict.update({key: float(val)})
                 except Exception:
                     pass
             else:
                 try:
-                    setattr(input_dict, key, int(val))
+                    input_dict.update({key: int(val)})
                 except Exception:
                     pass
         new_instance = HBNBCommand.classes[arg_list[0]](**input_dict)
