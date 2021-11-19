@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        #regex_str = r"(.+)=[\"]?(.+)[\"]"
+        # regex_str = r"(.+)=[\"]?(.+)[\"]"
         arg_list = args.split(" ")
         if len(arg_list) == 0:
             print("** class name missing **")
