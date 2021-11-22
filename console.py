@@ -12,6 +12,24 @@ from models.amenity import Amenity
 from models.review import Review
 
 
+def checkInt(str, neg):
+    '''Checks if string is an integer'''
+    if neg == 1 and str.startswith('-'):
+        if str[1:].isnumeric():
+            return True, str
+    elif str.isnumeric():
+        return True
+
+
+def escQuotes(str):
+    '''Checks escapes quotes'''
+    for i, char in enumerate(str):
+        if char == '"':
+            if str[i - 1] != '\\':
+                return False
+    return True
+
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -115,34 +133,49 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        arg_list = args.split(" ")
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        classParams = args.split()
+        if classParams[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        input_new = {}
-        for item in arg_list[1:]:
-            key, val = item.split("=", 1)
-            if "\"" in val:
-                try:
-                    input_new.update({key: val.replace("_", " ").strip("\"")})
-                except Exception:
-                    pass
-            elif "." in val:
-                try:
-                    input_new.update({key: float(val)})
-                except Exception:
-                    pass
-            else:
-                try:
-                    input_new.update({key: int(val)})
-                except Exception:
-                    pass
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
+
+        elif len(classParams) == 1:
+            newInstance = HBNBCommand.classes[classParams[0]]()
+            print(newInstance.id)
+            storage.new(newInstance)
+            storage.save()
+
+        else:
+            newInstance = HBNBCommand.classes[classParams[0]]()
+            for params in classParams[1:]:
+                paramParse = params.split('=', 1)
+                key = paramParse[0]
+                if len(paramParse) > 1:
+                    value = paramParse[1]
+                else:
+                    continue
+
+                if len(paramParse) > 1:
+                    num = value.split('.')
+                    if checkInt(value, 1):
+                        newInstance.__dict__[key] = int(value)
+
+                    elif (len(num) > 1 and checkInt(
+                            num[0], 1) and checkInt(num[1], 0)):
+                        newInstance.__dict__[key] = float(value)
+
+                    elif value.startswith('"') and value.endswith('"'):
+                        noQuote = value[1:-1]
+
+                        if escQuotes(noQuote):
+                            noQuote = noQuote.replace('_', ' ')
+                            noQuote = noQuote.replace('\"', '"')
+                            newInstance.__dict__[key] = noQuote
+        print(newInstance.id)
+        storage.new(newInstance)
         storage.save()
 
     def help_create(self):
