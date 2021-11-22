@@ -122,9 +122,14 @@ class HBNBCommand(cmd.Cmd):
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        input_dict = {}
+        input_new = {}
         for item in arg_list[1:]:
             key, val = item.split("=", 1)
+            if "\"" in val:
+                try:
+                    input_new.update({key: val.replace("_", " ").strip("\"")})
+                except Exception:
+                    pass
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
