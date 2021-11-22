@@ -130,6 +130,16 @@ class HBNBCommand(cmd.Cmd):
                     input_new.update({key: val.replace("_", " ").strip("\"")})
                 except Exception:
                     pass
+            elif "." in val:
+                try:
+                    input_new.update({key: float(val)})
+                except Exception:
+                    pass
+            else:
+                try:
+                    input_new.update({key: int(val)})
+                except Exception:
+                    pass
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
