@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """ Overrides the emptyline method of CMD's """
         pass
 
     def do_create(self, args):
