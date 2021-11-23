@@ -10,15 +10,12 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
 
-<<<<<<< HEAD
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow,
                         nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow,
                         nullable=False)
 
-=======
->>>>>>> 95c8a15c850ad304e40201b10a36e714de1a3635
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if kwargs:
@@ -36,6 +33,21 @@ class BaseModel:
                     self.updated_at = self.created_at
                 else:
                     self.updated_at = datetime.now()
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+
+    def __init__(self, *args, **kwargs):
+        """Instatntiates a new model"""
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        if not kwargs:
+            from models import storage
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -62,7 +74,8 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
 
-
     def delete(self):
-        """purge the object from storage"""
-        models.storage.delete(self)
+        """deletes the object from storage"""
+        from models import storage
+        storage.delete(self)
+

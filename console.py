@@ -3,31 +3,13 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-
-def checkInt(str, neg):
-    '''Checks if string is an integer'''
-    if neg == 1 and str.startswith('-'):
-        if str[1:].isnumeric():
-            return True, str
-    elif str.isnumeric():
-        return True
-
-
-def escQuotes(str):
-    '''Checks escapes quotes'''
-    for i, char in enumerate(str):
-        if char == '"':
-            if str[i - 1] != '\\':
-                return False
-    return True
 
 
 class HBNBCommand(cmd.Cmd):
@@ -91,8 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
-  
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -127,6 +108,24 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         """ Prints the help documentation for EOF """
         print("Exits the program without formatting\n")
+
+
+def checkInt(str, neg):
+    '''Checks if string is an integer'''
+    if neg == 1 and str.startswith('-'):
+        if str[1:].isnumeric():
+            return True, str
+    elif str.isnumeric():
+        return True
+
+
+def escQuotes(str):
+    '''Checks escapes quotes'''
+    for i, char in enumerate(str):
+        if char == '"':
+            if str[i - 1] != '\\':
+                return False
+    return True
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD's """
@@ -373,6 +372,5 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-
-if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    if __name__ == "__main__":
+        HBNBCommand().cmdloop()
