@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def own_fill_dict(self, args):
-        """Function to parse into a the incoming args
+        """Function to parse into a dict the incoming args
         """
         kwargs = {}
         for pair in args.split(' ')[1:]:
@@ -138,7 +138,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         kwargs = self.own_fill_dict(args)
-        print(kwargs)
         if kwargs == {}:
             new_instance = HBNBCommand.classes[args.split(' ')[0]]()
         else:
@@ -146,6 +145,7 @@ class HBNBCommand(cmd.Cmd):
             storage.new(new_instance)
         """ print(new_instance.id) """
         new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
