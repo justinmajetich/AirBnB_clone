@@ -175,34 +175,6 @@ class Test_docstrings_filestorage(unittest.TestCase):
         key_object = f"{object.__class__.__name__}.{object.id}"
         self.assertEqual(all_objs[key_object], object)
 
-    def test_new(self):
-        """Test new method
-        """
-        object = BaseModel()
-        storage.new(object)
-        dict_objects = storage.all()
-
-        # Testing if key was set correctly and in __objects
-        key = f"{object.__class__.__name__}.{object.id}"
-        keys_dict = dict_objects.keys()
-        self.assertIn(key, keys_dict)
-
-        # Testing if value was correctly added to __objects
-        self.assertEqual(dict_objects[key], object)
-
-        storage = FileStorage()
-        save = FileStorage._FileStorage__objects
-        FileStorage._FileStorage__objects = {}
-        test_dict = {}
-        for key, value in classes.items():
-            with self.subTest(key=key, value=value):
-                instance = value()
-                instance_key = instance.__class__.__name__ + "." + instance.id
-                storage.new(instance)
-                test_dict[instance_key] = instance
-                self.assertEqual(test_dict, storage._FileStorage__objects)
-        FileStorage._FileStorage__objects = save
-
     def test_save(self):
         """Test for save method
         """
@@ -230,7 +202,10 @@ class Test_docstrings_filestorage(unittest.TestCase):
 
     def testing_save(self):
         """Testing serializes method"""
-        os.remove("file.json")
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
         storage = FileStorage()
         new_dict = {}
         for key, value in classes.items():
