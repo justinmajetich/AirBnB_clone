@@ -106,10 +106,6 @@ class test_basemodel(unittest.TestCase):
         self.assertFalse(new.created_at == new.updated_at)
         """ ###################################################### """
 
-
-class TestCodeFormat(unittest.TestCase):
-    """
-    A class to test pep8 on base_model file"""
     def test_pycodestyle(self):
         """
         Test pep8 format
@@ -119,9 +115,6 @@ class TestCodeFormat(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-
-class Test_docstrings(unittest.TestCase):
-    """Test docstrings"""
     @classmethod
     def setup_class(self):
         """
@@ -141,9 +134,6 @@ class Test_docstrings(unittest.TestCase):
         self.assertTrue(len(__doc__) > 0, " base_model.py have docstrings")
         self.assertFalse(len(__doc__) < 0, " base_model  have docstrings")
 
-
-class Test_Class_BaseModel(unittest.TestCase):
-    """Testing BaseModel class"""
     @mock.patch('models.storage')
     def test_BaseModel_instance(self, mock_storage):
         instance = BaseModel()
