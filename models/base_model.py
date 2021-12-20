@@ -3,6 +3,8 @@
 import uuid
 from datetime import datetime
 
+"""{"BaseModel.a3b45f85-21c7-47e2-a202-84fd4ea20b8d": {"id": "a3b45f85-21c7-47e2-a202-84fd4ea20b8d", "created_at": "2021-12-20T17:24:07.265989", "updated_at": "2021-12-20T17:24:07.266003", "__class__": "BaseModel"}}"""
+
 
 class BaseModel:
     """A base class for all hbnb models"""
