@@ -10,7 +10,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns the list of objects of one type of class"""
-        if cls is None:
+        if not cls:
             return FileStorage.__objects
         else:
             return {key: value for key, value in FileStorage.__objects.items()
@@ -60,5 +60,7 @@ class FileStorage:
         Args:
             obj (optional): Object to delete. Defaults to None.
         """
-        key = obj.__class__.__name__ + '.' + obj.id
-        del FileStorage.__objects[key]
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in FileStorage.__objects.keys():
+                del FileStorage.__objects[key]
