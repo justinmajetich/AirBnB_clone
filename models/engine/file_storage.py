@@ -30,12 +30,13 @@ class FileStorage:
 
     def delete(self, obj=None):
         if obj:
-            objct = obj.__class__.__name__ + '.' + obj.id
-            if objct in self.__objects:
-                del self.__objects[objct]
-                self.save()
+            for key, value in FileStorage.__objects.items():
+                if value == obj:
+                    del FileStorage.__objects[key]
+                    FileStorage.save()
+                    return
         else:
-            return
+            pass
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
