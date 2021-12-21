@@ -124,6 +124,8 @@ class HBNBCommand(cmd.Cmd):
             tupl = pline[i].partition('=')
             value = tupl[2].replace('\"', '')
             names.append(tupl[0])
+            if type(value) is float:
+                value = int(value)
             values.append(value)
         dictionary = dict(zip(names[1:], values[1:]))
         if not _cls:
@@ -133,7 +135,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         print("dictionary -> {}".format(dictionary))
-        new_instance = HBNBCommand.classes[_cls](**dictionary)
+        new_instance = HBNBCommand.classes[_cls]()
+        new_instance.__dict__.update(dictionary)
         new_instance.save()
 
     def help_create(self):

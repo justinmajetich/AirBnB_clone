@@ -7,5 +7,3 @@ class Amenity(BaseModel):
     """Class Ameniy"""
     name = ""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__()
