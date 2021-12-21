@@ -5,24 +5,12 @@ from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.user import User
-
-
-classes =\
-    {
-        'State': State,
-        'City': City,
-        'Amenity': Amenity,
-        'Place': Place,
-        'Review': Review,
-        'User': User
-    }
 
 
 class DBStorage:
@@ -54,40 +42,42 @@ class DBStorage:
         (User, State, City, Amenity, Place and Review)
         """
         if cls is None:
-            objects = self.__session.query(classes['State']).all()
-            objects.extend(self.__session.query(classes['City']).all())
-            objects.extend(self.__session.query(classes['Amenity']).all())
-            objects.extend(self.__session.query(classes['Place']).all())
-            objects.extend(self.__session.query(classes['Review']).all())
-            objects.extend(self.__session.query(classes['User']).all())
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            objects.extend(self.__session.query(Amenity).all())
+            objects.extend(self.__session.query(Place).all())
+            objects.extend(self.__session.query(Review).all())
+            objects.extend(self.__session.query(User).all())
         else:
             if isinstance(cls, str):
                 cls = eval(cls)
-        objects = self.__session.query(cls)
+        objects = self.__session.query(cls).all()
         return {object.__clase__.__name__ + '.' + object.id: object for object in objects}
 
     def new(self, obj):
-        """add the object to the current database session (self.__session)"""
+        """add the object to the current database session"""
         self.__session.add(obj)
+        self.__session.close()
 
     def save(self):
-        """commit all changes of the current database session
-        (self.__session)"""
+        """commit all changes of the current database session"""
         self.__session.commit()
+        self.__session.close()
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
+            self.__session.close()
 
     def reload(self):
         """Creates all tables in the database
         """
         Base.metadata.create_all(self.__engine)
-        Session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
-        Session_secure = scoped_session(Session_factory)
-        self.__session = Session_secure
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_secure = scoped_session(session_factory)
+        self.__session = session_secure
+        self.__session.close()
 
     def close(self):
         """Closes the session
