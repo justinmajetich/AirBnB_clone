@@ -134,10 +134,10 @@ class HBNBCommand(cmd.Cmd):
         elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        print("dictionary -> {}".format(dictionary))
         new_instance = HBNBCommand.classes[_cls]()
         new_instance.__dict__.update(dictionary)
         new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
