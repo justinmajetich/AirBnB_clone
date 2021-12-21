@@ -117,24 +117,55 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         pline = args.split()
         _cls = pline[0]
-        i = 1
         values = []
         names = []
-        for i in range(len(pline)):
-            tupl = pline[i].partition('=')
-            value = tupl[2].replace('\"', '')
-            names.append(tupl[0])
-            values.append(value)
-        dictionary = dict(zip(names[1:], values[1:]))
         if not _cls:
             print("** class name missing **")
             return
         elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        print("dictionary -> {}".format(dictionary))
-        new_instance = HBNBCommand.classes[_cls](**dictionary)
+        for i in range(1, len(pline)):
+            print(i)
+            tupl = pline[i].partition('=')
+            names.append(tupl[0])
+            try:
+                print("llegué al try")
+                print(tupl)
+                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
+                    print("tuple")
+                    value = tupl[2].replace('\"', '')
+                    value = value.replace('_', ' ')
+                    values.append(value)
+                    print("legué al try if")
+                else:
+                    value = tupl[2]
+                    print("llegué al else")
+                    if '.' in value or type(value) is float:
+                        try:
+                            value = float(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+                    else:
+                        try:
+                            value = int(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+                print(values)
+                print(names)
+            except IndexError:
+                print("INDEXERROR")
+                continue
+
+        dictionary = dict(zip(names, values))
+        print("DICTIONARY ->>> {}".format(dictionary))
+
+        new_instance = HBNBCommand.classes[_cls]()
+        new_instance.__dict__.update(dictionary)
         new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """

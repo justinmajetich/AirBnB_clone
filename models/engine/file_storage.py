@@ -36,8 +36,11 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-
+        """deserializes the JSON file to __objects
+        - only if the JSON file (__file_path) exists
+        - otherwise, do nothing.
+        - If the file doesn’t exist, no exception should be raised
+        """
         try:
             with open(self.__file_path, 'r', encoding='UTF-8') as file:
                 js = json.load(file)
