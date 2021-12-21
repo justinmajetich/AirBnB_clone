@@ -19,7 +19,7 @@ class FileStorage:
                 var = key.split('.')
                 if var[0] in str(cls):
                     new_dict[key] = value
-            return items
+            return new_dict
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
