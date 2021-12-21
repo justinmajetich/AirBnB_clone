@@ -62,3 +62,4 @@ class FileStorage:
         for key, value in FileStorage.__objects.items():
             if value != obj:
                 FileStorage.__objects = {key: value}
+        self.save()
