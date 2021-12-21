@@ -40,11 +40,9 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
 
-        self.__engine = create_engine(
-            f'mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@\
-            {HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}',
-            pool_pre_ping=True
-        )
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                           format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,HBNB_MYSQL_HOST,
+                                  HBNB_MYSQL_DB, pool_pre_ping=True))
 
         if HBNB_ENV == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -66,7 +64,7 @@ class DBStorage:
             if isinstance(cls, str):
                 cls = eval(cls)
         objects = self.__session.query(cls)
-        return {f"{type(object).__name__}.{object.id}" for object in objects}
+        return {object.__clase__.__name__ + '.' + object.id: object for object in objects}
 
     def new(self, obj):
         """add the object to the current database session (self.__session)"""
@@ -83,8 +81,15 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        """Creates all tables in the database
+        """
         Base.metadata.create_all(self.__engine)
         Session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Session_secure = scoped_session(Session_factory)
         self.__session = Session_secure
+
+    def close(self):
+        """Closes the session
+        """
+        self.__session.close()
