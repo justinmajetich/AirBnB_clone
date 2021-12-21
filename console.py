@@ -19,15 +19,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+            'number_rooms': int, 'number_bathrooms': int,
+            'max_guest': int, 'price_by_night': int,
+            'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -73,12 +73,12 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
-                        _args = pline
+                        args = pline
                     else:
-                        _args = pline.replace(',', '')
-                        _args = _args.replace('\"', '')
+                        args = pline.replace(',', '')
+                        # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -94,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
+        return True
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -115,16 +115,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        pline = args.split()
+        _cls = pline[0]
+        i = 1
+        values = []
+        names = []
+        for i in range(len(pline)):
+            tupl = pline[i].partition('=')
+            value = tupl[2].replace('\"', '')
+            names.append(tupl[0])
+            values.append(value)
+        dictionary = dict(zip(names[1:], values[1:]))
+        if not _cls:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist")
+        elif _cls not in HBNBCommand.classes:
+            print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        print("dictionary -> {}".format(dictionary))
+        new_instance = HBNBCommand.classes[_cls](**dictionary)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -136,6 +146,11 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -164,6 +179,9 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -177,8 +195,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
+
         try:
-            del(storage._FileStorage__objects[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -219,13 +238,17 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
+    def help_count(self):
+        """ """
+        print("Usage: count <class_name>")
+
     def do_update(self, args):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_name = args[0]
         else:  # class name not present
             print("** class name missing **")
@@ -236,7 +259,7 @@ class HBNBCommand(cmd.Cmd):
 
         # isolate id from args
         args = args[2].partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_id = args[0]
         else:  # id not present
             print("** instance id missing **")
@@ -258,12 +281,25 @@ class HBNBCommand(cmd.Cmd):
                 args.append(k)
                 args.append(v)
         else:  # isolate args
-            args = args[2].replace('\"', '').split(' ')
-            try:  # assign
+            args = args[2]
+            if args and args[0] == '\"':  # check for quoted arg
+                second_quote = args.find('\"', 1)
+                att_name = args[1:second_quote]
+                args = args[second_quote + 1:]
+
+            args = args.partition(' ')
+
+            # if att_name was not quoted arg
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
-                att_val = args[1]
-            except IndexError:  # do nothing on KeyError
-                pass
+            # check for quoted val arg
+            if args[2] and args[2][0] == '\"':
+                att_val = args[2][1:args[2].find('\"', 1)]
+
+            # if att_val was not quoted arg
+            if not att_val and args[2]:
+                att_val = args[2].partition(' ')[0]
+
             args = [att_name, att_val]
 
         # retrieve dictionary of current objects
@@ -293,6 +329,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
