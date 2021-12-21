@@ -54,7 +54,7 @@ class DBStorage:
             if isinstance(cls, str):
                 cls = eval(cls)
         objects = self.__session.query(cls).all()
-        return {object.__clase__.__name__ + '.' + object.id: object
+        return {object.__class__.__name__ + '.' + object.id: object
                 for object in objects}
 
     def new(self, obj):
