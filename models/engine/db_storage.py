@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Allows manage storage of hbnb models using SQL Alchemy"""
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from os import getenv
 from models.base_model import BaseModel, Base
 from models import user, state, city, amenity, place, review
@@ -64,4 +64,7 @@ class DBStorage():
     def reload(self):
         """Create all tables in the database
         and create the current database session by by using a sessionmaker """
-        pass
+        Base.metadata.create_all(self.__engine)
+
+        Session = scoped_session(sessionmaker(bind=self.__engine,
+                                              expire_on_commit=False))
