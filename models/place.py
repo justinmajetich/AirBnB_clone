@@ -16,4 +16,3 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
-    print("Hola estoy en place")
