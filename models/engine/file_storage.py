@@ -29,11 +29,12 @@ class FileStorage:
         return FileStorage.__objects
 
     def delete(self, obj=None):
+        """THIS FUNCTION FUCKING DELETE"""
         if obj:
             for key, value in FileStorage.__objects.items():
                 if value == obj:
                     del FileStorage.__objects[key]
-                    FileStorage.save()
+                    self.save()
                     return
         else:
             pass
