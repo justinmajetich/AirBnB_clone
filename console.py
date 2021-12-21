@@ -120,6 +120,12 @@ class HBNBCommand(cmd.Cmd):
         i = 1
         values = []
         names = []
+        if not _cls:
+            print("** class name missing **")
+            return
+        elif _cls not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
         for i in range(len(pline)):
             tupl = pline[i].partition('=')
             value = tupl[2].replace('\"', '')
@@ -128,12 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 value = int(value)
             values.append(value)
         dictionary = dict(zip(names[1:], values[1:]))
-        if not _cls:
-            print("** class name missing **")
-            return
-        elif _cls not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+
         new_instance = HBNBCommand.classes[_cls]()
         new_instance.__dict__.update(dictionary)
         new_instance.save()
