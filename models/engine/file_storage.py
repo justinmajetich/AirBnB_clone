@@ -33,6 +33,7 @@ class FileStorage:
             for key, value in FileStorage.__objects.items():
                 if value == obj:
                     del FileStorage.__objects[key]
+                    return
         else:
             pass
 
