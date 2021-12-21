@@ -16,3 +16,10 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        if kwargs is not None and kwargs != {}:
+            for key in kwargs.keys():
+                if hasattr(self, key) and key != '__class__':
+                    setattr(self, key, kwargs[key])
