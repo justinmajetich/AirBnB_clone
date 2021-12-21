@@ -1,13 +1,6 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
-from models.base_model import BaseModel
 
-
-class State(BaseModel):
-    """ State class """
-    name = ""
-
-    print("Hola estoy en el state")
+class Validator():
     def __init__(self, *args, **kwargs):
         print("SOY EL KWARGS-> {}".format(kwargs))
         super().__init__()
