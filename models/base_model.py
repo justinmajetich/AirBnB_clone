@@ -3,8 +3,6 @@
 import uuid
 from datetime import datetime
 
-"""{"BaseModel.a3b45f85-21c7-47e2-a202-84fd4ea20b8d": {"id": "a3b45f85-21c7-47e2-a202-84fd4ea20b8d", "created_at": "2021-12-20T17:24:07.265989", "updated_at": "2021-12-20T17:24:07.266003", "__class__": "BaseModel"}}"""
-
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -38,9 +36,8 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary = self.__dict__.copy()
+        dictionary['__class__'] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary

@@ -117,22 +117,21 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         pline = args.split()
         _cls = pline[0]
-        if not _cls:
-            print("** class name missing **")
-            return
-        elif _cls not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
         i = 1
         values = []
         names = []
         for i in range(len(pline)):
             tupl = pline[i].partition('=')
             value = tupl[2].replace('\"', '')
-            value = value.replace('_', ' ')
             names.append(tupl[0])
             values.append(value)
         dictionary = dict(zip(names[1:], values[1:]))
+        if not _cls:
+            print("** class name missing **")
+            return
+        elif _cls not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
         print("dictionary -> {}".format(dictionary))
         new_instance = HBNBCommand.classes[_cls](**dictionary)
         new_instance.save()
