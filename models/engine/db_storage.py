@@ -3,12 +3,14 @@
 from sqlalchemy import create_engine
 from os import getenv
 from models.base_model import BaseModel, Base
+from models import user, state, city, amenity, place, review
 
 
 class DBStorage():
     """Allows manage storage of hbnb models using SQL Alchemy"""
     __engine = None
     __session = None
+
     def __init__(self):
         """Create the engine (self.__engine)"""
         user = getenv('HBNB_MYSQL_USER')
@@ -26,12 +28,29 @@ class DBStorage():
     def all(self, cls=None):
         """Query on the current database session
         all objects depending of the class name"""
-        pass
-    
+        self.__session = Session(self.__engine)
+        objs_dict = {}
+        if cls is not None:
+            list_objects = self.__session.query(str(cls)).all()
+            for obj in list_objects:
+                objs_dict[str(obj.__class__.__name__) + '.' + obj.id] = obj
+        else:
+            list_objects = self.__session.query(
+                user.User,
+                state.State,
+                city.City,
+                amenity.Amenity,
+                place.Place,
+                review.Review
+                ).all()
+            for obj in list_objects:
+                objs_dict[str(obj.__class__.__name__) + '.' + obj.id] = obj
+        return objs_dict
+
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """Commit all changes of the current database session"""
         self.__session.commit()
