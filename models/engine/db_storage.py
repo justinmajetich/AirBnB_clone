@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Allows manage storage of hbnb models using SQL Alchemy"""
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 from os import getenv
 from models.base_model import BaseModel, Base
 from models import user, state, city, amenity, place, review
