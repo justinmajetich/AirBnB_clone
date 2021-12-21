@@ -23,10 +23,13 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            for attr in ['updated_at', 'created_at']:
+                if attr in kwargs:
+                    kwargs[attr] = datetime.strptime(
+                        kwargs[attr], '%Y-%m-%dT%H:%M:%S.%f')
+                else:
+                    kwargs[attr] = datetime.now()
+
             if 'id' not in kwargs:
                 kwargs['id'] = str(uuid.uuid4())
 
