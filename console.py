@@ -133,10 +133,8 @@ class HBNBCommand(cmd.Cmd):
             try:
                 if '.' in value:
                     value = float(value)
-                    print("hola soy float")
                 else:
                     value = int(value)
-                    print("Hola soy un int")
             except Exception:
                 pass
             values.append(value)
