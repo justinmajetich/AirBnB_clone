@@ -130,8 +130,15 @@ class HBNBCommand(cmd.Cmd):
             tupl = pline[i].partition('=')
             value = tupl[2].replace('\"', '')
             names.append(tupl[0])
-            if type(value) is float:
-                value = int(value)
+            try:
+                if '.' in value:
+                    value = float(value)
+                    print("hola soy float")
+                else:
+                    value = int(value)
+                    print("Hola soy un int")
+            except Exception:
+                pass
             values.append(value)
         dictionary = dict(zip(names[1:], values[1:]))
 
