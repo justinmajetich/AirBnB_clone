@@ -3,6 +3,11 @@
 import uuid
 from datetime import datetime
 
+""" Must add before the class definition:
+-------------------------------------------------
+BaseModel: (models/base_model.py)
+-------------------------------------------------
+"""
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -31,6 +36,11 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        """
+        ----------------
+        storage.new(self)
+        ----------------
+        """
         storage.save()
 
     def to_dict(self):
