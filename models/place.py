@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel
+from models import storage
 from sqlalchemy import Table, Column
 from sqlalchemy import Integer, Float, String
+from sqlalchemy.orm import relationship
 
 class Place(BaseModel):
     """ A place to stay """
@@ -18,6 +20,7 @@ class Place(BaseModel):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float)
         longitude = Column(Float)
+        reviews = relationship("Review", backref="place", cascade="all, delete")
     else:
         city_id = ''
         user_id = ''
@@ -29,3 +32,15 @@ class Place(BaseModel):
         price_by_night = ''
         latitude = ''
         longitude = ''
+        @property
+        def reviews(self):
+            """
+            returns the list of Review instances with place_id equals
+            to the current Place.id => It will be the FileStorage
+            relationship between Place and Review
+            """
+            total_reviews = storage.all(Review)
+            result = []
+            for each in total_reviews.values():
+                result.append(each)
+            return result
