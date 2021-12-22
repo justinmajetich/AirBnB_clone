@@ -3,10 +3,11 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 from os import getenv
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
     if getenv('HBNB_TYPE_STORAGE') == 'db':
@@ -21,3 +22,4 @@ class User(BaseModel):
         first_name = ''
         last_name = ''
 
+    places = relationship("Place", backref="user", cascade="all, delete")
