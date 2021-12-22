@@ -42,6 +42,7 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
+            """Getter of reviews"""
             review_dict = models.storage.all(Review)
             review_list = []
             for key, value in review_dict.items():
@@ -51,9 +52,11 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            """Getter of amenities"""
             return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj):
+            """Setter of amenities"""
             if type(obj) == self:
                 self.amenity_ids.append(obj.id)
