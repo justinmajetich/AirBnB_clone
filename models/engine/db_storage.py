@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Allows manage storage of hbnb models using SQL Alchemy"""
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 from models.base_model import BaseModel, Base
 from models import user, state, city, amenity, place, review
@@ -29,28 +29,33 @@ class DBStorage():
     def all(self, cls=None):
         """Query on the current database session
         all objects depending of the class name"""
-        self.__session = Session(self.__engine)
-        objs_dict = {}
-        if cls is not None:
-            list_objects = self.__session.query(str(cls)).all()
-            for obj in list_objects:
-                objs_dict[str(obj.__class__.__name__) + '.' + obj.id] = obj
+        class_dict = {
+            'User': user.User, 'Place': place.Place,
+            'State': state.State, 'City': city.City,
+            'Amenity': amenity.Amenity, 'Review': review.Review
+        }
+        query_dict = {}
+
+        if cls:
+            if type(cls) == str:
+                for obj in self.__session.query(class_dict[cls]).all():
+                    query_dict[cls + '.' + obj.id] = obj
+            else:
+                print(cls)
+                for obj in self.__session.query(cls).all():
+                    print(obj)
+                    query_dict[cls.__name__ + '.' + obj.id] = obj
         else:
-            list_objects = self.__session.query(
-                user.User,
-                state.State,
-                city.City,
-                amenity.Amenity,
-                place.Place,
-                review.Review
-                ).all()
-            for obj in list_objects:
-                objs_dict[str(obj.__class__.__name__) + '.' + obj.id] = obj
-        return objs_dict
+            for class_key, class_value in class_dict.items():
+                for obj in self.__session.query(class_value).all():
+                    query_dict[class_key + '.' + obj.id] = obj
+
+        return query_dict
 
     def new(self, obj):
         """Add the object to the current database session"""
-        self.__session.add(obj)
+        if obj:
+            self.__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
@@ -58,7 +63,7 @@ class DBStorage():
 
     def delete(self, obj=None):
         """Delete from the current database session obj if not None"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
@@ -68,3 +73,5 @@ class DBStorage():
 
         Session = scoped_session(sessionmaker(bind=self.__engine,
                                               expire_on_commit=False))
+
+        self.__session = Session()
