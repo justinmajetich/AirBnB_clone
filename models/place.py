@@ -2,9 +2,9 @@
 """ Place Module for HBNB project """
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Table
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.orm import relationship, relationships
+from sqlalchemy.orm import relationship
 from os import getenv
 from models.review import Review
 
@@ -27,8 +27,18 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = []
 
+    association_table = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60),
+                                     ForeignKey('places.id'),
+                                     nullable=False),
+                              Column('amenity_id', String(60),
+                                     ForeignKey('amenities.id'),
+                                     nullable=False))
+
     if env == 'db':
         reviews = relationship('Review', backref="places")
+        amenities = relationship("Amenity",
+                                 secondary=association_table)
     else:
         @property
         def reviews(self):
@@ -38,3 +48,12 @@ class Place(BaseModel, Base):
                 if value.place_id == self.id:
                     review_list.append(value)
             return review_list
+
+        @property
+        def amenities(self):
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj):
+            if type(obj) == self:
+                self.amenity_ids.append(obj.id)
