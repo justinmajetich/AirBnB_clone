@@ -1,13 +1,10 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""Module: defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
 
-""" Must add before the class definition:
--------------------------------------------------
-BaseModel: (models/base_model.py)
--------------------------------------------------
-"""
+""" Adding before the class definition:"""
+Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -36,11 +33,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
-        """
-        ----------------
         storage.new(self)
-        ----------------
-        """
         storage.save()
 
     def to_dict(self):
