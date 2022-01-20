@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-'''Fabric srcript that generates .tgz archive
-    of static files'''
+'''Fabric srcript that generates .tgz archive of static files'''
 
 from fabric.api import local
 from datetime import datetime
