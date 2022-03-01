@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+""" """
+from io import StringIO
+from console import HBNBCommand as Console
+import models
+import unittest
+from uuid import UUID
+import sys
+
+
+con = Console()
+ConOut = StringIO
+trueOut = sys.stdout
+
+
+class test_console(unittest.TestCase):
+
+    def setUp(self):
+        stuffList = []
+        for stuff in models.storage.all():
+            stuffList.append(stuff)
+        for thing in stuffList:
+            del thing
+        print(models.storage.all())
+
+    def tearDown(self):
+        sys.stdout = trueOut
+        
+    def test_do_create(self):
+        sys.stdout = StringIO
+        self.con.do_create('Place city_id="0001" user_id="0001"\
+        name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10\
+            price_by_night=300 latitude=37.773972 longitude=-122.431297')
+            #How can we assert that we have created the instance? If it prints the correct name when using do_show?
+        self.con.do_all('Place') #can we grab any info from this?
+        self.con.do_create('Place city_id="0002" user_id="0001"\
+        name="My little house" number_rooms=4 number_bathrooms=2 max_guest=10\
+            price_by_night=300 latitude=37.773972 longitude=-122.431297')
+        #without underscores should fail
+        self.con.do_create('Place city_id="0003" user_id="0001"\
+        name="My_little_house" number_rooms=4 number_bathrooms=-2 max_guest=10\
+            price_by_night=300 latitude=37.773972 longitude=-122.431297')
+        #trying this after everthing is finished
+        #a negative amount should also actually fail for room and guest counts
+        console.do_create('Place city_id="0004" user_id="0001"\
+        name="My_little_house" number_rooms=NAN number_bathrooms=2 max_guest=10\
+            price_by_night=300 latitude=37.773972 longitude=-122.431297')
+        #NAN should fail
+        console.do_create('Place city_id=05 user_id="0001"\
+        name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10\
+            price_by_night=300 latitude=37.773972 longitude=-122.431297')
+        #Should this fail if an id given is not in string format?
