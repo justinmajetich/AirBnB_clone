@@ -10,6 +10,7 @@ import os
 from models.__init__ import storage
 from models.city import Review
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
 
@@ -25,12 +26,13 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    if  os.getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review",
+                               backref="place", cascade="all, delete-orphan")
     else:
         @property
         def reviews(self):
-            """getter that returns list of Review instances with matching ids"""
+            """getter that returns list of Review instances"""
             objects = storage.all(Review)
             my_list = []
             for value in objects.values():
