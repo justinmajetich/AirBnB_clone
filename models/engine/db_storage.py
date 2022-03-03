@@ -2,10 +2,14 @@
 """This module defines a class to manage file storage for using a database
 """
 import os
-from models.base_model import Base
+
+from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, session, scoped_session
-from importlib_metadata import metadata
+# from importlib_metadata import metadata
+
+
+
 
 
 class DBStorage:
@@ -65,6 +69,7 @@ class DBStorage:
             user = self.all(Review)
             new_dict2.update(new_dict) 
             return(new_dict2)
+            
             
     def new(self, obj):
         """ add an object to the session
