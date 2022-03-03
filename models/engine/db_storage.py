@@ -12,7 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-valid_instances = (City, State, User, Place)
+valid_instances = (City, State)
 
 
 class DBStorage:
@@ -35,7 +35,8 @@ class DBStorage:
         """Returns a dictionary of selected class in DB or
         all classes if none are passes as argument."""
         obj_dict = {}
-        if cls == None:
+
+        if cls is None:
             for inst in valid_instances:
                 for obj in self.__session.query(inst):
                     obj_dict["{}.{}".format(inst.__name__, obj.id)] = obj
