@@ -2,15 +2,20 @@
 """This module defines a class to manage file storage for using a database
 """
 import os
+
 from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, session, scoped_session
 # from importlib_metadata import metadata
 
 
+
+
+
 class DBStorage:
     """This class manages storage of hbnb models in SQL format
     """
+
     __engine = None
     __session = None
 
@@ -65,3 +70,35 @@ class DBStorage:
             new_dict2.update(new_dict) 
             return(new_dict2)
             
+            
+    def new(self, obj):
+        """ add an object to the session
+        """
+        self.__session.add(obj)
+    
+    def save(self, obj):
+        """ save an object to the session
+        """
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """ delete an object from the session
+        """
+        if obj:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """ This method sets the engine and loads the session
+        """
+        from models.base_model import BaseModel, Base
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+        
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
