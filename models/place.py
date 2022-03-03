@@ -52,7 +52,7 @@ class Place(BaseModel, Base):
             from models import storage
             amenity_list = []
             for amenity in storage.all(Amenity).values():
-                if amenity.id in self.amenities_ids:
+                if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
 
         @amenities.setter
