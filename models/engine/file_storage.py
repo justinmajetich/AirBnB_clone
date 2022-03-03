@@ -12,7 +12,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls:
             new_dict = {}
-            for i in FileStorage.__objects:
+            for i in FileStorage.__objects.keys():
                 obj = i.split(".")
                 if obj[0] == cls.__name__:
                     obj = ".".join(obj)
@@ -51,7 +51,6 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,

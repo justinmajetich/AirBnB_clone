@@ -1,16 +1,13 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
-from models.base_model import Base
-import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Float, Integer, String, ForeignKey
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import os
-from models.__init__ import storage
-from models.city import Review
-from sqlalchemy import *
+from models import storage
+from models.review import Review
 from models.amenity import Amenity
+import sqlalchemy
 
 place_amenity = Table('association', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
@@ -59,7 +56,7 @@ class Place(BaseModel, Base):
             objects = storage.all(Amenity)
             my_list = []
             for value in objects.values():
-                if self.id == value.amenity_ids:
+                if self.id == value.place_id:
                     my_list.append(value)
             return(my_list)
 
