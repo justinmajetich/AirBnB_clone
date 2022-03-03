@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 elif '.' in arg[1]:
                     arg[1] = float(arg[1])
                     setattr(new_instance, arg[0], arg[1])
-                elif arg[1].lstrip('-').isdigit() == True:
+                elif arg[1].lstrip('-').isdigit() is True:
                     arg[1] = int(arg[1])
                     setattr(new_instance, arg[0], arg[1])
         storage.new(new_instance)
@@ -337,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
