@@ -12,7 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-valid_instances = (City, State, User, Place)
+valid_instances = (City, State, User, Place, Review)
 
 
 class DBStorage:
