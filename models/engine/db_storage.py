@@ -2,16 +2,15 @@
 """This module defines a class to manage file storage for using a database
 """
 import os
-from models.base_model import Base
+from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, session, scoped_session
-from importlib_metadata import metadata
+# from importlib_metadata import metadata
 
 
 class DBStorage:
     """This class manages storage of hbnb models in SQL format
     """
-
     __engine = None
     __session = None
 
@@ -32,3 +31,37 @@ class DBStorage:
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
+    def all(self, cls=None):
+        """ import modules
+        """
+        from models.base_model import BaseModel, Base
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+        # query on the current database session (self.__session) all objects depending of the class name (argument cls)
+        if cls!=None:
+            objects = self.__session.query(cls).all()
+            new_dict = {}
+            for i in objects:
+                key = object.__class__.__name__ + "." + object.id
+                new_dict.update({key: i})
+            return(new_dict)
+        else:
+            new_dict2 = {}
+            state = self.all(State)
+            new_dict2.update(new_dict)
+            user = self.all(User)
+            new_dict2.update(new_dict) 
+            user = self.all(City)
+            new_dict2.update(new_dict)
+            user = self.all(Amenity)
+            new_dict2.update(new_dict) 
+            user = self.all(Place)
+            new_dict2.update(new_dict) 
+            user = self.all(Review)
+            new_dict2.update(new_dict) 
+            return(new_dict2)
+            
