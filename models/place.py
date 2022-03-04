@@ -1,14 +1,21 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
-from models.base_model import Base
-import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Float, Integer, String, ForeignKey
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import os
-from models.__init__ import storage
-from models.city import Review
+from models import storage
+from models.review import Review
+from models.amenity import Amenity
+import sqlalchemy
+
+place_amenity = Table('association', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             nullable=False, primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             nullable=False, primary_key=True)
+                      )
 
 
 class Place(BaseModel, Base):
@@ -26,9 +33,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review",
                                backref="place", cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False, backref='place_amenities')
     else:
         @property
         def reviews(self):
@@ -39,3 +49,19 @@ class Place(BaseModel, Base):
                 if self.id == value.place_id:
                     my_list.append(value)
             return(my_list)
+
+        @property
+        def amenities(self):
+            """getter that returns list of Amenity instances"""
+            objects = storage.all(Amenity)
+            my_list = []
+            for value in objects.values():
+                if self.id == value.place_id:
+                    my_list.append(value)
+            return(my_list)
+
+        @amenities.setter
+        def amenities(self, obj):
+            """setter that handles append method for Amenity.id"""
+            if isinstance(obj, Amenity):
+                self.append(obj)
