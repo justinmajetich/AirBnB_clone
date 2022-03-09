@@ -16,6 +16,8 @@ types = {
     'max_guest': int, 'price_by_night': int,
     'latitude': float, 'longitude': float
 }
+
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -91,6 +93,9 @@ class HBNBCommand(cmd.Cmd):
             return line
 
     def spliter(self, argm):
+        """
+        This will split the argv to dict and class name 
+        """
         alx = argm
         alx = alx.split()
         if len(alx) == 1:
@@ -103,9 +108,8 @@ class HBNBCommand(cmd.Cmd):
             try:
                 aalx[x][1] = types[aalx[x][0]](
                     eval(aalx[x][1]))
-  
+
                 if aalx[x][1] == '':
-                    print("found one")
                     raise IndexError
             except IndexError:
                 del aalx[x]
@@ -126,12 +130,9 @@ class HBNBCommand(cmd.Cmd):
                 continue
         dictt = {}
 
-        print("---------------", aalx)
         for x in range(1, len(aalx)):
             dictt[aalx[x][0]] = aalx[x][1]
 
-        for x in range(1, len(aalx)):
-            print(aalx[x][1], type(aalx[x][1]))
         res = [aalx[0][0], dictt]
         return res
 
