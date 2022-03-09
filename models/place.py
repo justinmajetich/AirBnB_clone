@@ -70,7 +70,7 @@ class Place(BaseModel, Base):
             return amen_list
 
         @amenities.setter
-        def amenities(self, amenity_obj):
+        def append(self, amenity_obj):
             """method to add an amenity to list of amenities"""
 
             if amenity_obj.__class__.__name__ == "Amenity":
