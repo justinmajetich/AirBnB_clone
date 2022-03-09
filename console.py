@@ -103,7 +103,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 aalx[x][1] = types[aalx[x][0]](
                     eval(aalx[x][1]))
-                print(x, aalx[x][1])
+  
                 if aalx[x][1] == '':
                     print("found one")
                     raise IndexError
