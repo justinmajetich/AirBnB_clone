@@ -142,6 +142,6 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 	
 ## Authors
-* **Ojo Timilehin Joseph ** - [Timex19](https://github.com/Timex19)
+* **Ojo Timilehin Joseph** - [Timex19](https://github.com/Timex19)
 
 * **Ifeoluwa Lawal** - [Ifeoluwa](https://github.com/Ifeoluwa-Lawal)
