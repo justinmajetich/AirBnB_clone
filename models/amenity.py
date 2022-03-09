@@ -11,7 +11,7 @@ class Amenity(BaseModel, Base):
     """amenity class"""
 
     __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False, unique=True)
 
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         place_amenities = relationship("Place", secondary="place_amenity",
