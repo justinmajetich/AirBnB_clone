@@ -8,6 +8,7 @@ import json
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel
+from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
@@ -81,8 +82,9 @@ class DBStorage:
         """
         Reloads the database
         """
-        BaseModel.__table__.drop(self.__engine)
-        BaseModel.__table__.create(self.__engine)
+        Base.metadata.create_all(self.__engine)
+        sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess_factory)
 
     def close(self):
         """
