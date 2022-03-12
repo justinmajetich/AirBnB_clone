@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage database storage for hbnb clone"""
 import json
+from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
@@ -10,54 +11,60 @@ class DBStorage:
 	__engine = None
 	__session = None
 
+	classes = {"BaseModel": BaseModel,
+                   "User": User,
+                   "State": State,
+                   "City": City,
+                   "Amenity": Amenity,
+                   "Place": Place,
+                   "Review": Review
+				}
+
 	def __init__(self):
 		"""Instantiates a new model"""
 
 		self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.\
-									format(HBNB_MYSQL_PWD,\
-										HBNB_MYSQL_USER,\
-										HBNB_MYSQL_HOST,\
-										HBNB_MYSQL_DB),\
+									format(getenv(HBNB_MYSQL_USER),\
+										getenv(HBNB_MYSQL_PWD),\
+										getenv(HBNB_MYSQL_HOST),\
+										getenv(HBNB_MYSQL_DB),\
 										pool_pre_ping=True)
-		
+		if getenv("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
+
 	def all(self, cls=None):
 		"""Returns a dictionary of models currently in storage"""
-		if cls == None:
-			return self.__session
+		if cls:
+            objs = self.__session.query(self.classes[cls])
 		else:
-			for k, v in self.__session.items():
-				if cls == k.split(.)[0]:
-					return self.__session[k]
+			objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
+		
+		dict_objs = {}
+		for obj in objs:
+			key = '{}.{}'.format(type(obj).__name__, obj.id)
+            dict_objs[key] = obj
+        return dict_objs
 
 
 	def new(self, obj):
 		"""Adds new object to storage dictionary"""
-		self.__session.new({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-		self.__session.close()
-
+		self.__session.add(obj)
 
 	def save(self):
-		"""Saves storage dictionary to file"""
-		self.__session.commit()
+        """Commit all changes to the current database session."""
+        self.__session.commit()
 
 	def reload(self):
 		"""Loads storage dictionary from file"""
-		from models.base_model import BaseModel
-		from models.user import User
-		from models.place import Place
-		from models.state import State
-		from models.city import City
-		from models.amenity import Amenity
-		from models.review import Review
 
-		classes = {
-					'BaseModel': BaseModel, 'User': User, 'Place': Place,
-					'State': State, 'City': City, 'Amenity': Amenity,
-					'Review': Review
-				  }
-
-		Base.metadata.create_all(engine)
-		Session = sessionmaker(bind=engine, expire_on_commit=False)
+		Base.metadata.create_all(self.__engine)
+		session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+		Session = scoped_session(session_factory)
 		self.__session = Session()
 
 	def delete(self, obj=None):
@@ -66,3 +73,7 @@ class DBStorage:
 			pass
 		else: 
 			self.__session.delete(obj)
+
+	def close(self):
+        """Removes the session"""
+        self.__session.close()
