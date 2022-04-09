@@ -306,6 +306,9 @@ class HBNBCommand(cmd.Cmd):
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
+                if att_name == "id" or att_name == "created_at" \
+                        or att_name == "updated_at":
+                    return
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
