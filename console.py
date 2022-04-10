@@ -132,6 +132,7 @@ class HBNBCommand(cmd.Cmd):
             value = sparg[1]
             value2 = value.replace("_", " ")
             setattr(new_instance, keyname, value2)
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
