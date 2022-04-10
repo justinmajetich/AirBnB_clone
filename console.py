@@ -256,8 +256,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # generate key from class and id
+        c_id = c_id.translate({ord('"'): None})
         key = c_name + "." + c_id
-
         # determine if key is present
         if key not in storage.all():
             print("** no instance found **")
