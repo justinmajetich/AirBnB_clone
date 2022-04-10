@@ -170,6 +170,7 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+        c_id = c_id.translate({ord('"'): None})
         if c_id and ' ' in c_id:
             c_id = c_id.partition(' ')[0]
 
