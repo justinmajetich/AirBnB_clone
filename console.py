@@ -121,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
         arlist = args.split(" ")
         for i in range arlist:
             print(arlist[i])
-        if arlist[0] not in HBNBCommand.classes:
+        if arlist not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args]()
