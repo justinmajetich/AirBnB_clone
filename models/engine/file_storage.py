@@ -7,7 +7,6 @@ class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
-
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         from models.base_model import BaseModel
@@ -72,15 +71,8 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         self.obj = obj
-        del self.__objects[obj]
-        storage.save()
-
-
-
-
-
-
-
-
-
-
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj)
+        if (key, obj) in self.__objects.items():
+            self.__objects.pop(key, None)
+        self.save()
