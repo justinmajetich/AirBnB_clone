@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import ast
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,16 +20,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,13 +119,25 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        else:
+            list_args = args.split(" ")
+            if list_args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            elif len(list_args) == 1:
+                new_instance = HBNBCommand.classes[list_args[0]]()
+                print(new_instance.id)
+                storage.save()
+            else:
+                class_name = list_args.pop(0)
+                attributes_dict = create_dict_attributes(list_args)
+                new_instance = HBNBCommand.classes[class_name]()
+                storage.save()
+                print(new_instance.id)
+                command = (class_name+".update("+'"'+str(new_instance.id) +
+                           '"'+", "+str(attributes_dict)+")")
+                line = self.precmd(command)
+                self.onecmd(line)
 
     def help_create(self):
         """ Help information for the create method """
@@ -307,11 +320,13 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
-
+                try:
+                    if att_name in HBNBCommand.types:
+                        att_val = HBNBCommand.types[att_name](att_val)
                 # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
+                    new_dict.__dict__.update({att_name: att_val})
+                except Exception:
+                    pass
 
         new_dict.save()  # save updates to file
 
@@ -319,6 +334,35 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+
+def create_dict_attributes(list_args):
+    """ 
+    Take a list of arguments and create a dict with key and value of attribute
+    """
+    attributes_dict = {}
+    for element in list_args:
+        attributes_list = element.split("=")
+        key = attributes_list[0]
+        value = attributes_list[1]
+        if isinstance(tryeval(value), str) and value[0] == '"' and value[-1] == '"':
+            value = value.replace('_', ' ')
+            value = value.strip('"')
+            value = value.replace('"', '\"')
+            attributes_dict[key] = value
+        elif not isinstance(tryeval(value), str):
+            attributes_dict[key] = value
+    return attributes_dict
+
+
+def tryeval(value):
+    """find the most appropriate type for value and return the new value"""
+    try:
+        value = ast.literal_eval(value)
+    except Exception:
+        pass
+    return value
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
