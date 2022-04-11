@@ -134,8 +134,14 @@ class HBNBCommand(cmd.Cmd):
                 new_instance = HBNBCommand.classes[class_name]()
                 storage.save()
                 print(new_instance.id)
-                command = (class_name+".update("+'"'+str(new_instance.id) +
-                           '"'+", "+str(attributes_dict)+")")
+                command = (class_name +
+                           ".update(" +
+                           '"' +
+                           str(new_instance.id) +
+                           '"' +
+                           ", " +
+                           str(attributes_dict) +
+                           ")")
                 line = self.precmd(command)
                 self.onecmd(line)
 
@@ -341,7 +347,7 @@ class HBNBCommand(cmd.Cmd):
 
 
 def create_dict_attributes(list_args):
-    """ 
+    """
     Take a list of arguments and create a dict with key and value of attribute
     """
     attributes_dict = {}
@@ -349,7 +355,8 @@ def create_dict_attributes(list_args):
         attributes_list = element.split("=")
         key = attributes_list[0]
         value = attributes_list[1]
-        if isinstance(tryeval(value), str) and value[0] == '"' and value[-1] == '"':
+        if isinstance(tryeval(value),
+                      str) and value[0] == '"' and value[-1] == '"':
             value = value.replace('_', ' ')
             value = value.strip('"')
             value = value.replace('"', '\"')
