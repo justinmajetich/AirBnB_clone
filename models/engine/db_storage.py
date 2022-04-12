@@ -18,3 +18,5 @@ class DBstorage():
     __session = None
 
     def __init__(self):
+        """Initialize a new instance of DBStorage"""
+        self.__engine
