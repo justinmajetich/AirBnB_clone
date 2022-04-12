@@ -74,4 +74,4 @@ class FileStorage:
         if obj:
 	    key = "{}.{}".format(obj.to_dict()['__class__'], obj.id)
 	    del self.__objects[key]
-        self.save()
+            self.save()
