@@ -36,10 +36,10 @@ class DBStorage():
         """query on the current database session"""
         que_dict = {}
         obj_list = [User, State, City, Amenity, Place, Review]
-        if cls is not None:
+        if cls is None:
             for obj1 in obj_list:
                 for obj2 in self.__session.query(obj1).all():
-                    que_dict[obj.to_dict()['__class__'] + '.' + obj.id] = obj2
+                    que_dict[obj.to_dict()['__class__'] + '.' + obj2.id] = obj2
         else:
             for obj in self.__session.query(cls).all():
                 que_dict[obj.to_dict()['__class__'] + '.' + obj.id] = obj
