@@ -27,15 +27,15 @@ class DBStorage():
         database = getenv("HBNB_MYSQL_DB")
         self.__engine = create_engine(
                 'mysql+mysqldb://{}:{}@{}/{}'.format(
-                    user, password, host, database), pool_pre_ping=True)
-
+                    user, password, host, database), pool_pre_ping=True) 
+ 
         if getenv("HBNB_ENV") == 'test':
-            Base.metadata.drop_all(self.__engine)
-
+            Base.metadata.drop_all()
+    
     def all(self, cls=None):
         """query on the current database session"""
         que_dict = {}
-        obj_list = [User, State, City, Amenity, Place, Review]
+        obj_list = [User, State, City, Place]
         if cls is None:
             for obj1 in obj_list:
                 for obj2 in self.__session.query(obj1).all():
