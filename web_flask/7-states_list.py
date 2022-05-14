@@ -16,7 +16,7 @@ def states_list():
     return render_templete('7-states_list.html', states=states)
 
 
-@app.teardown_appcontext:
+@app.teardown_appcontext
     def teardown(exc):
         """remove the current SQLAlchemy Session"""
         storage.close()
