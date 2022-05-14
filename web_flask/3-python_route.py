@@ -34,13 +34,12 @@ def text(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-def python(parameter):
+def python(text):
     """ display “Python ” followed by the value of the text variable"""
-    text = "is cool"
-    if parameter is None:
-        return "Python {}".format(text)
+    if text is None:
+        return "Python is cool"
     else:
-        new_text = parameter.replace('_', ' ')
+        new_text = text.replace('_', ' ')
         return "Python {}".format(new_text)
 
 if __name__ == '__main__':
