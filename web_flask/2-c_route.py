@@ -26,8 +26,8 @@ def hbnb():
 def text():
     """ display “C ” followed by the value of the text variable"""
     new_text = text.replace('_',' ')
-    complete_text = "C " + new_text
-    return complete_text
+    print("C ", new_text)
+    return 0
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
