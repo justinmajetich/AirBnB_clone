@@ -37,7 +37,7 @@ def text(text):
 def python(text):
     """ display “Python ” followed by the value of the text variable"""
     text = "is cool"
-    if text == None:
+    if text is None:
         return "Python {}".format(text)
     else:
         new_text = text.replace('_', ' ')
