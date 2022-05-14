@@ -36,7 +36,7 @@ def text(text):
 @app.route('/python/<text>', strict_slashes=False)
 def python(text):
     """ display “Python ” followed by the value of the text variable"""
-    if text is None:
+    if text == 0:
         return "Python is cool"
     else:
         new_text = text.replace('_', ' ')
