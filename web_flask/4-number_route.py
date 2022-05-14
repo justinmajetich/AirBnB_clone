@@ -10,7 +10,6 @@
     ou must use the option strict_slashes=False in your route definition
 """
 from cgitb import text
-from tkinter.tix import INTEGER
 from flask import Flask
 
 app = Flask(__name__)
@@ -46,7 +45,7 @@ def python(text="is cool"):
 @app.route('/number/<n>', strict_slashes=False)
 def number(n):
     """display “n is a number” only if n is an integer"""
-    if n is INTEGER:
+    if int(n):
         return "{} is a number".format(n)
 
 if __name__ == '__main__':
