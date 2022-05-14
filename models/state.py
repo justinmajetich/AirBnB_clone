@@ -3,7 +3,7 @@
 from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column
+from sqlalchemy import Column, String
 
 
 class State(BaseModel):

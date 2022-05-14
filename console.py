@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         # end new code
-        print(kw)
+        #print(kw)
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         # new_instance = HBNBCommand.classes[args]()
         storage.save()
