@@ -30,4 +30,4 @@ class Place(BaseModel, Base):
         for key, obj_rev in storage.all(Review).items():
             if obj_rev.place_id == self.id:
                 new.append(obj_rev)
-        return new
+        return new 
