@@ -38,17 +38,17 @@ class DBStorage:
             Base.metada.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session"""
+        """return a dictionary with all objets of a class or all classes"""
         mydict = {}
         if cls is None:
             for myclass in self.classes:
                 result = self.__session.query(myclass).all()
                 for obj in result:
-                    mydict[obj.__name__ + '.' + obj.id] = obj
+                    mydict[f"{obj.__class__}.{obj.id}"] = obj
         else:
             result = self.__session.query(cls).all()
             for obj in result:
-                mydict[obj.__name__ + '.' + obj.id] = obj
+                mydict[f"{obj.__class__}.{obj.id}"] = obj
         return mydict
 
     def new(self, obj):
