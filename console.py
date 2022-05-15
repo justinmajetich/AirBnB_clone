@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
         #print(kw)
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         # new_instance = HBNBCommand.classes[args]()
-        storage.new(new_instance)
+        #storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
