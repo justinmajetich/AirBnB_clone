@@ -10,5 +10,4 @@ else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
 
-print(dir(storage))
 storage.reload()
