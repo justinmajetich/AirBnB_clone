@@ -38,7 +38,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -116,39 +115,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split(' ')
-        class_name = args[0] if args else None
-        args = args[1:]
-
-        if not class_name:
+        if not args:
             print("** class name missing **")
             return
-        elif class_name not in HBNBCommand.classes:
+        arg_array = args.split(' ')
+        if arg_array[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        kwargs = {}
-        if args:
-            for arg in args:
-                arg = arg.split('=')
-                key, val = arg[0], arg[1]
-                if "_" in val:
-                    val = val.replace('_', ' ')
-                if "\"" in val:
-                    val = val[1][-1]
-                elif "." in val:
-                    try:
-                        val = float(val)
-                    except:
-                        continue
-
-                kwargs[key] = val
-            new_instance = HBNBCommand.classes[class_name](**kwargs)
-        else:
-            new_instance = HBNBCommand.classes[class_name]()
-        new_instance.save()
-
+        kwargs = dict()
+        for i in range(1, len(arg_array)):
+            attr_array = arg_array[i].split('=')
+            if "\"" in attr_array[1] and attr_array[1][-1] == "\"":
+                attr_array[1] = attr_array[1][1:-1]
+                if "_" in attr_array[1]:
+                    attr_array[1] = attr_array[1].replace("_", " ")
+            elif "." in attr_array[1]:
+                try:
+                    attr_array[1] = float(attr_array[1])
+                except:
+                    continue
+            else:
+                try:
+                    attr_array[1] = int(attr_array[1])
+                except:
+                    continue
+            kwargs[attr_array[0]] = attr_array[1]
+        new_instance = HBNBCommand.classes[arg_array[0]]()
+        new_instance.__dict__.update(kwargs)
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
