@@ -36,7 +36,7 @@ class DBStorage:
             from models.amenity import Amenity
             from models.review import Review
         
-            class_list = [State, City, User, Place]
+            class_list = [State, City, User, Place, Review]
             for query_cls in class_list:
                 for obj in self.__session.query(query_cls).all():
                     ret_dict[obj.to_dict()['__class__'] + '.' + obj.id] = obj
