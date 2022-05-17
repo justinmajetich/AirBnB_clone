@@ -3,9 +3,14 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from os import getenv
 
+env = getenv('HBNB_TYPE_STORAGE')
 
 class Amenity(BaseModel, Base):
     """Amenity Class for HBnB"""
-    __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
+    if env == "db":
+        __tablename__ = "amenities"
+        name = Column(String(128), nullable=False)
+    else:
+        name = ""
