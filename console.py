@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         xyz = 0
         list = args.split(" ")
-        
+
         if not list:
             print("** class name missing **")
             return
@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[list[0]]()
         for new in list:
             if xyz == 0:
-                xyz +- 1
+                xyz + - 1
                 continue
             if "=" in new:
                 x = xyz.split("=")
@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
                 elif '.' in x[1]:
                     x[1] = float(x[1])
                     setattr(new_instance, x[0], x[1])
-                elif x[1].lstrip('-').isdigit() == True:
+                elif x[1].lstrip('-').isdigit() is True:
                     x[1] = int(x[1])
                     setattr(new_instance, x[0], x[1])
         storage.save()
