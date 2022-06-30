@@ -9,6 +9,8 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
+
+
 class Place(BaseModel):
     """ A place to stay """
     city_id = ""

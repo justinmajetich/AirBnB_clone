@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+import datetime
+import os
+
+from more_itertools import value_chain
 
 
 class FileStorage:
@@ -8,13 +12,19 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+
+
+
+
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is not None:
-            return {key: self.__objects[key]
-                    for key in self.__objects
-                    if self.__objects[key].__class__ == cls}
-        return FileStorage.__objects
+            update = {}
+            for key, val in self.__objects.itmes():
+                    if cls == val.__class__ or cls == val.__class__.__name__:
+                        update[key] = val
+                        return update
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
