@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             new_val = key_val[2]
             if '\"' in new_val:
                 new_val = new_val[1:-1]
-                new_val = new_val.replace("_". " ")
+                new_val = new_val.replace("_", " ")
             elif '.' in new_val:
                 new_val = float(new_val)
             else:
@@ -138,8 +138,9 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_instance, new_key, new_val)
 
         storage.new(new_instance)
-        print(new_instance.id)
         storage.save()
+        print(new_instance.id)
+        
 
     def help_create(self):
         """ Help information for the create method """
