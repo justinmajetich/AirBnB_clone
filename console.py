@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +116,59 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        argsAsAList = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif argsAsAList[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[argsAsAList[0]]()
+        if (len(argsAsAList) > 1):
+            for key, value in (self.create_dictionary(argsAsAList[1:])).items():
+                setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
         storage.save()
+
+    def create_dictionary(self, listToTurnToDict):
+        """ This method is just used to help with parameters in create command"""
+        returnDictionary = {}
+        for item in listToTurnToDict:
+            if "=" in item:
+                itemAsKeyValuePair = item.split('=', 1)
+                keyForDict = itemAsKeyValuePair[0]
+                valueForDict = itemAsKeyValuePair[1]
+                valueForDict = self.identify_type_of_variable(valueForDict)
+                if valueForDict is not None:
+                    returnDictionary[keyForDict] = valueForDict
+        return (returnDictionary)
+
+    @staticmethod
+    def identify_type_of_variable(variableToIdentify):
+        """ID's type of varaible and returns variable as the type"""
+        if variableToIdentify[0] == variableToIdentify[-1] == '"':
+            for idx, char in enumerate(variableToIdentify[1:-1]):
+                if char == '"' and variableToIdentify[idx] != '\\':
+                    return (None)
+                if char == " ":
+                    return (None)
+            return (variableToIdentify.strip('"').replace('_', ' ').replace("\\\"", "\""))
+        else:
+            NumOfDecPoints = 0
+            acceptedChars = "0123456789.-"
+            for char in variableToIdentify:
+                if char not in acceptedChars:
+                    return (None)
+                if char == ".":
+                    NumOfDecPoints += 1
+                if NumOfDecPoints > 1:
+                    return (None)
+
+            if NumOfDecPoints == 1:
+                return (float(variableToIdentify))
+            else:
+                return (int(variableToIdentify))
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +316,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +324,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
