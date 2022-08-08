@@ -64,3 +64,4 @@ class FileStorage:
                 del self.__objects[obj_key]
             else:
                 pass
+        self.save()
