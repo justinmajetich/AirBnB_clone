@@ -3,7 +3,6 @@ from sqlalchemy import create_engine, MetaData
 from models.base_model import Base
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
-import models
 
 class DBStorage:
     """new engine DBStorage"""
