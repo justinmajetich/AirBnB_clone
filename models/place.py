@@ -50,7 +50,7 @@ class Place(BaseModel):
         """ getter returns the list of amenity instances """
         amenities_list = []
         for instance in models.storage.all(Amenity).values():
-            if amenity.id == self.id:
+            if amenity.id in self.amenity_ids:
                 amenities_list.append(instance)
         return amenities_list
 
