@@ -57,11 +57,16 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """ Deletes obj from __objects if inside """
+        """delete obj from __objects if it’s inside"""
         if obj is not None:
-            if obj in self.__objects:
-                obj_key = f"{obj.__name__}.{obj.id}"
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in self.__objects:
+                del self.__objects[key]
+
+    def delete(self, obj=None):
+        """Deletes obj from __objects if inside"""
+        if obj is not None:
+                obj_key = obj.__class__.__name__ + '.' + obj.id
                 del self.__objects[obj_key]
-            else:
-                pass
-        self.save()
+        else:
+            pass
