@@ -53,7 +53,7 @@ def save(self):
 
 def delete(self, obj=None):
     """delete from the current database session obj if not None"""
-    if obj not None:
+    if obj is not None:
         self.__session.delete(obj)
 
 
