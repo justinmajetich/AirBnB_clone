@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import re
 from models.base_model import BaseModel, Base
 from models.__init__ import storage
 from models.user import User
@@ -73,18 +72,9 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     pline = pline.partition(', ')
                     _args = pline[0].strip('"')
-                    print(f"new key is {_args}")
                     _args += ' '
                     _args += pline[2].partition(', ')[0]
-                    print(f"new key and value is {_args}")
 
-                    # check for *args or **kwargs
-                    # if pline[0] == '{' and pline[-1] == '}'\
-                            # and type(eval(pline)) is dict:
-                        # _args = pline
-                    # else:
-                        # _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -125,12 +115,40 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        elif args not in HBNBCommand.classes:
+        args = args.partition(' ')
+
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[args[0]]()
         new_instance.save()
+
+        if args[2]:
+            params = args[2].split()
+
+            for items in params:
+                key = items.partition('=')[0]
+                value = items.partition('=')[2]
+
+                try:
+                    if HBNBCommand.types.get(key) is float and '.' in value:
+                        print("float val entered")
+                        setattr(new_instance, key, float(value))
+                    elif HBNBCommand.types.get(key) == int and value.isdigit():
+                        print("int val entered")
+                        setattr(new_instance, key, int(value))
+                    else:
+                        if value[0] == '"' and value[-1] == '"':
+                            print("string val entered")
+                            value = value.strip('"')
+                            value = value.replace('_', ' ')
+                            setattr(new_instance, key, value)
+                except KeyError as input_error:
+                    pass
+
+                new_instance.save()
+
         print(new_instance.id)
 
     def help_create(self):
@@ -243,6 +261,7 @@ class HBNBCommand(cmd.Cmd):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
+        print("*****I WAS CALLED TO UPDATE*****")
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
         if args[0]:
