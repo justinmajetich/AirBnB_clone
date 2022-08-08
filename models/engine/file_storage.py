@@ -15,7 +15,7 @@ class FileStorage:
         else:
             newdict = {}
             for key, value in self.__objects.items():
-                if value == cls:
+                if type(value) == cls:
                     newdict[key] = value
             return newdict
 
@@ -52,7 +52,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
