@@ -13,8 +13,7 @@ place_amenity = Table('place_amenity', metadata,
                              nullable=False),
                       Column('amenity.id', String(60),\
                              ForeignKey('amenities.id'), primary_key=True,\
-                             nullable=False)
-)
+                             nullable=False))
 
 
 class Place(BaseModel):
