@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel, Base
 from models.__init__ import storage
 from models.user import User
@@ -65,20 +66,24 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].split('"')
-                _id = _id[1]
+                _id = pline[0].strip('"')
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
-                print(pline)
                 if pline:
-                    _args = pline
+                    pline = pline.partition(', ')
+                    _args = pline[0].strip('"')
+                    print(f"new key is {_args}")
+                    _args += ' '
+                    _args += pline[2].partition(', ')[0]
+                    print(f"new key and value is {_args}")
+
                     # check for *args or **kwargs
                     # if pline[0] == '{' and pline[-1] == '}'\
-                    #        and type(eval(pline)) is dict:
-                    #    _args = pline
+                            # and type(eval(pline)) is dict:
+                        # _args = pline
                     # else:
-                    #    _args = pline.replace(',', '')
+                        # _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
