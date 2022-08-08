@@ -27,6 +27,6 @@ class Place(BaseModel):
         """getter return the list of review instances"""
         review_list = []
         for instance in models.storage.all(Review).values():
-            if review.place_id == self.id:
+            if instance.place_id == self.id:
                 review_list.append(instance)
         return review_list
