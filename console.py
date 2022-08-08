@@ -70,13 +70,15 @@ class HBNBCommand(cmd.Cmd):
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
+                print(pline)
                 if pline:
+                    _args = pline
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
+                    # if pline[0] == '{' and pline[-1] == '}'\
+                    #        and type(eval(pline)) is dict:
+                    #    _args = pline
+                    # else:
+                    #    _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
