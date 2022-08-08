@@ -29,4 +29,4 @@ class Place(BaseModel):
         for instance in models.storage.all(Review).values():
             if instance.place_id == self.id:
                 review_list.append(instance)
-        return review_:list
+        return review_list
