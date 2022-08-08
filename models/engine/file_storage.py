@@ -60,6 +60,7 @@ class FileStorage:
         """Deletes obj from __objects if inside"""
         if obj is not None:
             obj_key = obj.__class__.__name__ + '.' + obj.id
-            del self.__objects[obj_key]
+            if key in FileStorage.__objects:
+                del self.__objects[obj_key]
         else:
             pass
