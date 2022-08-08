@@ -3,6 +3,18 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy import *
+
+metaData = Base.metadata
+
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', String(60),\
+                             ForeignKey('places.id'), primary_key=True,\
+                             nullable=False),
+                      Column('amenity.id', String(60),\
+                             ForeignKey('amenities.id'), primary_key=True,\
+                             nullable=False)
+)
 
 
 class Place(BaseModel):
@@ -18,9 +30,10 @@ class Place(BaseModel):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-
     reviews = relationship("Review", backref="place",
                            cascade="all, delete, delete-orphan")
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
+
 
     @property
     def reviews(self):
@@ -30,3 +43,21 @@ class Place(BaseModel):
             if instance.place_id == self.id:
                 review_list.append(instance)
         return review_list
+
+
+    @property
+    def amenities(self):
+        """ getter returns the list of amenity instances """
+        amenities_list = []
+        for instance in models.storage.all(Amenity).values():
+            if amenity.id == self.id:
+                amenities_list.append(instance)
+        return amenities_list
+
+    @amenities.setter
+    def amenities(self, value):
+        """ setter returns appended list """
+        if type(value) == Amenity:
+            self.amenity_ids.append(value.id)
+        else:
+            pass
