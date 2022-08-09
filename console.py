@@ -141,13 +141,9 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_instance, key, value)
             else:
                 try:
-                    if HBNBCommand.types.get(key) == float \
-                       and '.' in value \
-                       and value[0] != '"' and value[-1] != '"':
+                    if HBNBCommand.types.get(key) == float and '.' in value and value[0] != '"' and value[-1] != '"':
                         setattr(new_instance, key, float(value))
-                    elif HBNBCommand.types.get(key) == int \
-                         and value.isdigit() \
-                         and value[0] != '"' and value[-1] != '"':
+                    elif HBNBCommand.types.get(key) == int and value.isdigit() and value[0] != '"' and value[-1] != '"':
                         setattr(new_instance, key, int(value))
                 except KeyError as input_error:
                     pass
