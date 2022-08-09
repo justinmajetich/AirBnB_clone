@@ -3,24 +3,24 @@
 from sqlalchemy import create_engine, MetaData
 from models.base_model import Base
 from sqlalchemy.orm import sessionmaker, scoped_session
-import os
+from os import getenv
 
 
 class DBStorage:
     """new engine DBStorage"""
-    __engine = ""
-    __session = ""
+    __engine = None
+    __session = None
 
     def __init__(self):
         """create the engine """
-        user = os.getenv("HBNB_MYSQL_USER")
-        password = os.getenv("HBNB_MYSQL_PWD")
-        host = os.getenv("HBNB_MYSQL_HOST")
-        database = os.getenv("HBNB_MYSQL_DB")
+        user = getenv("HBNB_MYSQL_USER")
+        password = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST")
+        database = getenv("HBNB_MYSQL_DB")
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, password, host,
                                               database), pool_pre_ping=True)
-        if os.getenv("HBNB_ENV") == 'test':
+        if getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -37,6 +37,19 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     db_dict[key] = obj
         return db_dict
+
+    """
+    if cls is None:
+        for obj in self.__session.query(User, State, City, Amenity, Place, Review).all():
+            key = obj.__class__.__name__ + '.' + obj.id
+            db_dict[key] = obj
+    else:
+        for obj in self.__session.query(cls).all():
+            key = obj.cls.__name__ + '.' + obj.id
+            db_dict[key] = obj
+    return db_dict
+    """
+
 
     def new(self, obj):
         """add the object to the current database session"""
