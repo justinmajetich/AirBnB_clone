@@ -122,29 +122,32 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[args[0]]()
-        new_instance.save()
-        print(new_instance.id)
 
-        if not args[2]:
-            return
+        if args[2]:
+            params = args[2].split()
 
-        params = args[2].split()
-
-        for items in params:
-            if '=' in items:
+            for items in params:
                 key = items.partition('=')[0]
                 value = items.partition('=')[2]
 
-                if value[0] == '"' and value[-1] == '"':
-                    value = value.strip('"')
-                    value = value.replace('_', ' ')
-                    setattr(new_instance, key, value)
-                elif '.' in value:
-                    setattr(new_instance, key, float(value))
-                elif value.isdigit():
-                    setattr(new_instance, key, int(value))
+                try:
+                    if HBNBCommand.types.get(key) is float and '.' in value:
+                        print("float val entered")
+                        setattr(new_instance, key, float(value))
+                    elif HBNBCommand.types.get(key) == int and value.isdigit():
+                        print("int val entered")
+                        setattr(new_instance, key, int(value))
+                    else:
+                        if value[0] == '"' and value[-1] == '"':
+                            print("string val entered")
+                            value = value.strip('"')
+                            value = value.replace('_', ' ')
+                            setattr(new_instance, key, value)
+                except KeyError as input_error:
+                    pass
 
-        new_instance.save()
+                new_instance.save(）
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
