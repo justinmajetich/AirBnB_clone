@@ -64,11 +64,3 @@ class Place(BaseModel, Base):
                 self.amenity_ids.append(value.id)
             else:
                 pass
-
-        @amenities.setter
-        def amenities(self, value):
-            """ setter returns appended list """
-            if type(value) == Amenity:
-                self.amenity_ids.append(value.id)
-            else:
-                pass
