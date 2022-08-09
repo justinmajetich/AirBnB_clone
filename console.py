@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -122,32 +121,29 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[args[0]]()
+        new_instance.save()
+        print(new_instance.id)
 
-        if args[2]:
-            params = args[2].split()
+        if not args[2]:
+            return
 
-            for items in params:
+        params = args[2].split()
+
+        for items in params:
+            if '=' in items:
                 key = items.partition('=')[0]
                 value = items.partition('=')[2]
 
-                try:
-                    if HBNBCommand.types.get(key) is float and '.' in value:
-                        print("float val entered")
-                        setattr(new_instance, key, float(value))
-                    elif HBNBCommand.types.get(key) == int and value.isdigit():
-                        print("int val entered")
-                        setattr(new_instance, key, int(value))
-                    else:
-                        if value[0] == '"' and value[-1] == '"':
-                            print("string val entered")
-                            value = value.strip('"')
-                            value = value.replace('_', ' ')
-                            setattr(new_instance, key, value)
-                except KeyError as input_error:
-                    pass
+                if value[0] == '"' and value[-1] == '"':
+                    value = value.strip('"')
+                    value = value.replace('_', ' ')
+                    setattr(new_instance, key, value)
+                elif '.' in value:
+                    setattr(new_instance, key, float(value))
+                elif value.isdigit():
+                    setattr(new_instance, key, int(value))
 
-                new_instance.save(）
-        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
