@@ -57,7 +57,7 @@ class DBStorage:
 
     def save(self):
         """commit all changes of the current database session"""
-        self.__session.commit(obj)
+        self.__session.commit()
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
@@ -67,6 +67,12 @@ class DBStorage:
     def reload(self):
         """create all tables in the database
         create the current database session from engine"""
+        from models.user import User
+        from models.city import City
+        from models.place import Place
+        from models.state import State
+        from models.amenity import Amenity
+        from models.review import Review
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine,
                                               expire_on_commit=False))

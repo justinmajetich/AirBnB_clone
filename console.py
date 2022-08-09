@@ -122,7 +122,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[args[0]]()
-        new_instance.save()
 
         if args[2]:
             params = args[2].split()
