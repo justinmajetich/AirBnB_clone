@@ -9,21 +9,21 @@ from os import getenv
 metaData = Base.metadata
 
 place_amenity = Table('place_amenity', metaData,
-                      Column('place_id', String(60),\
-                             ForeignKey('places.id'), primary_key=True,\
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
                              nullable=False),
-                      Column('amenity.id', String(60),\
-                             ForeignKey('amenities.id'), primary_key=True,\
+                      Column('amenity.id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
                              nullable=False))
 
 metaData = Base.metadata
 
 place_amenity = Table('place_amenity', metaData,
-                      Column('place_id', String(60),\
-                             ForeignKey('places.id'), primary_key=True,\
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
                              nullable=False),
-                      Column('amenity_id', String(60),\
-                             ForeignKey('amenities.id'), primary_key=True,\
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
                              nullable=False))
 
 
@@ -40,10 +40,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place",\
+        reviews = relationship("Review", backref="place",
                                cascade="all, delete, delete-orphan")
     else:
         @property
@@ -55,9 +54,8 @@ class Place(BaseModel, Base):
                     review_list.append(instance)
             return review_list
 
-
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", secondary="place_amenity",\
+        amenities = relationship("Amenity", secondary="place_amenity",
                                  viewonly=False)
     else:
         @property
@@ -76,7 +74,6 @@ class Place(BaseModel, Base):
                 self.amenity_ids.append(value.id)
             else:
                 pass
-                
 
     @amenities.setter
     def amenities(self, value):
