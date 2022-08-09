@@ -135,19 +135,14 @@ class HBNBCommand(cmd.Cmd):
                 key = items.partition('=')[0]
                 value = items.partition('=')[2]
 
-                if key not in HBNBCommand.types \
-                   and value[0] == '"' and value[-1] == '"':
+                if value[0] == '"' and value[-1] == '"':
                     value = value.strip('"')
                     value = value.replace('_', ' ')
                     setattr(new_instance, key, value)
-                else:
-                    try:
-                        if HBNBCommand.types.get(key) == float and '.' in value and value[0] != '"' and value[-1] != '"':
-                            setattr(new_instance, key, float(value))
-                        elif HBNBCommand.types.get(key) == int and value.isdigit() and value[0] != '"' and value[-1] != '"':
-                            setattr(new_instance, key, int(value))
-                    except KeyError as input_error:
-                        pass
+                elif '.' in value:
+                    setattr(new_instance, key, float(value))
+                elif value.isdigit():
+                    setattr(new_instance, key, int(value))
 
         new_instance.save()
 
