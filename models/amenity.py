@@ -10,4 +10,5 @@ class Amenity(BaseModel, Base):
     """ class amenity inheriting from BaseModel """
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary="place_amenity", viewonly=False)
+    place_amenities = relationship("Place", secondary="place_amenity",\
+                                   back_populates="amenities", viewonly=False)
