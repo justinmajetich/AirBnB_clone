@@ -59,10 +59,10 @@ class FileStorage:
 
     def delete(self, obj=None):
         if obj is None:
-            pass
+            return
         temp = {}
         key = obj.to_dict()['__class__'] + '.' + obj.id
         try:
             del FileStorage.__objects[key]
         except (KeyError):
-            pass
+            return
