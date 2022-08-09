@@ -5,7 +5,6 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-
 class Amenity(BaseModel, Base):
     """ class amenity inheriting from BaseModel """
     __tablename__ = "amenities"

@@ -146,8 +146,7 @@ class HBNBCommand(cmd.Cmd):
                 except KeyError as input_error:
                     pass
 
-                new_instance.save()
-
+                new_instance.save(）
         print(new_instance.id)
 
     def help_create(self):
