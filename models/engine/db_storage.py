@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 from models.base_model import Base
 from models.user import User
@@ -26,6 +26,7 @@ class DBStorage():
 
 
     def __init__(self):
+        """Instantation for the engine"""
         __engine = self.__engine
         __engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                  format(user, passwd, host, db), pool_pre_ping=True)
@@ -35,6 +36,8 @@ class DBStorage():
 
     def all (self, cls=None):
         " Return dictionary of all the objects in the file "
+        print(self.__session)
+        temp = {}
 
 
     def new(self, obj):
@@ -53,3 +56,5 @@ class DBStorage():
 
     def reload(self):
         " Create all tables in the database, and creates the current session "
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
