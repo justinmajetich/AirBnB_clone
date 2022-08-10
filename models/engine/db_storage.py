@@ -27,8 +27,7 @@ class DBStorage():
 
     def __init__(self):
         """Instantation for the engine"""
-        __engine = self.__engine
-        __engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                  format(user, passwd, host, db), pool_pre_ping=True)
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
