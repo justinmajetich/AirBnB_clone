@@ -3,7 +3,7 @@
 
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -18,7 +18,7 @@ HOST = getenv('HBNB_MYSQL_HOST')
 DB = getenv('HBNB_MYSQL_DB')
 
 classes = {"City": City, "State": State, "User": User,
-        "Place": Place, "Review": Review, "Amenity": Amenity}
+           "Place": Place, "Review": Review, "Amenity": Amenity}
 
 
 class DBStorage:
@@ -39,7 +39,7 @@ class DBStorage:
         Return: a dictionary"""
         dictionary = {}
         if cls:
-            query = self.__session.query(eval(cls))
+            query = self.__session.query(cls)
             for obj in query:
                 key = f'{type(obj).__name__}.{obj.id}'
                 dictionary[key] = obj
