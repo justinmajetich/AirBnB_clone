@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[param[0]]()
-        new_instance.save()
+        storage.save()
 
         if len(param) > 1:
             for tokens in param[1:]:
@@ -163,7 +163,7 @@ class HBNBCommand(cmd.Cmd):
                     if value != "":
                         key = param[0] + "." + new_instance.id
                         HBNBCommand.do_update(self, f"{param[0]} {new_instance.id} {token[0]} {value}")
-            new_instance.save()
+            storage.save()
 
         print(new_instance.id)
 

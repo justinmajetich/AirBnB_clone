@@ -34,7 +34,7 @@ class DBStorage():
 
 
     def all(self, cls=None):
-        " Return dictionary of all the objects in the file "
+        """ Return dictionary of all the objects in the file
         if cls is None:
             obj = self.__session.query(State).all()
         else:
@@ -43,6 +43,8 @@ class DBStorage():
             obj = self.__session.query(cls).all()
             for o in obj:
                 return {"{}.{}".format(type(o).__class__, o.id): o}
+        """
+        return {}
 
 
     def new(self, obj):

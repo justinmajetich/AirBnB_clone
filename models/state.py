@@ -8,7 +8,7 @@ import models
 
 
 class State(BaseModel):
-    """ State class """
+    """ State class
 
     __tablename__ = "states"
 
@@ -25,3 +25,5 @@ class State(BaseModel):
     else:
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="city", cascade="delete")
+        """
+    name = ""
