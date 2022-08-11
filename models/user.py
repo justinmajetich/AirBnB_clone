@@ -20,7 +20,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
                               cascade='all, delete, delete-orphan')
 else:
     class User(BaseModel):
-        """This class defines a user by various attributes"""
+        """This is the class for user defined by various attributes"""
         email = ''
         password = ''
         first_name = ''
