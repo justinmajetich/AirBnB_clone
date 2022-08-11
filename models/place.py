@@ -5,10 +5,17 @@ from os import getenv
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
 import models
 
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'), nullable=False)
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'), nullable=False))
+
     class Place(BaseModel, Base):
         """ The Place class, contains city_id, user_id, name,
         description, number_rooms, number_bathrooms, max_guest,
@@ -27,6 +34,9 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         longitude = Column(Float, nullable=False)
         reviews = relationship('Review', backref='place',
                                cascade='all, delete, delete-orphan')
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 back_populates='place_amenities',
+                                 viewonly=False)
 else:
     class Place(BaseModel):
         """This class defines a place by various attributes"""
@@ -52,3 +62,19 @@ else:
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
+
+        @property
+        def amenities(self):
+            """ Getter attribute in case of file storage """
+            amenities = []
+            for value in models.storage.all(Amenity).values():
+                if value.id in self.amenity_ids:
+                    amenities.append(value)
+            return amenities
+
+        @amenities.setter
+        def amenities(self, value):
+            """ Adding an Amenity.id to the amenity_ids """
+
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
