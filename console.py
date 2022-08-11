@@ -144,7 +144,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[param[0]]()
-        storage.save()
+        new_instance.save()
+
         if len(param) > 1:
             for tokens in param[1:]:
                 token = tokens.split("=")
@@ -161,12 +162,10 @@ class HBNBCommand(cmd.Cmd):
                             value = value[1:-1]
                     if value != "":
                         key = param[0] + "." + new_instance.id
-                        new_dict = storage.all()[key]
-                        new_dict.__dict__.update({token[0]: value})
-            new_dict.save()
+                        HBNBCommand.do_update(self, f"{param[0]} {new_instance.id} {token[0]} {value}")
+            new_instance.save()
 
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
