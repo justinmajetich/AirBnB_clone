@@ -11,12 +11,8 @@ class City(BaseModel, Base):
     __tablename__ = "cities"
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
-        @property
-        def cities(self):
-            "Initiats the city attributes"
-            self.name = ""
-            self.state_id = ""
+        name = ""
+        state_id = ""
     else:
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey("states.id"), nullable=False,
-                          ondelete="CASCADE")
+        state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
