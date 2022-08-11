@@ -161,8 +161,10 @@ class HBNBCommand(cmd.Cmd):
                             value = token[1].replace("_", " ")
                             value = value[1:-1]
                     if value != "":
-                        key = param[0] + "." + new_instance.id
-                        HBNBCommand.do_update(self, f"{param[0]} {new_instance.id} {token[0]} {value}")
+                        id = new_instance.id
+                        k = token[0]
+                        HBNBCommand.do_update(self,
+                                              f"{param[0]} {id} {k} {value}")
             storage.save()
 
         print(new_instance.id)
