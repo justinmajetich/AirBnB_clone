@@ -35,4 +35,3 @@ class Place(BaseModel, Base):
                 if value.state_id == self.id:
                     cities_list.append(value)
             return cities_list
-

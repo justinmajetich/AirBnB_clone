@@ -8,7 +8,7 @@ from os import getenv
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    __tablename__="users"
+    __tablename__ = "users"
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
@@ -16,4 +16,3 @@ class User(BaseModel, Base):
 
     places = relationship("Place", backref="user", cascade="delete")
     reviews = relationship("Review", backref="user", cascade="delete")
-
