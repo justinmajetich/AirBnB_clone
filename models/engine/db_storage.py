@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+""" Storage info to the data base"""
+
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from os import getenv
+import os
 from models.base_model import Base
 from models.user import User
 from models.place import Place
@@ -12,24 +15,26 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-user = getenv("HBNB_MYSQL_USER")
-passwd = getenv("HBNB_MYSQL_PWD")
-host = getenv("HBNB_MYSQL_HOST")
-db = getenv("HBNB_MYSQL_DB")
-env = getenv("HBNB_ENV")
+os.environ["HBNB_MYSQL_USER"] = 'hbnb_dev'
+os.environ["HBNB_MYSQL_PWD"] = 'hbnb_dev_pwd'
+os.environ["HBNB_MYSQL_HOST"] = 'localhost'
+os.environ["HBNB_MYSQL_DB"] = 'hbnb_dev_db'
 
 
 class DBStorage():
-
+    """ Data Base Class """
     __engine = None
     __session = None
 
     def __init__(self):
         """Instantation for the engine"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(user, passwd, host, db),
-                                      pool_pre_ping=True)
-        if env == 'test':
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            os.getenv('HBNB_MYSQL_USER'),
+            os.getenv('HBNB_MYSQL_PWD'),
+            os.getenv('HBNB_MYSQL_HOST'),
+            os.getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True)
+        if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -66,5 +71,10 @@ class DBStorage():
     def reload(self):
         " Create all tables in the database, and creates the current session "
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                     expire_on_commit=False))
+        sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess)
+        self.__session = Session()
+
+    def close(self):
+        """ closes session"""
+        self.__session.close()
