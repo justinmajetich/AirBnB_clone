@@ -24,33 +24,35 @@ class DBStorage():
     __engine = None
     __session = None
 
-
     def __init__(self):
         """Instantation for the engine"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                 format(user, passwd, host, db), pool_pre_ping=True)
+                                      format(user, passwd, host, db),
+                                      pool_pre_ping=True)
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-
     def all(self, cls=None):
-        """ Return dictionary of all the objects in the file
+        """ Return dictionary of all the objects in the file """
+        table_dict = {}
+        classes = {
+            'State': State,
+            'City': City,
+            'User': User}
         if cls is None:
-            obj = self.__session.query(State).all()
+            for c in classes:
+                result = self.__session.query(classes[c]).all()
+                for obj in result:
+                    table_dict[f"{type(obj).__name__}.{obj.id}"] = obj
         else:
-            if type(cls) == str:
-                eval(cls)
-            obj = self.__session.query(cls).all()
-            for o in obj:
-                return {"{}.{}".format(type(o).__class__, o.id): o}
-        """
-        return {}
-
+            result = self.__session.query(classes[cls]).all()
+        for obj in result:
+            table_dict[f"{type(obj).__name__}.{obj.id}"] = obj
+        return table_dict
 
     def new(self, obj):
         " add the object to the current database session "
         self.__session.add(obj)
-
 
     def save(self):
         " Commit all changes of hte current database session "
@@ -64,4 +66,5 @@ class DBStorage():
     def reload(self):
         " Create all tables in the database, and creates the current session "
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                     expire_on_commit=False))

@@ -143,8 +143,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[param[0]]()
-        storage.save()
+        kwargs_dict = {}
 
         if len(param) > 1:
             for tokens in param[1:]:
@@ -161,13 +160,11 @@ class HBNBCommand(cmd.Cmd):
                             value = token[1].replace("_", " ")
                             value = value[1:-1]
                     if value != "":
-                        id = new_instance.id
-                        k = token[0]
-                        HBNBCommand.do_update(self,
-                                              f"{param[0]} {id} {k} {value}")
+                        kwargs_dict[token[0]] = value
+            new_inst = HBNBCommand.classes[param[0]](**kwargs_dict)
+            new_inst.save()
+            print(new_inst.id)
             storage.save()
-
-        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
