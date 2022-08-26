@@ -41,7 +41,6 @@ printf %s "server {
   location /redirect_me {
     return 301 https://i.imgur.com/guDXtsC.png;
   }
-}
-" > /etc/nginx/sites-available/default
+}" > /etc/nginx/sites-available/default
 
 sudo service nginx restart
