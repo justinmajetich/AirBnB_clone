@@ -32,15 +32,14 @@ printf %s "server {
     index index.html;
   }
 
-  location /hbnb_static {
-    alias /data/web_static/current/;
-    index index.html;
+  location    /redirect_me {
+      return 301 http://yourdomaindesign.tech/redirect_me;
   }
 
   location = /404.html {
     root /etc/nginx/html;
     internal;
   }
-}" > /etc/nginx/sites-available/default
+}" >/etc/nginx/sites-available/default
 
 sudo service nginx restart
