@@ -4,11 +4,11 @@
 apt-get update -y > /dev/null/;
 apt-get install -y nginx > /dev/null/;
 
-mkdir -p /data/web_static/shared/;
-mkdir -p /data/web_static/releases/test/;
-touch /data/web_static/releases/test/index.html;
+mkdir -p /data/web_static/shared/ > /dev/null/;
+mkdir -p /data/web_static/releases/test/ > /dev/null/;
+touch /data/web_static/releases/test/index.html > ;
 
-rm -fr /data/web_static/current;
+rm -fr /data/web_static/current > /dev/null/;
 ln -fs /data/web_static/releases/test /data/web_static/current
 echo "<html>
   <head>
