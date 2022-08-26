@@ -26,14 +26,14 @@ printf %s "server {
 
   root /etc/nginx/html;
   index index.html;
-  error_page 404 /custum_404.html;
+  error_page 404 /404.html;
 
   location /hbnb_static {
     alias /data/web_static/current/;
     index index.html;
   }
 
-  location = /custum_404.html {
+  location = /404.html {
     root /etc/nginx/html;
     internal;
   }
