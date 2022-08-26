@@ -31,6 +31,16 @@ printf %s "server {
     alias /data/web_static/current/;
     index index.html;
   }
+
+  location /hbnb_static {
+    alias /data/web_static/current/;
+    index index.html;
+  }
+
+  location = /404.html {
+    root /etc/nginx/html;
+    internal;
+  }
 }" > /etc/nginx/sites-available/default
 
 sudo service nginx restart
