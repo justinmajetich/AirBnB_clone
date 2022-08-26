@@ -8,7 +8,7 @@ mkdir -p /data/web_static/shared/;
 mkdir -p /data/web_static/releases/test/;
 touch /data/web_static/releases/test/index.html;
 
-rm -fr /data/web_static/current
+rm -fr /data/web_static/current;
 ln -fs /data/web_static/releases/test /data/web_static/current
 echo "<html>
   <head>
