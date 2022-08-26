@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 # Sets up the web server for the deployment of web_static
 
-apt-get update -y > /dev/null/;
-apt-get install -y nginx > /dev/null/;
+apt-get update -y;
+apt-get install -y nginx;
 
-mkdir -p /data/web_static/shared/ > /dev/null/;
-mkdir -p /data/web_static/releases/test/ > /dev/null/;
-touch /data/web_static/releases/test/index.html > ;
+mkdir -p /data/web_static/shared/;
+mkdir -p /data/web_static/releases/test/;
 
-rm -fr /data/web_static/current > /dev/null/;
-ln -fs /data/web_static/releases/test/ /data/web_static/current
+#rm -fr /data/web_static/current > /dev/null/;
 echo "<html>
   <head>
   </head>
@@ -17,6 +15,8 @@ echo "<html>
     Holberton School
   </body>
 </html>" > /data/web_static/releases/test/index.html
+
+ln -fs /data/web_static/releases/test /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data/
 
