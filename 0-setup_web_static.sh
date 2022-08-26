@@ -9,7 +9,7 @@ mkdir -p /data/web_static/releases/test/ > /dev/null/;
 touch /data/web_static/releases/test/index.html > ;
 
 rm -fr /data/web_static/current > /dev/null/;
-ln -fs /data/web_static/releases/test /data/web_static/current
+ln -fs /data/web_static/releases/test/ /data/web_static/current
 echo "<html>
   <head>
   </head>
