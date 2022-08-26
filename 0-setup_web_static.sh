@@ -3,7 +3,6 @@
 
 apt-get update -y > /dev/null/;
 apt-get install -y nginx > /dev/null/;
-apt-get upgrade -y > /dev/null/;
 
 mkdir -p /data/web_static/shared/;
 mkdir -p /data/web_static/releases/test/;
