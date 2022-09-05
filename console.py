@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+
+from libcst import parse_module
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,13 +117,22 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.partition(" ")
+        if not args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        parameter = args[2].partition("=")[2]
+
+        if "_" in parameter:
+            parameter = parameter.replace("_", " ")
+
+        """if "\"" in parameter:
+            parameter = parameter.replace("\"", "\\\"")"""
+
+        new_instance = HBNBCommand.classes[args[0]](**parameter)
         storage.save()
         print(new_instance.id)
         storage.save()
