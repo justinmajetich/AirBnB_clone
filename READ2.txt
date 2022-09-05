@@ -1,0 +1,7 @@
+2. Consoles improvements -- Jaime
+5. Delete Object -- Christian
+6. DBStorage - States and Cities  -- Jaime 
+7. DBStorage-User -- Christian
+8. DBStorage-Place // needs user -- xxx
+9. DBStorage-Review // needs user and Place -- xxx
+10. DBStorage.Amenity // needs SQLAlchemy place -- Al final 
