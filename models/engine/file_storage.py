@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from tkinter import Y
 
 
 class FileStorage:
@@ -10,7 +11,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if cls is None:
+            return(FileStorage.__objects)
+        your_list = {}
+        for key, value in FileStorage.__objects.items():
+            your_list[key] = value
+            
+        return(your_list)
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
