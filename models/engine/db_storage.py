@@ -25,6 +25,9 @@ class DBStorage:
 
     def all(self, cls=None):
         """Public instance method all"""
+        dict_new ={}
+        for cls in classes:
+            
 
     def new(self, obj):
         """Public instance method new"""
