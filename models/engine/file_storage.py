@@ -26,8 +26,8 @@ class FileStorage:
         else:
             listObj = {}
             for x, val in self.__objects.items():
-                if isinstance(val, cls):
-                    listObj[x] = val
+                if type(v) == cls:
+                    listObj[x] = self.__objects[k]
             return listObj
 
     def new(self, obj):
@@ -62,6 +62,6 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj:
-            for x, val in self.__objects.items():
-                del self.__objects[x]
-                break
+            k = obj.__class__.__name__ + '.' + obj.id
+            del self.__objects[k]
+            
