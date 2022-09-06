@@ -14,7 +14,7 @@ class FileStorage:
             return (FileStorage.__objects)
         your_list = {}
         for key, value in FileStorage.__objects.items():
-            if(type(value) == cls):
+            if (type(value) == cls):
                 your_list[key] = value
         return (your_list)
 
