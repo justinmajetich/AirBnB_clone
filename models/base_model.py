@@ -8,13 +8,14 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
-    
+
     def __init__(self, *args, **kwargs):
         """ Base model class
             Attributes:
@@ -32,7 +33,7 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
-       
+
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
@@ -44,7 +45,6 @@ class BaseModel:
         models.storage.save()
         models.storage.new(self)
 
-
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
@@ -53,7 +53,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        
+
         if dictionary.get('_sa_instance_state') is not None:
             dictionary.pop('_sa_instance_state')
         return dictionary

@@ -23,5 +23,5 @@ class State(BaseModel, Base):
         """Returns the list of City instances with equal state_id"""
         cities = models.storage.all(City)
         self.__cities = [city for city in cities.values()
-                             if city.state_id == self.id]
+                         if city.state_id == self.id]
         return self.__cities

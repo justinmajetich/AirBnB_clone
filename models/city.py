@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from models.place import Place
 
+
 class City(BaseModel, Base):
     """This is the class for City
     Attributes:
