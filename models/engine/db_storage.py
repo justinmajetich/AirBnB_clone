@@ -25,9 +25,18 @@ class DBStorage:
 
     def all(self, cls=None):
         """Public instance method all"""
-        dict_new ={}
-        for cls in classes:
-            
+        dict_new = {}
+
+        if cls:
+            query = self.__session.query(cls).all()
+            for key, value in query.items():
+                dict_new[key] = value
+        else:
+            for CLS in self.classes:
+                query = self.__session.query(CLS).all()
+                for key, value in query.items():
+                    dict_new[key] = value
+        return (dict_new)
 
     def new(self, obj):
         """Public instance method new"""
