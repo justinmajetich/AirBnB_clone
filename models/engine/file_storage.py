@@ -26,8 +26,8 @@ class FileStorage:
         else:
             listObj = {}
             for x, val in self.__objects.items():
-                if type(v) == cls:
-                    listObj[x] = self.__objects[k]
+                if type(val) == cls:
+                    listObj[x] = self.__objects[x]
             return listObj
 
     def new(self, obj):
