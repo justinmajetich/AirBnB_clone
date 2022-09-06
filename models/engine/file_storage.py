@@ -64,4 +64,3 @@ class FileStorage:
         if obj:
             k = obj.__class__.__name__ + '.' + obj.id
             del self.__objects[k]
-            
