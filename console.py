@@ -132,17 +132,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args[0]](**parameter)
         new_instance.save()
         print(new_instance.id)
-
-        if "_" in parameter:
-            parameter = parameter.replace("_", " ")
-
-        if "\"" in parameter:
-            parameter = parameter.replace("\"", "")
-
-        new_instance = HBNBCommand.classes[args[0]]()
-        new_instance.name = parameter
-        storage.save()
-        print(new_instance.id)
         storage.save()
 
     def help_create(self):
