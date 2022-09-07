@@ -6,7 +6,8 @@ from sqlalchemy.orm import relationship
 from os import getenv
 
 
-class User(BaseModel,Base if (getenv('HBNB_TYPE_STORAGE') == "db") else object):
+class User(BaseModel, Base if (getenv('HBNB_TYPE_STORAGE') == "db")
+           else object):
     """This module defines a class User"""
 
     if (getenv('HBNB_TYPE_STORAGE') == 'db'):
