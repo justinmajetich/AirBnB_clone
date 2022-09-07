@@ -32,9 +32,9 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                                       pool_pre_ping=True)
-
+        metadata = MetaData()
         if getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """Public instance method all"""
@@ -61,9 +61,10 @@ class DBStorage:
 
     def delete(self, obj=None):
         """public instance method delete"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
-
+		        
+        
     def reload(self):
         """Public instance method reload"""
         Base.metadata.create_all(self.__engine)
