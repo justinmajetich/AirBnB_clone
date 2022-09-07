@@ -48,11 +48,11 @@ class Place(BaseModel, Base):
 		latitude = 0.0
 		longitude = 0.0
 		amenity_ids = []
-		@property.getter
+		@property
 		def amenities(self):
 			if len(self.amenity_ids) > 0:
 				return (self.amenity_ids)
-		@property.setter
+		@amenities.setter
 		def amenities(self, obj):
 			if obj.__class__.__name__ == 'Amenity':
 				self.amenity_ids.append(obj)
