@@ -10,10 +10,10 @@ from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     """ State class """
-    
+
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    
+
     if getenv("HBNB_TYPE_STORAGE") != 'db':
 
         @property
@@ -21,7 +21,7 @@ class State(BaseModel, Base):
             """getter method, returns list de City objs"""
             city_list = []
             city_dict = models.storage.all(models.city.City)
-            for key, value in city_dict.items():            
+            for key, value in city_dict.items():
                 if value.state_id == self.id:
                     city_list.append(value)
             return city_list
