@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base if (getenv('HBNB_TYPE_STORAGE') == "db") else object):
     """ State class """
-    if getenv("HBNB_TYPE_STORAGE") != 'db':
+    if (getenv("HBNB_TYPE_STORAGE") != 'db'):
         name = ""
         @property
         def cities(self):
