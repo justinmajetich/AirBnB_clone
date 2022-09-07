@@ -2,7 +2,6 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine, MetaData
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -23,15 +22,12 @@ class DBStorage:
     }
 
     def __init__(self):
-        """Public instance methods"""
-        HBNB_ENV = getenv('HBNB_ENV')
-        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
-        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
-                                      pool_pre_ping=True)
+        """Engine constructor"""
+        self.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'),
+                getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True)
         metadata = MetaData()
         if getenv('HBNB_ENV') == 'test':
             metadata.drop_all(bind=self.__engine)
@@ -63,8 +59,7 @@ class DBStorage:
         """public instance method delete"""
         if obj:
             self.__session.delete(obj)
-		        
-        
+
     def reload(self):
         """Public instance method reload"""
         Base.metadata.create_all(self.__engine)
