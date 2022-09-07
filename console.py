@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
