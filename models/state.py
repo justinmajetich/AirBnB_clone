@@ -8,14 +8,10 @@ from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class State(BaseModel, Base):
+class State(BaseModel, Base if (getenv('HBNB_TYPE_STORAGE') == "db") else object):
     """ State class """
-    
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    
     if getenv("HBNB_TYPE_STORAGE") != 'db':
-
+        name = ""
         @property
         def cities(self):
             """getter method, returns list de City objs"""
@@ -26,4 +22,6 @@ class State(BaseModel, Base):
                     city_list.append(value)
             return city_list
     else:
+        __tablename__ = 'states'
+        name = Column(String(128), nullable=False)
         cities = relationship('City', backref='state', cascade='delete')
