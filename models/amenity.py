@@ -3,12 +3,9 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from os import getenv
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, Base):
     """Update Amenity"""
     __tablename__ = 'amenities'
-    if (getenv('HBNB_TYPE_STORAGE') == 'db'):
-        name = Column(String(128), nullable=False)
-        place_amenity = relationship('Place', 'Amenity')
+    name = Column(String(128), nullable=False)
