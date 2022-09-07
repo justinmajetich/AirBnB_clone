@@ -1,4 +1,4 @@
--- HBNB_ENV: running environment. It can be “dev” or “test” for the moment (“production” soon!)
+-- HBNB_ENV: running environment. It can be “dev” or “test” for the moment 
 
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
