@@ -8,11 +8,11 @@ import models
 import os
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """ State class """
     if getenv("HBNB_TYPE_STORAGE") == 'db':
-        name = Column(String(128), nullable=False)
         __tablename__ = 'states'
+        name = Column(String(128), nullable=False)
         cities = relationship('City', backref='State', cascade='delete')
     else:
 
