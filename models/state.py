@@ -10,19 +10,21 @@ from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     """ State class """
-    if getenv("HBNB_TYPE_STORAGE") == 'db':
-        name = Column(String(128), nullable=False)
-        __tablename__ = 'states'
-        cities = relationship('City', backref='State', cascade='delete')
-    else:
+    
+    name = Column(String(128), nullable=False)
+    __tablename__ = 'states'
+    
+    
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
 
         @property
         def cities(self):
             """getter method, returns list de City objs"""
-            
             city_list = []
-
-            for city in models.storage.all("City").values():
-                if city.state_id == self.id:
-                    city_list.append(city)
+            city_dict = models.storage.all(models.city.City)
+            for key, value in city_dict.items():            
+                if value.state_id == self.id:
+                    city_list.append(value)
             return city_list
+    else:
+        cities = relationship('City', backref='state', cascade='delete') 
