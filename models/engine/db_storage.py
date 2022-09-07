@@ -69,4 +69,5 @@ class DBStorage:
         """Public instance method reload"""
         Base.metadata.create_all(self.__engine)
         session_new = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session_new)
+        Session = scoped_session(session_new)
+        self.__session = Session()
