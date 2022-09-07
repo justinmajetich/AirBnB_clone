@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from models.review import Review
 
 
-class Place(BaseModel, Base):
+class Place(BaseModel, Base if (getenv('HBNB_TYPE_STORAGE') == "db") else object):
     """ A place to stay """
     __tablename__ = 'places'
     if (getenv('HBNB_TYPE_STORAGE') == 'db'):
@@ -24,15 +24,6 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', backref='place',
                                cascade='all, delete')
 
-        @property
-        def reviews(self):
-            """ Return the list of Reviews by Place """
-            from models import storage
-            reviews_by_place = []
-            for rev in storage.all(Review).values():
-                if rev.place_id == self.id:
-                    reviews_by_place.append(rev)
-            return reviews_by_place
         place_amenity = Table('place_amenity', Base.metadata,
                               Column('place_id', String(60), ForeignKey
                                      ('places.id'), primary_key=True,
@@ -42,6 +33,7 @@ class Place(BaseModel, Base):
                                      primary_key=True, nullable=False))
         amenities = relationship('Amenity', secondary=place_amenity,
                                  viewonly=False)
+
     else:
         city_id = ""
         user_id = ""
@@ -55,7 +47,17 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
-        @property.getter
+        @property
+        def reviews(self):
+            """ Return the list of Reviews by Place """
+            from models import storage
+            reviews_by_place = []
+            for rev in storage.all(Review).values():
+                if rev.place_id == self.id:
+                    reviews_by_place.append(rev)
+            return reviews_by_place
+
+        @property
         def amenities(self):
             if len(self.amenity_ids) > 0:
                 return(self.amenity_ids)
