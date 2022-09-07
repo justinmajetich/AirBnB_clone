@@ -11,9 +11,8 @@ from sqlalchemy.orm import relationship
 class State(BaseModel, Base):
     """ State class """
     
-    name = Column(String(128), nullable=False)
     __tablename__ = 'states'
-    
+    name = Column(String(128), nullable=False)
     
     if getenv("HBNB_TYPE_STORAGE") != 'db':
 
@@ -27,4 +26,4 @@ class State(BaseModel, Base):
                     city_list.append(value)
             return city_list
     else:
-        cities = relationship('City', backref='state', cascade='delete') 
+        cities = relationship('City', backref='state', cascade='delete')

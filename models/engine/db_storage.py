@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
+from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
-from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
 
 class DBStorage:
 	"""New bdstorage engine"""
@@ -29,8 +28,9 @@ class DBStorage:
 				getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'),
 				getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
 			pool_pre_ping=True)
+		metadata = MetaData()
 		if getenv('HBNB_ENV') == 'test':
-			MetaData.drop_all(bind=self.__engine)
+			metadata.drop_all(bind=self.__engine)
 
 	def all(self, cls=None):
 		"""All method"""
