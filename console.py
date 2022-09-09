@@ -11,8 +11,11 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 import re
-from pprint import pprint
+
+
+from rich import print as rprint
 
 
 class HBNBCommand(cmd.Cmd):
@@ -38,89 +41,6 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    # def precmd(self, line):
-    #     """Reformat command line for advanced command syntax.
-
-    #     Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-    #     (Brackets denote optional fields in usage example.)
-    #     """
-    #     _cmd = _cls = _id = _args = ''  # initialize line elements
-    #     print("=====================")
-    #     print(line)
-    #     print("=====================")
-
-    #     # added alternative exit command
-    #     if line == ".":
-    #         return "quit"
-    #     # scan for general formating - i.e '.', '(', ')'
-    #     if not ('.' in line and '(' in line and ')' in line):
-    #         return line
-    #     # converting every command into <command> <Class> <Arg1>...,<arg n>
-    #     # format
-
-    #         """ intercepts commands with .() notation and extracts the
-    #         args into one strings"""
-    #         toks = re.split(r'\.|\(|\)', line)
-
-    #         payload = toks[2].strip('"').replace(',', ' ')
-    #         # if payload[0] == '{' and payload[-1] == '}':
-    #         payload = self.dict_to_str(payload)
-
-    #         newline = toks[1] + ' ' + toks[0] + ' ' + payload
-    #         if payload == '':
-    #             line = (toks[1], toks[0], newline)
-    #             # print("======== line no payload =======")
-    #             # print(line)
-    #         else:
-    #             line = (toks[1], toks[0] + " " + payload, newline)
-    #             # print("========= line with payload ===========")
-    #             # print(line)
-
-    #         if toks[1] == 'count':
-    #             self.count(toks[0])
-    #             return cmd.Cmd.parseline(self, '')
-    #         # print("====== line =====")
-    #         # print(line)
-    #         return line
-
-    #     try:  # parse line left to right
-    #         pline = line[:]  # parsed line
-
-    #         # isolate <class name>
-    #         _cls = pline[:pline.find('.')]
-
-    #         # isolate and validate <command>
-    #         _cmd = pline[pline.find('.') + 1:pline.find('(')]
-    #         if _cmd not in HBNBCommand.dot_cmds:
-    #             raise Exception
-
-    #         # if parantheses contain arguments, parse them
-    #         pline = pline[pline.find('(') + 1:pline.find(')')]
-    #         if pline:
-    #             # partition args: (<id>, [<delim>], [<*args>])
-    #             pline = pline.partition(', ')  # pline convert to tuple
-
-    #             # isolate _id, stripping quotes
-    #             _id = pline[0].replace('\"', '')
-    #             # possible bug here:
-    #             # empty quotes register as empty _id when replaced
-
-    #             # if arguments exist beyond _id
-    #             pline = pline[2].strip()  # pline is now str
-    #             if pline:
-    #                 # check for *args or **kwargs
-    #                 if pline[0] is '{' and pline[-1] is '}'\
-    #                         and type(eval(pline)) is dict:
-    #                     _args = pline
-    #                 else:
-    #                     _args = pline.replace(',', '')
-    #                     # _args = _args.replace('\"', '')
-    #         line = ' '.join([_cmd, _cls, _id, _args])
-
-    #     except Exception as mess:
-    #         pass
-    #     finally:
-    #         return line
     def parseline(self, line):
         """ cmd function that we'll override to intercept incomming commands
         and return standardly parsed commands for easr of use
@@ -315,31 +235,69 @@ class HBNBCommand(cmd.Cmd):
         print("Shows an individual instance of a class")
         print("[Usage]: show <className> <objectId>\n")
 
+    # def do_destroy(self, args):
+    #     """ Destroys a specified object """
+    #     new = args.partition(" ")
+    #     c_name = new[0]
+    #     c_id = new[2]
+    #     if c_id and ' ' in c_id:
+    #         c_id = c_id.partition(' ')[0]
+
+    #     if not c_name:
+    #         print("** class name missing **")
+    #         return
+
+    #     if c_name not in HBNBCommand.classes:
+    #         print("** class doesn't exist **")
+    #         return
+
+    #     if not c_id:
+    #         print("** instance id missing **")
+    #         return
+
+    #     key = c_name + "." + c_id
+
+    #     try:
+    #         del (storage.all()[key])
+    #         storage.save()
+    #     except KeyError:
+    #         print("** no instance found **")
+
     def do_destroy(self, args):
-        """ Destroys a specified object """
+        """Destroys a specified object. """
+
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        if c_id == "all":
+            for k, v in list(storage.all().items()):
+                idclass = k.split('.')
+                if idclass[0] == c_name:
+                    self.delete_instance(idclass[0], idclass[1])
 
-        if not c_name:
+        else:
+            self.delete_instance(c_name, c_id)
+
+        storage.save()
+
+    def delete_instance(self, name, id):
+        """helper function for destroying an object instance"""
+        if not name:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        if not c_id:
+        if not id:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
-
+        key = name + "." + id
         try:
-            del (storage.all()[key])
-            storage.save()
+            del storage.all()[key]
+
         except KeyError:
             print("** no instance found **")
 
@@ -365,6 +323,7 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
 
         print(print_list)
+        self.printme("all of instance ", print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -530,10 +489,18 @@ class HBNBCommand(cmd.Cmd):
         else:
             return str
 
-    def printme(esl, title, body):
+    def printme(self, title, body):
         """helper function to print items to console"""
         print(f" ====  {title} start =====")
-        pprint(body)
+        # my_theme = Theme(
+        #     {
+        #         "repr.str": "bright_blue",
+        #         "repr.value_str": "green",
+        #     }
+        # )
+        # consore = Console(theme=my_theme, highlighter=ReprHighlighter())
+        # consore.print(body)
+        rprint(body)
         print(f" ====  {title} end =====")
 
     def parseLineWithNoArgs(self, toks, line, isTuple=False):
