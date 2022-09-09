@@ -145,16 +145,16 @@ class HBNBCommand(cmd.Cmd):
                 '=', ' ').replace('"', ' ')
             toks = toks.split(' ')
             payload = self.list_to_string(toks[2:])
-            self.printme("toks PAYLOAD", payload)
+            # self.printme("toks PAYLOAD", payload)
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
-            self.printme("toks NEW LINE", newline)
+            # self.printme("toks NEW LINE", newline)
             if len(toks) > 1 and toks[0][0].isupper():
                 line = toks[1] + " " + toks[0] + " " + payload
             elif len(toks) > 1 and toks[1][0].isupper():
                 line = toks[0] + " " + toks[1] + " " + payload
             # line = self.parseLineWithNoArgs(toks, line)
-            self.printme("toks FINAL LINE", line)
-       
+            # self.printme("toks FINAL LINE", line)
+
         # case 4
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
@@ -164,9 +164,9 @@ class HBNBCommand(cmd.Cmd):
 
             payload = toks[2].strip('"').replace(',', ' ')
             # if payload[0] == '{' and payload[-1] == '}':
-            self.printme("messy payload ", payload)
+            # self.printme("messy payload ", payload)
             payload = self.dict_to_str(payload)
-            self.printme("sanitized payload ", payload)
+            # self.printme("sanitized payload ", payload)
 
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
             if payload == '':
@@ -196,6 +196,8 @@ class HBNBCommand(cmd.Cmd):
             # print("intercepted straight one")
             # pprint(args)
             payload = []
+
+            # case 5A
             if len(args) > 2:
                 """ for args the look like <create User args... > 
                 or <User create args...> and converts 
@@ -203,17 +205,24 @@ class HBNBCommand(cmd.Cmd):
                 """
                 self.printme("ARGS ", payload)
                 payload = args[2:]
-                self.printme("raw payload ", payload)
+                # self.printme("raw payload ", payload)
                 payload = self.list_to_string(payload)
-                self.printme("sanitized payload ", payload)
+                # self.printme("sanitized payload ", payload)
                 # print("==== sanitized payload =====")
                 # print(payload)
                 newline = args[0] + ' ' + args[1] + ' ' + payload
-                line = (args[0], args[1] + " " + payload, newline)
+                # line = (args[0], args[1] + " " + payload, newline)
+                self.printme("args ", args)
+                toks = args
+                if len(toks) > 1 and toks[0][0].isupper():
+                    line = (toks[1], toks[0] + " " + payload, newline)
+                elif len(toks) > 1 and toks[1][0].isupper():
+                    line = (toks[0], toks[1] + " " + payload, newline)
                 # line = self.parseLineWithNoArgs(args, line, payload)
                 # print("====== line =====")
                 # self.printme("line in else block", line)
                 return line
+            # case 5B
             elif len(args) > 1:
                 """ for args the look like <create User > or <User create> 
                 and converts them to create User
@@ -254,7 +263,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         parsed = args.split(" ")
-        self.printme("inside do_create parsed ", parsed)
+        # self.printme("inside do_create parsed ", parsed)
         theClass = parsed[0]
 
         if not theClass:
