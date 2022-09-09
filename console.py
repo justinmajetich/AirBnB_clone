@@ -12,6 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+import datetime
 import re
 
 
@@ -150,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
                 toks = line.split(' ')
                 line = self.parseLineWithNoArgs(toks, line)
 
-        self.printme("global line", line)
+        # self.printme("global line", line)
         return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
@@ -182,19 +183,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        parsed = args.split(" ")
+        argslist = args.split(" ")
         # self.printme("inside do_create parsed ", parsed)
-        theClass = parsed[0]
+        c_name = argslist[0]
 
-        if not theClass:
+        if not c_name:
             print("** class name missing **")
             return
-        elif theClass not in HBNBCommand.classes:
+        elif c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[theClass]()
-        storage.save()
-        print(new_instance.id)
+        new_instance = HBNBCommand.classes[c_name](argslist)
+        
+        self.printme("new class instance created ", new_instance)
         storage.save()
 
     def help_create(self):
@@ -234,34 +235,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the show command """
         print("Shows an individual instance of a class")
         print("[Usage]: show <className> <objectId>\n")
-
-    # def do_destroy(self, args):
-    #     """ Destroys a specified object """
-    #     new = args.partition(" ")
-    #     c_name = new[0]
-    #     c_id = new[2]
-    #     if c_id and ' ' in c_id:
-    #         c_id = c_id.partition(' ')[0]
-
-    #     if not c_name:
-    #         print("** class name missing **")
-    #         return
-
-    #     if c_name not in HBNBCommand.classes:
-    #         print("** class doesn't exist **")
-    #         return
-
-    #     if not c_id:
-    #         print("** instance id missing **")
-    #         return
-
-    #     key = c_name + "." + c_id
-
-    #     try:
-    #         del (storage.all()[key])
-    #         storage.save()
-    #     except KeyError:
-    #         print("** no instance found **")
 
     def do_destroy(self, args):
         """Destroys a specified object. """
@@ -492,14 +465,6 @@ class HBNBCommand(cmd.Cmd):
     def printme(self, title, body):
         """helper function to print items to console"""
         print(f" ====  {title} start =====")
-        # my_theme = Theme(
-        #     {
-        #         "repr.str": "bright_blue",
-        #         "repr.value_str": "green",
-        #     }
-        # )
-        # consore = Console(theme=my_theme, highlighter=ReprHighlighter())
-        # consore.print(body)
         rprint(body)
         print(f" ====  {title} end =====")
 
