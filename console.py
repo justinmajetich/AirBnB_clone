@@ -127,64 +127,100 @@ class HBNBCommand(cmd.Cmd):
         """
 
         """my custom quit function"""
+        # case 1
         if line == '.':
             return cmd.Cmd.parseline(self, "quit")
-
+        # case 2
         if '.' in line and '(' not in line and ')' not in line:
+            """condition checks for commands like <User.create> or 
+            <create.User> and converts them to create User"""
             toks = line.split('.')
-            self.printme("toks", toks)
+            # self.printme("toks", toks)
             line = self.parseLineWithNoArgs(toks, line)
-
+        # case 3
+        if '.' not in line and '(' in line and ')' in line:
+            """condition checks for commands like <User create(args...)> or
+            <create User(args...)> and converts them to create User args..."""
+            toks = line.replace('(', ' ').replace(')', ' ').replace(
+                '=', ' ').replace('"', ' ')
+            toks = toks.split(' ')
+            payload = self.list_to_string(toks[2:])
+            self.printme("toks PAYLOAD", payload)
+            newline = toks[1] + ' ' + toks[0] + ' ' + payload
+            self.printme("toks NEW LINE", newline)
+            if len(toks) > 1 and toks[0][0].isupper():
+                line = toks[1] + " " + toks[0] + " " + payload
+            elif len(toks) > 1 and toks[1][0].isupper():
+                line = toks[0] + " " + toks[1] + " " + payload
+            # line = self.parseLineWithNoArgs(toks, line)
+            self.printme("toks FINAL LINE", line)
+       
+        # case 4
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
             args into one strings"""
             toks = re.split(r'\.|\(|\)', line)
-            self.printme("args in if block", toks)
+            # self.printme("args in if block", toks)
 
             payload = toks[2].strip('"').replace(',', ' ')
             # if payload[0] == '{' and payload[-1] == '}':
+            self.printme("messy payload ", payload)
             payload = self.dict_to_str(payload)
+            self.printme("sanitized payload ", payload)
 
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
             if payload == '':
-                line = (toks[1], toks[0], newline)
-                # print("======== line no payload =======")
-                # print(line)
+                if len(toks) > 1 and toks[0][0].isupper():
+                    line = (toks[1], toks[0], newline)
+                elif len(toks) > 1 and toks[1][0].isupper():
+                    line = (toks[0], toks[1], newline)
+
             else:
-                line = (toks[1], toks[0] + " " + payload, newline)
-                # print("========= line with payload ===========")
-                # print(line)
+                if len(toks) > 1 and toks[0][0].isupper():
+                    line = (toks[1], toks[0] + " " + payload, newline)
+                elif len(toks) > 1 and toks[1][0].isupper():
+                    line = (toks[0], toks[1] + " " + payload, newline)
 
             if toks[1] == 'count':
                 self.count(toks[0])
                 return cmd.Cmd.parseline(self, '')
-            # print("====== line =====")
-            # print(line)
+
             return line
+        # case 5
         else:
             """ intercepts regular all string commands to remove any quotes
             to output standadized text
             """
             args = line.split(" ")
-            self.printme("args in else block", args)
+            # self.printme("args in else block", args)
             # print("intercepted straight one")
             # pprint(args)
             payload = []
             if len(args) > 2:
+                """ for args the look like <create User args... > 
+                or <User create args...> and converts 
+                them to create User args,,,
+                """
+                self.printme("ARGS ", payload)
                 payload = args[2:]
+                self.printme("raw payload ", payload)
                 payload = self.list_to_string(payload)
+                self.printme("sanitized payload ", payload)
                 # print("==== sanitized payload =====")
                 # print(payload)
                 newline = args[0] + ' ' + args[1] + ' ' + payload
                 line = (args[0], args[1] + " " + payload, newline)
+                # line = self.parseLineWithNoArgs(args, line, payload)
                 # print("====== line =====")
                 # self.printme("line in else block", line)
                 return line
             elif len(args) > 1:
-                """ for args the look like <create User > or <User create> """
+                """ for args the look like <create User > or <User create> 
+                and converts them to create User
+                """
                 toks = line.split(' ')
                 line = self.parseLineWithNoArgs(toks, line)
-                
+
         self.printme("global line", line)
         return cmd.Cmd.parseline(self, line)
 
@@ -218,7 +254,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         parsed = args.split(" ")
-        # self.printme("do create aprsed ", parsed)
+        self.printme("inside do_create parsed ", parsed)
         theClass = parsed[0]
 
         if not theClass:
@@ -443,6 +479,8 @@ class HBNBCommand(cmd.Cmd):
                 newstr += str(newword) + " "
 
         newstr = newstr.strip()
+        if '=' in newstr:
+            newstr = newstr.replace('=', ' ')
         # print("===== dict list =========")
         # print(newstr)
         return newstr
@@ -464,6 +502,8 @@ class HBNBCommand(cmd.Cmd):
                 newstr += str(newword) + " "
 
         newstr = newstr.strip()
+        if '=' in newstr:
+            newstr = newstr.replace('=', ' ')
         # print("===== list to str =========")
         # print(newstr)
         return newstr
@@ -482,17 +522,21 @@ class HBNBCommand(cmd.Cmd):
             return str
 
     def printme(esl, title, body):
+        """helper function to print items to console"""
         print(f" ====  {title} start =====")
         pprint(body)
         print(f" ====  {title} end =====")
 
-    def parseLineWithNoArgs(self, toks, line):
-        self.printme("toks to parse ", toks)
+    def parseLineWithNoArgs(self, toks, line, isTuple=False):
+        """helper function to swap commands and Class to aciev 
+         this structure create User """
+
+        # self.printme("toks to parse ", toks)
         if len(toks) > 1 and toks[0][0].isupper():
             line = toks[1] + " " + toks[0]
         elif len(toks) > 1 and toks[1][0].isupper():
             line = toks[0] + " " + toks[1]
-        self.printme("line in args ", line)
+        # self.printme("line in args ", line)
         return line
 
 
