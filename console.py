@@ -130,15 +130,10 @@ class HBNBCommand(cmd.Cmd):
         if line == '.':
             return cmd.Cmd.parseline(self, "quit")
 
-        if '.' in line:
+        if '.' in line and '(' not in line and ')' not in line:
             toks = line.split('.')
             self.printme("toks", toks)
-            if len(toks) > 1 and toks[0][0].isupper():
-                line = (toks[1], toks[0])
-            elif len(toks) > 1 and toks[1][0].isupper():
-                line = (toks[0], toks[1], toks[0] + " " + toks[1])
-
-            return line
+            line = self.parseLineWithNoArgs(toks, line)
 
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
@@ -183,18 +178,14 @@ class HBNBCommand(cmd.Cmd):
                 newline = args[0] + ' ' + args[1] + ' ' + payload
                 line = (args[0], args[1] + " " + payload, newline)
                 # print("====== line =====")
-                self.printme("line in else block", line)
+                # self.printme("line in else block", line)
                 return line
             elif len(args) > 1:
                 """ for args the look like <create User > or <User create> """
                 toks = line.split(' ')
-                if len(toks) > 1 and toks[0][0].isupper():
-                    line = (toks[1], toks[0], toks[1] + " " + toks[0])
-                elif len(toks) > 1 and toks[1][0].isupper():
-                    line = (toks[0], toks[1], toks[0] + " " + toks[1])
-           
-                return line
-
+                line = self.parseLineWithNoArgs(toks, line)
+                
+        self.printme("global line", line)
         return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
@@ -227,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         parsed = args.split(" ")
-        print("create args ====  ", parsed)
+        # self.printme("do create aprsed ", parsed)
         theClass = parsed[0]
 
         if not theClass:
@@ -494,6 +485,15 @@ class HBNBCommand(cmd.Cmd):
         print(f" ====  {title} start =====")
         pprint(body)
         print(f" ====  {title} end =====")
+
+    def parseLineWithNoArgs(self, toks, line):
+        self.printme("toks to parse ", toks)
+        if len(toks) > 1 and toks[0][0].isupper():
+            line = toks[1] + " " + toks[0]
+        elif len(toks) > 1 and toks[1][0].isupper():
+            line = toks[0] + " " + toks[1]
+        self.printme("line in args ", line)
+        return line
 
 
 if __name__ == "__main__":
