@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""Starts a Flask web application with
-routes multiple"""
+"""Starts a Flask web application that
+accepts a route with a variable"""
 
 from flask import Flask
 
@@ -15,6 +15,11 @@ def hello_hbnb():
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
     return "HBNB"
+
+
+@app.route("/c/<text>", strict_slashes=False)
+def c_text(text):
+    return "C {}".format(text.replace("_", " "))
 
 
 if __name__ == '__main__':
