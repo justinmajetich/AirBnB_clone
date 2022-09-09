@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+from curses.ascii import isupper
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -10,6 +11,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
+from pprint import pprint
 
 
 class HBNBCommand(cmd.Cmd):
@@ -35,56 +38,156 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    def precmd(self, line):
-        """Reformat command line for advanced command syntax.
+    # def precmd(self, line):
+    #     """Reformat command line for advanced command syntax.
 
-        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-        (Brackets denote optional fields in usage example.)
+    #     Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
+    #     (Brackets denote optional fields in usage example.)
+    #     """
+    #     _cmd = _cls = _id = _args = ''  # initialize line elements
+    #     print("=====================")
+    #     print(line)
+    #     print("=====================")
+
+    #     # added alternative exit command
+    #     if line == ".":
+    #         return "quit"
+    #     # scan for general formating - i.e '.', '(', ')'
+    #     if not ('.' in line and '(' in line and ')' in line):
+    #         return line
+    #     # converting every command into <command> <Class> <Arg1>...,<arg n>
+    #     # format
+
+    #         """ intercepts commands with .() notation and extracts the
+    #         args into one strings"""
+    #         toks = re.split(r'\.|\(|\)', line)
+
+    #         payload = toks[2].strip('"').replace(',', ' ')
+    #         # if payload[0] == '{' and payload[-1] == '}':
+    #         payload = self.dict_to_str(payload)
+
+    #         newline = toks[1] + ' ' + toks[0] + ' ' + payload
+    #         if payload == '':
+    #             line = (toks[1], toks[0], newline)
+    #             # print("======== line no payload =======")
+    #             # print(line)
+    #         else:
+    #             line = (toks[1], toks[0] + " " + payload, newline)
+    #             # print("========= line with payload ===========")
+    #             # print(line)
+
+    #         if toks[1] == 'count':
+    #             self.count(toks[0])
+    #             return cmd.Cmd.parseline(self, '')
+    #         # print("====== line =====")
+    #         # print(line)
+    #         return line
+
+    #     try:  # parse line left to right
+    #         pline = line[:]  # parsed line
+
+    #         # isolate <class name>
+    #         _cls = pline[:pline.find('.')]
+
+    #         # isolate and validate <command>
+    #         _cmd = pline[pline.find('.') + 1:pline.find('(')]
+    #         if _cmd not in HBNBCommand.dot_cmds:
+    #             raise Exception
+
+    #         # if parantheses contain arguments, parse them
+    #         pline = pline[pline.find('(') + 1:pline.find(')')]
+    #         if pline:
+    #             # partition args: (<id>, [<delim>], [<*args>])
+    #             pline = pline.partition(', ')  # pline convert to tuple
+
+    #             # isolate _id, stripping quotes
+    #             _id = pline[0].replace('\"', '')
+    #             # possible bug here:
+    #             # empty quotes register as empty _id when replaced
+
+    #             # if arguments exist beyond _id
+    #             pline = pline[2].strip()  # pline is now str
+    #             if pline:
+    #                 # check for *args or **kwargs
+    #                 if pline[0] is '{' and pline[-1] is '}'\
+    #                         and type(eval(pline)) is dict:
+    #                     _args = pline
+    #                 else:
+    #                     _args = pline.replace(',', '')
+    #                     # _args = _args.replace('\"', '')
+    #         line = ' '.join([_cmd, _cls, _id, _args])
+
+    #     except Exception as mess:
+    #         pass
+    #     finally:
+    #         return line
+    def parseline(self, line):
+        """ cmd function that we'll override to intercept incomming commands
+        and return standardly parsed commands for easr of use
         """
-        _cmd = _cls = _id = _args = ''  # initialize line elements
-  
-        # scan for general formating - i.e '.', '(', ')'
-        if not ('.' in line and '(' in line and ')' in line):
+        print("====== line  =======")
+        pprint(line)
+        print("====== line  =======")
+        """my custom quit function"""
+        if line == '.':
+            return cmd.Cmd.parseline(self, "quit")
+
+        if '.' in line:
+            toks = line.split('.')
+            print("====== toks  =======")
+            pprint(toks)
+            print("====== toks  =======")
+            if len(toks) > 1 and toks[0].isupper():
+                line = (toks[1], toks[0])
+            elif len(toks) > 1 and toks[1].isupper():
+                line = (toks[0], toks[1])
+
+            return cmd.Cmd.parseline(self, line)
+
+        if '.' in line and '(' in line and ')' in line:
+            """ intercepts commands with .() notation and extracts the
+            args into one strings"""
+            toks = re.split(r'\.|\(|\)', line)
+
+            payload = toks[2].strip('"').replace(',', ' ')
+            # if payload[0] == '{' and payload[-1] == '}':
+            payload = self.dict_to_str(payload)
+
+            newline = toks[1] + ' ' + toks[0] + ' ' + payload
+            if payload == '':
+                line = (toks[1], toks[0], newline)
+                # print("======== line no payload =======")
+                # print(line)
+            else:
+                line = (toks[1], toks[0] + " " + payload, newline)
+                # print("========= line with payload ===========")
+                # print(line)
+
+            if toks[1] == 'count':
+                self.count(toks[0])
+                return cmd.Cmd.parseline(self, '')
+            # print("====== line =====")
+            # print(line)
             return line
-
-        try:  # parse line left to right
-            pline = line[:]  # parsed line
-
-            # isolate <class name>
-            _cls = pline[:pline.find('.')]
-
-            # isolate and validate <command>
-            _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
-                raise Exception
-
-            # if parantheses contain arguments, parse them
-            pline = pline[pline.find('(') + 1:pline.find(')')]
-            if pline:
-                # partition args: (<id>, [<delim>], [<*args>])
-                pline = pline.partition(', ')  # pline convert to tuple
-
-                # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
-
-                # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
-                if pline:
-                    # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
-            line = ' '.join([_cmd, _cls, _id, _args])
-
-        except Exception as mess:
-            pass
-        finally:
-            return line
+        else:
+            """ intercepts regular all string commands to remove any quotes
+            to output standadized text
+            """
+            args = line.split(" ")
+            # print("intercepted straight one")
+            # pprint(args)
+            payload = []
+            if len(args) > 2:
+                payload = args[2:]
+                payload = self.list_to_string(payload)
+                # print("==== sanitized payload =====")
+                # print(payload)
+                newline = args[0] + ' ' + args[1] + ' ' + payload
+                line = (args[0], args[1] + " " + payload, newline)
+                # print("====== line =====")
+                # print(line)
+                return line
+        return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
@@ -115,13 +218,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        parsed = args.split(" ")
+        print("create args ====  ", parsed)
+        theClass = parsed[0]
+
+        if not theClass:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif theClass not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[theClass]()
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +426,61 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    """ my custom helper functions for string maniputlation"""
+
+    def dict_to_str(self, dict):
+        """"converts  a dictionary like string to string for easier parsing"""
+        dictlist = dict.split(' ')
+        newstr = ""
+        for idx in range(len(dictlist)):
+            newword = ""
+            for word in dictlist[idx]:
+                if not word == '"' and not word == '' and not word == "'" and\
+                    not word == "}" and not word == "{"   \
+                        and not word == ":":
+                    newword = "".join([newword, word])
+            if len(newword) > 0:
+                newstr += str(newword) + " "
+
+        newstr = newstr.strip()
+        # print("===== dict list =========")
+        # print(newstr)
+        return newstr
+
+    def list_to_string(self, list):
+        """ takes a list and spits out a string comprised of each
+        list item separated by blank space  """
+        newstr = ""
+        for idx in range(len(list)):
+            word = list[idx]
+            newword = ""
+            for chr in word:
+                if not chr == '"' and not chr == '' and not chr == "'":
+                    newword = "".join([newword, chr])
+
+            # print("===== new word =========")
+            # print(newword)
+            if len(newword) > 0:
+                newstr += str(newword) + " "
+
+        newstr = newstr.strip()
+        # print("===== list to str =========")
+        # print(newstr)
+        return newstr
+
+    def strip_quotes(self, str):
+        """removes quotes from strings for easier parsing"""
+        if not str:
+            return
+        if str[0] == '"' and str[len(str) - 1] == '"':
+            return str[1:len(str) - 1]
+        elif str[0] == '"':
+            return str[1:]
+        elif str[len(str) - 1] == '"':
+            return str[:len(str) - 1]
+        else:
+            return str
 
 
 if __name__ == "__main__":
