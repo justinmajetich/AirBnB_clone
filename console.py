@@ -125,29 +125,26 @@ class HBNBCommand(cmd.Cmd):
         """ cmd function that we'll override to intercept incomming commands
         and return standardly parsed commands for easr of use
         """
-        print("====== line  =======")
-        pprint(line)
-        print("====== line  =======")
+
         """my custom quit function"""
         if line == '.':
             return cmd.Cmd.parseline(self, "quit")
 
         if '.' in line:
             toks = line.split('.')
-            print("====== toks  =======")
-            pprint(toks)
-            print("====== toks  =======")
-            if len(toks) > 1 and toks[0].isupper():
+            self.printme("toks", toks)
+            if len(toks) > 1 and toks[0][0].isupper():
                 line = (toks[1], toks[0])
-            elif len(toks) > 1 and toks[1].isupper():
-                line = (toks[0], toks[1])
+            elif len(toks) > 1 and toks[1][0].isupper():
+                line = (toks[0], toks[1], toks[0] + " " + toks[1])
 
-            return cmd.Cmd.parseline(self, line)
+            return line
 
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
             args into one strings"""
             toks = re.split(r'\.|\(|\)', line)
+            self.printme("args in if block", toks)
 
             payload = toks[2].strip('"').replace(',', ' ')
             # if payload[0] == '{' and payload[-1] == '}':
@@ -174,6 +171,7 @@ class HBNBCommand(cmd.Cmd):
             to output standadized text
             """
             args = line.split(" ")
+            self.printme("args in else block", args)
             # print("intercepted straight one")
             # pprint(args)
             payload = []
@@ -185,8 +183,18 @@ class HBNBCommand(cmd.Cmd):
                 newline = args[0] + ' ' + args[1] + ' ' + payload
                 line = (args[0], args[1] + " " + payload, newline)
                 # print("====== line =====")
-                # print(line)
+                self.printme("line in else block", line)
                 return line
+            elif len(args) > 1:
+                """ for args the look like <create User > or <User create> """
+                toks = line.split(' ')
+                if len(toks) > 1 and toks[0][0].isupper():
+                    line = (toks[1], toks[0], toks[1] + " " + toks[0])
+                elif len(toks) > 1 and toks[1][0].isupper():
+                    line = (toks[0], toks[1], toks[0] + " " + toks[1])
+           
+                return line
+
         return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
@@ -481,6 +489,11 @@ class HBNBCommand(cmd.Cmd):
             return str[:len(str) - 1]
         else:
             return str
+
+    def printme(esl, title, body):
+        print(f" ====  {title} start =====")
+        pprint(body)
+        print(f" ====  {title} end =====")
 
 
 if __name__ == "__main__":
