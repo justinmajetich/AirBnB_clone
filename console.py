@@ -65,12 +65,12 @@ class HBNBCommand(cmd.Cmd):
             payload = self.list_to_string(toks[2:])
 
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
-    
+
             if len(toks) > 1 and toks[0][0].isupper():
                 line = toks[1] + " " + toks[0] + " " + payload
             elif len(toks) > 1 and toks[1][0].isupper():
                 line = toks[0] + " " + toks[1] + " " + payload
-        
+
         # case 4
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
             # printme("args in if block", toks)
             payload = toks[2].strip('"').replace(',', ' ')
             payload = self.dict_to_str(payload)
-         
+
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
             if payload == '':
                 if len(toks) > 1 and toks[0][0].isupper():
@@ -295,9 +295,8 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
-
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
-        args = args.partition(" ")
+        args = args.split(" ")
         if args[0]:
             c_name = args[0]
         else:  # class name not present
@@ -306,60 +305,25 @@ class HBNBCommand(cmd.Cmd):
         if c_name not in HBNBCommand.classes:  # class name invalid
             print("** class doesn't exist **")
             return
-
-        # isolate id from args
-        args = args[2].partition(" ")
-        if args[0]:
-            c_id = args[0]
-        else:  # id not present
-            print("** instance id missing **")
-            return
-
-        # generate key from class and id
-        key = c_name + "." + c_id
-
-        # determine if key is present
-        if key not in storage.all():
+            # determine if key is present
+        if args[1] not in storage.all():
             print("** no instance found **")
             return
-
-        # first determine if kwargs or args
-        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
-            kwargs = eval(args[2])
-            args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
-            for k, v in kwargs.items():
-                args.append(k)
-                args.append(v)
-        else:  # isolate args
-            args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
-                second_quote = args.find('\"', 1)
-                att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
-
-            args = args.partition(' ')
-
-            # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
-                att_name = args[0]
-            # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
-
-            # if att_val was not quoted arg
-            if not att_val and args[2]:
-                att_val = args[2].partition(' ')[0]
-
-            args = [att_name, att_val]
-
+        # check if update arsg are sufficient
+        if len(args[2:]) % 2 != 0:
+            print(f"** equal number of keys and values required **")
+            return
         # retrieve dictionary of current objects
+        key = args[1]
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
-        for i, att_name in enumerate(args):
+        new_values = args[2:]
+        for i, att_name in enumerate(new_values):
+            # printme("attr name ", att_name)
             # block only runs on even iterations
             if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
+                att_val = new_values[i + 1]  # following item is value
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return

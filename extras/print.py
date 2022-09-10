@@ -4,13 +4,15 @@ from rich import print as rprint
 
 def printme(title, body):
     """helper function to print items to console"""
-    rprint(f" ====  [bold yellow]{title}  start [/bold yellow] =====")
+    rprint(
+        f" ====  [bold spring_green2]{title}  start [/bold spring_green2] ===")
     if type(body) == list:
         for item in body:
             rprint(item)
     else:
         rprint(body)        
-    rprint(f" ====  [bold yellow]{title} end [/bold yellow]=====")
+    rprint(
+        f" ====  [bold spring_green2]{title} end [/bold spring_green2]=====")
 
 
 # rprint(
