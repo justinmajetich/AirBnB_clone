@@ -1,1 +1,145 @@
-{"User.14835f23-570a-4b07-ac9f-20317a80f59d": {"id": "14835f23-570a-4b07-ac9f-20317a80f59d", "created_at": "2022-09-10T09:15:41.765802", "updated_at": "2022-09-10T09:15:41.765819", "name": "dennis_k", "__class__": "User"}, "User.80ff4fff-3601-4453-83f7-1944e1e44a30": {"id": "80ff4fff-3601-4453-83f7-1944e1e44a30", "created_at": "2022-09-10T09:16:40.047314", "updated_at": "2022-09-10T09:16:40.047329", "name": "dennis_k", "age": "23", "__class__": "User"}, "User.47614fdf-0e90-4d7f-885e-75bceca50015": {"id": "47614fdf-0e90-4d7f-885e-75bceca50015", "created_at": "2022-09-10T09:16:58.320672", "updated_at": "2022-09-10T09:16:58.320690", "name": "dennis_k", "age": "23", "sex": "alot", "__class__": "User"}, "User.6b83412d-a8ad-4ff9-bec0-22b086fdeace": {"id": "6b83412d-a8ad-4ff9-bec0-22b086fdeace", "created_at": "2022-09-10T09:19:42.499981", "updated_at": "2022-09-10T09:19:42.499999", "__class__": "User"}, "User.4c0603c6-9b3e-448a-abcf-bb73665f062e": {"id": "4c0603c6-9b3e-448a-abcf-bb73665f062e", "created_at": "2022-09-10T09:23:16.351440", "updated_at": "2022-09-10T09:23:16.351462", "first_name": "dennis_k", "__class__": "User"}, "User.041c8f3d-24a9-41ea-ba00-d805e917e27f": {"id": "041c8f3d-24a9-41ea-ba00-d805e917e27f", "created_at": "2022-09-10T09:30:51.591193", "updated_at": "2022-09-10T09:30:51.591214", "first_name": "dennis k", "__class__": "User"}, "User.09256b47-01ca-48a4-953a-65284a149ace": {"id": "09256b47-01ca-48a4-953a-65284a149ace", "created_at": "2022-09-10T09:34:12.070649", "updated_at": "2022-09-10T09:34:12.070694", "first_name": "dennis k", "__class__": "User"}, "User.e6352fec-12ac-4b8f-bf95-12aa4f52a5e2": {"id": "e6352fec-12ac-4b8f-bf95-12aa4f52a5e2", "created_at": "2022-09-10T09:38:37.257227", "updated_at": "2022-09-10T09:38:37.257242", "first_name": "dennis k", "__class__": "User"}, "User.22e570f5-a1d7-4d52-83f4-8d1cba62f337": {"id": "22e570f5-a1d7-4d52-83f4-8d1cba62f337", "created_at": "2022-09-10T09:40:17.608724", "updated_at": "2022-09-10T09:40:17.608739", "first_name": "dennis k", "__class__": "User"}, "User.e8be7e1b-b638-4f3d-9f95-e0eec9ea0b02": {"id": "e8be7e1b-b638-4f3d-9f95-e0eec9ea0b02", "created_at": "2022-09-10T09:45:27.861512", "updated_at": "2022-09-10T09:45:27.861534", "first_name": "dennis k", "__class__": "User"}, "User.c379230f-b98a-420b-9502-d9d114be65c1": {"id": "c379230f-b98a-420b-9502-d9d114be65c1", "created_at": "2022-09-10T09:46:54.536542", "updated_at": "2022-09-10T09:46:54.536557", "first_name": "dennis k", "__class__": "User"}, "User.e0a2ef25-f557-403f-8f7c-5b039869f045": {"id": "e0a2ef25-f557-403f-8f7c-5b039869f045", "created_at": "2022-09-10T09:47:54.288185", "updated_at": "2022-09-10T09:47:54.288199", "first_name": "dennis k", "__class__": "User"}, "User.a6690893-a605-456c-96fc-99fa020481d3": {"id": "a6690893-a605-456c-96fc-99fa020481d3", "created_at": "2022-09-10T09:49:50.068642", "updated_at": "2022-09-10T09:49:50.068664", "first_name": "dennis k", "__class__": "User"}, "User.6fb5d03e-ea5f-4ef7-a971-995e340b1d08": {"id": "6fb5d03e-ea5f-4ef7-a971-995e340b1d08", "created_at": "2022-09-10T09:51:02.040831", "updated_at": "2022-09-10T09:51:02.040845", "first_name": "dennis k", "__class__": "User"}, "User.cdad368f-f21e-4edc-9c1b-203985c1715c": {"id": "cdad368f-f21e-4edc-9c1b-203985c1715c", "created_at": "2022-09-10T10:02:07.180254", "updated_at": "2022-09-10T10:02:07.180269", "first_name": "dennis k", "__class__": "User"}, "User.f2dbf415-6ed5-41d3-881e-e10a4134b130": {"id": "f2dbf415-6ed5-41d3-881e-e10a4134b130", "created_at": "2022-09-10T10:11:13.049094", "updated_at": "2022-09-10T10:11:13.049111", "first_name": "dennis k", "__class__": "User"}, "User.a1b49999-bfd4-4cbb-a89d-57e84a5a829a": {"id": "a1b49999-bfd4-4cbb-a89d-57e84a5a829a", "created_at": "2022-09-10T10:11:53.977878", "updated_at": "2022-09-10T10:11:53.977899", "first_name": "dennis k", "__class__": "User"}}
+{
+    "User.14835f23-570a-4b07-ac9f-20317a80f59d": {
+        "id": "14835f23-570a-4b07-ac9f-20317a80f59d",
+        "created_at": "2022-09-10T09:15:41.765802",
+        "updated_at": "2022-09-10T09:15:41.765819",
+        "name": "dennis_k",
+        "__class__": "User"
+    },
+    "User.80ff4fff-3601-4453-83f7-1944e1e44a30": {
+        "id": "80ff4fff-3601-4453-83f7-1944e1e44a30",
+        "created_at": "2022-09-10T09:16:40.047314",
+        "updated_at": "2022-09-10T09:16:40.047329",
+        "name": "dennis_k",
+        "age": "23",
+        "__class__": "User"
+    },
+    "User.47614fdf-0e90-4d7f-885e-75bceca50015": {
+        "id": "47614fdf-0e90-4d7f-885e-75bceca50015",
+        "created_at": "2022-09-10T09:16:58.320672",
+        "updated_at": "2022-09-10T09:16:58.320690",
+        "name": "dennis_k",
+        "age": "23",
+        "sex": "alot",
+        "__class__": "User"
+    },
+    "User.6b83412d-a8ad-4ff9-bec0-22b086fdeace": {
+        "id": "6b83412d-a8ad-4ff9-bec0-22b086fdeace",
+        "created_at": "2022-09-10T09:19:42.499981",
+        "updated_at": "2022-09-10T09:19:42.499999",
+        "__class__": "User"
+    },
+    "User.4c0603c6-9b3e-448a-abcf-bb73665f062e": {
+        "id": "4c0603c6-9b3e-448a-abcf-bb73665f062e",
+        "created_at": "2022-09-10T09:23:16.351440",
+        "updated_at": "2022-09-10T09:23:16.351462",
+        "first_name": "dennis_k",
+        "__class__": "User"
+    },
+    "User.041c8f3d-24a9-41ea-ba00-d805e917e27f": {
+        "id": "041c8f3d-24a9-41ea-ba00-d805e917e27f",
+        "created_at": "2022-09-10T09:30:51.591193",
+        "updated_at": "2022-09-10T09:30:51.591214",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.09256b47-01ca-48a4-953a-65284a149ace": {
+        "id": "09256b47-01ca-48a4-953a-65284a149ace",
+        "created_at": "2022-09-10T09:34:12.070649",
+        "updated_at": "2022-09-10T09:34:12.070694",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.e6352fec-12ac-4b8f-bf95-12aa4f52a5e2": {
+        "id": "e6352fec-12ac-4b8f-bf95-12aa4f52a5e2",
+        "created_at": "2022-09-10T09:38:37.257227",
+        "updated_at": "2022-09-10T09:38:37.257242",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.22e570f5-a1d7-4d52-83f4-8d1cba62f337": {
+        "id": "22e570f5-a1d7-4d52-83f4-8d1cba62f337",
+        "created_at": "2022-09-10T09:40:17.608724",
+        "updated_at": "2022-09-10T09:40:17.608739",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.e8be7e1b-b638-4f3d-9f95-e0eec9ea0b02": {
+        "id": "e8be7e1b-b638-4f3d-9f95-e0eec9ea0b02",
+        "created_at": "2022-09-10T09:45:27.861512",
+        "updated_at": "2022-09-10T09:45:27.861534",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.c379230f-b98a-420b-9502-d9d114be65c1": {
+        "id": "c379230f-b98a-420b-9502-d9d114be65c1",
+        "created_at": "2022-09-10T09:46:54.536542",
+        "updated_at": "2022-09-10T09:46:54.536557",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.e0a2ef25-f557-403f-8f7c-5b039869f045": {
+        "id": "e0a2ef25-f557-403f-8f7c-5b039869f045",
+        "created_at": "2022-09-10T09:47:54.288185",
+        "updated_at": "2022-09-10T09:47:54.288199",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.a6690893-a605-456c-96fc-99fa020481d3": {
+        "id": "a6690893-a605-456c-96fc-99fa020481d3",
+        "created_at": "2022-09-10T09:49:50.068642",
+        "updated_at": "2022-09-10T09:49:50.068664",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.6fb5d03e-ea5f-4ef7-a971-995e340b1d08": {
+        "id": "6fb5d03e-ea5f-4ef7-a971-995e340b1d08",
+        "created_at": "2022-09-10T09:51:02.040831",
+        "updated_at": "2022-09-10T09:51:02.040845",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.cdad368f-f21e-4edc-9c1b-203985c1715c": {
+        "id": "cdad368f-f21e-4edc-9c1b-203985c1715c",
+        "created_at": "2022-09-10T10:02:07.180254",
+        "updated_at": "2022-09-10T10:02:07.180269",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.f2dbf415-6ed5-41d3-881e-e10a4134b130": {
+        "id": "f2dbf415-6ed5-41d3-881e-e10a4134b130",
+        "created_at": "2022-09-10T10:11:13.049094",
+        "updated_at": "2022-09-10T10:11:13.049111",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.a1b49999-bfd4-4cbb-a89d-57e84a5a829a": {
+        "id": "a1b49999-bfd4-4cbb-a89d-57e84a5a829a",
+        "created_at": "2022-09-10T10:11:53.977878",
+        "updated_at": "2022-09-10T10:11:53.977899",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "User.c90d4cf3-4067-4cea-ad7d-d35a69451ff1": {
+        "id": "c90d4cf3-4067-4cea-ad7d-d35a69451ff1",
+        "created_at": "2022-09-10T10:44:39.093520",
+        "updated_at": "2022-09-10T10:44:39.093535",
+        "first_name": "dennis k",
+        "__class__": "User"
+    },
+    "Place.2b456433-61b2-4f4e-8cef-99b444f17a57": {
+        "id": "2b456433-61b2-4f4e-8cef-99b444f17a57",
+        "created_at": "2022-09-10T10:45:30.288567",
+        "updated_at": "2022-09-10T10:45:30.288580",
+        "city_id": "0001",
+        "user_id": "0001",
+        "name": "My little house",
+        "number_rooms": "4",
+        "number_bathrooms": "2",
+        "max_guest": "10",
+        "price_by_night": "300",
+        "latitude": "37.773972",
+        "longitude": "-122.431297",
+        "__class__": "Place"
+    }
+}

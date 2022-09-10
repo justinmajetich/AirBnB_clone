@@ -94,7 +94,7 @@ class BaseModel:
                     break
                 trimed = attrs[marker:marker + 2]
                 # print(f"------------- attrs in loop # {idx}")
-                printme("trimmed arg ", trimed)
+                # printme("trimmed arg ", trimed)
                 self.add_attributes(instance, trimed, args[0])
                 marker += 2
 
