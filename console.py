@@ -11,12 +11,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from extras.print import printme
 import datetime
 import re
-
-
-from rich import print as rprint
 
 
 class HBNBCommand(cmd.Cmd):
@@ -56,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
             """condition checks for commands like <User.create> or 
             <create.User> and converts them to create User"""
             toks = line.split('.')
-            # self.printme("toks", toks)
+            # printme("toks", toks)
             line = self.parseLineWithNoArgs(toks, line)
         # case 3
         if '.' not in line and '(' in line and ')' in line:
@@ -66,29 +63,23 @@ class HBNBCommand(cmd.Cmd):
                 '=', ' ').replace('"', ' ')
             toks = toks.split(' ')
             payload = self.list_to_string(toks[2:])
-            # self.printme("toks PAYLOAD", payload)
+
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
-            # self.printme("toks NEW LINE", newline)
+    
             if len(toks) > 1 and toks[0][0].isupper():
                 line = toks[1] + " " + toks[0] + " " + payload
             elif len(toks) > 1 and toks[1][0].isupper():
                 line = toks[0] + " " + toks[1] + " " + payload
-            # line = self.parseLineWithNoArgs(toks, line)
-            # self.printme("toks FINAL LINE", line)
-
+        
         # case 4
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
             args into one strings"""
             toks = re.split(r'\.|\(|\)', line)
-            # self.printme("args in if block", toks)
-
+            # printme("args in if block", toks)
             payload = toks[2].strip('"').replace(',', ' ')
-            # if payload[0] == '{' and payload[-1] == '}':
-            # self.printme("messy payload ", payload)
             payload = self.dict_to_str(payload)
-            # self.printme("sanitized payload ", payload)
-
+         
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
             if payload == '':
                 if len(toks) > 1 and toks[0][0].isupper():
@@ -113,35 +104,21 @@ class HBNBCommand(cmd.Cmd):
             to output standadized text
             """
             args = line.split(" ")
-            # self.printme("args in else block", args)
-            # print("intercepted straight one")
-            # pprint(args)
             payload = []
-
             # case 5A
             if len(args) > 2:
                 """ for args the look like <create User args... > 
                 or <User create args...> and converts 
                 them to create User args,,,
                 """
-                self.printme("ARGS ", payload)
                 payload = args[2:]
-                # self.printme("raw payload ", payload)
                 payload = self.list_to_string(payload)
-                # self.printme("sanitized payload ", payload)
-                # print("==== sanitized payload =====")
-                # print(payload)
                 newline = args[0] + ' ' + args[1] + ' ' + payload
-                # line = (args[0], args[1] + " " + payload, newline)
-                self.printme("args ", args)
                 toks = args
                 if len(toks) > 1 and toks[0][0].isupper():
                     line = (toks[1], toks[0] + " " + payload, newline)
                 elif len(toks) > 1 and toks[1][0].isupper():
                     line = (toks[0], toks[1] + " " + payload, newline)
-                # line = self.parseLineWithNoArgs(args, line, payload)
-                # print("====== line =====")
-                # self.printme("line in else block", line)
                 return line
             # case 5B
             elif len(args) > 1:
@@ -151,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 toks = line.split(' ')
                 line = self.parseLineWithNoArgs(toks, line)
 
-        # self.printme("global line", line)
+        # printme("global line", line)
         return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
@@ -184,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         argslist = args.split(" ")
-        # self.printme("inside do_create parsed ", parsed)
+        # printme("inside do_create parsed ", parsed)
         c_name = argslist[0]
 
         if not c_name:
@@ -194,8 +171,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[c_name](argslist)
-        
-        self.printme("new class instance created ", new_instance)
+
+        printme("new class instance created ", new_instance)
         storage.save()
 
     def help_create(self):
@@ -296,7 +273,7 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
 
         print(print_list)
-        self.printme("all of instance ", print_list)
+        printme("all of instance ", print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -462,22 +439,16 @@ class HBNBCommand(cmd.Cmd):
         else:
             return str
 
-    def printme(self, title, body):
-        """helper function to print items to console"""
-        print(f" ====  {title} start =====")
-        rprint(body)
-        print(f" ====  {title} end =====")
-
     def parseLineWithNoArgs(self, toks, line, isTuple=False):
         """helper function to swap commands and Class to aciev 
          this structure create User """
 
-        # self.printme("toks to parse ", toks)
+        # printme("toks to parse ", toks)
         if len(toks) > 1 and toks[0][0].isupper():
             line = toks[1] + " " + toks[0]
         elif len(toks) > 1 and toks[1][0].isupper():
             line = toks[0] + " " + toks[1]
-        # self.printme("line in args ", line)
+        # printme("line in args ", line)
         return line
 
 

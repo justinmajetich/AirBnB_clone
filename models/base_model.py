@@ -2,10 +2,11 @@
 """
 contains BaseModel definitions.
 """
-
 import uuid
 from datetime import datetime
 from models import storage
+from extras.print import printme
+from rich import print as rprint
 
 
 class BaseModel:
@@ -93,6 +94,7 @@ class BaseModel:
                     break
                 trimed = attrs[marker:marker + 2]
                 # print(f"------------- attrs in loop # {idx}")
+                printme("trimmed arg ", trimed)
                 self.add_attributes(instance, trimed, args[0])
                 marker += 2
 
@@ -102,18 +104,25 @@ class BaseModel:
         and index 1 is the atrribute vallue """
         # print("-----  atr list --------")
         # print(attr_list)
-        
+
         if len(attr_list) == 1:
             print(f"value for attribute {attr_list[0]} is missing")
         try:
             if self.attributes()[c_name][attr_list[0]]:
                 # print(f"{c_name} ## {attr_list[0]}:{attr_list[1]}")
-                setattr(instance, attr_list[0], attr_list[1])
+                attr_val = attr_list[1]
+                if '_' in attr_val and type(attr_val) == str:
+                    attr_val = attr_val.replace('_', " ")
+                setattr(instance, attr_list[0], attr_val)
                 # print(attr_list)
 
         except KeyError:
-            print(f"attribute {attr_list[0]} doesn't exist in class {c_name}")
-            setattr(instance, attr_list[0], attr_list[1])
+            # print(" value error ", "attribute" + attr_list[0]
+            #         + "doesn't exist in class " + c_name)
+            rprint(
+                f"attr [bold spring_green2]{attr_list[0]}[/bold spring_green2]"
+                f" doesn't exist in class [bold yellow]{c_name}[bold yellow] ")
+            # setattr(instance, attr_list[0], attr_list[1])
 
     def to_dict(self):
         """returns a dictionary containing all key/value of __dict__
