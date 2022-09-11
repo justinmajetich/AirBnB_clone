@@ -7,12 +7,27 @@ from datetime import datetime
 from models import storage
 from extras.print import printme
 from rich import print as rprint
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime
+import models
+
+Base = declarative_base()
+
+if models.storage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """
     defines all common attributes/methods for other classes
     """
+    """initializes obect for the db storage"""
+    if models.storage_t == "db":
+        id = Column(String(60), primary_key=True)
+        created_at = Column(DateTime, default=datetime.utcnow)
+        updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """initializes object using dictionary if given otherwise
@@ -38,9 +53,7 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
         if len(args) >= 1:
-            # print("========= args  ============= ")
-            # print(args[0])
-            # print(len(args[0]))
+
             self.create(args[0], self)
 
     def __str__(self):
@@ -50,11 +63,12 @@ class BaseModel:
 
     def save(self):
         """updates the public instance attribute"""
-        self.updated_at = datetime.now()
-        storage.save()
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def uwu(self, instance):
-        print("let's go boys")
+        print("test message method")
         print(instance)
 
     def update(self, args, instance):
@@ -63,38 +77,28 @@ class BaseModel:
         if len(args) >= 3:
             attrs = args[2:]
             for idx in range(len(attrs)):
-                # print("========== attr len , marker ==========")
-                # print(len(attrs), marker + 1)
                 if marker + 1 >= len(attrs):
                     break
                 trimed = attrs[marker:marker + 2]
-                # print(f"------------- attrs in loop # {idx}")
                 self.add_attributes(instance, trimed, args[0])
                 self.updated_at = datetime.now()
                 marker += 2
         else:
             print("insuficient arguments")
 
+    def delete(self):
+        """delete the current instance from the storage"""
+        models.storage.delete(self)
+
     def create(self, args, instance):
         """helper function to create a class instance with args """
-        # print("self in create === ", self)
-        # for idx in range(len(args)):
-        #     if idx % 2 == 0:
-        #         for k, v in storage.attributes().items():
-        #             if 1:
         marker = 0
         if len(args) >= 3:
-
             attrs = args[1:]
-
             for idx in range(len(attrs)):
-                # print("========== attr len , marker ==========")
-                # print(len(attrs), marker + 1)
                 if marker + 1 >= len(attrs):
                     break
                 trimed = attrs[marker:marker + 2]
-                # print(f"------------- attrs in loop # {idx}")
-                # printme("trimmed arg ", trimed)
                 self.add_attributes(instance, trimed, args[0])
                 marker += 2
 
@@ -102,27 +106,18 @@ class BaseModel:
         """ function to insert attribute values,
         recieves a list index 0 is the attribute name
         and index 1 is the atrribute vallue """
-        # print("-----  atr list --------")
-        # print(attr_list)
-
         if len(attr_list) == 1:
             print(f"value for attribute {attr_list[0]} is missing")
         try:
             if self.attributes()[c_name][attr_list[0]]:
-                # print(f"{c_name} ## {attr_list[0]}:{attr_list[1]}")
                 attr_val = attr_list[1]
                 if '_' in attr_val and type(attr_val) == str:
                     attr_val = attr_val.replace('_', " ")
                 setattr(instance, attr_list[0], attr_val)
-                # print(attr_list)
-
         except KeyError:
-            # print(" value error ", "attribute" + attr_list[0]
-            #         + "doesn't exist in class " + c_name)
             rprint(
                 f"attr [bold spring_green2]{attr_list[0]}[/bold spring_green2]"
                 f" doesn't exist in class [bold yellow]{c_name}[bold yellow] ")
-            # setattr(instance, attr_list[0], attr_list[1])
 
     def to_dict(self):
         """returns a dictionary containing all key/value of __dict__
@@ -134,6 +129,7 @@ class BaseModel:
         return dic
 
     def strip_quotes(self, str):
+        """"helper functoin to parse a string and remove quotes"""
         if not str:
             return
         if str[0] == '"' and str[len(str) - 1] == '"':
