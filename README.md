@@ -210,25 +210,25 @@ datetime(2022, 9, 11, 2, 40, 6, 407949), 'id': '6ce453a9-6e6c-4db6-9827-82eb9
 e0096aa'}, [BaseModel] (7b815540-54a9-4e96-a901-794a5be36bee) {'id': '7b815540-
 54a9-4e96-a901-794a5be36bee', 'created_at': datetime.datetime(2022, 9, 11, 2,
 43, 17, 51024), 'updated_at': datetime.datetime(2022, 9, 11, 2, 43, 17, 51087)},
- [BaseModel] (8c803f8d-db39-4708-ba74-cc6c9b4a9af5) {'id': '8c803f8d-db39-4708-
- ba74-cc6c9b4a9af5', 'created_at': datetime.datetime(2022, 9, 11, 2, 44, 1, 534
- 380), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44, 1, 534462)}, [State]
-  (7654164f-81b6-4bf5-92e8-75b89c88a55f) {'name': 'Arizona', 'created_at':
-  datetime.datetime(2022, 9, 11, 2, 44, 10, 872940), 'updated_at':
-  datetime.datetime(2022, 9, 11, 2, 44, 10, 873084), 'id': '7654164f-81b6-4bf5-
-  92e8-75b89c88a55f'}, [BaseModel] (f2775208-56e8-4244-805f-dd575a7784e3) {'id':
-   'f2775208-56e8-4244-805f-dd575a7784e3', 'created_at': datetime.datetime(2022,
-   9, 11, 2, 44, 19, 13274), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44,
-    19, 13333)}, [State] (33e84116-9f36-4f77-a4a1-86abc5c3862c) {'id': '33e84116-
-    9f36-4f77-a4a1-86abc5c3862c', 'created_at': datetime.datetime(2022, 9, 11, 2,
-    44, 32, 974528), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44, 32,
-    974575)}, [User] (bc060cbe-51cf-4b4e-af41-1fce7936bb50) {'id': 'bc060cbe-
-    51cf-4b4e-af41-1fce7936bb50', 'created_at': datetime.datetime(2022, 9, 11,
-     2, 56, 49, 459184), 'updated_at': datetime.datetime(2022, 9, 11, 2, 56, 49,
-      459256)}, [Place] (fb9e026d-b9fb-46cb-8f6f-1f4167881bfb) {'id': 'fb9e026d-
-      b9fb-46cb-8f6f-1f4167881bfb', 'created_at': datetime.datetime(2022, 9, 11,
-       3, 1, 28, 522295), 'updated_at': datetime.datetime(2022, 9, 11, 3, 1, 28,
-       522343)}]
+[BaseModel] (8c803f8d-db39-4708-ba74-cc6c9b4a9af5) {'id': '8c803f8d-db39-4708-
+ba74-cc6c9b4a9af5', 'created_at': datetime.datetime(2022, 9, 11, 2, 44, 1, 534
+380), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44, 1, 534462)}, [State]
+(7654164f-81b6-4bf5-92e8-75b89c88a55f) {'name': 'Arizona', 'created_at':
+datetime.datetime(2022, 9, 11, 2, 44, 10, 872940), 'updated_at':
+datetime.datetime(2022, 9, 11, 2, 44, 10, 873084), 'id': '7654164f-81b6-4bf5-
+92e8-75b89c88a55f'}, [BaseModel] (f2775208-56e8-4244-805f-dd575a7784e3) {'id':
+'f2775208-56e8-4244-805f-dd575a7784e3', 'created_at': datetime.datetime(2022,
+9, 11, 2, 44, 19, 13274), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44,
+19, 13333)}, [State] (33e84116-9f36-4f77-a4a1-86abc5c3862c) {'id': '33e84116-
+9f36-4f77-a4a1-86abc5c3862c', 'created_at': datetime.datetime(2022, 9, 11, 2,
+44, 32, 974528), 'updated_at': datetime.datetime(2022, 9, 11, 2, 44, 32,
+974575)}, [User] (bc060cbe-51cf-4b4e-af41-1fce7936bb50) {'id': 'bc060cbe-
+51cf-4b4e-af41-1fce7936bb50', 'created_at': datetime.datetime(2022, 9, 11,
+2, 56, 49, 459184), 'updated_at': datetime.datetime(2022, 9, 11, 2, 56, 49,
+459256)}, [Place] (fb9e026d-b9fb-46cb-8f6f-1f4167881bfb) {'id': 'fb9e026d-
+b9fb-46cb-8f6f-1f4167881bfb', 'created_at': datetime.datetime(2022, 9, 11,
+3, 1, 28, 522295), 'updated_at': datetime.datetime(2022, 9, 11, 3, 1, 28,
+522343)}]
 (hbnb)
 ```
 
