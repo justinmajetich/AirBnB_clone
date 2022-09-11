@@ -14,7 +14,6 @@ For the second part of the project we should build the database connection throu
 
 Using a MySQL storage we replace the file storage (JSON file) by a Database storage and we map your models to a table in database by using an O.R.M.
 
-
 ---
 
 <center><h3>Repository Contents by Project Task</h3> </center>
@@ -33,7 +32,7 @@ Using a MySQL storage we replace the file storage (JSON file) by a Database stor
 | 9. More Classes | [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) [/models/place.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/place.py) [/models/city.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/city.py) [/models/amenity.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/amenity.py) [/models/state.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/state.py) [/models/review.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/review.py) | Dynamically implements more classes |
 | 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
 <br>
-<br>
+
 <center> <h2>General Use</h2> </center>
 
 1. First clone this repository.
@@ -79,7 +78,7 @@ Advanced syntax is implemented for the following commands:
     * update - Updates existing attributes an object based on class name and UUID
 
 <br>
-<br>
+
 ## Console :computer:
 
 The console is a command line interpreter that permits management of the backend
@@ -203,6 +202,6 @@ $ python3 unittest -m tests/test_console.py
 ```
 
 ## Authors :black_nib:
-* **Opeyemi Odebode** <[Suraj](https://github.com/surahj)>
+* **Opeyemi Odebode** <[Surahj](https://github.com/surahj)>
 * **Idris Zakariyau** <[Ade3146](https://github.com/Ade3164)>
 
