@@ -4,8 +4,6 @@ contains BaseModel definitions.
 """
 import uuid
 from datetime import datetime
-from models import storage
-from extras.print import printme
 from rich import print as rprint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
@@ -51,7 +49,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
         if len(args) >= 1:
 
             self.create(args[0], self)

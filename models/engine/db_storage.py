@@ -2,15 +2,22 @@
 """
 Contains the class DBStorage
 """
+
+from models.amenity import Amenity
 from models.base_model import Base
+from models.state import State
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.review import Review
+
+from extras.print import printme
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-import sys
-sys.path.insert(1, '/home/dennis/alx/AirBnB_clone_v2')
-from console import HBNBCommand  # noqa
 
-classes = HBNBCommand.classes
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class DBStorage:
@@ -46,16 +53,25 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session"""
-        self.__session.add(obj)
+        try:
+            self.__session.add(obj)
+        except Exception as e:
+            printme("errir adding to db", e)
 
     def save(self):
         """commit all changes of the current database session"""
-        self.__session.commit()
+        try:
+            self.__session.commit()
+        except Exception as e:
+            printme("errir saving  to db", e)
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
-            self.__session.delete(obj)
+            try:
+                self.__session.delete(obj)
+            except Exception as e:
+                printme("errir deleting  to db", e)
 
     def reload(self):
         """reloads data from the database"""

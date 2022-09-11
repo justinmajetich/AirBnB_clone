@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-from curses.ascii import isupper
 import sys
+from types import new_class
+import models
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -12,7 +13,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from extras.print import printme
-import datetime
 import re
 
 
@@ -43,7 +43,9 @@ class HBNBCommand(cmd.Cmd):
         """ cmd function that we'll override to intercept incomming commands
         and return standardly parsed commands for easr of use
         """
-
+        if line == " ":
+            return cmd.Cmd.parseline(self, "quit")
+        line = line.strip()
         """my custom quit function"""
         # case 1
         if line == '.':
@@ -104,6 +106,7 @@ class HBNBCommand(cmd.Cmd):
             to output standadized text
             """
             args = line.split(" ")
+            # printme("debugging line", args)
             payload = []
             # case 5A
             if len(args) > 2:
@@ -115,11 +118,14 @@ class HBNBCommand(cmd.Cmd):
                 payload = self.list_to_string(payload)
                 newline = args[0] + ' ' + args[1] + ' ' + payload
                 toks = args
-                if len(toks) > 1 and toks[0][0].isupper():
-                    line = (toks[1], toks[0] + " " + payload, newline)
-                elif len(toks) > 1 and toks[1][0].isupper():
-                    line = (toks[0], toks[1] + " " + payload, newline)
-                return line
+                if len(toks) > 2 and toks[0][0].isupper():
+                    return (toks[1], toks[0] + " " + payload, newline)
+
+                elif len(toks) > 2 and toks[1][0].isupper():
+                    return (toks[0], toks[1] + " " + payload, newline)
+                else:
+                    return ("invalid", "invalid", "invalid")
+
             # case 5B
             elif len(args) > 1:
                 """ for args the look like <create User > or <User create> 
@@ -173,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[c_name](argslist)
 
         printme("new class instance created ", new_instance)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -259,21 +265,38 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        argslist = args.split(" ")
+        # printme("all saved", models.storage.all())
+        
+        if len(args) == 0:
+            objs = models.storage.all()
+        elif argslist[0] in HBNBCommand.classes:
+            objs = models.storage.all(HBNBCommand.classes[argslist[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print("** class doesn't exist **")
+            return False
+        for key in objs:
+            print_list.append(str(objs[key]))
+        printme(" all instances", print_list)
 
-        print(print_list)
-        printme("all of instance ", print_list)
+        # if args:
+        #     if len(args) == 0:
+        #         obj_dict = models.storage.all()
+        #     args = args.split(' ')[0]  # remove possible trailing args
+        #     if args not in HBNBCommand.classes:
+        #         print("** class doesn't exist **")
+        #         return
+        #     for k, v in storage._FileStorage__objects.items():
+        #         if k.split('.')[0] == args:
+        #             print_list.append(str(v))
+        #     for key in obj_dict:
+        #         print_list.append(str(obj_dict[key]))
+        # else:
+        #     for k, v in storage._FileStorage__objects.items():
+        #         print_list.append(str(v))
+
+        # print(print_list)
+        # printme("all of instance ", print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -283,7 +306,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in models.storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -306,7 +329,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
             # determine if key is present
-        if args[1] not in storage.all():
+        if args[1] not in models.storage.all():
             print("** no instance found **")
             return
         # check if update arsg are sufficient
@@ -404,15 +427,18 @@ class HBNBCommand(cmd.Cmd):
             return str
 
     def parseLineWithNoArgs(self, toks, line, isTuple=False):
-        """helper function to swap commands and Class to aciev 
-         this structure create User """
+        """helper function to swap commands and Class to 
+        achieve this structure create User """
+        if toks[0] != " " and toks[1] != " ":
 
-        # printme("toks to parse ", toks)
-        if len(toks) > 1 and toks[0][0].isupper():
-            line = toks[1] + " " + toks[0]
-        elif len(toks) > 1 and toks[1][0].isupper():
-            line = toks[0] + " " + toks[1]
+            # printme("toks to parse ", toks)
+            if len(toks) > 1 and toks[0] != " " and toks[0][0].isupper():
+                line = toks[1] + " " + toks[0]
+            elif len(toks) > 1 and toks[1] != " " and toks[1][0].isupper():
+                line = toks[0] + " " + toks[1]
         # printme("line in args ", line)
+        else:
+            line = "error" + " " + "error"
         return line
 
 
