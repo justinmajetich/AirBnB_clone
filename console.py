@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import re
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,13 +117,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.partition(' ')
+        if not args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[args[0]]()
+        for kwarg in args[2].split(" "):
+            name, value = kwarg.split('=')
+            if re.match('(?:\\.|[^"])*', value):
+                value = value.replace('_', ' ')
+                value = value.replace('\\', '')
+            elif value.isdigit():
+                value = int(value)
+            elif re.match('^-?\d+\.\d+$', value):
+                value = float(value)
+            else:
+                continue
+            setattr(new_instance, name, value)
         storage.save()
         print(new_instance.id)
         storage.save()
