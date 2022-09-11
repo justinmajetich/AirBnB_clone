@@ -124,8 +124,12 @@ class BaseModel:
         of the instance"""
         dic = vars(self).copy()
         dic['__class__'] = self.__class__.__name__
-        dic['updated_at'] = self.updated_at.isoformat()
-        dic['created_at'] = self.created_at.isoformat()
+        if "updated_at" in dic:
+            dic['updated_at'] = self.updated_at.isoformat()
+        if "created_at" in dic:
+            dic['created_at'] = self.created_at.isoformat()
+        if "_sa_instance_state" in dic:
+            del dic["_sa_instance_state"]
         return dic
 
     def strip_quotes(self, str):
