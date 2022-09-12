@@ -26,12 +26,6 @@ class HBNBCommand(cmd.Cmd):
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
     }
-    # dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    # types = {
-    #     'number_rooms': int, 'number_bathrooms': int,
-    #     'max_guest': int, 'price_by_night': int,
-    #     'latitude': float, 'longitude': float
-    # }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -51,7 +45,7 @@ class HBNBCommand(cmd.Cmd):
             return cmd.Cmd.parseline(self, "quit")
         # case 2
         if '.' in line and '(' not in line and ')' not in line:
-            """condition checks for commands like <User.create> or 
+            """condition checks for commands like <User.create> or
             <create.User> and converts them to create User"""
             toks = line.split('.')
             # printme("toks", toks)
@@ -109,8 +103,8 @@ class HBNBCommand(cmd.Cmd):
             payload = []
             # case 5A
             if len(args) > 2:
-                """ for args the look like <create User args... > 
-                or <User create args...> and converts 
+                """ for args the look like <create User args... >
+                or <User create args...> and converts
                 them to create User args,,,
                 """
                 payload = args[2:]
@@ -127,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
 
             # case 5B
             elif len(args) > 1:
-                """ for args the look like <create User > or <User create> 
+                """ for args the look like <create User > or <User create>
                 and converts them to create User
                 """
                 toks = line.split(' ')
@@ -300,7 +294,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """counts the number ofinstances """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
@@ -415,7 +409,7 @@ class HBNBCommand(cmd.Cmd):
             return str
 
     def parseLineWithNoArgs(self, toks, line, isTuple=False):
-        """helper function to swap commands and Class to 
+        """helper function to swap commands and Class to
         achieve this structure create User """
         if toks[0] != " " and toks[1] != " ":
 

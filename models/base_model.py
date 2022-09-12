@@ -9,6 +9,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 import models
 
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
 Base = declarative_base()
 
 if models.storage_t == "db":
@@ -38,18 +40,18 @@ class BaseModel:
                     setattr(self, key, value)
             if kwargs['created_at']:
                 # print("not new instance updating time === ")
-                self.created_at = datetime.fromisoformat(kwargs['created_at'])
-                self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
+                self.created_at = datetime.strptime(kwargs["created_at"], time)
+                self.updated_at = datetime.strptime(kwargs["updated_at"], time)
             else:
                 # print("=====new instance  new time === ")
                 self.id = str(uuid.uuid4())
-                self.created_at = datetime.now()
-                self.updated_at = datetime.now()
+                self.created_at = datetime.utcnow()
+                self.updated_at = datetime.utcnow()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            models.storage.new(self)
+            self.updated_at = self.created_at
+            # models.storage.new(self)
         if len(args) >= 1:
 
             self.create(args[0], self)
@@ -64,10 +66,6 @@ class BaseModel:
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
-
-    def uwu(self, instance):
-        print("test message method")
-        print(instance)
 
     def update(self, args, instance):
         """update an obect instance by ID"""
