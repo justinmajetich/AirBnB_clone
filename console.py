@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-from curses.ascii import isupper
 import sys
+from types import new_class
+import models
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,8 +12,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from extras.print import printme
 import re
-from pprint import pprint
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,106 +27,25 @@ class HBNBCommand(cmd.Cmd):
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
     }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-        'number_rooms': int, 'number_bathrooms': int,
-        'max_guest': int, 'price_by_night': int,
-        'latitude': float, 'longitude': float
-    }
+    # dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    # types = {
+    #     'number_rooms': int, 'number_bathrooms': int,
+    #     'max_guest': int, 'price_by_night': int,
+    #     'latitude': float, 'longitude': float
+    # }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    # def precmd(self, line):
-    #     """Reformat command line for advanced command syntax.
-
-    #     Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-    #     (Brackets denote optional fields in usage example.)
-    #     """
-    #     _cmd = _cls = _id = _args = ''  # initialize line elements
-    #     print("=====================")
-    #     print(line)
-    #     print("=====================")
-
-    #     # added alternative exit command
-    #     if line == ".":
-    #         return "quit"
-    #     # scan for general formating - i.e '.', '(', ')'
-    #     if not ('.' in line and '(' in line and ')' in line):
-    #         return line
-    #     # converting every command into <command> <Class> <Arg1>...,<arg n>
-    #     # format
-
-    #         """ intercepts commands with .() notation and extracts the
-    #         args into one strings"""
-    #         toks = re.split(r'\.|\(|\)', line)
-
-    #         payload = toks[2].strip('"').replace(',', ' ')
-    #         # if payload[0] == '{' and payload[-1] == '}':
-    #         payload = self.dict_to_str(payload)
-
-    #         newline = toks[1] + ' ' + toks[0] + ' ' + payload
-    #         if payload == '':
-    #             line = (toks[1], toks[0], newline)
-    #             # print("======== line no payload =======")
-    #             # print(line)
-    #         else:
-    #             line = (toks[1], toks[0] + " " + payload, newline)
-    #             # print("========= line with payload ===========")
-    #             # print(line)
-
-    #         if toks[1] == 'count':
-    #             self.count(toks[0])
-    #             return cmd.Cmd.parseline(self, '')
-    #         # print("====== line =====")
-    #         # print(line)
-    #         return line
-
-    #     try:  # parse line left to right
-    #         pline = line[:]  # parsed line
-
-    #         # isolate <class name>
-    #         _cls = pline[:pline.find('.')]
-
-    #         # isolate and validate <command>
-    #         _cmd = pline[pline.find('.') + 1:pline.find('(')]
-    #         if _cmd not in HBNBCommand.dot_cmds:
-    #             raise Exception
-
-    #         # if parantheses contain arguments, parse them
-    #         pline = pline[pline.find('(') + 1:pline.find(')')]
-    #         if pline:
-    #             # partition args: (<id>, [<delim>], [<*args>])
-    #             pline = pline.partition(', ')  # pline convert to tuple
-
-    #             # isolate _id, stripping quotes
-    #             _id = pline[0].replace('\"', '')
-    #             # possible bug here:
-    #             # empty quotes register as empty _id when replaced
-
-    #             # if arguments exist beyond _id
-    #             pline = pline[2].strip()  # pline is now str
-    #             if pline:
-    #                 # check for *args or **kwargs
-    #                 if pline[0] is '{' and pline[-1] is '}'\
-    #                         and type(eval(pline)) is dict:
-    #                     _args = pline
-    #                 else:
-    #                     _args = pline.replace(',', '')
-    #                     # _args = _args.replace('\"', '')
-    #         line = ' '.join([_cmd, _cls, _id, _args])
-
-    #     except Exception as mess:
-    #         pass
-    #     finally:
-    #         return line
     def parseline(self, line):
         """ cmd function that we'll override to intercept incomming commands
         and return standardly parsed commands for easr of use
         """
-
+        if line == " ":
+            return cmd.Cmd.parseline(self, "quit")
+        line = line.strip()
         """my custom quit function"""
         # case 1
         if line == '.':
@@ -135,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
             """condition checks for commands like <User.create> or 
             <create.User> and converts them to create User"""
             toks = line.split('.')
-            # self.printme("toks", toks)
+            # printme("toks", toks)
             line = self.parseLineWithNoArgs(toks, line)
         # case 3
         if '.' not in line and '(' in line and ')' in line:
@@ -145,28 +65,22 @@ class HBNBCommand(cmd.Cmd):
                 '=', ' ').replace('"', ' ')
             toks = toks.split(' ')
             payload = self.list_to_string(toks[2:])
-            # self.printme("toks PAYLOAD", payload)
+
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
-            # self.printme("toks NEW LINE", newline)
+
             if len(toks) > 1 and toks[0][0].isupper():
                 line = toks[1] + " " + toks[0] + " " + payload
             elif len(toks) > 1 and toks[1][0].isupper():
                 line = toks[0] + " " + toks[1] + " " + payload
-            # line = self.parseLineWithNoArgs(toks, line)
-            # self.printme("toks FINAL LINE", line)
 
         # case 4
         if '.' in line and '(' in line and ')' in line:
             """ intercepts commands with .() notation and extracts the
             args into one strings"""
             toks = re.split(r'\.|\(|\)', line)
-            # self.printme("args in if block", toks)
-
+            # printme("args in if block", toks)
             payload = toks[2].strip('"').replace(',', ' ')
-            # if payload[0] == '{' and payload[-1] == '}':
-            # self.printme("messy payload ", payload)
             payload = self.dict_to_str(payload)
-            # self.printme("sanitized payload ", payload)
 
             newline = toks[1] + ' ' + toks[0] + ' ' + payload
             if payload == '':
@@ -192,36 +106,26 @@ class HBNBCommand(cmd.Cmd):
             to output standadized text
             """
             args = line.split(" ")
-            # self.printme("args in else block", args)
-            # print("intercepted straight one")
-            # pprint(args)
+            # printme("debugging line", args)
             payload = []
-
             # case 5A
             if len(args) > 2:
                 """ for args the look like <create User args... > 
                 or <User create args...> and converts 
                 them to create User args,,,
                 """
-                self.printme("ARGS ", payload)
                 payload = args[2:]
-                # self.printme("raw payload ", payload)
                 payload = self.list_to_string(payload)
-                # self.printme("sanitized payload ", payload)
-                # print("==== sanitized payload =====")
-                # print(payload)
                 newline = args[0] + ' ' + args[1] + ' ' + payload
-                # line = (args[0], args[1] + " " + payload, newline)
-                self.printme("args ", args)
                 toks = args
-                if len(toks) > 1 and toks[0][0].isupper():
-                    line = (toks[1], toks[0] + " " + payload, newline)
-                elif len(toks) > 1 and toks[1][0].isupper():
-                    line = (toks[0], toks[1] + " " + payload, newline)
-                # line = self.parseLineWithNoArgs(args, line, payload)
-                # print("====== line =====")
-                # self.printme("line in else block", line)
-                return line
+                if len(toks) > 2 and toks[0][0].isupper():
+                    return (toks[1], toks[0] + " " + payload, newline)
+
+                elif len(toks) > 2 and toks[1][0].isupper():
+                    return (toks[0], toks[1] + " " + payload, newline)
+                else:
+                    return ("invalid", "invalid", "invalid")
+
             # case 5B
             elif len(args) > 1:
                 """ for args the look like <create User > or <User create> 
@@ -230,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 toks = line.split(' ')
                 line = self.parseLineWithNoArgs(toks, line)
 
-        self.printme("global line", line)
+        # printme("global line", line)
         return cmd.Cmd.parseline(self, line)
 
     def postcmd(self, stop, line):
@@ -262,20 +166,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        parsed = args.split(" ")
-        # self.printme("inside do_create parsed ", parsed)
-        theClass = parsed[0]
+        argslist = args.split(" ")
+        # printme("inside do_create parsed ", parsed)
+        c_name = argslist[0]
 
-        if not theClass:
+        if not c_name:
             print("** class name missing **")
             return
-        elif theClass not in HBNBCommand.classes:
+        elif c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[theClass]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        new_instance = HBNBCommand.classes[c_name](argslist)
+
+        printme("new class instance created ", new_instance)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -316,30 +220,40 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: show <className> <objectId>\n")
 
     def do_destroy(self, args):
-        """ Destroys a specified object """
+        """Destroys a specified object. """
+
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        if c_id == "all":
+            for k, v in list(storage.all().items()):
+                idclass = k.split('.')
+                if idclass[0] == c_name:
+                    self.delete_instance(idclass[0], idclass[1])
 
-        if not c_name:
+        else:
+            self.delete_instance(c_name, c_id)
+
+        storage.save()
+
+    def delete_instance(self, name, id):
+        """helper function for destroying an object instance"""
+        if not name:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        if not c_id:
+        if not id:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
-
+        key = name + "." + id
         try:
-            del (storage.all()[key])
-            storage.save()
+            del storage.all()[key]
+
         except KeyError:
             print("** no instance found **")
 
@@ -351,20 +265,38 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        argslist = args.split(" ")
+        # printme("all saved", models.storage.all())
+        
+        if len(args) == 0:
+            objs = models.storage.all()
+        elif argslist[0] in HBNBCommand.classes:
+            objs = models.storage.all(HBNBCommand.classes[argslist[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print("** class doesn't exist **")
+            return False
+        for key in objs:
+            print_list.append(str(objs[key]))
+        printme(" all instances", print_list)
 
-        print(print_list)
+        # if args:
+        #     if len(args) == 0:
+        #         obj_dict = models.storage.all()
+        #     args = args.split(' ')[0]  # remove possible trailing args
+        #     if args not in HBNBCommand.classes:
+        #         print("** class doesn't exist **")
+        #         return
+        #     for k, v in storage._FileStorage__objects.items():
+        #         if k.split('.')[0] == args:
+        #             print_list.append(str(v))
+        #     for key in obj_dict:
+        #         print_list.append(str(obj_dict[key]))
+        # else:
+        #     for k, v in storage._FileStorage__objects.items():
+        #         print_list.append(str(v))
+
+        # print(print_list)
+        # printme("all of instance ", print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -374,7 +306,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in models.storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -386,9 +318,8 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
-
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
-        args = args.partition(" ")
+        args = args.split(" ")
         if args[0]:
             c_name = args[0]
         else:  # class name not present
@@ -397,60 +328,25 @@ class HBNBCommand(cmd.Cmd):
         if c_name not in HBNBCommand.classes:  # class name invalid
             print("** class doesn't exist **")
             return
-
-        # isolate id from args
-        args = args[2].partition(" ")
-        if args[0]:
-            c_id = args[0]
-        else:  # id not present
-            print("** instance id missing **")
-            return
-
-        # generate key from class and id
-        key = c_name + "." + c_id
-
-        # determine if key is present
-        if key not in storage.all():
+            # determine if key is present
+        if args[1] not in models.storage.all():
             print("** no instance found **")
             return
-
-        # first determine if kwargs or args
-        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
-            kwargs = eval(args[2])
-            args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
-            for k, v in kwargs.items():
-                args.append(k)
-                args.append(v)
-        else:  # isolate args
-            args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
-                second_quote = args.find('\"', 1)
-                att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
-
-            args = args.partition(' ')
-
-            # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
-                att_name = args[0]
-            # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
-
-            # if att_val was not quoted arg
-            if not att_val and args[2]:
-                att_val = args[2].partition(' ')[0]
-
-            args = [att_name, att_val]
-
+        # check if update arsg are sufficient
+        if len(args[2:]) % 2 != 0:
+            print(f"** equal number of keys and values required **")
+            return
         # retrieve dictionary of current objects
+        key = args[1]
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
-        for i, att_name in enumerate(args):
+        new_values = args[2:]
+        for i, att_name in enumerate(new_values):
+            # printme("attr name ", att_name)
             # block only runs on even iterations
             if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
+                att_val = new_values[i + 1]  # following item is value
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
@@ -530,22 +426,19 @@ class HBNBCommand(cmd.Cmd):
         else:
             return str
 
-    def printme(esl, title, body):
-        """helper function to print items to console"""
-        print(f" ====  {title} start =====")
-        pprint(body)
-        print(f" ====  {title} end =====")
-
     def parseLineWithNoArgs(self, toks, line, isTuple=False):
-        """helper function to swap commands and Class to aciev 
-         this structure create User """
+        """helper function to swap commands and Class to 
+        achieve this structure create User """
+        if toks[0] != " " and toks[1] != " ":
 
-        # self.printme("toks to parse ", toks)
-        if len(toks) > 1 and toks[0][0].isupper():
-            line = toks[1] + " " + toks[0]
-        elif len(toks) > 1 and toks[1][0].isupper():
-            line = toks[0] + " " + toks[1]
-        # self.printme("line in args ", line)
+            # printme("toks to parse ", toks)
+            if len(toks) > 1 and toks[0] != " " and toks[0][0].isupper():
+                line = toks[1] + " " + toks[0]
+            elif len(toks) > 1 and toks[1] != " " and toks[1][0].isupper():
+                line = toks[0] + " " + toks[1]
+        # printme("line in args ", line)
+        else:
+            line = "error" + " " + "error"
         return line
 
 
