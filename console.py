@@ -135,13 +135,19 @@ class HBNBCommand(cmd.Cmd):
             return
             
         new_instance = HBNBCommand.classes[classe]()
-
-        if classe != '':
-            # Mise a jour de la classe avec les parametres
-            pass
+        
+        if len(parametre) != 0:
+            
+            parametre = parametre.split(' ')
+            key, value = '', ''
+            for loop in parametre:
+                key = loop[:loop.rfind('=')]
+                value = loop[loop.rfind('=') + 1:]
+                arg = classe + " " + new_instance.id + " " + key + " " + value
+                self.do_update(arg)
+            
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
