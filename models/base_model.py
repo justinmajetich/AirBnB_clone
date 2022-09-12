@@ -13,10 +13,7 @@ time = "%Y-%m-%dT%H:%M:%S.%f"
 
 Base = declarative_base()
 
-if models.storage_t == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
@@ -62,7 +59,7 @@ class BaseModel:
                                      self.id, self.__dict__)
 
     def save(self):
-        """updates the public instance attribute"""
+        """Update updated_at with the current datetime."""
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
@@ -83,7 +80,7 @@ class BaseModel:
             print("insuficient arguments")
 
     def delete(self):
-        """delete the current instance from the storage"""
+        """Delete the current instance from storage."""
         models.storage.delete(self)
 
     def create(self, args, instance):
