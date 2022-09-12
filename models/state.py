@@ -14,11 +14,11 @@ class State(BaseModel, Base):
     name = Column('name', String(128), nullable=False)
     cities = relationship('City', back_populates="state")
 
-    if os.getenv("HBNB_TYPE_STORAGE") != "db":
-        @property
-        def cities(self):
-            return [city for city in storage.all(City).values()
-                    if city.state_id == self.id]
+    # if os.getenv("HBNB_TYPE_STORAGE") != "db":
+    #     @property
+    #     def cities(self):
+    #         return [city for city in storage.all(City).values()
+    #                 if city.state_id == self.id]
 
 
 City.state = relationship('State', back_populates="cities")

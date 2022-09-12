@@ -14,7 +14,7 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         return {k: v for k, v in FileStorage.__objects.items(
-        ) if re.match("^{}\..*".format(cls.__name__), k)}
+        ) if re.match("^{}\\..*".format(cls.__name__), k)}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -54,6 +54,12 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """
+        delete removes the instance obj is not None from the private class
+        attribute __objects
+
+        :param obj: is the object to be removed
+        """
         if obj is None:
             return
         id = "{}.{}".format(obj.__class__.__name__, obj.id)
