@@ -123,20 +123,8 @@ class HBNBCommand(cmd.Cmd):
         elif arg2[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        """
-        class_attr = {"Place": ["name", "city_id", "user_id", "number_rooms",
-                                "max_guest", "price_by_night", "latitude",
-                                "longitude", "number_bathrooms", "description",
-                                "amenity_ids"],
-                      "Amenity": "name", "City": ["state_id", "name"],
-                      "Review": ["place_id", "user_id", "text"],
-                      "State": "name", "User": ["email", "password",
-                                                "first_name", "last_name"]}
-                                                """
         new_instance = HBNBCommand.classes[arg2[0]]()
-        # arg2[0] is the clasname e.g. "Place"
         storage.save()
-        # attributes = class_attr[arg2[0]]
         arg2 = arg2[1:]
         for arg in arg2:
             """
@@ -147,11 +135,10 @@ class HBNBCommand(cmd.Cmd):
             """
             try:
                 new_list = list(arg.split('='))
-                # new_list = ["city_id", "0001"]
+
             except Exception:
                 continue
             key = new_list[0]
-            # if key in attributes:
             value = new_list[1]
             try:
                 test = int(value)
