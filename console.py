@@ -137,12 +137,12 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[classe]()
         
         if len(parametre) != 0:
-            
             parametre = parametre.split(' ')
             key, value = '', ''
             for loop in parametre:
                 key = loop[:loop.rfind('=')]
                 value = loop[loop.rfind('=') + 1:]
+                value = value.replace('_', ' ')
                 arg = classe + " " + new_instance.id + " " + key + " " + value
                 self.do_update(arg)
             
