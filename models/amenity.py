@@ -5,8 +5,8 @@ import models
 from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
-from sqlachemy import Column, String, Foreignkey
-from sqlachemy import.orm import relationship
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
 

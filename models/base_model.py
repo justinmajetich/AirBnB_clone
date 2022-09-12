@@ -8,7 +8,7 @@ common atributes and methods for other classes
 import models
 import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer, Datetime
+from sqlalchemy import Column, String, Integer, DateTime
 import uuid
 from os import getenv
 from datetime import datetime
