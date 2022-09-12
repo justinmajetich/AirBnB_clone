@@ -87,3 +87,8 @@ class DBStorage:
         Base.metadata.create_all(DBStorage.__engine)
         DBStorage.__session = sessionmaker(
             bind=DBStorage.__engine, expire_on_commit=False)()
+
+
+    def close(self):
+        """Closes the storage engine."""
+        self.__session.close()
