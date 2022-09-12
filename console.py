@@ -148,14 +148,7 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     value = float(value)
                 except Exception:
-                    if value[0] == '-':
-                        try:
-                            test = int(value[1:])
-                            value = test * -1
-                        except Exception:
-                            pass
-                    else:
-                        value = value.replace('_', ' ')
+                    value = value.replace('_', ' ')
 
             setattr(new_instance, key, value)
         print(new_instance.id)
