@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-from types import new_class
 import models
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -164,6 +163,11 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def do_reset(self, args):
+        """removes every instance for dev purposese"""
+        storage.all().clear()
+        storage.save()
+
     def do_create(self, args):
         """ Create an object of any class"""
         argslist = args.split(" ")
@@ -210,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(models.storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -267,7 +271,7 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
         argslist = args.split(" ")
         # printme("all saved", models.storage.all())
-        
+
         if len(args) == 0:
             objs = models.storage.all()
         elif argslist[0] in HBNBCommand.classes:
@@ -277,26 +281,10 @@ class HBNBCommand(cmd.Cmd):
             return False
         for key in objs:
             print_list.append(str(objs[key]))
-        printme(" all instances", print_list)
-
-        # if args:
-        #     if len(args) == 0:
-        #         obj_dict = models.storage.all()
-        #     args = args.split(' ')[0]  # remove possible trailing args
-        #     if args not in HBNBCommand.classes:
-        #         print("** class doesn't exist **")
-        #         return
-        #     for k, v in storage._FileStorage__objects.items():
-        #         if k.split('.')[0] == args:
-        #             print_list.append(str(v))
-        #     for key in obj_dict:
-        #         print_list.append(str(obj_dict[key]))
-        # else:
-        #     for k, v in storage._FileStorage__objects.items():
-        #         print_list.append(str(v))
-
-        # print(print_list)
-        # printme("all of instance ", print_list)
+        print("[", end="")
+        print(", ".join(print_list), end="")
+        print("]")
+        # printme(" all instances", print_list)
 
     def help_all(self):
         """ Help information for the all command """
