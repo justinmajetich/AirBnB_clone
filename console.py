@@ -52,8 +52,8 @@ class HBNBCommand(cmd.Cmd):
             kwargs = {}
             for i in range(1, len(my_list)):
                 key, value = tuple(my_list[i].split("="))
-                if value[0] == ':
-                    value = value.strip(').replace("_", " ")
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
                 else:
                     try:
                         value = eval(value)
@@ -72,9 +72,16 @@ class HBNBCommand(cmd.Cmd):
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
 
     def do_show(self, line):
+        """Prints the string representation of an instance
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
+            IndexError: when there is no id given
+            KeyError: when there is no valid id given
+        """
         try:
             if not line:
                 raise SyntaxError()
@@ -84,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
             if len(my_list) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + . + my_list[1]
+            key = my_list[0] + '.' + my_list[1]
             if key in objects:
                 print(objects[key])
             else:
@@ -92,13 +99,20 @@ class HBNBCommand(cmd.Cmd):
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
         except IndexError:
             print("** instance id missing **")
         except KeyError:
             print("** no instance found **")
 
     def do_destroy(self, line):
+        """Deletes an instance based on the class name and id
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
+            IndexError: when there is no id given
+            KeyError: when there is no valid id given
+        """
         try:
             if not line:
                 raise SyntaxError()
@@ -108,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             if len(my_list) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + . + my_list[1]
+            key = my_list[0] + '.' + my_list[1]
             if key in objects:
                 del objects[key]
                 storage.save()
@@ -117,13 +131,17 @@ class HBNBCommand(cmd.Cmd):
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
         except IndexError:
             print("** instance id missing **")
         except KeyError:
             print("** no instance found **")
 
-    def do_all(self, line)
+    def do_all(self, line):
+        """Usage: all or all <class> or <class>.all()
+        Display string representations of all instances of a given class.
+        If no class is specified, displays all instantiated objects.
+        """
         if not line:
             o = storage.all()
             print([o[k].__str__() for k in o])
@@ -137,9 +155,18 @@ class HBNBCommand(cmd.Cmd):
             print([o[k].__str__() for k in o])
 
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
 
     def do_update(self, line):
+        """Updates an instanceby adding or updating attribute
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
+            IndexError: when there is no id given
+            KeyError: when there is no valid id given
+            AttributeError: when there is no attribute given
+            ValueError: when there is no value given
+        """
         try:
             if not line:
                 raise SyntaxError()
@@ -149,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
             if len(my_list) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + . + my_list[1]
+            key = my_list[0] + '.' + my_list[1]
             if key not in objects:
                 raise KeyError()
             if len(my_list) < 3:
@@ -165,7 +192,7 @@ class HBNBCommand(cmd.Cmd):
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
         except IndexError:
             print("** instance id missing **")
         except KeyError:
@@ -176,6 +203,8 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
 
     def count(self, line):
+        """count the number of instances of a class
+        """
         try:
             my_list = split(line, " ")
             if my_list[0] not in self.__classes:
@@ -187,28 +216,34 @@ class HBNBCommand(cmd.Cmd):
                     counter += 1
             print(counter)
         except NameError:
-            print("** class doesnt exist **")
+            print("** class doesn't exist **")
 
-    def strip_clean(self, args):" > console.py
-
+    def strip_clean(self, args):
+        """strips the argument and return a string of command
+        Args:
+            args: input list of arg
+        Return:
+            return string of arguments
+        """
         try:
             my_dict = eval(
-                args[1][args[1].find({):args[1].find(})+1])
+                args[1][args[1].find('{'):args[1].find('}')+1])
         except Exception:
             my_dict = None
         if isinstance(my_dict, dict):
-            new_str = args[1][args[1].find()+1:args[1].find()]
-            new_list.append(((new_str.split)[0]).strip)
+            new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+            new_list.append(((new_str.split(", "))[0]).strip('"'))
             new_list.append(my_dict)
             return new_list
-        new_str = args[1][args[1].find()+1:args[1].find()]
-        new_list.append(" ".join(new_str.split)
+        new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+        new_list.append(" ".join(new_str.split(", ")))
         return " ".join(i for i in new_list)
 
     def default(self, line):
-" >> console.py
-
-        my_list = line.split(.)
+        """retrieve all instances of a class and
+        retrieve the number of instances
+        """
+        my_list = line.split('.')
         if len(my_list) >= 2:
             if my_list[1] == "all()":
                 self.do_all(my_list[0])
@@ -222,14 +257,14 @@ class HBNBCommand(cmd.Cmd):
                 args = self.strip_clean(my_list)
                 if isinstance(args, list):
                     obj = storage.all()
-                    key = args[0] +   + args[1]
+                    key = args[0] + ' ' + args[1]
                     for k, v in args[2].items():
-                        self.do_update(key +  {} {}.format(k, v))
+                        self.do_update(key + ' "{}" "{}"'.format(k, v))
                 else:
                     self.do_update(args)
         else:
             cmd.Cmd.default(self, line)
 
 
-if __name__ == __main__:
+if __name__ ==" __main__":
     HBNBCommand().cmdloop()
