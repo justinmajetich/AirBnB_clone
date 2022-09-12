@@ -132,12 +132,20 @@ class HBNBCommand(cmd.Cmd):
                       "State": "name", "User": ["email", "password",
                                                 "first_name", "last_name"]}
         new_instance = HBNBCommand.classes[arg2[0]]()
+        # arg2[0] is the clasname e.g. "Place"
         storage.save()
         attributes = class_attr[arg2[0]]
         arg2 = arg2[1:]
         for arg in arg2:
+            """
+            Iterates all arguments passed from the command line
+
+            E.g: arg2 = [city_id="0001", user_id="0001", number_rooms=4]
+                 arg = city_id="0001"
+            """
             try:
                 new_list = list(arg.split('='))
+                # new_list = ["city_id", "0001"]
             except Exception:
                 continue
             key = new_list[0]
