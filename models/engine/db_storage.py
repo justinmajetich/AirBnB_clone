@@ -3,16 +3,16 @@
 Contains the class DBStorage
 """
 
+import models
 from models.amenity import Amenity
-from models.base_model import Base
-from models.state import State
-from models.user import User
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
-
-from extras.print import printme
+from models.state import State
+from models.user import User
 from os import getenv
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -53,25 +53,16 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session"""
-        try:
-            self.__session.add(obj)
-        except Exception as e:
-            printme("errir adding to db", e)
+        self.__session.add(obj)
 
     def save(self):
         """commit all changes of the current database session"""
-        try:
-            self.__session.commit()
-        except Exception as e:
-            printme("errir saving  to db", e)
+        self.__session.commit()
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
-            try:
-                self.__session.delete(obj)
-            except Exception as e:
-                printme("errir deleting  to db", e)
+            self.__session.delete(obj)
 
     def reload(self):
         """reloads data from the database"""
