@@ -1,27 +1,28 @@
 #!/usr/bin/python3
-""" User Class File"""
-import models
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+"""Defines the User class."""
+from models.base_model import Base
+from models.base_model import BaseModel
+from sqlalchemy import Column
+from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
-    """ Class User Inheriting from BaseModel nad Base"""
-    if models.storage_t == 'db':
-        __tablename__ = 'users'
-        email = Column(String(128), nullable=False)
-        password = Column(String(128), nullable=False)
-        first_name = Column(String(128), nullable=True)
-        last_name = Column(String(128), nullable=True)
-        places = relationship("Place", backref="user")
-        reviews = relationship("Review", backref="user")
-    else:
-        email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
-
-    def __init__(self, *args, **kwargs):
-        """initializes user"""
-        super().__init__(*args, **kwargs)
+    """Represents a user for a MySQL database.
+    Inherits from SQLAlchemy Base and links to the MySQL table users.
+    Attributes:
+        __tablename__ (str): The name of the MySQL table to store users.
+        email: The user's email address.
+        password: The user's password.
+        first_name : The user's first name.
+        last_name: The user's last name.
+        places: The User-Place relationship.
+        reviews: The User-Review relationship.
+    """
+    __tablename__ = "users"
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128))
+    last_name = Column(String(128))
+    places = relationship("Place", backref="user", cascade="delete")
+    reviews = relationship("Review", backref="user", cascade="delete")
