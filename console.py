@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+import shlex
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -117,11 +117,28 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+            return False
+        arg_split = args.split(" ")
+        if arg_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
+            return False
+        else:
+             kwargs = {}
+             for i in range(1, len(arg_split)):
+                 key, value = tuple(arg_split[i].split("="))
+                 if value[0] and value[-1] == '"':
+                     value = value.strip('"').replace("_", " ")
+                 else:
+                     try:
+                         value = int(value)
+                     except:
+                         try:
+                             value = float(value)
+                         except:
+                             continue
+                     kwargs[key] = value
+
+        new_instance = HBNBCommand.classes[arg_split[0]](**kwargs)
         storage.save()
         print(new_instance.id)
         storage.save()
