@@ -1,44 +1,184 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""
+contains BaseModel definitions.
+"""
 import uuid
 from datetime import datetime
+from rich import print as rprint
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime
+import models
+
+Base = declarative_base()
+
+if models.storage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """
+    defines all common attributes/methods for other classes
+    """
+    """initializes obect for the db storage"""
+    if models.storage_t == "db":
+        id = Column(String(60), primary_key=True)
+        created_at = Column(DateTime, default=datetime.utcnow)
+        updated_at = Column(DateTime, default=datetime.utcnow)
+
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
-        if not kwargs:
-            from models import storage
+        """initializes object using dictionary if given otherwise
+        it gives default value
+        """
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    setattr(self, key, value)
+            if kwargs['created_at']:
+                # print("not new instance updating time === ")
+                self.created_at = datetime.fromisoformat(kwargs['created_at'])
+                self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
+            else:
+                # print("=====new instance  new time === ")
+                self.id = str(uuid.uuid4())
+                self.created_at = datetime.now()
+                self.updated_at = datetime.now()
+        else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
-        else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            models.storage.new(self)
+        if len(args) >= 1:
+
+            self.create(args[0], self)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        """string repr of obj"""
+        return '[{}] ({}) {}'.format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.save()
+        """updates the public instance attribute"""
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
+
+    def uwu(self, instance):
+        print("test message method")
+        print(instance)
+
+    def update(self, args, instance):
+        """update an obect instance by ID"""
+        marker = 0
+        if len(args) >= 3:
+            attrs = args[2:]
+            for idx in range(len(attrs)):
+                if marker + 1 >= len(attrs):
+                    break
+                trimed = attrs[marker:marker + 2]
+                self.add_attributes(instance, trimed, args[0])
+                self.updated_at = datetime.now()
+                marker += 2
+        else:
+            print("insuficient arguments")
+
+    def delete(self):
+        """delete the current instance from the storage"""
+        models.storage.delete(self)
+
+    def create(self, args, instance):
+        """helper function to create a class instance with args """
+        marker = 0
+        if len(args) >= 3:
+            attrs = args[1:]
+            for idx in range(len(attrs)):
+                if marker + 1 >= len(attrs):
+                    break
+                trimed = attrs[marker:marker + 2]
+                self.add_attributes(instance, trimed, args[0])
+                marker += 2
+
+    def add_attributes(self, instance, attr_list, c_name):
+        """ function to insert attribute values,
+        recieves a list index 0 is the attribute name
+        and index 1 is the atrribute vallue """
+        if len(attr_list) == 1:
+            print(f"value for attribute {attr_list[0]} is missing")
+        try:
+            if self.attributes()[c_name][attr_list[0]]:
+                attr_val = attr_list[1]
+                if '_' in attr_val and type(attr_val) == str:
+                    attr_val = attr_val.replace('_', " ")
+                setattr(instance, attr_list[0], attr_val)
+        except KeyError:
+            rprint(
+                f"attr [bold spring_green2]{attr_list[0]}[/bold spring_green2]"
+                f" doesn't exist in class [bold yellow]{c_name}[bold yellow] ")
 
     def to_dict(self):
-        """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        """returns a dictionary containing all key/value of __dict__
+        of the instance"""
+        dic = vars(self).copy()
+        dic['__class__'] = self.__class__.__name__
+        if "updated_at" in dic:
+            dic['updated_at'] = self.updated_at.isoformat()
+        if "created_at" in dic:
+            dic['created_at'] = self.created_at.isoformat()
+        if "_sa_instance_state" in dic:
+            del dic["_sa_instance_state"]
+        return dic
+
+    def strip_quotes(self, str):
+        """"helper functoin to parse a string and remove quotes"""
+        if not str:
+            return
+        if str[0] == '"' and str[len(str) - 1] == '"':
+            return str[1:len(str) - 1]
+        elif str[0] == '"':
+            return str[1:]
+        elif str[len(str) - 1] == '"':
+            return str[:len(str) - 1]
+        else:
+            return str
+
+    def attributes(self):
+        """Returns the valid attributes and their types for classname."""
+
+        attributes = {
+            "BaseModel":
+                {"id": str,
+                 "created_at": datetime.now(),
+                 "updated_at": datetime.now()},
+            "User":
+                {"email": str,
+                 "password": str,
+                 "first_name": str,
+                 "last_name": str},
+
+            "State":
+                {"name": str},
+            "City":
+                {"state_id": str,
+                 "name": str},
+            "Amenity":
+                {"name": str},
+            "Place":
+                {"city_id": str,
+                 "user_id": str,
+                 "name": str,
+                 "description": str,
+                 "number_rooms": int,
+                 "number_bathrooms": int,
+                 "max_guest": int,
+                 "price_by_night": int,
+                 "latitude": float,
+                 "longitude": float,
+                 "amenity_ids": str},
+            "Review":
+                {"place_id": str,
+                 "user_id": str,
+                 "text": str}
+        }
+        return attributes
