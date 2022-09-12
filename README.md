@@ -1,7 +1,7 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-[![CodeStyle](https://github.com/Joelayo/AirBnB_clone_v2/actions/workflows/codestyle.yml/badge.svg)](https://github.com/Joelayo/AirBnB_clone_v2/actions/workflows/codestyle.yml)
-![Latest commit](https://img.shields.io/github/last-commit/B3zaleel/AirBnB_clone_v2/master?style=round-square)
+[CodeStyle](https://github.com/Joelayo/AirBnB_clone_v2/actions/workflows/codestyle.yml/badge.svg)](https://github.com/Joelayo/AirBnB_clone_v2/actions/workflows/codestyle.yml)
+![Latest commit](https://img.shields.io/github/last-commit/Joelayo/AirBnB_clone_v2/main?style=round-square)
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
