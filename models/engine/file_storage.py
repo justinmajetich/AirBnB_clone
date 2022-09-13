@@ -14,7 +14,7 @@ class FileStorage:
             that match the value of given parameter cls
 
             Args:
-                cls (Model): Input for a specific class value
+                cls (Model): Input for a specific class value (optional)
 
             Attributes:
                 cls (Model): support class
@@ -28,7 +28,8 @@ class FileStorage:
             for (key, value) in FileStorage.__objects.items():
                 if isinstance(value, cls):
                     collections[key] = value
-        return collections
+            return collections
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
