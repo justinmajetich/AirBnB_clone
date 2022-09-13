@@ -53,6 +53,6 @@ class TestHBNBCommand(unittest.TestCase):
         """Test that code style conforms to pep8"""
         style = pep8.StyleGuide(quiet=True)
         result = style.check_files(
-                ['/home/vagrant/AirBnB_clone_v2/console.py']
+                ['console.py']
                 )
         self.assertEqual(result.total_errors, 0, 'Found code style errors')
