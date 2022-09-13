@@ -14,7 +14,6 @@ class FileStorage:
         if cls is not None:
             classe = str(cls).split(' ')[1].split('.')[2]
             classe = classe[:len(classe)-2]
-            print("hello all cls: ",classe)
             dic = {}
             for key in FileStorage.__objects.keys():
                 if classe in key:
