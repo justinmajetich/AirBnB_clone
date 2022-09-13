@@ -132,6 +132,13 @@ class HBNBCommand(cmd.Cmd):
 
         for key, val in param.items():
             try:
+                if key in HBNBCommand.types.keys():
+                    if key in ['latitude', 'longitude']:
+                        if type(eval(val)) is not float:
+                            continue
+                    else:
+                        if type(eval(val)) is not int:
+                            continue
                 if type(eval(val)) is str:
                     val = val.replace("_", " ")
                 elif type(eval(val)) not in [int, float]:
