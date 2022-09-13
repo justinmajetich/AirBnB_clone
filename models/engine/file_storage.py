@@ -16,22 +16,21 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-      """returns the dictionary __objects"""
-      if cls is not None:
-          if type(cls) == str:
-              cls = eval(cls)
-          new_dict = {}
-          for key, value in self.__objects.items():
-              if type(value) == cls:
-                  new_dict[key] = value
-                  return new_dict
-              return self.__objects
+        """returns the dictionary __objects"""
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)
+            new_dict = {}
+            for key, value in self.__objects.items():
+                if type(value) == cls:
+                    new_dict[key] = value
+            return new_dict
+        return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
-            self.__object[key] = obj
+        """Set in __objects obj with key <obj_class_name>.id"""
+        if obj:
+            self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -43,21 +42,16 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+        """Deserialise json file to __objects, if it exists"""
         try:
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key in temp:
-                        self.all()[key] = classes[temp[key]['__class__']](**temp[key])
-        except:
+            with open(self.__file_path, 'r', encoding='utf-8') as f:
+                json_dict = json.load(f)
+                for value in json_dict.values():
+                    cls = value['__class__']
+                    self.new(eval('{}({})'.format(cls, '**value')))
+        except(FileNotFoundError):
             pass
-   
+
     def delete(self, obj=None):
         """deletes obj from __objects"""
         if obj is not None:
@@ -66,4 +60,4 @@ class FileStorage:
                 if key in self.__objects:
                     del self.__objects[key]
             except(KeyError):
-                  pass
+                pass
