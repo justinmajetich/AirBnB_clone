@@ -112,6 +112,21 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    @staticmethod
+    def validate_create_parameters(value):
+        """Validates whether attribute value of the Object being
+        created using the HBNB cmd create command are valid"""
+        val = value
+        try:
+            val = float(value)
+        except ValueError:
+            pass
+
+        try:
+            val = int(value)
+        except ValueError:
+            pass
+        return val
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -131,14 +146,18 @@ class HBNBCommand(cmd.Cmd):
             new_instance = HBNBCommand.classes[classname]()
             for parameter in args_list:
                 attribute, value = parameter.split('=')
-                new_value = ""
-                for char in value:
-                    if char is not '"':
-                        new_value += char
-                setattr(new_instance, attribute, new_value)
+                value = value.replace('"', "")
+                value = value.replace("_", " ")
+                # TODO: id values(e.g user_id) should not be
+                # converted to int.
+                # I am yet to find a way to implement that without
+                # hardcoding which attributes should be avoided
+                value = HBNBCommand.validate_create_parameters(value)
+                setattr(new_instance, attribute, value)
         storage.save()
         print(new_instance.id)
         storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
