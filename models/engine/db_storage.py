@@ -60,7 +60,6 @@ class DBStorage:
 
     def new(self, obj):
         if obj:
-            try:
                 self.__session.add(obj)
 
     def delete(self, obj=None):
