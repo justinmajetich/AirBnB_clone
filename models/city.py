@@ -2,7 +2,7 @@
 """ This is city class"""
 from sqlalchemy import String, DateTime, Column, ForeignKey
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel, Base 
+from models.base_model import BaseModel, Base
 
 
 class City(BaseModel, Base):
@@ -14,3 +14,5 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    places = relationship("Place", cascade="delete, delete-orphan",
+                          backref='cities')
