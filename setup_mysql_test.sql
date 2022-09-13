@@ -1,4 +1,4 @@
---A script that prepares a test server for the MSQL server for the project
+-- A script that prepares a test server for the MSQL server for the project
 
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 USE hbnb_test_db;
