@@ -3,6 +3,7 @@
 
 
 import cmd
+from os import fsdecode
 import models
 import shlex  # used for spliting
 from models.base_model import BaseModel
@@ -39,25 +40,44 @@ class HBNBCommand(cmd.Cmd):
         """overite/skip the emptyline method"""
         return False
 
+    def _key_value_parser(self, args):
+        """creates a dictionary from a list of strings"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split("=", 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace("_", " ")
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_dict[key] = value
+        return new_dict
+
     def do_create(self, arg):
+        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+        Create a new class instance with given keys/values and print its id.
         """
-        creates a new instance of BaseModel
-        saves instance to a JSON file and prints the id
-        Ex: $ create BaseModel
-        """
-        args = shlex.split(arg)
+        args = arg.split()
         if len(args) == 0:
-            print("**class name missing **")
+            print("** class name missing **")
             return False
         if args[0] in classes:
-            instance = classes[args[0]]()
+            new_dict = self._key_value_parser(args[1:])
+            instance = classes[args[0]](**new_dict)
+            models.storage.new(instance)
+            models.storage.save()
         else:
             print("** class doesn't exist **")
             return False
         print(instance.id)
-        key = instance.__class__.__name__ + "." + instance.id
-        print(models.storage.all()[key])
-        instance.save()
 
     def do_show(self, arg):
         """
