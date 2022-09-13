@@ -29,16 +29,16 @@ class Place(BaseModel, Base):
     Inherits from SQLAlchemy Base and links to the MySQL table places.
     Attributes:
         __tablename__ (str): The name of the MySQL table to store places.
-        city_id (sqlalchemy String): The places city id.
-        user_id (sqlalchemy String): The places user id.
+        city_id (sqlalchemy String): The place's city id.
+        user_id (sqlalchemy String): The place's user id.
         name (sqlalchemy String): The name.
         description (sqlalchemy String): The description.
         number_rooms (sqlalchemy Integer): The number of rooms.
         number_bathrooms (sqlalchemy Integer): The number of bathrooms.
         max_guest (sqlalchemy Integer): The maximum number of guests.
         price_by_night (sqlalchemy Integer): The price by night.
-        latitude (sqlalchemy Float): The places latitude.
-        longitude (sqlalchemy Float): The places longitude.
+        latitude (sqlalchemy Float): The place's latitude.
+        longitude (sqlalchemy Float): The place's longitude.
         reviews (sqlalchemy relationship): The Place-Review relationship.
         amenities (sqlalchemy relationship): The Place-Amenity relationship.
         amenity_ids (list): An id list of all linked amenities.
