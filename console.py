@@ -55,6 +55,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
         print(instance.id)
+        key = instance.__class__.__name__ + "." + instance.id
+        print(models.storage.all()[key])
         instance.save()
 
     def do_show(self, arg):
