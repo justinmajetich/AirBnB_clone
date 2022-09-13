@@ -66,7 +66,7 @@ class FileStorage:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except Exception:
             pass
-    
+
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
