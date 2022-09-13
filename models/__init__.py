@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module instantiates an object of class FileStorage
     Instatiates the database storage engine (DBStorage) when the env
-    var "HBNB_TYPE_STORAGE" is set to db
+    var "HBNB_TYPE_STORAGE" is set to 'db'
 """
 from os import getenv
 
