@@ -29,7 +29,7 @@ print()
 
 name= '"abrahm"'
 print(name.strip("'"))
-
+'''
 try:
     if args:
         new_args = split_args(args)
@@ -53,3 +53,4 @@ try:
 except IndexError:
     print("** class name missing **")
     return
+'''
