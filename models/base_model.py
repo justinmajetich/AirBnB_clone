@@ -3,9 +3,18 @@
 import uuid
 from datetime import datetime
 
+from sqlalchemy import Column, String, DATETIME
+<<<<<<< HEAD
+=======
+#from sqlalchemy.orm import declarative_base
+
+#Base = declarative_base()
+>>>>>>> master0
+
 
 class BaseModel:
     """A base class for all hbnb models"""
+    
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
