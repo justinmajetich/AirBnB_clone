@@ -56,3 +56,31 @@ class TestHBNBCommand(unittest.TestCase):
                 ['console.py']
                 )
         self.assertEqual(result.total_errors, 0, 'Found code style errors')
+
+    def test_docstrings(self):
+        """Check for docstrings"""
+        self.assertIsNotNone(HBNBCommand.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
+        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+
+    def test_create_with_parameters(self):
+        """Check that create works properly when provided with parameters
+        that are extra attributes of the object it creates"""
+        # TODO: Add test logic
+        pass
+
+    def test_create_without_parameters(self):
+        """Check that the create <classname> command works properly and
+        creates an object of <classname>"""
+        # TODO: Add test logic
+        pass
+
+
+
