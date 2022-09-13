@@ -15,6 +15,7 @@ if models.storage_t == "db":
 else:
     Base = object
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
@@ -68,4 +69,4 @@ class BaseModel:
 
     def delete(self):
         """delete the current instance from the storage"""
-        models.storage.delete(self)    
+        models.storage.delete(self)
