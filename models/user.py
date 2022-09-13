@@ -12,10 +12,10 @@ class User(BaseModel, Base):
     Inherits from SQLAlchemy Base and links to the MySQL table users.
     Attributes:
         __tablename__ (str): The name of the MySQL table to store users.
-        email: (sqlalchemy String): The users email address.
-        password (sqlalchemy String): The users password.
-        first_name (sqlalchemy String): The users first name.
-        last_name (sqlalchemy String): The users last name.
+        email: (sqlalchemy String): The user's email address.
+        password (sqlalchemy String): The user's password.
+        first_name (sqlalchemy String): The user's first name.
+        last_name (sqlalchemy String): The user's last name.
         places (sqlalchemy relationship): The User-Place relationship.
         reviews (sqlalchemy relationship): The User-Review relationship.
     """
