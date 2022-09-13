@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,19 +112,52 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    @staticmethod
+    def validate_create_parameters(value):
+        """Validates whether attribute value of the Object being
+        created using the HBNB cmd create command are valid"""
+        val = value
+        try:
+            val = float(value)
+        except ValueError:
+            pass
+
+        try:
+            val = int(value)
+        except ValueError:
+            pass
+        return val
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args_list = []
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
+        args_list = args.split(' ')
+        classname = args_list[0]
+        if len(args_list) == 1:
+            if classname not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[classname]()
+        elif len(args_list) > 1:
+            args_list = args_list[1:]
+            new_instance = HBNBCommand.classes[classname]()
+            for parameter in args_list:
+                attribute, value = parameter.split('=')
+                value = value.replace('"', "")
+                value = value.replace("_", " ")
+                # TODO: id values(e.g user_id) should not be
+                # converted to int.
+                # I am yet to find a way to implement that without
+                # hardcoding which attributes should be avoided
+                value = HBNBCommand.validate_create_parameters(value)
+                setattr(new_instance, attribute, value)
         storage.save()
         print(new_instance.id)
         storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +352,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
