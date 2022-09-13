@@ -4,6 +4,12 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import Column, String, DATETIME
+<<<<<<< HEAD
+=======
+#from sqlalchemy.orm import declarative_base
+
+#Base = declarative_base()
+>>>>>>> master0
 
 
 class BaseModel:
