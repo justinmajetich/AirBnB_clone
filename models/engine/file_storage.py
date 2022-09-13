@@ -31,9 +31,16 @@ class FileStorage:
     # dictionary - (empty) but will store all objects by <class name>.id
     __objects = {}
 
-    def all(self):
-        """returns the dictionary __objects"""
-        return self.__objects
+    def all(self, cls=None):
+        """returns the list of objects of one type of class"""
+        if cls is None:
+            return self.__objects
+        else:
+            new_dict = {}
+            for key in self.__objects:
+                if cls.__name__ in key:
+                    new_dict[key] = self.__objects[key]
+            return new_dict
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class>.id"""
@@ -59,3 +66,11 @@ class FileStorage:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except Exception:
             pass
+    
+    def delete(self, obj=None):
+        """delete obj from __objects if it’s inside"""
+        if obj is not None:
+            key = obj.__class__.__name__ + "." + obj.id
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
