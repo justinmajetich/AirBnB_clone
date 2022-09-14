@@ -45,7 +45,7 @@ class DBStorage:
                     class_name = "{}.{}".format(type(news).__name__, news.id)
                     new_dict[class_name] = news.__str__()
             return new_dict
-        for Variable in [State, City]:
+        for Variable in [State, City, User, Place, Amenity, Review]:
             all_query = self.__session.query(Variable).all()
             if all_query:
                 for keys in all_query:
