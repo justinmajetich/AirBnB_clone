@@ -13,7 +13,8 @@ class FileStorage:
         if cls:
             all = dict()
             for i in self.__objects.keys():
-                all[i] = self.__objects[i]
+                if i.split('.')[0] == cls.__name__:
+                    all[i] = self.__objects[i]
             return all
         return FileStorage.__objects
 
