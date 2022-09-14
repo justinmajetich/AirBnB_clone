@@ -7,7 +7,7 @@ from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 
-Base = declarative_base();
+Base = declarative_base()
 
 
 class BaseModel:
@@ -15,7 +15,7 @@ class BaseModel:
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -25,10 +25,10 @@ class BaseModel:
             self.updated_at = datetime.utcnow()
         else:
             try:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = (datetime.strptime(kwargs['updated_at'],
+                                        '%Y-%m-%dT%H:%M:%S.%f'))
+                kwargs['created_at'] = (datetime.strptime(kwargs['created_at'],
+                                        '%Y-%m-%dT%H:%M:%S.%f'))
             except Exception:
                 if 'id' not in kwargs.keys():
                     self.__init__()
@@ -62,7 +62,7 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         try:
             del dictionary['_sa_instance_state']
-        except:
+        except Exception:
             pass
         return dictionary
 

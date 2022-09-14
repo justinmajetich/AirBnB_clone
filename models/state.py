@@ -17,8 +17,6 @@ class State(BaseModel):
         """Getter attribute cities that returns the list of City instances"""
         new_list = []
         for city in list(models.storage.all(City).values()):
-                if city.state_id == self.id:
-                    city_list.append(city)
+            if city.state_id == self.id:
+                city_list.append(city)
             return new_list
-
-

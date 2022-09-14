@@ -13,10 +13,10 @@ from models.city import City
 from models.state import State
 from models.place import Place
 from models.review import Review
-from models.user import 
+from models.user import User
 
 
-class DBStorage();
+class DBStorage():
     """ DB storage class """
     __engine = None
     __session = None
@@ -27,10 +27,10 @@ class DBStorage();
         host = getenv('HBNB_MYSQL_HOST')
         database = getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-                                user, passwd, host, database), pool_pre_ping=True)
+                                user, passwd, host, database),
+                                pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-
 
     def all(self, cls=None):
         """ queries current database session all objects
