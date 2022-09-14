@@ -60,7 +60,8 @@ class HBNBCommand(cmd.Cmd):
                     except (SyntaxError, NameError):
                         continue
                 kwargs[key] = value
-
+            if my_list[0] not in self.__classes:
+                raise NameError
             if kwargs == {}:
                 obj = eval(my_list[0])()
             else:
