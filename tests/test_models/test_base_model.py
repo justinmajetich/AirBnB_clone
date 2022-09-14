@@ -47,6 +47,16 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') == 'db', "not supported")
+    def test_save_file(self):
+        """ Testing save """
+        i = self.value()
+        i.save()
+        key = self.name + "." + i.id
+        with open('file.json', 'r') as f:
+            j = json.load(f)
+            self.assertEqual(j[key], i.to_dict())
+
     def test_save(self):
         """ Testing save """
         i = self.value()

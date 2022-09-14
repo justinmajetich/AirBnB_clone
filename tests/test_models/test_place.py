@@ -67,3 +67,20 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') != 'db', "not supported")
+    def test_without_mandatory_arguments(self):
+        """ """
+        new = self.value()
+        with self.assertRaises(OperationalError):
+            try:
+                new.save()
+            except Exception as error:
+                models.storage._DBStorage__session.rollback()
+                raise error
+
+    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') == 'db', "not supported")
+    def test_is_subclass(self):
+        """Check that Place is a subclass of Basemodel"""
+        place = self.value()
+        self.assertTrue(isinstance(place, Place))
