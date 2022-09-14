@@ -3,17 +3,12 @@
 Contains class BaseModel
 """
 
-import uuid
 from datetime import datetime
-
-
-from sqlalchemy import Column, DateTime, String
-from sqlalchemy.orm import declarative_base
-
 import models
-import sqlalchemy
 from os import getenv
-
+import sqlalchemy
+from sqlalchemy import Column, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 import uuid
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
@@ -25,7 +20,7 @@ else:
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """The BaseModel class from which future classes will be derived"""
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         id = Column(String(60), primary_key=True)
@@ -55,8 +50,9 @@ class BaseModel:
 
     def __str__(self):
         """String representation of the BaseModel class"""
-        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
-                                         self.__dict__)
+        return "[{:s}] ({:s}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__
+        )
 
     def save(self):
         """updates the attribute 'updated_at' with the current datetime"""
