@@ -15,6 +15,7 @@ classes = {
             'Review': Review
             }
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -38,17 +39,17 @@ class FileStorage:
         """Saves storage dictionary to file"""
         json_objects = {}
         for key in self.__objects:
-                json_objects[key] = self.__objects[key].to_dict(save_check=True)
+            json_objects[key] = self.__objects[key].to_dict()
         with open(self.__file_path, 'w') as f:
-            json.dump(json_objects, f)
+            json.dump(json_objects, f, indent=2)
 
     def reload(self):
         """Loads storage dictionary from file"""
         try:
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
-            for key in temp:
-                self.__objects[key] = classes[temp[key]['__class__']](**temp[key])
+            for k in temp:
+                self.__objects[k] = classes[temp[k]['__class__']](**temp[k])
         except FileNotFoundError:
             pass
 

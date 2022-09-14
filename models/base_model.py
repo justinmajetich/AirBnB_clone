@@ -7,15 +7,19 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 
-Base = declarative_base()
+if models.storage_type == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
+    if models.storage_type == "db":
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime(), default=datetime.utcnow())
+        updated_at = Column(DateTime(), default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
@@ -51,7 +55,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        #del dictionary['_sa_instance_state']
+        del dictionary['_sa_instance_state']
         return dictionary
 
     def delete(self):
