@@ -22,3 +22,10 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+    def test_creation(self):
+        """ Test Creation """
+        state = State(name="California")
+        new = self.value(state_id=state.id, name="San_Francisco")
+        self.assertEqual(type(new.state_id), str)
+        self.assertEqual(type(new.name), str)
