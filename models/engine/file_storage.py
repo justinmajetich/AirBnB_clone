@@ -25,6 +25,14 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+    def delete(self, obj=None):
+        """ delete obj from __objects if obj is inside """
+        if obj is None:
+            return
+        for k, v in self.__objects.items():
+            if obj == v:
+                del self.__objects[k]
+
     def reload(self):
         """Loads storage dictionary from file"""
         from models.base_model import BaseModel
