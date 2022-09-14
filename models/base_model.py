@@ -7,8 +7,10 @@ from sqlalchemy import Column, Integer, String, DateTime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
+
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
@@ -21,26 +23,27 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
-                if key in ['updated_at', 'created_at']:
-                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                if key != '__class__':
+                if key in ["updated_at", "created_at"]:
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
                     setattr(self, key, value)
-            if 'id' not in kwargs.keys():
+            if "id" not in kwargs.keys():
                 self.id = str(uuid.uuid4())
-            if 'created_at' not in kwargs.keys():
+            if "created_at" not in kwargs.keys():
                 self.created_at = self.updated_at = datetime.now()
         self.to_dict()
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        if '_sa_instance_state' in self.__dict__.keys():
-            del self.__dict__['_sa_instance_state']
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        if "_sa_instance_state" in self.__dict__.keys():
+            del self.__dict__["_sa_instance_state"]
+        cls = (str(type(self)).split(".")[-1]).split("'")[0]
+        return "[{}] ({}) {}".format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
+
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -49,15 +52,15 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dictionary.keys():
-            del dictionary['_sa_instance_state']
+        dictionary.update({"__class__": (str(type(self)).split(".")[-1]).split("'")[0]})
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary.keys():
+            del dictionary["_sa_instance_state"]
         return dictionary
 
     def delete(self):
-        """ Method to delete the current instance from the storage """
+        """Method to delete the current instance from the storage"""
         from models import storage
+
         storage.delete(self)
