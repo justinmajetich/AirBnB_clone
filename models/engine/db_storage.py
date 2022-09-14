@@ -36,7 +36,8 @@ class DBStorage():
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+                                             HBNB_MYSQL_DB),
+                                             pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -55,6 +56,8 @@ class DBStorage():
 
         a_dict = {}
         for obj in objs:
+            # for k in obj:
+            #     print("hello", k)
             k = '{}.{}'.format(type(obj).__name__, obj.id)
             a_dict[k] = obj
         return a_dict
