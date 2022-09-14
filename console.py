@@ -126,6 +126,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = shlex.split(args)
+        # kwargs = {}
         if args[0] in classes:
             new_instance = classes[args[0]]()
             for arg in args[1:]:
@@ -139,14 +140,15 @@ class HBNBCommand(cmd.Cmd):
                     float(val)
                 except:
                     pass
-                setattr(new_instance, key, val)
+                setattr(new_instance, key , val)
         else:
             print("** class doesn't exist **")
 
-        setattr(new_instance, key, val)
-        storage.save()
+        # obj = new_instance(**kwargs)
+        storage.new(new_instance)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """

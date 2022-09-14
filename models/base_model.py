@@ -40,7 +40,7 @@ class BaseModel:
                     kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
             else:
                 self.updated_at = datetime.now()
-            if not self.id:
+            if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
 
             for key, val in kwargs.items():
