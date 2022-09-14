@@ -13,7 +13,7 @@ import uuid
 from os import getenv
 from datetime import datetime
 
-time = "%Y-%m-%dT%:%M:%S.%f"
+time = "%Y-%m-%dT%H:%M:%S.%f"
 if getenv("HBNB_TYPE_STORAGE") == "db":
     
 
@@ -82,7 +82,7 @@ class BaseModel:
         if "created_at" in dictionary:
             dictionary["created_at"] = dictionary["created_at"].strftime(time)
         if "updated_at" in dictionary:
-            new_dict["updated_at"] = dictionary["updated_at"].strftime(time)
+            dictionary["updated_at"] = dictionary["updated_at"].strftime(time)
         dictionary["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in dictionary:
             del dictionary["_sa_instance_state"]
