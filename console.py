@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex  # for splitting the line along spaces except in double quotes
 
 
 class HBNBCommand(cmd.Cmd):
@@ -113,14 +114,17 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+            return False
+        
+      
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return
+            return False
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
