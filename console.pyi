@@ -12,25 +12,18 @@ from models.amenity import Amenity
 from models.review import Review
 import shlex
 
-classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
-
 
 class HBNBCommand(cmd.Cmd):
-
     """ Contains the functionality for the HBNB console"""
+
+    # determines prompt for interactive/non-interactive modes
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-
-    # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -81,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
+                    if pline[0] is '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -122,33 +115,11 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        if len(args) == 0:
-            print("** class name missing **")
-            return
-        args = shlex.split(args)
-        # kwargs = {}
-        if args[0] in classes:
-            new_instance = classes[args[0]]()
-            for arg in args[1:]:
-                key = arg.split("=")[0]
-                val = arg.split("=")[1].replace('_', ' ')
-                try:
-                    int(val)
-                except:
-                    pass
-                try:
-                    float(val)
-                except:
-                    pass
-                setattr(new_instance, key , val)
-        else:
-            print("** class doesn't exist **")
-
-        # obj = new_instance(**kwargs)
-        storage.new(new_instance)
-        new_instance.save()
+        
+        setattr(new_instance, key, val)
+        storage.save()
         print(new_instance.id)
-        # storage.save()
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -343,7 +314,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
