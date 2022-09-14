@@ -43,7 +43,7 @@ class DBStorage:
             objs.extend(self.__session.query(User).all())
             objs.extend(self.__session.query(Place).all())
             objs.extend(self.__session.query(Review).all())
-            # objs.extend(self.__session.query(Amenity).all())
+            objs.extend(self.__session.query(Amenity).all())
         return {"{}.{}".format(type(ob).__name__, ob.id): ob for ob in objs}
 
     def new(self, obj):
