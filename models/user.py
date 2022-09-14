@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class User"""
 from models.base_model import BaseModel, Base, Relationship
-import models
+from models import storage_type
 from sqlalchemy import (
     Column,
     String
@@ -10,14 +10,16 @@ from sqlalchemy import (
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    if models.storage_type == "db":
+    if storage_type == "db":
         __tablename__ = "users"
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
-        first_name = Column(String(128), nullable=False)
-        last_name = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
         reviews = Relationship(
-            "Review", cascade="all, delete", backref="user")
+            'Review', cascade='all, delete', backref="user")
+        places = Relationship(
+            'Place', cascade='all, delete', backref="user")
     else:
         email = ""
         password = ""

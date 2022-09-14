@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+import re
 
 
 class FileStorage:
@@ -13,16 +14,18 @@ class FileStorage:
         if cls:
             cls_dict = {}
             keys = self.__objects.keys()
+            if type(cls) is not str:
+                cls = cls.__name__
             for key in keys:
                 cls_name = key.split('.')[0]
-                if cls_name == cls.__name__:
+                if cls_name == cls:
                     cls_dict[key] = self.__objects[key]
             return cls_dict
         return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        self.all().update({obj.__class__.__name__ + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -53,7 +56,9 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    cls_name = re.findall(r"^\w+", key)
+                    self.__objects[key] = eval(cls_name[0])(**val)
+
         except FileNotFoundError:
             pass
 
