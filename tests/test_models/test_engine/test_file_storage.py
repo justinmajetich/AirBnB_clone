@@ -1,109 +1,175 @@
 #!/usr/bin/python3
-""" Module for testing file storage"""
+''' module for file_storage tests '''
 import unittest
-from models.base_model import BaseModel
+import MySQLdb
+from models.user import User
 from models import storage
+from datetime import datetime
 import os
 
-
-class test_fileStorage(unittest.TestCase):
-    """ Class to test the file storage method """
-
-    def setUp(self):
-        """ Set up test environment """
-        del_list = []
-        for key in storage._FileStorage__objects.keys():
-            del_list.append(key)
-        for key in del_list:
-            del storage._FileStorage__objects[key]
-
-    def tearDown(self):
-        """ Remove storage file at end of tests """
-        try:
-            os.remove('file.json')
-        except:
-            pass
-
-    def test_obj_list_empty(self):
-        """ __objects is initially empty """
-        self.assertEqual(len(storage.all()), 0)
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
+                 'db_storage test not supported')
+class TestDBStorage(unittest.TestCase):
+    '''testing dbstorage engine'''
+    def test_new_and_save(self):
+        '''testing  the new and save methods'''
+        db = MySQLdb.connect(user=os.getenv('HBNB_MYSQL_USER'),
+                             host=os.getenv('HBNB_MYSQL_HOST'),
+                             passwd=os.getenv('HBNB_MYSQL_PWD'),
+                             port=3306,
+                             db=os.getenv('HBNB_MYSQL_DB'))
+        new_user = User(**{'first_name': 'jack',
+                           'last_name': 'bond',
+                           'email': 'jack@bond.com',
+                           'password': 12345})
+        cur = db.cursor()
+        cur.execute('SELECT COUNT(*) FROM users')
+        old_count = cur.fetchall()
+        cur.close()
+        db.close()
+        new_user.save()
+        db = MySQLdb.connect(user=os.getenv('HBNB_MYSQL_USER'),
+                             host=os.getenv('HBNB_MYSQL_HOST'),
+                             passwd=os.getenv('HBNB_MYSQL_PWD'),
+                             port=3306,
+                             db=os.getenv('HBNB_MYSQL_DB'))
+        cur = db.cursor()
+        cur.execute('SELECT COUNT(*) FROM users')
+        new_count = cur.fetchall()
+        self.assertEqual(new_count[0][0], old_count[0][0] + 1)
+        cur.close()
+        db.close()
 
     def test_new(self):
-        """ New object is correctly added to __objects """
-        new = BaseModel()
-        for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
-
-    def test_all(self):
-        """ __objects is properly returned """
-        new = BaseModel()
-        temp = storage.all()
-        self.assertIsInstance(temp, dict)
-
-    def test_base_model_instantiation(self):
-        """ File is not created on BaseModel save """
-        new = BaseModel()
-        self.assertFalse(os.path.exists('file.json'))
-
-    def test_empty(self):
-        """ Data is saved to file """
-        new = BaseModel()
-        thing = new.to_dict()
+        """ New object is correctly added to database """
+        new = User(
+            email='john2020@gmail.com',
+            password='password',
+            first_name='John',
+            last_name='Zoldyck'
+        )
+        self.assertFalse(new in storage.all().values())
         new.save()
-        new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize('file.json'), 0)
+        self.assertTrue(new in storage.all().values())
+        dbc = MySQLdb.connect(
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            port=3306,
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
+        )
+        cursor = dbc.cursor()
+        cursor.execute('SELECT * FROM users WHERE id="{}"'.format(new.id))
+        result = cursor.fetchone()
+        self.assertTrue(result is not None)
+        self.assertIn('john2020@gmail.com', result)
+        self.assertIn('password', result)
+        self.assertIn('John', result)
+        self.assertIn('Zoldyck', result)
+        cursor.close()
+        dbc.close()
 
-    def test_save(self):
-        """ FileStorage save method """
-        new = BaseModel()
-        storage.save()
-        self.assertTrue(os.path.exists('file.json'))
+    def test_delete(self):
+        """ Object is correctly deleted from database """
+        new = User(
+            email='john2020@gmail.com',
+            password='password',
+            first_name='John',
+            last_name='Zoldyck'
+        )
+        obj_key = 'User.{}'.format(new.id)
+        dbc = MySQLdb.connect(
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            port=3306,
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
+        )
+        new.save()
+        self.assertTrue(new in storage.all().values())
+        cursor = dbc.cursor()
+        cursor.execute('SELECT * FROM users WHERE id="{}"'.format(new.id))
+        result = cursor.fetchone()
+        self.assertTrue(result is not None)
+        self.assertIn('john2020@gmail.com', result)
+        self.assertIn('password', result)
+        self.assertIn('John', result)
+        self.assertIn('Zoldyck', result)
+        self.assertIn(obj_key, storage.all(User).keys())
+        new.delete()
+        self.assertNotIn(obj_key, storage.all(User).keys())
+        cursor.close()
+        dbc.close()
 
     def test_reload(self):
-        """ Storage file is successfully loaded to __objects """
-        new = BaseModel()
-        storage.save()
+        """ Tests the reloading of the database session """
+        dbc = MySQLdb.connect(
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            port=3306,
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
+        )
+        cursor = dbc.cursor()
+        cursor.execute(
+            'INSERT INTO users(id, created_at, updated_at, email, password' +
+            ', first_name, last_name) VALUES(%s, %s, %s, %s, %s, %s, %s);',
+            [
+                '4447-by-me',
+                str(datetime.now()),
+                str(datetime.now()),
+                'ben_pike@yahoo.com',
+                'pass',
+                'Benjamin',
+                'Pike',
+            ]
+        )
+        self.assertNotIn('User.4447-by-me', storage.all())
+        dbc.commit()
         storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+        self.assertIn('User.4447-by-me', storage.all())
+        cursor.close()
+        dbc.close()
 
-    def test_reload_empty(self):
-        """ Load from an empty file """
-        with open('file.json', 'w') as f:
-            pass
-        with self.assertRaises(ValueError):
-            storage.reload()
-
-    def test_reload_from_nonexistent(self):
-        """ Nothing happens if file does not exist """
-        self.assertEqual(storage.reload(), None)
-
-    def test_base_model_save(self):
-        """ BaseModel save method calls storage save """
-        new = BaseModel()
+    def test_save(self):
+        """ object is successfully saved to database """
+        new = User(
+            email='john2020@gmail.com',
+            password='password',
+            first_name='John',
+            last_name='Zoldyck'
+        )
+        dbc = MySQLdb.connect(
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            port=3306,
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
+        )
+        cursor = dbc.cursor()
+        cursor.execute('SELECT * FROM users WHERE id="{}"'.format(new.id))
+        result = cursor.fetchone()
+        cursor.execute('SELECT COUNT(*) FROM users;')
+        old_cnt = cursor.fetchone()[0]
+        self.assertTrue(result is None)
+        self.assertFalse(new in storage.all().values())
         new.save()
-        self.assertTrue(os.path.exists('file.json'))
-
-    def test_type_path(self):
-        """ Confirm __file_path is string """
-        self.assertEqual(type(storage._FileStorage__file_path), str)
-
-    def test_type_objects(self):
-        """ Confirm __objects is a dict """
-        self.assertEqual(type(storage.all()), dict)
-
-    def test_key_format(self):
-        """ Key is properly formatted """
-        new = BaseModel()
-        _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
-
-    def test_storage_var_created(self):
-        """ FileStorage object storage created """
-        from models.engine.file_storage import FileStorage
-        print(type(storage))
-        self.assertEqual(type(storage), FileStorage)
+        dbc1 = MySQLdb.connect(
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            port=3306,
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
+        )
+        cursor1 = dbc1.cursor()
+        cursor1.execute('SELECT * FROM users WHERE id="{}"'.format(new.id))
+        result = cursor1.fetchone()
+        cursor1.execute('SELECT COUNT(*) FROM users;')
+        new_cnt = cursor1.fetchone()[0]
+        self.assertFalse(result is None)
+        self.assertEqual(old_cnt + 1, new_cnt)
+        self.assertTrue(new in storage.all().values())
+        cursor1.close()
+        dbc1.close()
+        cursor.close()
+        dbc.close()
