@@ -49,7 +49,7 @@ class BaseModel:
 
     def attr_update(self, attr_dict=None):
         """
-        Updates a BaseModel object
+        Updates a BaseModel object with attr_dict
         """
 
         do_not_update = ["id", "created_at", "updated_at"]
