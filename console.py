@@ -3,8 +3,9 @@
 import cmd
 import sys
 import shlex
+import models
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -82,7 +83,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
@@ -127,17 +128,19 @@ class HBNBCommand(cmd.Cmd):
                     key = i.split("=")[0]
                     value = i.split("=")[1]
                     if hasattr(new_instance, key) is True:
-                        value = value.replace("_", " ")
-                        try:
-                            value = eval(value)
-                        except ValueError:
-                            pass
-                        setattr(new_instance, key, value)
+                        if '_' in value:
+                            value = value.replace("_", " ")
+                        elif value.isdigit():
+                            if "." in value:
+                                value = float(value)
+                            elif "_id" not in key:
+                                value = int(value)
+                    setattr(new_instance, key, value)
                 except (ValueError, IndexError):
                     pass
             new_instance.save()
             print(new_instance.id)
-        except ValueError:
+        except NameError:
             print("** class doesn't exist **")
             return
 
@@ -216,18 +219,19 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
+        args = args.split(" ")
+        objects = storage.all(args[0])
+        try:
+            if args[0] != "":
+                models.classes[args[0]]
+        except (KeyError, NameError):
+            print("** class doesn't exist **")
+            return
+        try:
+            for key, val in objects.items():
+                print_list.append(val)
+        except ValueError:
+            pass
         print(print_list)
 
     def help_all(self):
