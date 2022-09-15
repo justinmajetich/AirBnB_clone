@@ -140,3 +140,23 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+Original Author:
+<p align="center">
+Justin Majetich -  <a href="https://github.com/justinmajetich">
+<img src="https://img.shields.io/badge/Justin-mainPage-blue">
+</a>
+</p>
+
+After Authors:
+<p align="center">
+Miguel Grillo -  <a href="https://github.com/Ineffable22">
+<img src="https://img.shields.io/badge/Miguel-mainPage-blue">
+</a>
+</p>
+
+<p align="center">
+Gonzalo Flores - <a href="https://github.com/zye7ert">
+<img src="https://img.shields.io/badge/Jeshua-mainPage-blue">
+</a>
+</p>
