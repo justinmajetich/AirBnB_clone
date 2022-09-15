@@ -141,7 +141,7 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 ###### Example 4: Create object (by parameters)
 Usage: create <class_name> <param 1> <param 2> <param 3>...
-<br>param syntax : key=value
+<br> param syntax : key=value
 ```
 (hbnb) create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10 price_by_night=300 latitude=37.773972 longitude=-122.431297
 (hbnb) (hbnb) 76b65327-9e94-4632-b688-aaa22ab8a124
