@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,6 +112,21 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    @staticmethod
+    def validate_create_parameters(value):
+        """Validates whether attribute value of the Object being
+        created using the HBNB cmd create command are valid"""
+        val = value
+        try:
+            val = float(value)
+        except ValueError:
+            pass
+
+        try:
+            val = int(value)
+        except ValueError:
+            pass
+        return val
 
     @staticmethod
     def parse_create_parameters(value):
@@ -140,6 +155,7 @@ class HBNBCommand(cmd.Cmd):
             return
         args_list = args.split(' ')
         classname = args_list[0]
+
         if classname not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -153,6 +169,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -347,6 +364,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
