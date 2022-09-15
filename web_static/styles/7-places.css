@@ -1,32 +1,29 @@
 .places {
-	display: block;
-	margin: 45px auto;
-	text-align: center;
+    width: 100%;
+    border: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-article {
-	display: inline-block;
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #FF5A5F;
-	border-radius: 4px;
-	text-align: center;
+.places > h1 {
+    font-size: 30px;
+    padding-left: 20px;
+    padding-top: 20px;
+    margin-bottom: 0px;
+    flex: 0 1 100%;
+}
+.places > article {
+    width: 390px;
+    padding: 20px 20px 20px 20px;
+    margin: 20px 20px 20px 20px;
+    border: 1px solid #FF5A5F;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
 }
 
-h1 {
-	float: left;
-	text-align: left;
-	width: 95%;
-	display: block;
-	margin-top: 0px;
-	margin-left: 20px;
-	margin-bottom: 5px;
-	font-size: 30px;
-}
-
-article h2 {
-	font-size: 30px;
-	padding: 0px;
-	margin: auto;
+.places > article > h2 {
+    font-size: 30px;
 }
