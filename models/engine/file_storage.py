@@ -59,6 +59,8 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """Delete obj from __objects if it’s inside
+        """
         if obj is not None:
             classe = str(type(obj)).split(' ')[1].split('.')[2]
             classe = classe[:len(classe)-2]
