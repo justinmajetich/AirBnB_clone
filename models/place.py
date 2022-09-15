@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
 
+
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id',
@@ -55,6 +56,7 @@ class Place(BaseModel, Base):
                                  secondary='place_amenity',
                                  viewonly=False,
                                  backref="place_amenities")
+
     else:
         city_id = ""
         user_id = ""
