@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -112,63 +111,43 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-    @staticmethod
-    def validate_create_parameters(value):
-        """Validates whether attribute value of the Object being
-        created using the HBNB cmd create command are valid"""
-        val = value
-        try:
-            val = float(value)
-        except ValueError:
-            pass
+    
 
-        try:
-            val = int(value)
-        except ValueError:
-            pass
-        return val
+    def _key_value_parser(self, args):
+        """creates a dictionary from a list of strings"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_dict[key] = value
+        return new_dict
 
-    @staticmethod
-    def parse_create_parameters(value):
-        """Converts values of parameters which are in string type
-        to appropriate string, float and integer types"""
-        val = value
-        if val.startswith('"'):
-            val = val.strip('"').replace("_", " ")
-            return val
-        try:
-            val = float(value)
-        except ValueError:
-            pass
-
-        try:
-            val = int(value)
-        except ValueError:
-            pass
-        return val
-
-    def do_create(self, args):
-        """ Create an object of any class"""
-        args_list = []
-        if not args:
+    def do_create(self, arg):
+        """Creates a new instance of a class"""
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-            return
-        args_list = args.split(' ')
-        classname = args_list[0]
-
-        if classname not in HBNBCommand.classes:
+            return False
+        if args[0] in classes:
+            new_dict = self._key_value_parser(args[1:])
+            instance = classes[args[0]](**new_dict)
+        else:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[classname]()
-        if len(args_list) > 1:
-            args_list = args_list[1:]
-            for parameter in args_list:
-                attribute, value = parameter.split('=')
-                value = HBNBCommand.parse_create_parameters(value)
-                setattr(new_instance, attribute, value)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            return False
+        print(instance.id)
+        instance.save()
 
 
     def help_create(self):
