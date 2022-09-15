@@ -4,19 +4,18 @@ from msilib.schema import InstallUISequence
 import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, primarykey, Integere, String
+from sqlalchemy import Column, primarykey, Integer, String, DATETIME
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
-    
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(datetime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(datetime, nullable=False, default=datetime.utcnow())
-    
-    
-    
+
+    id = Column(String(60), nullable=False, primary_key=True, unique=True)
+    created_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -46,19 +45,18 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
+        from models import storage
         dictionary = {}
-        for k in self.__dict__.keys():
-            if k == '_sa_instance_state':
-                del self.__dict__[k]
-
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary = dict(self.__dict__)
+        dictionary["__class__"] = str(type(self).__name__)
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary.keys():
+            del dictionary["_sa_instance_state"]
+            storage.save()
         return dictionary
 
     def delete(self):
+        """deletes the instance"""
         from models import storage
         storage.delete(self)
-        storage.save()
