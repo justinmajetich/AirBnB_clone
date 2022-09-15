@@ -1,6 +1,6 @@
 # /usr/bin/python3
 '''
-	Define class DBStorage
+Define class DBStorage
 '''
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -17,8 +17,8 @@ import models
 
 class DBStorage:
     '''
-                Create SQLalchemy database
-        '''
+    Create SQLalchemy database
+'''
 
     __engine = None
     __session = None
@@ -33,7 +33,8 @@ class DBStorage:
         db = getenv('HBNB_MYSQL_DB')
         envv = getenv('HBNB_ENV', "none")
         self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(user, pwd, host, db), pool_pre_ping=True)
+            'mysql+mysqldb://{}:{}@{}/{}'
+            .format(user, pwd, host, db), pool_pre_ping=True)
         if envv == "test":
             Base.metadata.drop_all(self.__engine)
 
