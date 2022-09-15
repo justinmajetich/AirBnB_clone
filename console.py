@@ -2,8 +2,9 @@
 """ Console Module """
 import cmd
 import sys
+import shlex 
 from models.base_model import BaseModel
-from models.__init__ import storage
+import models
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -140,9 +141,8 @@ class HBNBCommand(cmd.Cmd):
                     value = int(value)
             setattr(new_instance, key, value)
 
-        storage.save()
+        models.storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -206,7 +206,7 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             del(storage.all()[key])
-            storage.save()
+            models.storage.save()
         except KeyError:
             print("** no instance found **")
 
@@ -217,21 +217,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage.all().items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        args = shlex.split(args)
+        obj_list = []
+        if len(args) == 0:
+            for value in models.storage.all().values():
+                obj_list.append(str(value))
+        elif args[0] in self.classes:
+            for key in models.storage.all():
+                if key.startswith(args[0]):
+                    obj_list.append(str(models.storage.all()[key]))
         else:
-            for k, v in storage.all().items():
-                print_list.append(str(v))
+            print("** class doesn't exist **")
+            return False
+        print(obj_list)
 
-        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -241,7 +240,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage.all().items():
+        for k, v in models.storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
