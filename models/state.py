@@ -10,8 +10,8 @@ import models
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128),nulleable=False)
-    cities = relationship("City",  backref="state", cascade="delete")
+    name = Column(String(128))
+    cities = relationship("City",  backref="state")
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
