@@ -2,6 +2,7 @@
 -- sets up database
 -- creates new user 
 -- grants permissions
+
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
 CREATE USER IF NOT EXISTS 'hbnb_dev' @'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
