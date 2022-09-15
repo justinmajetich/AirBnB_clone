@@ -113,15 +113,43 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    @staticmethod
+    def parse_create_parameters(value):
+        """Converts values of parameters which are in string type
+        to appropriate string, float and integer types"""
+        val = value
+        if val.startswith('"'):
+            val = val.strip('"').replace("_", " ")
+            return val
+        try:
+            val = float(value)
+        except ValueError:
+            pass
+
+        try:
+            val = int(value)
+        except ValueError:
+            pass
+        return val
+
     def do_create(self, args):
         """ Create an object of any class"""
+        args_list = []
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args_list = args.split(' ')
+        classname = args_list[0]
+        if classname not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[classname]()
+        if len(args_list) > 1:
+            args_list = args_list[1:]
+            for parameter in args_list:
+                attribute, value = parameter.split('=')
+                value = HBNBCommand.parse_create_parameters(value)
+                setattr(new_instance, attribute, value)
         storage.save()
         print(new_instance.id)
         storage.save()
