@@ -21,7 +21,8 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self, cls=None):
+    def all(self, cls = None):
+
         """returns a dictionary
         Return:
             returns a dictionary of __object
@@ -83,6 +84,7 @@ class FileStorage:
         from models.place import Place
         from models.review import Review
 
+
         classes = {"BaseModel": BaseModel,
                    "User": User,
                    "State": State,
@@ -129,3 +131,4 @@ class FileStorage:
                          "text": str}
         }
         return attributes 
+

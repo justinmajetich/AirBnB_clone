@@ -103,6 +103,7 @@ class DBStorage():
                    "Place": Place,
                    "Review": Review}
         return classes
+
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
@@ -139,4 +140,4 @@ class DBStorage():
                          "user_id": str,
                          "text": str}
         }
-        return  
+        return  attributes
