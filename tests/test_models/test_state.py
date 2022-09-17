@@ -1,62 +1,67 @@
 #!/usr/bin/python3
-'''
-    Contain tests for the state module.
-'''
+"""test for state"""
 import unittest
-from models.base_model import BaseModel
+import os
 from models.state import State
-from os import getenv, remove
+from models.base_model import BaseModel
 import pep8
-
-storage = getenv("HBNB_TYPE_STORAGE", "fs")
 
 
 class TestState(unittest.TestCase):
-    '''
-        Test the State class.
-    '''
+    """this will test the State class"""
 
     @classmethod
     def setUpClass(cls):
-        '''
-            Sets up unittest
-        '''
-        cls.new_state = State()
-        cls.new_state.name = "California"
+        """set up for test"""
+        cls.state = State()
+        cls.state.name = "CA"
 
     @classmethod
-    def tearDownClass(cls):
-        '''
-            Tears down unittest
-        '''
-        del cls.new_state
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.state
+
+    def tearDown(self):
+        """teardown"""
         try:
-            remove("file.json")
-        except FileNotFoundError:
+            os.remove("file.json")
+        except Exception:
             pass
 
-    def test_States_dbtable(self):
-        '''
-            Check if the tablename is correct
-        '''
-        self.assertEqual(self.new_state.__tablename__, "states")
+    def test_pep8_Review(self):
+        """Tests pep8 style"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/state.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_State_inheritence(self):
-        '''
-            Test that State class inherits from BaseModel.
-        '''
-        self.assertIsInstance(self.new_state, BaseModel)
+    def test_checking_for_docstring_State(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(State.__doc__)
 
-    def test_State_attributes(self):
-        '''
-            Test that State class contains the attribute `name`.
-        '''
-        self.assertTrue("name" in self.new_state.__dir__())
+    def test_attributes_State(self):
+        """chekcing if State have attributes"""
+        self.assertTrue('id' in self.state.__dict__)
+        self.assertTrue('created_at' in self.state.__dict__)
+        self.assertTrue('updated_at' in self.state.__dict__)
+        self.assertTrue('name' in self.state.__dict__)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_State_attributes_type(self):
-        '''
-            Test that State class attribute name is class type str.
-        '''
-        name = getattr(self.new_state, "name")
-        self.assertIsInstance(name, str)
+    def test_is_subclass_State(self):
+        """test if State is subclass of BaseModel"""
+        self.assertTrue(issubclass(self.state.__class__, BaseModel), True)
+
+    def test_attribute_types_State(self):
+        """test attribute type for State"""
+        self.assertEqual(type(self.state.name), str)
+
+    def test_save_State(self):
+        """test if the save works"""
+        self.state.save()
+        self.assertNotEqual(self.state.created_at, self.state.updated_at)
+
+    def test_to_dict_State(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.state), True)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,123 +1,86 @@
 #!/usr/bin/python3
-'''
-    Testing the file_storage module.
-'''
-import time
+"""test for file storage"""
 import unittest
-import sys
-from models.engine.db_storage import DBStorage
-from models import storage
+import pep8
+import json
+import os
+from os import getenv
+import MySQLdb
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
-from models import storage
-from console import HBNBCommand
-from os import getenv
-from io import StringIO
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.engine.db_storage import DBStorage
 
-db = getenv("HBNB_TYPE_STORAGE")
 
-
-@unittest.skipIf(db != 'db', "Testing DBstorage only")
-class test_DBStorage(unittest.TestCase):
-    '''
-        Testing the DB_Storage class
-    '''
-    @classmethod
-    def setUpClass(cls):
-        '''
-            Initializing classes
-        '''
-        cls.dbstorage = DBStorage()
-        cls.output = StringIO()
-        sys.stdout = cls.output
+@unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+class TestDBStorage(unittest.TestCase):
+    '''this will test the DBStorage'''
 
     @classmethod
-    def tearDownClass(cls):
-        '''
-            delete variables
-        '''
-        del cls.dbstorage
-        del cls.output
+    def setUpClass(self):
+        """set up for test"""
+        self.User = getenv("HBNB_MYSQL_USER")
+        self.Passwd = getenv("HBNB_MYSQL_PWD")
+        self.Db = getenv("HBNB_MYSQL_DB")
+        self.Host = getenv("HBNB_MYSQL_HOST")
+        self.db = MySQLdb.connect(host=self.Host, user=self.User,
+                                  passwd=self.Passwd, db=self.Db,
+                                  charset="utf8")
+        self.query = self.db.cursor()
+        self.storage = DBStorage()
+        self.storage.reload()
 
-    def create(self):
-        '''
-            Create HBNBCommand()
-        '''
-        return HBNBCommand()
+    @classmethod
+    def teardown(self):
+        """at the end of the test this will tear it down"""
+        self.query.close()
+        self.db.close()
 
-    def test_new(self):
-        '''
-            Test DB new
-        '''
-        new_obj = State(name="California")
-        self.assertEqual(new_obj.name, "California")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_pep8_DBStorage(self):
+        """Test Pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/db_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_dbstorage_user_attr(self):
-        '''
-            Testing User attributes
-        '''
-        new = User(email="melissa@hbtn.com", password="hello")
-        self.assertTrue(new.email, "melissa@hbtn.com")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_read_tables(self):
+        """existing tables"""
+        self.query.execute("SHOW TABLES")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 7)
 
-    def test_dbstorage_check_method(self):
-        '''
-            Check methods exists
-        '''
-        self.assertTrue(hasattr(self.dbstorage, "all"))
-        self.assertTrue(hasattr(self.dbstorage, "__init__"))
-        self.assertTrue(hasattr(self.dbstorage, "new"))
-        self.assertTrue(hasattr(self.dbstorage, "save"))
-        self.assertTrue(hasattr(self.dbstorage, "delete"))
-        self.assertTrue(hasattr(self.dbstorage, "reload"))
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_no_element_user(self):
+        """no elem in users"""
+        self.query.execute("SELECT * FROM users")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
 
-    def test_dbstorage_all(self):
-        '''
-            Testing all function
-        '''
-        storage.reload()
-        result = storage.all("")
-        self.assertIsInstance(result, dict)
-        self.assertEqual(len(result), 0)
-        new = User(email="adriel@hbtn.com", password="abc")
-        console = self.create()
-        console.onecmd("create State name=California")
-        result = storage.all("State")
-        self.assertTrue(len(result) > 0)
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_no_element_cities(self):
+        """no elem in cities"""
+        self.query.execute("SELECT * FROM cities")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
 
-    def test_dbstorage_new_save(self):
-        '''
-           Testing save method
-        '''
-        new_state = State(name="NewYork")
-        storage.new(new_state)
-        save_id = new_state.id
-        result = storage.all("State")
-        temp_list = []
-        for k, v in result.items():
-            temp_list.append(k.split('.')[1])
-            obj = v
-        self.assertTrue(save_id in temp_list)
-        self.assertIsInstance(obj, State)
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_add(self):
+        """Test same size between storage() and existing db"""
+        self.query.execute("SELECT * FROM states")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
+        state = State(name="LUISILLO")
+        state.save()
+        self.db.autocommit(True)
+        self.query.execute("SELECT * FROM states")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 1)
 
-    def test_dbstorage_delete(self):
-        '''
-            Testing delete method
-        '''
-        new_user = User(email="haha@hehe.com", password="abc",
-                        first_name="Adriel", last_name="Tolentino")
-        storage.new(new_user)
-        save_id = new_user.id
-        key = "User.{}".format(save_id)
-        self.assertIsInstance(new_user, User)
-        storage.save()
-        old_result = storage.all("User")
-        del_user_obj = old_result[key]
-        storage.delete(del_user_obj)
-        new_result = storage.all("User")
-        self.assertNotEqual(len(old_result), len(new_result))
 
-    def test_model_storage(self):
-        '''
-            Test to check if storage is an instance for DBStorage
-        '''
-        self.assertTrue(isinstance(storage, DBStorage))
+if __name__ == "__main__":
+    unittest.main()

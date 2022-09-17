@@ -1,72 +1,67 @@
 #!/usr/bin/python3
-
-'''
-    All the test for the amenity model are implemented here.
-'''
-
+"""test for amenity"""
 import unittest
-import pep8
-from models.base_model import BaseModel
+import os
 from models.amenity import Amenity
-from os import getenv, remove
-
-
-storage = getenv("HBNB_TYPE_STORAGE", "fs")
+from models.base_model import BaseModel
+import pep8
 
 
 class TestAmenity(unittest.TestCase):
-    '''
-        Testing Amenity class
-    '''
+    """this will test the Amenity class"""
+
     @classmethod
     def setUpClass(cls):
-        '''
-            Sets up unittest
-        '''
-        cls.new_amenity = Amenity()
-        cls.new_amenity.name = "wifi"
+        """set up for test"""
+        cls.amenity = Amenity()
+        cls.amenity.name = "Breakfast"
 
     @classmethod
-    def tearDownClass(cls):
-        '''
-            Tears down unittest
-        '''
-        del cls.new_amenity
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.amenity
+
+    def tearDown(self):
+        """teardown"""
         try:
-            remove("file.json")
-        except FileNotFoundError:
+            os.remove("file.json")
+        except Exception:
             pass
 
-    def test_pep8_style_check(self):
-        '''
-            Tests pep8 style
-        '''
+    def test_pep8_Amenity(self):
+        """Tests pep8 style"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/amenity.py'])
-        self.assertEqual(p.total_errors, 0, "pep8 error needs fixing")
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_States_dbtable(self):
-        '''
-            Check if the tablename is correct
-        '''
-        self.assertEqual(self.new_amenity.__tablename__, "amenities")
+    def test_checking_for_docstring_Amenity(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(Amenity.__doc__)
 
-    def test_Amenity_inheritence(self):
-        '''
-            tests that the Amenity class Inherits from BaseModel
-        '''
-        self.assertIsInstance(self.new_amenity, BaseModel)
+    def test_attributes_Amenity(self):
+        """chekcing if amenity have attibutes"""
+        self.assertTrue('id' in self.amenity.__dict__)
+        self.assertTrue('created_at' in self.amenity.__dict__)
+        self.assertTrue('updated_at' in self.amenity.__dict__)
+        self.assertTrue('name' in self.amenity.__dict__)
 
-    def test_Amenity_attributes(self):
-        '''
-            Test that Amenity class had name attribute.
-        '''
-        self.assertTrue("name" in self.new_amenity.__dir__())
+    def test_is_subclass_Amenity(self):
+        """test if Amenity is subclass of Basemodel"""
+        self.assertTrue(issubclass(self.amenity.__class__, BaseModel), True)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_Amenity_attribute_type(self):
-        '''
-            Test that Amenity class had name attribute's type.
-        '''
-        name_value = getattr(self.new_amenity, "name")
-        self.assertIsInstance(name_value, str)
+    def test_attribute_types_Amenity(self):
+        """test attribute type for Amenity"""
+        self.assertEqual(type(self.amenity.name), str)
+
+    def test_save_Amenity(self):
+        """test if the save works"""
+        self.amenity.save()
+        self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
+
+    def test_to_dict_Amenity(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.amenity), True)
+
+
+if __name__ == "__main__":
+    unittest.main()

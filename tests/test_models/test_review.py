@@ -1,81 +1,75 @@
 #!/usr/bin/python3
-
-'''
-    All the test for the user model are implemented here.
-'''
-
+"""test for review"""
 import unittest
-import pep8
-from models.base_model import BaseModel
+import os
+from os import getenv
 from models.review import Review
-from os import getenv, remove
-
-storage = getenv("HBNB_TYPE_STORAGE", "fs")
+from models.base_model import BaseModel
+import pep8
 
 
 class TestReview(unittest.TestCase):
-    '''
-        Testing Review class
-    '''
+    """this will test the place class"""
 
     @classmethod
     def setUpClass(cls):
-        '''
-            Sets up unittest
-        '''
+        """set up for test"""
         cls.rev = Review()
-        cls.rev.user_id = "Adriel and Melissa 123"
-        cls.rev.place_id = "Amy and Victor's room at SF"
-        cls.rev.text = "Team Awesome includes Adekunle"
+        cls.rev.place_id = "4321-dcba"
+        cls.rev.user_id = "123-bca"
+        cls.rev.text = "The srongest in the Galaxy"
 
     @classmethod
-    def tearDownClass(cls):
-        '''
-            Tears down unittest
-        '''
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
         del cls.rev
+
+    def tearDown(self):
+        """teardown"""
         try:
-            remove("file.json")
-        except FileNotFoundError:
+            os.remove("file.json")
+        except Exception:
             pass
 
-    def test_pep8_style_check(self):
-        '''
-            Tests pep8 style
-        '''
+    def test_pep8_Review(self):
+        """Tests pep8 style"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/review.py'])
-        self.assertEqual(p.total_errors, 0, "pep8 error needs fixing")
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_Review_dbtable(self):
-        '''
-            Check if the tablename is correct
-        '''
-        self.assertEqual(self.rev.__tablename__, "reviews")
+    def test_checking_for_docstring_Review(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(Review.__doc__)
 
-    def test_Review_inheritance(self):
-        '''
-            Tests that the Review class Inherits from BaseModel
-        '''
-        self.assertIsInstance(self.rev, BaseModel)
+    def test_attributes_review(self):
+        """chekcing if review have attributes"""
+        self.assertTrue('id' in self.rev.__dict__)
+        self.assertTrue('created_at' in self.rev.__dict__)
+        self.assertTrue('updated_at' in self.rev.__dict__)
+        self.assertTrue('place_id' in self.rev.__dict__)
+        self.assertTrue('text' in self.rev.__dict__)
+        self.assertTrue('user_id' in self.rev.__dict__)
 
-    def test_Review_attributes(self):
-        '''
-            Tests Review class has place_id, user_id and text attributes
-        '''
-        self.assertTrue("place_id" in self.rev.__dir__())
-        self.assertTrue("user_id" in self.rev.__dir__())
-        self.assertTrue("text" in self.rev.__dir__())
+    def test_is_subclass_Review(self):
+        """test if review is subclass of BaseModel"""
+        self.assertTrue(issubclass(self.rev.__class__, BaseModel), True)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_Review_attributes(self):
-        '''
-            Test that Review class has place_id, user_id and text
-            attributes.
-        '''
-        place_id = getattr(self.rev, "place_id")
-        user_id = getattr(self.rev, "user_id")
-        text = getattr(self.rev, "text")
-        self.assertIsInstance(place_id, str)
-        self.assertIsInstance(user_id, str)
-        self.assertIsInstance(text, str)
+    def test_attribute_types_Review(self):
+        """test attribute type for Review"""
+        self.assertEqual(type(self.rev.text), str)
+        self.assertEqual(type(self.rev.place_id), str)
+        self.assertEqual(type(self.rev.user_id), str)
+
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
+    def test_save_Review(self):
+        """test if the save works"""
+        self.rev.save()
+        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
+
+    def test_to_dict_Review(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.rev), True)
+
+
+if __name__ == "__main__":
+    unittest.main()

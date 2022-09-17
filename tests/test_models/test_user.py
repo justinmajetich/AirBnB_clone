@@ -1,97 +1,76 @@
 #!/usr/bin/python3
-
-'''
-    All the test for the user model are implemented here.
-'''
-
+"""test for user"""
 import unittest
-from models.base_model import BaseModel
+import os
 from models.user import User
-from os import getenv, remove
-from io import StringIO
-import sys
-import datetime
+from models.base_model import BaseModel
 import pep8
 
 
-storage = getenv("HBNB_TYPE_STORAGE", "fs")
-
-
 class TestUser(unittest.TestCase):
-    '''
-        Testing User class
-    '''
+    """this will test the User class"""
+
     @classmethod
     def setUpClass(cls):
-        '''
-            Sets up unittest
-        '''
-        cls.new_user = User()
-        cls.new_user.email = "email@gmail.com"
-        cls.new_user.password = "password"
-        cls.new_user.firt_name = "Mel"
-        cls.new_user.last_name = "Ng"
+        """set up for test"""
+        cls.user = User()
+        cls.user.first_name = "Kevin"
+        cls.user.last_name = "Yook"
+        cls.user.email = "yook00627@gmamil.com"
+        cls.user.password = "secret"
 
     @classmethod
-    def tearDownClass(cls):
-        '''
-            Tears down unittest
-        '''
-        del cls.new_user
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.user
+
+    def tearDown(self):
+        """teardown"""
         try:
-            remove("file.json")
-        except FileNotFoundError:
+            os.remove("file.json")
+        except Exception:
             pass
 
-    def test_User_dbtable(self):
-        '''
-            Check if the tablename is correct
-        '''
-        self.assertEqual(self.new_user.__tablename__, "users")
+    def test_pep8_User(self):
+        """Tests pep8 style"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/user.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_User_inheritance(self):
-        '''
-            tests that the User class Inherits from BaseModel
-        '''
-        self.assertIsInstance(self.new_user, BaseModel)
+    def test_checking_for_docstring_User(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(User.__doc__)
 
-    def test_User_attributes(self):
-        '''
-            Test the user attributes exist
-        '''
-        self.assertTrue("email" in self.new_user.__dir__())
-        self.assertTrue("first_name" in self.new_user.__dir__())
-        self.assertTrue("last_name" in self.new_user.__dir__())
-        self.assertTrue("password" in self.new_user.__dir__())
+    def test_attributes_User(self):
+        """chekcing if User have attributes"""
+        self.assertTrue('email' in self.user.__dict__)
+        self.assertTrue('id' in self.user.__dict__)
+        self.assertTrue('created_at' in self.user.__dict__)
+        self.assertTrue('updated_at' in self.user.__dict__)
+        self.assertTrue('password' in self.user.__dict__)
+        self.assertTrue('first_name' in self.user.__dict__)
+        self.assertTrue('last_name' in self.user.__dict__)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_type_email(self):
-        '''
-            Test the type of name
-        '''
-        name = getattr(self.new_user, "email")
-        self.assertIsInstance(name, str)
+    def test_is_subclass_User(self):
+        """test if User is subclass of Basemodel"""
+        self.assertTrue(issubclass(self.user.__class__, BaseModel), True)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_type_first_name(self):
-        '''
-            Test the type of name
-        '''
-        name = getattr(self.new_user, "first_name")
-        self.assertIsInstance(name, str)
+    def test_attribute_types_User(self):
+        """test attribute type for User"""
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_type_last_name(self):
-        '''
-            Test the type of last_name
-        '''
-        name = getattr(self.new_user, "last_name")
-        self.assertIsInstance(name, str)
+    def test_save_User(self):
+        """test if the save works"""
+        self.user.save()
+        self.assertNotEqual(self.user.created_at, self.user.updated_at)
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
-    def test_type_password(self):
-        '''
-            Test the type of password
-        '''
-        name = getattr(self.new_user, "password")
-        self.assertIsInstance(name, str)
+    def test_to_dict_User(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.user), True)
+
+
+if __name__ == "__main__":
+    unittest.main()
