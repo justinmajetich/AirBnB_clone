@@ -19,7 +19,7 @@ class FileStorage:
                     dic[key] = FileStorage.__objects[key]
             return dic
         else:
-            return FileStorage.__objects
+            return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
