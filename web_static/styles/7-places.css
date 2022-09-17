@@ -1,32 +1,28 @@
-.places {
-	display: block;
-	margin: 45px auto;
-	text-align: center;
+.container .places {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-article {
-	display: inline-block;
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #FF5A5F;
-	border-radius: 4px;
-	text-align: center;
+.places h1 {
+  font-size: 30px;
+  flex: 0 0 100%;
+  margin: 0;
+  padding-top: 30px;
+  padding-left: 30px;
 }
 
-h1 {
-	float: left;
-	text-align: left;
-	width: 95%;
-	display: block;
-	margin-top: 0px;
-	margin-left: 20px;
-	margin-bottom: 5px;
-	font-size: 30px;
+.places article {
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  text-align: center;
+  align-items: flex-start;
 }
 
-article h2 {
-	font-size: 30px;
-	padding: 0px;
-	margin: auto;
+.places article h2 {
+  font-size: 30px;
+  margin: 0;
 }

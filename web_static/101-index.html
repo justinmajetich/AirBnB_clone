@@ -1,195 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>AirBnB clone</title>
 
-		<link rel="shortcut icon" href="images/icon.ico" >
+<head>
+	<meta charset="utf-8">
+	<title>AirBnB Clone</title>
 
-		<link rel="stylesheet" href="styles/4-common.css"/>
-		<link rel="stylesheet" href="styles/3-header.css"/>
-		<link rel="stylesheet" href="styles/3-footer.css"/>
-		<link rel="stylesheet" href="styles/6-filters.css"/>
-		<link rel="stylesheet" href="styles/100-places.css"/>
-	</head>
-    <body>
-		<header>
-			<div id="header_logo"></div>
-		</header>
-		<div class="container">
-			<section class="filters">
-				<button>Search</button>
-				<div class="locations">
-					<h3>States</h3>
-					<h4>California, Arizona...</h4>
-					<ul class="popover">
-						<li><h2>Arizona</h2>
-							<ul>
-								<li><h4>Page</h4></li>
-								<li><h4>Page2</h4></li>
-							</ul></li>
-						<li><h2>California</h2>
-							<ul>
-								<li><h4>San Francisco</h4></li>
-								<li><h4>Los Altos</h4></li>
-							</ul></li>
+	<link rel="icon" type="image/png" href="images/icon.png" />
+	
+	<link rel="stylesheet" type="text/css" href="styles/4-common.css" />
+	<link rel="stylesheet" type="text/css" href="styles/3-header.css" />
+	<link rel="stylesheet" type="text/css" href="styles/6-filters.css" />
+	<link rel="stylesheet" type="text/css" href="styles/101-places.css" />
+	<link rel="stylesheet" type="text/css" href="styles/3-footer.css" />
+</head>
+
+<body>
+	<header></header>
+	<div class="container">
+		<section class="filters">
+			<div class="locations">
+				<h3>States</h3>
+				<h4>California, Arizona...</h4>
+				<ul class="popover">
+					<li>
+						<h2>Arizona:</h2>
+						<ul>
+							<li>Page</li>
+							<li>Page2</li>
+						</ul>
+					</li>
+					<li>&nbsp;</li>
+					<li>
+						<h2>California:</h2>
+						<ul>
+							<li>San Francisco</li>
+							<li>Los Altos</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="amenities">
+				<h3>Amenities</h3>
+				<h4>Internet, Kitchen...</h4>
+				<ul class="popover">
+					<li>
+						<ul>
+							<li>Internet</li>
+							<li>TV</li>
+							<li>Kitchen</li>
+							<li>Iron</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<button>Search</button>
+		</section>
+		<section class="places">
+			<h1>Places</h1>
+			<article>
+				<h2>My home</h2>
+				<div class="price_by_night">$80</div>
+				<div class="information">
+					<div class="max_guest">2 Guests</div>
+					<div class="number_rooms">1 Bedroom</div>
+					<div class="number_bathrooms">1 Bathroom</div>
+				</div>
+				<div class="user">
+					<strong>Owner:</strong>&nbsp;
+					John Lennon
+				</div>
+				<div class="description">
+					This is a lovely 1 bedroom and 1 bathroom apartment that can accomodate 2 people. It locates at the center of Shanghai and next to subway line 1. 1 stop to People Square, 2 stops to Bund, 3 stops to Jingan Temple.
+				</div>
+				<div class="amenities">
+					<h2>Amenities</h2>
+					<ul>
+						<li class="amenity-tv">TV</li>
+						<li class="amenity-wifi">WiFi</li>
+						<li class="amenity-pets">Pets friendly</li>
 					</ul>
 				</div>
-				<div class="filter_amenities">
-					<h3>Amenities</h3>
-					<h4>Internet, Kitchen...</h4>
-					<ul class="popover">
-						<li><h4>Internet</h4></li>
-						<li><h4>TV</h4></li>
-						<li><h4>Kitchen</h4></li>
-						<li><h4>Iron</h4></li>
+				<div class="reviews">
+					<h2>2 Reviews</h2>
+					<ul>
+						<li>
+							<h3>From Bob Dylan the 27th January 2017</h3>
+							<p>Runshi is an epic host. Nothing more I can say. 5 star!</p>
+						</li>
+						<li>
+							<h3>From Connor the 4th January 2017</h3>
+							<p>Highly recommended!</p>
+						</li>
 					</ul>
 				</div>
+			</article>
+			<article>
+				<h2>Tiny house</h2>
+				<div class="price_by_night">$65</div>
+				<div class="information">
+					<div class="max_guest">4 Guests</div>
+					<div class="number_rooms">2 Bedrooms</div>
+					<div class="number_bathrooms">1 Bathroom</div>
+				</div>
+				<div class="user">
+					<strong>Owner:</strong>&nbsp;
+					Adrienne
+				</div>
+				<div class="description">
+					Our place is a private, affordable stand-alone guets house centrally located just minutes to French Quarters, downtown, the Fair Grounds (Jazz Fest) and City Park. The guest house is a quaint, 400 square ft. with a full bath, mini kitchen, & living room. The extra high ceilings make the home feel more spacious. The sofa converts to a bed also. We have a hand made counter area that adds character to the room and a great porch/deck to relax on and have a glass of Merlot.
+				</div>
+				<div class="amenities">
+					<h2>Amenities</h2>
+					<ul>
+						<li class="amenity-pets">Pets friendly</li>
+					</ul>
+				</div>
+				<div class="reviews">
+					<h2>1 Review</h2>
+					<ul>
+						<li>
+							<h3>From Max the 27th January 2017</h3>
+							<p>Fantastic place. It was clean, Adrienne was great (even though we did not meet in person) and everything went super smooth. Location is also great if you like running and something a bit more quiet. I would suggest a car or take into consideration that you might have to Uber into the city from the location. Overall, would recommend the place anytime.</p>
+						</li>
+					</ul>
+				</div>
+			</article>
+			<article>
+				<h2>A suite</h2>
+				<div class="price_by_night">$190</div>
+				<div class="information">
+					<div class="max_guest">6 Guests</div>
+					<div class="number_rooms">3 Bedrooms</div>
+					<div class="number_bathrooms">2 Bathrooms</div>
+				</div>
+				<div class="user">
+					<strong>Owner:</strong>&nbsp;
+					Bill Zuckerberg
+				</div>
+				<div class="description">
+					Newly renovated spacious 2 bedrooms 2 baths in cozy Gastown style unit with the views of North Shore mountains. Woodward’s landmark building situated at the historic heart of Vancouver.
+				</div>
+				<div class="amenities">
+					<h2>Amenities</h2>
+					<ul>
+						<li class="amenity-tv">TV</li>
+						<li class="amenity-pets">Pets friendly</li>
+					</ul>
+				</div>
+				<div class="reviews">
+					<h2>0 Reviews</h2>
+				</div>
+			</article>
+		</section>
+	</div>
+	<footer>
+		<p>Best School</p>
+	</footer>
+</body>
 
-			</section>
-			<section class="places">
-				<h1>Places</h1>
-				<article>
-					<div class="headline">
-						<h2 class="article_title">My home</h2>
-						<div class="price_by_night">$80</div>
-					</div>
-					<div class="information">
-						<div class="max_guest">
-							<div class="guest_icon"></div>
-							<p>2 Guests</p>
-						</div>
-						<div class="number_rooms">
-							<div class="bed_icon"></div>
-							<p>1 Bedroom</p>
-						</div>
-						 <div class="number_bathrooms">
-							<div class="bath_icon"></div>
-							<p>1 Bathroom</p>
-						</div>
-					</div>
-					<div class="user"><b>Owner</b>: John Lennon</div>
-					<div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    </div>
-					<div class="amenities">
-						<h2 class="article_subtitle">Amenities</h2>
-						<ul>
-							<li><div class="tv_icon"></div>TV</li>
-							<li><div class="wifi_icon"></div>Wifi</li>
-							<li><div class="pet_icon"></div>Pet friendly</li>
-						</ul>
-					</div>
-					<div class="reviews">
-						<h2 class="article_subtitle">Reviews</h2>
-						<ul>
-							<li>
-								<div class="review_item">
-									<h3>From Bob Dylan the 27th January 2017</h3>
-									<p class="review_text">Wow, what can I say?! I'm a real rolling stone, you may have heard, but - by golly - I'd just as well settle down in this humble home, if you'd part with it - course, I'm sure you wouldn't. Real shame too. Oh well...</p>
-								</div>
-							</li>
-							<li>
-								<div class="review_item">
-									<h3>From Justin Majetich the 28th April 1991</h3>
-									<p class="review_text">I was birthed in this here bathtub today!</p>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</article>
-				<article>
-					<div class="headline">
-						<h2 class="article_title">Tiny house</h2>
-						<div class="price_by_night">$65</div>
-					</div>
-					<div class="information">
-                        <div class="max_guest">
-                            <div class="guest_icon"></div>
-                            <p>4 Guests</p>
-                        </div>
-                        <div class="number_rooms">
-                            <div class="bed_icon"></div>
-                            <p>2 Bedroom</p>
-                        </div>
-                         <div class="number_bathrooms">
-                            <div class="bath_icon"></div>
-                            <p>1 Bathroom</p>
-                        </div>
-                    </div>
-					<div class="user"><b>Owner</b>: Adrienne</div>
-					<div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </div>
-					<div class="amenities">
-                        <h2 class="article_subtitle">Amenities</h2>
-                        <ul>
-                            <li><div class="tv_icon"></div>TV</li>
-                            <li><div class="wifi_icon"></div>Wifi</li>
-                        </ul>
-                    </div>
-                    <div class="reviews">
-                        <h2 class="article_subtitle">Reviews</h2>
-                        <ul>
-                            <li>
-								<div class="review_item">
-                                	<h3>From Bilbo Baggins the 6th June 2089</h3>
-                                	<p class="review_text">The place was spotless, and Adrienne was an excellent host, leaving fresh biscuits out for my ravenous arrival.</p>
-								</div>
-                            </li>
-                        </ul>
-                    </div>
-				</article>
-				<article>
-					<div class="headline">
-						<h2 class="article_title">A suite</h2>
-						<div class="price_by_night">$180</div>
-					</div>
-					<div class="information">
-                        <div class="max_guest">
-                            <div class="guest_icon"></div>
-                            <p>5 Guests</p>
-                        </div>
-                        <div class="number_rooms">
-                            <div class="bed_icon"></div>
-                            <p>3 Bedroom</p>
-                        </div>
-                         <div class="number_bathrooms">
-                            <div class="bath_icon"></div>
-                            <p>2 Bathroom</p>
-                        </div>
-                    </div>
-					<div class="user"><b>Owner</b>: Betty Holberton</div>
-					<div class="description">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</div>
-					<div class="amenities">
-                        <h2 class="article_subtitle">Amenities</h2>
-                        <ul>
-                            <li><div class="pet_icon"></div>Pet friendly</li>
-                        </ul>
-                    </div>
-                    <div class="reviews">
-                        <h2 class="article_subtitle">Reviews</h2>
-                        <ul>
-                            <li>
-								<div class="review_item">
-                                	<h3>From Beyonce Knowles the 16th September 2013</h3>
-                                	<p class="review_text">Betty was a sweetheart. Jay, I and the kids thoroughly enjoyed out stay.</p>
-								</div>
-                            </li>
-                            <li>
-								<div class="review_item">
-                                	<h3>From Julien Barbier the 1th August 2008</h3>
-                                	<p class="review_text">What a beautiful home! I had one of the best night's sleeps of my life and woke up with an idea!</p>
-								</div>
-                            </li>
-                        </ul>
-                    </div>
-				</article>
-			</section>
-		</div>
-		<footer>
-			<p>Holberton School</p>
-		</footer>
-	</body>
 </html>
