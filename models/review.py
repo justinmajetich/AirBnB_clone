@@ -1,37 +1,18 @@
 #!/usr/bin/python3
-'''
-    Implementation of the State class
-'''
-
+"""This is the review class"""
+from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-from models.city import City
-import os
-import models
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
 
 
-class State(BaseModel, Base):
-    '''
-        Implementation for the State.
-    '''
-    __tablename__ = 'states'
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", passive_deletes=True, backref="state")
-    else:
-        name = ""
-
-        @property
-        def cities(self):
-            """
-            cities property
-            """
-            city_list = []
-            for key, val in models.storage.all().items():
-                try:
-                    if val.state_id == self.id:
-                        city_list.append(val)
-                except AttributeError:
-                    pass
-            return city_list
+class Review(BaseModel, Base):
+    """This is the class for Review
+    Attributes:
+        place_id: place id
+        user_id: user id
+        text: review description
+    """
+    __tablename__ = "reviews"
+    text = Column(String(1024), nullable=False)
+    place_id = Column(String(60), ForeignKey("places.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
