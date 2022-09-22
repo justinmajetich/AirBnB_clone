@@ -5,6 +5,9 @@ from datetime import datetime
 from fabric.contrib import files
 from fabric.api import env, put, run, local
 
+env.hosts = ['34.202.231.144', '54.85.119.117']
+env.user = 'ubuntu'
+
 
 def do_pack():
     """
@@ -36,9 +39,6 @@ def do_deploy(archive_path):
         If all operations have been done correctly - True
         Otherwise - False
     """
-    env.hosts = ['34.202.231.144', '54.85.119.117']
-    env.user = 'ubuntu'
-
     if os.path.isfile(archive_path) is False:
         return False
     file = archive_path.split('/')[-1]
