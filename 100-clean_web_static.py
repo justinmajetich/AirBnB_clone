@@ -7,6 +7,11 @@ env.user = 'ubuntu'
 
 
 def do_clean(number=0):
+    """Cleans old versions from local and remote folders
+
+    Args:
+        number (str): number of the archives to keep (the newest)
+    """
     number = int(number)
     if number == 0:
         number = 1
