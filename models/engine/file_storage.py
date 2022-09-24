@@ -66,3 +66,7 @@ class FileStorage:
             self.save()
         except (AttributeError, KeyError):
             pass
+
+    def close(self):
+        """Calls the reload() method"""
+        self.reload()
