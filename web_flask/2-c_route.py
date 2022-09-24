@@ -9,7 +9,6 @@ Routes:
     variable (replace underscore _ symbols with a space)
 """
 from flask import Flask
-from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -29,8 +28,8 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 def c_is_fun(text):
     """Displays C <text>"""
-    txt = text.replace("_", " ")
-    return f"C {escape(txt)}"
+    text = text.replace("_", " ")
+    return "C {}".format(text)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
