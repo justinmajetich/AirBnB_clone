@@ -1,29 +1,30 @@
 #!/usr/bin/python3
-"""web server distribution"""
-from fabric.api import *
-import os.path
+"""
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
+"""
 
-env.user = 'ubuntu'
-env.hosts = ["104.196.155.240", "34.74.146.120"]
-env.key_filename = "~/id_rsa"
+from fabric.api import put, run, env
+from os.path import exists
+env.hosts = ['142.44.167.228', '144.217.246.195']
 
 
 def do_deploy(archive_path):
-    """distributes an archive to your web servers
-    """
-    if os.path.exists(archive_path) is False:
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
     try:
-        arc = archive_path.split("/")
-        base = arc[1].strip('.tgz')
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
+        path = "/data/web_static/releases/"
         put(archive_path, '/tmp/')
-        sudo('mkdir -p /data/web_static/releases/{}'.format(base))
-        main = "/data/web_static/releases/{}".format(base)
-        sudo('tar -xzf /tmp/{} -C {}/'.format(arc[1], main))
-        sudo('rm /tmp/{}'.format(arc[1]))
-        sudo('mv {}/web_static/* {}/'.format(main, main))
-        sudo('rm -rf /data/web_static/current')
-        sudo('ln -s {}/ "/data/web_static/current"'.format(main))
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
     except:
         return False
