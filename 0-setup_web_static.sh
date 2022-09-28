@@ -33,8 +33,8 @@ config_text=\
 systemctl status nginx > /dev/null 2>&1
 cmd_status=$?
 if [[ $cmd_status -ne 0 ]]; then
-    sudo apt update
-    sudo apt install nginx -y
+    sudo apt-get update
+    sudo apt-get install nginx -y
 fi
 
 if ! [ -d $test ]; then
