@@ -8,9 +8,9 @@ env.hosts = ["3.235.176.169", "3.227.240.66"]
 
 
 def do_pack():
-    """
-    Targging project directory into a packages as .tgz
-    """
+
+    #Targging project directory into a packages as .tgz
+   
     now = datetime.now().strftime("%Y%m%d%H%M%S")
     local('sudo mkdir -p ./versions')
     path = './versions/web_static_{}'.format(now)
