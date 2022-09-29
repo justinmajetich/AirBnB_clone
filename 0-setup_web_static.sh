@@ -1,27 +1,21 @@
 #!/usr/bin/env bash
-# Prepare your web servers
+#Bash script that sets up web servers for the deployment of web_static.
 
-## Update server
-sudo apt-get -y update
-sudo apt-get -y upgrade
+sudo apt-get update
 
-## Install NGINX
-sudo apt-get -y install nginx
+#install nginx
+sudo apt-get install -y nginx
 
-## Creates directories
-sudo mkdir -p /data/web_static/shared /data/web_static/releases/test
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
 
-## Write Hello World in index with tee command
-echo "Hello World" | sudo tee /data/web_static/releases/test/index.html
+echo "Hello web server" > /data/web_static/releases/test/index.html
 
-## Create Symbolic link
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current 
 
-## Change owner and group like ubuntu
-sudo chown -R ubuntu:ubuntu /data
+sudo chown -R ubuntu /data/
+sudo chgrp -R ubuntu /data/
 
-## Add new configuration to NGINX
-sudo sed -i "/listen 80 default_server;/ a \\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-available/default
+sudo sed -i '37i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
-## Restart NGINX
 sudo service nginx restart
