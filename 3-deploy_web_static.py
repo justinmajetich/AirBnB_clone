@@ -3,8 +3,21 @@
 Fabric file to generate Project Deploy Static
 """
 from fabric.api import env, sudo, run, local, put
+from datetime import datetime
 
 env.hosts = ['3.235.225.96', '34.236.187.99']
+
+
+def do_pack():
+    """
+    Function to create the compressed file
+    """
+    curr_datetime = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    path = "./versions/web_static_" + curr_datetime + ".tgz"
+    local("mkdir -p ./versions")
+    if local("tar -cvzf " + path + " ./web_static").succeeded:
+        return path
+    return None
 
 
 def do_deploy(archive_path):
@@ -39,3 +52,10 @@ def do_deploy(archive_path):
         return False
     print('New version deployed!')
     return True
+
+
+def deploy():
+    tar_path = do_pack()
+    if tar_path is None:
+        return False
+    return do_deploy(tar_path)
