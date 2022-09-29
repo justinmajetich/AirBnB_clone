@@ -55,6 +55,9 @@ def do_deploy(archive_path):
 
 
 def deploy():
+    """
+    Function to run both do_pack and do_deploy
+    """
     tar_path = do_pack()
     if tar_path is None:
         return False
