@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-Write a Fabric script that generates a .tgz
-@author: Bashir AmirKano 
-"""
+#Write a Fabric script that generates a .tgz
 from fabric.api import local, env
 from datetime import datetime
 
