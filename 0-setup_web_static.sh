@@ -3,7 +3,7 @@
 
 # Install Nginx if not already installed
 if [ "$(dpkg-query -l nginx | wc -l)" -le 1 ]; then
-    apt update
+    apt -y update
     apt install -y nginx
 fi
 
@@ -14,15 +14,6 @@ fi
 #+ /data/web_static/releases/test/
 #+ /data/web_static/shared/     
 mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
-
-TEMP=\
-"<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>"
 
 echo "$TEMP" > /data/web_static/releases/test/index.html
 
