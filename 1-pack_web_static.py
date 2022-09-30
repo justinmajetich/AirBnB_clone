@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Packing to somewhere
 """
 Module that contains a fabfile that archives the web_static folder
 of the AirBnB Clone repo.
@@ -7,12 +8,11 @@ from datetime import datetime
 from fabric.api import local
 
 
+@runs_once
 def do_pack():
     """Archives the web_static folder """
-    day = datetime.now()
-    filename = "versions/web_static_{}{}{}\
-{}{}{}.tgz".format(day.year, day.month, day.day,
-                   day.hour, day.minute, day.second)
+    filename = ("versions/web_static_{}.tgz"
+                .format(datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")))
     local("mkdir -p versions")
     result = local(f"tar -cvzf {filename} web_static")
 
