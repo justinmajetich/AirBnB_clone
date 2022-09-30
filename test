@@ -1,0 +1,21 @@
+guillaume@ubuntu:~/AirBnB_clone_v2$ fab -f 2-do_deploy_web_static.py do_deploy:archive_path=versions/web_static_20170315003959.tgz -i my_ssh_private_key -u ubuntu
+[52.55.249.213] Executing task 'do_deploy'
+[52.55.249.213] put: versions/web_static_20170315003959.tgz -> /tmp/web_static_20170315003959.tgz
+[52.55.249.213] run: mkdir -p /data/web_static/releases/web_static_20170315003959/
+[52.55.249.213] run: tar -xzf /tmp/web_static_20170315003959.tgz -C /data/web_static/releases/web_static_20170315003959/
+[52.55.249.213] run: rm /tmp/web_static_20170315003959.tgz
+[52.55.249.213] run: mv /data/web_static/releases/web_static_20170315003959/web_static/* /data/web_static/releases/web_static_20170315003959/
+[52.55.249.213] run: rm -rf /data/web_static/releases/web_static_20170315003959/web_static
+[52.55.249.213] run: rm -rf /data/web_static/current
+[52.55.249.213] run: ln -s /data/web_static/releases/web_static_20170315003959/ /data/web_static/current
+New version deployed!
+[54.157.32.137] Executing task 'deploy'
+[54.157.32.137] put: versions/web_static_20170315003959.tgz -> /tmp/web_static_20170315003959.tgz
+[54.157.32.137] run: mkdir -p /data/web_static/releases/web_static_20170315003959/
+[54.157.32.137] run: tar -xzf /tmp/web_static_20170315003959.tgz -C /data/web_static/releases/web_static_20170315003959/
+[54.157.32.137] run: rm /tmp/web_static_20170315003959.tgz
+[54.157.32.137] run: mv /data/web_static/releases/web_static_20170315003959/web_static/* /data/web_static/releases/web_static_20170315003959/
+[54.157.32.137] run: rm -rf /data/web_static/releases/web_static_20170315003959/web_static
+[54.157.32.137] run: rm -rf /data/web_static/current
+[54.157.32.137] run: ln -s /data/web_static/releases/web_static_20170315003959/ /data/web_static/current
+New version deployed!

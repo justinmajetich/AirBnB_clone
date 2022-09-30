@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+sudo mkdir tmp
+tar zxvf /tmp/web_static_20220929154108.tgz -C /data/web_static/releases/web_static_20220929154108
+rm  /tmp/web_static_20220929154108.tgz
+
