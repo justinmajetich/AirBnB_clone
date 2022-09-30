@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# Packing to somewhere
 """
 Module that contains a fabfile that archives the web_static folder
 of the AirBnB Clone repo.
