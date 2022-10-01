@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
-echo "hello world"
+# install nginx if bit exiting in os
+nb=$(which nginx | wc -l)
+if [ $nb -eq 0 ]
+then
+    echo "nginx is not installed"
+    echo "installation of the nginx server"
+    #sudo apt-get update -y
+    #sudo apt-get install nginx -y
+else
+    echo "nginx installé"
+fi
+
+#
