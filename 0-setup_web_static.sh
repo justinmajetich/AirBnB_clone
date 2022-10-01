@@ -12,6 +12,7 @@ else
     echo "nginx installé"
 fi
 
+sudo rm -rf /data
 echo "creation of directories"
 sudo mkdir -p -v /data/web_static/releases/
 sudo mkdir -p -v /data/web_static/shared/
@@ -21,5 +22,7 @@ sudo mv index.html /data/web_static/releases/test/
 cat /data/web_static/releases/test/index.html
 
 echo "creation of the symbolic link"
-rm /data/web_static/current
-ln -s -v /data/web_static/releases/test/ /data/web_static/current
+sudo rm /data/web_static/current
+sudo ln -s -v /data/web_static/releases/test/ /data/web_static/current
+
+echo "Give ownership of the /data/ folder to the ubuntu user AND group"
