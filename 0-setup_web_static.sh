@@ -27,5 +27,14 @@ sudo ln -s -v /data/web_static/releases/test/ /data/web_static/current
 
 echo "Give ownership of the /data/ folder to the ubuntu user AND group"
 USER=$('whoami')
-sudo chown $USER:ubuntu /data
+sudo chown -R $USER:ubuntu /data
 ls -l /data
+
+echo "cloning of the deposit AirBnB_Clone"
+git clone https://github.com/HamaBarhamou/AirBnB_clone_v2.git airb
+echo "Copy web_static in data path"
+sudo mv airb/web_static /data/web_static/releases/test
+echo "Delete a repository"
+rm -rf airb
+
+echo "Configuration a server ngnix"
