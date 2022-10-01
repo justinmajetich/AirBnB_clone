@@ -26,3 +26,6 @@ sudo rm /data/web_static/current
 sudo ln -s -v /data/web_static/releases/test/ /data/web_static/current
 
 echo "Give ownership of the /data/ folder to the ubuntu user AND group"
+USER=$('whoami')
+sudo chown $USER:ubuntu /data
+ls -l /data
