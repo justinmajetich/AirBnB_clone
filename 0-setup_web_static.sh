@@ -13,7 +13,7 @@ apt install -y nginx
 #+ /data/web_static/shared/     
 mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
 
-TEMP=\
+HTML_TEMP=\
 "<html>
   <head>
   </head>
@@ -22,7 +22,7 @@ TEMP=\
   </body>
 </html>"
 
-echo "$TEMP" > /data/web_static/releases/test/index.html
+echo "$HTML_TEMP" > /data/web_static/releases/test/index.html
 
 # Create symlink current for releases/test/ directory
 ln -fs /data/web_static/releases/test/ /data/web_static/current
@@ -30,8 +30,7 @@ ln -fs /data/web_static/releases/test/ /data/web_static/current
 # Give ownership of data folder to ubuntu
 chown -R ubuntu:ubuntu /data/
 
-CONFIG_FILE="/etc/nginx/sites-enabled/default"
-sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$CONFIG_FILE"
+sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-enabled/default
 
 # restart nginx service
 service nginx restart
