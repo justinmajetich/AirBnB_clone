@@ -16,4 +16,10 @@ echo "creation of directories"
 sudo mkdir -p -v /data/web_static/releases/
 sudo mkdir -p -v /data/web_static/shared/
 sudo mkdir -p -v /data/web_static/releases/test/
-sudo touch /data/web_static/releases/test/index.html
+echo "Hello World Nginx" > index.html
+sudo mv index.html /data/web_static/releases/test/
+cat /data/web_static/releases/test/index.html
+
+echo "creation of the symbolic link"
+rm /data/web_static/current
+ln -s -v /data/web_static/releases/test/ /data/web_static/current
