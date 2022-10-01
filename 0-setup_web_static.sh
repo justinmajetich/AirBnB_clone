@@ -12,4 +12,8 @@ else
     echo "nginx installé"
 fi
 
-#
+echo "creation of directories"
+sudo mkdir -p -v /data/web_static/releases/
+sudo mkdir -p -v /data/web_static/shared/
+sudo mkdir -p -v /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
