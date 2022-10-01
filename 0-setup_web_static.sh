@@ -13,6 +13,15 @@ apt install -y nginx
 #+ /data/web_static/shared/     
 mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
 
+TEMP=\
+"<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>"
+
 echo "$TEMP" > /data/web_static/releases/test/index.html
 
 # Create symlink current for releases/test/ directory
@@ -22,8 +31,9 @@ ln -fs /data/web_static/releases/test/ /data/web_static/current
 chown -R ubuntu:ubuntu /data/
 
 CONFIG_FILE="/etc/nginx/sites-enabled/default"
-CONFIG_TEMP="\tserver_name _;\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n"
-sed -i "s~^\tserver_name _;~$CONFIG_TEMP~g" "$CONFIG_FILE"
+CONFIG_TEMP="\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n"
+
+sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$CONFIG_FILE"
 
 # restart nginx service
 service nginx restart
