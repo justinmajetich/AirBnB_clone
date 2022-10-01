@@ -6,8 +6,8 @@ if [ $nb -eq 0 ]
 then
     echo "nginx is not installed"
     echo "installation of the nginx server"
-    #sudo apt-get update -y
-    #sudo apt-get install nginx -y
+    sudo apt-get update -y
+    sudo apt-get install nginx -y
 else
     echo "nginx installé"
 fi
@@ -38,3 +38,31 @@ echo "Delete a repository"
 rm -rf airb
 
 echo "Configuration a server ngnix"
+
+SERVER_CONFIG=\
+"server {
+	listen 8080 default_server;
+	listen [::]:8080 default_server;
+	root /data/web_static/current;
+	index index.html index.htm index.nginx-debian.html 103-index.html;
+	server_name _;
+	location / {
+		try_files \$uri \$uri/ =404;
+	}
+	if (\$request_filename ~ redirect_me){
+		rewrite ^ https://hamabarhamou.github.io/monCV/ permanent;
+	}
+}"
+
+echo -e $SERVER_CONFIG > default
+sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_save
+sudo mv default /etc/nginx/sites-enabled/
+ls /etc/nginx/sites-enabled
+
+if [ "$(pgrep -c nginx)" -le 0 ]; then
+    echo "start of ngnix"
+	sudo service nginx start
+else
+    echo "restart of ngnix"
+	sudo service nginx restart
+fi
