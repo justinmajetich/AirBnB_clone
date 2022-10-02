@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """
-    a python script that generates .tgz arcgive from the content of web static
+Fabric script that generates archive
 """
-import tarfile
-from datetime import datetime
-import os.path
+
 from fabric.api import *
+from datetime import datetime
+import os
 
 env.hosts = ["18.232.52.73", "3.228.24.89"]
 env.user = "ubuntu"
@@ -13,8 +13,7 @@ env.user = "ubuntu"
 
 def do_pack():
     """
-        Return the archive path if archive has been correctly
-        gernerated.
+        return the archive path if correctly gernerated.
     """
 
     local("mkdir -p versions")
@@ -30,7 +29,7 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
-        Distribute archive.
+        Distribute an archive to our web servers
     """
     if os.path.exists(archive_path):
         archived_file = archive_path[9:]
@@ -61,3 +60,21 @@ def deploy():
     if path:
         do_deploy(path)
     return False
+
+
+def do_clean(number=0):
+    """Deletes out-of-date archives"""
+    files = local("ls -1t versions", capture=True)
+    file_names = files.split("\n")
+    n = int(number)
+    if n in (0, 1):
+        n = 1
+    for i in file_names[n:]:
+        local("rm versions/{}".format(i))
+    dir_server = run("ls -1t /data/web_static/releases")
+    dir_server_names = dir_server.split("\n")
+    for i in dir_server_names[n:]:
+        if i is 'test':
+            continue
+        run("rm -rf /data/web_static/releases/{}"
+            .format(i))
