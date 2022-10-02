@@ -1,69 +1,54 @@
 #!/usr/bin/env bash
+# sets up my web servers for the deployment of web_static
 
-# install nginx if bit exiting in os
-nb=$(which nginx | wc -l)
-if [ $nb -eq 0 ]
+echo -e "\e[1;32m START\e[0m"
+
+#--Updating the packages
+sudo apt-get -y update
+sudo apt-get -y install nginx
+echo -e "\e[1;32m Packages updated\e[0m"
+echo
+
+#--configure firewall
+sudo ufw allow 'Nginx HTTP'
+echo -e "\e[1;32m Allow incomming NGINX HTTP connections\e[0m"
+echo
+
+#--created the dir
+sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
+echo -e "\e[1;32m directories created"
+echo
+
+#--adds test string
+echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" > /data/web_static/releases/test/index.html
+echo -e "\e[1;32m Test string added\e[0m"
+echo
+
+#--prevent overwrite
+if [ -d "/data/web_static/current" ];
 then
-    echo "nginx is not installed"
-    echo "installation of the nginx server"
-    sudo apt-get update -y
-    sudo apt-get install nginx -y
-else
-    echo "nginx installé"
-fi
+    echo "path /data/web_static/current exists"
+    sudo rm -rf /data/web_static/current;
+fi;
+echo -e "\e[1;32m prevent overwrite\e[0m"
+echo
 
-sudo rm -rf /data
-echo "creation of directories"
-sudo mkdir -p -v /data/web_static/releases/
-sudo mkdir -p -v /data/web_static/shared/
-sudo mkdir -p -v /data/web_static/releases/test/
-#echo "Hello World Nginx" > index.html
-#sudo mv index.html /data/web_static/releases/test/
-#cat /data/web_static/releases/test/index.html
+#--create symbolic link
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo chown -hR ubuntu:ubuntu /data
 
-echo "creation of the symbolic link"
-sudo rm /data/web_static/current
-sudo ln -s -v /data/web_static/releases/test/ /data/web_static/current
+sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
-echo "Give ownership of the /data/ folder to the ubuntu user AND group"
-USER=$('whoami')
-sudo chown -R $USER:ubuntu /data
-ls -l /data
+sudo ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
+echo -e "\e[1;32m Symbolic link created\e[0m"
+echo
 
-echo "cloning of the deposit AirBnB_Clone"
-git clone https://github.com/HamaBarhamou/AirBnB_clone_v2.git airb
-echo "Copy web_static in data path"
-sudo mv airb/web_static /data/web_static/releases/test
-echo "Delete a repository"
-rm -rf airb
-
-echo "Configuration a server ngnix"
-
-SERVER_CONFIG=\
-"server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
-	root /data/web_static/current/web_static;
-	index index.html index.htm index.nginx-debian.html 103-index.html;
-	server_name _;
-	add_header X-Served-By \$hostname;
-	location / {
-		try_files \$uri \$uri/ =404;
-	}
-	if (\$request_filename ~ redirect_me){
-		rewrite ^ https://hamabarhamou.github.io/monCV/ permanent;
-	}
-}"
-
-echo -e $SERVER_CONFIG > default
-#sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_save
-sudo mv default /etc/nginx/sites-enabled/
-ls /etc/nginx/sites-enabled
-
-if [ "$(pgrep -c nginx)" -le 0 ]; then
-    echo "start of ngnix"
-	sudo service nginx start
-else
-    echo "restart of ngnix"
-	sudo service nginx restart
-fi
+#--restart NGINX
+sudo service nginx restart
+echo -e "\e[1;32m restart NGINX\e[0m"
