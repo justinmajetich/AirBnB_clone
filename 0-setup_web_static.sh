@@ -46,6 +46,7 @@ SERVER_CONFIG=\
 	root /data/web_static/current/web_static;
 	index index.html index.htm index.nginx-debian.html 103-index.html;
 	server_name _;
+	add_header X-Served-By \$hostname;
 	location / {
 		try_files \$uri \$uri/ =404;
 	}
