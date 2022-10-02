@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Prepare my webservers (web-01 & web-02)
-
-# uncomment for easy debugging
-#set -x
+# Sets up your web servers (web-01 & web-02) for the deployment of web_static
 
 # colors
 blue='\e[1;34m'
@@ -14,31 +11,33 @@ echo -e "${blue}Updating and doing some minor checks...${reset}\n"
 
 # install nginx if not present
 if [ ! -x /usr/sbin/nginx ]; then
-        sudo apt-get update -y -qq && \
-             sudo apt-get install -y nginx
+        sudo apt-get update -y && \
+                sudo apt-get upgrade -y && \
+                        sudo apt-get install nginx -y
 fi
 
 echo -e "\n${blue}Setting up some minor stuff.${reset}\n"
 
-# Create directories...
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
+# create directories
+sudo mkdir -p /data
+sudo mkdir -p /data/web_static
+sudo mkdir -p /data/web_static/releases
+sudo mkdir -p /data/web_static/shared
+sudo mkdir -p /data/web_static/releases/test
 
 # create index.html for test directory
 sudo echo -e "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>" > /data/web_static/releases/test/index.html
 
 # create symbolic link
-sudo ln -sf /data/web_static/releases/test /data/web_static/current
+sudo ln -fs /data/web_static/releases/test /data/web_static/current
 
-# give user ownership to directory
-sudo chown -R ubuntu:ubuntu /data/
+# Give the user ownership of the dir
+sudo chown -R ubuntu:ubuntu /data
 
-# backup default server config file
-sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
+# Set-up the content of /data/web_static/current/ to redirect to domain.tech/hbnb_static
+sudo sed -i '/^\tserver_name/ a\\tlocation /hbnb_static \{\n\t\talias /data/web_static/current;\n\t\}\n' /etc/nginx/sites-available/default
 
-# Set-up the content of /data/web_static/current/ to redirect
-# to domain.tech/hbnb_static
-sudo sed -i '37i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
-
+# Restart the nginx service to enforce the changes
 sudo service nginx restart
 
 echo -e "${green}Completed${reset}"
