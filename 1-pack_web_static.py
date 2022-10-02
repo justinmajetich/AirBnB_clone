@@ -7,6 +7,7 @@ from datetime import datetime
 import os.path
 from fabric.api import local
 
+
 def do_pack():
     """
         Return the archive path if archive has been correctly
