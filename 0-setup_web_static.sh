@@ -17,9 +17,9 @@ echo "creation of directories"
 sudo mkdir -p -v /data/web_static/releases/
 sudo mkdir -p -v /data/web_static/shared/
 sudo mkdir -p -v /data/web_static/releases/test/
-echo "Hello World Nginx" > index.html
-sudo mv index.html /data/web_static/releases/test/
-cat /data/web_static/releases/test/index.html
+#echo "Hello World Nginx" > index.html
+#sudo mv index.html /data/web_static/releases/test/
+#cat /data/web_static/releases/test/index.html
 
 echo "creation of the symbolic link"
 sudo rm /data/web_static/current
@@ -41,9 +41,9 @@ echo "Configuration a server ngnix"
 
 SERVER_CONFIG=\
 "server {
-	listen 8080 default_server;
-	listen [::]:8080 default_server;
-	root /data/web_static/current;
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /data/web_static/current/web_static;
 	index index.html index.htm index.nginx-debian.html 103-index.html;
 	server_name _;
 	location / {
@@ -55,7 +55,7 @@ SERVER_CONFIG=\
 }"
 
 echo -e $SERVER_CONFIG > default
-sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_save
+#sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_save
 sudo mv default /etc/nginx/sites-enabled/
 ls /etc/nginx/sites-enabled
 
