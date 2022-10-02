@@ -26,7 +26,7 @@ sudo mkdir -p /data/web_static/shared
 sudo mkdir -p /data/web_static/releases/test
 
 # create index.html for test directory
-sudo echo -e "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>" > /data/web_static/releases/test/index.html
+echo -e "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>" | sudo tee /data/web_static/releases/test/index.html
 
 # create symbolic link
 sudo ln -fs /data/web_static/releases/test /data/web_static/current
