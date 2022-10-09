@@ -9,6 +9,5 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
     print("In DB")
     storage = DBStorage()
 else:
-    print("not")
     storage = FileStorage()
 storage.reload()
