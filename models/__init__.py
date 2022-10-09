@@ -6,7 +6,6 @@ from os import getenv
 
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
-    print("In DB")
     storage = DBStorage()
 else:
     storage = FileStorage()
