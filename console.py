@@ -154,9 +154,9 @@ class HBNBCommand(cmd.Cmd):
                     except ValueError:
                         value = arg[1]
                 setattr(new_instance, arg[0], value)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -234,15 +234,15 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]  # remove possible trailing args 
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(eval(args)).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(eval(args)).items():
                 print_list.append(str(v))
 
         print(print_list)
