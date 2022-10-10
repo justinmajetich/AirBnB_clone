@@ -40,12 +40,15 @@ class DBStorage():
         if cls in classes:
             print("class defined")
             cls_objects = self.__session.query(classes[cls]).all()
+            print(cls_objects)
             for co in cls_objects:
                 print(co.id)
-        if cls is None:
+        elif cls is None:
             print("class not defined")
             for key, val in classes.items():
                 print(self.__session.query(val).all())
+        else:
+            print("Didn't run")
 
     def new(self, obj):
         """Adds an object to the session"""
