@@ -36,13 +36,13 @@ class DBStorage():
         classes = {'BaseModel': BaseModel, 'User': User,
                    'Place': Place, 'State': State, 'City': City,
                    'Amenity': Amenity, 'Review': Review}
-        # obj = {}
+        obj = []
         if cls in classes:
             print("class defined")
             cls_objects = self.__session.query(classes[cls]).all()
-            print(cls_objects)
             for co in cls_objects:
-                print(co.id)
+                obj.append(co.to_dict)
+            return obj
         elif cls is None:
             print("class not defined")
             for key, val in classes.items():
