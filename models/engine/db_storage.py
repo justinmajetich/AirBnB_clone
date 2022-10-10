@@ -38,10 +38,12 @@ class DBStorage():
                    'Amenity': Amenity, 'Review': Review}
         # obj = {}
         if cls in classes:
+            print("class defined")
             cls_objects = self.__session.query(classes[cls]).all()
             for co in cls_objects:
                 print(co.id)
         if cls is None:
+            print("class not defined")
             for key, val in classes.items():
                 print(self.__session.query(val).all())
 
