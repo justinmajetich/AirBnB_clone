@@ -38,6 +38,8 @@ class DBStorage():
         if cls in classes:
             cls_objects = self.__session.query(classes[cls]).all()
             for co in cls_objects:
+                if '_sa_instance_state' in co.__dict__:
+                    co.__dict__.pop("_sa_instance_state")
                 dicti = co.to_dict()
                 clss = dicti['__class__']
                 key = f"[{clss}] ({co.id})"
@@ -47,6 +49,8 @@ class DBStorage():
             for key, val in classes.items():
                 cls_objects = self.__session.query(val).all()
                 for co in cls_objects:
+                    if '_sa_instance_state' in co.__dict__:
+                        co.__dict__.pop("_sa_instance_state")
                     dicti = co.to_dict()
                     clss = dicti['__class__']
                     key = f"[{clss}] ({co.id})"
