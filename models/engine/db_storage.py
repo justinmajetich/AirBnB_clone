@@ -33,7 +33,11 @@ class DBStorage():
 
     def all(self, cls=None):
         """Returns all elements or elements filtered by class in DBStorage"""
-        classes = {'State': State, 'City': City}
+        classes = {
+            'State': State,
+            'City': City,
+            'User': User
+        }
         obj = {}
         if cls in classes:
             cls_objects = self.__session.query(classes[cls]).all()
