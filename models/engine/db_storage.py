@@ -36,7 +36,8 @@ class DBStorage():
         classes = {
             'State': State,
             'City': City,
-            'User': User
+            'User': User,
+            'Place': Place
         }
         obj = {}
         if cls in classes:
