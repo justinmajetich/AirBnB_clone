@@ -122,19 +122,24 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
+        new_inst = HBNBCommand.classes[args[0]]()
         try:
             dic = {param.split("=")[0]: param.split("=")[1] \
                     for param in args if param is not args[0]}
-            num = [str, int]
-            for key, value in dic:
-                if value[0] == '\"' or type(value) in num:
-                    print("{key}: {value}
+            for key, value in dic.items():
+                if value[0] == '\"' or type(value) is int or\
+                    value.find('.'):
+                    val = value
+                    if value.find('_'):
+                        val = value.replace('_', ' ')
+                    elif value.find('\"'):
+                        val = value.replace('\"', '')
+                    new_inst.{} = val
         except IndexError:
             print("Param syntax: <key name>=<value>")
-        #storage.save()
-        #print(new_instance.id)
-        #storage.save()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
