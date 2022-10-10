@@ -33,20 +33,25 @@ class DBStorage():
 
     def all(self, cls=None):
         """Returns all elements or elements filtered by class in DBStorage"""
-        classes = {'BaseModel': BaseModel, 'User': User,
-                   'Place': Place, 'State': State, 'City': City,
-                   'Amenity': Amenity, 'Review': Review}
+        classes = {'State': State, 'City': City}
         obj = {}
         if cls in classes:
-            print("class defined")
             cls_objects = self.__session.query(classes[cls]).all()
             for co in cls_objects:
-                print(co)
+                dicti = co.to_dict()
+                clss = dicti['__class__']
+                key = f"[{clss}] ({co.id})"
+                obj[key] = co
             return obj
         elif cls is None:
-            print("class not defined")
             for key, val in classes.items():
-                print(self.__session.query(val).all())
+                cls_objects = self.__session.query(val).all()
+                for co in cls_objects:
+                    dicti = co.to_dict()
+                    clss = dicti['__class__']
+                    key = f"[{clss}] ({co.id})"
+                    obj[key] = co
+            return obj
         else:
             print("Didn't run")
 
