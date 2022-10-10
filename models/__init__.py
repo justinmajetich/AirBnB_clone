@@ -7,9 +7,6 @@ from os import getenv
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
     storage = DBStorage()
-elif getenv("HBNB_TYPE_STORAGE") == "file":
-    storage = FileStorage()
 else:
-    print("HBNB_TYPE_STORAGE should be set to 'db' or 'file'")
-    exit()
+    storage = FileStorage()
 storage.reload()
