@@ -14,3 +14,5 @@ models/engine/__pycache__/file_storage.cpython-38.pyc
 test_params_create
 tests/test_models/__pycache__/
 tests/test_models/test_engine/__pycache__/
+__pycache__/1-pack_web_static.cpython-38.pyc
+versions/web_static_20221011025334.tgz
