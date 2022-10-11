@@ -8,7 +8,7 @@ fab -f 2-do_deploy_web_static.py do_deploy:archive_path=filepath
 from os.path import exists
 from fabric.api import put, run, env
 
-env.hosts = ['3.236.102.171', '35.174.62.188']
+env.hosts = ['3.236.102.171', '3.230.76.77']
 
 
 def do_deploy(archive_path):
