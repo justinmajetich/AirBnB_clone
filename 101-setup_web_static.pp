@@ -48,7 +48,7 @@ file { '/data/web_static/shared':
 
 file { '/data/web_static/releases/test/index.html':
   ensure  => 'present',
-  content => "Holberton School\n"
+  content => "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>"
 } ->
 
 file { '/data/web_static/current':
@@ -70,7 +70,7 @@ file { '/var/www/html':
 
 file { '/var/www/html/index.html':
   ensure  => 'present',
-  content => "Holberton School\n"
+  content => "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>"
 } ->
 
 file { '/var/www/html/404.html':
