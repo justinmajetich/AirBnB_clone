@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """ Create an object of any class"""
+        """ Create an object of any class """
         args = arg.split(" ")
         if not args:
             print("** class name missing **")
@@ -122,21 +122,48 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_inst = HBNBCommand.classes[args[0]]()
+        instance = HBNBCommand.classes[args[0]]()
         try:
-            dic = {param.split("=")[0]: param.split("=")[1] \
-                    for param in args if param is not args[0]}
+            """
+                Validate the syntax of the parameter
+                then split each parameter to key and value
+                then save in a dictionary and validate the data
+                type
+            """
+            dic = {param.split("=")[0]: param.split("=")[1]
+                   for param in args if param is not args[0]}
             for key, value in dic.items():
-                if value[0] == '\"' or type(value) is int or\
-                    value.find('.'):
-                    val = value
+                """
+                    Validate the value syntax
+                    String: "<value>" => remove '_' and ' " '
+                    Float: <unit>.<decimal> => contains a dot
+                    Integer: <number> => default case
+                """
+                if value[0] == '\"':
+                    value = value.replace('\"', '')
                     if value.find('_'):
-                        val = value.replace('_', ' ')
-                    elif value.find('\"'):
-                        val = value.replace('\"', '')
-                    new_inst.{} = val
+                        dic[key] = value.replace('_', ' ')
+                    else:
+                        dic[key] = value
+                elif value.find('.'):
+                    # Convert string to int or float
+                    try:
+                        dic[key] = int(value)
+                    except ValueError:
+                        try:
+                            dic[key] = float(value)
+                        except ValueError:
+                            dic[key] = ''
+            # Remove the invalid parameters
+            data = {key: value for key, value in dic.items()
+                    if value != ''}
+            # Create a new instance and update it with the new data
+            model = instance.to_dict()
+            model.update(data)
+            new_instance = HBNBCommand.classes[args[0]](**model)
         except IndexError:
             print("Param syntax: <key name>=<value>")
+            return
         storage.save()
         print(new_instance.id)
         storage.save()
