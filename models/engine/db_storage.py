@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.city import City
 from models.state import State
+from models.user import User
 from models.base_model import Base
 import os
 
@@ -36,7 +37,7 @@ class DBStorage():
     def all(self, cls=None):
         '''Return all the all instances of type cls
         '''
-        models = [City, State]
+        models = [City, State, User]
         result_dict = {}
         if cls is not None and cls in models:
             for obj in self.__session.query(cls).all():
