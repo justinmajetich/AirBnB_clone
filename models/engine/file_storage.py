@@ -13,7 +13,8 @@ class FileStorage:
         if cls is not None:
             result = {key: FileStorage.__objects[key] for key in
                       FileStorage.__objects
-                      if FileStorage.__objects[key].__class__ == cls}
+                      if FileStorage.__objects[key].__class__.__name__ ==
+                      cls.__name__}
             return result
         return FileStorage.__objects
 

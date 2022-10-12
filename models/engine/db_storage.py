@@ -7,7 +7,9 @@ from models.city import City
 from models.state import State
 from models.user import User
 from models.place import Place
+from models.review import Review
 from models.base_model import Base
+from models.amenity import Amenity
 import os
 
 
@@ -22,11 +24,11 @@ class DBStorage():
         '''
         dev_mode = user = password = host = db = ""
         try:
-            user = os.environ['HBNB_MYSQL_USER']
-            password = os.environ['HBNB_MYSQL_PWD']
-            host = os.environ['HBNB_MYSQL_HOST']
-            db = os.environ['HBNB_MYSQL_DB']
-            dev_mode = os.environ['HBNB_ENV']
+            user = os.getenv('HBNB_MYSQL_USER')
+            password = os.getenv('HBNB_MYSQL_PWD')
+            host = os.getenv('HBNB_MYSQL_HOST')
+            db = os.getenv('HBNB_MYSQL_DB')
+            dev_mode = os.getenv('HBNB_ENV')
         except KeyError:
             print("Warning: Some environment variables were not found")
         self.__engine = create_engine(
@@ -38,7 +40,7 @@ class DBStorage():
     def all(self, cls=None):
         '''Return all the all instances of type cls
         '''
-        models = [City, State, User, Place]
+        models = [City, State, User, Place, Review]
         result_dict = {}
         if cls is not None and cls in models:
             for obj in self.__session.query(cls).all():
