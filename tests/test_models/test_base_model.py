@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """ Unittest test cases for 'models.base_model' """
-from models.base_model import BaseModel
 import unittest
+from models.base_model import BaseModel
 import datetime
 from uuid import UUID
 import json
 import os
 
 
-class TestBaseModel_Instantiation(unittest.TestCase):
+class test_basemodel(unittest.TestCase):
     """ Test the instantiation of the BaseModel class. """
 
     def __init__(self, *args, **kwargs):
@@ -24,8 +24,13 @@ class TestBaseModel_Instantiation(unittest.TestCase):
     def tearDown(self):
         """ """
         try:
+<<<<<<< HEAD
             os.remove('file.json')
         except:
+=======
+            del self.model
+        except BaseException:
+>>>>>>> e3800d5 (Update class models)
             pass
 
     def test_instanceNotNone(self):
@@ -116,27 +121,7 @@ class TestBaseModel_Instantiation(unittest.TestCase):
         with self.assertRaises(KeyError):
             new = self.model(**n)
 
-
-class TestBaseModel__str__(unittest.TestCase):
-    """ Class to define test cases for public instance method '__str__()' """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.model = BaseModel
-
-    def setUp(self):
-        """ """
-        pass
-
-    def tearDown(self):
-        """ """
-        try:
-            del self.model
-            # os.remove('file.json')
-        except BaseException:
-            pass
+    """ Test cases for public instance method '__str__()' """
 
     def test_output_type(self):
         """ """
@@ -167,7 +152,7 @@ class TestBaseModel__str__(unittest.TestCase):
         """ """
         i = self.model()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                                                       i.__dict__))
 
     def test_without_args(self):
         """ """
@@ -178,27 +163,7 @@ class TestBaseModel__str__(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.model.__str__("id")
 
-
-class TestBaseModel_Save(unittest.TestCase):
-    """ Class to define test cases for public instance method 'save()' """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.model = BaseModel
-
-    def setUp(self):
-        """ """
-        pass
-
-    def tearDown(self):
-        """ """
-        try:
-            del self.model
-            # os.remove('file.json')
-        except BaseException:
-            pass
+    """ Test cases for public instance method 'save()' """
 
     def test_output_type(self):
         """ """
@@ -232,27 +197,7 @@ class TestBaseModel_Save(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.model.save("id")
 
-
-class TestBaseModel_to_dict(unittest.TestCase):
-    """Test the `to_dict` instance method of the BaseModel class."""
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.model = BaseModel
-
-    def setUp(self):
-        """ """
-        pass
-
-    def tearDown(self):
-        """ """
-        try:
-            del self.model
-            # os.remove('file.json')
-        except BaseException:
-            pass
+    """ Test the `to_dict` instance method of the BaseModel class."""
 
     def test_output_type(self):
         """ """
@@ -301,14 +246,6 @@ class TestBaseModel_to_dict(unittest.TestCase):
         """ """
         with self.assertRaises(TypeError):
             self.model.to_dict("id")
-
-
-def tearDownModule(self):
-    """ """
-    try:
-        os.remove('file.json')
-    except BaseException:
-        pass
 
 
 if __name__ == '__main__':

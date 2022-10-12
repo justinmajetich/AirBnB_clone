@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Table
-from sqlalchemy.orm import relationship
-from models import storage
+from models.base_model import BaseModel
+from sqlalchemy import Column, String, Float, Integer, ForeignKey, Table
+from sqlalchemy.orm import relationship, declarative_base
+from models import *
+
+Base = declarative_base()
 
 
 class Place(BaseModel, Base):
@@ -22,33 +24,36 @@ class Place(BaseModel, Base):
 
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False,)
-    user_id = Column(String(60), ForeignKey("users.id", nullable=False))
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     descripion = Column(String(1024), nullable=False)
     number_rooms = Column(Integer, nullable=False, default=0)
     number_bathrooms = Column(Integer, nullable=False, default=0)
     max_guest = Column(Integer, nullable=False, default=0)
     price_by_night = Column(Integer, nullable=False, default=0)
-    latitude = Column(float, nullable=False)
-    longitude = Column(float, nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
     user = relationship("User", cascade="all, delete")
     cities = relationship("City", cascade="all, delete")
     reviews = relationship("Review", cascade="all, delete")
-    place_amenity = Table("place_amenity", Base.metadata,
-                          Column("place_id", String(60),
-                                 ForeignKey("places.id",
-                                            primary_key=True,
-                                            nullable=False)),
-                          Column("amenity_id", String(60),
-                                 ForeignKey("amenities.id",
-                                            primary_key=True,
-                                            nullable=False)))
+    place_amenity = Table("place_amenity",
+                          Base.metadata,
+                          Column("place_id",
+                                 String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column("amenity_id",
+                                 String(60),
+                                 ForeignKey("amenities.id"),
+                                 primary_key=True,
+                                 nullable=False))
     place_amenity = relationship("Amenity",
-                                 back_populates="place_amenities",
+                                 back_populates="places",
                                  cascade="all, delete")
     amenities = relationship("Amenity",
-                             secondary=association_table,
-                             back_populates="place_amenity",
+                             secondary="place_amenity",
+                             back_populates="places",
                              viewonly=False)
 
     @property

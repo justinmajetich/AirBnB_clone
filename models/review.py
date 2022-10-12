@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ Review module for the HBNB project """
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
+
+Base = declarative_base()
 
 
 class Review(BaseModel, Base):
@@ -17,3 +19,12 @@ class Review(BaseModel, Base):
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     user = relationship("User")
     place = relationship("Place")
+
+    def __init__(self, *args, **kwargs):
+        """ Constructor method to initialize user instances
+        Args:
+            args: list of arguments
+        kwargs:
+            key/value dictionary of arguments
+        """
+        super().__init__(args, kwargs)

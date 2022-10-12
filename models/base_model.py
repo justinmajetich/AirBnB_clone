@@ -5,8 +5,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, UniqueContraint
-from models import storage
+from sqlalchemy import Column, Integer, String, DateTime, UniqueConstraint
+from models import *
 
 Base = declarative_base()
 
@@ -23,9 +23,13 @@ now = datetime.now()
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """ A base class for all hbnb models """
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(datetime, default=datetime.utcnow(), nullable=False)
+    Updated_at = Column(datetime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -38,7 +42,7 @@ class BaseModel:
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            self.__dict__.update(**kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -56,7 +60,7 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
@@ -64,6 +68,6 @@ class BaseModel:
     def delete(self):
         """ Delete the current instance from storage """
         d = storage.all()
-        obj_name = str(self.__class__.__name__ + "." + self.id)
+        obj_name = f"{self.__class__.__name__}.{self.id}"
         if obj_name in d.keys():
             del d[obj_name]
