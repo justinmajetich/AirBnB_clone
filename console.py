@@ -4,7 +4,7 @@ import cmd
 import sys
 import shlex
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -116,10 +116,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class """
-        arg_list = shlex.split(args)
+        arg_list = shlex.split(args.strip())
         try:
             class_name = arg_list[0]
-            param_list = list(arg_list[1:].strip().split())
+            param_list = arg_list[1:]
             if not class_name:
                 print("** class name missing **")
                 return
@@ -132,11 +132,12 @@ class HBNBCommand(cmd.Cmd):
                     for item in param_list:
                         key = item.split("=")[0].strip()
                         value = item.split("=")[1].strip()
-                        if '\"' in value:
-                            value = str(value.translate({95: 32}))
+                        if '"' in value and value.isascii():
+                            value = str(value.translate(
+                                {95: 32, 34: None, 92: None}))
                         elif '.' in value:
                             value = float(value)
-                        elif isinstance(value, int):
+                        elif value.isnumeric():
                             value = int(value)
                         params.update({key: value})
                     new_instance = HBNBCommand.classes[class_name](**params)
@@ -233,7 +234,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
-
         print(print_list)
 
     def help_all(self):
