@@ -1,29 +1,35 @@
 #!/usr/bin/python3
-""" """
+""" Unittest test cases for 'models.review' """
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
+import unittest
 
 
 class test_review(test_basemodel):
-    """ """
+    """ Test the instantiation of the Review class. """
 
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
         self.name = "Review"
-        self.value = Review
+        self.model = Review
 
-    def test_place_id(self):
+    def test_instance_exists(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.place_id), str)
+        self.assertIsNotNone(self.model)
 
-    def test_user_id(self):
+    def test_class_attributes(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
+        self.assertTrue(hasattr(Review, 'place_id'))
+        self.assertTrue(hasattr(Review, 'user_id'))
+        self.assertTrue(hasattr(Review, 'text'))
 
-    def test_text(self):
+    def test_class_attributes_type(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.text), str)
+        self.assertIsInstance(getattr(Review, 'place_id'), str)
+        self.assertIsInstance(getattr(Review, 'user_id'), str)
+        self.assertIsInstance(getattr(Review, 'text'), str)
+
+
+if __name__ == '__main__':
+    unittest.main()
