@@ -12,9 +12,10 @@ class State(BaseModel, Base):
     __tablename__ = "states"
 
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete")
 
     if storage_type == "db":
+        cities = relationship("City", backref="state", cascade="all, delete")
+    else:
         @property
         def cities(self):
             '''Return a list of cities with the same state_id
