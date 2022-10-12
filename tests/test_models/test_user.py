@@ -1,34 +1,37 @@
 #!/usr/bin/python3
-""" """
+""" Unittest test cases for 'models.user' """
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+import unittest
 
 
-class test_User(test_basemodel):
-    """ """
+class TestUser_Instantiation(test_basemodel):
+    """ Test the instantiation of the User class. """
 
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
         self.name = "User"
-        self.value = User
+        self.model = User
 
-    def test_first_name(self):
+    def test_instance_exists(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+        self.assertIsNotNone(self.model)
 
-    def test_last_name(self):
+    def test_class_attributes(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+        self.assertTrue(hasattr(User, 'email'))
+        self.assertTrue(hasattr(User, 'password'))
+        self.assertTrue(hasattr(User, 'first_name'))
+        self.assertTrue(hasattr(User, 'last_name'))
 
-    def test_email(self):
+    def test_class_attributes_type(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+        self.assertIsInstance(getattr(User, 'email'), str)
+        self.assertIsInstance(getattr(User, 'password'), str)
+        self.assertIsInstance(getattr(User, 'first_name'), str)
+        self.assertIsInstance(getattr(User, 'last_name'), str)
 
-    def test_password(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+
+if __name__ == '__main__':
+    unittest.main()
