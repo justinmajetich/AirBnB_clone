@@ -6,12 +6,11 @@ from sqlalchemy import Table, Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from models import storage_type
 
-if storage_type == 'db':
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('places.id'), primary_key=True),
-                          Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'), primary_key=True))
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True))
 
 
 class Place(BaseModel, Base):
@@ -30,7 +29,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship('Review', backref='place', cascade="all, delete")
-    amenities = relationship('Amenity', secondary='place_amenity',
+    amenities = relationship('Amenity', secondary=place_amenity,
                              viewonly=False, back_populates='place_amenities')
 
     if storage_type != 'db':
@@ -42,11 +41,12 @@ class Place(BaseModel, Base):
             return result
 
         @amenities.setter
-        def amenities(self, value):
+        def amenities(self, obj):
             '''Setter attribute that handles append method
             for adding an Amenity.id to the attribute amenity_ids
             '''
-            self.amenity_ids.append(value)
+            if obj.__class__.__name__ == 'Amenity':
+                self.amenity_ids.append(obj.id)
 
         @property
         def reviews(self):
