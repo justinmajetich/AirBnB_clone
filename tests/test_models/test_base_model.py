@@ -1,9 +1,6 @@
 #!/usr/bin/python3
-"""Defines unittests for models/base_model.py.
-Unittest classes:
-    TestBaseModel_instantiation
-    TestBaseModel_save
-    TestBaseModel_to_dict
+"""
+    Defines unittests for models/base_model.py.
 """
 from models.base_model import BaseModel
 import unittest
@@ -14,7 +11,7 @@ import os
 from time import sleep
 
 
-class TestBasemodel_instantiation(unittest.TestCase):
+class test_basemodel(unittest.TestCase):
     """
         Base Model test case class
         Function:
@@ -108,8 +105,6 @@ class TestBasemodel_instantiation(unittest.TestCase):
         bm2 = BaseModel()
         self.assertLess(bm1.updated_at, bm2.updated_at)
 
-
-class TestBaseModel_save(unittest.TestCase):
     """Unittests for testing save method of the BaseModel class."""
 
     @classmethod
@@ -159,8 +154,6 @@ class TestBaseModel_save(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(bmid, f.read())
 
-
-class TestBaseModel_to_dict(unittest.TestCase):
     """Unittests for testing to_dict method of the BaseModel class."""
 
     def test_to_dict_type(self):
