@@ -95,6 +95,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
+        print()
         exit()
 
     def help_quit(self):
@@ -112,9 +113,9 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
-        pass
+        return False
 
-    def do_create(self, args):
+    def do_create(self, args: str):
         """ Create an object of any class """
         arg_list = shlex.split(args.strip())
         try:
@@ -143,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
                     new_instance = HBNBCommand.classes[class_name](**params)
                 else:
                     new_instance = HBNBCommand.classes[class_name]()
-                storage.save()
+                new_instance.save()
                 print(new_instance.id)
         except BaseException:
             pass
@@ -219,20 +220,20 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, args: str):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.strip().split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
             for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+                if str(k).split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for v in storage._FileStorage__objects.values():
                 print_list.append(str(v))
         print(print_list)
 
