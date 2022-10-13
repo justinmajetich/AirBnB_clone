@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -102,8 +103,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
-        print()
-        exit()
+        os._exit(1)
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """ Create an object of any class """
         args = arg.split(" ")
-        if not args:
+        if not arg:
             print("** class name missing **")
             return
         elif args[0] not in HBNBCommand.classes:

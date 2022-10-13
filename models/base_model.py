@@ -8,6 +8,7 @@ from datetime import datetime
 class BaseModel:
     """A base class for all hbnb models"""
     fmt = '%Y-%m-%dT%H:%M:%S.%f'
+
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         if not kwargs:
@@ -21,10 +22,10 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == 'updated_at':
                     self.updated_at = datetime.strptime(kwargs['updated_at'],
-                                                            self.fmt)
+                                                        self.fmt)
                 elif key == 'created_at':
                     self.created_at = datetime.strptime(kwargs['created_at'],
-                                                             self.fmt)
+                                                        self.fmt)
                 else:
                     setattr(self, key, value)
             models.storage.new(self)
