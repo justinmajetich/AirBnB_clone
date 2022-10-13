@@ -5,7 +5,6 @@ starts a Flask web application
 
 
 from flask import Flask
-import os
 app = Flask(__name__)
 
 
@@ -19,6 +18,19 @@ def hello_world():
 def hello_HNNB():
     """return HBNB"""
     return 'HBNB!'
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def hello_txt(text):
+    """return the text"""
+    return 'C ' + text.replace('_', ' ')
+
+
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_txt(text='is cool'):
+    """return HBNB"""
+    return 'Python ' + text.replace('_', ' ')
 
 
 if __name__ == '__main__':
