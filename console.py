@@ -121,10 +121,22 @@ class HBNBCommand(cmd.Cmd):
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
+        # Getting attributes
+        attributes = {}
+        for attr in args[1:]:
+            new_dict = attr.split('=', 1)
+            attributes[new_dict[0]] = new_dict[1]
+
         new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        for key, value in attributes.items():
+            value = value.strip("\"'").replace("_", " ")
+            value = self.num_or_float(value)
+            setattr(new_instance, key, value)
+
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
