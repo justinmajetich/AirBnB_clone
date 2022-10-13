@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer, ForeignKey, Table
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 from models import *
-
-Base = declarative_base()
 
 
 class Place(BaseModel, Base):
@@ -33,8 +31,8 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
-    user = relationship("User", cascade="all, delete")
-    cities = relationship("City", cascade="all, delete")
+    user = relationship("User", cascade="all, delete-orphan")
+    cities = relationship("City", cascade="all, delete-orphan")
     reviews = relationship("Review", cascade="all, delete")
     place_amenity = Table("place_amenity",
                           Base.metadata,
@@ -49,12 +47,23 @@ class Place(BaseModel, Base):
                                  primary_key=True,
                                  nullable=False))
     place_amenity = relationship("Amenity",
-                                 back_populates="places",
+                                 backref=["Place", "Amenity"],
                                  cascade="all, delete")
     amenities = relationship("Amenity",
                              secondary="place_amenity",
-                             back_populates="places",
+                             backref="Place",
                              viewonly=False)
+
+    def __init__(self, *args, **kwargs):
+        """ Constructor method to initialize Place instances
+
+        Args:
+            args: list of arguments
+        Kwargs:
+            key/value dictionary of arguments
+
+        """
+        super().__init__(args, kwargs)
 
     @property
     def reviews(self):
@@ -65,7 +74,6 @@ class Place(BaseModel, Base):
         d = storage.all()
         for obj_name, obj_dict in d.items():
             if str(obj_name).startswith("Review") and\
-                    "state_id" in dict(obj_dict).keys() and\
                     dict(obj_dict).get("place_id") == self.id:
                 myList.append(obj_dict)
         return myList
@@ -79,7 +87,6 @@ class Place(BaseModel, Base):
         d = storage.all()
         for obj_name, obj_dict in d.items():
             if str(obj_name).startswith("Amenity") and\
-                    self.name in dict(obj_dict).keys() and\
                     dict(obj_dict).get("id") in self.amenity_ids:
                 myList.append(obj_dict)
         return myList
@@ -87,14 +94,12 @@ class Place(BaseModel, Base):
     @amenities.setter
     def amenities(self):
         """ Setter method handling append method for adding an Amenity.id
-            to the attribute amenity_ids
+            to the attribute amenity_ids from file storage
         """
         myList = []
         d = storage.all()
         for obj_name, obj_dict in d.items():
             if str(obj_name).startswith("Amenity") and\
-                    dict(obj_dict).get("id") in dict(
-                    Base.metadata.tables).get(
-                    "place_amenity").columns.amenity_id:
-                myList.append(obj_dict)
+                    dict(obj_dict).get("id"):
+                myList.append(obj_dict["id"])
         self.amenity_ids = list(set(self.amenity_ids.extend(myList)))

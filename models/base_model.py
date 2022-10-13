@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, UniqueConstraint
-from models import *
+import models
 
 Base = declarative_base()
 
@@ -53,7 +53,12 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+<<<<<<< HEAD
         storage.save()
+=======
+        models.storage.new(self)
+        models.storage.save()
+>>>>>>> b065d2f (Update class models)
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -63,11 +68,13 @@ class BaseModel:
                            (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+<<<<<<< HEAD
+=======
+        if dictionary.get('_sa_instance_state'):
+            del dictionary['_sa_instance_state']
+>>>>>>> b065d2f (Update class models)
         return dictionary
 
     def delete(self):
         """ Delete the current instance from storage """
-        d = storage.all()
-        obj_name = f"{self.__class__.__name__}.{self.id}"
-        if obj_name in d.keys():
-            del d[obj_name]
+        models.storage.delete()
