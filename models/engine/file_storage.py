@@ -28,7 +28,7 @@ classes = {
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """ This class manages storage of hbnb models in JSON format """
     __file_path = os.path.relpath('file.json')
     __objects = {}
 
@@ -54,7 +54,7 @@ class FileStorage:
         dictionary = {}
         if cls is not None:
             for k, o in FileStorage.__objects.items():
-                if cls == o.to_dict()['__class__']:
+                if cls == str(k).strip().split('.')[0]:
                     dictionary.update({k: o})
             return dictionary
         else:
@@ -62,8 +62,12 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
+<<<<<<< HEAD
         self.all().update({f"{obj.to_dict()['__class__']}.{obj.id}": obj})
 >>>>>>> e3800d5 (Update class models)
+=======
+        self.all().update({f"{obj.__class__.__name__}.{obj.id}": obj})
+>>>>>>> 40846c0 (Update storage engines)
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -93,9 +97,15 @@ class FileStorage:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
+<<<<<<< HEAD
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
+=======
+            for key, val in temp.items():
+                self.all()[key] = classes[val['__class__']](**val)
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+>>>>>>> 40846c0 (Update storage engines)
             pass
 <<<<<<< HEAD
 =======
@@ -103,7 +113,15 @@ class FileStorage:
     def delete(self, obj=None):
         """ Deletes object from __objects """
         if obj is not None:
+<<<<<<< HEAD
             obj_name = f"{obj.to_dict()['__class__']}.{obj.id}"
             if obj_name in self.__objects.keys():
                 del self.__objects[obj_name]
 >>>>>>> e3800d5 (Update class models)
+=======
+            obj_name = f"{obj.__class__.__name__}.{obj.id}"
+            for k in FileStorage.__objects.keys():
+                if str(k).startswith(obj.__class__.__name__):
+                    del FileStorage.__objects[obj_name]
+        self.save()
+>>>>>>> 40846c0 (Update storage engines)
