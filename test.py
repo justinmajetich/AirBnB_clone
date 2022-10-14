@@ -10,10 +10,10 @@ from os.path import isdir
 import sys
 
 
-# def do_pack():
-#     """generates a tgz archive"""
-#     # local("mkdir versions")
-#     local(" echo done")
+def do_hello():
+    """generates a tgz archive"""
+    # local("mkdir versions")
+    local(" echo hello")
 
 
 def myfunction(mystring):
