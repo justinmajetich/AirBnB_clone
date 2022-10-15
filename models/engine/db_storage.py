@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-""" """
+""" Database Storage using sqlalchemy ORM to map classes to MySQL. """
 from ast import Delete
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
-from models.base_model import BaseModel
+from models.base_model import Base, BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -18,7 +17,7 @@ import urllib.parse
 workspace = os.getenv("HBNB_ENV")
 username = os.getenv("HBNB_MYSQL_USER")
 passwd = urllib.parse.quote_plus(os.getenv("HBNB_MYSQL_PWD"))
-host = os.getenv("HBNB_MYSQL_HOST") or "localhost"
+host = os.getenv("HBNB_MYSQL_HOST")
 port = 3306
 db = os.getenv("HBNB_MYSQL_DB")
 src = f"mysql+mysqldb://{username}:{passwd}@{host}:{port}/{db}"
@@ -35,7 +34,9 @@ class DBStorage:
             from the database connection
         """
         self.__engine = create_engine(src, pool_pre_ping=True)
-        self.__session = Session.configure(bind=self.__engine)
+        Base.metadata.create_all(self.__engine)
+        Session.configure(bind=self.__engine)
+        self.__session = Session()
         try:
             if workspace == "test":
                 Base.metadata.drop_all(bind=self.__engine)
@@ -45,13 +46,25 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         dictionary = {}
-        if cls:
-            for obj in self.__session.query(cls):
-                dictionary.update({f"{cls}.{obj.id}": obj.to_dict()})
-        else:
-            for obj in self.__session.query().all():
-                dictionary.update({f"{cls}.{cls.id}": obj})
-        return dictionary
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
+        try:
+            if cls:
+                for obj in self.__session.query(cls):
+                    dictionary.update({f"{cls}.{obj.id}": obj.to_dict()})
+            else:
+                for class_name in classes.values():
+                    instance = self.__session.query(class_name).one_or_none()
+                    if instance:
+                        for obj in self.__session.query(class_name).all():
+                            dictionary.update({f"{class_name}.{obj.id}": obj})
+        except Exception:
+            pass
+        finally:
+            return dictionary
 
     def new(self, obj):
         """Adds new object to storage dictionary"""

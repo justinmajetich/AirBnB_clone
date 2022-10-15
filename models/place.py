@@ -31,9 +31,15 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
-    user = relationship("User", cascade="all, delete-orphan")
-    cities = relationship("City", cascade="all, delete-orphan")
-    reviews = relationship("Review", cascade="all, delete")
+    user = relationship("User", back_populates="places", cascade="all, delete")
+    cities = relationship(
+        "City",
+        back_populates="places",
+        cascade="all, delete")
+    reviews = relationship(
+        "Review",
+        back_populates="place",
+        cascade="all, delete")
     place_amenity = Table("place_amenity",
                           Base.metadata,
                           Column("place_id",
@@ -46,12 +52,8 @@ class Place(BaseModel, Base):
                                  ForeignKey("amenities.id"),
                                  primary_key=True,
                                  nullable=False))
-    place_amenity = relationship("Amenity",
-                                 backref=["Place", "Amenity"],
-                                 cascade="all, delete")
     amenities = relationship("Amenity",
                              secondary="place_amenity",
-                             backref="Place",
                              viewonly=False)
 
     def __init__(self, *args, **kwargs):

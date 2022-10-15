@@ -18,8 +18,14 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
-    places = relationship("Place", cascade="all, delete")
-    reviews = relationship("Review", cascade="all, delete")
+    places = relationship(
+        "Place",
+        back_populates="user",
+        cascade="all, delete")
+    reviews = relationship(
+        "Review",
+        back_populates="user",
+        cascade="all, delete")
 
     def __init__(self, *args, **kwargs):
         """ Constructor method to initialize new instances
