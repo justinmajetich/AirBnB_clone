@@ -12,7 +12,7 @@ class Amenity(BaseModel, Base):
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
     place_amenities = relationship("Place",
-                                   back_populates="Amenity",
+                                   secondary="place_amenity",
                                    cascade="all, delete")
 
     def __init__(self, *args, **kwargs):

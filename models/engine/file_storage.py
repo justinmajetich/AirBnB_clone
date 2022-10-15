@@ -12,16 +12,22 @@ from models.review import Review
 
 
 class FileStorage:
-    """ This class manages storage of hbnb models in JSON format """
+    """ This class manages storage of hbnb models in JSON format
+
+    Attributes:
+        __file_path (str): path to the JSON file
+        __objects (dict): object storage structure
+
+    """
     __file_path = os.path.relpath('file.json')
     __objects = {}
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         dictionary = {}
-        if cls is not None:
+        if cls:
             for k, o in FileStorage.__objects.items():
-                if cls == str(k).strip().split('.')[0]:
+                if cls == str(k).split('.')[0]:
                     dictionary.update({k: o})
             return dictionary
         else:
@@ -51,16 +57,15 @@ class FileStorage:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
-            for key, val in temp.items():
-                self.all()[key] = classes[val['__class__']](**val)
+            for val in temp.values():
+                self.new(classes[val['__class__']](**val))
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             pass
 
     def delete(self, obj=None):
         """ Deletes object from __objects """
-        if obj is not None:
+        if obj:
             obj_name = f"{obj.__class__.__name__}.{obj.id}"
-            for k in FileStorage.__objects.keys():
-                if str(k).startswith(obj.__class__.__name__):
-                    del FileStorage.__objects[obj_name]
+            if FileStorage.__objects.get(obj_name):
+                del FileStorage.__objects[obj_name]
         self.save()

@@ -12,7 +12,10 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete")
+    cities = relationship(
+        "City",
+        back_populates="state",
+        cascade="all, delete")
 
     def __init__(self, *args, **kwargs):
         """ Constructor method to initialize State instances
