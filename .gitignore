@@ -1,2 +1,5 @@
 models/__pycache__/
 models/engine/__pycache__/
+file.json
+main_delete.py
+test_params_create
