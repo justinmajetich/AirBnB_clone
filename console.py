@@ -113,18 +113,39 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+    # def do_create(self, args):
+    #     """ Create an object of any class"""
+    #     if not args:
+    #         print("** class name missing **")
+    #         return
+    #     elif args not in HBNBCommand.classes:
+    #         print("** class doesn't exist **")
+    #         return
+    #     new_instance = HBNBCommand.classes[args]()
+    #     storage.save()
+    #     print(new_instance.id)
+    #     storage.save()
+
+    def do_create(self, arg):
+        """
+        """
+        Args = arg.split()
+        if self.ValidArgs(Args):
+            if len(Args) == 0:
+                print("** class name missing **")
+                return
+            elif Args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+        obj = eval(Args[0])()
+        for parameters in Args[1:]:
+            param = parameters.split("=")
+            name = param[0]
+            value = param[1]
+            new_value = value.replace("_", " ").replace("\"", "")
+            setattr(obj, name, new_value)
+        obj.save()
+        print("{}".format(obj.id))
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +340,17 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    def ValidArgs(self, args, valid_id=True):
+        """Validates the arguments to be passed to the console
+        """
+        if len(args) < 1:
+            print("** class name missing **")
+            return False
+        if args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return False
+        return True
 
 
 if __name__ == "__main__":
