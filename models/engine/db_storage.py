@@ -14,6 +14,7 @@ from models.state import State
 from models.place import Place
 from models.review import Review
 from models.user import User
+import datetime
 
 
 class DBStorage():
@@ -30,7 +31,7 @@ class DBStorage():
                                 user, passwd, host, database),
                                 pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """ queries current database session all objects
@@ -58,7 +59,7 @@ class DBStorage():
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
