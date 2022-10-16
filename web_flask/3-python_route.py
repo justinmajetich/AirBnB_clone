@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#start
 """
 Script that starts Flash in Applications. 
 """
