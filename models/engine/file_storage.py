@@ -8,7 +8,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-import shlex
 
 
 class FileStorage:
@@ -26,15 +25,12 @@ class FileStorage:
         Return:
             returns a dictionary of __object
         """
-        dic = {}
         if cls:
-            dictionary = self.__objects
-            for key in dictionary:
-                partition = key.replace('.', ' ')
-                partition = shlex.split(partition)
-                if (partition[0] == cls.__name__):
+            dic = {}
+            for key, val in self.__objects.items():
+                if type(val) == cls:
                     dic[key] = self.__objects[key]
-            return (dic)
+            return dic
         else:
             return self.__objects
 
@@ -68,13 +64,11 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """ delete an existing element
-        """
+        """ deletes an object """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
 
     def close(self):
-        """ calls reload()
-        """
+        """ reload method"""
         self.reload()
