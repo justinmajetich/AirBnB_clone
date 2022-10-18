@@ -1,0 +1,30 @@
+/*
+* === Global Style === 
+*/
+
+/* Body Style */
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    color: #484848;
+    font-size: 14px;
+    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Container Style */
+.container {
+    margin: 30px auto;
+    max-width: 1000px;
+    height: 250%;
+    padding-bottom: 2.5rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100vh;
+}
