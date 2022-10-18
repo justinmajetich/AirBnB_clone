@@ -1,0 +1,116 @@
+/*
+ * === Filters class style ===
+ */
+
+/* Filters style */
+.filters {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    display: inline-block;
+    height: 70px;
+    width: 100%;
+  }
+  
+  /* Search button style */
+  .filters button {
+    background: #FF5A5F;
+    border: none;
+    border-radius: 4px;
+    color: #FFFFFF;
+    float: right;
+    font-size: 18px;
+    height: 48px;
+    margin: 12px 30px;
+    width: 20%;
+  }
+  
+  /* Search button hover opacity */
+  .filters button:hover {
+    background-color: rgba(255, 90, 95, .9);
+  }
+  
+  /* Locations and amenities style */
+  .filters .locations,
+  .filters .amenities {
+   display: inline-block; 
+    height: 100%;
+    position: relative; 
+    width: 25%;
+  }
+  
+  /* Locations border */
+  .filters .locations {
+    border-right: 1px solid #DDDDDD;
+  }
+  
+  /* Header 3 style */
+  .filters h3 {
+    font-weight: 600;
+    color: #484848;
+    height: 50%;
+    margin: 18px 40px -18px;
+ }
+  
+  /* Header 4 style */
+  .filters h4 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #484848;
+    height: 50%;
+    margin: 0 40px;
+ }
+  
+ /* Locations and amenities popover menu */
+ .filters .popover {
+   background-color: #FAFAFA;
+   border: 1px solid #DDDDDD;
+   border-radius: 4px;
+   display: none;
+   position: absolute;
+   list-style-type: none;
+   width: 100%;
+   margin-top: 0;
+   max-height: 300px;
+   overflow-y: scroll;
+   height: fit-content;
+ }
+  
+  /* Locations and amenities popover hover */
+  .filters .locations:hover .popover,
+  .filters .amenities:hover .popover {
+    display: block;
+  }
+  
+  /* Locations list style */
+  .filters .locations ul {
+    padding: 0 0 6px 0;
+    margin: 0 0 6px -1px;
+    list-style-type: none;
+  }
+  
+  /* Locations list element margin */
+  .filters .locations li {
+    margin: 0 auto 6px 3em;
+  }
+  
+  /* Locations list style */
+  .filters .amenities ul {
+    margin: 0 0 6px -5px;
+  }
+
+  /* Amenities list element margin */
+  .filters .amenities li {
+    margin: 12px auto 12px 1px;
+  }
+  
+  /* Header 2 style */
+  .filters h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 12px auto 0 -18px;
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+.popover::-webkit-scrollbar {
+  display: none;
+}
