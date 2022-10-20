@@ -1,0 +1,20 @@
+body {
+    margin:0px;
+    padding:0px;
+    color:  #484848;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.container{
+    max-width: 1000px;
+    margin: 30px auto;
+}
+@media screen and (max-width: 1000px){
+    .container {
+        width: 95%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
