@@ -1,3 +1,6 @@
+-- TASK 3: MySQL setup development
+-- Script that prepares a MySQL server for the
+-- project by adding a database and new user.
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost'
