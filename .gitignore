@@ -130,3 +130,6 @@ dmypy.json
 
 #.json files
 file.json
+
+# Test text files
+test_params_create
