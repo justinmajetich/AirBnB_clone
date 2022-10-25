@@ -130,13 +130,14 @@ class HBNBCommand(cmd.Cmd):
                 temp_list = param.split('=', 1)
                 attr_n = temp_list[0]
                 attr_v = temp_list[1]
-                if '"' in attr_v:
-                    attr_v = attr_v.strip('\'"').replace("_", " ")
+                if '\"' in attr_v:
+                    attr_v = attr_v[1:-1]
+                    attr_v =attr_v.replace("_", " ")
                     setattr(new_instance, attr_n, attr_v)
                 elif '.' in attr_v:
                     attr_v = float(attr_v)
                     setattr(new_instance, attr_n, attr_v)
-                elif attr_v.isnumeric():
+                else:
                     attr_v = int(attr_v)
                     setattr(new_instance, attr_n, attr_v)
         print(new_instance.id)
