@@ -11,16 +11,18 @@ from os import getenv
 class State(BaseModel, Base):
     """ State class """
     storageType = getenv("HBNB_TYPE_STORAGE")
-    if storageType == "db":
-        __tablename__ = "states"
-        name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='State')
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
     
-    @property
-    def cities(self):
-        """ returns list of City instances with matching state ids"""
-        Citylist = []
-        for val in storage.all(City).values():
-            if val.state_id == self.id:
-                Citylist += val
-        return Citylist
+    if storageType == 'db':
+        cities = relationship('City', cascade="all, delete-orphan", backref='state')
+    
+    elif storageType == 'file':
+        @property
+        def cities(self):
+            """ returns list of City instances with matching state ids"""
+            Citylist = []
+            for val in storage.all(City).values():
+                if val.state_id == self.id:
+                    Citylist.append(val)
+            return Citylist
