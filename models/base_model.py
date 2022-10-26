@@ -3,7 +3,7 @@
 from email.policy import default
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from models import storage
@@ -21,10 +21,10 @@ class BaseModel:
                 )
     created_at = Column(datetime,
                         nullable=False,
-                        default=datetime.utcnow())
+                        default=DateTime.utcnow())
     updated_at = Column(datetime,
                         nullable=False,
-                        default=datetime.utcnow)
+                        default=created_at)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
