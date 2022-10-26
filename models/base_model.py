@@ -19,10 +19,10 @@ class BaseModel:
                 nullable=False,
                 primary_key=True
                 )
-    created_at = Column(datetime,
+    created_at = Column(DateTime,
                         nullable=False,
-                        default=DateTime.utcnow())
-    updated_at = Column(datetime,
+                        default=datetime.utcnow())
+    updated_at = Column(DateTime,
                         nullable=False,
                         default=created_at)
 
