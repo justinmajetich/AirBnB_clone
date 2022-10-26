@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[args_list[0]]()
-        storage.save()
+        storage.new(new_instance)
         for param in args_list[1:]:
             if '=' in param:
                 temp_list = param.split('=', 1)
