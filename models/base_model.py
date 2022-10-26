@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
@@ -48,8 +49,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        #if dictionary['_sa_instance_state'] is not None:
-        #    del dictionary['_sa_instance_state']
+        dictionary.pop('_sa_instance_state', 0)
         return dictionary
 
     def delete(self):
