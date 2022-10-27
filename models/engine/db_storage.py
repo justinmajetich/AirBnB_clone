@@ -12,7 +12,7 @@ from models.user import User
 from models.amenity import Amenity
 
 all_classes = {'State': State, 'City': City,
-               'User': User, #'Place': Place,
+               'User': User, 'Place': Place,
                #'Review': Review, 'Amenity': Amenity
               }
 
