@@ -1,0 +1,7 @@
+/__pycache__/
+__pycache__/
+/test_params_create
+.idea/
+hack/
+/main_delete.py
+/*.json
