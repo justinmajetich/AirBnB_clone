@@ -11,6 +11,11 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 
+all_classes = {'State': State, 'City': City,
+               'User': User, #'Place': Place,
+               #'Review': Review, 'Amenity': Amenity
+              }
+
 
 class DBStorage:
     """database storage engine"""
@@ -32,18 +37,28 @@ class DBStorage:
 
     def all(self, cls=None):
         """ """
-        classes = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
+        classes = {'User': User, 'State': State,
+                   'City': City,# 'Amenity': Amenity,
+                   #'Place': Place, 'Review': Review
+                   }
 
-        cls_dict = {}
-        if cls in classes:
-            list_obj = self.__session.query(cls).all()
-        elif cls is None:
-            list_obj = []
-            for item in classes:
-                list_obj += self.__session.query(item).all()
-        for obj in list_obj:
-            cls_dict[f"{cls.__name__}.{obj.id}"] = obj
-        return cls_dict
+    def all(self, cls=None):
+        """Query and return all objects by class/generally
+        Return: dictionary (<class-name>.<object-id>: <obj>)
+        """
+        obj_dict = {}
+
+        if cls:
+            for row in self.__session.query(cls).all():
+                # populate dict with objects from storage
+                obj_dict.update({'{}.{}'.
+                                format(type(cls).__name__, row.id,): row})
+        else:
+            for key, val in all_classes.items():
+                for row in self.__session.query(val):
+                    obj_dict.update({'{}.{}'.
+                                    format(type(row).__name__, row.id,): row})
+        return obj_dict
 
     def new(self, obj):
         """ Adds object to current db session"""
