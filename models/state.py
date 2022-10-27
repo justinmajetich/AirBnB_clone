@@ -12,10 +12,13 @@ class State(BaseModel, Base):
     storageType = getenv("HBNB_TYPE_STORAGE")
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    
+
     if storageType == 'db':
-        cities = relationship('City', cascade="all, delete-orphan", backref='state')
-    
+        cities = relationship('City',
+                              cascade="all, delete-orphan",
+                              backref='state'
+                              )
+
     elif storageType == 'file':
         @property
         def cities(self):
