@@ -32,7 +32,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ """
-        classes = [User, State, City, Amenity, Place, Review]
+        classes = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
 
         cls_dict = {}
         if cls in classes:
@@ -40,7 +40,7 @@ class DBStorage:
         elif cls is None:
             list_obj = []
             for item in classes:
-                list_obj += self.__session.query(cls).all()
+                list_obj += self.__session.query(item).all()
         for obj in list_obj:
             cls_dict[f"{cls.__name__}.{obj.id}"] = obj
         return cls_dict
