@@ -43,21 +43,17 @@ class DBStorage:
                    }
 
     def all(self, cls=None):
-        """Query and return all objects by class/generally
-        Return: dictionary (<class-name>.<object-id>: <obj>)
-        """
+        """ """
         obj_dict = {}
 
-        if cls:
-            for row in self.__session.query(cls).all():
-                # populate dict with objects from storage
-                obj_dict.update({'{}.{}'.
-                                format(type(cls).__name__, row.id,): row})
+        if cls is not None:
+            for obj in self.__session.query(cls).all():
+                obj_dict.update({f'{type(cls).__name__}.{obj.id}': obj})
         else:
-            for key, val in all_classes.items():
-                for row in self.__session.query(val):
-                    obj_dict.update({'{}.{}'.
-                                    format(type(row).__name__, row.id,): row})
+            for class_name in all_classes.values():
+                obj_list = self.__session.query(class_name)
+                for obj in obj_list:
+                    obj_dict.update({f'{type(obj).__name__}.{obj.id}': obj})
         return obj_dict
 
     def new(self, obj):
