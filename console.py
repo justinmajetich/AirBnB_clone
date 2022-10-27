@@ -130,9 +130,9 @@ class HBNBCommand(cmd.Cmd):
             param_dict[param[0]] = param[2].replace('"', '').replace('_', ' ')
         new_instance.__dict__.update(**param_dict)
 
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
