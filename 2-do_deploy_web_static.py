@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""A script that distributes an archieve to your web serves
+"""
+A script that distributes an archieve to your web serves
 """
 
 
