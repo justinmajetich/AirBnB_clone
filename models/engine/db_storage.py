@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 """This module defines a class to manage db storage for hbnb clone"""
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import os
-
 
 classes = {
     'User': User,
@@ -34,9 +33,9 @@ class DBStorage:
         passwd = os.getenv('HBNB_MYSQL_PWD')
         db = os.getenv('HBNB_MYSQL_DB')
         env = os.getenv('HBNB_MYSQL_ENV')
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(user, passwd, host, db),
-            pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            user, passwd, host, db),
+                                      pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(bind=self.__engine)
 
@@ -44,8 +43,8 @@ class DBStorage:
         """query on the current database session all objects"""
         sql_dict = {}
         if cls is None:
-            result = self.__session.query(
-                State, City, User, Place, Review, Amenity).all()
+            result = self.__session.query(State, City, User, Place, Review,
+                                          Amenity).all()
         else:
             result = self.__session.query(cls).all()
         for obj in result:
@@ -68,9 +67,9 @@ class DBStorage:
     def reload(self):
         """create all tables in the database"""
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(
-            sessionmaker(bind=self.__engine, expire_on_commit=False)
-        )
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        self.__session = scoped_session(session_factory)
 
     def close(self):
         """close current SQLAlchemy session"""
