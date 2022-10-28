@@ -55,7 +55,6 @@ class DBStorage:
     def new(self, obj):
         """add the object to the current database session """
         self.__session.add(obj)
-        self.save()
 
     def save(self):
         """commit all changes of the current database session"""
@@ -65,14 +64,13 @@ class DBStorage:
         """delete from the current database session if not None"""
         if obj:
             self.__session.delete(obj)
-        self.save()
 
     def reload(self):
         """create all tables in the database"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(
-            bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session_factory)
+        self.__session = scoped_session(
+            sessionmaker(bind=self.__engine, expire_on_commit=False)
+        )
 
     def close(self):
         """close current SQLAlchemy session"""
