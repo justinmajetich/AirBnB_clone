@@ -47,7 +47,9 @@ def isInt(n):
 
     Display the value of n if only is int.
     """
-    return (n)
+    return ("{} is a number".format(
+        n
+    ))
 
 
 if __name__ == "__main__":
