@@ -2,18 +2,17 @@
 """Starts a web application."""
 
 
-from tracemalloc import start
 from flask import Flask
 
 
-start = Flask(__name__)
+app = Flask(__name__)
 
 
-@start.route("/", strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def helloHBNB():
-    """returns Hello HBN!."""
-    return ("Hello HNBN!")
+    """returns Hello HBNB!."""
+    return ("Hello HBNB!")
 
 
 if __name__ == "__main__":
-    start.run()
+    app.run(host='0.0.0.0', port='5000')
