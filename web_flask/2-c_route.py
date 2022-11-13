@@ -3,6 +3,7 @@
 
 
 from flask import Flask
+from markupsafe import escape
 
 
 app = Flask(__name__)
@@ -23,8 +24,8 @@ def HBNB():
 @app.route("/c/<text>", strict_slashes=False)
 def variableValue(text):
     """returns the value of a variable."""
-    return (text)
+    return ('%s' % escape(text))
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port='5000')
