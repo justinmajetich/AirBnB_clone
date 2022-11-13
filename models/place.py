@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from os import getenv
 import models
 import shlex
-from models import Amenity
+
 
 
 place_amenity = Table("place_amenity", Base.metadata,
@@ -80,6 +80,7 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, obj=None):
+            from models import amenity
             """ Appends amenity ids to the attribute """
-            if type(obj) is Amenity and obj.id not in self.amenity_ids:
+            if type(obj) is amenity.Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
