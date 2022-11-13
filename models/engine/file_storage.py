@@ -3,6 +3,13 @@
 
 
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -53,31 +60,24 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
 
+        classes = {
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
-            with open(self.__file_path, "r") as f:
-                jsn_file = json.load(f)
-
-            for k in jsn_file:
-                self.__objects[k] = classes[jsn_file[k]["__class__"]](
-                    **jsn_file[k]
-                )
-
+            temp = {}
+            with open(FileStorage.__file_path, 'r') as f:
+                temp = json.load(f)
+                for key, val in temp.items():
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    def delete(self, obj=None):
-        """
-        deletes obj from __objects
-        """
-
-        if obj is not None:
-            objectKey = "{}.{}".format(
-                obj.__class__.__name__, obj.id
-            )
-            if objectKey in self.__objects:
-                del self.__objects[objectKey]
-
-    def close(self):
-        """call reload()"""
-        self.reload()
