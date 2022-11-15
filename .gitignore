@@ -4,7 +4,7 @@ file.json
 main_delete.py
 test_params_create
 connectdb.session.sql
-__pycache__
-versions
+__pycache__/
+versions/
 main_place_amenities.py
 mainn.py
