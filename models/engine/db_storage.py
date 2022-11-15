@@ -37,22 +37,24 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query and return all objects by class/generally
-        Return: dictionary (<class-name>.<object-id>: <obj>)
         """
-        obj_dict = {}
-
+        Retrieves dictionary of objects in database
+        Args:
+            cls (obj): class of objects to be queried
+        Returns:
+            dictionary of objects
+        """
+        objs_dict = {}
+        objs = [v for k, v in all_classes.items()]
         if cls:
-            for row in self.__session.query(cls).all():
-                # populate dict with objects from storage
-                obj_dict.update({'{}.{}'.
-                                format(type(cls).__name__, row.id,): row})
-        else:
-            for key, val in all_classes.items():
-                for row in self.__session.query(val):
-                    obj_dict.update({'{}.{}'.
-                                    format(type(row).__name__, row.id,): row})
-        return obj_dict
+            if isinstance(cls, str):
+                cls = all_classes[cls]
+            objs = [cls]
+        for c in objs:
+            for instance in self.__session.query(c):
+                key = str(instance.__class__.__name__) + "." + str(instance.id)
+                objs_dict[key] = instance
+        return (objs_dict)
 
     def new(self, obj):
         """add a new element in the table
