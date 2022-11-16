@@ -22,15 +22,6 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-<<<<<<< HEAD
-        """Returns a dictionary of models currently in storage"""
-        if cls:
-            dic = {k:v for k, v in FileStorage.__objects.items()
-                   if type(v) == cls}
-            return dic
-        else:
-            return FileStorage.__objects
-=======
         """returns a dictionary
         Return:
             returns a dictionary of __object
@@ -46,7 +37,6 @@ class FileStorage:
             return (dic)
         else:
             return self.__objects
->>>>>>> e7b73d271790dc7c5215818705e40e677a859f47
 
     def new(self, obj):
         """sets __object to given obj
@@ -78,13 +68,6 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-<<<<<<< HEAD
-        """Delete obj from __objects"""
-        if obj:
-            key = obj.to_dict()['__class__'] + '.' + obj.id
-            if key in self.all():
-                del self.all()[key]
-=======
         """ delete an existing element
         """
         if obj:
@@ -95,4 +78,3 @@ class FileStorage:
         """ calls reload()
         """
         self.reload()
->>>>>>> e7b73d271790dc7c5215818705e40e677a859f47
