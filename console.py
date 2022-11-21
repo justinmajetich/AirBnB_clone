@@ -120,9 +120,10 @@ class HBNBCommand(cmd.Cmd):
         first_split = args.split(' ')
         new_instance = HBNBCommand.classes[first_split[0]]()
         parameters = first_split[1:]
-        parmeters = [i.replace('_', ' ') for i in parameters]
         for i in parameters:
             key, value = i.split('=')
+            if value[0] == '"':
+                value = value.strip('"').replace('_', ' ')
             setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
