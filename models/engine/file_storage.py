@@ -2,11 +2,11 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
-__objects = {}
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
+    __objects = {}
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
