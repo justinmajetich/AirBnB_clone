@@ -33,6 +33,7 @@ class FileStorage:
             for key, val in self.__objects.items():
                 # returns the list of objects of one type of class
                 if cls is type(val):
+                    # attribute the value to the key
                     dict[key] = val
             return dict
         return FileStorage.__objects
