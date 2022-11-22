@@ -4,7 +4,8 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from models.city import City
 from models import storage
-from sqlalchemy import Column, String, relationship
+from sqlalchemy import Column, String
+from sqalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
