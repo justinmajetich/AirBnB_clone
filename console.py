@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
 
         print(new_inst.id)"""
 
-          try:
+        try:
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
