@@ -139,34 +139,36 @@ class HBNBCommand(cmd.Cmd):
         new_inst.save()
 
         print(new_inst.id)"""
-        if not args:
-            print("** class name missing **")
-            return
-        arg_list = args.split()
-        class_name = arg_list[0]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
 
-        new_instance = HBNBCommand.classes[class_name]()
+          try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
 
-        for arg in arg_list[1:]:
-            param = arg.split('=')
-            key = param[0]
-            val = param[1]
+            kwargs = {}
+            for i in range(1, len(my_list)):
+                key, value = tuple(my_list[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
 
-            if val[0] == '\"':
-                val = val.replace('\"', '').replace('_', ' ')
-            elif '.' in val:
-                val = float(val)
+            if kwargs == {}:
+                obj = eval(my_list[0])()
             else:
-                val = int(val)
+                obj = eval(my_list[0])(**kwargs)
+                storage.new(obj)
+            print(obj.id)
+            obj.save()
 
-            setattr(new_instance, key, val)
-
-        new_instance.save()
-        print(new_instance.id)
-
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
