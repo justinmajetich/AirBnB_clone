@@ -3,7 +3,7 @@
 from models.base_model import BaseModel
 from models.base_model import Base
 from models.city import City
-import models
+from models import storage
 from sqlalchemy import Column, String
 from sqalchemy.orm import relationship
 
@@ -18,7 +18,7 @@ class State(BaseModel, Base):
     def cities(self):
         """Returns list of city instances in same state"""
         my_list = []
-        for i in models.storage.all(City):
+        for i in storage.all(City):
             if self.id == i.state_id:
                 my_list.append(i)
         return my_list
