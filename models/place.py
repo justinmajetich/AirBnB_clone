@@ -46,7 +46,7 @@ class Place(BaseModel, Base):
 
     description = Column(String(1024), nullable=True)
 
-    number_rooms = Column(Integer, nullable=false, default=0)
+    number_rooms = Column(Integer, nullable=False, default=0)
 
     number_bathrooms = Column(Integer, nullable=False, default=0)
 
