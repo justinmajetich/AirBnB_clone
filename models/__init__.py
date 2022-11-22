@@ -17,4 +17,3 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
 else:
     storage = FileStorage()
 storage.reload()
-print(storage)
