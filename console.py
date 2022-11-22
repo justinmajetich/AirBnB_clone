@@ -130,12 +130,9 @@ class HBNBCommand(cmd.Cmd):
             key = el[0]
             value = el[1]
             value = value.replace("_", " ")
-            if "." in value:
-                value = float(value)
-            else:
-                value = int(value)
 
-            setattr(new_inst, key, value)
+            if hasattr(new_inst, key):
+                setattr(new_inst, key, eval(value))
         new_inst.save()
 
         print(new_inst.id)
