@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         new_inst.save()
 
         print(new_inst.id)"""
-         if not args:
+        if not args:
             print("** class name missing **")
             return
         arg_list = args.split()
