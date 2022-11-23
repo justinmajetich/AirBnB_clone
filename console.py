@@ -129,7 +129,6 @@ class HBNBCommand(cmd.Cmd):
         # Create new instance if args exist
         new_instance = HBNBCommand.classes[line[0]]()
 
-
         # Separate the key and the value
         key, value = new_instance.split('=')
 
