@@ -30,6 +30,7 @@ class BaseModel:
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != '__class__':
                     setattr(self, key, value)
+        self.save()
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -52,7 +53,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         try:
-            del dictionary[_sa_instance_state]
+            del dictionary['_sa_instance_state']
         except Exception:
             pass
         return dictionary
