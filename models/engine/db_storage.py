@@ -12,8 +12,9 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import models
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import relationship
+import sqalchemy
 from sqlalchemy.orm import scoped_session
 
 class DBStorage:
@@ -25,9 +26,9 @@ class DBStorage:
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'
             .format(getenv('HBNB_MYSQL_USER'),
-            getenv('HBNB_MYSQL_PWD'),
-            getenv('HBNB_MYSQL_HOST'),
-            getenv('HBNB_MYSQL_DB')),
+                    getenv('HBNB_MYSQL_PWD'),
+                    getenv('HBNB_MYSQL_HOST'),
+                    getenv('HBNB_MYSQL_DB')),
             pool_pre_ping=True
         )
         if getenv('HBNB_ENV') == 'test':
