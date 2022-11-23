@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """New Engine DBStorage"""
+import os
 from os import getenv
 from models.base_model import BaseModel
 from models.base_model import Base
