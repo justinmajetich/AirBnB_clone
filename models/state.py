@@ -5,5 +5,5 @@ from sqlalchemy import Column, String, ForeignKey
 
 class State(BaseModel, Base):
     """ State class """
-    __tablesname__ = 'states'
+    __tablename__ = 'states'
     name = Column(String(128), nullable=False)
