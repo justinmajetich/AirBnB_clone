@@ -131,8 +131,8 @@ class HBNBCommand(cmd.Cmd):
 
         for el in arg[1:]:
             div = el.split("=")
-            key = el[0]
-            value = el[1]
+            key = div[0]
+            value = div[1]
             value = value.replace("_", " ")
 
             if hasattr(new_inst, key):
