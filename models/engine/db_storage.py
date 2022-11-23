@@ -12,10 +12,9 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import models
 from sqlalchemy.orm import sessionmaker
-import sqalchemy
 from sqlalchemy.orm import scoped_session
+import sqalchemy
 
 class DBStorage:
     """Class DBStorage"""

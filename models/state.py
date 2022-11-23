@@ -3,7 +3,7 @@
 from models.base_model import BaseModel
 from models.base_model import Base
 from models.city import City
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
@@ -17,12 +17,13 @@ class State(BaseModel, Base):
     else:
         name=''
 
-    @property
-    def cities(self):
-        """Returns list of city instances in same state"""
-        from models import storage
-        my_list = []
-        for i in storage.all(City):
-            if self.id == i.state_id:
-                my_list.append(i)
-        return my_list
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """Returns list of city instances in same state"""
+            from models import storage
+            my_list = []
+            for i in storage.all(City):
+                if self.id == i.state_id:
+                    my_list.append(i)
+            return my_list
