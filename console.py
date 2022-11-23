@@ -146,18 +146,6 @@ class HBNBCommand(cmd.Cmd):
             value = self.num_or_float(value)
             setattr(new_instance, key, value)
 
-        """for arg in argv[1:]:
-            split = arg.split('=')
-            key=split[0]
-            value=split[1]
-            if '\"' in value:
-                value = value.replace('\"', '')
-                value = value.replace('_', ' ')
-            elif '.' in value:
-                value = float(value)
-            else:
-                value = int(value)"""
-
        
         print(new_instance.id)
         new_instance.save()
