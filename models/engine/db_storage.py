@@ -33,7 +33,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """Turns to query the current database session"""
-        if cls=None:
+        if cls is NULL:
             elem = self.__session.query(State).all()
             elem.extend(self.__session.query(City).all())
             elem.extend(self.__session.query(User).all())
