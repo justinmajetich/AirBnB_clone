@@ -123,17 +123,24 @@ class HBNBCommand(cmd.Cmd):
             return
 
 
-        # Separe the arguments at each spaces
+        # Separate the arguments at each spaces
         line = args.split(' ')
 
         # Create new instance if args exist
         new_instance = HBNBCommand.classes[line[0]]()
-        sep_key_val = new_instance.split('=')
 
-        for key, value in line.items():
-            if value
+        # Separate the key and the value
+        key, value = new_instance.split('=')
 
+        for key, value in line[0]:
+            key = eval(key)
+            value = eval(value)
 
+        if type(value) == str:
+            value = value.replace("_", " ")
+
+        # associate the value and the key
+        setattr(self, key, value)
 
         storage.save()
         print(new_instance.id)
