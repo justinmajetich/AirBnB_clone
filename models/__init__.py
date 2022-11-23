@@ -4,8 +4,6 @@ from models.engine.file_storage import FileStorage
 import os
 from models.engine.db_storage import DBStorage
 
-storage = FileStorage()
-storage.reload()
 
 if os.getenv('BNB_TYPE_STORAGE') == 'db':
     storage = DBStorage

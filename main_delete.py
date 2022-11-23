@@ -1,48 +1,61 @@
 #!/usr/bin/python3
-""" Test delete feature
+""" Test
 """
+import os
+
+if os.path.exists("file.json"):
+    os.remove("file.json")
+
 from models.engine.file_storage import FileStorage
 from models.state import State
+from models.city import City
+
+
+if os.path.exists(FileStorage._FileStorage__file_path):
+    os.remove(FileStorage._FileStorage__file_path)
+
 
 fs = FileStorage()
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+# All with nothing
+all_objs = fs.all()
+if len(all_objs.keys()) > 0:
+    print("all() is returning result when it should not")
+    exit(1)
 
-# Create a new State
+# Create 2 States and 1 city
+search_keys = []
 new_state = State()
 new_state.name = "California"
 fs.new(new_state)
 fs.save()
-print("New State: {}".format(new_state))
+search_keys.append("{}.{}".format("State", new_state.id))
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
-
-# Create another State
-another_state = State()
-another_state.name = "Nevada"
-fs.new(another_state)
+new_state = State()
+new_state.name = "Nevada"
+fs.new(new_state)
 fs.save()
-print("Another State: {}".format(another_state))
+search_keys.append("{}.{}".format("State", new_state.id))
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+new_city = City()
+new_city.name = "Las Vegas"
+new_city.state_id = new_state.id
+fs.new(new_city)
+fs.save()
+city_search = "{}.{}".format("City", new_city.id)
 
-# Delete the new State
-fs.delete(new_state)
+all_objs = fs.all(State)
+if len(all_objs.keys()) != 2:
+    print("all() is not returning all new State/City created")
+    exit(1)
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+for key_search in search_keys:
+    if all_objs.get(key_search) is None:
+        print("State created should be in the list of objects")
+        exit(1)
+
+if all_objs.get(city_search) is not None:
+    print("City created should not be in the list of objects if filtered by State")
+    exit(1)
+
+print("OK", end="")
