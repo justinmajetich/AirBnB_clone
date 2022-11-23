@@ -4,17 +4,18 @@ import json
 
 import MySQLdb
 import sys
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from models.base_model import BaseModel, Base
 import os
-from file_storage import FileStorage
 
-__engine = None
-__session = None
+
 
 class DBStorage:
+    __engine = None
+    __session = None
+
     def __init__(self):
         # Return the value of the environment variable key as a string if it exists
         self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(os.getenv("HBNB_MYSQL_USER"), os.getenv("HBNB_MYSQL_PWD"), os.getenv("HBNB_MYSQL_HOST"), os.getenv("HBNB_MYSQL_DB")),
@@ -22,7 +23,7 @@ class DBStorage:
 
         # drop all tables if the environment variable HBNB_ENV is equal to test
         if os.getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(__engine)
+            Base.metadata.drop_all(DBStorage.__engine)
 
     def all(self, cls=None):
         """
@@ -39,7 +40,7 @@ class DBStorage:
                     # attribute the value to the key
                     my_dict[key] = val
             return my_dict
-        return FileStorage.__objects
+        return DBStorage.__engine
 
     def new(self, obj):
         """add the object to the current database session """
