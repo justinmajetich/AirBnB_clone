@@ -33,6 +33,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
         models.storage.new(self)
+        models.storage.save()
 
     def delete(self):
         models.storage.delete(self)
