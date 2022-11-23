@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             div = el.split("=")
             key = div[0]
             value = div[1]
-            value = value.replace("_", " ")
+            value = value.strip("\"'").replace("_", " ")
 
             if hasattr(new_inst, key):
                 setattr(new_inst, key, eval(value))
