@@ -25,7 +25,12 @@ class DBStorage:
             Base.metadata.drop_all(__engine)
 
     def all(self, cls=None):
+        """
+        query on the current database session (self.__session) all objects
+        depending of the class name (argument cls)
+        """
         my_dict = {}
+
         if cls:
             # with .items, use the key and value
             for key, val in self.__objects.items():
