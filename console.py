@@ -1,19 +1,15 @@
 #!/usr/bin/python3
 """ Console Module """
-
-
 import cmd
+import sys
 from models.base_model import BaseModel
-from models import storage
+from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
 from models.review import Review
-import sys
-from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -27,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    dot_cmds = ['create', 'all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
@@ -41,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -78,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict:
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -117,29 +112,55 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def num_or_float(self, arg: str):
+        """convert str to int or float"""
+        try:
+            return int(arg)
+        except Exception:
+            pass
+
+        try:
+            return float(arg)
+        except Exception:
+            return arg
+
     def do_create(self, args):
         """ Create an object of any class"""
-        arg = args.split()
-        if len(arg[0]) == 0:
+        argv = args.split(' ')
+        if not args:
             print("** class name missing **")
             return
-        if arg[0] not in HBNBCommand.classes:
+        if argv[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        
+        attributes = {}
+        for attr in argv[1:]:
+            new_dict = attr.split('=', 1)
+            attributes[new_dict[0]] = new_dict[1]
+        
+        new_instance = HBNBCommand.classes[argv[0]]()
 
-        new_inst = HBNBCommand.classes[arg[0]]()
+        for key, value in attributes.items():
+            value = value.strip("\"'").replace("_", " ")
+            value = self.num_or_float(value)
+            setattr(new_instance, key, value)
 
-        for el in arg[1:]:
-            div = el.split("=")
-            key = div[0]
-            value = div[1]
-            value = value.replace('_', ' ')
+        """for arg in argv[1:]:
+            split = arg.split('=')
+            key=split[0]
+            value=split[1]
+            if '\"' in value:
+                value = value.replace('\"', '')
+                value = value.replace('_', ' ')
+            elif '.' in value:
+                value = float(value)
+            else:
+                value = int(value)"""
 
-            if hasattr(new_inst, key):
-                setattr(new_inst, key, eval(value))
-        new_inst.save()
-
-        print(new_inst.id)
+       
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -221,11 +242,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
