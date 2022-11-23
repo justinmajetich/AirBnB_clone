@@ -132,9 +132,6 @@ class HBNBCommand(cmd.Cmd):
 
         for key, value in line.items():
             if value
-
-
-
         storage.save()
         print(new_instance.id)
         storage.save()
