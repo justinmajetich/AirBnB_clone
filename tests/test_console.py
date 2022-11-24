@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """test for console"""
+
 import unittest
 import console
 from console import HBNBCommand
@@ -18,7 +19,5 @@ class TestConsole(unittest.TestCase):
         for all_methods in dir(HBNBCommand):
             self.assertTrue(all_methods.__doc__)
 
-
 if __name__ == '__main__':
     unittest.main()
-    
