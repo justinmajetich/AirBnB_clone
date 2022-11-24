@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns the list of objects of one type of class"""
         if (cls):
             cls_dict = {}
             for key, value in self.__objects.items():
@@ -40,7 +40,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-        
+
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -56,7 +56,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Public method that deletes obj from objects"""
+        """Deletes object from objects"""
         if (obj):
             key = f"{type(obj).__name__}.{obj.id}"
             del self.__objects[key]
