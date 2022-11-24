@@ -14,7 +14,6 @@ from models.state import State
 from models.user import User
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-import sqalchemy
 
 class DBStorage:
     """Class DBStorage"""
@@ -68,3 +67,7 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         ses = scoped_session(session_factory)
         self.__session = ses()
+
+    def close(self):
+        """Close database connection"""
+        self.__session.close()
