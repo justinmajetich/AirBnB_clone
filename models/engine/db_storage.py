@@ -13,16 +13,22 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.schema import MetaData
 
 
-"""username = getenv('HBNB_MYSQL_USER')
+username = getenv('HBNB_MYSQL_USER')
 password = getenv('HBNB_MYSQL_PWD')
 host = getenv('HBNB_MYSQL_HOST')
 db = getenv('HBNB_MYSQL_DB')
 v_env = getenv('HBNB_ENV')
 
-URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"""
+URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"
 
-    """def __init__(self):
-        init engine
+
+class DBStorage:
+    """SQLAlchemy storage"""
+    __engine = None
+    __session = None
+
+    def __init__(self):
+        """init engine"""
         self.__engine = create_engine(URI, pool_pre_ping=True)
 
         if v_env == 'test':
@@ -31,6 +37,7 @@ URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"""
             metadata.drop_all()
 
     def all(self, cls=None):
+        """query on the current database session """
 
         classDict = {"City": City, "State": State,
                      "User": User, "Place": Place,
@@ -48,42 +55,7 @@ URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"""
             data = self.__session.query(cls).all()
             for obj in data:
                 objects[f"{obj.id}"] = obj
-        return objects"""
-
-    class DBStorage:
-    """class of database storage engine"""
-    __engine = None
-    __session = None
-
-    def __init__(self):
-        """initialize the new engine creation"""
-        engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                               .format(getenv("HBNB_MYSQL_USER"),
-                                       getenv("HBNB_MYSQL_PWD"),
-                                       getenv("HBNB_MYSQL_HOST"),
-                                       getenv("HBNB_MYSQL_DB")),
-                               pool_pre_ping=True)
-        if os.getenv("HBNB_ENV") ==  "test":
-            Base.metadata.drop_all(self.__engine)
-
-    def all(self, cls=None):
-        """Turns to query the current database session"""
-        if cls is NULL:
-            elem = self.__session.query(State).all()
-            elem.extend(self.__session.query(City).all())
-            elem.extend(self.__session.query(User).all())
-            elem.extend(self.__session.query(Place).all())
-            elem.extend(self.__session.query(Review).all())
-            elem.extend(self.__session.query(Amenity).all())
-        else:
-            if type(cls) == str:
-                cls = eval(cls)
-            elem = self.__session.query(cls)
-        for el in elem:
-            cl = "{}.{}".format(type(el).__name__, el.id)
-            dict1[cl] = el
-            return dict1
-
+        return objects
     def new(self, obj):
         """adds the objecgt to the current database session"""
         self.__session.add(obj)
