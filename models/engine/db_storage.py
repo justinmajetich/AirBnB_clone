@@ -59,7 +59,7 @@ class DBStorage:
         return objects
 
     """def __init__(self):
-        """initialize the new engine creation"""
+        initialize the new engine creation
         engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
                                .format(getenv("HBNB_MYSQL_USER"),
                                        getenv("HBNB_MYSQL_PWD"),
@@ -71,7 +71,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Turns to query the current database session"""
+        Turns to query the current database session
         if cls is NULL:
             elem = self.__session.query(State).all()
             elem.extend(self.__session.query(City).all())
