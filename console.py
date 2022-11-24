@@ -152,9 +152,8 @@ class HBNBCommand(cmd.Cmd):
         # associate the value and the key
         setattr(new_instance, key, value)
 
-        print(new_instance.id)
-        storage.save()
         new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
