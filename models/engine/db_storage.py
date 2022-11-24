@@ -36,17 +36,16 @@ class DBStorage:
         """All function
         all objects depending of the class name
         return a dictionary"""
-        if cls is None:
-            am = self.__session.query(Amenity).all()
-            ci = self.__session.query(City).all()
-            pl = self.__session.query(Place).all()
-            re = self.__session.query(Review).all()
-            st = self.__session.query(State).all()
-            us = self.__session.query(User).all()
-            ob = am.union(ci, pl, re, st, us).all()
-        else:
-            ob = self.__session.query(cls)
-        return {"{}.{}".format(type(i).__name__, i.id): i for i in ob}
+        classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
+        my_dict = {}
+        for i in classes:
+            if cls is None or cls is classes[i]:
+                ob = self.__session.query(classes[i]).all()
+                for i in ob:
+                    key = "{}.{}".format(type(ob).__name__, ob.id)
+                    my_dict[key] = ob
+        return my_dict
 
     def new(self, obj):
         """Add obj to session"""
