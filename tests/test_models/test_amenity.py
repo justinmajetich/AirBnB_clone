@@ -15,5 +15,5 @@ class test_Amenity(test_basemodel):
 
     def test_name2(self):
         """ Test """
-        new = self.value(name="awda")
+        new = self.value(name="kjgjkjh")
         self.assertEqual(type(new.name), str)
