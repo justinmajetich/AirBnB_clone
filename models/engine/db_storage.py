@@ -56,6 +56,7 @@ class DBStorage:
             for obj in data:
                 objects[f"{obj.id}"] = obj
         return objects
+
     def new(self, obj):
         """adds the objecgt to the current database session"""
         self.__session.add(obj)
