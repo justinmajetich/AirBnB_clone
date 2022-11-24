@@ -117,7 +117,6 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         if not args:
             raise SyntaxError("Error of syntax")
-        my_dict = {}
         first_split = args.split(' ')
         new_instance = HBNBCommand.classes[first_split[0]]()
         parameters = first_split[1:]
@@ -126,9 +125,7 @@ class HBNBCommand(cmd.Cmd):
             if value[0] == '"':
                 value = value.strip('"').replace('_', ' ')
             setattr(new_instance, key, value)
-            my_dict[key] = value
-        ob = eval(first_split[0])(**my_dict)
-        storage.new(ob)
+            storage.new(new_instance)
         new_instance.save()
         print(new_instance.id)
 
