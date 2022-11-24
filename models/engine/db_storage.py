@@ -16,12 +16,49 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import MetaData
 
 
+username = getenv('HBNB_MYSQL_USER')
+password = getenv('HBNB_MYSQL_PWD')
+host = getenv('HBNB_MYSQL_HOST')
+db = getenv('HBNB_MYSQL_DB')
+v_env = getenv('HBNB_ENV')
+
+URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"
+
+
 class DBStorage:
     """class of database storage engine"""
     __engine = None
     __session = None
-
+    
     def __init__(self):
+        """init engine"""
+        self.__engine = create_engine(URI, pool_pre_ping=True)
+
+        if v_env == 'test':
+            metadata = MetaData(self.__engine)
+            metadata.reflect()
+            metadata.drop_all()
+
+    def all(self, cls=None):
+        classDict = {"City": City, "State": State,
+                     "User": User, "Place": Place,
+                     "Review": Review, "Amenity": Amenity}
+        objects = {}
+        if cls is None:
+            for className in classDict:
+                data = self.__session.query(classDict[className]).all()
+                for obj in data:
+                    objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
+
+        else:
+            if isinstance(cls, str):
+                cls = classDict[cls]
+            data = self.__session.query(cls).all()
+            for obj in data:
+                objects[f"{obj.id}"] = obj
+        return objects
+
+    """def __init__(self):
         """initialize the new engine creation"""
         engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
                                .format(getenv("HBNB_MYSQL_USER"),
@@ -49,7 +86,7 @@ class DBStorage:
         for el in elem:
             cl = "{}.{}".format(type(el).__name__, el.id)
             dict1[cl] = el
-            return dict1
+            return dict1"""
 
     def new(self, obj):
         """adds the objecgt to the current database session"""
