@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from shlex import split as sh_split
+
 
 
 
@@ -116,28 +115,73 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+     def split_args(self, line):
+        """ Split arguments by spaces """
+        list = []
+        for arg in line.split(" "):
+            list.append(arg)
+        return list
+
     def do_create(self, args):
         """ Create an object of any class"""
-        l_args = sh_split(args)
-        class_name = l_args[0]
-        if not class_name:
+        if not args:
             print("** class name missing **")
             return
-        elif class_name not in HBNBCommand.classes:
+        array_args = self.split_args(args)
+        if array_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        d = {}
-        for element in l_args[1:]:
-            # seperating key and value for kwargs
-            key_v = element.split("=")
-            if HBNBCommand.types.get(key_v[0], "not found") != "not found":
-                d[key_v[0]] = HBNBCommand.\
-                 types[key_v[0]](key_v[1].replace('"', '').replace("_", ' '))
-        new_instance = HBNBCommand.classes[class_name]()
-        new_instance.__dict__.update(**d)
+        array_kwargs = array_args[1:]
+        dict_kwargs = dict()
+        for kwarg in array_kwargs:
+            key, value = kwarg.split("=")
+            if value[0] == "\"":
+                value = str(value.strip('"'))
+                value = value.replace("_", " ")
+            elif "." in value:
+                value = float(value)
+            else:
+                value = int(value)
+            dict_kwargs[key] = value
+        new_instance = HBNBCommand.classes[array_args[0]]()
+        for key, value in dict_kwargs.items():
+            new_instance.__dict__[key] = value
+        print(new_instance.id)
         storage.new(new_instance)
         storage.save()
-        print(new_instance.id)
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
+
+    def do_show(self, args):
+        """ Method to show an individual object """
+        new = args.partition(" ")
+        c_name = new[0]
+        c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+
+        if c_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        if not c_id:
+            print("** instance id missing **")
+            return
+
+        key = c_name + "." + c_id
+        try:
+            print(storage._FileStorage__objects[key])
+        except KeyError:
+            print("** no instance found **")
 
     def help_create(self):
         """ Help information for the create method """
