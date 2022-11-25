@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-     def split_args(self, line):
+    def split_args(self, line):
         """ Split arguments by spaces """
         list = []
         for arg in line.split(" "):
