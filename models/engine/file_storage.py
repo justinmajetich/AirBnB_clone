@@ -70,3 +70,8 @@ class FileStorage:
             # if there is a key, delete it
             if self.__objects[key]:
                 del self.__objects[key]
+                self.save()
+
+    def close(self):
+        """ close"""
+        self.reload()
