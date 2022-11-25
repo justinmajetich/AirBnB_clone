@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from os import getenv
 
 
 
@@ -115,39 +115,39 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def split_args(self, line):
-        """ Split arguments by spaces """
-        list = []
-        for arg in line.split(" "):
-            list.append(arg)
-        return list
-
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        array_args = self.split_args(args)
-        if array_args[0] not in HBNBCommand.classes:
+        arg_lis = args.split()
+        if arg_lis[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        array_kwargs = array_args[1:]
-        dict_kwargs = dict()
-        for kwarg in array_kwargs:
-            key, value = kwarg.split("=")
-            if value[0] == "\"":
-                value = str(value.strip('"'))
-                value = value.replace("_", " ")
-            elif "." in value:
-                value = float(value)
-            else:
-                value = int(value)
-            dict_kwargs[key] = value
-        new_instance = HBNBCommand.classes[array_args[0]]()
-        for key, value in dict_kwargs.items():
-            new_instance.__dict__[key] = value
-        print(new_instance.id)
+        key_lis = []
+        if len(arg_lis) > 1:
+            for arg in arg_lis[1:]:
+                values = arg.split('=', 1)
+                try:
+                    if values[1][0] == '"' and values[1][-1] == '"':
+                        out = [values[0], ' '.join(values[1][1:-1].split('_'))]
+                        key_lis.append(out)
+                        continue
+                    try:
+                        num = float(values[1])
+                        if '.' not in values[1]:
+                            num = int(values[1])
+                        out = [values[0], num]
+                        key_lis.append(out)
+                    except ValueError:
+                        continue
+                except IndexError:
+                    continue
+        new_instance = HBNBCommand.classes[arg_lis[0]]()
+        for opt in key_lis:
+            setattr(new_instance, opt[0], opt[1])
         storage.new(new_instance)
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
