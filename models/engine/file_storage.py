@@ -1,15 +1,40 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
+
+classes = {
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+         }
+
+
+__objects = {}
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        dict = {}
+        if cls:
+            # with .items, use the key and value
+            for key, val in self.__objects.items():
+                # returns the list of objects of one type of class
+                if cls is type(val):
+                    # attribute the value to the key
+                    dict[key] = val
+            return dict
         return FileStorage.__objects
 
     def new(self, obj):
@@ -27,19 +52,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -48,3 +60,17 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """delete obj from __objects if it's inside - if obj is equal to None"""
+        if obj is not None:
+            # define the key
+            key = obj.__class__.__name__ + '.' + obj.id
+            # if there is a key, delete it
+            if self.__objects[key]:
+                del self.__objects[key]
+                self.save()
+
+    def close(self):
+        """ close"""
+        self.reload()
