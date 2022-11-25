@@ -128,32 +128,37 @@ class HBNBCommand(cmd.Cmd):
         # Create new instance if args exist
         new_instance = HBNBCommand.classes[line[0]]()
 
-        for i in range(0, len(line)):
+        if len(line) > 1:
+            res = line[0] + "." +  new_instance.id
+
+        for i in range(1, len(line)):
             # Separate the key and the value
-            key_value = line[i].partition('=')
-            key = key_value[0]
-            value = key_value[2]
+            value = line[i].split('=')
 
-        if type(value) == str:
-            value = value.replace("_", " ")
+            if len(value) < 2 or value[1] == "":
+                print('* missing value*')
 
+        if '"' in value[1]:
+            value[1] = value[1].replace("_", " ")
+            value[1] = value[1].replace("\"", "")
         # double quote inside the value must be escaped with a \
-        if '\"' in value:
-            value = value[1:-1]
+
 
         # Float
-        elif '.' in value:
-            value = float(value)
+        elif '.' in value[1]:
+            value[1] = float(value[1])
 
         # integer is default case
-        else:
-            value = int(value)
+        elif value[1].isdigit():
+             value[1] = int(value[1])
 
         # associate the value and the key
-        setattr(new_instance, key, value)
+        setattr(new_instance, value[0], value[1])
 
-        new_instance.save()
         print(new_instance.id)
+        storage.save()
+        new_instance.save()
+
 
     def help_create(self):
         """ Help information for the create method """
