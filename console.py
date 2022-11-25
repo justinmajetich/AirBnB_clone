@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[line[0]]()
 
         if len(line) > 1:
-            res = line[0] + "." +  new_instance.id
+            res = line[0] + "." + new_instance.id
 
             for i in range(1, len(line)):
                 # Separate the key and the value
@@ -143,8 +143,6 @@ class HBNBCommand(cmd.Cmd):
                         value[1] = value[1].replace("_", " ")
                         value[1] = value[1].replace("\"", "")
 
-
-
                     # Float
                     else:
                         if '.' in value[1]:
@@ -157,10 +155,12 @@ class HBNBCommand(cmd.Cmd):
                     # associate the value and the key
                     setattr(new_instance, value[0], value[1])
 
+        else:
+            print("** class name missing **")
+
         print(new_instance.id)
         storage.save()
         new_instance.save()
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -224,8 +224,9 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
+
         except KeyError:
             print("** no instance found **")
 
@@ -355,6 +356,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
