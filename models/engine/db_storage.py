@@ -73,7 +73,7 @@ class DBStorage:
 
         # scoped_session - to make sure your Session is thread-safe
         Session = scoped_session(session_factory)
-        self.__session = Session
+        self.__session = Session()
 
     def close(self):
         """ close the session """
