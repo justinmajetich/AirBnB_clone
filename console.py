@@ -335,7 +335,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-def do_create(self, arg):
-    print("Class name")
-    print("param 1")
-    print("para")
