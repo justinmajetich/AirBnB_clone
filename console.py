@@ -131,29 +131,30 @@ class HBNBCommand(cmd.Cmd):
         if len(line) > 1:
             res = line[0] + "." +  new_instance.id
 
-        for i in range(1, len(line)):
-            # Separate the key and the value
-            value = line[i].split('=')
+            for i in range(1, len(line)):
+                # Separate the key and the value
+                value = line[i].split('=')
 
-            if len(value) < 2 or value[1] == "":
-                print('* missing value*')
+                if len(value) < 2 or value[1] == "":
+                    print('* missing value*')
+                else:
+                    if '"' in value[1]:
+                        value[1] = value[1].replace("_", " ")
+                        value[1] = value[1].replace("\"", "")
+    # double quote inside the value must be escaped with a \
 
-        if '"' in value[1]:
-            value[1] = value[1].replace("_", " ")
-            value[1] = value[1].replace("\"", "")
-        # double quote inside the value must be escaped with a \
 
-
-        # Float
-        elif '.' in value[1]:
-            value[1] = float(value[1])
+    # Float
+                    else:
+                        if '.' in value[1]:
+                            value[1] = float(value[1])
 
         # integer is default case
-        elif value[1].isdigit():
-             value[1] = int(value[1])
+                        elif value[1].isdigit():
+                            value[1] = int(value[1])
 
         # associate the value and the key
-        setattr(new_instance, value[0], value[1])
+                    setattr(new_instance, value[0], value[1])
 
         print(new_instance.id)
         storage.save()
