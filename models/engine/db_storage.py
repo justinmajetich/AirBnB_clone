@@ -24,7 +24,8 @@ class DBStorage():
                                               pool_pre_ping=True))
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
     def all(self, cls=None):
         classes_dict = {'Amenity': Amenity, 'Place': Place,
                         'User': User, 'Review': Review, 'City': City,
