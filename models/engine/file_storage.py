@@ -50,10 +50,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """delete obj """
-        if (obj is None):
+        """Deletes an object from the dictionary"""
+        try:
+            key = f"{type(obj).__name__}.{obj.id}"
+            del self.__objects[key]
+        except Exception:
             return
-        for key, value in FileStorage.__objects.items():
-            if obj == value:
-                FileStorage.__objects.pop(key)
-                break
