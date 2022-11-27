@@ -33,11 +33,17 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deletes an object from the dictionary"""
-        try:
+        """ try:
             key = f"{type(obj).__name__}.{obj.id}"
             del self.__objects[key]
         except Exception:
+            return """
+        if obj is None:
             return
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        if key in self.all():
+            del self.all()[key]
+            self.save()
 
     def reload(self):
         """Loads storage dictionary from file"""
