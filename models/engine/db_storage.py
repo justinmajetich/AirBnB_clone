@@ -9,6 +9,7 @@ from models.place import Place
 from models.city import City
 from models.state import State
 from models.review import Review
+import MySQLdb
 
 class DBStorage():
     __engine = None
@@ -55,6 +56,3 @@ class DBStorage():
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
-
-    def close(self):
-        self.__session.close()
