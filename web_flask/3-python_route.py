@@ -23,13 +23,16 @@ def hbnb_route():
     """
     return "HBNB"
 
-
+@app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_is_magic(text):
-    """Display Python, followed by the value of the text"""
+    """
+    Display Python, followed by the value of the text
+    replace underscore _ symbols with a space
+    """
     if text is None:
         return "Python is cool"
-    return f"Python {text.replace('_', ' ')}"
+    return "Python {}".format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':

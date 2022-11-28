@@ -28,7 +28,7 @@ def hbnb_route():
 def c(text):
     """
     Display C, followed by the value of the text variable
-    replace underscore _ symbols with a space 
+    replace underscore _ symbols with a space
     """
     return "C {}".format(text.replace("_", " "))
 
