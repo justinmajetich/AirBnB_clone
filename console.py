@@ -123,18 +123,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         splitted = args.split(' ')
-        new_instance = HBNBCommand.classes[args]()
-        kwargs = splitted[1:]
-        for i in kwargs:
-            key, value = i.split('=') 
-            if '"' in value:
-                value = value.strip('"').replace('_', ' ')
-            elif '.' in value:
-                value = float(value)
-            else:
-                value = int(value)
-            setattr(new_instance, key, value)
-        storage.save()
+        kwargs = {}
+        for i in range(1, len(splitted)):
+            key, value = i.split('=')
+            if '"' in value[0]:
+                value = value.strip('"')
+                value = value.replace('_', ' ')
+            kwargs[key] = value
+        if kwargs == {}:
+            new_instance = HBNBCommand.classes[splitted[0]](**kwargs)
         print(new_instance.id)
         storage.save()
         
