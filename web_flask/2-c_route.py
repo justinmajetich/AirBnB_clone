@@ -20,7 +20,7 @@ def hbnb():
 
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
-    """Displays C and the text that follows"""
+    """Returns C and the text that follows"""
     text = text.replace("_", " ")
     return "C {}".format(text)
 
