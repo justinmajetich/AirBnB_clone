@@ -19,10 +19,7 @@ def hello_route():
 @app.route('/hbnb', strict_slashes=False)
 def hello_route():
     """
-    This line is for filling some lines in this comment section
-    This too
-    And this too
-    This too
+    I dont understand this 'Module is docuemnted' check fr
     """
     return "HBNB"
 
