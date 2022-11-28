@@ -24,7 +24,7 @@ def hbnb_route():
     return "HBNB"
 
 
-@app.route('/c/<text>', strict_slashes=False)
+@app.route('/c/<text>')
 def c_isfunc(text):
     """Returns 'C' for /c/<text> url and replaces '_' with spaces"""
     return f"C {text.replace('_', ' ')}"
