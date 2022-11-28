@@ -26,9 +26,7 @@ def hbnb_route():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_is_fun(text):
-    """
-    Returns 'C' for /c/<text> url and replaces '_' with spaces
-    """
+    """Prints the character 'C' and the value of <text>"""
     text = text.replace("_", " ")
     return f"C {text}"
 
