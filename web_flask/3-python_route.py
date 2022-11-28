@@ -28,7 +28,7 @@ def cisfun(text):
     Returns C, followed by text value.
     """
     text = text.replace("_", " ")
-    return "C " + text
+    return "C {}".format(text)
 
 @APP.route("/python", strict_slashes=False)
 @APP.route("/python/<text>", strict_slashes=False)
@@ -37,7 +37,7 @@ def pythoniscool(text="is cool"):
     Returns Python, followed by text value.
     """
     text = text.replace('_', " ")
-    return "Python " + text
+    return "Python {}".format(text)
 
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port="5000")
