@@ -26,7 +26,7 @@ def hbnb_route():
 
 @app.route('/python/<text>', strict_slashes=False)
 def python_is_magic(text):
-    """display “Python ”, followed by the value of the text"""
+    """Display Python, followed by the value of the text"""
     if text is None:
         return "Python is cool"
     return f"Python {text.replace('_', ' ')}"
