@@ -22,10 +22,13 @@ def hbnb():
     """
     return "HBNB"
 
-@APP.route("/c/text", strict_slashes=False)
+@APP.route("/c/<text>", strict_slashes=False)
 def cisfun(text):
+    """
+    Returns C, followed by text value.
+    """
     text = text.replace("_", " ")
     return "C " + text
-    
+
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port="5000")
