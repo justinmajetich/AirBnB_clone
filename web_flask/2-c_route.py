@@ -22,7 +22,7 @@ def hbnb():
 def c(text):
     """Displays C and the text that follows"""
     text = text.replace("_", " ")
-    return F"C {text}"
+    return "C {}".format(text)
 
 
 if __name__ == "__main__":
