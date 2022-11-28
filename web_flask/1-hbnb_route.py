@@ -17,10 +17,9 @@ def hello_route():
 
 
 @app.route('/hbnb', strict_slashes=False)
-def hello_route():
+def hbnb_route():
     """
-    Returns string for the hbnb route
-    i dont understand this 'Module is docuemnted' check fr
+    Returns HBNB for the /hbnb route
     """
     return "HBNB"
 
