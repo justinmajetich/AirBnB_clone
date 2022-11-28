@@ -5,6 +5,8 @@ import sqlalchemy
 from sqlalchemy import Column, String, ForeignKey, Float, Integer, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+from models.review import Review
+from models.amenity import Amenity
 
 
 place_amenity = Table("place_amenity", Base.metadata, 
@@ -32,19 +34,30 @@ class Place(BaseModel, Base):
 
     if (getenv('HBNB_TYPE_STORAGE') == 'db'):
         reviews = relationship("Review", backref="place", cascade="all, delete")
-        amenities = relationship("Amenity", secondary=place_amenity, back_populates="place_amenities", viewonly=False)
+        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
 
-    if (getenv('HBNB_TYPE_STORAGE') != 'db'):
+    else:
+        @property
+        def reviews(self):
+            from models import storage
+            to_return = []
+            for review in storage.all(Review):
+                if review.place_id == self.id:
+                    to_return.append(review)
+            return to_return
+    
 
-        city_id = ''
-        user_id = ''
-        name = ''
-        description = ''
-        number_rooms = 0
-        number_bathrooms = 0
-        max_guest = 0
-        price_by_night = 0
-        latitude = 0.0
-        longitude = 0.0
-        amenity_ids = []
-        review_ids = []
+        @property
+        def amenities(self):
+            from models import storage
+            to_return = []
+            for amenity in storage.all(Amenity).values():
+                if amenity.id in self.amenity_ids:
+                    to_return.append(amenity)
+            return to_return
+
+
+        @amenities.setter
+        def amenities(self, obj):
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
