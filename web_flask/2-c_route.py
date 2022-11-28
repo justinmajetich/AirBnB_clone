@@ -22,7 +22,7 @@ def hbnb():
 def c_cool(text):
     """replaces underscores with space"""
     swap = text.replace("_", " ")
-    return F"C {text}"
+    return F"C {swap}"
 
 
 if __name__ == "__main__":
