@@ -19,7 +19,7 @@ host = getenv('HBNB_MYSQL_HOST')
 db = getenv('HBNB_MYSQL_DB')
 v_env = getenv('HBNB_ENV')
 
-URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"
+URI = "mysql+mysqldb://{}:{}@{}/{}".format(username, password, host, db)
 
 
 class DBStorage:
@@ -47,14 +47,15 @@ class DBStorage:
             for className in classDict:
                 data = self.__session.query(classDict[className]).all()
                 for obj in data:
-                    objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
+                    objects["{}.{}".format(obj.__class__.__name__,
+                                           obj.id)] = obj
 
         else:
             if isinstance(cls, str):
                 cls = classDict[cls]
             data = self.__session.query(cls).all()
             for obj in data:
-                objects[f"{obj.id}"] = obj
+                objects["{}".format(obj.id)] = obj
         return objects
 
     def new(self, obj):
@@ -80,4 +81,4 @@ class DBStorage:
 
     def close(self):
         """clossing session"""
-        self.__session.remove()
+        self.__session.close()
