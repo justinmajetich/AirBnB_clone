@@ -19,11 +19,11 @@ def hbnb():
 
 
 @app.route("/c/<text>", strict_slashes=False)
-def c_cool(text):
+def c(text):
     """replaces underscores with space"""
     swap = text.replace("_", " ")
-    return F"C {swap}"
+    return "C {}".format(swap)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", po`rt="5000")
