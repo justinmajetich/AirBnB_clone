@@ -44,6 +44,7 @@ def is_cool(text="is_cool"):
 
 @app.route("/number/<int:n>")
 def is_num(n):
+    """display 'n is a number' if n is a number"""
     return "{} is a number".format(n)
 
 
