@@ -40,7 +40,7 @@ class FileStorage:
             return """
         if obj is None:
             return
-        key = f"{obj.__class__.__name__}.{obj.id}"
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
         if key in self.all():
             del self.all()[key]
             self.save()
