@@ -29,6 +29,7 @@ def c_isfunc(text):
     """
     Returns 'C' + the text with underscores replaced for spaces
     in the /c/<text> route
+    i really dont understand this check of module is documented fr
     """
     return f"C {text.replace('_', ' ')}"
 
