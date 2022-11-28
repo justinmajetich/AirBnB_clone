@@ -22,8 +22,7 @@ def hbnb():
 def c(text):
     """Displays C and the text that follows"""
     text = text.replace("_", " ")
-    return "C {}".format(text)
-
+    return F"{C} {text}"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
