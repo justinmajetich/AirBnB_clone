@@ -118,7 +118,6 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args.partition(" ")[0]
         params = args.partition(" ")[2]
-        print(class_name, params)
 
         if not class_name:
             print("** class name missing **")
@@ -139,6 +138,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
+        return new_instance.id
 
     def help_create(self):
         """ Help information for the create method """
