@@ -5,7 +5,7 @@ Displays the states lists
 
 from flask import Flask, render_template
 from models import storage
-from models.state import State
+
 
 app = Flask(__name__)
 
@@ -13,12 +13,12 @@ app = Flask(__name__)
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     """Lists all the states with the storage.all() method"""
-    states = storage.all(State)
+    states = storage.all("State")
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
-def teardown():
+def teardown(exit):
     """Closes the database when the session ends"""
     storage.close()
 
