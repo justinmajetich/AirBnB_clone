@@ -73,9 +73,8 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    #if pline[0] is '{' and pline[-1] is'}'\
                     if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict:
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -117,24 +116,21 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        splitted = args.split(' ')
+            raise SyntaxError("Error of syntax")
+        first_split = args.split(' ')
         kwargs = {}
-        for i in range(1, len(splitted)):
-            key, value = i.split('=')
-            if '"' in value[0]:
-                value = value.strip('"')
-                value = value.replace('_', ' ')
+        for i in range(1, len(first_split)):
+            key, value = tuple(first_split[i].split('='))
+            if value[0] == '"':
+                value = value.strip('"').replace('_', ' ')
             kwargs[key] = value
         if kwargs == {}:
-            new_instance = HBNBCommand.classes[splitted[0]](**kwargs)
+            new_instance = eval(first_split[0])()
+        else:
+            new_instance = eval(first_split[0])(**kwargs)
         print(new_instance.id)
-        storage.save()
-        
+        new_instance.save()
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -215,14 +211,15 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
+        return print_list
 
     def help_all(self):
         """ Help information for the all command """
@@ -328,6 +325,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

@@ -10,17 +10,14 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls:
-            to_dict = {}
-            if type(cls) == str:
-                cls = eval(cls)
+        if cls is not None:
+            my_dict = {}
             for key, value in self.__objects.items():
-                if cls.__name__ == value.__class__.__name__:
-                    to_dict[key] = value
-            return to_dict
-        else:
-            return self.__objects
-            
+                if cls == type(value):
+                    my_dict[key] = value
+            return my_dict
+        return FileStorage.__objects
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
@@ -33,20 +30,6 @@ class FileStorage:
             for key, val in temp.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
-
-    def delete(self, obj=None):
-        """Deletes an object from the dictionary"""
-        """ try:
-            key = f"{type(obj).__name__}.{obj.id}"
-            del self.__objects[key]
-        except Exception:
-            return """
-        if obj is None:
-            return
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        if key in self.all():
-            del self.all()[key]
-            self.save()
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -68,10 +51,18 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
+    def delete(self, obj=None):
+        """Delete object"""
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except Exception:
+            pass
 
     def close(self):
-        self.reload()
+        """Method for deserializing the JSON file to objects"""
+        from . import reload
+        reload()
