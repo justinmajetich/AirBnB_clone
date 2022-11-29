@@ -2,6 +2,7 @@
 Script that starts a Flask application.
 """
 from flask import Flask
+from flask import abort
 
 
 APP = Flask(__name__)
