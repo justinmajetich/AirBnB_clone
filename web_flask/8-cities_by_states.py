@@ -14,7 +14,7 @@ def teardown(exception):
     storage.close()
 
 
-@app.route("/states_list", strict_slashes=False)
+@app.route("/cities_by_states", strict_slashes=False)
 def list_states():
     """displays the list1 of states"""
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
