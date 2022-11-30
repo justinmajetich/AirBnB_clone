@@ -3,8 +3,7 @@
 from models import storage
 from flask import Flask
 from flask import render_template
-import os
-
+from models.state import State
 app = Flask(__name__)
 
 
@@ -14,13 +13,12 @@ def teardown(exception):
     storage.close()
 
 
-"""@app.route("/cities_by_states", strict_slashes=False)"""
+@app.route("/cities_by_states", strict_slashes=False)
 def list_states():
     """displays the list1 of states"""
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
-        states = storage.all(State).values()
+    states = storage.all(State).values()
     return render_template("8-cities_by_states.html", states=states)
 
 
 if __name__ == "__main__":
-    """app.run(host="0.0.0.0", port="5000")"""
+    app.run(host="0.0.0.0", port="5000")
