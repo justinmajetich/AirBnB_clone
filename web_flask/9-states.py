@@ -17,7 +17,7 @@ def teardown(exception):
 def states():
     """displays the list1 of states"""
     states = storage.all(State).values()
-    return render_template("7-states_list.html", state=states)
+    return render_template("7-states_list.html", states=states)
 
 
 @app.route("/states/<id>", strict_slashes=False)
