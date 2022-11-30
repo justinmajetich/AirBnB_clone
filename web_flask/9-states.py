@@ -23,7 +23,7 @@ def states():
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id):
     """Displays an HTML page with info about <id>, if it exists."""
-    states = storage.all("State").values()
+    states = storage.all(State).values()
     for state in states:
         if state.id == id:
             return render_template("9-states.html", states=state, id=state.id)
