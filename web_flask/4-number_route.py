@@ -36,7 +36,7 @@ def pythoniscool(text="is cool"):
     """
     Returns Python, followed by text value.
     """
-    text = text.replace('_', " ")
+    text = text.replace("_", " ")
     return "Python {}".format(text)
 
 @APP.route("/number/<int:n>", strict_slashes=False)
