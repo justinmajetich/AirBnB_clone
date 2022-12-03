@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from models.city import City
 import models
 
-if getenv('HBNB_TYPE_STORAGE') != 'db':
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     class State(BaseModel, Base):
         """ State class for State """
         __tablename__ = 'states'
@@ -27,7 +27,7 @@ else:
         with `state_id` equals to the current
         """
         cities = []
-        for key, value in models.storage.all(City).items():
+        for value in models.storage.all(City).values():
             if value.state_id == self.id:
                 cities.append(value)
         return cities
