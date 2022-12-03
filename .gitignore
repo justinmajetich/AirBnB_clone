@@ -5,6 +5,7 @@
 **/__pycache__
 #ignore all main.py files
 *main.py
+*main*.py
 
-# ingore json files
+# ignore json files
 *.json
