@@ -63,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
             b = eval(tuple_arg[0])(**kwargs)
             b.save()
             print(b.id)
-            # loop on dict of attributes to call do_update for each key/value pair
+        # loop on dict of attributes to call do_update for each key/value pair
             for key, val in kwargs.items():
                 self.do_update(f"{tuple_arg[0]} {b.id} {key} {val}")
 
