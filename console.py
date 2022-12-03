@@ -74,7 +74,8 @@ class HBNBCommand(cmd.Cmd):
         """
         if Errors_.error_checker("show", arg) is True:
             tuple_args = tuple(arg.split())
-            print(storage.all()[f"{tuple_args[0]}.{tuple_args[1]}"])
+            print(storage.all()["{}.{}"
+                                .format(tuple_args[0], tuple_args[1])])
 
     def do_all(self, arg):
         """Prints all string representation of all instances based
@@ -118,7 +119,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             tuple_arg = tuple(arg.split())
             if Errors_.error_checker("destroy", arg) is True:
-                del storage.all()[f"{tuple_arg[0]}.{tuple_arg[1]}"]
+                del storage.all()["{}.{}"
+                                  .format(tuple_arg[0], tuple_arg[1])]
                 storage.save()
 
     def do_count(self, arg):
@@ -176,14 +178,17 @@ class HBNBCommand(cmd.Cmd):
             attr_val.append(args[4+i])
 
         if func in ("all", "create", "count"):
-            eval(f"self.do_{func}('{cls}')")
+            eval("self.do_{}('{}')"
+                 .format(func, cls))
 
         if func in ("show", "destroy"):
-            eval(f"self.do_{func}('{cls} {id}')")
+            eval("self.do_{}('{} {}')"
+                 .format(func, cls, id))
 
         if func == "update":  # update requires loop over maybe multiple vals
             for i in range(len(attr_val)):
-                self.do_update(f"{cls} {id} {attr_name[i]} {attr_val[i]}")
+                self.do_update("{} {} {} {}"
+                               .format(cls, id, attr_name[i], attr_val[i]))
 
 
 if __name__ == '__main__':
