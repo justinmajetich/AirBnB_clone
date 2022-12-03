@@ -1,0 +1,10 @@
+# ignore all .mypy_cache directories
+**/.mypy_cache
+
+# ignore all __pycache__ directories
+**/__pycache__
+#ignore all main.py files
+*main.py
+
+# ingore json files
+*.json

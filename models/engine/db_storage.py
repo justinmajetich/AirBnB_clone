@@ -4,8 +4,8 @@
 from sqlalchemy import create_engine
 from models.base_model import Base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import Column
 from os import getenv
-from sqlalchemy.schema import MetaData
 
 
 class DBStorage:
@@ -27,7 +27,7 @@ class DBStorage:
                                               db),
                                       pool_pre_ping=True)
         if env == 'test':
-            MetaData.drop_all(bind=self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """initialize all method"""
@@ -38,17 +38,18 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        my_dict = {}
-        if cls is not None:
-            list_obj = self.__session.query(cls).all()
-            for obj in list_obj:
-                my_dict[f"{obj.__class__}.{obj.id}"] = obj
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         else:
-            cls_list = [User, State, City, Amenity, Place, Review]
-            for cls in cls_list:
-                list_obj = self.__session.query(cls).all()
-                for obj in list_obj:
-                    my_dict[f"{obj.__class__}.{obj.id}"] = obj
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """add the object tp the current database session"""
@@ -71,8 +72,12 @@ class DBStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
-        self__session = Session()
+        self.__session = Session()
+
+    def close(self):
+        """close the sqlalchemy session"""
+        self.__session.close()

@@ -1,1 +1,33 @@
-{"State.1ca7d6a9-8717-4848-a758-0de2e81ac833": {"id": "1ca7d6a9-8717-4848-a758-0de2e81ac833", "created_at": "2022-11-23T16:31:34.539300", "updated_at": "2022-11-23T16:31:34.547926", "name": "California", "__class__": "State"}, "State.6fa48b0e-74f4-4e41-b114-25e87df43149": {"id": "6fa48b0e-74f4-4e41-b114-25e87df43149", "created_at": "2022-11-23T16:31:34.549327", "updated_at": "2022-11-23T16:31:34.557267", "name": "Arizona", "__class__": "State"}, "Place.50ded83b-c3ac-4c21-a210-5889718a0c1b": {"id": "50ded83b-c3ac-4c21-a210-5889718a0c1b", "created_at": "2022-11-23T16:31:34.567023", "updated_at": "2022-11-23T16:31:34.603948", "city_id": "0001", "user_id": "0001", "name": "My little house", "number_rooms": 4, "number_bathrooms": 2, "max_guest": 10, "price_by_night": 300, "latitude": 37.773972, "longitude": -122.431297, "__class__": "Place"}}
+{
+    "State.e5ad09e8-59d0-4f36-9b41-8c7fae4f3e2c": {
+        "id": "e5ad09e8-59d0-4f36-9b41-8c7fae4f3e2c",
+        "created_at": "2022-12-03T15:56:36.758091",
+        "updated_at": "2022-12-03T15:56:36.758104",
+        "name": "California",
+        "__class__": "State"
+    },
+    "City.203f75fb-cd9b-46ae-8470-d9733e5c8b19": {
+        "id": "203f75fb-cd9b-46ae-8470-d9733e5c8b19",
+        "created_at": "2022-12-03T15:56:36.758362",
+        "updated_at": "2022-12-03T15:56:36.758382",
+        "state_id": "e5ad09e8-59d0-4f36-9b41-8c7fae4f3e2c",
+        "name": "San Francisco",
+        "__class__": "City"
+    },
+    "User.593d3129-540c-4acc-826c-4c0e099a8cc8": {
+        "id": "593d3129-540c-4acc-826c-4c0e099a8cc8",
+        "created_at": "2022-12-03T15:56:36.759376",
+        "updated_at": "2022-12-03T15:56:36.759413",
+        "email": "john@snow.com",
+        "password": "johnpwd",
+        "__class__": "User"
+    },
+    "Place.14b23fc7-7a1d-47aa-8d4a-d38ff74d90a8": {
+        "id": "14b23fc7-7a1d-47aa-8d4a-d38ff74d90a8",
+        "created_at": "2022-12-03T15:56:36.759826",
+        "updated_at": "2022-12-03T15:56:36.759851",
+        "user_id": "593d3129-540c-4acc-826c-4c0e099a8cc8",
+        "city_id": "203f75fb-cd9b-46ae-8470-d9733e5c8b19",
+        "name": "House 1",
+        "_amenities": [
+            
