@@ -21,13 +21,13 @@ else:
         """ State class for State """
         name = ''
 
-    @property
-    def cities(self):
-        """ Returns the list of `City` instances
-        with `state_id` equals to the current
-        """
-        cities = []
-        for value in models.storage.all(City).values():
-            if value.state_id == self.id:
-                cities.append(value)
-        return cities
+        @property
+        def cities(self):
+            """ Returns the list of `City` instances
+            with `state_id` equals to the current
+            """
+            cities = []
+            for value in models.storage.all(City).values():
+                if value.state_id == self.id:
+                    cities.append(value)
+            return cities
