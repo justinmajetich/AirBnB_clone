@@ -26,15 +26,20 @@ HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py
 from flask import Flask
 from flask import render_template
 from models import storage
-from models.state import State
 app = Flask(__name__)
 
 
 @app.route("/states_list", strict_slashes=False)
-def get_states_list(states_list):
+def states_list():
     """display the sorted state list int he url"""
-    states_List = storage.all(State)
-    return render_template("7-states_list.html", states_list=states_list)
+    states = sorted(storage.all("State").values(), key=lambda x: x.name)
+    return render_template("7-states_list.html", states=states)
+
+
+@app.teardown_appcontext
+def teardown(exception):
+    """Remove the current SQLAlchemy session."""
+    storage.close()
 
 
 if __name__ == "__main__":
