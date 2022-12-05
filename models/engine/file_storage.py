@@ -13,11 +13,11 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            data = []
+            data = {}
             all_data = FileStorage.__objects
             for data_v in all_data.keys():
                 if cls == all_data[data_v].__class__:
-                    data.append(data_v)
+                    data[data_v] = all_data[data_v]
             return data
 
     def new(self, obj):
