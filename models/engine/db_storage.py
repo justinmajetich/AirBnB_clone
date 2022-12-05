@@ -28,7 +28,7 @@ class DBStorage:
 
     def __init__(self):
         """ Initialize the constructor """
-        db_uri = f'mysql+mysqldb://{USER}:{PWD}@{HOST}:3306/{DB}'
+        db_uri = "mysql+mysqldb://"+USER+":"+PWD+"@"+HOST+"/"+DB
         self.__engine = create_engine(db_uri, pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == 'test':
@@ -41,13 +41,13 @@ class DBStorage:
         if cls:
             query = self.__session.query(cls)
             for obj in query:
-                key = f'{type(obj).__name__}.{obj.id}'
+                key = type(obj).__name__ + "." + obj.id
                 dictionary[key] = obj
         else:
             for _cls in classes.values():
                 query = self.__session.query(_cls).all()
                 for obj in query:
-                    key = f'{type(obj).__name__}.{obj.id}'
+                    key = type(obj).__name__ + "." + obj.id
                     dictionary[key] = obj
         return dictionary
 
