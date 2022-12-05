@@ -2,6 +2,9 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
 from models import storage
 import os
 
@@ -107,3 +110,47 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         # print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_storage_delete_definition(self):
+        from models.engine.file_storage import FileStorage
+        self.assertNotEqual("", FileStorage.delete.__doc__)
+
+    def test_storage_delete(self):
+        from models.engine.file_storage import FileStorage
+        fs = FileStorage()
+        new = BaseModel()
+        self.assertEqual(1, len(fs.all()))
+        fs.delete(new)
+        self.assertEqual(0, len(fs.all()))
+
+    def test_storage_delete_wrong_data(self):
+        from models.engine.file_storage import FileStorage
+        fs = FileStorage()
+        new = BaseModel()
+        new2 = BaseModel()
+        self.assertEqual(2, len(fs.all()))
+        fs.delete(new2)
+        self.assertEqual(1, len(fs.all()))
+
+    def test_storage_delete_wrong_type(self):
+        from models.engine.file_storage import FileStorage
+        fs = FileStorage()
+        new = BaseModel()
+        fs.delete("")
+        fs.delete(True)
+        fs.delete(12.8)
+        self.assertEqual(1, len(fs.all()))
+
+    def test_storage_all_specific_type(self):
+        from models.engine.file_storage import FileStorage
+        fs = FileStorage()
+        Amenity()
+        Amenity()
+        Amenity()
+        City()
+        Place()
+        Place()
+        self.assertEqual(6, len(fs.all()))
+        self.assertEqual(3, len(fs.all(Amenity)))
+        self.assertEqual(1, len(fs.all(City)))
+        self.assertEqual(2, len(fs.all(Place)))

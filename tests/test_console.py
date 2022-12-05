@@ -9,6 +9,7 @@ from unittest.mock import patch
 import unittest
 from models import storage
 
+
 class TestConsole(unittest.TestCase):
     def setUp(self):
         self.console = HBNBCommand()
@@ -17,34 +18,34 @@ class TestConsole(unittest.TestCase):
         self.assertTrue(HBNBCommand.do_create.__doc__ != "")
 
     def test_do_create_without_class_name(self):
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.console.do_create('')
             self.assertEqual("** class name missing **\n", output.getvalue())
 
     def test_do_create_without_wrong_class_name(self):
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.console.do_create('Bonjour')
             self.assertEqual("** class doesn't exist **\n", output.getvalue())
 
     def test_do_create_with_good_class_name(self):
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.console.do_create('State')
-            self.assertTrue(storage.all().get(f"State.{output.getvalue()[0:-1]}", False))
+            test = storage.all().get(f"State.{output.getvalue()[0:-1]}", False)
+            self.assertTrue(test)
 
     def test_do_create_with_one_good_params(self):
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.console.do_create('State name="California"')
             data = storage.all().get(f"State.{output.getvalue()[0:-1]}", False)
             self.assertTrue(data)
             self.assertEqual("California", data.name)
 
-
     def test_do_create_with_multiple_good_params(self):
-        with patch('sys.stdout', new = StringIO()) as output:
-            self.console.do_create('Place city_id="0001" \
-                user_id="0001" name="My_little_house" \
-                number_rooms=4 number_bathrooms=2 max_guest=10 \
-                price_by_night=300 latitude=37.773972 \
+        with patch('sys.stdout', new=StringIO()) as output:
+            self.console.do_create('Place city_id="0001"\
+                user_id="0001" name="My_little_house"\
+                number_rooms=4 number_bathrooms=2 max_guest=10\
+                price_by_night=300 latitude=37.773972\
                 longitude=-122.431297')
 
             data = storage.all().get(f"Place.{output.getvalue()[0:-1]}", False)
@@ -60,8 +61,8 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(-122.431297, data.longitude)
 
     def test_do_create_with_string(self):
-        with patch('sys.stdout', new = StringIO()) as output:
-            self.console.do_create('Place city_id="000_1" \
+        with patch('sys.stdout', new=StringIO()) as output:
+            self.console.do_create('Place city_id="000_1"\
                 user_id="0001" name="My\"little_house"')
 
             data = storage.all().get(f"Place.{output.getvalue()[0:-1]}", False)
