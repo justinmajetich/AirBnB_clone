@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -86,6 +87,10 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
+    @staticmethod
+    def split_commands(line):
+        line = line.split()
+        return line
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -112,16 +117,43 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    
+    @staticmethod
+    def parse_create_params(args):
+        params_dict = {}
+        r_exp = re.compile(r"^[\"](.+)[\"]$")
+        for arg in args:
+            k,v = arg.split('=')
+            check_q = re.findall(r_exp, v)
+            if len(check_q):
+                params_dict[k] = check_q[0].replace("_", " ")
+            elif v.find("'") != -1:
+                continue
+            elif (v.find('.') != -1):
+                try:
+                    params_dict[k] = float(v)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    params_dict[k] = int(v)
+                except ValueError:
+                    continue
+        return params_dict
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = self.split_commands(args)
+        if not len(args):
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        params_dict = self.parse_create_params(args[1:])
+        new_instance = HBNBCommand.classes[args[0]]()
+        for k, v in params_dict.items():
+            setattr(new_instance, k, v)
         storage.save()
         print(new_instance.id)
         storage.save()
