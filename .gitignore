@@ -1,0 +1,6 @@
+*/__pycache__/*
+models/engine/__pycache__/
+tests/test_models/__pycache__/
+__pycache__/
+main_delete.py
+file.json
