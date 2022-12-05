@@ -1,0 +1,53 @@
+#The do_create function
+
+def do_create(self, args):
+        """ Create an object of any class"""
+        
+        input = args.split()
+        if not args:
+            print("** class name missing **")
+            return
+        elif input[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        
+        new_instance = HBNBCommand.classes[input[0]]()
+        for elem in input[1:]:
+            elem = elem.split("=")
+            if (len(elem) == 2):
+                elem[1] = elem[1].replace("_", " ")
+
+                if elem[1][0] != '"':
+                    try:
+                        elem[1] = int(elem[1])
+                    except:
+                        try:
+                            elem[1] = float(elem[1])
+                        except:
+                            pass
+                else:
+                    elem[1] = elem[1].replace('"', "")
+                elem[0] = elem[0].replace('"', "")
+                try:
+                    setattr(new_instance, elem[0], elem[1])
+                except:
+                    pass
+        new_instance.save()
+        print(new_instance.id)
+
+
+the ABOVE code does;
+ The code starts by splitting the input string into an array of strings.
+ The first element in the array is the class name, and it must be a valid class name for this code to work.
+ If not, then print out a message saying that you need to provide a class name.
+ The next step is checking if there are any arguments passed on to do_create().
+ If there are no arguments passed on, then return without doing anything else.
+ Otherwise, check if the first argument in the input string is "HBNBCommand".
+ If so, create an instance of HBNBCommand with new_instance = HBNBCommand() If not "HBNBCommand", split up each word from the input string until you get one that starts with "_" or ends with "_".
+ This will give you all of your options for creating objects: CommandClasses[input[0]](), CommandClasses["Command"](), CommandClasses["Command"]("")(), etc... For example: InputString="command" would yield ["command","Command","Command"], while InputString="command-class" would yield ["command-class","Command-class","Commands-class"],"commands-class").
+ The code does the following: 1.
+ Splits the input string into an array of strings 2.
+ Checks if the first string in the array is not a class name, and prints "** class name missing **" if it is 3.
+ If the first string in the array is a class name, checks to see if that class exists by checking its index in HBNBCommand.classes 4.
+ If it doesn't exist, creates an instance of that class with new_instance = HBNBCommand.classes[input[0]]() 5.
+ For each element in input, splits them into two strings (elem) and replaces any occurrences of "_" with " " 6.

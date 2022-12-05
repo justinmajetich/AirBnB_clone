@@ -131,17 +131,17 @@ class HBNBCommand(cmd.Cmd):
                 if param[1][0] != '"':
                     try:
                         param[1] = int(param[1])
-                    except:
+                    except Exception:
                         try:
                             param[1] = float(param[1])
-                        except:
+                        except Exception:
                             pass
                 else:
                     param[1] = param[1].replace('"', "")
                 param[0] = param[0].replace('"', "")
                 try:
                     setattr(new_instance, param[0], param[1])
-                except:
+                except Exception:
                     pass
 
         storage.save()
@@ -341,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
