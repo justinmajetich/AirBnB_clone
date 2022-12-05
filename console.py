@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         c_name = c_id = att_name = att_val = kwargs = ''
         
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
-        args = args.partition(" ")
+        args = args.split(" ")
         if args[0]:
             c_name = args[0]
         else:  # class name not present
@@ -128,11 +128,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         kwargs = {}
-        if len(args) >= 3:
-            for iter in args[2:]:
+        if len(args) > 1:
+            for iter in args[1:]:
                 if '=' in iter:
                     h = iter.partition("=")
-                    kwargs[h[0]] = eval(h[2])  
+                    kwargs[h[0]] = eval(h[2]) if isinstance(h[2], str) else h[2]
         
         new_instance = HBNBCommand.classes[c_name]()
         new_instance.__dict__.update(kwargs)
