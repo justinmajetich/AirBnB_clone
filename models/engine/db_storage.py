@@ -10,7 +10,7 @@ class DBStorage:
     """database ongine"""
 
     __engine = None
-    __session: scoped_session = None
+    __session = None
 
     def __init__(self):
         """init"""
