@@ -119,13 +119,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 		# check if args contain parameters
+        p_dict = {}
         if ('=' in args and ' ' in args):
             # let's separate args into class & parameters
             args = args.partition(' ')
             class_name = args[0]
             params = args[2].split(' ')
             # convert params into a dictionary
-            p_dict = {}
 
             for item in params:
                 param_key, param_value = tuple(item.split('='))
@@ -152,10 +152,12 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
         storage.save()
         print(new_instance.id)
-        args = f"{class_name} {new_instance.id} {p_dict}"
-        # call the update method
-        self.do_update(args)
-        # print(args)
+        
+        if len(p_dict) > 0:
+            args = f"{class_name} {new_instance.id} {p_dict}"
+            # call the update method
+            self.do_update(args)
+            # print(args)
         storage.save()
 
     def help_create(self):
