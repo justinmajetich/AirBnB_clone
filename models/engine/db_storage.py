@@ -42,7 +42,6 @@ class DBStorage:
 
             for i in lst:
                 new.append(self.__session.query(i).all())
-                print("======================DEBUGGING!!!=========================")
             for i in new:
                 for j in i:
                     key = "{}.{}".format(j.__class__.__name__, j.id)
