@@ -22,7 +22,7 @@ class DBStorage:
 
         url = "mysql+mysqldb://{}:{}@{}:3306/{}"\
             .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,HBNB_MYSQL_DB)
-        self.__engine = create_engine(url, pool_pre_ping=True, echo=True)
+        self.__engine = create_engine(url, pool_pre_ping=True, echo=False)
 
     def all(self, cls=None):
         """querry on database session all obj depending on class name"""
@@ -35,20 +35,26 @@ class DBStorage:
         from models.review import Review
 
 
-        new = []
+        new = []#list of lists
+        obj = {}#dict of obj
         if cls is None:
-            lst = [State, City, User, Place, Review, Amenity]
+            lst = [State, City]
 
             for i in lst:
-                new.append(self.__session.query(i)).all()
+                new.append(self.__session.query(i).all())
+                print("======================DEBUGGING!!!=========================")
+            for i in new:
+                for j in i:
+                    key = "{}.{}".format(j.__class__.__name__, j.id)
+                    obj[key] = j
+            return obj
         else:
-            new = self.__session(cls).all()
-        
-        obj = {}
-        for i in new:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            obj[key] = i
-        return obj
+            new = self.__session.query(cls).all()
+
+            for j in new:
+                key = "{}.{}".format(j.__class__.__name__, j.id)
+                obj[key] = j
+            return obj
 
     def new(self, obj):
         """UPDATE!!!"""
@@ -76,8 +82,7 @@ class DBStorage:
 
         Base.metadata.create_all(self.__engine)
         
-        session_fctry = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
+        session_fctry = sessionmaker(bind=self.__engine, expire_on_commit=False)
 
         Session = scoped_session(session_fctry)
         self.__session = Session()
