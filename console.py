@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from os import getenv
+
 
 
 class HBNBCommand(cmd.Cmd):
@@ -118,13 +120,68 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        arg_lis = args.split()
+        if arg_lis[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        key_lis = []
+        if len(arg_lis) > 1:
+            for arg in arg_lis[1:]:
+                values = arg.split('=', 1)
+                try:
+                    if values[1][0] == '"' and values[1][-1] == '"':
+                        out = [values[0], ' '.join(values[1][1:-1].split('_'))]
+                        key_lis.append(out)
+                        continue
+                    try:
+                        num = float(values[1])
+                        if '.' not in values[1]:
+                            num = int(values[1])
+                        out = [values[0], num]
+                        key_lis.append(out)
+                    except ValueError:
+                        continue
+                except IndexError:
+                    continue
+        new_instance = HBNBCommand.classes[arg_lis[0]]()
+        for opt in key_lis:
+            setattr(new_instance, opt[0], opt[1])
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
+
+    def do_show(self, args):
+        """ Method to show an individual object """
+        new = args.partition(" ")
+        c_name = new[0]
+        c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+
+        if c_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        if not c_id:
+            print("** instance id missing **")
+            return
+
+        key = c_name + "." + c_id
+        try:
+            print(storage._FileStorage__objects[key])
+        except KeyError:
+            print("** no instance found **")
 
     def help_create(self):
         """ Help information for the create method """
@@ -202,15 +259,21 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0] # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
+
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
+            """
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
+            """
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
