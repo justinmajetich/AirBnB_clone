@@ -11,6 +11,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+<<<<<<< HEAD
+=======
 
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -25,6 +27,7 @@ classes = {
     'State': State, 'City': City, 'Amenity': Amenity,
     'Review': Review
 }
+>>>>>>> origin/chalo
 
 
 class FileStorage:
@@ -40,6 +43,20 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+<<<<<<< HEAD
+        dictionary = {}
+        if cls:
+            for k, o in FileStorage.__objects.items():
+                if cls == str(k).split('.')[0]:
+                    dictionary.update({k: o})
+            return dictionary
+        else:
+            return FileStorage.__objects
+
+    def new(self, obj):
+        """Adds new object to storage dictionary"""
+        self.all().update({f"{obj.__class__.__name__}.{obj.id}": obj})
+=======
 <<<<<<< HEAD
         if cls is not None:
             newDict = dict()
@@ -74,6 +91,7 @@ class FileStorage:
 =======
         self.all().update({f"{obj.__class__.__name__}.{obj.id}": obj})
 >>>>>>> 40846c0 (Update storage engines)
+>>>>>>> origin/chalo
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -86,23 +104,25 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
+<<<<<<< HEAD
+            for val in temp.values():
+                self.new(classes[val['__class__']](**val))
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+            pass
+
+    def delete(self, obj=None):
+        """ Deletes object from __objects """
+        if obj:
+=======
 <<<<<<< HEAD
 <<<<<<< HEAD
                 for key, val in temp.items():
@@ -134,8 +154,12 @@ class FileStorage:
 =======
         if obj:
 >>>>>>> d110871 (Update class and database engine models)
+>>>>>>> origin/chalo
             obj_name = f"{obj.__class__.__name__}.{obj.id}"
             if FileStorage.__objects.get(obj_name):
                 del FileStorage.__objects[obj_name]
         self.save()
+<<<<<<< HEAD
+=======
 >>>>>>> 40846c0 (Update storage engines)
+>>>>>>> origin/chalo

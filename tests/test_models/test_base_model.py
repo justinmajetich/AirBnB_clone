@@ -25,12 +25,17 @@ class test_basemodel(unittest.TestCase):
         """ """
         try:
 <<<<<<< HEAD
+            del self.model
+        except BaseException:
+=======
+<<<<<<< HEAD
             os.remove('file.json')
         except:
 =======
             del self.model
         except BaseException:
 >>>>>>> e3800d5 (Update class models)
+>>>>>>> origin/chalo
             pass
 
     def test_instanceNotNone(self):
