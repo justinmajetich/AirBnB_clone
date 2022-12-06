@@ -5,16 +5,6 @@
 
 import json
 import os
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-<<<<<<< HEAD
-=======
-
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -28,10 +18,8 @@ classes = {
     'State': State, 'City': City, 'Amenity': Amenity,
     'Review': Review
 }
->>>>>>> origin/chalo
 
 
-class FileStorage:
     """ This class manages storage of hbnb models in JSON format
 
     Attributes:
