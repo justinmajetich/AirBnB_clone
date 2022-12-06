@@ -35,7 +35,7 @@ class DBStorage:
         from models.review import Review
 
 
-        new = []#list of lists
+        new = []#list of lists of obj |OR| list of obj
         obj = {}#dict of obj
         if cls is None:
             lst = [State, City]
