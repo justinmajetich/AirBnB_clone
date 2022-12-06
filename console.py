@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    def precmd(self, line):
+    def parse_cmd(self, line):
         """Reformat command line for advanced command syntax.
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
@@ -81,10 +81,28 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
+    
+    def default(self, line: str) -> None:
+        """Find the right cmd and execute it."""
+        cmd = {
+                'all': self.do_all,
+                'count': self.do_count,
+                'show': self.do_show,
+                'destroy': self.do_destroy,
+                'update': self.do_update
+            }
+        args = self.parse_cmd(line)
+        arg = args.split()
+
+        if arg[0] in cmd:
+            func = cmd[arg[0]]
+            func(' '.join(arg[1:]))
+        else:
+            return super().default(line)
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
@@ -94,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
+        return True;
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -102,8 +120,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
-        print()
-        exit()
+        return True
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
