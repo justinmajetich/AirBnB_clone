@@ -19,7 +19,10 @@ def setUpModule(self):
         del_list.append(key)
     for key in del_list:
         del storage._FileStorage__objects[key]
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/chalo
 
 def tearDownModule(self):
     """ Remove storage file at end of tests """
@@ -27,6 +30,42 @@ def tearDownModule(self):
         os.remove('file.json')
     except BaseException:
         pass
+
+
+class TestFileStorage_All(unittest.TestCase):
+    """ Test the instantiation of the storage object. """
+
+    def test_base_model_instantiation(self):
+        """ File is not created on BaseModel save """
+        new = BaseModel()
+        self.assertFalse(os.path.exists('file.json'))
+
+    def test_type_path(self):
+        """ Confirm __file_path is string """
+        self.assertIsInstance(storage._FileStorage__file_path, str)
+
+    def test_storage_var_created(self):
+        """ FileStorage object storage created """
+        from models.engine.file_storage import FileStorage
+        # print(type(storage))
+        self.assertIsInstance(storage, FileStorage)
+
+
+class TestFileStorage_All(unittest.TestCase):
+    """ Class to define test cases for public instance method 'all()' """
+
+    def test_output_type(self):
+        """ Confirm __objects is a dict """
+        self.assertIsNotNone(storage.all())
+        self.assertIsInstance(storage.all(), dict)
+
+    def test_key_format(self):
+        """ Key is properly formatted """
+        new = BaseModel()
+        _id = new.to_dict()['id']
+        for key in storage.all().keys():
+            temp = key
+        self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
 
 class TestFileStorage_All(unittest.TestCase):
