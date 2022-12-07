@@ -36,6 +36,6 @@ def display_html(id=None):
     return render_template('9-states.html',
                            items=None)
 
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-    
