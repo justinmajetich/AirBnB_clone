@@ -155,7 +155,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance.__dict__.update(kwargs)
         new_instance.save()
         print(new_instance.id)
-    
 
     def help_create(self):
         """ Help information for the create method """
@@ -350,6 +349,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
