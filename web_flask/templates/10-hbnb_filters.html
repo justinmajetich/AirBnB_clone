@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang = "en" dir="ltr">
+    <head>
+        <!-- Set character encoding for the document -->
+        <meta charset="utf-8">
+        <!-- Viewport for responsive web design -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 , viewport-fit=cover">
+        <!-- Document Title -->
+        <title>AirBnB clone</title>
+        <!-- Meta Description -->
+        <meta name="description" content="AirBnB clone is a clone of AirBnB">
+        <!-- Page's Icon -->
+        <link rel="icon" type="image/png" href="images/icon.png">
+        <!-- External CSS-->
+        <link rel="stylesheet" href="styles/3-header.css">
+        <link rel="stylesheet" href="styles/4-common.css">
+        <link rel="stylesheet" href="styles/6-filters.css">
+        <link rel="stylesheet" href="styles/3-footer.css">
+    </head>
+
+    <body>
+        <header></header>
+        <div class="container">
+            <section class="filters">
+                <div class="locations">
+                    <h3><b>States</b></h3>
+                    <h4>&nbsp;</h4>
+                    <UL class="popover">
+                            {% for state in states.values() | sort(attribute='name') %}
+                                <LI><B>{{ state.name }}</B>
+                                    <UL>
+                                        {% for city in state.cities | sort(attribute='name') %}
+                                                <LI><B>{{ city.name }}</B></LI>
+                                        {% endfor %}
+                                    </UL>
+                                </LI>
+                            {% endfor %}
+                    </UL>
+                </div>
+                <div class="amenities">
+                    <h3><b>Amenities</b></h3>
+                    <h4>&nbsp;</h4>
+                    <UL class="popover">
+                        {% for amenity in amenities.values() | sort(attribute='name') %}
+                        <LI> {{ amenity.name }}</LI>
+                        {% endfor %}
+                    </UL>
+                </div>
+                <button type="button">Search</button>
+            </section>
+        </div>
+        <footer><b>Holberton School</b></footer>
+    </body>
+</html>

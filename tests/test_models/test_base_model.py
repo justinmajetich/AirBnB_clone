@@ -1,99 +1,60 @@
 #!/usr/bin/python3
-""" """
-from models.base_model import BaseModel
+""" Unittest for base_model
+"""
+
 import unittest
-import datetime
-from uuid import UUID
-import json
-import os
+from datetime import datetime
+import models
+from models.base_model import BaseModel
+from os import path
+from unittest import mock
 
 
-class test_basemodel(unittest.TestCase):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.value = BaseModel
+class Test_BaseModel(unittest.TestCase):
+    """Test different attributes and methods of BaseModel instances
+    """
 
     def setUp(self):
-        """ """
-        pass
+        """set up of the test instance base
+        """
+        self.base = BaseModel()
+        self.base2 = BaseModel()
+        self.d = self.base.to_dict()
 
-    def tearDown(self):
-        try:
-            os.remove('file.json')
-        except:
-            pass
+    def test_attributes(self):
+        """test regular attributes
+        """
+        self.assertNotEqual(self.base.id, self.base2.id)
+        self.assertIsInstance(self.base.created_at, datetime)
 
-    def test_default(self):
-        """ """
-        i = self.value()
-        self.assertEqual(type(i), self.value)
+    @mock.patch('models.storage.save')
+    def test_save(self, mock_save):
+        """test method save
+        """
+        old_created_at = self.base.created_at
+        old_updated_at = self.base.updated_at
+        self.base.save()
+        new_created_at = self.base.created_at
+        new_updated_at = self.base.updated_at
+        self.assertEqual(old_created_at, new_created_at)
+        self.assertNotEqual(new_created_at, new_updated_at)
+        self.assertNotEqual(old_updated_at, new_updated_at)
+        mock_save.assert_called_once()
 
-    def test_kwargs(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
-        new = BaseModel(**copy)
-        self.assertFalse(new is i)
+    def test_to_dict(self):
+        """test method to_dict
+        """
+        self.assertIsInstance(self.d, dict)
+        self.assertTrue('__class__' in self.d)
+        self.assertIsInstance(self.d['created_at'], str)
+        self.assertIsInstance(self.d['updated_at'], str)
 
-    def test_kwargs_int(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
-        copy.update({1: 2})
-        with self.assertRaises(TypeError):
-            new = BaseModel(**copy)
+    def test__str__(self):
+        """test str representation of the instance
+        """
+        s = f"[{self.base.__class__.__name__}] " \
+            f"({self.base.id}) {self.base.__dict__}"
+        self.assertEqual(self.base.__str__(), s)
 
-    def test_save(self):
-        """ Testing save """
-        i = self.value()
-        i.save()
-        key = self.name + "." + i.id
-        with open('file.json', 'r') as f:
-            j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
-
-    def test_str(self):
-        """ """
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
-
-    def test_todict(self):
-        """ """
-        i = self.value()
-        n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
-
-    def test_kwargs_none(self):
-        """ """
-        n = {None: None}
-        with self.assertRaises(TypeError):
-            new = self.value(**n)
-
-    def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
-
-    def test_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.id), str)
-
-    def test_created_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.created_at), datetime.datetime)
-
-    def test_updated_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+    if __name__ == "__main__":
+        unittest.main()
