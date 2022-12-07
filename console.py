@@ -115,31 +115,47 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        c_name = c_id = att_name = att_val = kwargs = ''
-        
-        # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
-        args = args.split(" ")
-        if args[0]:
-            c_name = args[0]
-        else:  # class name not present
+        if not args:
             print("** class name missing **")
             return
-        if c_name not in HBNBCommand.classes:  # class name invalid
+        arg_list = args.split(" ")
+        cls_name = arg_list[0]
+        arg_list[0:] = arg_list[1:]
+
+        if cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        kwargs = {}
-        if len(args) > 1:
-            for iter in args[1:]:
-                if '=' in iter:
-                    h = iter.partition("=")
-                    kwargs[h[0]] = eval(h[2]) if isinstance(h[2], str) else h[2]
-        
-        new_instance = HBNBCommand.classes[c_name]()
-        new_instance.__dict__.update(kwargs)
 
+        kwargs = {}
+        for arg in arg_list:
+            try:
+                key, value = arg.split("=")
+                if value.startswith('"'):
+                    value = value[1:]
+                if value.endswith('"'):
+                    value = value[0:len(value) - 1]
+                value = value.replace('"', '\"')
+                value = value.replace("_", " ")
+                temp = value
+                try:
+                    value = int(value)
+                    value = value if str(value) == temp else temp
+                except ValueError:
+                    value = temp
+                if type(value) is str:
+                    try:
+                        value = float(value)
+                        value = value if str(value) == temp else temp
+                    except ValueError:
+                        value = temp
+                kwargs[key] = value
+            except Exception:
+                pass
+        new_instance = HBNBCommand.classes[cls_name]()
+        new_instance.__dict__.update(kwargs)
         new_instance.save()
         print(new_instance.id)
-        storage.save()
+    
 
     def help_create(self):
         """ Help information for the create method """
