@@ -43,11 +43,9 @@ Recognizing that I am sharing a near-complete project, I additionally put
 together a small Flask app according to the specifications described in the
 application. Please take a look at this separate repository here:
 
-https://github.com/bdbaraban/lyft_apprenticeship_application
-
 Nonetheless, allow me to talk a little more about this AirBnB clone. This
 repository is the second iteration of the project. In the first version
-(viewable [here](https://github.com/bdbaraban/AirBnB_clone)), I, together
+(viewable [here](https://github.com/RaymanMoha/AirBnB_clone)), I, together
 with a cohort mate, built up the initial file storage back-end and
 console from scratch. We pair programmed for most all of this version one work.
 
@@ -59,7 +57,7 @@ to build up the database storage engine of the back-end.
 In between each version, I put together an entire CSS-styled HTML web page
 for the project. This front-end development was coded independently, although
 the HTML files I personally wrote are only posted in
-[version one](https://github.com/bdbaraban/AirBnB_clone) (the
+[version one](https://github.com/RaymanMoha/AirBnB_clone) (the
 [web_static](./web_static) folder in this directory was included in the
 fork). Addtionally, all Shell, Puppet, and Fabric deployment scripts/manifests
 were coded myself.
