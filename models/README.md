@@ -1,5 +1,5 @@
 <h1 align="center">HBnB</h1>
-<p align="center">An AirBnB clone.</p>
+<p align="center">AirBnB clone</p>
 
 <p align="center">
   <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb_logo.png"
