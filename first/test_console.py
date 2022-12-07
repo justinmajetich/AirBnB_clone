@@ -1,4 +1,4 @@
-!/usr/bin/python3
+#!/usr/bin/python3
 """Defines unittests for console.py."""
 import os
 import pep8
