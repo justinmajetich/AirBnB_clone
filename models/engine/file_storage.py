@@ -23,11 +23,11 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls:
             same = dict()
-            for key, row in self.__objects.items():
+            for key, row in FileStorage.__objects.items():
                 if row.__class__ == cls:
                     same[key] = row
             return same
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -63,10 +63,12 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
         try:
-            with open(FileStorage.__file_path, 'r', encoding="utf-8") as f:
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
                 d = json.load(f)
-            for obj_id, objd in d.items():
-                FileStorage.__objects[obj_id] = eval(objd['__class__'])(**objd)
+                for obj in d.values():
+                    name = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(name)(**obj))
         except Exception:
             pass
 
