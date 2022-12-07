@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from os import getenv
 
+
 class DBStorage:
     """database ongine"""
 
@@ -23,6 +24,10 @@ class DBStorage:
         url = "mysql+mysqldb://{}:{}@{}:3306/{}"\
             .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,HBNB_MYSQL_DB)
         self.__engine = create_engine(url, pool_pre_ping=True, echo=False)
+
+        if getenv("HBNB_ENV") == "test":
+            from models.base_model import Base
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """querry on database session all obj depending on class name"""
