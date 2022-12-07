@@ -17,7 +17,7 @@ class State(BaseModel, Base):
     if st == "db":
         name = Column(String(128), nullable=False)
 
-        cities = relationship("City", back_populates="state")
+        cities = relationship("City", cascade="all,delete, delete-orphan, merge, save-update", back_populates="state")
     else:
         name = ""
         @property
