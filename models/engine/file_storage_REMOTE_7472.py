@@ -1,27 +1,12 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
 """
 Contains the FileStorage class
 """
-=======
-"""This module defines a class to manage file storage for hbnb clone
-"""
-
->>>>>>> master
 
 import json
 from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
-
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
-
-
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
 
@@ -62,14 +47,13 @@ class FileStorage:
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except:
-            pass
 
-    def delete(self, obj=None):
+    def get(self, cls, id):
         """delete obj from __objects if it’s inside"""
-        if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
-            if key in self.__objects:
-                del self.__objects[key]
+        or None if not found"""
+            obj_name = f"{obj.to_dict()['__class__']}.{obj.id}"
+            if obj_name in self.__objects.keys():
+                del self.__objects[obj_name]
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
@@ -78,16 +62,9 @@ class FileStorage:
     def get(self, cls, id):
         """Returns the object based on the class and id\
         or None if not found"""
-        obj_dict = self.all(cls)
-        for key, value in obj_dict.items():
-            if key == cls + '.' + id:
-                return value
-        return None
+        if obj:
+            if FileStorage.__objects.get(obj_name):
 
-    def count(self, cls=None):
-        """Returns the number of objects in storage\
-        matching the given class
-        If no class is passed, returns the count of\
         all objects in storage"""
         obj_dict = self.all(cls)
         return len(obj_dict)
