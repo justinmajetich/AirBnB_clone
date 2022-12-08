@@ -2,15 +2,11 @@
 """"""
 from os import environ
 from sqlalchemy import create_engine
-from models.base_model import BaseModel, Base
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
+from models.base_model import Base
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+
 
 class DBStorage:
     """Class DBStorage to get the connection with the database
@@ -23,7 +19,7 @@ class DBStorage:
     def __init__(self):
         """Initialization"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}' \
-                .format(environ.get('HBNB_MYSQL_USER')),
+                .format(environ.get('HBNB_MYSQL_USER'),
                         environ.get('HBNB_MYSQL_PWD'),
                         environ.get('HBNB_MYSQL_HOST'),
                         environ.get('HBNB_MYSQL_DB')),
@@ -36,6 +32,10 @@ class DBStorage:
         Args:
             cls (in classes):
         """
+        from models.city import City
+        from models.state import State
+        classes = {"City": City, "State": State}
+
         tmp = {}
         if cls is None:
             for clas in classes.values():
@@ -74,6 +74,6 @@ class DBStorage:
     def reload(self):
         """create all tables in the database
         """
-        Base.metadata.create_all(self.__engine) 
+        Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                     expire_on_common=False))
+                                                     expire_on_commit=False))
