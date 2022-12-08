@@ -96,6 +96,7 @@ class HBNBCommand(cmd.Cmd):
         """ Method to exit the HBNB console"""
         exit()
 
+    def help_quit(self):
         """ Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
@@ -121,24 +122,22 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args]()
-
         #print(args[2])
         length = len(args)
         for i in range(1, length):
             # arg[i] = name="california"
-            params = param.split('=')
-            key_name = params[0]
-            key_value = params[1]
-            if '"' in key_value:
-                key_value = key_value.strip('"')
+            params = args[i].split("=")
+
+            if ('"' in params[1]):
+                key_value = params[1].strip('"')
                 if '_' in key_value:
-                    key_value = key_value.replace('_', "")
-            elif '.' in key_value:
-                key_value = float(key_value)
+                    key_value = key_value.replace('_', ' ')
+            elif '.' in params[1]:
+                key_value = float(params[1])
             else:
-                key_value = int(key_value)
-            setattr(new_instant, key_name, key_value)
-        storage.save()
+                key_value = int(params[1])
+            setattr(new_instant, params[0], key_value)
+        storage.new(new_instant)
         print(new_instance.id)
         storage.save()
 
