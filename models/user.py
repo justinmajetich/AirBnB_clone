@@ -21,6 +21,8 @@ class User(BaseModel, Base):
 
         places = relationship("Place", cascade="all,delete, delete-orphan, merge, save-update", back_populates="user")
 
+        reviews = relationship("Review", back_populates="user")
+
     else:
         email = ""
         password = ""

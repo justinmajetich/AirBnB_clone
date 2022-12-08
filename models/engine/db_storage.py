@@ -43,7 +43,7 @@ class DBStorage:
         new = []#list of lists of obj |OR| list of obj
         obj = {}#dict of obj
         if cls is None:
-            lst = [State, City, User, Place]
+            lst = [State, City, User, Place, Review]
 
             for i in lst:
                 new.append(self.__session.query(i).all())

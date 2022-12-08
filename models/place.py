@@ -29,6 +29,7 @@ class Place(BaseModel, Base):
 
         user = relationship("User", back_populates="places")
         cities = relationship("City", back_populates="places")
+        reviews = relationship("Review", back_populates="place")
 
     else:
         city_id = ""
@@ -42,3 +43,23 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+        @property
+        def reviews(self):
+            """
+            returns list of review instance with place_id
+            equals to the current place.id
+            """
+            from models import storage
+            from models.review import Review
+
+            obj = storage.all()
+            lst = list(obj)
+            new =[]
+
+            for i in lst:
+                if "Review" in i:
+                    temp = Review(obj[i])
+                    if temp.place_id == self.id:
+                        new.append(temp)
+
