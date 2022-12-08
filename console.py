@@ -121,20 +121,23 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args]()
-        param = args.split(' ')[1]
-        params = param.split('=')
-        key_name = params[0]
-        key_value = params[1]
-        if '"' in key_value:
-            key_value = key_value.strip('"')
-            key_value = key_value.replace('\\', "")
-            key_value = key_value.replace('_', "")
-        elif '.' in key_value:
-            try:
+
+        #print(args[2])
+        length = len(args)
+        for i in range(1, length):
+            # arg[i] = name="california"
+            params = param.split('=')
+            key_name = params[0]
+            key_value = params[1]
+            if '"' in key_value:
+                key_value = key_value.strip('"')
+                if '_' in key_value:
+                    key_value = key_value.replace('_', "")
+            elif '.' in key_value:
                 key_value = float(key_value)
-            except:
-                pass
-        setattr(new_instant, key_name, key_value)
+            else:
+                key_value = int(key_value)
+            setattr(new_instant, key_name, key_value)
         storage.save()
         print(new_instance.id)
         storage.save()
