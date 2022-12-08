@@ -1,22 +1,16 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
 """
 Contains the FileStorage class
 """
-=======
-"""This module defines a class to manage file storage for hbnb clone
-"""
-
->>>>>>> master
 
 import json
+from models.review import Review
+from models.state import State
+from models.user import User
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -65,7 +59,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """delete obj from __objects if it’s inside"""
+        """delete obj from __objects if it is inside"""
         if obj is not None:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
@@ -85,7 +79,8 @@ class FileStorage:
         return None
 
     def count(self, cls=None):
-        """Returns the number of objects in storage\
+        """
+        Returns the number of objects in storage\
         matching the given class
         If no class is passed, returns the count of\
         all objects in storage"""
