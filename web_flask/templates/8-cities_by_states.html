@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HBNB</title>
+  </head>
+  <BODY>
+    <H1>States</H1>
+    <UL id="states-cities">
+      {% for state in states|sort(attribute='name') %}
+      <LI>{{state.id}}: <B>{{state.name}}</B>
+        <UL>
+          {% for city in state.cities|sort(attribute='name') %}
+          <LI>{{city.id}}: <B>{{city.name}}</B>
+          {% endfor %}
+        </UL>
+      </LI>
+      {% endfor %}
+    </UL>
+  </BODY>
+</html>
