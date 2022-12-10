@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-#Comment
-#!/usr/bin/python3
 """Script that starts a Flask web application:
 
 Web application must be listening on 0.0.0.0, port 5000
@@ -44,6 +42,7 @@ def states_by_id(id):
 def close_current_session(exception):
     """Close the current SQLAlchemy session"""
     storage.close()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
