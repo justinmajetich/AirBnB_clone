@@ -17,9 +17,9 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
         places = relationship('Place', backref='user',
-                              cascade='all, delete, delete-orphan')
+                              cascade='all')
         reviews = relationship('Review', backref='user',
-                               cascade='all, delete, delete-orphan')
+                               cascade='all')
 else:
     class User(BaseModel):
         """This is the class for user defined by various attributes"""
