@@ -31,8 +31,10 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
+            """
             for key, value in kwargs.items():
                 self.__setattr__(self, key, value)
+                """
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -55,9 +57,9 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary.keys():
-            dictionary.pop({'_sa_instance_state': dictionary['_sa_instance_state']})
+            del dictionary['_sa_instance_state']
         return dictionary
     def delete(self):
         """Deletes the current instance from the storage"""
         from models import storage
-        storage.delete()
+        storage.delete(self)
