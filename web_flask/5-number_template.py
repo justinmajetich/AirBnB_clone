@@ -10,7 +10,7 @@ from flask import render_template
 APP = Flask(__name__)
 
 
-@APP.route("/", strict_slashes=False)
+@APP.route('/', strict_slashes=False)
 def hello_holberton():
     """
     Returns 'Hello HBNB!'.
@@ -18,7 +18,7 @@ def hello_holberton():
     return "Hello HBNB!"
 
 
-@APP.route("/hbnb", strict_slashes=False)
+@APP.route('/hbnb', strict_slashes=False)
 def hbnb():
     """
     Returns 'HBNB'.
@@ -26,7 +26,7 @@ def hbnb():
     return "HBNB"
 
 
-@APP.route("/c/<text>", strict_slashes=False)
+@APP.route('/c/<text>', strict_slashes=False)
 def cisfun(text):
     """
     Returns C, followed by text value.
@@ -35,8 +35,8 @@ def cisfun(text):
     return "C {}".format(text)
 
 
-@APP.route("/python", strict_slashes=False)
-@APP.route("/python/<text>", strict_slashes=False)
+@APP.route('/python', strict_slashes=False)
+@APP.route('/python/<text>', strict_slashes=False)
 def pythoniscool(text="is cool"):
     """
     Returns Python, followed by text value.
@@ -45,7 +45,7 @@ def pythoniscool(text="is cool"):
     return "Python {}".format(text)
 
 
-@APP.route("/number/<int:n>", strict_slashes=False)
+@APP.route('/number/<int:n>', strict_slashes=False)
 def IsINT(n):
     """
     Returns n is a number if n is a integer.
@@ -53,7 +53,7 @@ def IsINT(n):
     return "{} is a number".format(n)
 
 
-@APP.route("/number_template/<int:n>", strict_slashes=False)
+@APP.route('/number_template/<int:n>', strict_slashes=False)
 def nTemp(n):
     """
     Displays a HTML page if n is an integer.
