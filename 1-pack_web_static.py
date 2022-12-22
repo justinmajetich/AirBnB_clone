@@ -1,18 +1,22 @@
 #!/usr/bin/python3
-""" Function that compress a folder """
+# Fabfile to generates a .tgz archive from the contents of web_static.
+import os.path
 from datetime import datetime
 from fabric.api import local
-import os
 
 
 def do_pack():
-    try:
-        if not os.path.exists("versions"):
-            local('mkdir versions')
-        t = datetime.now()
-        f = "%Y%m%d%H%M%S"
-        archive_path = 'versions/web_static_{}.tgz'.format(t.strftime(f))
-        local('tar -cvzf {} web_static'.format(archive_path))
-        return archive_path
-    except:
+    """Create a tar gzipped archive of the directory web_static."""
+    dt = datetime.utcnow()
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
+                                                         dt.month,
+                                                         dt.day,
+                                                         dt.hour,
+                                                         dt.minute,
+                                                         dt.second)
+    if os.path.isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
+    return file
