@@ -35,6 +35,25 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
+    def do_create(self, args):
+        """ Creates a new instance of BaseModel """
+        arguments = args.split(' ', 1)
+        if len(args) == 0
+        print("** class name missing **")
+        return
+    if arguments[0] in self.all_classes:
+        args_dict = {}
+        obj = eval("{}()".format(arguments[0]))
+        print("{}".format(obj.id))
+        try:
+            if arguments[1]:
+                args_dict = self.__build_dict(arguments[1])
+                obj.__dict__.update(args_dict)
+        except IndexError:
+            pass
+        obj.save()
+    else:
+        print("** class doesn't exist **")
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
