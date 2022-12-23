@@ -35,21 +35,20 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database"""
-        """
-        Session = sessionmaker(bind=self.__engine)
-        session = Session()"""
-        obj_classes = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
+
+        obj_classes = {'City': City, 'User': User, 'State': State,
+                       'Amenity': Amenity, 'Place': Place, 'Review': Review}
         db_dict = {}
-        if cls == None:
-            for obj_class in obj_classes:
+        if cls is None:
+            for obj_class in obj_classes.values():
                 obj_list = self.__session.query(obj_class)
                 for obj in obj_list:
-                    key = "{}.{}".format(type(obj.__name__), obj.id)
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     db_dict[key] = obj
         else:
             obj_list = self.__session.query(cls)
             for obj in obj_list:
-                key = "{}.{}".format(type(obj.__name__), obj.id)
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 db_dict[key] = obj
         return db_dict
 
