@@ -5,7 +5,7 @@ AirBnB Clone repo, using the function do_pack."""
 from fabric.api import env, put, run
 from os import path
 
-env.host = ['52.91.116.127', '100.25.45.223']
+env.host = ['35.175.132.172', '52.91.116.127']
 env.user = 'ubuntu'
 
 
@@ -18,14 +18,15 @@ def do_deploy(archive_path):
         file_name = file_name_tgz.split('.')[0]
         release_path = "/data/web_static/releases/{}/".format(file_name)
         tmp_path = "/tmp/{}".format(file_name_tgz)
+        static_current = "/data/web_static/current"
         put(archive_path, "/tmp/")
         run("mkdir -p {}".format(release_path))
         run("tar -xzf {} -C {}".format(tmp_path, release_path))
         run("rm {}".format(tmp_path))
         run("mv {}web_static/* {}".format(release_path))
         run("rm -rf {}web_static".format(release_path))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(release_path))
+        run("rm -rf {}".format(static_current))
+        run("ln -s {} {}".format(release_path, static_current))
         print("New version deployed!")
         return True
     except Exception:
