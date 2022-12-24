@@ -20,7 +20,7 @@ def do_deploy(archive_path):
         tmp_path = "/tmp/{}".format(file_name_tgz)
         put(archive_path, "/tmp/")
         run("mkdir -p {}".format(release_path))
-        run("tar -xzf {} -c {}".format(tmp_path, release_path))
+        run("tar -xzf {} -C {}".format(tmp_path, release_path))
         run("rm {}".format(tmp_path))
         run("mv {}web_static/* {}".format(release_path))
         run("rm -rf {}web_static".format(release_path))
