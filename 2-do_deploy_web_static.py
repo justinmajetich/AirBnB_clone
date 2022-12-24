@@ -17,13 +17,16 @@ def do_deploy(archive_path):
         file_name_tgz = archive_path.split('/')[-1]
         file_name = file_name_tgz.split('.')[0]
         release_path = "/data/web_static/releases/{}/".format(file_name)
+        tmp_path = "/tmp/{}".format(file_name_tgz)
         put(archive_path, "/tmp/")
         run("mkdir -p {}".format(release_path))
-        run("tar -xzf /tmp/{} -c {}".format(file_name_tgz, release_path))
+        run("tar -xzf {} -c {}".format(tmp_path, release_path))
+        run("rm {}".format(tmp_path))
         run("mv {}web_static/* {}".format(release_path))
         run("rm -rf {}web_static".format(release_path))
         run("rm -rf /data/web_static/current")
         run("ln -s {} /data/web_static/current".format(release_path))
         print("New version deployed!")
+        return True
     except Exception:
         return False
