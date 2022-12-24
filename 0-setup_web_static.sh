@@ -9,11 +9,10 @@ sudo mkdir /data/web_static/releases/
 sudo mkdir /data/web_static/shared/
 sudo mkdir /data/web_static/releases/test/
 FAKEHTMLFILE="/data/web_static/releases/test/index.html"
-sudo echo "Holberton" >> "$FAKEHTMLFILE"
-symbolic="/data/web_static/current"
-rm -f "$symbolic"
+echo "Holberton School" | sudo tee "$FAKEHTMLFILE"
+rm -f "/data/web_static/current"
 sudo rm -f "/data/web_static/releases/test/current"
-sudo ln -s "$symbolic" /data/web_static/releases/test/
+sudo ln -sf "/data/web_static/releases/test/" "/data/web_static/current"
 sudo chown -hR ubuntu:ubuntu /data/
 FILE="/etc/nginx/sites-available/default"
 ALIAS="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n"
