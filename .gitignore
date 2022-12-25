@@ -4,3 +4,4 @@ tests/test_models/__pycache__/
 __pycache__/
 main_delete.py
 file.json
+2-do_deploy_web_static.sh

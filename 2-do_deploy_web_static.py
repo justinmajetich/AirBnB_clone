@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Function that compress a folder """
 from datetime import datetime
-from fabric.api import *
+from fabric.api import env, put, run
 from os import path
 
 env.hosts = ['35.175.132.172', '52.91.116.127']

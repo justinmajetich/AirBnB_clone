@@ -1,20 +1,34 @@
 #!/usr/bin/python3
 """creates and distributes an archive to
 your web servers, using the function deploy"""
-from fabric.api import env, put, run
+from fabric.api import env, local, put, run
+from datetime import datetime
 from os import path
 
-# archive_path = 'versions/web_static_20221221225808.tgz'
-archive_path = __import__("1-pack_web_static").do_pack()
 env.hosts = ['35.175.132.172', '52.91.116.127']
 env.user = 'ubuntu'
 
 
-def deploy():
+def do_pack():
+    """Prototype: def do_pack():"""
     try:
-        if not path.exists(archive_path):
-            raise Exception
+        if not path.exists("versions"):
+            local('mkdir versions')
+        created_time = datetime.now().strftime("%Y%m%d%H%M%S")
+        file_path = "versions/web_static_{}.tgz".format(created_time)
+        local("tar -cvzf {} web_static".format(file_path))
+        return file_path
+    except Exception:
+        return None
 
+
+
+def deploy():
+    """ Deploys """
+    try:
+        archive_path = do_pack()
+        if archive_path is None or not path.exists(archive_path):
+            raise Exception
         file_name_tgz = archive_path.split('/')[-1]
         file_name = file_name_tgz.split('.')[0]
         versions_path = "versions/{}".format(file_name_tgz)
@@ -30,6 +44,6 @@ def deploy():
         run("rm -rf /data/web_static/current")
         run("ln -s {} /data/web_static/current".format(release_path))
         print("New version deployed!")
-        return archive_path
+        return True
     except Exception:
         return False
