@@ -19,12 +19,16 @@ file {$data_dirs:
 file {"/data/web_static/releases/test/index.html":
 	ensure 	=> file,
 	content => "Hello Friends",
+	group 	=> $user,
+	owner 	=> $user
 }
 
 file { '/data/web_static/current':
 	ensure 	=> link,
 	target 	=> '/data/web_static/releases/test/',
 	force 	=> true
+	group 	=> $user,
+	owner 	=> $user
 }
 
 exec {'put location':
