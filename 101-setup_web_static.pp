@@ -13,7 +13,8 @@ exec {'get update and install nginx and start nginx':
 file {$data_dirs:
 	ensure	=> directory,
 	group 	=> $user,
-	owner 	=> $user
+	owner 	=> $user,
+	mode 		=> 0644
 }
 
 file {"/data/web_static/releases/test/index.html":
