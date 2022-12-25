@@ -2,13 +2,13 @@
 
 exec {'update':
   provider => shell,
-  command  => 'sudo apt-get -y update',
+  command  => 'sudo apt-get -y update && sudo apt-get -y install nginx',
   before   => Exec['install Nginx'],
 }
 
 exec {'install Nginx':
   provider => shell,
-  command  => 'sudo apt-get -y install nginx',
+  command  => '',
   before   => Exec['start Nginx'],
 }
 
@@ -59,4 +59,5 @@ file {'/data/':
   owner   => 'ubuntu',
   group   => 'ubuntu',
   recurse => true,
+	mode		=> 0777
 }
