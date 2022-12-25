@@ -1,5 +1,3 @@
-# Redo the task #0 but by using Puppet:
-
 $data_dirs = ['/data', '/data/web_static', '/data/web_static/releases',
 	'/data/web_static/releases/test', '/data/web_static/shared/']
 
