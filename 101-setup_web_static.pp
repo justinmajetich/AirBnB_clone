@@ -12,29 +12,29 @@ exec {'get update and install nginx and start nginx':
 
 file {$data_dirs:
 	ensure	=> directory,
-	group 	=> $user,
-	owner 	=> $user,
-	mode 		=> 0644
 }
 
 file {"/data/web_static/releases/test/index.html":
 	ensure 	=> file,
 	content => "Hello Friends",
-	group 	=> $user,
-	owner 	=> $user
 }
 
 file { '/data/web_static/current':
 	ensure 	=> link,
 	target 	=> '/data/web_static/releases/test/',
 	force 	=> true
-	group 	=> $user,
-	owner 	=> $user
 }
 
 exec {'put location':
   provider => shell,
   command  => 'sudo sed -i \'38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n\' /etc/nginx/sites-available/default'
+}
+
+file {'/data/':
+  ensure  => directory,
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  recurse => true,
 }
 
 exec {'restart Nginx':
