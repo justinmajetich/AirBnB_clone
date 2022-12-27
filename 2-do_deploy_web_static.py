@@ -22,7 +22,7 @@ def do_deploy(archive_path):
         run('cd /data/web_static/releases/{}'.format(free))
         sudo('tar xzvf archive_path')
         sudo('rm -f /data/web_static/current')
-        sudo('ln -sf /data/web_static/releases /data/web_static/current')
+        sudo('ln -sf /data/web_static/releases/{} /data/web_static/current'.format(free))
         return True
     else:
         return False
