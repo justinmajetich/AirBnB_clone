@@ -18,14 +18,14 @@ def do_deploy(archive_path):
         free = archive.split('.')[0]
         sudo('mkdir -p /data/web_static/releases/{}/'.format(free))
         sudo('tar -xzf /tmp/{} -C /data/web_static\
-                /releases/{}/'.format(archive, free))
+/releases/{}/'.format(archive, free))
         sudo('rm /tmp/{}'.format(archive))
         sudo('mv /data/web_static/releases/{}\
-                /web_static/* /data/web_static/releases/{}'.format(free, free))
+/web_static/* /data/web_static/releases/{}'.format(free, free))
         sudo('rm -rf /data/web_static/releases/{}/web_static'.format(free))
         sudo('rm -rf /data/web_static/current')
         sudo('ln -s /data/web_static/releases\
-                /{}/ /data/web_static/current'.format(free))
+/{}/ /data/web_static/current'.format(free))
         return True
     except:
         return False
