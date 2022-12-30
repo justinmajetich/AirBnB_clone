@@ -3,7 +3,6 @@
 Just packing
 """
 from datetime import datetime
-import os
 from fabric.api import *
 import tarfile
 
@@ -14,10 +13,10 @@ def do_pack():
     """compress before sending"""
     now = datetime.now().strftime("%Y%m%d%H%M%S")
     path = local('mkdir -p versions/web_static_{}'.format(now))
+    file_name = "versions/web_static_{}".format(now)
     tar = local('tar -czvf versions/web_static_{}.tgz web_static'.format(now))
-    if os.path.exists("versions/web_static_{}.tgz web_static".format(now)):
-        return os.path.normpath(
-            "versions/web_static_{}.tgz web_static".format(now))
+    if file_name:
+        return file_name
     else:
         return None
 
