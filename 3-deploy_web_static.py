@@ -48,7 +48,7 @@ def do_deploy(archive_path):
         sudo('ln -s /data/web_static/releases\
 /{}/ /data/web_static/current'.format(free))
         return True
-    except BaseException:
+    except:
         return False
 
 
@@ -59,8 +59,8 @@ Full deployment
 
 def deploy():
     """Based on 2 and Based on 1"""
-    archive_path = do_pack()
-    if not archive_path:
+    path = do_pack()
+    if path is None:
         return False
-    new_deploy = do_deploy(archive_path)
+    new_deploy = do_deploy(path)
     return new_deploy
