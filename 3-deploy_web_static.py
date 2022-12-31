@@ -13,8 +13,8 @@ def do_pack():
     """compress before sending"""
     now = datetime.now().strftime("%Y%m%d%H%M%S")
     path = local('mkdir -p versions/web_static_{}'.format(now))
-    file_name = "versions/web_static_{}".format(now)
     tar = local('tar -czvf versions/web_static_{}.tgz web_static'.format(now))
+    file_name = "versions/web_static_{}.tgz".format(now)
     if file_name:
         return file_name
     else:
