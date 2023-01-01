@@ -13,7 +13,7 @@ class City(BaseModel, Base):
     if dbstorage == "db":
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-        # states = relationship('State', backref=backref('cities', cascade='all,delete'))
+        places = relationship('Place', cascade='all,delete', backref='cities')
     else:
         name = ""
         state_id = ""
