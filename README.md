@@ -1,4 +1,4 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<center> <h1>AirBnB - The Console</h1> </center>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
@@ -140,3 +140,22 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+<center> <h1>AirBnB - MySQL</h1> </center>
+This implements the database of the AirBnB clone application. Remember in the first section (AirBnB clone - Console), a console was implemented which interacted with
+a file storage. With the implementation of the database with MYSQL, our application will be able to interact with a database engine.
+
+Interaction with the database was done using SQLAlchemy and Python DB API 2.0 (MySQLdb).
+
+### Objectives of this project
+By the end of this project, the following objectives should be met:
+- Understand how to implement unittesting in large projects
+- Understand how to use *args
+- Understand how to use **kwargs
+- Understand how to handle named arguments in a function
+- Know how to create a MySQL database
+- Know how to create a MySQL user and grant it priviledges
+- Know what an ORM means
+- Know how to map a Python class to a MySQL table
+- Know how to handle 2 different storage engines with the same codebase
+- Know how to use environment variables
