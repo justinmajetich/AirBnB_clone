@@ -3,7 +3,7 @@
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
 import os
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.state import State
 from models.place import Place
@@ -12,7 +12,7 @@ from models.review import Review
 from models.user import User
 
 
-classes = {'BaseModel': BaseModel, 'User': User, 'State': State,
+classes = {'User': User, 'State': State,
            'City': City, 'Place': Place, 'Amenity': Amenity, 'Review': Review}
 
 
@@ -31,7 +31,6 @@ class DBStorage:
         variables
         3. drop all tables if the environment variable HBNB_ENV is not test """
         # create an engine
-        from models.base_model import Base
         self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
                                       .format(os.getenv('HBNB_MYSQL_USER',
                                                         None),
@@ -40,11 +39,9 @@ class DBStorage:
                                               os.getenv('HBNB_MYSQL_DB',
                                                         None)),
                                       pool_pre_ping=True)
-        # check that HBNB_ENV is set to test, else drop all tables
+        # check if HBNB_ENV is set to test, if true -> drop all tables
         env_val = os.getenv('HBNB_ENV', None)
         if (env_val and env_val == 'test'):
-            pass
-        else:
             # drop all tables
             Base.metadata.drop_all(self.__engine)
 
@@ -63,14 +60,19 @@ class DBStorage:
             per_cls2 = self.__session.query(City).all()
             objs.extend(per_cls1)
             objs.extend(per_cls2)
-        return objs
+        # need to return a dictionary
+        objs_dict = {}
+        for obj in objs:
+            obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+            objs_dict[obj_key] = obj
+        return objs_dict
 
-    def new(self):
+    def new(self, obj):
         """ adds the object to the current database session
         (self.__session) """
         # self.__session =  Session()
         # add this (self) object to current db session
-        self.__session.add(self)
+        self.__session.add(obj)
 
     def save(self):
         """  commits all changes of the current session (self.__session) """
@@ -89,7 +91,7 @@ class DBStorage:
             # to_del = self.__session.query(classes[_cls])
             # .filter(classes[_cls].id == _id)
             self.__session.delete(to_del)
-            self.save()  # save the changes
+            # self.save()  # save the changes
 
     def reload(self):
         """ Creates all tables in the database as well as a current session
@@ -103,3 +105,7 @@ class DBStorage:
         Session = scoped_session(session_factory)
         # create a session from the factory, to use
         self.__session = Session()
+
+    def close(self):
+        """ removes/closes session """
+        self.session.close()

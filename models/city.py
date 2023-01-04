@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models.state import State
+# from models.state import State
 from sqlalchemy import Column, String, ForeignKey
 
 # Inherits from both BaseModel and Base in that order
