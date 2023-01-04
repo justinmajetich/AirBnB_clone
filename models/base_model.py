@@ -4,13 +4,14 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import MetaData, Column, String, Integer
+from sqlalchemy import Column, String, DateTime
 
 
 Base = declarative_base()
 
 
-# Note: BaseModel does NOT imherit from Base, only defines the common attributes
+# Note: BaseModel does NOT imherit from Base
+# it only defines the common attributes
 class BaseModel:
     """A base class for all hbnb models"""
     # define the field properties of the attributes (for sqlalchemy)
@@ -56,7 +57,7 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         # remove dictionary['_sa_instance_state'] if it exists
