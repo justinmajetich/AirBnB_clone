@@ -27,11 +27,18 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+            if ('updated_on' and 'created_at' in kwargs.keys()):
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            else:
+                # a totally new instance, not a reload: set attributes
+                kwargs.update({'updated_at':'{}'.format(datetime.now())})
+                kwargs.update({'created_at':'{}'.format(datetime.now())})
+                kwargs.update({'id':'{}'.format(str(uuid.uuid4()))})
+            if ('__class__' in kwargs.keys()):
+                del kwargs['__class__']
             self.__dict__.update(kwargs)
 
     def __str__(self):
