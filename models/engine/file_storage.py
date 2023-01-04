@@ -27,7 +27,7 @@ class FileStorage:
         if cls and cls in classes.values():
             objs = {}
             # reload objects
-            self.reload()
+            # self.reload()
             curr_objs = self.all()
             if curr_objs:
                 for key, val in curr_objs.items():
@@ -46,7 +46,7 @@ class FileStorage:
         """Delete object"""
         # check if object exists and delete it if it does
         if obj:
-            self.reload()  # reload current objects
+            # self.reload()  # reload current objects
             if self.all():
                 objs_keys = self.all().keys()
                 this_key = obj.to_dict()['__class__'] + '.' + obj.id
