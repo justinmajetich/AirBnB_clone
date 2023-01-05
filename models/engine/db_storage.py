@@ -13,7 +13,9 @@ from models.user import User
 
 
 classes = {'User': User, 'State': State,
-           'City': City, 'Place': Place, 'Amenity': Amenity, 'Review': Review}
+           'City': City}
+'''classes = {'User': User, 'State': State,
+           'City': City, 'Place': Place, 'Amenity': Amenity, 'Review': Review}'''
 
 
 class DBStorage:
@@ -53,13 +55,12 @@ class DBStorage:
         if cls and cls in classes.values():
             # return objects of cls
             objs = self.__session.query(cls).all()
+            print('all called: ', objs)
         else:
             # return all objects
             objs = []
-            per_cls1 = self.__session.query(State).all()
-            per_cls2 = self.__session.query(City).all()
-            objs.extend(per_cls1)
-            objs.extend(per_cls2)
+            for cls in classes.values():
+                objs.extend(self.__session.query(cls).all())
         # need to return a dictionary
         objs_dict = {}
         for obj in objs:
