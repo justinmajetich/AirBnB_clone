@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for console"""
+"""tests for console"""
 import unittest
 from unittest.mock import patch
 from io import StringIO
@@ -24,12 +24,12 @@ class TestConsole(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """setup for the test"""
+        """Method that performs setup operation for test"""
         cls.consol = HBNBCommand()
 
     @classmethod
     def teardown(cls):
-        """at the end of the test this will tear it down"""
+        """Method that performs cleanup operation at the end of test"""
         del cls.consol
 
     def tearDown(self):
@@ -40,13 +40,13 @@ class TestConsole(unittest.TestCase):
             pass
 
     def test_pep8_console(self):
-        """Pep8 console.py"""
+        """Test if console.py is pep8 compliant"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(["console.py"])
         self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
     def test_docstrings_in_console(self):
-        """checking for docstrings"""
+        """Tests if each method has a docstring"""
         self.assertIsNotNone(console.__doc__)
         self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
         self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
@@ -61,7 +61,7 @@ class TestConsole(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.default.__doc__)
 
     def test_emptyline(self):
-        """Test empty line input"""
+        """Tests the result if the input is an empty line"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("\n")
             self.assertEqual('', f.getvalue())
@@ -90,7 +90,7 @@ class TestConsole(unittest.TestCase):
                 "[[User]", f.getvalue()[:7])
 
     def test_show(self):
-        """Test show command inpout"""
+        """Test show command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show")
             self.assertEqual(
