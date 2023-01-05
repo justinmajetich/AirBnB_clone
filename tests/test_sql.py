@@ -51,7 +51,7 @@ class TestMySQL(unittest.TestCase):
         id = f.getvalue()[:-1]
         with patch('sys.stdout', new=io.StringIO()) as f:
             HBNBCommand().onecmd(f'''create City state_id="{id}"
-                                        name="SAN_Francisco"''')
+                                        name="San_Francisco"''')
         self.cur.execute("SELECT COUNT(*) FROM cities")
         res = self.cur.fetchone()[0]
         self.assertEqual(res, 1)
