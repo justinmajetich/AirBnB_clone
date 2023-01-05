@@ -19,12 +19,12 @@ class TestMySQL(unittest.TestCase):
     def connection(self):
         """connect to MySQLdb"""
         storage = DBStorage()
-        storage.relaod()
+        storage.reload()
         self.conn = MySQLdb.connect(getenv('HBNB_MYSQL_HOST'),
-                                    getenv('HBNB+MYSQL_USER'),
+                                    getenv('HBNB_MYSQL_USER'),
                                     getenv('HBNB_MYSQL_PWD'),
                                     getenv('HBNB_MYSQL_DB'))
-        self.cr = self.conn.cursor()
+        self.cur = self.conn.cursor()
 
     def diconnection(self):
         """ Disconect form the db"""
@@ -37,7 +37,7 @@ class TestMySQL(unittest.TestCase):
         """Test create state entry"""
         self.connection()
         with patch('sys.stdout', new=io.StringIO()) as f:
-            HBNBCommand().onecmd('create State nam="California"')
+            HBNBCommand().onecmd('create State name="California"')
         self.cur.execute("SELECT COUNT(*) FROM states")
         res = self.cur.fetchone()[0]
         self.assertEqual(res, 1)
@@ -51,7 +51,7 @@ class TestMySQL(unittest.TestCase):
         id = f.getvalue()[:-1]
         with patch('sys.stdout', new=io.StringIO()) as f:
             HBNBCommand().onecmd(f'''create City state_id="{id}"
-                                        name="San_Francisco"''')
+                                 name="San_Francisco"''')
         self.cur.execute("SELECT COUNT(*) FROM cities")
         res = self.cur.fetchone()[0]
         self.assertEqual(res, 1)
