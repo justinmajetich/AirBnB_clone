@@ -139,9 +139,13 @@ class HBNBCommand(cmd.Cmd):
             for attr, attr_val in kwargs.items():
                 if attr in HBNBCommand.types:  # typecast if necessary
                     attr_val = HBNBCommand.types[attr](attr_val)
-                setattr(new_instance, attr, attr_val)
+                    kwargs[attr] = attr_val
+                # setattr(new_instance, attr, attr_val)
+            print('kwargs: ', kwargs)
+            new_instance = HBNBCommand.classes[args[0]](**kwargs)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
