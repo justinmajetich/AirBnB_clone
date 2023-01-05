@@ -20,7 +20,6 @@ class State(BaseModel, Base):
         Returns all cities whose state_id == current state's id (self.id) """
         # get all City objects and filter w.r.t state_id
         from models import storage
-        storage.reload()  # reload objects from storage file
         all_cities = storage.all(City)  # returns a dict of objects
         state_cities = {}
         if all_cities:
