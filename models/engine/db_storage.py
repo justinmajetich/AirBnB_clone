@@ -13,9 +13,10 @@ from models.user import User
 
 
 classes = {'User': User, 'State': State,
-           'City': City}
+           'City': City, 'Place': Place, 'Review': Review}
 '''classes = {'User': User, 'State': State,
-           'City': City, 'Place': Place, 'Amenity': Amenity, 'Review': Review}'''
+           'City': City, 'Place': Place, 'Amenity': Amenity,
+           'Review': Review}'''
 
 
 class DBStorage:
