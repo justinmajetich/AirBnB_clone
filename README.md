@@ -140,3 +140,16 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+<br>
+
+## Purpose 
+
+This project was part of [ALX](https://www.alxafrica.com/software-engineering-2022/) holberoton task on ORM with Airbnb Clone 
+
+## Authours of the Airbnb_clone_v2 project: 
+
+Hamza Saidu <hamzasaidu34@gmail.com> 
+
+Keriane Nzabampema <>
+
+ <BR>
