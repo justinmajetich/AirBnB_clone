@@ -1,4 +1,6 @@
----A script to prepare MYSQL server for the project.
+-- Setup MySQL server for dev
+-- a script that prepares a MySQL server for the project
+
 --A database hbnb_dev_db
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 -- A new user hbnb_dev (in localhost)
