@@ -52,8 +52,11 @@ class DBStorage:
         all objects depending on class name if provided """
         # self.__session =  Session()
         # query database based on whether a cls is provided
-        if cls and cls in classes.values():
+        # if cls and cls in classes.values():
+        if cls:
             # return objects of cls
+            if type(cls) is str:
+                cls = classes[cls]
             objs = self.__session.query(cls).all()
             print('all called: ', objs)
         else:
