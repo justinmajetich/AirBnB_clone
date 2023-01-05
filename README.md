@@ -141,15 +141,3 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 <br>
-
-## Purpose 
-
-This project was part of [ALX](https://www.alxafrica.com/software-engineering-2022/) holberoton task on ORM with Airbnb Clone 
-
-## Authours of the Airbnb_clone_v2 project: 
-
-Hamza Saidu <hamzasaidu34@gmail.com> 
-
-Keriane Nzabampema <>
-
- <BR>
