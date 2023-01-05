@@ -1,6 +1,20 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+
+classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
 
 
 class FileStorage:
@@ -10,24 +24,11 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
         # Return only instances of cls if provided
         if cls and cls in classes.values():
             objs = {}
             # reload objects
-            self.reload()
+            # self.reload()
             curr_objs = self.all()
             if curr_objs:
                 for key, val in curr_objs.items():
@@ -46,7 +47,7 @@ class FileStorage:
         """Delete object"""
         # check if object exists and delete it if it does
         if obj:
-            self.reload()  # reload current objects
+            # self.reload()  # reload current objects
             if self.all():
                 objs_keys = self.all().keys()
                 this_key = obj.to_dict()['__class__'] + '.' + obj.id
@@ -66,19 +67,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
