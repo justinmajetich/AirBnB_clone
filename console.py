@@ -129,14 +129,26 @@ class HBNBCommand(cmd.Cmd):
             new_instance = HBNBCommand.classes[args[0]]()
         else:
             # parameters provided
-            new_instance = HBNBCommand.classes[args[0]]()
             # set parameters (key-value) pairs as attributes
             params = args[2].split()
+            oks = []
+            # remove/skip unrecognizable parameters
+            for index, param in enumerate(params):
+                if '=' not in param:
+                    # remove the preceeding param from oks & skip it
+                    if len(oks):
+                        oks.pop()
+                else:
+                    oks.append(param)
+            params = oks
             kwargs = {}
             for param in params:
                 kwargs[param[:param.find('=')]] = param[param.find(
                     '=') + 1:].strip('"')
             for attr, attr_val in kwargs.items():
+                # check for underscores in attr_val and replace with space
+                if '_' in attr_val:
+                    kwargs[attr] = attr_val.replace('_', ' ')
                 if attr in HBNBCommand.types:  # typecast if necessary
                     attr_val = HBNBCommand.types[attr](attr_val)
                     kwargs[attr] = attr_val
