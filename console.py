@@ -146,14 +146,14 @@ class HBNBCommand(cmd.Cmd):
                 value = HBNBCommand.types[key](value)
                 # print(type(value))
                 kwargs[key] = value
-            new_instance = HBNBCommand.classes[clas_name]()
+        new_instance = HBNBCommand.classes[clas_name]()
 
-            if kwargs:
-                key = f"{clas_name}.{new_instance.id}"
+        if kwargs:
+            key = f"{clas_name}.{new_instance.id}"
                 # retr inst dict
-                instance_dict = storage.all()[key]
-                instance_dict.__dict__.update(**kwargs)
-                instance_dict.save()
+            instance_dict = storage.all()[key]
+            instance_dict.__dict__.update(**kwargs)
+            instance_dict.save()
 
         print(new_instance.id)
         storage.save()
