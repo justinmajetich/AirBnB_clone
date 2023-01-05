@@ -10,7 +10,16 @@ class FileStorage:
 
     def all(self, clas=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if clas is None:
+            return FileStorage.__objects
+        else:
+            # create empty dict to store classes
+            clas_dict = {}
+            for key,value in FileStorage.__objects.items():
+                if type(value) is clas:
+                    clas_dict[key] = value
+            return clas_dict
+
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -49,8 +58,8 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-        def delete(self, obj=None):
-            """Deletes a given object from __objects if it exists"""
+    def delete(self, obj=None):
+        """Deletes a given object from __objects if it exists"""
         try:
             #create object key using classname and object id
             obj_key = f"{type(obj).__name__}.{obj.id}"
