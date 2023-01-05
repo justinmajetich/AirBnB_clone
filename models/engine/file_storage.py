@@ -25,16 +25,14 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         # Return only instances of cls if provided
-        if cls and cls in classes.values():
+        if cls and cls in classes.keys():
             objs = {}
             # reload objects
-            # self.reload()
             curr_objs = self.all()
             if curr_objs:
                 for key, val in curr_objs.items():
-                    for k, v in classes.items():
-                        if key[:key.find('.')] == k:
-                            objs[key] = val
+                    if key[:key.find('.')] == cls:
+                        objs[key] = val
                 return objs
         # else, Return all objects
         return FileStorage.__objects
