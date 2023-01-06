@@ -1,10 +1,9 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+This repository contains the second stage of the AirBnB_clone project. In the previous parts of the project students were required to implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions. In this pat of the project students need to use MySQL to manage the website database based on the code provided. After writing scripts that will prepare the MySQL server for the next tasks the project will require a change in the storage engine and the use of SQLAchemy to make changes to the project. 
 
----
 
-<center><h3>Repository Contents by Project Task</h3> </center>
+<center><h3>Repository Contents by Former Project Task</h3> </center>
 
 | Tasks | Files | Description |
 | ----- | ----- | ------ |
@@ -21,6 +20,16 @@ This repository contains the initial stage of a student project to build a clone
 | 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
 <br>
 <br>
+
+<center><h3>Repository Contents by Project Task</h3> </center>
+
+| Tasks | Files | Description |
+| ----- | ----- | ------ |
+| 0. Fork me if you can | AirBnB_clone_v2 | forking the provided codebase and saving it as the AirBnB clone to be used for the project |
+| 1. Bug Free | AirBnB_clone_v2 | Test MySQL |
+| 2. console improvements | console.py, models/, tests/ | Update the def do_create(self, arg): function of your command interpreter (console.py) to allow for object creation. Don't forget to write tests for this new improvements |
+| 3. MySQL set-up development | setup_mysql_dev.sql | Write a script that prepares a MySQL server for the project: A database hbnb_dev_db, A new user hbnb_dev (in localhost), The password of hbnb_dev should be set to hbnb_dev_pwd |
+
 <center> <h2>General Use</h2> </center>
 
 1. First clone this repository.
