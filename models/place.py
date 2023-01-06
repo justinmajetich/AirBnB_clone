@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
 """
     module containing places to represent the place
     module containing places to represent the place
@@ -24,7 +23,7 @@ if storage_engine == "db":
                           Column('amenity_id', String(60),
                                  ForeignKey('amenities.id'),
                                  primary_key=True, nullable=False))
-=======
+
 """ Place Module for HBNB project """
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
@@ -32,7 +31,6 @@ from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 import models
->>>>>>> f375e0cd1889c516746ec76f071c7bed658c682c
 
 place_amenity = Table("place_amenity", Base.metadata,
                         Column("place_id", String(60), ForeignKey("places.id"), 
@@ -40,7 +38,6 @@ place_amenity = Table("place_amenity", Base.metadata,
                         Column("amenity_id", String(60), ForeignKey("amenities.id"), primary_key=True, nullable=False))
 
 class Place(BaseModel, Base):
-<<<<<<< HEAD
     """
         Place class to represent places
         Place class to represent places
@@ -114,7 +111,7 @@ class Place(BaseModel, Base):
                 if isinstance(obj, Amenity):
                     if obj.id not in self.amenity_ids:
                         self.amenity_ids.append(obj.id)
-=======
+
     """ A place to stay
     city_id = "city id"
     user_id = "user id"
@@ -172,4 +169,3 @@ class Place(BaseModel, Base):
             """ Appends amenity ids to the attribute """
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
->>>>>>> f375e0cd1889c516746ec76f071c7bed658c682c
