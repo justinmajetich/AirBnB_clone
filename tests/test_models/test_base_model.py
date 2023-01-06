@@ -24,7 +24,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_default(self):
@@ -41,7 +41,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_int(self):
         """ """
-        i = self.value()
+        i = self.value()  # i is a BaseModel object
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
@@ -60,7 +60,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                                                       i.__dict__))
 
     def test_todict(self):
         """ """
@@ -74,11 +74,19 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
+    @unittest.skipIf(1 < 2,
+                     "BaseModel now supports creating attributes from kwargs")
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
+
+    def test_kwargs_one_alt(self):
+        """alternative test to skipped: test that attribute is created """
+        n = {'Name': 'test'}
+        new = self.value(**n)
+        self.assertEqual(new.Name, 'test')
 
     def test_id(self):
         """ """
