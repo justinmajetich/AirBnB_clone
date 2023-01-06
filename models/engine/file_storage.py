@@ -25,7 +25,10 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         # Return only instances of cls if provided
-        if cls and cls in classes.keys():
+        if cls and cls in classes.keys() or cls in classes.values():
+            # if cls and cls in classes.keys():
+            if cls in classes.values():
+                cls = cls.__name__  # so that we are dealing with a string
             objs = {}
             # reload objects
             curr_objs = self.all()

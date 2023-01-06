@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.city import City
 from models import storage
 import os
 
@@ -41,6 +42,19 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
+    def test_all_with_class_argument(self):
+        """ test that only instances of <class> are returned """
+        base = BaseModel()
+        base.save()
+        city = City()
+        city.save()
+        city_key = 'City.{}'.format(city.id)
+        base_key = 'BaseModel.{}'.format(base.id)
+        temp = storage.all(City)
+        print('temp: ',temp)
+        self.assertTrue(city_key in temp.keys())
+        self.assertTrue(base_key not in temp.keys())
+    
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
