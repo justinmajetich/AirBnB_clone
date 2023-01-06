@@ -4,7 +4,7 @@ This repository contains the initial updated stage of a student project to build
 
 ---
 
-<center><h3>Repository Contents by Project Task</h3> </center>
+<center><h3>Repository Contents by Project Task.</h3> </center>
 
 | Tasks | Files | Description |
 | ----- | ----- | ------ |
