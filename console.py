@@ -94,8 +94,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
-        # return True  # To onecmd which then stops the looping/interpreter
+        # exit()
+        # print()
+        return True  # To onecmd which then stops the looping/interpreter
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -104,8 +105,8 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
         print()
-        exit()
-        # return True  # To onecmd which then stops the looping/interpreter
+        # exit()
+        return True  # To onecmd which then stops the looping/interpreter
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -153,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
                     attr_val = HBNBCommand.types[attr](attr_val)
                     kwargs[attr] = attr_val
                 # setattr(new_instance, attr, attr_val)
-            print('kwargs: ', kwargs)
+            # print('kwargs: ', kwargs)
             new_instance = HBNBCommand.classes[args[0]](**kwargs)
         print(new_instance.id)
         new_instance.save()
