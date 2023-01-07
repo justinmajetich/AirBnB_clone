@@ -13,18 +13,3 @@ class Amenity(BaseModel, Base):
         name = Column(String(128), nullable=False)
     else:
         name = ""
-=======
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
-from models.place import Place_amenity
-
-
-class Amenity(BaseModel):
-    """This is the class for amenity
-    attributes:
-        name = ""
-    """
-    __tablename__ =  "amenities"
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary=place_amenity)
->>>>>>> f375e0cd1889c516746ec76f071c7bed658c682c
