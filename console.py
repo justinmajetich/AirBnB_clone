@@ -2,8 +2,12 @@
 """ Console Module """
 import cmd
 import sys
+import os
+import re
+from datetime import datetime
+import uuid
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -115,14 +119,46 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        #args are splited into list
+        arguemens = args.split(" ")
+        #initializes an empty dictionary
+        kwargs = {}
+        try:
+            clas_name = arguemens[0]
+        except Exception:
+            pass
+        #looking no class presented
+        if not clas_name:
+            print("** class name missing **")
+            return
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif clas_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        for i in range(1, len(arguemens)):
+            #split key,value pairs
+            key, value = list(arguemens[i].split("="))
+            #store them dict
+            value = (value.replace("'", "")
+                     .replace("\"", "")
+                     .replace("_", " ")
+                     )
+            if key in HBNBCommand.types:
+                value = HBNBCommand.types[key](value)
+                # print(type(value))
+                kwargs[key] = value
+        new_instance = HBNBCommand.classes[clas_name]()
+
+        if kwargs:
+            key = f"{clas_name}.{new_instance.id}"
+                # retr inst dict
+            instance_dict = storage.all()[key]
+            instance_dict.__dict__.update(**kwargs)
+            instance_dict.save()
+
         print(new_instance.id)
         storage.save()
 
