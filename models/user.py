@@ -9,7 +9,7 @@ from models.review import Review
 
 
 class User(BaseModel, Base):
-<<<<<<< HEAD
+
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
 
@@ -22,7 +22,7 @@ class User(BaseModel, Base):
                           cascade='all, delete, delete-orphan')
     reviews = relationship('Review', backref='user',
                                cascade='all, delete, delete-orphan')
-=======
+
     """This class defines a user by various attributes
     email = 'email address'
     password = 'login password'
@@ -36,4 +36,3 @@ class User(BaseModel, Base):
     last_name = Column(String(128))
     places = relationship("Place", cascade='all, delete, delete-orphan', backref="user")
     reviews = relationship("Review", cascade='all, delete, delete-orphan', backref="user")
->>>>>>> 626f41eba3b4dada643beaaa7b42e749f72f61e7
