@@ -107,3 +107,35 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+
+class TestFileStorageDocs(unittest.Testcase):
+	"""tests the documentation and style of filestorage class"""
+	@classmethod
+	def setUpClass(cls):
+		cls.fs_f = inspect.getmembers(FileStorage, inspect.isfunction)
+		"""sets up for the doc tests"""
+
+
+	def test_pep8_conformance_file_storage(self):
+		self.assertEqual(result.total_errors, 0, "Found code style errors (ad warnis).")
+
+	def test_pep8_conformance_test_file_storage(self):
+	pep8 = pep8.styleGuide(quiet=True)
+	result = pep8s.check_filles(['test/test_models/test_engine/\test_file_storage.py'])
+	self.assertEqual(result.total_errors, 0, "Found code style errors (and warnigs).")
+
+	def test_file_storage_module_docstring(self):
+	self.assertIsNot(file_storage.__doc__, None, "file_storage.py needs a docstring")
+	self.assertTrue(len(file_storage.__doc__) >= 1, "file_storage.py needs a docstring")
+
+
+	def test_file_storage_class_docstring(self):
+        self.assertIsNot(file_storage.__doc__, None, "file_storage.py needs a docstring")
+        self.assertTrue(len(file_storage.__doc__) >= 1, "file_storage.py needs a docstring")
+
+
+	def test_fs_func_docstrings(self):
+	for func in self.fs_f:
+		self.assertIsNot(func[1].__doc__, None, "{:s} method needs a docstring".format(func[0]))
+		self.assertTrue(len(func[1].__doc__) >= 1, "{:s} method needs a docstring".format(func[0]))
