@@ -17,9 +17,8 @@ class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    all_classes = {"BaseModel": BaseModel, "User": User, "State": State,
-                   "City": City, "Amenity": Amenity,
-                   "Place": Place, "Review": Review}
+    all_classes = {"BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"}
 
     def emptyline(self):
         """Ignores empty spaces"""
@@ -33,43 +32,42 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program at end of file"""
         return True
 
-    def do_create(self, line):
-        """ Creates a new instance of BaseModel, saves it
-        ### Exceptions:
+    def do_create(self, args):
+        """Creates a new instance of BaseModel.
+
+        Exceptions:
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
+
         """
+
         try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")  # split cmd line into list
-
-            if my_list:  # if list not empty
-                clas_name = my_list[0]  # extract class name
-            else:  # class name missing
+            if not args:
                 raise SyntaxError()
 
-            kwargs = {}
+            splittedArgs = args.split(" ")
+            inst = eval("{}()".format(splittedArgs[0]))
 
-            for pair in my_list[1:]:
-                k, v = pair.split("=")
-                if self.is_int(v):
-                    kwargs[k] = int(v)
-                elif self.is_float(v):
-                    kwargs[k] = float(v)
-                else:
-                    v = v.replace('_', ' ')
-                    kwargs[k] = v.strip('"\'')
+            for commandArg in splittedArgs[1:]:
+                param = commandArg.split("=")
+                key = param[0]
+                value = param[1].replace("_", " ")
 
-            obj = self.all_classes[clas_name](**kwargs)
-            storage.new(obj)  # store new object
-            obj.save()  # save storage to file
-            print(obj.id)  # print id of created object class
+                if hasattr(inst, key):
+                    try:
+                        setattr(inst, key, eval(value))
+                    except Exception:
+                        pass
 
+            inst.save()
+
+            print("{}".format(inst.id))
         except SyntaxError:
             print("** class name missing **")
-        except KeyError:
+        except NameError:
             print("** class doesn't exist **")
+        except IndexError:
+            pass
 
     def do_show(self, line):
         """Prints the string representation of an instance
@@ -121,8 +119,7 @@ class HBNBCommand(cmd.Cmd):
             objects = storage.all()
             key = my_list[0] + '.' + my_list[1]
             if key in objects:
-                # del objects[key]
-                storage.delete(objects[key])
+                del objects[key]
                 storage.save()
             else:
                 raise KeyError()
@@ -269,23 +266,6 @@ class HBNBCommand(cmd.Cmd):
                     self.do_update(args)
         else:
             cmd.Cmd.default(self, line)
-
-    @staticmethod
-    def is_int(n):
-        """ checks if integer"""
-        try:
-            int(n)
-            return True
-        except ValueError:
-            return False
-
-    @staticmethod
-    def is_float(n):
-        try:
-            float(n)
-            return True
-        except ValueError:
-            return False
 
 
 if __name__ == '__main__':
