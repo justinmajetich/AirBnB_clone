@@ -32,3 +32,6 @@ class State(BaseModel, Base):
             for i in lst:
                 if "City" in i:
                     new.append(City(obj[i]))
+
+        @
+        def cities

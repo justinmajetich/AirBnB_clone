@@ -90,3 +90,6 @@ class DBStorage:
 
         Session = scoped_session(session_fctry)
         self.__session = Session()
+
+    def close(self):
+        self.reload()

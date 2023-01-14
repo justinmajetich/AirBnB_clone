@@ -63,3 +63,6 @@ class FileStorage:
         """
         if obj:
             del self.__objects[obj.to_dict()['__class__'] + '.' + obj.id]
+
+    def close(self):
+        self.reload()
