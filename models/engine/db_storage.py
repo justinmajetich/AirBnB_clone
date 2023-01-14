@@ -22,7 +22,7 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv("HBNB_MYSQL_DB")
 
         url = "mysql+mysqldb://{}:{}@{}:3306/{}"\
-            .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,HBNB_MYSQL_DB)
+            .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB)
         self.__engine = create_engine(url, pool_pre_ping=True, echo=False)
 
         if getenv("HBNB_ENV") == "test":
@@ -39,9 +39,8 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-
-        new = []#list of lists of obj |OR| list of obj
-        obj = {}#dict of obj
+        new = []  # list of lists of obj |OR| list of obj
+        obj = {}  # dict of obj
         if cls is None:
             lst = [State, City, User, Place, Review, Amenity]
 
@@ -85,11 +84,13 @@ class DBStorage:
         from models.review import Review
 
         Base.metadata.create_all(self.__engine)
-        
-        session_fctry = sessionmaker(bind=self.__engine, expire_on_commit=False)
+
+        session_fctry = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
 
         Session = scoped_session(session_fctry)
         self.__session = Session()
 
     def close(self):
-        self.reload()
+        """method on the private session attribute"""
+        self.__session.close()

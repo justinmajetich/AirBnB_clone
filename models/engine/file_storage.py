@@ -13,8 +13,8 @@ class FileStorage:
         if cls:
             dicts = {}
             for key in self.__objects:
-               if cls.__name__ in key:
-                   dicts[key] = self.__objects[key]
+                if cls.__name__ in key:
+                    dicts[key] = self.__objects[key]
             return dicts
         return FileStorage.__objects
 
@@ -65,4 +65,5 @@ class FileStorage:
             del self.__objects[obj.to_dict()['__class__'] + '.' + obj.id]
 
     def close(self):
+        """method for deserializing the JSON file to objects"""
         self.reload()
