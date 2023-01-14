@@ -1,53 +1,55 @@
 <!DOCTYPE html>
-<HTML lang="en">
-  <HEAD>
-    <META charset="utf-8">
-    <TITLE>AirBnB clone</TITLE>
-    <LINK rel="stylesheet" href="../static/styles/reset.css">
-    <LINK rel="stylesheet" href="../static/styles/4-common.css">
-    <LINK rel="stylesheet" href="../static/styles/3-header.css">
-    <LINK rel="stylesheet" href="../static/styles/3-footer.css">
-    <LINK rel="stylesheet" href="../static/styles/6-filters.css">
-    <LINK rel="icon" href="../static/images/icon.png">
-  </HEAD>
-
-  <BODY>
-    <HEADER></HEADER>
-
-    <DIV class="container">
-      <SECTION class="filters">
-        <DIV class="locations">
-          <H3>States</H3>
-          <H4>&nbsp;</H4>
-          <DIV class="popover">
-            <UL>
-            {% for state in states.values()|sort(attribute="name") %}
-              <LI><STRONG>{{ state.name }}</STRONG>
-                <UL>
-                {% for city in state.cities|sort(attribute="name") %}
-                  <LI>{{ city.name }}</LI>
-                {% endfor %}
-                </UL>
-              </LI>
-            {% endfor %}
-            </UL>
-          </DIV>
-
-        </DIV><DIV class="amenities">
-          <H3>Amenities</H3>
-          <H4>&nbsp;</H4>
-          <UL class="popover">
-          {% for amenity in amenities.values()|sort(attribute="name") %}
-            <LI>{{ amenity.name }}</LI>
-          {% endfor %}
-          </UL>
-        </DIV>
-        <BUTTON>Search</BUTTON>
-      </SECTION>
-    </DIV>
-
-    <FOOTER>
-      Holberton School
-    </FOOTER>
-  </BODY>
-</HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles/4-common.css">
+    <link rel="stylesheet" href="styles/3-header.css">
+    <link rel="stylesheet" href="styles/3-footer.css">
+    <link rel="stylesheet" href="styles/6-filters.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <title>AirBnb Clone</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+      </div>
+    </header>
+    <div class="container">
+      <section class="filters">
+        <div class="locations">
+          <h3>States</h3>
+          <h4>&nbsp;</h4>
+          <ul class="popover">
+	    {% for state in states|sort(attribute='name') %}
+              <li>
+                <h2>{{ state.name }}:</h2>
+                <ul>
+		  {% for city in state.cities|sort(attribute='name') %}
+                    <li>{{ city.name }}</li>
+		  {% endfor %}
+                </ul>
+              </li>
+	    {% endfor %}
+          </ul>
+        </div>
+        <div class="amenities">
+          <h3>Amenities</h3>
+          <h4>&nbsp;</h4>
+          <ul class="popover">
+	    {% for amenity in amenities|sort(attribute='name') %}
+              <li>{{ amenity.name }}</li>
+	    {% endfor %}
+          </ul>
+        </div>
+        <button>
+          Search
+        </button>
+      </section>
+    </div>
+    <footer>
+      <p>
+        Holberton School
+      </p>
+    </footer>
+  </body>
+</html>
