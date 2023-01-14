@@ -1,30 +1,17 @@
 #!/usr/bin/python3
-"""create archive module"""
-from genericpath import isdir
-from fabric.api import *
-from datetime import datetime
+"""
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
+"""
 
-
-def do_pack():
-    """function to zip files"""
-    try:
-        new_date = datetime.now()
-        new_date = new_date.strftime('%Y%m%d%H%M%S')
-        archive = f"versions/web_static_{new_date}.tgz"
-        if isdir('versions') is False:
-            local('mkdir versions')
-        print(f"Packing web_static to {archive}")
-        var = local(f'tar -cvzf {archive} web_static')
-        return archive
-    except Exception:
-        return None
+from fabric.api import put, run, env
+from os.path import exists
+env.hosts = ['142.44.167.228', '144.217.246.195']
 
 
 def do_deploy(archive_path):
-    """new version"""
-    env.hosts = ['44.197.231.3', '100.25.4.135']
-
-    if isdir(archive_path) is False:
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
     try:
         file_n = archive_path.split("/")[-1]
@@ -39,5 +26,5 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except Exception as ex:
+    except BaseException:
         return False
