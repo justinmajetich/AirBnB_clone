@@ -44,11 +44,13 @@ class DBStorage:
                 obj_list = self.__session.query(obj_class)
                 for obj in obj_list:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    del obj.__dict__['_sa_instance_state']
                     db_dict[key] = obj
         else:
             obj_list = self.__session.query(cls)
             for obj in obj_list:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                del obj.__dict__['_sa_instance_state']
                 db_dict[key] = obj
         return db_dict
 
@@ -77,4 +79,4 @@ class DBStorage:
 
     def close(self):
         """call remove() method on the private session attribute (self.__session)"""
-        self.__session.remove()
+        self.__session.close()

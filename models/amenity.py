@@ -3,14 +3,13 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
-from models.place import Place
 from models import dbstorage
 
 
 class Amenity(BaseModel, Base):
     """The Amenity class, contains amenity name"""
-    if dbstorage == 'db':
-        __tablename__ = 'amenities'
+    __tablename__ = "amenities"
+    if dbstorage == 'db':    
         name = Column(String(128), nullable=False)
         place_amenities = relationship('Place', secondary = 'place_amenity')
     else:

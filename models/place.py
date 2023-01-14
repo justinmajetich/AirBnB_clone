@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
 from models import dbstorage
+from models.amenity import Amenity
 
 
 if dbstorage == "db":
