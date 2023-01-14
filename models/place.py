@@ -91,4 +91,4 @@ class Place(BaseModel, Base):
             amenities = storage.all(Amenity)
             for amenity in amenities.values():
                 if obj == amenity:
-                    self.amenity_ids.append(obj.id)
+                    amenity_ids.append(obj.id)
