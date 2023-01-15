@@ -4,14 +4,14 @@
         <TITLE>HBNB</TITLE>
     </HEAD>
     <BODY>
-       {{ if flag is 1 }}
+       {% if flag is 1 %}
        <H1>States</H1>
        <UL>
        {% for state in states_cities %}
        <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
        {% endfor %}
        </UL>
-       {{ else }}
+       {% else if flag is 0 %}
        <H1>State: {{ states_cities.name }}</H1>
         <H3>Cities:</H3>
         <UL>
@@ -19,6 +19,8 @@
             <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
             {% endfor %}
         </UL>
-       {{ endif }}
+        {% else if flag is -1 %}
+        <H1>Not found!</H1>
+       {% endif %}
     </BODY>
 </HTML>

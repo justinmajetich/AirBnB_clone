@@ -37,6 +37,8 @@ def states_list(id=""):
                 states_cities = state
                 states_cities.cities = sorted(state.cities, key=lambda d: d.name)
                 flag = 0
+        if flag == 1:
+            flag = -1
     return render_template('9-states.html', states=states_cities, flag=flag)
 
 
