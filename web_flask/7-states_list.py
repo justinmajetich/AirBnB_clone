@@ -4,7 +4,8 @@ Your web application must be listening on 0.0.0.0, port 5000
 Routes:
     /states_list: display a HTML page: (inside the tag BODY)
         H1 tag: “States”
-        UL tag: with the list of all State objects present in DBStorage sorted by name (A->Z) tip
+        UL tag: with the list of all State objects present in
+            DBStorage sorted by name (A->Z) tip
         LI tag: description of one State: <state.id>: <B><state.name></B>
 """
 
@@ -28,6 +29,7 @@ def states_list():
         '7-states_list.html',
         states=sorted(storage.all(State).values(), key=lambda d: d.name)
     )
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
