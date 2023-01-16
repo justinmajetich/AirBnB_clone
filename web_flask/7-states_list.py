@@ -15,7 +15,7 @@ def teardown_db(exception):
 
 
 @app.route('/state_list', strict_slashes=False)
-def state_list(state_list):
+def state_list():
     data = storage.all(State)
     return render_template('7-states_list.html', state_list=data.values())
 
