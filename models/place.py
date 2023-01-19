@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
-from models import dbstorage
-from models.amenity import Amenity
 
 
 if dbstorage == "db":
@@ -34,9 +33,8 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship('Review', cascade='all,delete', backref='place')
-        amenities = relationship('Amenity',
-                                 secondary="place_amenity",
-                                 back_populates="place_amenities",viewonly=False)
+        amenities = relationship('Amenity', secondary="place_amenity",
+                                 backref="place_amenities", viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -50,6 +48,10 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+        def __init__(self, *args, **kwargs):
+            """initializes Place"""
+            super().__init__(*args, **kwargs)
+
 
         @property
         def reviews(self):
@@ -57,7 +59,7 @@ class Place(BaseModel, Base):
             the current Place.id
             FileStorage relationship between Place and Review
             """
-            from models import storage
+            from models.review import Review
             related_reviews = []
             reviews = storage.all(Review) #gets the entire storage a dictionary
             for review in reviews.values(): # reviews.values returns list of Review object
@@ -73,23 +75,10 @@ class Place(BaseModel, Base):
             instances based on the attribute amenity_ids that contains
             all Amenity.id linked to the Place
             """
-            from models import storage
+            from models.amenity import Amenity
             amenity_instances = []
             amenities = storage.all(Amenity)
             for amenity in amenities.values():
                 if amenity.place_id == self.id:
                     amenity_instances.append(amenity)
                 return amenity_instances
-
-
-        @amenities.setter
-        def amenities(self, obj):
-            """
-            Setter attribute amenities that handles append method for
-            adding an Amenity.id to the attribute amenity_ids.
-            This method should accept only Amenity object, otherwise, do nothing.
-            """
-            amenities = storage.all(Amenity)
-            for amenity in amenities.values():
-                if obj == amenity:
-                    amenity_ids.append(obj.id)
