@@ -4,7 +4,6 @@ from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from models import dbstorage
-from models import storage
 from models.city import City
 
 
@@ -33,4 +32,4 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     """if the object.state.id ==self.id"""
                     related_cities.append(city)
-                    return related_cities
+            return related_cities

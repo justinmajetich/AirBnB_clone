@@ -19,6 +19,7 @@ class DBStorage:
     __engine = None
     __session = None
 
+
     def __init__(self):
         """Instantiation"""
         user = environ.get("HBNB_MYSQL_USER")
@@ -32,6 +33,7 @@ class DBStorage:
                                       pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
+
 
     def all(self, cls=None):
         """Query on the current database"""
@@ -81,3 +83,4 @@ class DBStorage:
         """call remove() method on the private session
         attribute (self.__session)"""
         self.__session.close()
+        self.__session.reload()
