@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
 import models
 import sqlalchemy
+from models.amenity import Amenity
 
 
 if models.dbstorage == 'db':
@@ -33,7 +34,7 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship('Review', cascade='all,delete', backref='place')
         amenities = relationship('Amenity', secondary="place_amenity",
-                                 backref="place_amenities", viewonly=False)
+                                 back_populates="place_amenities", viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -78,3 +79,9 @@ class Place(BaseModel, Base):
                     if amenity.place_id == self.id:
                         amenity_instances.append(amenity)
                 return amenity_instances
+
+            @amenities.setter
+            def amenities(self, obj):
+                """setter for amenities class"""
+                if (isinstance(obj, Amenity)):
+                    self.amenity_ids.append(obj.id)
