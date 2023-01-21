@@ -3,24 +3,24 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
-from models import dbstorage
-from models import storage
+import models
+import sqlalchemy
 
 
-
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column("place_id", String(60),
-                             ForeignKey('places.id'),
-                             primary_key=True, nullable=False),
-                      Column("amenity_id", String(60),
-                             ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False))
+if models.dbstorage == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column("place_id", String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    __tablename__ = "places"
-    if dbstorage == "db":
+    if models.dbstorage == "db":
+        __tablename__ = "places"
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
@@ -33,7 +33,7 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship('Review', cascade='all,delete', backref='place')
         amenities = relationship('Amenity', secondary="place_amenity",
-                                 viewonly=False)
+                                 backref="place_amenities", viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -47,34 +47,34 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+        if models.dbstorage != 'db':
+            @property
+            def reviews(self):
+                """ Returns the list of review instances with place_id equals to
+                the current Place.id
+                FileStorage relationship between Place and Review
+                """
+                from models.review import Review
+                related_reviews = []
+                reviews = models.storage.all(Review)
+                for review in reviews.values():
+                    if review.place_id == self.id:
+                        related_reviews.append(review)
+                return related_reviews
 
-        @property
-        def reviews(self):
-            """ Returns the list of review instances with place_id equals to
-            the current Place.id
-            FileStorage relationship between Place and Review
-            """
-            from models.review import Review
-            related_reviews = []
-            reviews = storage.all(Review) #gets the entire storage a dictionary
-            for review in reviews.values(): # reviews.values returns list of Review object
-                if review.place_id == self.id:
-                    related_reviews.append(review)
-            return related_reviews
 
-
-        @property
-        def amenities(self):
-            """
-            Getter attribute amenities that returns the list of Amenity
-            instances based on the attribute amenity_ids that contains
-            all Amenity.id linked to the Place
-            """
+            @property
+            def amenities(self):
+                """
+                Getter attribute amenities that returns the list of Amenity
+                instances based on the attribute amenity_ids that contains
+                all Amenity.id linked to the Place
+                """
             
-            from models.amenity import Amenity
-            amenity_instances = []
-            amenities = storage.all(Amenity)
-            for amenity in amenities.values():
-                if amenity.place_id == self.id:
-                    amenity_instances.append(amenity)
-            return amenity_instances
+                from models.amenity import Amenity
+                amenity_instances = []
+                amenities = models.storage.all(Amenity)
+                for amenity in amenities.values():
+                    if amenity.place_id == self.id:
+                        amenity_instances.append(amenity)
+                return amenity_instances

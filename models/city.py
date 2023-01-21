@@ -3,13 +3,14 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
-from models import dbstorage
+import models
+import sqlalchemy
 
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    __tablename__ = "cities"
-    if dbstorage == "db":
+    if  models.dbstorage == "db":
+        __tablename__ = "cities"
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         places = relationship('Place', cascade='all,delete', backref='cities')

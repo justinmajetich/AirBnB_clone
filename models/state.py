@@ -3,29 +3,29 @@
 from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from models import dbstorage
+import models
 from models.city import City
 
 
 class State(BaseModel, Base):
     """ State class """
-    __tablename__ = 'states'
-    if dbstorage == 'db':
+    if models.dbstorage == 'db':
+        __tablename__ = 'states'
         name = Column(String(128), nullable=False)
         cities = relationship('City', cascade='all,delete', backref='state')
 
     else:
         name = ""
 
+    if models.dbstorage != "db":
         @property
         def cities(self):
             """ Returns the list of city instances with state_id
                 equals the current State.id
                 FileStorage relationship between State and City
             """
-            from models import storage
             related_cities = []
-            cities = storage.all(City)
+            cities = models.storage.all(City)
             """gets the entire storage a dictionary"""
             for city in cities.values():
                 """cities.value returns list of the city objects"""
