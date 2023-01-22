@@ -8,16 +8,14 @@ from datetime import datetime
 from fabric.api import env, local, put, run, runs_once
 
 
-env.hosts = ['100.24.74.197', '52.91.117.197']
+env.hosts = ['54.237.21.114', '54.158.188.149']
+env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
-    Args:
-        archive_path (str): The path of the archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
-        Otherwise - True.
+
+    """
+        return the archive path if archive has generated correctly.
     """
     if not os.path.isdir("versions"):
         os.mkdir("versions")
