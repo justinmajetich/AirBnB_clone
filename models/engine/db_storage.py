@@ -45,15 +45,15 @@ class DBStorage:
                 obj_list = self.__session.query(obj_class)
                 for obj in obj_list:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    del obj.__dict__['_sa_instance_state']
                     db_dict[key] = obj
+                    del obj.__dict__['_sa_instance_state']
+            return db_dict
         else:
             obj_list = self.__session.query(cls)
             for obj in obj_list:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                del obj.__dict__['_sa_instance_state']
                 db_dict[key] = obj
-        return db_dict
+            return db_dict
 
     def new(self, obj):
         """Adds object to a current database"""
