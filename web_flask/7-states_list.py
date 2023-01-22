@@ -9,11 +9,11 @@ from models import *
 app = Flask(__name__)
 
 
-@app.route('/state_list', strict_slashes=False)
+@app.route('/states_list', strict_slashes=False)
 def state_list():
     """display a HTML page with the states listed in alphabetical order"""
-    states = sorted(list(storage.all(State).values()), key=lambda x: x.name)
-    return render_template('7-states_list.html', states=states)
+    states_list = sorted(list(storage.all(State)), key = lambda x: x.name)
+    return render_template('7-states_list.html', states_list=states_list)
 
 @app.teardown_appcontext
 def teardown_db(exception):
