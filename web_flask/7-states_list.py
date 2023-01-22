@@ -12,8 +12,8 @@ app = Flask(__name__)
 @app.route('/states_list', strict_slashes=False)
 def state_list():
     """display a HTML page with the states listed in alphabetical order"""
-    states_list = storage.all(State)
-    return render_template('7-states_list.html', states_list=states_list)
+    states = storage.all(State)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
