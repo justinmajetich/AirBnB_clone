@@ -7,7 +7,7 @@ import os.path
 from fabric.api import *
 from datetime import datetime
 
-env.hosts = ['35.231.24.237', '54.90.204.128']
+env.hosts = ['34.202.234.205', '54.209.10.253']
 
 
 def deploy():
