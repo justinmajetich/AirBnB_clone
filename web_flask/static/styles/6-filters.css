@@ -1,0 +1,80 @@
+/* search bar */
+div.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    /* text-align: center; */
+}
+section.filters {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+section.filters button {
+    background-color: #FF5A5F;
+    height: 48px;
+    width: 20%;
+    border: 0;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #FFFFFF;
+    float: right;
+    margin: 11px 30px;
+}
+section.filters button:hover {
+    opacity: .9;
+}
+/* location and amenities part of search bar */
+.locations,
+.amenities {
+    height: 100%;
+    width: 25%;
+    float: left;
+}
+.locations {
+    border-right: 1px solid #DDDDDD;
+}
+.locations h3,
+.amenities h3 {
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    text-align: left;
+    margin-left: 30px;
+}
+.locations h4,
+.amenities h4 {
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: left;
+    margin-left: 30px;
+}
+/* display location and amenities options upon hover */
+.popover {
+    display: none;
+    background-color: #FAFAFA;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+    max-height: 300px;
+    margin-top: 7%;
+    padding-bottom: 10%;
+    overflow: auto;
+}
+.popover h2 {
+    font-size: 16px;
+}
+li {
+    list-style-type: none;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+.locations:hover .popover,
+.amenities:hover .popover {
+    display: block;
+}
