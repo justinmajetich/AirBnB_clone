@@ -28,7 +28,7 @@ sudo ln -s -f /data/web_static/releases/test/ /data/web_static/current
 # Give recursive ownership of the '/data/' folder to the 'ubuntu' user AND group
 sudo chown -R ubuntu:ubuntu /data/
 
-sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
+sudo sed -i '29i/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
 
 # restart Nginx
 sudo service nginx restart
