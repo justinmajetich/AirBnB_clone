@@ -52,3 +52,4 @@ def deploy():
 
     archive = do_pack()
     return do_deploy(archive)
+
