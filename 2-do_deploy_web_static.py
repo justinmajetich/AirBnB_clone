@@ -6,6 +6,7 @@ import os.path
 env.hosts = ['54.174.125.138', '54.175.54.26']
 env.user = 'ubuntu'
 
+
 def do_deploy(archive_path):
     """distributes an archive to your web servers
     """
@@ -16,6 +17,7 @@ def do_deploy(archive_path):
         base = arc[1].strip('.tgz')
         put(archive_path, '/tmp/')
         sudo('mkdir -p /data/web_static/releases/{}'.format(base))
+
         main = "/data/web_static/releases/{}".format(base)
         sudo('tar -xzf /tmp/{} -C {}/'.format(arc[1], main))
         sudo('rm /tmp/{}'.format(arc[1]))
@@ -25,4 +27,3 @@ def do_deploy(archive_path):
         return True
     except Exception:
         return False
-
