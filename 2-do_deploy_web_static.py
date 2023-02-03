@@ -1,13 +1,15 @@
 #!/usr/bin/python3
-"""
-Fabric script that distributes an archive to your web servers
-"""
+'''
+fabric script to distribute an archive to web servers
+----NEEDS TO REVISIT SCRIPT
+'''
 
-from datetime import datetime
-from fabric.api import *
 import os
+from datetime import datetime
+from fabric.api import env, local, put, run, runs_once
 
-env.hosts = ["54.237.21.114", "54.158.188.149"]
+
+env.hosts = ['100.26.175.113', '34.204.101.131']
 
 
 def do_deploy(archive_path):
