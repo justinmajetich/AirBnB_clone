@@ -1,30 +1,30 @@
 #!/usr/bin/python3
-"""This is the state class"""
-from sqlalchemy.ext.declarative import declarative_base
+""" State class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
-import models
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, String, ForeignKey, Integer
+import os
 from models.city import City
-import shlex
+import models
 
 
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
-        name: input name
+    name: input name
     """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete")
 
-    @property
-    def cities(self):
-        """getter attribute cities that returns the list of City
-        instances with state_id equals to the current State.id
-        """
-        cities = []
-        for city in models.storage.all(City).values():
-            if city.state_id == self.id:
-                cities.append(city)
-        return cities
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship("City",
+                              cascade="all, delete, delete-orphan",
+                              backref="state")
+    else:
+        @property
+        def cities(self):
+            """Return list of city"""
+            city_list = [value for key, value in
+                         models.storage.all(City).items()
+                         if value.state_id == self.id]
+            return city_list
