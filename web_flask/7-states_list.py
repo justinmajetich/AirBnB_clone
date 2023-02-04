@@ -9,18 +9,18 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
-    """  Function that display a HTML page """
-    # Fetch in a list of all the values available in a given dictionary
-    states = storage.all(State).values()
-    return render_template('7-states_list.html', states=states)
-
-
 @app.teardown_appcontext
-def remove_session(exception):
-    """ After each request you must remove the current SQLAlchemy Session """
+def appcontext_teardown(self):
+    """use storage for fetching data from the storage engine
+    """
     storage.close()
+
+
+@app.route('/states_list', strict_slashes=False)
+def state_info():
+    """Display a HTML page inside the tag BODY"""
+    return render_template('7-states_list.html',
+                           states=storage.all(State))
 
 
 if __name__ == '__main__':
