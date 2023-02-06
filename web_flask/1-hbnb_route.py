@@ -13,13 +13,13 @@ app = Flask(__name__)
 @app.route("/", strict_slashes=False)
 def hello():
     """returning  Hello HBNB str"""
-    return("Hello HBNB!")
+    return ("Hello HBNB!")
 
 
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
     """returning  HBNB str"""
-    return("HBNB!")
+    return ("HBNB!")
 
 
 if __name__ == "__main__":
