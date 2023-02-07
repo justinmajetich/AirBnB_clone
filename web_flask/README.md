@@ -21,3 +21,4 @@ Final Product:
   <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb_screenshot_2.png"
        alt="HolbertonBnB logo">
 </p>
+
