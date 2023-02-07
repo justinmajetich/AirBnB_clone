@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HBNB</title>
+    </head>
+    <body>
+        {#- `states` is the full dictionary containing all states -#}
+        {#- `id_state` is the dictionary containing only -#}
+        {#- a state whose id was passed #}
+        {% if id_state %} {#- if state variable is not null #}
+        <H1>State: {{ id_state.name }}</H1>
+        <H3>Cities:</H3>
+        <ul>
+        {#- Loop thru the cities -#}
+        {% for city in id_state.cities|sort(attribute="name") %}
+            <li>{{ city.id }}: <B>{{ city.name }}</B></li>
+        {% endfor -%}
+        </ul>
+        {% elif states %} {#- check if states isn't empty #}
+        <h1>States</h1>
+        <ul>
+        {#- Loop thru the state #}
+        {% for key, state in states | dictsort %}
+            <li>{{ state.id }}: <B>{{ state.name }}</B></li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <H1>Not found!</H1>
+        {% endif %}
+    </body>
+</html>

@@ -1,58 +1,66 @@
 #!/usr/bin/python3
-""" starts a Flask web application:
-Your web application must be listening on 0.0.0.0, port 5000
-Routes: /: display “Hello HBNB!”
-You must use the option strict_slashes=False in your route definition
-"""
-
+"""Definition of a Flask web application"""
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/", strict_slashes=False)
-def hello():
-    """returning  Hello HBNB str"""
-    return("Hello HBNB!")
+def hello_world():
+    """
+    The hello_world function returns the string 'Hello HBNB!'
+    :return: The string `Hello HBNB!`
+    """
+    return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
-    """returning  HBNB str"""
-    return("HBNB!")
+    """
+    The hbnb function returns the string 'HBNB'
+    :return: The string `HBNB`
+    """
+    return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
 def c_text(text):
-    """display “C ” followed by the value of the text variable
-    (replace underscore _ symbols with a space )
     """
-    return "C {}".format(text.replace("_", " "))
-
-
-app.route("/python", strict_slashes=False)
-app.route("/python/<text>", strict_slashes=False)
-
-
-def python_text(text="is cool"):
-    """display “ python” followed by the value of the text variable
-    (replace underscore _ symbols with a space )
+    The c_text function returns the string 'C + {text}'
+    :return: The string `C + {text}`
     """
-    return "Python {}".format(text.replace("_", " "))
+    text = text.replace("_", " ")
+    return "C {}".format(text)
 
 
-@app.route("/number/<int:number>", strict_slashes=False)
-def number(numb):
-    """display “n is a number” only if n is an integer"""
-    return "{} is a number".format(numb)
+@app.route("/python/", strict_slashes=False)
+@app.route("/python/<text>", strict_slashes=False)
+def pyth(text="is cool"):
+    """
+    The pytee function returns the string 'Python + {text}'
+    :return: The string `Python + {text}`
+    """
+    text = text.replace("_", " ")
+    return "Python {}".format(text)
 
 
-@app.route("/number_template/<int:n>", strict_slashes=False)
-def number_template(n):
-    """The number_template function renders a HTML file
-    :return: 5-number.html"""
-    return render_template("5-number.html", numb=n)
+@app.route("/number/<int:num>", strict_slashes=False)
+def number(num):
+    """
+    The number function returns the string 'n is a number'
+    :return: `n is a number`
+    """
+    return "{} is a number".format(num)
+
+
+@app.route("/number_template/<int:numba>", strict_slashes=False)
+def number_template(numb):
+    """
+    The number_template function renders a HTML file
+    :return: 5-number.html
+    """
+    return render_template("5-number.html", numb=numb)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(port=5000, debug=True)
