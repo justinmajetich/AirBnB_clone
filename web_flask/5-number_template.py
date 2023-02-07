@@ -53,11 +53,11 @@ def number(num):
     return "{} is a number".format(num)
 
 
-@app.route("/number_template/<int:numba>", strict_slashes=False)
+@app.route("/number_template/<int:numb>", strict_slashes=False)
 def number_template(numb):
     """
     The number_template function renders a HTML file
-    :return: 5-number.html
+    :return: 5-number.html..
     """
     return render_template("5-number.html", numb=numb)
 
