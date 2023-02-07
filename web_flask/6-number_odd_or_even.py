@@ -62,13 +62,13 @@ def number_template(numb):
     return render_template("5-number.html", numb=numb)
 
 
-@app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
-def odd_even(n):
+@app.route("/number_odd_or_even/<int:numb>", strict_slashes=False)
+def odd_even(numb):
     """
     The odd_even function renders a HTML file
     :return: 6-number_odd_or_even.html
     """
-    return render_template("6-number_odd_or_even.html", numb=n)
+    return render_template("6-number_odd_or_even.html", numb=numb)
 
 
 if __name__ == "__main__":
