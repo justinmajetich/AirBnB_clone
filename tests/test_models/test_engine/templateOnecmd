@@ -1,0 +1,8 @@
+ssue console command
+		with patch('sys.stdout', new=StringIO()) as f:
+		    interpreter.onecmd(
+			    'create User\
+			    email="obisann@gmail.com"\
+			    password="myPassword"\
+			    first_name="Greenbel"\
+			    last_name="Eleghasim"')
