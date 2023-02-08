@@ -1,8 +1,8 @@
 <h1 align="center">HBnB</h1>
-<p align="center">An AirBnB clone.</p>
+<p align="center">AirBnB clone</p>
 
 <p align="center">
-  <img src="https://github.com/RaymanMoha/AirBnB_clone_v2/blob/master/assets/hbnb_logo.png"
+  <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb_logo.png"
 	    alt="HolbertonBnB logo">
 </p>
 
@@ -22,7 +22,7 @@ deploy in the coming month:
 * Serving of dynamic content using JavaScript
 
 <p align="center">
-  <img src="https://github.com/RaymanMoha/AirBnB_clone_v2/blob/master/assets/hbnb_stack.png"
+  <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb_stack.png"
 	    alt="HolbertonBnB stack">
 </p>
 
@@ -43,7 +43,7 @@ Recognizing that I am sharing a near-complete project, I additionally put
 together a small Flask app according to the specifications described in the
 application. Please take a look at this separate repository here:
 
-nonetheless, allow me to talk a little more about this AirBnB clone. This
+Nonetheless, allow me to talk a little more about this AirBnB clone. This
 repository is the second iteration of the project. In the first version
 (viewable [here](https://github.com/RaymanMoha/AirBnB_clone)), I, together
 with a cohort mate, built up the initial file storage back-end and
@@ -57,7 +57,7 @@ to build up the database storage engine of the back-end.
 In between each version, I put together an entire CSS-styled HTML web page
 for the project. This front-end development was coded independently, although
 the HTML files I personally wrote are only posted in
-[version one](https://github.com/bdbaraban/AirBnB_clone) (the
+[version one](https://github.com/RaymanMoha/AirBnB_clone) (the
 [web_static](./web_static) folder in this directory was included in the
 fork). Addtionally, all Shell, Puppet, and Fabric deployment scripts/manifests
 were coded myself.
@@ -75,7 +75,7 @@ Please let me know if you have any questions!
 
 ### Static :page_facing_up:
 
-The front-end of HBnB was designed from scratch using HTML5/CSS3 pages
+The front-end of HolbertonBnB was designed from scratch using HTML5/CSS3 pages
 integrated using Flask. While the front-end has not yet been officially deployed,
 screenshots are viewable in the README of the [web_flask](./web_flask) directory.
 
@@ -360,4 +360,3 @@ Alternatively, you can specify a single test file to run at a time:
 
 ```
 $ python3 unittest -m tests/test_console.py
-```
