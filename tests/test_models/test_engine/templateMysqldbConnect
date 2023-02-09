@@ -1,0 +1,12 @@
+re database connection parameters
+		    user = os.getenv('HBNB_MYSQL_USER')
+		    passwd = os.getenv('HBNB_MYSQL_PWD')
+		    dbase = os.getenv('HBNB_MYSQL_DB')
+		    host = os.getenv('HBNB_MYSQL_HOST')
+		    port = '3306'
+
+		    # Connect to the database
+		    conn = mdb.connect(host=host, user=user, passwd=passwd, db=dbase)
+
+		    # Get a cursor
+		    cur = conn.cursor()
