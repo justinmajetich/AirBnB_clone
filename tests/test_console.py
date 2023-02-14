@@ -17,7 +17,3 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
-
-
-class TestConsole(unittest.TestCase):
-    """this will test the console"""
