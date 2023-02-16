@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """test for console"""
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from io import StringIO
 import pep8
 import os
+from models import storage
 import json
 import console
 from console import HBNBCommand
@@ -72,7 +73,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual('', f.getvalue())
 
     def test_create(self):
-        """Test create command inpout"""
+        """Test create command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("create")
             self.assertEqual(
@@ -87,3 +88,20 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("all User")
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_valid_object(self, mock_stdout):
+        HBNBCommand().onecmd('create BaseModel name="My House" value=42.0')
+        object_id = mock_stdout.getvalue().strip()
+        self.assertTrue(object_id)
+        storage.delete(BaseModel(id=object_id))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_invalid_attributes(self, mock_stdout):
+        HBNBCommand().onecmd('create BaseModel name="My House" value=invalid')
+        self.assertEqual(mock_stdout.getvalue().strip(), "** attribute value not valid **")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_invalid_format(self, mock_stdout):
+        HBNBCommand().onecmd('create BaseModel invalid_format')
+        self.assertEqual(mock_stdout.getvalue().strip(), "** attribute format not valid **")
