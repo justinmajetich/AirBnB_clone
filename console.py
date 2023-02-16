@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         # Split the arguments by spaces and get the class name and the attributes
         args = args.split()
         class_name = args[0]
-        if args not in HBNBCommand.classes:
+        if args not in self.classes:
             print("** class doesn't exist **")
             return
 
