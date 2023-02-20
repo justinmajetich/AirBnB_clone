@@ -82,4 +82,3 @@ class TestConsole(unittest.TestCase):
         HBNBCommand().onecmd('create BaseModel name="My House" value=42.0')
         object_id = mock_stdout.getvalue().strip()
         self.assertTrue(object_id)
-        storage.delete(BaseModel(id=object_id))
