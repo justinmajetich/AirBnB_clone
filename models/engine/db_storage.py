@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""New DBStorage engine"""
+""" new class for sqlAlchemy """
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
@@ -14,14 +14,15 @@ from models.amenity import Amenity
 
 
 class DBStorage:
+    """ create tables in environmental"""
     __engine = None
     __session = None
 
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
         passwd = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST")
         db = getenv("HBNB_MYSQL_DB")
+        host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
@@ -32,7 +33,10 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query the current database session"""
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
+        """
         dic = {}
         if cls:
             if type(cls) is str:
@@ -51,20 +55,24 @@ class DBStorage:
         return (dic)
 
     def new(self, obj):
-        """add the object to the current database session """
+        """add a new element in the table
+        """
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session """
+        """save changes
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+        """delete an element in the table
+        """
         if obj:
             self.session.delete(obj)
 
     def reload(self):
-        """create database current session"""
+        """configuration
+        """
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sec)
