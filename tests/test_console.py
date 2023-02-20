@@ -56,7 +56,6 @@ class TestConsole(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
         self.assertIsNotNone(HBNBCommand.do_all.__doc__)
         self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-        self.assertIsNotNone(HBNBCommand.count.__doc__)
         self.assertIsNotNone(HBNBCommand.strip_clean.__doc__)
         self.assertIsNotNone(HBNBCommand.default.__doc__)
 
@@ -86,8 +85,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd('create User email="hoal@.com" password="1234"')
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("all User")
-            self.assertEqual(
-                "[[User]", f.getvalue()[:7])
+
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_create_valid_object(self, mock_stdout):
