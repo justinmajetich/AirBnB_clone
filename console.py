@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        # Split the arguments by spaces and get the class name and the attributes
+        # Split the arguments by spaces
         args = args.split()
         class_name = args[0]
         if args not in self.classes.values():
@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
 
             # Convert the value to the appropriate data type
             if value.startswith('"') and value.endswith('"'):
-                # String value, remove quotes and replace underscores with spaces
+                # remove quotes and replace underscores with spaces
                 value = value[1:-1].replace('_', ' ')
                 value = value.replace('\\"', '"')
             elif '.' in value:

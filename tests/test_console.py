@@ -99,9 +99,11 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_create_invalid_attributes(self, mock_stdout):
         HBNBCommand().onecmd('create BaseModel name="My House" value=invalid')
-        self.assertEqual(mock_stdout.getvalue().strip(), "** attribute value not valid **")
+        self.assertEqual(mock_stdout.getvalue().strip(),
+                         "** attribute value not valid **")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_create_invalid_format(self, mock_stdout):
         HBNBCommand().onecmd('create BaseModel invalid_format')
-        self.assertEqual(mock_stdout.getvalue().strip(), "** attribute format not valid **")
+        self.assertEqual(mock_stdout.getvalue().strip(),
+                         "** attribute format not valid **")
