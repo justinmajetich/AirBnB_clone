@@ -12,24 +12,24 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 
+
 class DBStorage:
     __engine = None
     __session = None
 
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
+        passwd = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
         db = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(user, password, host, db),
+                                      .format(user, passwd, host, db),
                                       pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
-
 
     def all(self, cls=None):
         """Query the current database session"""
