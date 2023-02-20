@@ -131,6 +131,10 @@ class HBNBCommand(cmd.Cmd):
                 continue
             else:
                 dt[1] = dt[1].split('"')[1]
+                dt[1] = dt[1].split("_")
+                if (isinstance(dt[1],list)):
+                   dt[1] = " ".join(dt[1])
+                
                 obj[dt[0]] = dt[1]
 
         new_instance = HBNBCommand.classes[args.split(" ")[0]]()
