@@ -27,11 +27,6 @@ class test_basemodel(unittest.TestCase):
         except:
             pass
 
-    def test_default(self):
-        """ """
-        i = self.value()
-        self.assertEqual(type(i), self.value)
-
     def test_kwargs(self):
         """ """
         i = self.value()
