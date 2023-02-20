@@ -116,65 +116,44 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """
-           Creates a new instance of a class,
-           saves it (to the JSON file) and prints the id.
-
-        """
-        # If the class name is missing,
-        # print ** class name missing ** (ex: $ create)
+        """ Create an object of any class"""
         if len(args) < 1:
             print("** class name missing **")
             return
-
-        # Split the arguments by spaces and get the class name and the attributes
+        # convert the args to a list
         args = args.split()
+
+        # the 1st element of the list is the class name
         class_name = args[0]
-        if args not in self.classes.values():
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-
-        # Create a new instance of the class
-        new_object = eval(class_name + "()")
-
-        # Parse the attributes and set them on the new object
-        attributes = args[1:]
-        for attribute in attributes:
-            # Split the attribute into key and value
-            key_value = attribute.split('=')
-            if len(key_value) != 2:
-                # Attribute is not formatted correctly, skip it
+        new_instance = self.classes[class_name]()
+        for params in args[1:]:
+            if "=" not in params:
                 continue
-            key, value = key_value
-
-            # Convert the value to the appropriate data type
+            key, value = params.split('=')
+            value = value.replace('_', ' ')
             if value.startswith('"') and value.endswith('"'):
-                # String value, remove quotes and replace underscores with spaces
-                value = value[1:-1].replace('_', ' ')
-                value = value.replace('\\"', '"')
+                value = value[1:-1].replace('\\"', '"')
             elif '.' in value:
-                # Float value
                 try:
                     value = float(value)
                 except ValueError:
-                    # Value can't be converted to float, skip it
                     continue
             else:
-                # Integer value
                 try:
                     value = int(value)
                 except ValueError:
-                    # Value can't be converted to int, skip it
                     continue
 
-            # Set the attribute on the new object
-            setattr(new_object, key, value)
+            if value is not None and value != "" and hasattr(
+                    new_instance, key):
+                setattr(new_instance, key, value)
 
-        # Save the new object and print its ID
-        new_object.save()
-        print(new_object.id)
-        storage.save()
-
+        print(new_instance.id)
+        new_instance.save()
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")

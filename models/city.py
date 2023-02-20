@@ -6,9 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import Base
 
-
 class City(BaseModel, Base):
-
     """This is the class for City
     Attributes:
         state_id: The state id

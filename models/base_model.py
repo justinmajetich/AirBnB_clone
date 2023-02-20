@@ -10,8 +10,7 @@ Base = declarative_base()
 
 
 class BaseModel:
-
-    """This class will defines all common attributes/methods
+    """This class will define all common attributes/methods
     for other classes
     """
 
@@ -22,7 +21,6 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
-            args: it won't used
             kwargs: arguments for the constructor of the BaseModel
         Attributes:
             id: unique id generated
@@ -30,8 +28,6 @@ class BaseModel:
             updated_at: updated date
         """
         if kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -77,6 +73,5 @@ class BaseModel:
         return my_dict
 
     def delete(self):
-        """Delete the current instance from the storage models.storage
-        """
+        """Delete the current instance from the storage models.storage"""
         models.storage.delete(self)
