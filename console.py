@@ -115,35 +115,45 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, line):
-        """Creates a new instance of BaseModel, saves it
-        Exceptions:
-            SyntaxError: when there is no args given
-            NameError: when there is no object that has the name
-        """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
-            obj = eval({my_list[0] + "()"})
-            print("{}".format(obj.id))
-            for num in range(1, len(my_list)):
-                my_list[num] = my_list[num].replace('=', ' ')
-                attributes = split(my_list[num])
-                attributes[1] = attributes[1].replace('_', ' ')
-                try:
-                    var = eval(attributes[1])
-                    attributes[1] = var
-                except:
-                    pass
-                if type(attributes[1]) is not tuple:
-                    setattr(obj, attributes[0], attributes[1])
-            obj.save()
-        except SyntaxError:
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if len(args) < 1:
             print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
+            return
+        # convert the args to a list
+        args = args.split()
 
+        # the 1st element of the list is the class name
+        class_name = args[0]
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = self.classes[class_name]()
+        for params in args[1:]:
+            if "=" not in params:
+                continue
+            key, value = params.split('=')
+            value = value.replace('_', ' ')
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+
+            if value is not None and value != "" and hasattr(
+                    new_instance, key):
+                setattr(new_instance, key, value)
+
+        print(new_instance.id)
+        new_instance.save()
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
