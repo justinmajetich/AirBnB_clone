@@ -115,65 +115,34 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, line):
+        """Creates a new instance of BaseModel, saves it
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object that has the name
         """
-           Creates a new instance of a class,
-           saves it (to the JSON file) and prints the id.
-
-        """
-        # If the class name is missing,
-        # print ** class name missing ** (ex: $ create)
-        if len(args) < 1:
+        try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            print("{}".format(obj.id))
+            for num in range(1, len(my_list)):
+                my_list[num] = my_list[num].replace('=', ' ')
+                attributes = split(my_list[num])
+                attributes[1] = attributes[1].replace('_', ' ')
+                try:
+                    var = eval(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1]) is not tuple:
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except SyntaxError:
             print("** class name missing **")
-            return
-
-        # Split the arguments by spaces
-        args = args.split()
-        class_name = args[0]
-        if args not in self.classes.values():
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        # Create a new instance of the class
-        new_object = eval(class_name + "()")
-
-        # Parse the attributes and set them on the new object
-        attributes = args[1:]
-        for attribute in attributes:
-            # Split the attribute into key and value
-            key_value = attribute.split('=')
-            if len(key_value) != 2:
-                # Attribute is not formatted correctly, skip it
-                continue
-            key, value = key_value
-
-            # Convert the value to the appropriate data type
-            if value.startswith('"') and value.endswith('"'):
-                # remove quotes and replace underscores with spaces
-                value = value[1:-1].replace('_', ' ')
-                value = value.replace('\\"', '"')
-            elif '.' in value:
-                # Float value
-                try:
-                    value = float(value)
-                except ValueError:
-                    # Value can't be converted to float, skip it
-                    continue
-            else:
-                # Integer value
-                try:
-                    value = int(value)
-                except ValueError:
-                    # Value can't be converted to int, skip it
-                    continue
-
-            # Set the attribute on the new object
-            setattr(new_object, key, value)
-
-        # Save the new object and print its ID
-        new_object.save()
-        print(new_object.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
