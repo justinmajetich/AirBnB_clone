@@ -126,12 +126,12 @@ class HBNBCommand(cmd.Cmd):
             return
         new_operation = HBNBCommand.classes[args[0]]()
         argv = args.pop(0)
-        print(argv)
+        #print(argv)
         if len(argv) > 1:
             for i in args:
                 x = i.split("=")
                 val = json.loads(x[1])
-                print(type(val), val)
+                #print(type(val), val)
                 if type(val) is str:
                     val = val.replace("_", " ")
                 setattr(new_operation, x[0], val)
