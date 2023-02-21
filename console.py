@@ -17,11 +17,15 @@ def is_number(s):
         int(s)
         return True
     except ValueError:
-        try:
-            float(s)
-            return True
-        except ValueError:
-            return False
+        pass
+
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+
+    return False
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -137,14 +141,16 @@ class HBNBCommand(cmd.Cmd):
             dt = i.split("=")
             if (len(dt) != 2):
                 continue
-            if (dt[1][0] != '"' or dt[1][-1] != '"'):
+            if ((dt[1][0] != '"' or dt[1][-1] != '"') and not  is_number(dt[1].replace('"', ''))):
+                continue
+            if ((dt[1][0] == '"' or dt[1][-1] == '"') and is_number(dt[1].replace('"', ''))):
                 continue
             else:
-                dt[1] = dt[1].split('"')[1]
+                dt[1] = dt[1].replace('"', '')
                 dt[1] = dt[1].split("_")
                 if (isinstance(dt[1],list)):
                    dt[1] = " ".join(dt[1])
-                if (dt[1].isnumeric()):
+                if (is_number(dt[1])):
                     print(dt[1])
                     if '.' in dt[1]:
                         dt[1] = float(dt[1])
