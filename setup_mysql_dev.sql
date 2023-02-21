@@ -6,5 +6,5 @@ CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
 --Gives SELECT privilege on the database performance_schema to user hbnb_dev
 GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
---Ends Script that prepares a MySQL server for the project
+--End Script that prepares a MySQL server for the project
 
