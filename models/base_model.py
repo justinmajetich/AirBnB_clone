@@ -22,6 +22,12 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
+            if "id" not in kwargs:
+                kwargs["id"] = str(uuid.uuid4())
+            if "updated_at" not in kwargs:
+                kwargs["updated_at"] = datetime.now().isoformat()
+            if "created_at" not in kwargs:
+                kwargs["created_at"] = datetime.now().isoformat()
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
