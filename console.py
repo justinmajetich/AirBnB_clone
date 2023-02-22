@@ -148,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
                     continue
             parameters[key] = value
         new_instance = HBNBCommand.classes[class_name]()
-        new_instance._dict_.update(**parameters)
+        new_instance.__dict__.update(**parameters)
         storage.save()
         print(new_instance.id)
 
