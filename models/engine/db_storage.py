@@ -34,12 +34,12 @@ class DBStorage:
                 queried = self.__session.query(self.classes[i]).all()
                 for j in queried:
                     key = j.__class__.__name__ + "." + j.id
-                    data[key] = j
+                    data[key] = j.to_dict()
         else:
             queried = self.__session.query(cls).all()
             for j in queried:
                 key = j.__class__.__name__ + "." + j.id
-                data[key] = j
+                data[key] = j.to_dict()
         return data
 
     def new(self, obj):
