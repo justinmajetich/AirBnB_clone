@@ -114,42 +114,42 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-    """Create an object of any class with given parameters"""
-    if not args:
-        print("** class name missing **")
-        return
-    args_list = args.split()
-    class_name = args_list[0]
-    if class_name not in HBNBCommand.classes:
-        print("** class doesn't exist **")
-        return
-    # Remove class name from args_list
-    args_list.pop(0)
-    # Extract parameters and their values from args_list
-    parameters = {}
-    for arg in args_list:
-        if "=" not in arg:
-            continue
-        key, value = arg.split("=")
-        # Handle string values
-        if value.startswith('"') and value.endswith('"'):
-            value = value[1:-1].replace('_', ' ')
-        # Handle float values
-        elif '.' in value:
-            try:
-                value = float(value)
-            except ValueError:
+        """Create an object of any class with given parameters"""
+        if not args:
+            print("** class name missing **")
+            return
+        args_list = args.split()
+        class_name = args_list[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        # Remove class name from args_list
+        args_list.pop(0)
+        # Extract parameters and their values from args_list
+        parameters = {}
+        for arg in args_list:
+            if "=" not in arg:
                 continue
-        # Handle integer values
-        else:
-            try:
-                value = int(value)
-            except ValueError:
-                continue
-        parameters[key] = value
-    new_instance = HBNBCommand.classes[class_name](**parameters)
-    storage.save()
-    print(new_instance.id)
+            key, value = arg.split("=")
+            # Handle string values
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ')
+            # Handle float values
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            # Handle integer values
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            parameters[key] = value
+        new_instance = HBNBCommand.classes[class_name](**parameters)
+        storage.save()
+        print(new_instance.id)
 
 
     def help_create(self):
