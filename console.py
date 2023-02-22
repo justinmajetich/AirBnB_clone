@@ -163,7 +163,6 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance.__dict__.update(**obj)
         storage.new(new_instance)
-        # storage.save()
         print(new_instance.id)
         storage.save()
 
@@ -241,7 +240,6 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-        print(storage.all())
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
