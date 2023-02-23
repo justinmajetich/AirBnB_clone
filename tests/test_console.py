@@ -35,7 +35,7 @@ class ConsoleTestCase(unittest.TestCase):
     def test_create_save(self):
         """Test the 'create' command and data saving"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="Rivers"')
+            self.console.onecmd('create State name="FCT"')
         state_id = self.stdout.getvalue()[:-1]
         self.assertIsNotNone(
             self.storage.all()["State.{}".format(state_id)])
