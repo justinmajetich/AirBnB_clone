@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is'}' \
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +115,30 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        try:
+            if not args:
+                raise SyntaxError()
+            arg_list = args.split(" ")
+            kw = {}
+            for arg in arg_list[1:]:
+                arg_splited = arg.split("=")
+                arg_value = arg_splited[1]
+                if isinstance(arg_value, str):
+                    arg_value = arg_value.replace("_", " ").replace('"', '\\"')
+                kw[arg_splited[0]] = eval(arg_value)
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        else:
+            class_name = arg_list[0]
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+            else:
+                new_instance = HBNBCommand.classes[class_name](**kw)
+                new_instance.save()
+                print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -322,3 +336,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
