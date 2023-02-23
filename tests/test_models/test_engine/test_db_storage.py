@@ -46,10 +46,10 @@ def test_city(self):
 
 def test_state(self):
     """Test for state"""
-    test_state = State(name="FCT")
+    test_state = State(name="California")
     test_state.save()
     self.assertTrue(test_state.id in self.storage.all())
-    self.assertEqual(test_state.name, "FCT")
+    self.assertEqual(test_state.name, "California")
 
 def test_place(self):
     """Test for place"""

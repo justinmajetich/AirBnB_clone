@@ -35,7 +35,7 @@ class ConsoleTestCase(unittest.TestCase):
     def test_create_save(self):
         """Test the 'create' command and data saving"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="FCT"')
+            self.console.onecmd('create State name="California"')
         state_id = self.stdout.getvalue()[:-1]
         self.assertIsNotNone(
             self.storage.all()["State.{}".format(state_id)])
@@ -50,30 +50,30 @@ class ConsoleTestCase(unittest.TestCase):
     def test_all(self):
         """Test the 'all' command"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="FCT"')
+            self.console.onecmd('create State name="California"')
         with patch('sys.stdout', self.stdout):
             self.console.onecmd('all State')
         output = self.stdout.getvalue()[:-1]
         self.assertIn("State", output)
-        self.assertIn("FCT", output)
+        self.assertIn("California", output)
 
     def test_update(self):
         """Test the 'update' command"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="FCT"')
+            self.console.onecmd('create State name="California"')
         state_id = self.stdout.getvalue()[:-1]
         with patch('sys.stdout', self.stdout):
             self.console.onecmd(
-                'update State {} name="New FCT"'.format(state_id))
+                'update State {} name="New California"'.format(state_id))
         with patch('sys.stdout', self.stdout):
             self.console.onecmd('show State {}'.format(state_id))
         output = self.stdout.getvalue()[:-1]
-        self.assertIn("FCT", output)
+        self.assertIn("California", output)
 
     def test_destroy(self):
         """Test the 'destroy' command"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="FCT"')
+            self.console.onecmd('create State name="California"')
         state_id = self.stdout.getvalue()[:-1]
         with patch('sys.stdout', self.stdout):
             self.console.onecmd('destroy State {}'.format(state_id))
@@ -81,9 +81,9 @@ class ConsoleTestCase(unittest.TestCase):
     def test_show(self):
         """Test the 'show' command"""
         with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="FCT"')
+            self.console.onecmd('create State name="California"')
         state_id = self.stdout.getvalue()[:-1]
         with patch('sys.stdout', self.stdout):
             self.console.onecmd('show State {}'.format(state_id))
         output = self.stdout.getvalue()[:-1]
-        self.assertIn("FCT", output)
+        self.assertIn("California", output)
