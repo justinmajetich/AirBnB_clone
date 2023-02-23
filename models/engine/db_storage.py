@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-"""This module defines a class for interacting with a database using SQLAlchemy"""
+"""This module defines a class for interacting 
+    with a database using SQLAlchemy.
+"""
 
 import os
 from os import getenv
@@ -14,6 +16,7 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+
 
 class DBStorage:
     """A class for interacting with a database using SQLAlchemy."""
@@ -29,14 +32,16 @@ class DBStorage:
         env = getenv("HBNB_ENV")
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                    .format(user, passwd, host, db),
-                                    pool_pre_ping=True)
+                                            .format(user, passwd, host, db),
+                                            pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Returns a dictionary of all objects of a given class or all classes if none is specified."""
+        """Returns a dictionary of all objects of a given class 
+           or all classes if none is specified.
+        """
         objects = {}
         if cls:
             if isinstance(cls, str):
@@ -70,7 +75,8 @@ class DBStorage:
     def reload(self):
         """Configures the database connection."""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                              expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
 
