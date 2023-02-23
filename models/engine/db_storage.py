@@ -5,6 +5,8 @@ import os
 from models.base_model import Base
 from models.city import City
 from models.state import State
+from models.place import Place
+from models.user import User
 
 
 class DBStorage:
@@ -12,7 +14,9 @@ class DBStorage:
     __session = None
     classes = {
         'City': City,
-        'State': State
+        'State': State,
+        'Place': Place,
+        'User': User
     }
 
     def __init__(self):

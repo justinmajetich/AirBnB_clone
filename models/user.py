@@ -7,11 +7,11 @@ from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    __tablename__="users"
+    __tablename__= "users"
     email = ''
     password = ''
     first_name = ''
     last_name = ''
-    place = relationship("Place", backref='user', cascade="delete")
+    places = relationship("Place", backref='user')
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
