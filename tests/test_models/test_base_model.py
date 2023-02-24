@@ -3,6 +3,7 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
+import pep8
 from uuid import UUID
 import json
 import os
@@ -84,12 +85,6 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
-
-    # def test_kwargs_one(self):
-    #     """ """
-    #     n = {'Name': 'test'}
-    #     with self.assertRaises(KeyError):
-    #         new = self.value(**n)
 
     def test_id(self):
         """ """
