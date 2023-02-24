@@ -9,7 +9,7 @@ from models.place import Place
 from models.user import User
 from models.review import Review
 from models.amenity import Amenity
-from models.place_amenity import PlaceAmenity
+# from models.place_amenity import PlaceAmenity
 
 
 class DBStorage:
@@ -22,7 +22,7 @@ class DBStorage:
         'User': User,
         'Review': Review,
         'Amenity': Amenity,
-        "PlaceAmenity": PlaceAmenity
+        # "PlaceAmenity": PlaceAmenity
     }
 
     def __init__(self):
