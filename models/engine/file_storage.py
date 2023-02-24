@@ -8,7 +8,7 @@ class FileStorage:
     Class that serializes instances to a JSON file
     '''
     __file_path= 'file.json'
-    __object ={}
+    __object = {}
 
     def all(self, cls=None):
         """
@@ -21,13 +21,14 @@ class FileStorage:
             for key, value in self.__objects.items():
                 if type(value) == cls:
                     filtered_obj[key] = value
-            return 
+            return filtered_obj
     
     def new(self, obj):
         """
         sets __object to given obj
         """
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+    
     def delete(self, obj=None):
         """
         Update FileStorage, add a new instance publica
