@@ -1,24 +1,17 @@
 #!/usr/bin/python3
-"""This is the city class"""
+"""This module defines a class User"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import os
 
 
-class City(BaseModel, Base):
-    """
-    This is the class for City
-    Attributes:
-    state_id: The state id
-    name: input name
-    """
-    __tablename__ = "cities"
+class User(BaseModel, Base):
+    """This class defines a user by various attributes"""
+    __tablename__ = 'users'
 
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-        places = relationship("Place", backref="cities", cascade="delete")
-    else:
-        state_id = ''
-        name = ''
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128))
+    last_name = Column(String(128))
+    places = relationship("Place", backref="user", cascade="delete")
+    reviews = relationship("Review", backref="user", cascade="delete")
