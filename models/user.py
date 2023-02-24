@@ -5,13 +5,14 @@ from sqlalchemy import column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
+storage_type = getenv("HBNB_TYPE_STORAGE")
+
 
 class User(BaseModel, Base):
     """
     This class defines a user by various attributes
     """
     __tablename__ ='users'
-    
     email = column(String(128), nullable=False)
     password = column(String(128), nullable=False)
     first_name = column(String(128))
