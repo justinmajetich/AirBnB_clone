@@ -10,6 +10,8 @@ from models.engine.file_storage import FileStorage
 from console import HBNBCommand
 from io import StringIO
 from unittest.mock import patch
+from models.state import State
+
 
 
 class ConsoleTestCase(unittest.TestCase):
