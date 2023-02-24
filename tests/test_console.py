@@ -13,7 +13,6 @@ from unittest.mock import patch
 from models.state import State
 
 
-
 class ConsoleTestCase(unittest.TestCase):
     """Class to test the HBNBCommand console"""
     def setUp(self):
