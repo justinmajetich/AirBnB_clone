@@ -8,6 +8,7 @@ from models.state import State
 from models.place import Place
 from models.user import User
 from models.review import Review
+from models.amenity import Amenity
 
 
 class DBStorage:
