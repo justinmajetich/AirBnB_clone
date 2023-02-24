@@ -4,16 +4,12 @@ import json
 
 
 class FileStorage:
-    '''
-    Class that serializes instances to a JSON file
-    '''
+    """Class that serializes instances to a JSON file"""
     __file_path= 'file.json'
     __object = {}
 
     def all(self, cls=None):
-        """
-        returns a dictionary
-        """
+        """returns a dictionary"""
         if cls is None:
             return self.__objects
         else:
@@ -24,15 +20,11 @@ class FileStorage:
             return filtered_obj
     
     def new(self, obj):
-        """
-        sets __object to given obj
-        """
+        """sets __object to given obj"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
     
     def delete(self, obj=None):
-        """
-        Update FileStorage, add a new instance publica
-        """
+        """Update FileStorage, add a new instance publica"""
         if obj is not None:
             key = key = obj.__class__.__name__ + "." + obj.id
             if key in self.__objects:
@@ -40,9 +32,7 @@ class FileStorage:
                 self.save()
 
     def save(self):
-        """
-        serialize the file path to JSON file path
-        """
+        """serialize the file path to JSON file path"""
         with open(self.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -51,9 +41,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """
-        serialize the file path to JSON file path
-        """
+        """serialize the file path to JSON file path"""
         from models.base_model import BaseModel
         from models.user import User
         from models.amenity import Amenity
