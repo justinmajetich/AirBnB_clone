@@ -19,7 +19,8 @@ class DBStorage:
         'State': State,
         'Place': Place,
         'User': User,
-        'Review': Review
+        'Review': Review,
+        'Amenity': Amenity
     }
 
     def __init__(self):

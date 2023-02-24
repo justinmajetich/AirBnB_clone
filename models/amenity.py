@@ -7,4 +7,4 @@ from sqlalchemy.orm import relationship
 class Amenity(BaseModel):
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
-    # place_amenities=
+    place_amenities=relationship('Place', secondary='place_amenity')
