@@ -32,7 +32,8 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship("Review", backref='place', cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False, back_populates="place_amenities")
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        amenities = relationship("Amenity", secondary="place_amenity", viewonly=False, back_populates="place_amenities")
     if os.getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def amenities(self):
