@@ -122,22 +122,18 @@ class HBNBCommand(cmd.Cmd):
             kw = {}
             for arg in arg_list[1:]:
                 arg_splited = arg.split("=")
-                arg_value = arg_splited[1]
-                if isinstance(arg_value, str):
-                    arg_value = arg_value.replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = eval(arg_value)
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1] \
+                            .replace("_", " ").replace('"', '\\"')
+                kw[arg_splited[0]] = arg_splited[1]
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        else:
-            class_name = arg_list[0]
-            if class_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-            else:
-                new_instance = HBNBCommand.classes[class_name](**kw)
-                new_instance.save()
-                print(new_instance.id)
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -200,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -219,13 +215,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 print_list.append(str(v))
-
+        else:
+            for k, v in storage.all().items():
+                print_list.append(str(v))
         print(print_list)
 
     def help_all(self):
