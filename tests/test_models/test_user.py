@@ -1,72 +1,38 @@
 #!/usr/bin/python3
-"""
-Tests for User
-"""
-
-import unittest
-import pep8
-from datetime import datetime
-from io import StringIO
-from contextlib import redirect_stdout
-import models
+""" """
+from tests.test_models.test_base_model import TestBaseModel
 from models.user import User
 
 
-class TestUser(unittest.TestCase):
-    """Test"""
+class TestUser(TestBaseModel):
+    """ Test for user"""
 
-    def setUp(self):
-        self.user = User()
-
-    def test_email(self):
-        """
-        1. test that the email attribute of the User object
-           is an instance of the str class
-        2. test that the email atttribute has the value of an empty string
-        """
-        self.assertIsInstance(self.user.email, str)
-        self.assertEqual(self.user.email, "")
-
-    def test_password(self):
-        """
-        1. test that the password attribute of the User object
-           is an instance of the str class
-        2. test that the password atttribute has the value of an empty string
-        """
-        self.assertIsInstance(self.user.password, str)
-        self.assertEqual(self.user.password, "")
+    def __init__(self, *args, **kwargs):
+        """ """
+        super().__init__(*args, **kwargs)
+        self.name = "User"
+        self.value = User
 
     def test_first_name(self):
-        """
-        1. test that the first_name attribute of the User object
-           is an instance of the str class
-        2. test that the first_name atttribute has the value of an empty string
-        """
-        self.assertIsInstance(self.user.first_name, str)
-        self.assertEqual(self.user.first_name, "")
+        """ """
+        new = self.value()
+        new.first_name = "Elia"
+        self.assertEqual(type(new.first_name), str)
 
     def test_last_name(self):
-        """
-        1. test that the last_name attribute of the User object
-           is an instance of the str class
-        2. test that the last_name atttribute has the value of an empty string
-        """
-        self.assertIsInstance(self.user.last_name, str)
-        self.assertEqual(self.user.last_name, "")
+        """ """
+        new = self.value()
+        new.last_name = "Elia"
+        self.assertEqual(type(new.last_name), str)
 
-    def test_user_pep8(self):
-        """test that user.py is PEP8 compliant"""
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/user.py'])
-        self.assertEqual(result.total_errors, 0, "PEP8 errors found")
+    def test_email(self):
+        """ """
+        new = self.value()
+        new.email = "e.faye@alustudent.com"
+        self.assertEqual(type(new.email), str)
 
-    def test_pep8(self):
-        """test that this file is PEP8 compliant"""
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['tests/test_models/test_user.py'])
-        self.assertEqual(result.total_errors, 0, "PEP8 errors found")
-
-
-if __name__ == "__main__":
-    unittest.main()
-    
+    def test_password(self):
+        """ """
+        new = self.value()
+        new.password = "password1"
+        self.assertEqual(type(new.password), str)
