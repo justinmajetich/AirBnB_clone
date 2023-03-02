@@ -142,6 +142,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 ## Contributors:
 ##### This project was brought to you by the following contributors.
-
 - Lindsey Lancaster, (https://github.com/linszay)
 - Teylor Chapman, (https://github.com/teylorchapman)
