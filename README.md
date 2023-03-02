@@ -141,9 +141,9 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 
-##### Contributors:
+## Contributors:
+##### This project was brought to you by the following contributors.
 
-Foster Clark, [@FosterClark48](https://github.com/FosterClark48) 
-
-Lindsey Thomas, [@timidgeek](https://github.com/timidgeek/) 
+- Foster Clark, [@FosterClark48](https://github.com/FosterClark48) 
+- Lindsey Thomas, [@timidgeek](https://github.com/timidgeek/) 
 
