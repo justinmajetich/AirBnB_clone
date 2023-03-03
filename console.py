@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -113,18 +114,35 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+def do_create(self, line):
+    """Create a new instance of a given class"""
+    args = shlex.split(line)
+    if not args:
+        print("** class name missing **")
+        return
+    class_name = args[0]
+    if class_name not in HBNBCommand.classes:
+        print("** class doesn't exist **")
+        return
+    kwargs = {}
+    for arg in args[1:]:
+        if '=' in arg:
+            key, value = arg.split('=', 1)
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ')
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+            kwargs[key] = value
+    kwargs['updated_at'] = datetime.now()
+    instance = HBNBCommand.classes[class_name](**kwargs)
+    instance.save()
+    print(instance.id)
 
     def help_create(self):
         """ Help information for the create method """
