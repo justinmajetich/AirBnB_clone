@@ -62,19 +62,22 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes an instance"""
 
-        split_obj = obj.split(" ")
-        if len(obj) == 0:
-            print("** class name missing **")
-        elif split_obj[0] in classes.keys():
-            if len(split_obj) < 2:
-                print("** instance id missing **")
-            else:
-                search = split_obj[0] + "." + split_obj[1]
-                all = FileStorage.all()
-                if search in all:
-                    del all[search]
-                    FileStorage.save()
-                else:
-                    print("** no instance found **")
+        if obj is None:
+            print("** instance id missing **")
         else:
-            print("** class doesn't exist **")
+            split_obj = obj.split(" ")
+            if len(obj) == 0:
+                print("** class name missing **")
+            elif split_obj[0] in classes.keys():
+                if len(split_obj) < 2:
+                    print("** instance id missing **")
+                else:
+                    search = split_obj[0] + "." + split_obj[1]
+                    all = FileStorage.all()
+                    if search in all:
+                        del all[search]
+                        FileStorage.save()
+                    else:
+                        print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
