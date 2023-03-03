@@ -129,15 +129,15 @@ def do_create(self, line):
         if '=' in arg:
             key, value = arg.split('=', 1)
             if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ')
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
             else:
                 try:
-                    value = int(value)
-                except ValueError:
-                    try:
+                    if '.' in value:
                         value = float(value)
-                    except ValueError:
-                        continue
+                    else:
+                        value = int(value)
+                except ValueError:
+                    continue
             kwargs[key] = value
     kwargs['updated_at'] = datetime.now()
     instance = HBNBCommand.classes[class_name](**kwargs)
