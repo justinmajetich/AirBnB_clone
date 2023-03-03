@@ -69,19 +69,7 @@ class FileStorage:
         if obj is None:
             pass
         else:
-            split_obj = obj.split(" ")
-            if len(obj) == 0:
-                print("** class name missing **")
-            elif split_obj[0] in classes.keys():
-                if len(split_obj) < 2:
-                    print("** instance id missing **")
-                else:
-                    search = split_obj[0] + "." + split_obj[1]
-                    all = FileStorage.all()
-                    if search in all:
-                        del all[search]
-                        FileStorage.save()
-                    else:
-                        print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
