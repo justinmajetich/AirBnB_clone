@@ -7,9 +7,10 @@ from uuid import UUID
 import json
 import os
 
+
 class test_basemodel(unittest.TestCase):
     """ """
-    
+
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
@@ -58,7 +59,8 @@ class test_basemodel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id, i.__dict__))
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
+                         i.__dict__))
 
     def test_todict(self):
         """ """
@@ -71,7 +73,7 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
- 
+
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
@@ -87,7 +89,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
-    
+
     def test_updated_at(self):
         """ """
         new = self.value()
