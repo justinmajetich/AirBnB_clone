@@ -119,19 +119,26 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         from models import storage
+        """Check if class name is provided in args"""
         if not args:
             print("** class name missing **")
             return
+        """Split args into class name and params"""
         args = args.partition(' ')
+        """Check if class exists in dict of classes"""
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        """Split params into list of key-value pairs"""
         params = args[2].split(' ')
+        """Create new instance of class using default constructor"""
         new_instance = HBNBCommand.classes[args[0]]()
+        """Create dict of keyword args to be set as attributes of instance"""
         param_dict = {}
         for param in params:
             param = param.partition("=")
             param_dict[param[0]] = param[2].replace('"', '').replace('_', ' ')
+        """Set attributes of instance using dict of keyword args"""
         new_instance.__dict__.update(**param_dict)
 
         storage.new(new_instance)
