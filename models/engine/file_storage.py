@@ -59,17 +59,17 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-    def delete(self, args):
+    def delete(self, obj=None):
         """Deletes an instance"""
 
-        split_arg = args.split(" ")
-        if len(args) == 0:
+        split_obj = obj.split(" ")
+        if len(obj) == 0:
             print("** class name missing **")
-        elif split_arg[0] in classes.keys():
-            if len(split_arg) < 2:
+        elif split_obj[0] in classes.keys():
+            if len(split_obj) < 2:
                 print("** instance id missing **")
             else:
-                search = split_arg[0] + "." + split_arg[1]
+                search = split_obj[0] + "." + split_obj[1]
                 all = FileStorage.all()
                 if search in all:
                     del all[search]
