@@ -1,0 +1,6 @@
+{
+    "editor.semanticTokenColorCustomizations": {
+        
+    },
+    "editor.semanticHighlighting.enabled": "configuredByTheme"
+}
