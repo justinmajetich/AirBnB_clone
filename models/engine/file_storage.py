@@ -1,16 +1,38 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""This module defines a class to manage file storage for HBNB V2"""
 import json
+import shlex  # for splitting lines
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
+classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+    def all(self, cls=None):
+        """Returns a dictionary of models currently in storage
+        is cls is specified, only returns that class"""
+        if cls is not None:
+            if type(cls) is str:
+                cls = eval(cls)
+            spec_dict = {}
+            for key, val in self.__objects.items():
+                if cls == type(val):
+                    spec_dict[key] = val
+            return spec_dict
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -27,24 +49,35 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """Deletes an instance"""
+
+        if obj is None:
+            pass
+        else:
+            split_obj = obj.split(" ")
+            if len(obj) == 0:
+                print("** class name missing **")
+            elif split_obj[0] in classes.keys():
+                if len(split_obj) < 2:
+                    print("** instance id missing **")
+                else:
+                    search = split_obj[0] + "." + split_obj[1]
+                    all = FileStorage.all()
+                    if search in all:
+                        del all[search]
+                        FileStorage.save()
+                    else:
+                        print("** no instance found **")
+            else:
+                print("** class doesn't exist **")

@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -66,15 +65,18 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
+                if pline[0]:
+                    _id = pline[0].replace('\"', '')
+                else:
+                    _id = None
+                    # possible bug here: fixed?
+                    # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,35 +116,39 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-def do_create(self, line):
-    """Create a new instance of a given class"""
-    args = shlex.split(line)
+def do_create(self, args):
+    """Create a new instance of a given class with given parameters"""
+    from models import storage
+    
     if not args:
         print("** class name missing **")
         return
-    class_name = args[0]
+    
+    # Extract the class name and parameters
+    class_name, *params = args.split()
+
+    # Check if the class exists
     if class_name not in HBNBCommand.classes:
         print("** class doesn't exist **")
         return
-    kwargs = {}
-    for arg in args[1:]:
-        if '=' in arg:
-            key, value = arg.split('=', 1)
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            else:
-                try:
-                    if '.' in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except ValueError:
-                    continue
-            kwargs[key] = value
-    kwargs['updated_at'] = datetime.now()
-    instance = HBNBCommand.classes[class_name](**kwargs)
-    instance.save()
-    print(instance.id)
+
+    # Parse the parameters
+    param_dict = {}
+    for param in params:
+        key, value = param.split('=')
+        if value.startswith('"') and value.endswith('"'):
+            value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+        elif '.' in value:
+            value = float(value)
+        else:
+            value = int(value)
+        param_dict[key] = value
+    
+    # Create a new instance of the class with the given parameters
+    new_instance = HBNBCommand.classes[class_name](**param_dict)
+    new_instance.save()
+    print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -290,7 +296,7 @@ def do_create(self, line):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -298,10 +304,10 @@ def do_create(self, line):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -337,6 +343,7 @@ def do_create(self, line):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
