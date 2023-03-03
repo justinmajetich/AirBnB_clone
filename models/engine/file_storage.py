@@ -63,7 +63,7 @@ class FileStorage:
         """Deletes an instance"""
 
         if obj is None:
-            print("** instance id missing **")
+            pass
         else:
             split_obj = obj.split(" ")
             if len(obj) == 0:
