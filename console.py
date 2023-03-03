@@ -65,9 +65,12 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
+                if pline[0]:
+                    _id = pline[0].replace('\"', '')
+                else:
+                    _id = None
+                    # possible bug here: fixed?
+                    # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
@@ -115,53 +118,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        from models import storage
         if not args:
             print("** class name missing **")
             return
-        else:
-            """ Split args into list of args """
-            args_list = args.split()
-            """ Extracts name of class to be created """
-            class_name = args_list[0]
-            """ Checks if class exists """
-            if class_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            """
-            Parse parameters: initializing empty dict to hold keyword
-            args for class constructor
-            """
-            kwargs = {}
-            """ Loop over remaining args """
-            for arg in args_list[1:]:
-                """ Begin to parse each arg """
-                try:
-                    """ Split each arg into key = value """
-                    key, value = arg.split('=')
-                    """ Remove any double quotes in value """
-                    value = value.replace('"', '')
-                    """ Replace any escaped underscores with spaces """
-                    value = value.replace('\_', ' ')
-                    """ Checks if value is floating point """
-                    if '.' in value:
-                        """ Converts value to float if floating point """
-                        value = float(value)
-                        """ Checks if value is int """
-                    elif value.isnumeric():
-                        """ Converts value to int if int """
-                        value = int(value)
-                    else:
-                        """ Value is a string """
-                        pass
-                    """ Add parsed parameter to dict """
-                    kwargs[key] = value
-                except ValueError:
-                    """ Skip any malformed parameters """
-                    pass
-            new_instance = HBNBCommand.classes[class_name](*(), **kwargs)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
+        args = args.partition(' ')
+        if args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        params = args[2].split(' ')
+        new_instance = HBNBCommand.classes[args[0]]()
+        param_dict = {}
+        for param in params:
+            param = param.partition("=")
+            param_dict[param[0]] = param[2].replace('"', '').replace('_', ' ')
+        new_instance.__dict__.update(**param_dict)
+
+        storage.new(new_instance)
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
