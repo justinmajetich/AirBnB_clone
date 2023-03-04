@@ -2,7 +2,6 @@
 # setup nginx server and create a route "/hbnb_static/ to server index.html"
 
 sudo apt-get -y update
-sudo apt-get -y upgrade
 sudo apt-get -y install nginx
 sudo mkdir -p /data/
 sudo mkdir -p /data/web_static/
