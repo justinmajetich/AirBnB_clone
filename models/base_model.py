@@ -23,7 +23,6 @@ class BaseModel():
                     v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
                 if k != '__class__':
                     setattr(self, k, v)
-            self.save()
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -34,6 +33,7 @@ class BaseModel():
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):

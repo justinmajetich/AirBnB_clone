@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
 
-class DBStorage:
+class DBStorage():
     __engine = None
     __session = None
 

@@ -113,45 +113,29 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, line):
+        """Usage: create <Class name> <param 1> <param 2> <param 3>..."""
+        if not line:
             print("** class name missing **")
             return
-        arg_list = args.split(' ')
-        class_name = arg_list[0]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[class_name]()
-        for arg in arg_list[1:]:
-            param_list = arg.split('=')
-            if len(param_list) != 2:
-                print("** invalid parameter format **")
-                continue
-            key = param_list[0]
-            value = param_list[1]
-            if value.startswith('"'):
-                value = value[1:]
-                if value.endswith('"'):
-                    value = value[:-1]
-                    value = value.replace('_', ' ')
-                    value = value.replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    print("** invalid parameter format **")
-                    continue
+        args = line.split()
+        kwargs = {}
+        for param in range(1, len(args)):
+            ky, vl = args[param].split("=")
+            if vl[0] == '"':
+                vl = vl.replace('_', ' ').strip('"')
             else:
                 try:
-                    value = int(value)
-                except ValueError:
-                    print("** invalid parameter format **")
+                    vl = eval(vl)
+                except (SyntaxError, NameError):
                     continue
-                setattr(new_instance, key, value)
-                new_instance.save()
-            print(new_instance.id)
+            kwargs[ky] = vl
+        if len(kwargs) == 0:
+            obj = eval(args[0])()
+        else:
+            obj = eval(args[0])(**kwargs)
+        print(obj.id)
+        obj.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -224,23 +208,13 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, line):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        if not line:
+            objs = storage.all()
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            objs = storage.all(eval(line))
+        print([objs[key].__str__() for key in objs])
 
     def help_all(self):
         """ Help information for the all command """
