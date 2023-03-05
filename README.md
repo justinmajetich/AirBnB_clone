@@ -142,5 +142,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 
 <center><h3>Authors</h3> </center>
-Clint Hendrickson <https://github.com/Maitreya-today>
-Katrina Keas <https://github.com/kkeas>
+Clint Hendrickson : <https://github.com/Maitreya-today>
+Katrina Keas  : <https://github.com/kkeas>
