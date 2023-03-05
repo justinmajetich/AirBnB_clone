@@ -143,5 +143,6 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 
 ## Contributors:
 (https://github.com/MicoBledsoe)
+
 (https://github.com/jobabyyy)
 
