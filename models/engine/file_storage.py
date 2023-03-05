@@ -56,6 +56,6 @@ class FileStorage:
         """ delete obj from __objects """
         if obj in self.__objects.values():
             key = obj.__class__.__name__ + "." + obj.id
-            self.__objects.remove(key)
+            self.__objects.pop(key)
         elif obj is None:
             return
