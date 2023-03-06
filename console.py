@@ -115,45 +115,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pline = args.split()
-        _cls = pline[0]
-        values = []
-        names = []
-        if not _cls:
+        arg = args.split(" ")
+        if not args:
             print("** class name missing **")
             return
-        elif _cls not in HBNBCommand.classes:
+        elif arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for i in range(1, len(pline)):
-            tupl = pline[i].partition('=')
-            names.append(tupl[0])
-            try:
-                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
-                    value = tupl[2].replace('\"', '')
-                    value = value.replace('_', ' ')
-                    values.append(value)
-                else:
-                    value = tupl[2]
-                    if '.' in value or type(value) is float:
-                        try:
-                            value = float(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-                    else:
-                        try:
-                            value = int(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-            except IndexError:
-                continue
-
-        dictionary = dict(zip(names, values))
-
-        new_instance = HBNBCommand.classes[_cls]()
-        new_instance.__dict__.update(dictionary)
+        new_instance = HBNBCommand.classes[arg[0]]()
+        for i in range(1, len(arg)):
+            value = arg[i].partition('=')
+            new_instance.__dict__.update({value[0]: value[2].replace('_', ' ').replace('"', '')})
+        
         storage.save()
         print(new_instance.id)
         storage.save()
