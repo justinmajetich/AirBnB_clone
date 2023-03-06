@@ -134,12 +134,9 @@ class HBNBCommand(cmd.Cmd):
                 if value[0] == '"' and value[-1] == '"':
                     value = value[1:-1].replace('_', ' ')
                 try:
-                    if "." in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except ValueError:
-                    pass
+                    value = float(value) if "." in value else int(value)
+                except (SyntaxError, NameError):
+                    continue
                 param_dict[key] = value
 
         new_instance = HBNBCommand.classes[input_list[0]]()
