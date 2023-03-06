@@ -2,8 +2,8 @@
 """ Console Module """
 import cmd
 import sys
-from models import storage
 from models.base_model import BaseModel
+from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -123,25 +123,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        param_dict = {}
-        """
-        Extract class name and parameters from input args
-        """
-        for item in input_list[1:]:
-            new_dict = item.split("=")
-            if len(new_dict) == 2:
-                key, value = new_dict
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace('_', ' ')
-                try:
-                    value = float(value) if "." in value else int(value)
-                except (SyntaxError, NameError):
-                    continue
-                param_dict[key] = value
+        attributes = {}  # get all attributes
+        for attr in input_list[1:]:
+            new_dict = attr.split('=', 1)
+            attributes[new_dict[0]] = new_dict[1]
 
         new_instance = HBNBCommand.classes[input_list[0]]()
-        for key, value in param_dict.items():
-            setattr(new_instance, key, value)
+
+        for k, v in attributes.items():
+            v = v.strip("\"'").replace("_", " ")
+            v = self.convert_str_to_num(v)
+            setattr(new_instance, k, v)
 
         storage.new(new_instance)
         print(new_instance.id)
