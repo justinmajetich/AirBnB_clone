@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 """ Console Module """
-
 import cmd
-import contextlib
 import sys
-from models.base_model import Base, BaseModel
 from models import storage
+from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
