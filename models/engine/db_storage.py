@@ -21,7 +21,7 @@ class DBStorage:
                                             getenv('HBNB_MYSQL_PWD'),
                                             getenv('HBNB_MYSQL_HOST'),
                                             getenv('HBNB_MYSQL_DB')),
-                                    pool_pre_ping=True)
+                                        pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -52,7 +52,7 @@ class DBStorage:
                 cls = eval(cls)
             obj_lst = self.__session.query(cls).all()
         return {"{}.{}".format(type(obj).__name__,
-                            obj.id): obj for obj in obj_lst}
+                                obj.id): obj for obj in obj_lst}
 
     def close(self):
         self.__session.close()
