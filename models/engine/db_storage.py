@@ -17,7 +17,7 @@ class DBStorage:
     __session = None
     
     def __init__(self):
-        self.__engine = create_engine("mysql+myswldb://{}:{}@{}/{}".format(getenv('HBNB_MYSQL_USER'),
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(getenv('HBNB_MYSQL_USER'),
                                                                            getenv('HBNB_MYSQL_PWD'),
                                                                            getenv('HBNB_MYSQL_HOST'),
                                                                            getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
@@ -47,6 +47,6 @@ class DBStorage:
             self.__session.delete(obj)
             
     def reload(self):
-        Base.metadata.create.all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
