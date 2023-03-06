@@ -17,7 +17,7 @@ class BaseModel:
         """Instatntiates a new model"""
         if not kwargs:
             from models import storage
-            self.id = uuid4()
+            self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
