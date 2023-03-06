@@ -13,10 +13,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import os
-os.environ['HBNB_MYSQL_USER'] = 'user'
-os.environ['HBNB_MYSQL_PWD'] = 'password'
-os.environ['HBNB_MYSQL_HOST'] = 'host'
-os.environ['HBNB_MYSQL_DB'] = 'database'
+from os import getenv
 
 classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -31,12 +28,22 @@ class DBStorage():
     __objects = {}
 
     def __init__(self):
+        """Creates engine"""
+        user = getenv("HBNB_MYSQL_USER")
+        password = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST")
+        database = getenv("HBNB_MYSQL_DB")
+        env = getenv("HBNB_ENV")
+        
         self.__engine = sqlalchemy.create_engine(
-             "mysql://{}:{}@localhost/{}".format('HBNB_MYSQL_USER', 'HBNB_MYSQL_PWD', 'HBNB_MYSQL_DB'),
+             "mysql+mysqldb://{}:{}@localhost/{}".format(user, password, host, database),
             pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
+
+        if env == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
@@ -74,16 +81,6 @@ class DBStorage():
             self.__session.delete()
 
     def reload(self):
-        """Loads storage dictionary from file"""
-
+        """Creates current database session"""
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker, expire_on_commit=False)
-
-        try:
-            temp = {}
-            with open(DBStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
