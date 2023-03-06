@@ -44,7 +44,7 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            json.dump(temp, f)
+            json.dumps(temp, f)
 
     def reload(self):
         """deseriaizes objescts"""
@@ -60,11 +60,11 @@ class FileStorage:
         except json.decoder.JSONDecodeError:
             pass
 
-        def delete(self, obj=None):
-            if obj == None:
-                pass
-            else:
-                ob = ("{}.{}").format(obj.__class__.__name__, obj.id)
-                if ob in self.__objects:
-                    del self.__objects[ob]
-                    self.save()
+    def delete(self, obj=None):
+        if obj == None:
+            pass
+        else:
+            ob = ("{}.{}").format(obj.__class__.__name__, obj.id)
+            if ob in self.__objects:
+                del self.__objects[ob]
+                self.save()
