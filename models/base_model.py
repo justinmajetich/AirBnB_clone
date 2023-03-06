@@ -3,10 +3,20 @@
 import uuid
 from datetime import datetime
 import shlex  # for splitting lines
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
+
+    # class attributes
+    id = Column(String(60), unique=True, nullable=False, primarykey=True)
+    created_at = Column(datetime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(datetime, nullable=False, default=datetime.utcnow())
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -14,8 +24,8 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
         else:
+            self.name = kwargs.get('name', str(60))
             self.id = kwargs.get('id', str(uuid.uuid4()))
             self.created_at = kwargs.get('created_at', datetime.now())
             self.updated_at = kwargs.get('updated_at', datetime.now())
@@ -47,4 +57,14 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         new_dict['created_at'] = self.created_at.isoformat()
         new_dict['updated_at'] = self.updated_at.isoformat()
+
+        if "_sa_instance_state" in new_dict:
+            del new_dict['_sa_instance_state']
+
         return new_dict
+
+    def delete(self):
+        """deletes current instance from the storage"""
+        from models import storage
+        storage.new(self)
+        storage.delete()
