@@ -30,8 +30,8 @@ class FileStorage:
                 if cls == self.__objects:
                     for k, v in self.__objects.items():
                         mydict[k] = v
-                        return mydict
-        """ return FileStorage.__objects"""
+                        """return mydict"""
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
