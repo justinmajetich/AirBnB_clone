@@ -16,7 +16,7 @@ import os
 from os import getenv
 
 classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
             }
@@ -38,9 +38,6 @@ class DBStorage():
         self.__engine = sqlalchemy.create_engine(
              "mysql+mysqldb://{}:{}@localhost/{}".format(user, password, host, database),
             pool_pre_ping=True)
-
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
@@ -65,22 +62,21 @@ class DBStorage():
         return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        """Adds new object to database session"""
+        self.__session.add(obj)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        self.updated_at = datetime.now()
-        self.__session.new(self)
-        self.__session.save()
+        """Commits changes to database session"""
+        self.__session.commit()
 
     def delete(self, obj=None):
         """deletes current instance from the storage"""
         if obj is not None:
-            self.__session.new(self)
-            self.__session.delete()
+            self.__session.delete(obj)
+        else:
+            pass
 
     def reload(self):
         """Creates current database session"""
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker, expire_on_commit=False)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
