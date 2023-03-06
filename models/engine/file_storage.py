@@ -44,7 +44,7 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            json.dumps(temp, f)
+            json.dump(temp, f)
 
     def reload(self):
         """deseriaizes objescts"""
@@ -63,7 +63,7 @@ class FileStorage:
     def delete(self, obj=None):
         """deletes objects"""
         if obj == None:
-            pass
+            return
         else:
             ob = ("{}.{}").format(obj.__class__.__name__, obj.id)
             if ob in self.__objects:
