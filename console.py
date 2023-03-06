@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         if args:
            token = args.split(' ', 1)
            cmd = token[0]
-           token = token.partition(' ')
+           token = token.split(' ', 1)
            classname = token[0]
            for parts in token[2].split('='):
                token = parts.split('=')
