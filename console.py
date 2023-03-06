@@ -128,6 +128,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance.__dict__.update({value[0]: value[2].replace('_', ' ').replace('"', '')})
         
         storage.save()
+        new_instance.save()
         print(new_instance.id)
         storage.save()
 
