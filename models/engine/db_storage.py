@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ DB Storage Engine """
-from models.base_model import BaseModel, Base
+from models.base_model import Base, BaseModel
 from models.base_model import Amenity
 from models.base_model import City
 from models.base_model import Place
@@ -35,22 +35,19 @@ class DBStorage:
         Returns a dictionary where the keys are in the format <class-name>.<object-id>
         and the values are the corresponding objects.
         """
-        objects = {}
-        
-        if cls is None:
-            # Query all types of objects
-            for obj_type in [User, State, City, Amenity, Place, Review]:
-                for obj in self.__session.query(obj_type):
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    objects[key] = obj
-        else:
-            # Query objects of a specific class
-            for obj in self.__session.query(cls):
-                key = f"{obj.__class__.__name__}.{obj.id}"
-                objects[key] = obj
-        
-        return objects
 
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """ Add object to current database session """
