@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         attributes = dict()
         if args:
-           token = args.partiion(' ')
+           token = args.partition(' ')
            cmd = token[0]
            token = token.partition(' ')
            classname = token[0]
