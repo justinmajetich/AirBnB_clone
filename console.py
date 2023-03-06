@@ -115,32 +115,47 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        pline = args.split()
+        _cls = pline[0]
+        values = []
+        names = []
+        if not _cls:
             print("** class name missing **")
             return
-        
-        args = args.split(' ')
-        className = args[0]
-
-        if className not in HBNBCommand.classes:
+        elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        for i in range(1, len(pline)):
+            tupl = pline[i].partition('=')
+            names.append(tupl[0])
+            try:
+                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
+                    value = tupl[2].replace('\"', '')
+                    value = value.replace('_', ' ')
+                    values.append(value)
+                else:
+                    value = tupl[2]
+                    if '.' in value or type(value) is float:
+                        try:
+                            value = float(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+                    else:
+                        try:
+                            value = int(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+            except IndexError:
+                continue
 
-        # Getting attributes
-        attributes = {}
-        for attr in args[1:]:
-            new_dict = attr.split('=', 1)
-            attributes[new_dict[0]] = new_dict[1]
+        dictionary = dict(zip(names, values))
 
-        new_instance = HBNBCommand.classes[className]()
-
-        for key, value in attributes.items():
-            value = value.strip("\"'").replace("_", " ")
-            value = self.num_or_float(value)
-            setattr(new_instance, key, value)
-
-        print(new_instance.id)
+        new_instance = HBNBCommand.classes[_cls]()
+        new_instance.__dict__.update(dictionary)
         new_instance.save()
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
