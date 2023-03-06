@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
+from models.place import Place
+from models.review import Review
 
 
 class User(BaseModel, Base):
@@ -16,3 +18,5 @@ class User(BaseModel, Base):
 
     places = relationship("Place", backref="user",
                           cascade="all, delete, delete-orphan")
+    reviews = relationship("Review", backref="user",
+                           cascade="all, delete, delete-orphan")
