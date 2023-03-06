@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 from os import getenv
-from models.base_model import Basemodel, Base
+from models.base_model import Base, BaseModel
+from models.review import Review
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.user import User
+from models.place import Place
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
