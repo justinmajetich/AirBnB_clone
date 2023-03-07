@@ -136,7 +136,6 @@ class HBNBCommand(cmd.Cmd):
                             continue
 
         
-        storage.save()
         new_instance.save()
         print(new_instance.id)
         storage.save()
