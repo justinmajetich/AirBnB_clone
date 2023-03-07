@@ -28,6 +28,7 @@ class DBStorage:
         cls_pos = ["Review", "City" "State", "Amenity", "User", "Place"]
         ob_lis = []
         if cls is None:
+            pass
             for item in cls_pos:
                 ob_lis.extend(self.__session.query(item).all())
         else:
