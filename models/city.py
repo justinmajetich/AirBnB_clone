@@ -6,6 +6,7 @@ from sqlalchemy import create_engine, Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 
+
 class City(BaseModel, Base):
     """Name of table in database to link to"""
     __tablename__ = "cities"
