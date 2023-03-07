@@ -12,20 +12,16 @@ class UnpackingTool:
     @classmethod
     def _retrieve_object_methods(cls, namespace, object_name="HBNBCommand"):
         
-        source_mods = {
-            key: value for key, value in namespace.items()
-                if object_name in key
-        }
         return {
-            method.__name__: method for method in
-                [list(vars(x).items())[-1][1] for x in source_mods.values()]
+            key[key.index("d_") + 2:]: value for key, value in namespace.items()
+                if object_name in key
         }
 
     @classmethod
     def activate(cls, namespace, object_name="HBNBCommand"):
         return {
             "prompt": '(hbnb) ',
-            "models": globals()["models"],
+            "models": namespace["models"],
             "classes": cls._retrieve_classes(namespace),
             **cls._retrieve_object_methods(namespace, object_name)
         }
