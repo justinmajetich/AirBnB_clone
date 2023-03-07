@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex  # for splitting lines
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -55,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
+            if _cmd not in self.dot_cmds:
                 raise Exception
 
             # if parantheses contain arguments, parse them
@@ -126,13 +127,13 @@ class HBNBCommand(cmd.Cmd):
         """Split args into class name and params"""
         args = args.partition(' ')
         """Check if class exists in dict of classes"""
-        if args[0] not in HBNBCommand.classes:
+        if args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         """Split params into list of key-value pairs"""
         params = args[2].split(' ')
         """Create new instance of class using default constructor"""
-        new_instance = HBNBCommand.classes[args[0]]()
+        new_instance = self.classes[args[0]]()
         """Create dict of keyword args to be set as attributes of instance"""
         param_dict = {}
         for param in params:
@@ -164,7 +165,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if c_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -195,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if c_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -222,19 +223,22 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
         objects = storage.all()
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+        if not args:
+            for key in objects:
+                print_list.append(objects[key])
+            print(print_list)
+            return
+        try:
+            split_args = args.split(" ")
+            if split_args[0] not in self.classes:
+                raise NameError()
+            for key in objects:
+                name = key.split('.')
+                if name[0] == split_args[0]:
+                    print_list.append(objects[key])
+            print(print_list)
+        except NameError:
+            print("** class doesn't exist **")
 
     def help_all(self):
         """ Help information for the all command """
@@ -264,7 +268,7 @@ class HBNBCommand(cmd.Cmd):
         else:  # class name not present
             print("** class name missing **")
             return
-        if c_name not in HBNBCommand.classes:  # class name invalid
+        if c_name not in self.classes:  # class name invalid
             print("** class doesn't exist **")
             return
 
@@ -328,8 +332,8 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
+                if att_name in self.types:
+                    att_val = self.types[att_name](att_val)
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
