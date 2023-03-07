@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 from sqlalchemy import create_engine
-import json
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
@@ -11,7 +10,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import os
 from os import getenv
 
 classes = {
@@ -24,7 +22,6 @@ classes = {
 class DBStorage():
     __engine = None
     __session = None
-    __objects = {}
 
     def __init__(self):
         """Creates engine"""
@@ -43,22 +40,17 @@ class DBStorage():
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        self.user = self.__session.query(User)
-        self.state = self.__session.query(State)
-        self.city = self.__session.query(City)
-        self.amenity = self.__session.query(Amenity)
-        self.place = self.__session.query(Place)
-        self.review = self.__session.query(Review)
-
-        if cls is not None:
-            if type(cls) is str:
+        cls_lst = ["Review", "City", "State", "User", "Place", "Amenity"]
+        obj_lst = []
+        if cls is None:
+            for cls_type in cls_lst:
+                obj_lst.extend(self.__session.query(cls_type).all())
+        else:
+            if type(cls) == str:
                 cls = eval(cls)
-            spec_dict = {}
-            for key, val in self.__objects.items():
-                if cls == type(val):
-                    spec_dict[key] = val
-            return spec_dict
-        return self.__objects
+            obj_lst = self.__session.query(cls).all()
+        return {"{}.{}".format(type(obj).__name__,
+                               obj.id): obj for obj in obj_lst}
 
     def new(self, obj):
         """Adds new object to database session"""
@@ -79,3 +71,6 @@ class DBStorage():
         """Creates current database session"""
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+
+        def close(self):
+            self.__session.close()
