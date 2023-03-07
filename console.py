@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import contextlib
 import sys
 from models.base_model import BaseModel
+from models import storage
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -29,6 +31,14 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+
+    def convert_str_to_num(self, arg: str):
+        with contextlib.suppress(Exception):
+            return int(arg)
+        try:
+                return float(arg)
+        except Exception:
+            return arg
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -115,29 +125,44 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        input_list = args.split(" ")
+        input_list = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif input_list[0] not in HBNBCommand.classes:
+
+        class_name = input_list[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        attributes = {}  # get all attributes
-        for attr in input_list[1:]:
-            new_dict = attr.split('=', 1)
-            attributes[new_dict[0]] = new_dict[1]
-
-        new_instance = HBNBCommand.classes[input_list[0]]()
-
-        for k, v in attributes.items():
-            v = v.strip("\"'").replace("_", " ")
-            v = self.convert_str_to_num(v)
-            setattr(new_instance, k, v)
-
-        storage.new(new_instance)
-        print(new_instance.id)
-        storage.save()
+        new_instance = HBNBCommand.classes[class_name]()
+        for arg in input_list[1:]:
+            param_list =arg.split('=')
+            if len(param_list) != 2:
+                print("** invalid parameter format **")
+                continue
+            key = param_list[0]
+            value = param_list[1]
+            if value.startswith('"'):
+                value = value[1:]
+                if value.endswith('"'):
+                    value = value[:-1]
+                    value = value.replace('_', ' ')
+                    value = value.replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    print("** invalid parameter format **")
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    print("** invalid parameter format **")
+                    continue
+                setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
     
     def help_create(self):
         """ Help information for the create method """
