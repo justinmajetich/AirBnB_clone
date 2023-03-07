@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 """ DB Storage Engine """
-from models.base_model import Base, BaseModel
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
+from models.base_model import Base, BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage:
@@ -35,19 +34,18 @@ class DBStorage:
         Returns a dictionary where the keys are in the format <class-name>.<object-id>
         and the values are the corresponding objects.
         """
-
+        cls_list = ["Reviews", "City", "State", "User", "Place", "Amenity"]
+        obj_list = []
         if cls is None:
-            objs = self.__session.query(State).all()
-            objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
+            for cls_name in cls_list:
+                obj_list.extend(self.__session.query(cls_name).all())
+
         else:
             if type(cls) == str:
                 cls = eval(cls)
-            objs = self.__session.query(cls)
-        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
+            obj_list = self.__session.query(cls).all()
+        return {"{}.{}".format(type(obj).__name__,
+                               obj.id): obj for obj in obj_list}
 
     def new(self, obj):
         """ Add object to current database session """
@@ -65,6 +63,15 @@ class DBStorage:
     def reload(self):
         """ Creates all tables in the database """
         Base.metadata.create_all(self.__engine)
-        session_time = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_time)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """
+        Ends private session
+        """
+        self.__session.close()
+
+    def total(self):
+        return len(self.__session.query(Review).all())
