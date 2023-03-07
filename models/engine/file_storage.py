@@ -19,7 +19,7 @@ class FileStorage:
                 if cls == type(vl):
                     spec_rich[ky] = vl
             return spec_rich
-        return self.__object
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
