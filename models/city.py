@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""City class for AirBnb v2 project"""
+"""City class for AirBnb project"""
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship

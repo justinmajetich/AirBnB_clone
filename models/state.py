@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""State class for AirBnb v2 project"""
+"""State class for AirBnb project"""
 from os import getenv
 import models
 from models.base_model import BaseModel, Base
