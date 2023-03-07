@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[arg[0]]()
         for i in range(1, len(arg)):
             value = arg[i].partition('=')
-            new_instance.__dict__.update({value[0].replace('"', ''): value[2].replace('_', ' ').replace('"', '')})
+            new_instance.__dict__.update({value[0].replace('"', ''): value[2].replace('_', ' ').replace('\"', '')})
 
             try:
                  value = value(int)
