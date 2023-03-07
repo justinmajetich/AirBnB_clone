@@ -36,7 +36,7 @@ class DBStorage():
         env = getenv("HBNB_ENV")
         
         self.__engine = sqlalchemy.create_engine(
-             "mysql+mysqldb://{}:{}@localhost/{}".format(user, password, host, database),
+             "mysql+mysqldb://{}:{}@{}/{}".format(user, password, host, database),
             pool_pre_ping=True)
 
         if env == "test":
