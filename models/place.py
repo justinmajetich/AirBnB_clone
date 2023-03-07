@@ -18,3 +18,5 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    
+    places = relationship("Place", backref=backref("user", cascade="all, delete"), cascade="all, delete")
