@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 
 class Place(BaseModel):
     """ A place to stay """
+    __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -18,5 +19,4 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    
-    places = relationship("Place", back_populates="user", cascade="all, delete")
+   
