@@ -93,7 +93,7 @@ class test_Place(TestBaseModel):
         self.assertIsInstance(new.longitude, float)
         self.assertEqual(new.longitude, 0.0)
 
-    def test_amenity_ids(self):
-        """ """
+    def test_amenities(self):
+        """Test that amenities is a list"""
         new = self.value()
-        self.assertEqual(type(new.amenity_ids), list)
+        self.assertEqual(type(new.amenities), list)

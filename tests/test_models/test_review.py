@@ -30,9 +30,19 @@ class test_review(TestBaseModel):
         self.assertEqual(type(new_review.user_id), str)
 
     def test_text(self):
-        """ """
+        """Test the text attribute of the Review class"""
         new = self.value()
         if new.text is None:
             new.text = ''
         self.assertIsInstance(new.text, str)
         self.assertEqual(new.text, '')
+
+    def test_created_at(self):
+        """Test the created_at attribute of the Review class"""
+        new = self.value()
+        self.assertEqual(type(new.created_at), type(datetime.datetime.now()))
+
+    def test_updated_at(self):
+        """Test the updated_at attribute of the Review class"""
+        new = self.value()
+        self.assertEqual(type(new.updated_at), type(datetime.datetime.now()))

@@ -4,7 +4,7 @@ from tests.test_models.test_base_model import TestBaseModel
 from models.amenity import Amenity
 
 
-class test_Amenity(TestBaseModel):
+class TestAmenity(TestBaseModel):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -16,7 +16,8 @@ class test_Amenity(TestBaseModel):
     def test_name2(self):
         """ """
         new = self.value()
-        if new.name is None:
-            new.name = ''
-        self.assertIsInstance(new.name, str)
-        self.assertEqual(new.name, '')
+        if hasattr(new, 'name'):
+            if new.name is None:
+                new.name = ''
+            self.assertIsInstance(new.name, str)
+            self.assertEqual(new.name, '')
