@@ -15,11 +15,8 @@ class City(BaseModel, Base):
     state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
 
     """Check if env variable is db(sql), if so create rel w/ place"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        places = relationship('Place', cascade='all, delete-orphan', backref='state')
-        """If env variable is not db(sql), its FileStorage"""
-    else:
-        @property
-        def places(self):
-            from models import storage
-            return [place for place in storage.all(Place).values() if place.city_id == self.id]
+    storageType = getenv("HBNB_TYPE_STORAGE")
+    if storageType == 'db':
+        places = relationship('Place',
+                              cascade="all, delete, delete-orphan",
+                              backref='cities')

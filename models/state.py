@@ -15,11 +15,21 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     """Check if env variable is db(sql), if so create rel w/ state"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        cities = relationship('City', cascade='all, delete-orphan', backref='state')
-        """If env variable is not db(sql), its FileStorage"""
+    storageType = getenv("HBNB_TYPE_STORAGE")
+    if storageType == 'db':
+        cities = relationship('City',
+                              cascade="all, delete-orphan",
+                              backref='state'
+                              )
+
     else:
         @property
         def cities(self):
+            """ returns list of City instances with matching state ids"""
             from models import storage
-            return [city for city in storage.all(City).values() if city.state_id == self.id]
+
+            Citylist = []
+            for val in storage.all(City).values():
+                if val.state_id == self.id:
+                    Citylist.append(val)
+            return Citylist
