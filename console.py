@@ -125,44 +125,40 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        input_list = args.split()
+        input_list = args.split(" ")
         if not args:
             print("** class name missing **")
             return
-
-        class_name = input_list[0]
-        if class_name not in HBNBCommand.classes:
+        elif input_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[class_name]()
-        for arg in input_list[1:]:
-            param_list =arg.split('=')
-            if len(param_list) != 2:
-                print("** invalid parameter format **")
-                continue
-            key = param_list[0]
-            value = param_list[1]
-            if value.startswith('"'):
-                value = value[1:]
-                if value.endswith('"'):
-                    value = value[:-1]
-                    value = value.replace('_', ' ')
-                    value = value.replace('\\"', '"')
-            elif '.' in value:
+        param_dict = {}
+        """
+        Extract class name and parameters from input args
+        """
+        for item in input_list[1:]:
+            new_dict = item.split("=")
+            if len(new_dict) == 2:
+                key, value = new_dict
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace('_', ' ')
                 try:
-                    value = float(value)
+                    if "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
                 except ValueError:
-                    print("** invalid parameter format **")
-                    continue
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    print("** invalid parameter format **")
-                    continue
-                setattr(new_instance, key, value)
-            new_instance.save()
-            print(new_instance.id)
+                    pass
+                param_dict[key] = value
+
+        new_instance = HBNBCommand.classes[input_list[0]]()
+        for key, value in param_dict.items():
+            setattr(new_instance, key, value)
+
+        storage.new(new_instance)
+        print(new_instance.id)
+        storage.save()
+
     
     def help_create(self):
         """ Help information for the create method """
