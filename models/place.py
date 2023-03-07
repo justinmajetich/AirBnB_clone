@@ -2,7 +2,8 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models.review import Review
-from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey, Table
+from sqlalchemy import create_engine, Column, \
+    String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
 
@@ -16,6 +17,7 @@ place_amenity = Table('place_amenity', Base.metadata,
                              ForeignKey('amenities.id'),
                              primary_key=True,
                              nullable=False))
+
 
 class Place(BaseModel, Base):
     """Name of table in database to link to"""
