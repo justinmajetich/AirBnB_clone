@@ -10,7 +10,7 @@ def do_pack():
         if not os.path.exists("versions"):
             local("mkdir versions")
         date = datetime.now().strftime("%Y%m%d%H%M%S")
-        archive = "web_static_{}.tgz".format(date)
+        archive = "versions/web_static_{}.tgz".format(date)
         local("tar -cvzf {} web_static".format(archive))
         return archive
     except:
