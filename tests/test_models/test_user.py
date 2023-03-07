@@ -1,37 +1,51 @@
 #!/usr/bin/python3
-"""User Class Test Cases"""
+""" a module for user tests"""
 import unittest
-from datetime import datetime
+import pycodestyle
 from models.user import User
+import os
 
 
 class TestUser(unittest.TestCase):
-    """Test cases for User class"""
+    """ a class for user tests"""
 
-    def test_init(self):
-        self.assertEqual(User, type(User()))
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.user = User()
+        cls.user.first_name = "Madame"
+        cls.user.last_name = "Tabitha"
+        cls.user.email = "gildedlily@gmail.com"
+        cls.user.password = "gildedlily123"
 
-    def test_attributes(self):
-        """Testing attributes"""
-        usr = User(email="a", password="a")
-        self.assertEqual(str, type(usr.id))
-        self.assertTrue(hasattr, (usr, "__tablename__"))
-        self.assertTrue(hasattr, (usr, "email"))
-        self.assertTrue(hasattr, (usr, "password"))
-        self.assertTrue(hasattr, (usr, "first_name"))
-        self.assertTrue(hasattr, (usr, "last_name"))
-        self.assertTrue(hasattr, (usr, "places"))
-        self.assertTrue(hasattr, (usr, "reviews"))
+    @classmethod
+    def teardown(cls):
+        """ Tear down the class """
+        del cls.user
 
-    def test_first_name(self):
-        """Testing type of first_name"""
-        User.first_name = "Betty"
-        self.assertEqual(str, type(User.first_name))
+    def tearDown(self):
+        """ Tear down the file (file storage) """
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def test_last_name(self):
-        """Testing type of last_name"""
-        User.last_name = "Holberton"
-        self.assertEqual(str, type(User.last_name))
+    def test_pycodestyle_user(self):
+        """tests for pycodestyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(["models/user.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
+
+    def test_docs_user(self):
+        """ check for docstrings """
+        self.assertIsNotNone(User.__doc__)
+
+    def test_attribute_types_User(self):
+        """test attribute type for User"""
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
 
 
 if __name__ == "__main__":

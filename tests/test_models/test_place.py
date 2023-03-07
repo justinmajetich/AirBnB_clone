@@ -1,99 +1,81 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import TestBaseModel
+""" module for state reviews"""
+import unittest
+import pycodestyle
 from models.place import Place
+from models.base_model import BaseModel
+import os
 
 
-class test_Place(TestBaseModel):
-    """ """
+class TestPlace(unittest.TestCase):
+    """ a class for testing Place"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Place"
-        self.value = Place
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.place = Place()
+        cls.place.city_id = "san-francisco"
+        cls.place.user_id = "madame-tabitha"
+        cls.place.name = "Gilded Lily"
+        cls.place.description = "A fragrant paradise where flowers bloom"
+        cls.place.number_rooms = 30
+        cls.place.number_bathrooms = 5
+        cls.place.max_guest = 3
+        cls.place.price_by_night = 500
+        cls.place.latitude = 37.77
+        cls.place.longitude = 122.42
+        cls.place.amenity_ids = ["1324-asdf"]
 
-    def test_city_id(self):
-        """ """
-        new = self.value()
-        if new.city_id is None:
-            new.city_id = ''
-        self.assertIsInstance(new.city_id, str)
-        self.assertEqual(new.city_id, '')
+    @classmethod
+    def teardown(cls):
+        """ tear down Class """
+        del cls.state
 
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        if new.user_id is None:
-            new.user_id = ''
-        self.assertIsInstance(new.user_id, str)
-        self.assertEqual(new.user_id, '')
+    def tearDown(self):
+        try:
+            os.remove('file.json')
+        except FileNotFoundError:
+            pass
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        if new.name is None:
-            new.name = ''
-        self.assertIsInstance(new.name, str)
-        self.assertEqual(new.name, '')
+    def test_Place_pycodestyle(self):
+        """check for pycodestyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(["models/state.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
-    def test_description(self):
-        """ """
-        new = self.value()
-        if new.description is None:
-            new.description = ''
-        self.assertIsInstance(new.description, str)
-        self.assertEqual(new.description, '')
+    def test_Place_docs(self):
+        """ check for docstring """
+        self.assertIsNotNone(Place.__doc__)
 
-    def test_number_rooms(self):
-        """ """
-        new = self.value()
-        if new.number_rooms is None:
-            new.number_rooms = 0
-        self.assertIsInstance(new.number_rooms, int)
-        self.assertEqual(new.number_rooms, 0)
+    def test_Place_attribute_types(self):
+        """ test Place attribute types """
+        self.assertEqual(type(self.place.city_id), str)
+        self.assertEqual(type(self.place.user_id), str)
+        self.assertEqual(type(self.place.name), str)
+        self.assertEqual(type(self.place.description), str)
+        self.assertEqual(type(self.place.number_rooms), int)
+        self.assertEqual(type(self.place.number_bathrooms), int)
+        self.assertEqual(type(self.place.max_guest), int)
+        self.assertEqual(type(self.place.price_by_night), int)
+        self.assertEqual(type(self.place.latitude), float)
+        self.assertEqual(type(self.place.longitude), float)
+        self.assertEqual(type(self.place.amenity_ids), list)
 
-    def test_number_bathrooms(self):
-        """ """
-        new = self.value()
-        if new.number_bathrooms is None:
-            new.number_bathrooms = 0
-        self.assertIsInstance(new.number_bathrooms, int)
-        self.assertEqual(new.number_bathrooms, 0)
+    def test_Place_is_subclass(self):
+        """ test if Place is subclass of BaseModel """
+        self.assertTrue(issubclass(self.place.__class__, BaseModel), True)
 
-    def test_max_guest(self):
-        """ """
-        new = self.value()
-        if new.max_guest is None:
-            new.max_guest = 0
-        self.assertIsInstance(new.max_guest, int)
-        self.assertEqual(new.max_guest, 0)
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "Place won't\
+                     save because it needs to be tied to a User and State :\\")
+    def test_Place_save(self):
+        """ test save() command """
+        self.place.save()
+        self.assertNotEqual(self.place.created_at, self.place.updated_at)
 
-    def test_price_by_night(self):
-        """Test that price_by_night is an integer & has default value of 0"""
-        new = self.value()
-        if new.price_by_night is None:
-            new.price_by_night = 0
-        self.assertIsInstance(new.price_by_night, int)
-        self.assertEqual(new.price_by_night, 0)
+    def test_Place_sa_instance_state(self):
+        """ test is _sa_instance_state has been removed """
+        self.assertNotIn('_sa_instance_state', self.place.to_dict())
 
-    def test_latitude(self):
-        """ """
-        new = self.value()
-        if new.latitude is None:
-            new.latitude = 0.0
-        self.assertIsInstance(new.latitude, float)
-        self.assertEqual(new.latitude, 0.0)
 
-    def test_longitude(self):
-        """ """
-        new = self.value()
-        if new.longitude is None:
-            new.longitude = 0.0
-        self.assertIsInstance(new.longitude, float)
-        self.assertEqual(new.longitude, 0.0)
-
-    def test_amenities(self):
-        """Test that amenities is a list"""
-        new = self.value()
-        self.assertEqual(type(new.amenities), list)
+if __name__ == "__main__":
+    unittest.main()

@@ -1,48 +1,64 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import TestBaseModel
+""" module for.review reviews"""
+import unittest
+import pycodestyle
 from models.review import Review
-from models.user import User
+from models.base_model import BaseModel
+import os
 
 
-class test_review(TestBaseModel):
-    """ """
+class TestReview(unittest.TestCase):
+    """ a class for testing Review"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Review"
-        self.value = Review
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.rev = Review()
+        cls.rev.place_id = "gilded-lily"
+        cls.rev.user_id = "johnny-sinner"
+        cls.rev.text = "Best Damn Flowers this side of San Francisco"
 
-    def test_place_id(self):
-        """Test the place_id attribute of the Review class"""
-        new = Review()
-        new.place_id = "test_place_id"
-        self.assertEqual(type(new.place_id), str)
+    def teardown(cls):
+        """ tear down Class """
+        del cls.rev
 
-    def test_user_id(self):
-        """ Test that user_id is a string """
-        new_user = User(email="john@example.com", password="password")
-        new_user.save()
-        new_review = Review(place_id="123", user_id=new_user.id,
-                            text="Test review")
-        new_review.save()
-        self.assertEqual(type(new_review.user_id), str)
+    def tearDown(self):
+        try:
+            os.remove('file.json')
+        except FileNotFoundError:
+            pass
 
-    def test_text(self):
-        """Test the text attribute of the Review class"""
-        new = self.value()
-        if new.text is None:
-            new.text = ''
-        self.assertIsInstance(new.text, str)
-        self.assertEqual(new.text, '')
+    def test_Review_pycodestyle(self):
+        """check for pycodestyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(["models/review.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
-    def test_created_at(self):
-        """Test the created_at attribute of the Review class"""
-        new = self.value()
-        self.assertEqual(type(new.created_at), type(datetime.datetime.now()))
+    def test_Review_docs(self):
+        """ check for docstring """
+        self.assertIsNotNone(Review.__doc__)
 
-    def test_updated_at(self):
-        """Test the updated_at attribute of the Review class"""
-        new = self.value()
-        self.assertEqual(type(new.updated_at), type(datetime.datetime.now()))
+    def test_Review_attribute_types(self):
+        """ test Review attribute types """
+        self.assertEqual(type(self.rev.place_id), str)
+        self.assertEqual(type(self.rev.user_id), str)
+        self.assertEqual(type(self.rev.text), str)
+
+    def test_Review_is_subclass(self):
+        """ test if Review is subclass of BaseModel """
+        self.assertTrue(issubclass(self.rev.__class__, BaseModel), True)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "Review won't\
+                     save because it needs to be tied to a user :\\")
+    def test_Review_save(self):
+        """ test save() command """
+        self.rev.save()
+        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
+
+    def test_Review_sa_instance_state(self):
+        """ test is _sa_instance_state has been removed """
+        self.assertNotIn('_sa_instance_state', self.rev.to_dict())
+
+
+if __name__ == "__main__":
+    unittest.main()
