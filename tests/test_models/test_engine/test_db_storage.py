@@ -20,7 +20,7 @@ from sqlalchemy.engine.base import Engine
 
 
 class TestDBStorage(unittest.TestCase):
-        """ """
+    """ """
 
     @classmethod
     def setUpClass(cls):
@@ -36,10 +36,10 @@ class TestDBStorage(unittest.TestCase):
             cls.user = User(email="poppy@holberton.com", password="betty")
             cls.storage._DBStorage__session.add(cls.user)
             cls.place = Place(city_id=cls.city.id, user_id=cls.user.id,
-                            name="School")
+                              name="School")
             cls.storage._DBStorage__session.add(cls.place)
             cls.amenity = Amenity(name="Wifi")
-            s.storage._DBStorage__session.add(cls.amenity)
+            cls.storage._DBStorage__session.add(cls.amenity)
             cls.review = Review(place_id=cls.place.id, user_id=cls.user.id,
                                 text="stellar")
             cls.storage._DBStorage__session.add(cls.review)
@@ -59,16 +59,16 @@ class TestDBStorage(unittest.TestCase):
             del cls.place
             del cls.amenity
             del cls.review
-            cls.storage._DBStorage__session.close()~
+            cls.storage._DBStorage__session.close()
             del cls.storage
 
     @unittest.skipIf(type(models.storage) == FileStorage,
-                "Testing FileStorage")
+                     "Testing FileStorage")
     def test_all_cls(self):
-    obj = self.storage.all(State)
-    self.assertEqual(type(obj), dict)
-    self.assertEqual(len(obj), 1)
-    self.assertEqual(self.state, list(obj.values())[0])
+        obj = self.storage.all(State)
+        self.assertEqual(type(obj), dict)
+        self.assertEqual(len(obj), 1)
+        self.assertEqual(self.state, list(obj.values())[0])
 
     def test_docstrings(self):
         self.assertIsNotNone(FileStorage.__doc__)
@@ -77,16 +77,16 @@ class TestDBStorage(unittest.TestCase):
         self.assertIsNotNone(FileStorage.reload.__doc__)
         self.assertIsNotNone(FileStorage.delete.__doc__)
 
-      @unittest.skipIf(type(models.storage) == FileStorage,
+    @unittest.skipIf(type(models.storage) == FileStorage,
                      "Testing FileStorage")
-       def test_reload(self):
-           """Test reload method."""
-            og_session = self.storage._DBStorage__session
-            self.storage.reload()
-            self.assertIsInstance(self.storage._DBStorage__session, Session)
-            self.assertNotEqual(og_session, self.storage._DBStorage__session)
-            self.storage._DBStorage__session.close()
-            self.storage._DBStorage__session = og_session
+    def test_reload(self):
+        """Test reload method."""
+        og_session = self.storage._DBStorage__session
+        self.storage.reload()
+        self.assertIsInstance(self.storage._DBStorage__session, Session)
+        self.assertNotEqual(og_session, self.storage._DBStorage__session)
+        self.storage._DBStorage__session.close()
+        self.storage._DBStorage__session = og_session
 
 
 if __name__ == "__main__":

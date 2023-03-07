@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models  import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -320,5 +320,5 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-    if __name__ == "__main__":
-        HBNBCommand().cmdloop()
+if __name__ == "__main__":
+     HBNBCommand().cmdloop()
