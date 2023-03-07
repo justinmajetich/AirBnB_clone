@@ -1,24 +1,23 @@
-#!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""City module tests"""
+import unittest
+import models
+import os
+from datetime import datetime
 from models.city import City
+import sqlalchemy.orm
 
 
-class test_City(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
+class TestCityModel(unittest.TestCase):
+    def test_init(self):
+        self.assertEqual(City, type(City()))
 
     def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
+        Tulsa = City()
+        self.assertEqual(sqlalchemy.orm.attributes.InstrumentedAttribute,
+                         type(City.state_id))
+        self.assertIn("state_id", dir(Tulsa))
+        self.assertNotIn("state_id", Tulsa.__dict__)
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+
+if __name__ == "__main__":
+    unittest.main()
