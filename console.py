@@ -159,7 +159,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if c_name not in self.classes:
+        if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -169,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage.__objects[key])
+            print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -180,28 +180,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """ Destroys a specified object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        arg_data = args.partition(" ")
+        cls_name = arg_data[0]
+        obj_id = arg_data[2]
+        if obj_id and ' ' in obj_id:
+            obj_id = obj_id.partition(' ')[0]
 
-        if not c_name:
+        if not cls_name:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        if not c_id:
+        if not obj_id:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        key = cls_name + "." + obj_id
 
         try:
-            del(storage.all()[key])
+            storage.delete(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -227,7 +227,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage.__objects.items():
+        for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -323,6 +323,22 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    def get_value(input_str):
+        """attempts to turn a string to number"""
+        num = None
+        try:
+            num = float(input_str)          # if float fails num will be None
+            res = int(input_str)
+        except ValueError:
+            res = num or str(input_str)   # if int failed, num won't be None,
+        if type(res) is str:
+            if (res[0] != res[-1] or res[0] != '"'):
+                raise TypeError('Not Implmented')
+            res = res.replace("_", ' ')
+            res = res.strip('"')
+
+        return res
 
 
 if __name__ == "__main__":
