@@ -141,6 +141,9 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 
+## Initial Authors:
+(https://github.com/justinmajetich)
+
 ## Collaborators:
 (https://github.com/MicoBledsoe)
 
