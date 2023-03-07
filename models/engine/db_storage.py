@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
-import sqlalchemy
+from sqlalchemy import create_engine
 import json
 from datetime import datetime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -35,7 +34,7 @@ class DBStorage():
         database = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
         
-        self.__engine = sqlalchemy.create_engine(
+        self.__engine = create_engine(
              "mysql+mysqldb://{}:{}@{}/{}".format(user, password, host, database),
             pool_pre_ping=True)
 

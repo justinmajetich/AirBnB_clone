@@ -38,7 +38,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -117,29 +116,34 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, line):
-        """Usage: create <Class name> <param 1> <param 2> <param 3>..."""
-        if not line:
+    def do_create(self, args):
+        """ Create an object of any class"""
+        from models import storage
+        """Check if class name is provided in args"""
+        if not args:
             print("** class name missing **")
             return
-        args = line.split()
-        kwargs = {}
-        for param in range(1, len(args)):
-            ky, vl = args[param].split("=")
-            if vl[0] == '"':
-                vl = vl.replace('_', ' ').strip('"')
-            else:
-                try:
-                    vl = eval(vl)
-                except (SyntaxError, NameError):
-                    continue
-            kwargs[ky] = vl
-        if len(kwargs) == 0:
-            obj = eval(args[0])()
-        else:
-            obj = eval(args[0])(**kwargs)
-        print(obj.id)
-        obj.save()
+        """Split args into class name and params"""
+        args = args.partition(' ')
+        """Check if class exists in dict of classes"""
+        if args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
+        """Split params into list of key-value pairs"""
+        params = args[2].split(' ')
+        """Create new instance of class using default constructor"""
+        new_instance = self.classes[args[0]]()
+        """Create dict of keyword args to be set as attributes of instance"""
+        param_dict = {}
+        for param in params:
+            param = param.partition("=")
+            param_dict[param[0]] = param[2].replace('"', '').replace('_', ' ')
+        """Set attributes of instance using dict of keyword args"""
+        new_instance.__dict__.update(**param_dict)
+
+        storage.new(new_instance)
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -212,13 +216,25 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, line):
+    def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        if not line:
-            objs = storage.all()
+        from models import storage
+        print_list = []
+        objects = storage.all()
+
+        if args:
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in self.classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            objs = storage.all(eval(line))
-        print([objs[key].__str__() for key in objs])
+            for k, v in objects.items():
+                print_list.append(str(v))
+
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
