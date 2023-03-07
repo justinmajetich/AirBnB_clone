@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 '''
 fabric script to distribute an archive to web servers
+----NEEDS TO REVISIT SCRIPT
 '''
 
 import os
@@ -8,9 +9,7 @@ from datetime import datetime
 from fabric.api import env, local, put, run, runs_once
 
 
-env.hosts = ['44.211.26.34', '44.192.114.202']
-env.user = "ubuntu"
-env.key_filename = '~/.ssh/id_rsa.pub'
+env.hosts = ['100.26.246.254', '54.165.219.197']
 
 
 def do_deploy(archive_path):
@@ -66,4 +65,4 @@ def do_deploy(archive_path):
         success = True
     except Exception:
         success = False
-    return success
+    return 
