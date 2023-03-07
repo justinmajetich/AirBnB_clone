@@ -5,10 +5,11 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 from models.base_model import Base, BaseModel
 from models.user import User
+from models.review import Review
+from models.place import Place
 from models.state import State
 from models.city import City
-from models.place import Place
-from models.review import Review
+from models.amenity import Amenity
 
 
 class DBStorage:
@@ -28,13 +29,23 @@ class DBStorage:
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
+    def reload(self):
+        """ Creates all tables in the database """
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
+
     def all(self, cls=None):
         """
-        Query all objects in the current session, optionally filtering by class.
-        Returns a dictionary where the keys are in the format <class-name>.<object-id>
-        and the values are the corresponding objects.
+        Query all objects in the current session, optionally
+        filtering by class. Returns a dictionary where the keys
+        are in the format <class-name>.<object-id> and the values
+        are the corresponding objects.
         """
-        cls_list = ["Reviews", "City", "State", "User", "Place", "Amenity"]
+        cls_list = ["Reviews", "City", "State", "User",
+                    "Place", "Amenity"]
         obj_list = []
         if cls is None:
             for cls_name in cls_list:
@@ -50,7 +61,7 @@ class DBStorage:
     def new(self, obj):
         """ Add object to current database session """
         self.__session.add(obj)
-    
+
     def save(self):
         """ Commit all changes of current database session """
         self.__session.commit()
@@ -59,13 +70,6 @@ class DBStorage:
         """ Delete object from current database session """
         if obj is not None:
             self.__session.delete(obj)
-
-    def reload(self):
-        """ Creates all tables in the database """
-        Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
 
     def close(self):
         """
