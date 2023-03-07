@@ -2,9 +2,9 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship
 from models.review import Review
 from os import getenv
+from sqlalchemy.orm import relationship
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -20,9 +20,9 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 class Place(BaseModel, Base):
     """ Place class """
-    __tablename__ = "places"
-    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    __tablename__ = 'places'
+    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     number_rooms = Column(Integer, nullable=False, default=0)
@@ -49,24 +49,28 @@ class Place(BaseModel, Base):
             """ getter for reviews """
             from models import storage
             rev_list = []
-            for review in storage.all(Review).values():
-                if review.getattr('place_id') == self.id:
-                    rev_list.append(review)
+            for x in storage.all(Review).values():
+                if x.place_id == self.id:
+                    rev_list.append(x)
             return rev_list
 
         @property
         def amenities(self):
             """getter for amenities"""
             from models import storage
-            amn_list = []
-            for amenity in storage.all(Amenity).value():
-                if self.id == amenity.place_id:
-                    amn_list.append(amenity)
-            return amn_list
+            from models.amenity import Amenity
+            ame_list = []
+            i = storage.all(Amenity)
+            
+            for amenity_in in i.values():
+                if amenity_in.id == self.amenity_id:
+                    ame_list.append(amenity_in)
+            return ame_list
 
         @amenities.setter
         def amenities(self, obj):
             from models.amenity import Amenity
             """setter for amenities"""
-            if isinstance(obj, Amenity):
-                self.append(obj)
+            for j in obj:
+                if type(j) == Amenity:
+                    self.amenity_ids.append(j)
