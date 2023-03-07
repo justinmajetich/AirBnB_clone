@@ -10,21 +10,23 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
-        else:
-            return {key: value for key, value in FileStorage.__objects.items()
-                    if isinstance(value, cls)}
+        if cls is not None:
+            filtered_objs = {}
+            for key, value in self.__objects.items():
+                if isinstance(value, cls):
+                    filtered_objs[key] = value
+            return filtered_objs
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all()[obj.__class__.__name__ + '.' + obj.id] = obj
+        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
+        with open(self.__file_path, 'w') as f:
             temp = {}
-            for key, val in FileStorage.__objects.items():
+            for key, val in self.__objects.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
@@ -44,17 +46,21 @@ class FileStorage:
             'Review': Review
         }
         try:
-            with open(FileStorage.__file_path, 'r') as f:
+            temp = {}
+            with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    cls_name = val['__class__']
-                    if cls_name in classes:
-                        self.all()[key] = classes[cls_name](**val)
+                    class_name = val['__class__']
+                    if class_name in classes:
+                        self.__objects[key] = classes[class_name](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Deletes obj from __objects"""
+        """Deletes an object from __objects if it's inside"""
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
-            del self.all()[key]
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
+
