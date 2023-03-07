@@ -34,7 +34,7 @@ class DBStorage:
         else:
             if type(cls) == str:
                 cls = eval(cls)
-                ob_lis = (self.session.query(cls).all())
+                ob_lis = self.session.query(cls).all()
                 return { "{}.{}".format(type(obj).__name__, obj.id): obj for obj in ob_lis}
 
     def add(self, obj):

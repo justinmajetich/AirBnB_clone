@@ -8,9 +8,7 @@ from os import getenv
 
 class State(BaseModel, Base):
     __tablename__ = 'states'
-    if getenv('HBNB_STORAGE_TYPE') == 'db':
-        """ State class """  
-        name =  Column(String(128), nullable=False)
-        cities = relationship('City', backref='state', cascade='delete')
-    else:
-        name = ''
+    """ State class """  
+    name =  Column(String(128), nullable=False)
+    cities = relationship('City', backref='state', cascade='delete')
+

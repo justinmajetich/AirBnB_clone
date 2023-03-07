@@ -25,12 +25,10 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         mydict = {}
-        if cls is not None:
-            if type(cls) is str:                
+        if cls is not None:                
                 if cls == self.__objects:
                     for k, v in self.__objects.items():
                         mydict[k] = v
-                        """return mydict"""
         return FileStorage.__objects
 
     def new(self, obj):
@@ -44,6 +42,9 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
+            #if '_sa_instance_state' in temp:
+            #    del temp['_sa_instance_state']
+            #print(temp)
             json.dump(temp, f)
 
     def reload(self):
