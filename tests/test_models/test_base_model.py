@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """ test_base_model """
-from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
 import json
 import os
+from models.base_model import BaseModel
 from models.engine.db_storage import DBStorage
 
 
@@ -51,8 +50,7 @@ class TestBaseModel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id, i.__dict__))
 
     def test_to_dict(self):
         """ """
@@ -75,3 +73,9 @@ class TestBaseModel(unittest.TestCase):
         """ """
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
+
+    def test_amenity_ids(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.amenity_ids), list)
+
