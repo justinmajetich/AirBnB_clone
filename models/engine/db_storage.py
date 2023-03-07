@@ -30,16 +30,16 @@ class DBStorage:
         if cls is None:
             for item in cls_pos:
                 ob_lis.extend(self.__session.query(item).all())
-            else:
-                if type(cls) == str:
-                    cls = eval(cls)
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
                 ob_lis = (self.session.query(cls).all())
                 return { "{}.{}".format(type(obj).__name__, obj.id): obj for obj in ob_lis}
 
     def add(self, obj):
         self.__session.add(obj)
 
-    def sace(self):
+    def save(self):
         self.__session.commit()
 
     def delete(self, obj=None):
