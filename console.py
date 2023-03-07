@@ -16,7 +16,6 @@ from console.behaviour import *
 
 console_members = UnpackingTool.activate(globals())
 
-exit()
 HBNBCommand = type(
     "HBNBCommand",
     (cmd.Cmd,),
