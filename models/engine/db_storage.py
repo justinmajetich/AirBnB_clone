@@ -16,11 +16,11 @@ class DBStorage:
 
     def __init__(self):
         from models.base_model import Base, BaseModel
-        self.__engine =  create_engine('mysql+mysqldb://{}:{}{}/{}'
+        self.__engine =  create_engine('mysql+mysqldb://{}:{}@{}/{}'
                            .format(getenv('HBNB_MYSQL_USER'),
                                    getenv('HBNB_MYSQL_PWD'),
                                    getenv('HBNB_MYSQL_HOST'),
-                                   getenv('HBNB_MYSQL_DB'), pool_pre_ping=True))
+                                   getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.dropall(self.__engine)
     
@@ -52,3 +52,7 @@ class DBStorage:
         sesh = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sesh)
         self.__session = Session()
+
+    def new(self, obj):
+        """Adds new object to storage dictionary"""
+        self.__session.add(obj)
