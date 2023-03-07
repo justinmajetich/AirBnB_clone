@@ -20,6 +20,6 @@ class State(BaseModel, Base):
         """If env variable is not db(sql), its FileStorage"""
     else:
         @property
-        def citites(self):
+        def cities(self):
             from models import storage
             return [city for city in storage.all(City).values() if city.state_id == self.id]
