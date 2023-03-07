@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -126,6 +126,15 @@ class HBNBCommand(cmd.Cmd):
         for i in range(1, len(arg)):
             value = arg[i].partition('=')
             new_instance.__dict__.update({value[0].replace('"', ''): value[2].replace('_', ' ').replace('"', '')})
+
+            try:
+                 value = value(int)
+            except:
+                    try:
+                        value = value(float)
+                    except:
+                            continue
+
         
         storage.save()
         new_instance.save()

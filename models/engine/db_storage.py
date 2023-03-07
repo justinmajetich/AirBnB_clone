@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from models.base_model import Base, Basemodel
+from models.base_model import Base, BaseModel
 from models.user import User
 from models.state import State
 from models.place import Place
@@ -15,6 +15,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        from models.base_model import Base, BaseModel
         self.__engine =  create_engine('mysql+mysqldb://{}:{}{}/{}'
                            .format(getenv('HBNB_MYSQL_USER'),
                                    getenv('HBNB_MYSQL_PWD'),
