@@ -10,7 +10,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage
-         if cls specified, only returns that class"""
+        if cls specified, only returns that class"""
         if cls is not None:
             if type(cls) is str:
                 cls = eval(cls)
@@ -36,7 +36,7 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel, Base
+        from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
         from models.state import State
