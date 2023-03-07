@@ -223,22 +223,19 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
         objects = storage.all()
 
-        if not args:
-            for key in objects:
-                print_list.append(objects[key])
-            print(print_list)
-            return
-        try:
-            split_args = args.split(" ")
-            if split_args[0] not in self.classes:
-                raise NameError()
-            for key in objects:
-                name = key.split('.')
-                if name[0] == split_args[0]:
-                    print_list.append(objects[key])
-            print(print_list)
-        except NameError:
-            print("** class doesn't exist **")
+        if args:
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in self.classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
+        else:
+            for k, v in objects.items():
+                print_list.append(str(v))
+
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
