@@ -44,6 +44,6 @@ class BaseModel:
         new_richard.pop("_sa_instance_state", None)
         return new_richard
 
-     def delete(self):
+    def delete(self):
         """deletes basemodel instance"""
         models.storage.delete(self)
