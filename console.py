@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[class_name]()
         for arg in arg_list[1:]:
-            param_list =arg.split('=')
+            param_list = arg.split('=')
             if len(param_list) != 2:
                 print("** invalid parameter format **")
                 continue
@@ -214,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -347,5 +347,7 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+
 if __name__ == "__main__":
+
     HBNBCommand().cmdloop()
