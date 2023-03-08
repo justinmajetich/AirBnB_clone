@@ -1,12 +1,8 @@
-#!/usr/bin/python3
-"""Place class for AirBnb project"""
 import models
 from os import getenv
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, ForeignKey, String, Integer, Float, Table
 from sqlalchemy.orm import relationship
-from models.review import Review
-from models.amenity import Amenity
 
 place_amenity = Table("place_amenity", Base.metadata, Column("place_id",
                       String(60), ForeignKey("places.id"), primary_key=True,
@@ -31,6 +27,8 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        from models.review import Review
+        from models.amenity import Amenity
         reviews = relationship("Review", cascade="all, delete-orphan",
                                backref='place')
         amenities = relationship("Amenity", secondary=place_amenity,
@@ -38,19 +36,18 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """"""
             reviewsList = []
-            for review in models.storage.all(Review).values():
+            for review in models.storage.all(models.review.Review).values():
                 if self.id == review.place_id:
-                    reviewsList.append(models.storage.all(Review)[review])
+                    reviewsList.append(review)
             return reviewsList
 
         @property
         def amenities(self):
             amenityList = []
-            for amenity in models.storage.all(Amenity).values():
+            for amenity in models.storage.all(models.amenity.Amenity).values():
                 if self.id == amenity.place_id:
-                    amenityList.append(models.storage.all(Amenity)[amenity])
+                    amenityList.append(amenity)
             return amenityList
 
         @amenities.setter
