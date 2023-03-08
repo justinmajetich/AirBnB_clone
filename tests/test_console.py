@@ -61,7 +61,6 @@ class test_console(unittest.TestCase):
         with self.assertRaises(TypeError):
             i.do_destroy()
 
-
     def test_do_all(self):
         """ """
         i = self.value()
