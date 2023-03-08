@@ -1,15 +1,22 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
-from models.base_model import BaseModel, Base
+"""User class for AirBnb project"""
+from models.base_model import Base, BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
+<<<<<<< HEAD
 HBNB_ENV = 'HBNBCommand'
 class User(BaseModel):
     """This class defines a user by various attributes"""
     __tablename__ = "users"
 
+=======
+
+class User(BaseModel, Base):
+    """User class that creates users table"""
+    __tablename__ = 'users'
+>>>>>>> 264124bc988ce7a6bb1a4572926299a403c362ec
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
