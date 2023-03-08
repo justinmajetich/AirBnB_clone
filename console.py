@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        arg_list = args.split()
+        arg_list = args.split(' ')
         class_name = arg_list[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** invalid parameter format **")
                     continue
                 setattr(new_instance, key, value)
-            new_instance.save()
+                new_instance.save()
             print(new_instance.id)
 
     def help_create(self):
