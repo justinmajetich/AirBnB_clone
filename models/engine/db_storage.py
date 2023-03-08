@@ -26,18 +26,14 @@ class DBStorage:
     
     def all(self, cls=None):
         cls_pos = ["Review", "City" "State", "Amenity", "User", "Place"]
-        ob_lis = []
-        if cls is None:
-            pass
-            for item in cls_pos:
-                if isinstance(item, cls_pos):
-                    ob_lis.extend(self.__session.query(item).all())
+        if cls:
+            objs = {}
+            for obj in self.__session.query(eval(cls)).all():
+                key = obj.__class__.__name__ + '.' + obj.id
+                objs[key] = obj
+            return objs
         else:
-            if type(cls) == str:
-                cls = eval(cls)
-                ob_lis = self.session.query(cls).all()
-                return { "{}.{}".format(type(obj).__name__, obj.id): obj for obj in ob_lis}
-
+            return self.__objects
     def add(self, obj):
         self.__session.add(obj)
 
