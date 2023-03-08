@@ -16,10 +16,11 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         run("mkdir -p {}/".format(path_name))
         run('tar -xzf /tmp/{} -C {}/'.format(file_name, path_name))
-        run("rm /tmp/{}".format(archive_path.split("/")[-1]))
-        run("mv {0}/web_static/* {0}".format(path_name))
+        run("rm /tmp/{}".format(file_name))
+        run("mv {}/web_static/* {}".format(path_name, path_name))
         run("rm -rf {}/web_static".format(path_name))
         run('rm -rf /data/web_static/current')
+        run('ln -s {}/ /data/web_static/current'.format(path_name))
         return True
     except:
         return False
