@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         with contextlib.suppress(Exception):
             return int(arg)
         try:
-                return float(arg)
+            return float(arg)
         except Exception:
             return arg
 
@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         for param in range(1, len(args)):
             ky, vl = args[param].split("=")
             if vl[0] == '"':
-                vl = vl.replace('', ' ').strip('"')
+                vl = vl.replace('_', ' ').strip('"')
             else:
                 try:
                     vl = eval(vl)
@@ -146,7 +146,6 @@ class HBNBCommand(cmd.Cmd):
         print(obj.id)
         obj.save()
 
-    
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -340,6 +339,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
