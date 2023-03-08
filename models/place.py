@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 from os import getenv
 from models.review import Review
-from models import storage
+
 
 place_amenity =  Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
@@ -33,7 +33,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship('Review', bakref='place', cascade='all, delete, delete-orphan')
+        reviews = relationship('Review', backref='place', cascade='all, delete, delete-orphan')
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
                                  back_populates='place_amenities',
@@ -42,6 +42,7 @@ class Place(BaseModel, Base):
     else:
        @property
        def reviews(self):
+        from models import storage
         li=[]
         for item in storage.all(Review).values():
             if item.place_id == self.id:
