@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """State class for AirBnb project"""
 from os import getenv
