@@ -1,4 +1,4 @@
-#!/usr/bin/ env bash
+#!/usr/bin/env bash
 # A Bash script to prepare the web server
 sudo apt-get update
 sudo apt-get install -y nginx
