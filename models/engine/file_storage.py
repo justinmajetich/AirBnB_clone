@@ -29,7 +29,9 @@ class FileStorage:
                 if cls == self.__objects:
                     for k, v in self.__objects.items():
                         mydict[k] = v
-        return FileStorage.__objects
+                return mydict
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -42,9 +44,8 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            #if '_sa_instance_state' in temp:
-            #    del temp['_sa_instance_state']
-            #print(temp)
+            if '_sa_instance_state' in temp:
+                del temp['_sa_instance_state']
             json.dump(temp, f)
 
     def reload(self):

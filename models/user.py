@@ -7,7 +7,6 @@ from models.place import Place
 from os import getenv
 
 class User(BaseModel, Base):
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
         """This class defines a user by various attributes"""
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
