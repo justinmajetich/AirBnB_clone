@@ -11,9 +11,10 @@ def do_deploy(archive_path):
         return False
     try:
         put(archive_path, "/tmp/")
-        name = archive_path.split("/")[-1].split(".")[0]
+        file_name = archive_path.split("/")[-1]
+        name = file_name.split(".")[0]
         path_name = "/data/web_static/releases/" + name
-        run("mkdir -p {}".format(path_name))
+        run("mkdir -p {}/".format(path_name))
         run('tar -xzf /tmp/{} -C {}/'.format(archive_path.split("/")[-1], name))
         run("rm /tmp/{}".format(archive_path.split("/")[-1]))
         run("mv {0}/web_static/* {0}".format(name))
