@@ -30,7 +30,8 @@ class DBStorage:
         if cls is None:
             pass
             for item in cls_pos:
-                ob_lis.extend(self.__session.query(item).all())
+                if isinstance(item, cls_pos):
+                    ob_lis.extend(self.__session.query(item).all())
         else:
             if type(cls) == str:
                 cls = eval(cls)
