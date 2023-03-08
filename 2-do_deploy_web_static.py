@@ -10,15 +10,15 @@ def do_deploy(archive_path):
     if not exists(archive_path):
         return False
     try:
-        put(archive_path, "/tmp/")
         file_name = archive_path.split("/")[-1]
         name = file_name.split(".")[0]
         path_name = "/data/web_static/releases/" + name
+        put(archive_path, "/tmp/")
         run("mkdir -p {}/".format(path_name))
-        run('tar -xzf /tmp/{} -C {}/'.format(archive_path.split("/")[-1], name))
+        run('tar -xzf /tmp/{} -C {}/'.format(file_name, path_name))
         run("rm /tmp/{}".format(archive_path.split("/")[-1]))
-        run("mv {0}/web_static/* {0}".format(name))
-        run("rm -rf {}/web_static".format(name))
+        run("mv {0}/web_static/* {0}".format(path_name))
+        run("rm -rf {}/web_static".format(path_name))
         run('rm -rf /data/web_static/current')
         return True
     except:
