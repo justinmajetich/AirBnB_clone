@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import sqlalchemy
 
 
 class HBNBCommand(cmd.Cmd):
@@ -136,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
         # storage.save()
         new_instance.save()
 
-def help_create(self):
+    def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
