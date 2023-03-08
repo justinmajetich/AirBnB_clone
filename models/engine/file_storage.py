@@ -32,7 +32,6 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            json.dump(temp, f, cls=CustomJSONEncoder)
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -65,10 +64,3 @@ class FileStorage:
             del self.__objects[key]
         except (AttributeError, KeyError):
             pass
-
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime):
-            return obj.isoformat()
-        return super().default(obj)
