@@ -25,15 +25,20 @@ class DBStorage:
             Base.metadata.dropall(self.__engine)
     
     def all(self, cls=None):
-        cls_pos = ["Review", "City" "State", "Amenity", "User", "Place"]
-        if cls:
-            objs = {}
-            for obj in self.__session.query(eval(cls)).all():
-                key = obj.__class__.__name__ + '.' + obj.id
-                objs[key] = obj
-            return objs
+        cls_list = ["Reviews", "City", "State", "User",
+                    "Place", "Amenity"]
+        obj_list = []
+        if cls is None:
+            for cls_name in cls_list:
+                obj_list.extend(self.__session.query(cls_name).all())
+
         else:
-            return self.__objects
+            if type(cls) == str:
+                cls = eval(cls)
+            obj_list = self.__session.query(cls).all()
+        return {"{}.{}".format(type(obj).__name__,
+                               obj.id): obj for obj in obj_list}
+
     def add(self, obj):
         self.__session.add(obj)
 
