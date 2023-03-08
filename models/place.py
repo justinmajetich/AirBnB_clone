@@ -4,12 +4,13 @@ from models.base_model import Base, BaseModel
 from sqlalchemy import Column, ForeignKey, String, Integer, Float, Table
 from sqlalchemy.orm import relationship
 
-place_amenity = Table("place_amenity", Base.metadata, Column("place_id",
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id",
                       String(60), ForeignKey("places.id"), primary_key=True,
                       nullable=False),
-                      Column("amenity_id", String(60),
-                             ForeignKey("amenities.id"), primary_key=True,
-                             nullable=False))
+                      Column("amenity_id", 
+                      String(60), ForeignKey("amenities.id"), primary_key=True,
+                      nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -26,31 +27,36 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        from models.review import Review
-        from models.amenity import Amenity
-        reviews = relationship("Review", cascade="all, delete-orphan",
-                               backref='place')
-        amenities = relationship("Amenity", secondary=place_amenity,
-                                 backref="places", viewonly=False)
-    else:
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def reviews(self):
-            reviewsList = []
-            for review in models.storage.all(models.review.Review).values():
-                if self.id == review.place_id:
-                    reviewsList.append(review)
-            return reviewsList
+            """ Review Getter attribute in case of file storage """
+            reviews_list = []
+
+            for review in list(models.storage.all(Review).values()):
+                if review.place_id == self.id:
+                    reviews_list.append(review)
+            return reviews_list
 
         @property
         def amenities(self):
-            amenityList = []
-            for amenity in models.storage.all(models.amenity.Amenity).values():
-                if self.id == amenity.place_id:
-                    amenityList.append(amenity)
-            return amenityList
+            """getter"""
+            amenities_list = []
+
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenities_list.append(amenity)
+            return amenities_list
 
         @amenities.setter
-        def amenities(self, amenity_object):
-            if type(amenity_object).__name__ == "Amenity":
-                self.amenity_ids.append(amenity_object.id)
+        def amenities(self, obj):
+            """Function that handles append method for adding an amenity"""
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
+    else:
+        reviews = relationship('Review', backref='place',
+                               cascade='all, delete, delete-orphan')
+        amenities = relationship("Amenity",
+                                 secondary='place_amenity',
+                                 back_populates='place_amenities',
+                                 viewonly=False)
