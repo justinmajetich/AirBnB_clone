@@ -1,16 +1,13 @@
-#!/usr/bin/python3
-from fabric.api import run, local, put
-import datetime
+#!/usr/bin/env python3
+from fabric.api import local
+from datetime import datetime
 
 
 def do_pack():
-    """do pack method"""
-    time = datetime.datetime.now()
-    date = (str(time.year) + str(time.month) + str(time.day) + str(time.hour) +
-            str(time.minute) + str(time.second))
-    try:
-        local("mkdir -p versions")
-        local("tar -cvzf versions/web_static_{}.tgz ./web_static".format(date))
-        return "./versions/web_static_{}.tgz".format(date)
-    except:
+    now = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"web_static_{now}.tgz"
+    local("mkdir -p versions")
+    result = local(f"tar -czvf versions/{filename} web_static", capture=True)
+    if result.failed:
         return None
+    return f"versions/{filename}"
