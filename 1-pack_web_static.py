@@ -1,6 +1,7 @@
 
 #!/usr/bin/python3
-"""Creates a compressed archive of the web_static folder using its contents"""
+"""Creates a compressed archive of the web_static 
+folder using its contents"""
 from fabric.api import local, env
 from datetime import datetime
 import os
