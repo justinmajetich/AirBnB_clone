@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 def do_pack():
+    """creates .tgz archive from web_static folder"""
     now = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f"web_static_{now}.tgz"
     local("mkdir -p versions")
