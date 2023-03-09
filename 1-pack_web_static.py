@@ -1,15 +1,18 @@
 #!/usr/bin/python3
-"""creates .tgz archive from web_static folder using its contents"""
-from fabric.api import local
+from fabric.api import *
 from datetime import datetime
+import os
 
+env.hosts = ['localhost']
 
 def do_pack():
-    """creates .tgz archive from web_static folder using its contents"""
-    now = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"web_static_{now}.tgz"
-    local("mkdir -p versions")
-    result = local(f"tar -czvf versions/{filename} web_static", capture=True)
-    if result.failed:
-        return None
-    return f"versions/{filename}"
+    """Creates a compressed archive of the web_static folder"""
+    try:
+        if not os.path.exists("versions"):
+            local("mkdir versions")
+        now = datetime.now().strftime("%Y%m%d%H%M%S")
+        archive_name = "web_static_{}.tgz".format(now)
+        local("tar -cvzf versions/{} web_static".format(archive_name))
+        return "versions/{}".format(archive_name)
+    except:
+        return None
