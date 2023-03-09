@@ -12,5 +12,5 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 echo "<html><head></head><body> husna SE</body></html>" | sudo tee /data/web_static/releases/test/index.html
 sudo chown -R ubuntu:ubuntu /data/
 sudo sed -i '38i\\n\tlocation /hbnb_static/ {\n\talias /data/web_static/current/;\n}\n' /etc/nginx/sites-available/default
-sudo service nginx restarts
+sudo service nginx restart
 exit 0
