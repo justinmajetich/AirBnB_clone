@@ -11,3 +11,4 @@ echo "<html><head></head><body> husna SE</body></html>" | sudo tee /data/web_sta
 sudo chown -R ubuntu:ubuntu /data
 sudo sed -i '37i\\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
 sudo service nginx restarts
+exit 0
