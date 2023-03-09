@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A Bash script to prepare the web server
+# A  Bash script that sets up your web servers for the deployment of web_static
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo mkdir /data/
