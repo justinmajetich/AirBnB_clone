@@ -22,9 +22,9 @@ env.hosts = ['35.229.42.147', '54.90.157.131']
 
 def do_deploy(archive_path):
     """
-     Fabric script 
-     (based on the file 1-pack_web_static.py) 
-     that distributes an archive to your web servers, 
+     Fabric script
+     (based on the file 1-pack_web_static.py)
+     that distributes an archive to your web servers,
      using the function do_deploy
 
     """
@@ -44,5 +44,4 @@ def do_deploy(archive_path):
         run("rm -d {}/web_static/".format(rmt_path))
         return True
     except:
-        return False 
-    
+        return False
