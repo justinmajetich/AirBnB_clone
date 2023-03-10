@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from fabric.api import local, run, put, env
 from os.path import exists
 env.hosts = ['<IP web-01>', '<IP web-02>']
