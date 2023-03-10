@@ -22,7 +22,7 @@ def do_deploy(archive_path):
 
     archive_name = archive_path.split("/")[-1]
     folder_name = "/data/web_static/releases/{}"\
-            .format(archive_name.split(".")[0])
+        .format(archive_name.split(".")[0])
     put(archive_path, "/tmp/")
     run("mkdir -p {}".format(folder_name))
     run("tar -xzf /tmp/{} -C {}".format(archive_name, folder_name))
