@@ -1,9 +1,6 @@
 #!/usr/bin/python3
-"""starts a Flask web application
-- web application must be listening on 0.0.0.0, port 5000
-Routes:
-        - /: display “Hello HBNB!”
--You must use the option strict_slashes=False in your route definition
+"""
+intializing flask web app to listen on 0.0.0.0:5000
 """
 from flask import Flask
 
