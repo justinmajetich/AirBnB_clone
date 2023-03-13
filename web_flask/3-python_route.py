@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-script
+initializing web app
 """
 from flask import Flask
 
