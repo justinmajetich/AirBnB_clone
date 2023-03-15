@@ -8,17 +8,13 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """
-    Hello_hbnb module
-    """
+    """Hello_hbnb module"""
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """
-    hbnb method
-    """
+    """hbnb method"""
     return 'HBNB'
 
 
