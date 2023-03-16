@@ -29,7 +29,7 @@ def c_text(text):
 def python(text='is cool'):
     """ python_text function"""
     text = text.replace('_', ' ')
-    return 'python {}'.format(text)
+    return 'Python {}'.format(text)
 
 
 if __name__ == "__main__":
