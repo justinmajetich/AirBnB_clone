@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-''' starting a flask application'''
+""" Script for starting a flask application """
 
 from flask import Flask
 
@@ -21,7 +21,7 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
     """ c_text module that returns c/text """
-    return f"C {text.replace('_', ' ')}"
+    return 'C %s' % text.replace('_', '')
 
 
 if __name__ == '__main__':
