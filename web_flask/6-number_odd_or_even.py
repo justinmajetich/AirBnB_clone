@@ -50,7 +50,11 @@ def number_template(n):
 def number_evenodd(n):
     """ method odd or even """
     if isinstance(n, int):
-        return render_template('6-number_odd_or_even.html', n=n)
+        if n % 2 == 0:
+          return render_template("6-number_odd_or_even.html", n=n, even_odd='even')
+    else:
+          return render_template(
+                '6-number_odd_or_even.html', n=n, even_odd='odd')
 
 
 if __name__ == "__main__":
