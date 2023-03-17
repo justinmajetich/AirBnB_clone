@@ -50,6 +50,7 @@ def number_template(n):
 def number_even_odd(n):
     """ method odd or even """
     return render_template("6-number_odd_or_even.html", n=n)
-    
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
