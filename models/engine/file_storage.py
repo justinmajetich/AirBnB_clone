@@ -64,5 +64,7 @@ class FileStorage:
             if obj_key in self.__objects:
                 del self.__objects[obj_key]
                 self.save()
-        else:
-            return
+    
+    def close(self):
+        """ Reloading """
+        self.reload()
