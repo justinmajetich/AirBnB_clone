@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Ignore file database
+models/engine/file_database.json
+file.json
+
+# Ignore screenshots dir
+screenshots
