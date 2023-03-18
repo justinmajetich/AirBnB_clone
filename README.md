@@ -143,5 +143,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 	
 	Project Team:
 	-anwulika-1 (Editor @ anwulika-1)
-	-kadelite (ADEKUNLE Adeleke)
+	-kadelite (@ ADEKUNLE Adeleke)
 	
