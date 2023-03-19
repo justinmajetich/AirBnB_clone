@@ -12,27 +12,26 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = self.created_at
 
-        if not kwargs:
-            from models import storage
-            storage.new(self)
-            return
+        if kwargs:
+            for attr, value in kwargs.items():
+                if attr == "__class__":
+                    continue
 
-        for attr, value in kwargs.items():
-            if attr == "__class__":
-                continue
+                result = value
 
-            result = value
+                if attr in ("created_at", "updated_at") and \
+                        type(value) == str:
+                    result = datetime.fromisoformat(value)
 
-            if attr in ("created_at", "updated_at") and \
-                    type(value) == str:
-                result = datetime.fromisoformat(value)
+                self.__setattr__(attr, result)
 
-            self.__setattr__(attr, result)
+        from models import storage
+        storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        cls = self.__class__.__name__
+        return f"[{cls}] ({self.id}) {self.__dict__}"
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -42,7 +41,7 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = self.__dict__
+        dictionary = self.__dict__.copy()
         dictionary["__class__"] = type(self).__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
