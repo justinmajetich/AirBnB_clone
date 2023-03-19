@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "0x0F. Python - Object-relational mapping"
+git commit -m "AirBnB_clone_v2"
 git push
