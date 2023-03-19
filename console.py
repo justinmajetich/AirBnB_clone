@@ -182,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
             return False
         if len(argl) == 3:
             try:
-                type(eval(argl[2])) != dict
+                not isinstance(eval(argl[2]), dict)
             except NameError:
                 print("** value missing **")
                 return False
@@ -194,7 +194,7 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[argl[2]] = valtype(argl[3])
             else:
                 obj.__dict__[argl[2]] = argl[3]
-        elif type(eval(argl[2])) == dict:
+        elif isinstance(eval(argl[2]), dict):
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             for k, v in eval(argl[2]).items():
                 if (k in obj.__class__.__dict__.keys() and
@@ -208,4 +208,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
