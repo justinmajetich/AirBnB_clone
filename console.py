@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-                if line == "" or line is None:
+        if line == "" or line is None:
             print("** class name missing **")
         else:
             my_list = line.split(" ")
@@ -148,6 +148,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(obj, key, value)
             obj.save()
             print("{}".format(obj.id))
+            
 
 
     def help_create(self):
