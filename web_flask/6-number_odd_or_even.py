@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """simple flask routes"""
-from flask import Flask, abort, render_template_string
+from flask import Flask, abort, render_template_string, render_template
 
 app = Flask(__name__)
 
@@ -48,16 +48,7 @@ def number_template(n):
     """return message with paramns"""
 
     if n.isdigit():
-        return render_template_string("""
-        <!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <TITLE>HBNB</TITLE>
-    </HEAD>
-    <BODY>
-        <H1>Number: {{ n }}</H1>
-    </BODY>
-</HTML>""", n=n)
+        return render_template('5-number.html', n=n)
     abort(404)
 
 @app.route('/number_odd_or_even/<n>', strict_slashes=False)
@@ -68,16 +59,7 @@ def number_odd_or_even(n):
         type_number = "even"
         if int(n) % 2 != 0:
             type_number = "odd"
-        return render_template_string("""
-        <!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <TITLE>HBNB</TITLE>
-    </HEAD>
-    <BODY>
-        <H1>Number: {{ n }} is {{type_number}}</H1>
-    </BODY>
-</HTML>""", n=n, type_number=type_number)
+        return render_template('6-number_odd_or_even.html', n=n, type_number=type_number)
     abort(404)
 
 
