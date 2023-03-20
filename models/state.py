@@ -6,7 +6,15 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
-    """ class State """
+    """ class for State
+     
+      Attributs
+       =================
+            name : name of State
+                String, not null
+            cities : relationship to class City 
+       
+          """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     cities = relationship('City', backref='state', cascade='all, delete')
