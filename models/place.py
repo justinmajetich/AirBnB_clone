@@ -8,6 +8,13 @@ import os
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
+place_amenity = Table(
+    'place_amenity',
+    Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), nullable=False, primary_key=True),
+    Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False, primary_key=True) 
+)
+"""Represents the many to many relationship table between places and amenities"""
 
 class Place(BaseModel, Base):
     """ A place to stay """
