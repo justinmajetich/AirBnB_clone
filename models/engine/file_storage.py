@@ -17,14 +17,17 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns the list of objects of one type of class"""
-        if cls is None:
-            return FileStorage.__objects
+        if cls is not None:
+            cls_type = str((type(obj)))[15:]
+            cls_name = cls_type[cls_type.find(".") + 1:-2]
+            key = f"{cls_name}.{obj.id}"  
+            for key, obj in FileStorage.__objects.items():
+                obj_cls = key[:key.find(".")]
+                if obj_cls == cls_name:
+                    cls_dict[key] = obj
+            return cls_dict
         else:
-            new_dict = {}
-            for key, value in FileStorage.__objects.items():
-                if value.__class__.__name__ == cls.__name__:
-                    new_dict[key] = value
-            return new_dict
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -58,7 +61,8 @@ class FileStorage:
     def delete(self, obj=None):
         """Delete obj from __objects if it's inside, if obj is equal to None, do nothing"""
         if obj is not None:
-            key = f"{obj.__class__.__name__}.{obj.id}"
-            if key in self.__objects:
-                del FileStorage.__objects[key]
-                self.save()
+            cls_type = str(type(obj))[15:]
+            cls_name = cls_type[cls_type.find(".") + 1:-2]
+            key = f"{cls_name}.{obj.id}"
+            del FileStorage.__objects[key]
+            self.save()
