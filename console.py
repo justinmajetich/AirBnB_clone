@@ -24,10 +24,10 @@ class HBNBCommand(cmd.Cmd):
                'Review': Review
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    carac = {
+    types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float,
+             'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,25 +114,55 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        listOfArgs = args.split(" ")
-        if not listOfArgs[0]:
-            print("** class name missing **")
+        """Crée une nouvelle instance d'une classe en fonction de l'entrée utilisateur"""
+
+        # Divise les arguments entrés par l'utilisateur en une liste
+        ListOfArgs = args.split(" ")
+
+        # Si la liste a au moins 2 éléments, le premier est le nom de la classe à instancier
+        if len(ListOfArgs) >= 2:
+            class_name = ListOfArgs[0]
+
+            # Instancie une nouvelle instance de la classe
+            new_instance = HBNBCommand.classes[class_name]()
+
+            # Enregistre l'instance nouvellement créée dans le stockage
+            storage.save()
+
+            # Affiche l'ID de l'instance nouvellement créée
+            print(new_instance.id)
+
+            # Pour chaque argument entré par l'utilisateur après le nom de la classe,
+            # appelle la méthode 'do_update' pour mettre à jour l'instance nouvellement créée
+            for arg in ListOfArgs[1:]:
+                update_string = f"{class_name} {new_instance.id} {arg}"
+                HBNBCommand.do_update(self, update_string)
             return
-        elif listOfArgs[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+
+        # Si aucun argument n'a été entré, affiche un message d'erreur
+        if not args:
+            print("** Nom de classe manquant **")
             return
-        new_instance = HBNBCommand.classes[listOfArgs[0]]()
-        storage.save()
-        
-        for i in listOfArgs[1:]:
-            Caracs = i.split("=") # split les elements de la liste par "="
-            carac_name = Caracs[0] # ex: name
-            carac_value = Caracs[1].replace("\"", "") # ex: "california"
-            new_dict = storage.all()[str(listOfArgs[0]) + "." + str(new_instance.id)]
-            new_dict.__dict__.update({carac_name: carac_value})
-        print(new_instance.id)
-        storage.save()
+
+        # Si le nom de la classe entré par l'utilisateur n'existe pas dans la liste des classes,
+        # affiche un message d'erreur
+        elif ListOfArgs[0] not in HBNBCommand.classes:
+            print("** La classe n'existe pas **")
+            return
+
+        # Si le nom de la classe est valide, instancie une nouvelle instance de la classe
+        else:
+            class_name = ListOfArgs[0]
+            new_instance = HBNBCommand.classes[class_name]()
+
+            # Enregistre l'instance nouvellement créée dans le stockage
+            storage.save()
+
+            # Affiche l'ID de l'instance nouvellement créée
+            print(new_instance.id)
+            storage.save()
+            return
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -285,7 +315,8 @@ class HBNBCommand(cmd.Cmd):
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
 
-            args = args.partition(' ')
+            args = args.partition("=")
+            #print(f"check args post partition: \n {args}")
 
             # if att_name was not quoted arg
             if not att_name and args[0] != ' ':
@@ -299,6 +330,7 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
+            #print(f"check args [list]:\n {args}")
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
@@ -315,10 +347,13 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 # type cast as necessary
-                if att_name in HBNBCommand.carac:
-                    att_val = HBNBCommand.carac[att_name](att_val)
+                if att_name in HBNBCommand.types:
+                    att_val = HBNBCommand.types[att_name](att_val)
+                    
 
                 # update dictionary with name, value pair
+                if not isinstance(att_val, (int, float)) and "_" in att_val:
+                    att_val = att_val.replace("_", " ")
                 new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
