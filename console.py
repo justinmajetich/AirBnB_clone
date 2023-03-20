@@ -135,7 +135,6 @@ class HBNBCommand(cmd.Cmd):
 
         # split name param & value param
         for key_value in ArgLine[1:]:
-
             k, v = key_value.split("=")
             # replace space by _
             v = v.replace('_', ' ')
