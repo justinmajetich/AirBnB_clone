@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    dot_cmds = ['create', 'all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
@@ -73,8 +73,11 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
+                    if (
+                        pline[0] == '{'
+                        and pline[-1] == '}'
+                        and type(eval(pline)) is dict
+                    ):
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -113,18 +116,32 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
+        if not arg:
+            print('** class name missing **')
             return
-        elif args not in HBNBCommand.classes:
+
+        args = arg.split()
+        if args[0] not in self.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+
+        obj = eval(args[0])()
+        for param in args[1:]:
+            try:
+                key, value = param.split("=", 1)
+                if value.startswith('"'):
+                    value = value[1:-1].replace("_", " ").replace('\\"', '"')
+                elif "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(obj, key, value)
+            except Exception:
+                pass
+        obj.save()
+        print(obj.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -153,7 +170,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        key = f"{c_name}.{c_id}"
         try:
             print(storage._FileStorage__objects[key])
         except KeyError:
@@ -184,7 +201,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        key = f"{c_name}.{c_id}"
 
         try:
             del(storage.all()[key])
@@ -199,21 +216,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        if not args:
+            for obj in storage.all():
+                print(storage.all()[obj].__str__())
+            return
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+        try:
+            cls_name = eval(args).__name__
+        except NameError:
+            print("** class doesn't exist **")
+            return
 
-        print(print_list)
+        for obj in storage.all():
+            if obj.startswith(f"{cls_name}."):
+                print(storage.all()[obj].__str__())
 
     def help_all(self):
         """ Help information for the all command """
@@ -256,7 +272,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # generate key from class and id
-        key = c_name + "." + c_id
+        key = f"{c_name}.{c_id}"
 
         # determine if key is present
         if key not in storage.all():
@@ -272,7 +288,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +296,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
