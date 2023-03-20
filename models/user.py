@@ -14,6 +14,8 @@ class User(BaseModel, Base):
         password (str): password of the user
         first_name (str): user's first name
         last_name (str): user's last name
+        places: represents the relationship between a user and a place
+        reviews: represents the relationship between user and a review
     """
 
     __tablename__ = "users"
@@ -24,3 +26,5 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=True)
     places = relationship("Place", backref="user",
                           cascade="all, delete, delete-orphan")
+    reviews = relationship("Review", backref="user",
+                           cascade="all, delete, delete-orphan")
