@@ -124,6 +124,7 @@ class HBNBCommand(cmd.Cmd):
         elif arguments[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        
         new_instance = HBNBCommand.classes[arguments[0]]()
         for element in arguments[1:]:
             key = element.split('=')[0]
@@ -144,7 +145,6 @@ class HBNBCommand(cmd.Cmd):
             #
             elif value.find('.') == -1:
                 value = int(value)
-                
             setattr(new_instance, key, value)
             
         storage.save()
