@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+# from models.__init__ import storage
+from models import storage  # added by dpmax
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -16,7 +16,8 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    # prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) '  # added by dpmax
 
     classes = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -29,11 +30,7 @@ class HBNBCommand(cmd.Cmd):
         'max_guest': int, 'price_by_night': int,
         'latitude': float, 'longitude': float
     }
-
-    def preloop(self):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb)')
+    protected = ['id', 'created_at', 'updated_at']
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -86,12 +83,6 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
-    def postcmd(self, stop, line):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
-        return stop
-
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         return True
@@ -113,23 +104,62 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    # added by dpmax
+    def do_create(self, arg):
+        """Create a new instance of a class"""
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args = arg.split()
+        classname = args[0]
+        if classname not in self.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        attrs = {}
+        for arg in args[1:]:
+            try:
+                key, value = arg.split('=', 1)
+                if value.startswith('"'):
+                    # parse string value
+                    value = value[1:].replace('_', ' ')
+                    while value.endswith('\\'):
+                        value = value[:-1] + ' ' + input().strip()
+                    value = value[:-1].replace('\\"', '"')
+                elif '.' in value:
+                    # parse float value
+                    value = float(value)
+                else:
+                    # parse integer value
+                    value = int(value)
+                if key in HBNBCommand.protected:
+                    print("** cannot manually set {} **".format(key))
+                    continue
+                attrs[key] = value
+            except (ValueError, IndexError):
+                # skip this arg if it can't be parsed correctly
+                pass
+        instance = self.classes[classname](**attrs)
+        print(instance.id)
+        instance.save()
 
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+    # below is the old function
+    # def do_create(self, args):
+    #     """ Create an object of any class"""
+    #     if not args:
+    #         print("** class name missing **")
+    #         return
+    #     elif args not in HBNBCommand.classes:
+    #         print("** class doesn't exist **")
+    #         return
+    #     new_instance = HBNBCommand.classes[args]()
+    #     storage.save()
+    #     print(new_instance.id)
+    #     storage.save()
+    #
+    # def help_create(self):
+    #     """ Help information for the create method """
+    #     print("Creates a class of any type")
+    #     print("[Usage]: create <className>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -303,6 +333,9 @@ class HBNBCommand(cmd.Cmd):
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
+                if att_name in HBNBCommand.protected:
+                    print("** cannot update {}".format(att_name))
+                    continue
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
