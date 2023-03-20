@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes
-    
+
         Attributs:
         ====================
 
