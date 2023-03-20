@@ -143,10 +143,10 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[_cls]()
         #use setattr to update new_instance param
         for key, value in attributs.items():
-            if '.' in value:
-                value = float(value)
-            elif isinstance(value, int):
+            if isinstance(value, int):
                 value = int(value)
+                if '.' in value:
+                    value = float(value)
             setattr(new_instance, key, value)
 
         new_instance.save()
