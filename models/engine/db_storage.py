@@ -1,4 +1,5 @@
-
+#!/usr/bin/python3
+"""db storage"""
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
@@ -70,3 +71,7 @@ class DBStorage:
         session_maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
         session = scoped_session(session_maker)
         self.__session = session()
+    
+    def close(self):
+        self.reload();
+        DBStorage.__session.remove()
