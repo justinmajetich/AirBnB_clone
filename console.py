@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     carac = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+             'latitude': float, 'longitude': float,
             }
 
     def preloop(self):
@@ -124,21 +124,14 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[listOfArgs[0]]()
         storage.save()
-        print(new_instance.id)
         
         for i in listOfArgs[1:]:
             Caracs = i.split("=") # split les elements de la liste par "="
             carac_name = Caracs[0] # ex: name
-            if carac_name not in HBNBCommand.carac:
-                continue
             carac_value = Caracs[1].replace("\"", "") # ex: "california"
-            carac_type = HBNBCommand.carac[carac_name] # ex: Int
-            try:
-                var = carac_type(carac_value)
-                HBNBCommand.do_update(self, str(listOfArgs[0]) + " " + str(new_instance.id) + " " + str(carac_name) + " " + str(var))
-                storage.save()
-            except:
-                pass
+            new_dict = storage.all()[str(listOfArgs[0]) + "." + str(new_instance.id)]
+            new_dict.__dict__.update({carac_name: carac_value})
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
