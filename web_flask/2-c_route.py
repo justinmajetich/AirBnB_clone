@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """simple flask routes"""
-
 from flask import Flask
 
 app = Flask(__name__)
@@ -11,19 +10,18 @@ def hello():
     """return message"""
     return "Hello HBNB!"
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """return message HBNB"""
     return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_fun(text):
     """return message with paramns"""
     new_text = text.replace("_", " ")
     return "C {}".format(new_text)
-
-
-
 
 
 if __name__ == "__main__":
