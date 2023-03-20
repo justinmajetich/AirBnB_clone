@@ -328,7 +328,7 @@ class HBNBCommand(cmd.Cmd):
                     
 
                 # update dictionary with name, value pair
-                if not isinstance(att_val, int) and "_" in att_val:
+                if not isinstance(att_val, (int, float)) and "_" in att_val:
                     att_val = att_val.replace("_", " ")
                 new_dict.__dict__.update({att_name: att_val})
 
