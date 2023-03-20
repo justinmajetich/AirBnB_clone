@@ -10,6 +10,7 @@ This repository contains the initial stage of a student project to build a clone
 ## Authors 
 
 Groupierre Asia : https://github.com/AsiaGrpr
+
 Assenat Amandine : https://github.com/Amandine4731
 
 | Tasks | Files | Description |
