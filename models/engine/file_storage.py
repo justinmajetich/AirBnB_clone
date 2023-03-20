@@ -58,6 +58,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """
+            method to delete objects of specific class
+        """
         try:
             # construct identifiant object : class_name.id_obj
             value = "{}.{}".format(obj.__class__.__name__, obj.id)
