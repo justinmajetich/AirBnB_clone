@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-""" Console Module """
+"""
+    Console Module
+"""
+
+
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -319,6 +323,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
