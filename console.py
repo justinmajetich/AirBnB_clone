@@ -118,10 +118,11 @@ class HBNBCommand(cmd.Cmd):
         split_arg = args.split(" ")
         if len(split_arg) >= 2:
             new_instance = HBNBCommand.classes[split_arg[0]]()
+            storage.save()
             print(new_instance.id)
             for arg in split_arg[1:]:
                 chaine_de_char = f"{split_arg[0]} {new_instance.id} {arg}"
-                print(f"val: {chaine_de_char}")
+                #print(f"val: {chaine_de_char}")
                 HBNBCommand.do_update(self, chaine_de_char)
             return
         if not args:
@@ -291,7 +292,7 @@ class HBNBCommand(cmd.Cmd):
                 args = args[second_quote + 1:]
 
             args = args.partition("=")
-            print(f"check args post partition: \n {args}")
+            #print(f"check args post partition: \n {args}")
 
             # if att_name was not quoted arg
             if not att_name and args[0] != ' ':
@@ -305,7 +306,7 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
-            print(f"check args [list]:\n {args}")
+            #print(f"check args [list]:\n {args}")
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
