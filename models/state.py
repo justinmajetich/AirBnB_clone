@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" module for class State """
+""" class State  """
 from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base

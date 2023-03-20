@@ -42,24 +42,11 @@ class DBStorage:
                 db_name),
         pool_pre_ping=True
         )
+        # create all table
+        Base.metadata.create_all(self.__engine)
+
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
-
-    def all(self, cls=None):
-        """ query on the current database session"""
-        dict_objects = {}
-
-        # class given
-        if cls != None:
-            for obj in self.__session.query(cls).all():
-                dict_objects.update({'{}.{}'.
-                                format(type(cls).__name__, obj.id,): obj})
-        else:
-            for k, v in Class_name.items():
-                for obj in self.__session.query(v):
-                    dict_objects.update({'{}.{}'.
-                                format(type(obj).__name__, obj.id,): obj})
-        return(dict_objects)
 
     def new(self, obj):
         self.__session.add(obj)
@@ -81,3 +68,19 @@ class DBStorage:
 
     def close(self):
         self.__session.close()
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
+
+        dict_objects = {}
+        # class given
+        if cls != None:
+            for obj in self.__session.query(cls).all():
+                k = obj.__class__.__name__ + '.' + obj.id
+                dict_objects[k] = obj
+        else:
+            for k, v in Class_name.items():
+                cls = v
+                for obj in self.__session.query(cls).all():
+                    k = obj.__class__.__name__ + '.' + obj.id
+                    dict_objects[k] = obj
+        return(dict_objects)
