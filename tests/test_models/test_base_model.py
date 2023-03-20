@@ -91,9 +91,13 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
+        import time
         """ """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
+        # Add a delay of 1 second before updating the object
+        time.sleep(0.00000000000001) 
+        new.save()  # Update the object
         self.assertFalse(new.created_at == new.updated_at)
