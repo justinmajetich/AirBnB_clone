@@ -171,9 +171,9 @@ class HBNBCommand(cmd.Cmd):
                             formatted_dict[key] = stripped_val
                     else:
                         if value.isdigit():
-                            formatted_dict.__dict__[key] = int(value)
+                            formatted_dict[key] = int(value)
                         else:
-                            formatted_dict.__dict__[key] = float(value)
+                            formatted_dict[key] = float(value)
                 new_instance.__dict__.update(formatted_dict)
                 new_instance.save()
                 print(new_instance.id)
@@ -252,18 +252,23 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """Shows all objects, or all objects of a class"""
         print_list = []
-        all_objs = storage.all()
 
         if args:
             args = args.split(" ")[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for key in all_objs.keys():
-                if key.split(".")[0] == args:
-                    print_list.append(str(all_objs[key]))
+            # args -> cls name e.g BaseModel, User, Place
+            cls_objs = storage.all(args)
+            for key in cls_objs.keys():
+                if "_sa_instance_state" in cls_objs[key].__dict__:
+                    del cls_objs[key].__dict__["_sa_instance_state"]
+                print_list.append(str(cls_objs[key]))
         else:
-            for key in all_objs.items():
+            all_objs = storage.all()
+            for key in all_objs.keys():
+                if "_sa_instance_state" in all_objs[key].__dict__:
+                    del all_objs[key].__dict__["_sa_instance_state"]
                 print_list.append(str(all_objs[key]))
 
         print(print_list)
