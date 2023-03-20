@@ -12,6 +12,15 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 
+Class_name = {
+    'Amenity': Amenity,
+    'City': City,
+    'Place': Place,
+    'State': State,
+    'Review': Review,
+    'User': User
+}
+
 class DBStorage:
     """Manage DB storage"""
 
@@ -41,14 +50,19 @@ class DBStorage:
     def all(self, cls=None):
         """ query on the current database session"""
         Session = sessionmaker(bind=self.__engine)
-        self.session = Session()
-        if cls is not None:
-            q = self.session.query(cls).all()
-            return(q)
+        self.__session = Session()
+
+        dict_objects = {}
+        # class given
+        if cls != None:
+            for obj in self.__session.query(cls).all():
+                k = obj.__class__.__name__ + '.' + obj.id
+                dict_objects[k] = obj
         else:
-            U = self.session.query(User).all()
-            S = self.session.query(State).all()
-            C = self.session.query(City).all()
-            A = self.session.query(Amenity).all()
-            P = self.session.query(Place).all()
-            R = self.session.query(Review).all()
+            for k, v in Class_name.items():
+                cls = v
+                for obj in self.__session.query(cls).all():
+                k = obj.__class__.__name__ + '.' + obj.id
+                dict_objects[k] = obj
+
+        return(dict_objects)
