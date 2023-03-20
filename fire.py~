@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+
+class Human:
+
+    def __init__(self, name, age, gender):
+        self.name = name
+        self.age = age
+        self.gender = gender
+
+one_human = Human(name="George", age=43, gender="Male")
+one_human
