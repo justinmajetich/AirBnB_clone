@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,16 +116,32 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
         if not args:
+            raise SyntaxError()
+        ArgLine = args.split(" ")
+        print (ArgLine)
+        
+        # stock command and add () to maque command valid
+        _cmd = ArgLine[0]
+        print (_cmd)
+        if not ArgLine[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif _cmd not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[_cmd]()
+
+        re = [Key_value.replace("=", ":") for Key_value in ArgLine]
+        print (re)
+        re.pop(0)
+        print (re)
+            
         storage.save()
         print(new_instance.id)
         storage.save()
+        HBNBCommand.do_update(_cmd, new_instance.id, re)
 
     def help_create(self):
         """ Help information for the create method """
