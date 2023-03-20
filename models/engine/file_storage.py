@@ -12,13 +12,22 @@ class FileStorage:
         """Returns a dictionary of models currently in storage
             all or only element of specified class
             """
-        if cls == None:
+        if cls is None:
             return FileStorage.__objects
         else:
+            if cls is str:
             # search cls in the key:value representation of object
-            for key in FileStorage.__objects.keys():
-                if cls.__name__ in key:
-                    return FileStorage.__objects
+                for key in FileStorage.__objects.keys():
+                    if cls in key:
+                        return FileStorage.__objects
+            else:
+                # select only name of class
+                cls = cls.__name__
+                # search cls in the key:value representation of object
+                for key in FileStorage.__objects.keys():
+                    if cls in key:
+                        return FileStorage.__objects
+
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
