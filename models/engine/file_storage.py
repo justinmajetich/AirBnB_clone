@@ -15,19 +15,14 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            if cls is str:
-            # search cls in the key:value representation of object
-                for key in FileStorage.__objects.keys():
-                    if cls in key:
-                        return FileStorage.__objects
-            else:
+            dict_all = {}
+            if cls is not str:
                 # select only name of class
                 cls = cls.__name__
-                # search cls in the key:value representation of object
-                for key in FileStorage.__objects.keys():
-                    if cls in key:
-                        return FileStorage.__objects
-
+            for key, value in FileStorage.__objects.items():
+                if cls in key:
+                    dict_all.update({key: value})
+            return (dict_all)
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
