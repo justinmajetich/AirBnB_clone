@@ -1,13 +1,11 @@
 -- prepares a MySQL server for the project
--- create database hbnb_test_db
+-- Create database
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
--- create new user for hbnb_test
-CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost';
--- set password for user hbnb_test
-SET PASSWORD FOR 'hbnb_test'@'localhost' = 'hbnb_test_pwd';
--- grant all privileges for user
-GRANT ALL PRIVILEGES ON hbnb_test_db.* 	TO 'hbnb_test'@'localhost';
--- SELECT privilege on the database performance_schema
+-- Create user if not exist
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+-- Grant all privileges to the database `hbnb_test_db`
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+-- Grant SELECT privilege on the database performance_schema
 GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
--- flush privilaeges
+-- Reload the grant tables
 FLUSH PRIVILEGES;
