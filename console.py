@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -141,13 +141,13 @@ class HBNBCommand(cmd.Cmd):
 
         # Si aucun argument n'a été entré, affiche un message d'erreur
         if not args:
-            print("** class name missing **")
+            print("** Missing class name **")
             return
 
         # Si le nom de la classe entré par l'utilisateur n'existe pas dans la liste des classes,
         # affiche un message d'erreur
         elif ListOfArgs[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+            print("** Class doesn't exist **")
             return
 
         # Si le nom de la classe est valide, instancie une nouvelle instance de la classe
@@ -162,6 +162,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
             return
+
 
     def help_create(self):
         """ Help information for the create method """
