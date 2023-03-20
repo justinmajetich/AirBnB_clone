@@ -216,6 +216,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+
         if not args:
             for obj in storage.all():
                 print(storage.all()[obj].__str__())
@@ -230,7 +231,7 @@ class HBNBCommand(cmd.Cmd):
         for obj in storage.all():
             if obj.startswith(f"{cls_name}."):
                 print(storage.all()[obj].__str__())
-
+ 
     def help_all(self):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")
