@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """simple flask routes"""
-from flask import Flask
+from flask import Flask, abort
 
 app = Flask(__name__)
 
@@ -36,10 +36,11 @@ def python_fun(text):
 @app.route('/number/<n>', strict_slashes=False)
 def number(n):
     """return message with paramns"""
-    print("working")
-    print(n.isdigit())
+
     if n.isdigit():
         return "{} is a number".format(n)
+    else:
+        abort(404)
 
 
 if __name__ == "__main__":
