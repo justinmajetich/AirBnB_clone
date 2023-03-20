@@ -1,4 +1,4 @@
-# ![Hbnb](https://raw.githubusercontent.com/paulinepar/holbertonschool-AirBnB_clone_v2/main/image/HolberBnb.png)
+# ![Hbnb](https://raw.githubusercontent.com/paulinepar/holbertonschool-AirBnB_clone_v2/master/image/HolberBnb.png)
 
 
 ## 📑 DESCRIPTION
@@ -46,4 +46,5 @@ This Python Script is based on a JSON file that serves as a database. It allows 
 ## 👦 Authors
 
 - [@RedginaldGodeau](https://github.com/RedginaldGodeau)
-- [@PhYdrogen](https://github.com/PhYdrogen)
+- [@Leakim01](https://github.com/Leakim01)
+- [@paulinepar](https://github.com/paulinepar)
