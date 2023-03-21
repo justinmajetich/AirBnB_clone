@@ -1,0 +1,32 @@
+
+Tuesday, March 21 2023  18:39:02
+	To ovy, in state.py, line 5, can't import backref as it's a keyword parameter and don't need to
+	be imported
+
+Tuesday, March 21 2023  18:41:20
+	To ovy, in state.py, line 10, no need to getenv again, you could just import `storage_type` from models
+	since it's always initialized in `__init__`
+
+Tuesday, March 21 2023  18:42:54
+	To ovy, in state.py, line 12, I don't think you should wrap the entire class def in that
+	condition since our filestorage engine uses the class as well. The if/else when setting the attributes should be
+	good enough
+
+Tuesday, March 21 2023  18:45:47
+	To ovy, in state.py, line 26, you should pass the actual `City` type and not a string `City`.
+	Also, `key` is unused, so doing `.values()` instead of `.items()` should work better.
+
+Tuesday, March 21 2023  18:47:12
+	To ovy, in db_storage.py, during imports, you don't specify the modules you're importing the classes from.
+
+Tuesday, March 21 2023  18:49:29
+	To Ovy, in db_storage.py, line 57, since cls is a type and not a string, you should use
+	`.values()` method of the dict since that's what holds the types. Currently it'll be searching in the keys
+	which are strings
+
+Tuesday, March 21 2023  18:52:03
+	To Ovy, in db_storage.py, line 55, why not just get the value straight and then use that in
+	line 57 instead of getting key on 55 then getting value again on line 57.
+
+Tuesday, March 21 2023  18:53:40
+	To Ovy, in db_storage.py, for `new` method, you might want to check type of `obj` first
