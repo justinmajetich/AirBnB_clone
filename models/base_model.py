@@ -12,7 +12,6 @@ if getenv("HBNB_TYPE_STORAGE") == 'db':
 else:
     Base = object
 
-
 class BaseModel:
     """A base class for all hbnb models"""
 
@@ -24,7 +23,7 @@ class BaseModel:
                             default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instatntiates a nei model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -48,7 +47,15 @@ class BaseModel:
                 del kwargs['__class__']
             if 'id' not in kwargs.keys():
                 self.id = str(uuid.uuid4())
+            storage.new(self)
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs.get('updated_at',
+                datetime.now().isoformat()), '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs.get('created_at',
+                datetime.now().isoformat()), '%Y-%m-%dT%H:%M:%S.%f')
             self.__dict__.update(kwargs)
+            storage.new(self)
+            self.save()
 
     def __str__(self):
         """Returns a string representation of the instance"""
