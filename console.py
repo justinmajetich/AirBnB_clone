@@ -19,15 +19,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+            'number_rooms': int, 'number_bathrooms': int,
+            'max_guest': int, 'price_by_night': int,
+            'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -113,18 +113,23 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+def do_create(self, arg):
+    """ Create an object of any class"""
+    if not arg:
+        raise SyntaxError("Error of syntax")
+    first_split = arg.split(' ')
+    kwargs = {key: value.strip('"').replace('_', ' ') if value[0] == '"' else value
+            for key, value in map(lambda x: x.split('='), first_split[1:])}
+    cls_name = first_split[0]
+    try:
+        cls = getattr(sys.modules[__name__], cls_name)
+    except AttributeError:
+        print("** class doesn't exist **")
+        return
+    new_instance = cls(**kwargs)
+    new_instance.save()
+    print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
