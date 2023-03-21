@@ -114,38 +114,33 @@ class HBNBCommand (cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        _args = args.split(" ", 1)
-        if not _args[0]:
-            print("** class name missing**")
-            return
-        elif _args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[_args[0]]()
-        if len(_args) > 1:
-            _kwargs = dict((x, y) for x, y in (elt.split('=')
-                           for elt in _args[1].split(' ')))
-
-            for key, value in _kwargs.items():
+        """Create an object of any class
+        Exceptions:
+            SyntaxError: No args given
+            NameError: No object with name
+        """
+        try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            print("{}".format(obj.id))
+            for num in range(1, len(my_list)):
+                my_list[num] = my_list[num].replace('=', ' ')
+                attributes = split(my_list[num])
+                attributes[1] = attribute[1].replace('_', ' ')
                 try:
-                    getattr(new_instance, key)
-                except AttributeError:
-                    continue
-                if value[0] == "\"":
-                    value = value.strip("\"")
-                    value = value.replace("_", " ")
-                    value = value.replace("\\\"", "\"")
-                elif "." in value:
-                    value = float(value)
-                else:
-                    try:
-                        value = int(value)
-                    except Exception:
-                        continue
-                setattr(new_instance, key, value)
-        new_instance.save()
-        print(new_instance.id)
+                    var = eval(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1]) is not tuple:
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """

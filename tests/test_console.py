@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 """unittest module for the console"""
 
+
 import unittest
 import os
 import json
 import pycodestyle
 import io
+from io import stringIO
 from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from unittest.mock import patch
@@ -17,9 +19,8 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class TestCommand(unittest.TestCase):
-    """This class tests the console"""
+    """Class that tests the console"""
 
     @classmethod
     def setUpClass(cls):
@@ -77,6 +78,23 @@ class TestCommand(unittest.TestCase):
             self.assertIsNotNone(HBNBCommand.do_all.__doc__)
             self.assertIsNotNone(HBNBCommand.do_update.__doc__)
             self.assertIsNotNone(HBNBCommand.default.__doc__)
+
+        def test_create(self):
+            """Test create command inpout"""
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.consol.onecmd("create")
+                self.assertEqual(
+                    "** class name missing **\n", f.getvalue())
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.consol.onecmd("create asdfsfsd")
+                self.assertEqual(
+                    "** class doesn't exist **\n", f.getvalue())
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.consol.onecmd('create User email="x@.com" password="234"')
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.consol.onecmd("all User")
+                self.assertEqual(
+                    "[[User]", f.getvalue()[:7])
 
 
 if __name__ == "__main__":
