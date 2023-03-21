@@ -1,16 +1,22 @@
 #!/usr/bin/python3
 
-#!/usr/bin/env python3
-
 """
-This script defines a Flask application with several routes.
-It uses the Flask module, which can be found at:
-https://flask.palletsprojects.com/en/2.1.x/
-"""
+This is a Flask application that defines several routes.
 
+Routes:
+- /: returns a greeting message
+- /hbnb: returns the message "HBNB"
+- /c/<text>: returns the message "C <text>", replacing underscores with spaces
+- /python: returns the message "Python is cool" by default, or "Python <text>"
+  if a value for <text> is provided
+- /number/<int:n>: returns the message "<n> is a number"
+- /number_template/<int:n>: renders a Jinja2 template that displays the message
+  "<n> is a number"
+"""
 from flask import Flask, render_template
 
 app = Flask(__name__)
+
 
 @app.route('/', strict_slashes=False)
 def index():
