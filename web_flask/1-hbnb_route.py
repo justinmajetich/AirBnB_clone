@@ -1,5 +1,9 @@
-#!/usr/bin/python3
-"""from flask import Flask""" 
+#!/usr/bin/env python3
+"""
+This module defines a Flask application with two routes: '/' and '/hbnb'.
+"""
+
+from flask import Flask
 
 app = Flask(__name__)
 
