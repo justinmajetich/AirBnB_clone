@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 # Split arguments into key and value
                 item = item.split('=')
                 key = item[0]
-                value = item[1]
+                value = eval(item[1])
 
                 if not isinstance(value, (str, float, int)):
                     continue  # Skip the argument
