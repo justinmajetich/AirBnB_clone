@@ -1,21 +1,11 @@
 #!/usr/bin/python3
 
+#!/usr/bin/env python3
+
 """
-This module defines a Flask application with five routes:
-- '/'
-- '/hbnb'
-- '/c/<text>'
-- '/python/' (default value of 'text' is 'is cool')
-- '/python/<text>'
-- '/number/<n>'
-- '/number_template/<n>'
-
-Each route returns a string based on the input text or a rendered HTML template.
-
-Example usage:
-$ export FLASK_APP=7-airbnb_clone_v3.py
-$ export FLASK_ENV=development
-$ flask run
+This script defines a Flask application with several routes.
+It uses the Flask module, which can be found at:
+https://flask.palletsprojects.com/en/2.1.x/
 """
 
 from flask import Flask, render_template
