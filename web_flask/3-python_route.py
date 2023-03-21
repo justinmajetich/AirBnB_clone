@@ -1,5 +1,16 @@
 #!/usr/bin/python3
-"""from flask import Flask"""
+"""
+This script defines a Flask application with four routes:
+- '/'
+- '/hbnb'
+- '/c/<text>'
+- '/python/' (default value of 'text' is 'is cool')
+- '/python/<text>'
+
+The routes return strings based on the input text.
+"""
+
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -19,6 +30,3 @@ def c(text):
 @app.route('/python/<text>', strict_slashes=False)
 def python(text):
     return 'Python ' + text.replace('_', ' ')
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
