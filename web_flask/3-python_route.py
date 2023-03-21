@@ -30,3 +30,9 @@ def c(text):
 @app.route('/python/<text>', strict_slashes=False)
 def python(text):
     return 'Python ' + text.replace('_', ' ')
+
+# Test case for "/python/<text>" route
+def test_python_route():
+    import requests
+    response = requests.get('http://localhost:5000/python/test')
+    assert response.text == 'Python test'
