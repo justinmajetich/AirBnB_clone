@@ -3,9 +3,10 @@
 from models.base_model import BaseModel
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    email = ''
+    __tablename__: 'users'
+    email = Column(String(128))
     password = ''
     first_name = ''
     last_name = ''

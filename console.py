@@ -132,9 +132,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         else:
-            
             new_instance = HBNBCommand.classes[args]()
-            
             storage.save()
             print(new_instance.id)
             storage.save()
@@ -326,7 +324,6 @@ class HBNBCommand(cmd.Cmd):
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
                     
-
                 # update dictionary with name, value pair
                 if not isinstance(att_val, (int, float)) and "_" in att_val:
                     att_val = att_val.replace("_", " ")
