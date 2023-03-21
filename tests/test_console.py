@@ -45,6 +45,13 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("'height': 9.1", pout.getvalue().strip())
             
             
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db', 'DBStorage test')  
+    
+    def test_database_storage(self):
+        
+        
+            
             
             
             
