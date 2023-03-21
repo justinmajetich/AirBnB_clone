@@ -114,19 +114,46 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        obj = args.split()
-        if not obj:
+        obj = args.split(" ")
+        classname = obj[0]
+        params = obj[1:]
+        
+        if not classname:
             print("** class name missing **")
-        elif obj[0] not in HBNBCommand.classes:
+        elif classname not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
-            for key in HBNBCommand.classes:
-                if key == obj[0]:
-                    new_instance = eval("{}()".format(obj[0]))
-            print(new_instance.id)
-            storage.save()
+            """create an list"""
+            object_params = {}
+    
+        for param in params:
+            """ Replace underscores with spaces in the value
+            """
+            key, value = param.split('=')
+            value = value.replace('_', ' ')
+            """checks if it is a string and removes the quotation marks"""
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+                
+                """Check if the value is a float"""
+            elif '.' in value and all(char.isdigit() for char in value.replace('.', '', 1)):
+                value = float(value)
 
+                """check id the value is integer"""
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            
+            """add a key and a value to the dictionary"""
+            object_params[key] = value
+            """creates a new instance of the class specified by the user"""
+            new_object = globals()[classname](**object_params)
+
+        """stores the new instance"""
+        self.storage.save()
+        """prints the id of the new instance"""
+        print(new_object.id)
 
         
     def help_create(self):
