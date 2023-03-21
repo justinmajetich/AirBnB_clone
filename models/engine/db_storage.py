@@ -39,20 +39,16 @@ class DBStorage:
         depending of the class name (argument cls)
         """
 
-        objects = [User, State, City, Amenity, Place, Review]
-
         dictionary = {}
-        objs = []
 
         if cls:
-            objs = self.__session.query(cls).all()
+            objs = self.__session.query(cls)
 
         else:
-            for cls in objects:
-                objs += self.__session.query(cls)
+            objs = self.__session.query(User, State, City, Amenity, Place, Review)
 
         for obj in objs:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
             dictionary[key] = obj
 
         return dictionary
