@@ -116,7 +116,6 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         params = args.split()
         classname = params[0]
-
         if not args:
             print("** class name missing **")
             return
