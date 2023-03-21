@@ -9,7 +9,15 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Retur`ns a dictionary of models currently in storage"""
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)  # convert the string into an actual class obj
+            cls_dict = {}
+            for key, value in FileStorage.__objects.items():
+                if type(value) == cls:
+                    cls_dict[key] = value
+            return cls_dict
         return FileStorage.__objects
 
     def new(self, obj):
