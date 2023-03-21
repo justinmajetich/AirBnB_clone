@@ -30,3 +30,6 @@ Tuesday, March 21 2023  18:52:03
 
 Tuesday, March 21 2023  18:53:40
 	To Ovy, in db_storage.py, for `new` method, you might want to check type of `obj` first
+
+Tuesday, March 21 2023  20:12:23
+	To Ovy, in __init__ for models package, you didn't import `getenv` before using it
