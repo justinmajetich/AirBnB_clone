@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/usr/bin/python3
 
 """
@@ -28,7 +27,6 @@ def teardown(self):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
-=======
 #!/usr/bin/python3
 """Starts a Flask web application.
 The application listens on 0.0.0.0, port 5000.
@@ -59,4 +57,3 @@ def teardown(exc):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=None)
->>>>>>> ca8b9d21952aceed5bb310b84efd729bdf9ce273
