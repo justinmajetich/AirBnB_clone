@@ -1,46 +1,43 @@
 #!/usr/bin/python3
-"""
-This script defines a Flask application with five routes:
-- '/'
-- '/hbnb'
-- '/c/<text>'
-- '/python/' (default value of 'text' is 'is cool')
-- '/python/<text>'
-- '/number/<n>'
-- '/number_template/<n>'
 
-The routes return strings based on the input text, or render an HTML template
-with the input number.
+"""
+Script that starts a Flask web application
 """
 
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/', strict_slashes=False)
-def index():
-    return 'Hello HBNB!'
+@app.route('/', methods=['GET'], strict_slashes=False)
+def hello_hbnb():
+    """Returns a greeting message"""
+    return "Hello HBNB!"
 
-@app.route('/hbnb', strict_slashes=False)
+@app.route('/hbnb', methods=['GET'], strict_slashes=False)
 def hbnb():
-    return 'HBNB'
+    """Returns the acronym HBNB"""
+    return "HBNB"
 
-@app.route('/c/<text>', strict_slashes=False)
-def c(text):
-    return 'C ' + text.replace('_', ' ')
+@app.route('/c/<string:text>', methods=['GET'], strict_slashes=False)
+def text_route(text):
+    """Returns the text after the letter 'c', replacing underscores with spaces"""
+    return "C {}".format(text.replace("_", " "))
 
-@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def python(text):
-    return 'Python ' + text.replace('_', ' ')
+@app.route('/python', methods=['GET'], strict_slashes=False)
+@app.route('/python/<string:text>', methods=['GET'], strict_slashes=False)
+def text_route_python(text="is cool"):
+    """Returns the text after the word 'Python', replacing underscores with spaces"""
+    return "Python {}".format(text.replace("_", " "))
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def number(n):
-    return f'{n} is a number'
+@app.route('/number/<int:n>', methods=['GET'], strict_slashes=False)
+def num_route(n):
+    """Returns a message stating that the given input is a number"""
+    return "{} is a number".format(n)
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def number_template(n):
-    return render_template('5-number.html', n=n)
+@app.route('/number_template/<int:n>', methods=['GET'], strict_slashes=False)
+def num_route_template(n):
+    """Renders a template that displays the given number"""
+    return render_template("5-number.html", num=n)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
