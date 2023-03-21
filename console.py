@@ -124,39 +124,31 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Create an instance of the class using the name provided by the user
-        class_name = argument_list[0]
-        if class_name not in HBNBCommand.classes:
+        elif argument_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
         # Create an instance of the class using the name provided by the user
-        new_instance = HBNBCommand.classes[class_name]()
+        new_instance = HBNBCommand.classes[argument_list[0]]()
 
         # Loop the rest of the arguments and set properties on the instance
-        for argument_index in range(1, len(argument_list)):
-            argument_string = argument_list[argument_index]
-            argument_parts = argument_string.split('=')
+        for index in range(1, len(argument_list)):
+            argument_str = argument_list[index].split('=')
 
-        # Check if the argument is in the form of a key-value pair
-        if len(argument_parts) > 1:
-            key = argument_parts[0]
-            value = argument_parts[1]
+            # Check if the argument is in the form of a key-value pair
+            if len(argument_str) > 1:
+                # If is a string, remove quotes and replace underscores with spaces
+                if argument_str[1][0] == '"':
+                    argument_str[1] = argument_str[1].replace('_', ' ')
+                    setattr(new_instance, argument_str[0], argument_str[1][1:-1])
 
-            # If is a string, remove quotes and replace underscores with spaces
-            if value[0] == '"':
-                value = value.replace('_', ' ')
-                value = value[1:-1]
+                # If the value is a float, convert it to a float
+                elif '.' in argument_str[1]:
+                    setattr(new_instance, argument_str[0], float(argument_str[1]))
 
-            # If the value is a float, convert it to a float
-            elif '.' in value:
-                value = float(value)
-
-            # If the value is an integer, convert it to an integer
-            else:
-                value = int(value)
-
-            # Set the property on the instance
-            setattr(new_instance, key, value)
+                # If the value is an integer, convert it to an integer
+                else:
+                    setattr(new_instance, argument_str[0], int(argument_str[1]))
 
         # Print the ID of the new instance and save
         print(new_instance.id)
