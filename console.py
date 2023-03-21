@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,19 +114,44 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        obj = args.split()
-        if not obj:
-            print("** class name missing **")
-        elif obj[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-        else:
-            for key in HBNBCommand.classes:
-                if key == obj[0]:
-                    new_instance = eval("{}()".format(obj[0]))
-            print(new_instance.id)
-            storage.save()
+        classname, *params = args.split()
 
+        # Vallidations
+        if not classname:
+            print("** class name missing **")
+        if classname not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+
+        object_params = {}
+    
+        for param in params:
+            # Replace underscores with spaces in the value
+            key, value = param.split('=')
+            value = value.replace('_', ' ')
+
+            # checks if it is a string and removes the quotation marks
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+            # Check if the value is a float
+            elif '.' in value and all(char.isdigit() for char in value.strip('-').replace('.', '', 1)):
+                value = float(value)
+            # check id the value is integer
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            
+            # add a key and a value to the dictionary
+            object_params[key] = value
+
+        # creates a new instance of the class specified by the user
+        new_object = globals()[classname](**object_params)
+
+        # stores the new instance
+        new_object.save()
+
+        # prints the id of the new instance
+        print(new_object.id)
         
     def help_create(self):
         """ Help information for the create method """
@@ -274,7 +299,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -282,10 +307,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg

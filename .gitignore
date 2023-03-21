@@ -1,4 +1,6 @@
+.gitignore
 *.pyc
 *.pyo
-
+test_params_create.py
+file.json
 __pycache__/
