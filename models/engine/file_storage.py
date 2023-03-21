@@ -15,7 +15,7 @@ class FileStorage:
         else:
             res = {}
             for k, v in FileStorage.__objects.items():
-                if v.__class__ is cls or v.__name__ is cls:
+                if v.__class__ is cls:
                     res[k] = v.__dict__
             return res
 
@@ -30,7 +30,7 @@ class FileStorage:
         
         save = [key for key in FileStorage.__objects.keys()] 
         for k in save:
-            if (FileStorage.__objects[k].__class__ == obj):
+            if (FileStorage.__objects[k] == obj):
                 del FileStorage.__objects[k]
         self.save()
 
