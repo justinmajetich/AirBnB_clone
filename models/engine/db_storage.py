@@ -2,9 +2,10 @@
 """New engine DbStorage"""
 
 import os
+import models
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -43,16 +44,16 @@ class DBStorage:
                                               db_name),
                                       pool_pre_ping=True
                                       )
-
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
+
 
     def all(self, cls=None):
         """ query on the current database session"""
 
         if not self.__session:
             self.reload()
-            
+
         dict_objects = {}
         # class given
         if cls != None:
@@ -76,6 +77,8 @@ class DBStorage:
 
     def delete(self, obj=None):
         """ delete object from current db session"""
+        if not self.__session:
+            self.reload()
         if obj is not None:
             self.__session.delete(obj)
 
