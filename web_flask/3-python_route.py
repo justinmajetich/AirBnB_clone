@@ -34,7 +34,7 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
     """
-    Returns a string that prepends 'C ' to the given text with underscores replaced by spaces.
+    Returns a string that prepends 'C ' to the given text.
     """
     return 'C ' + text.replace('_', ' ')
 
@@ -43,7 +43,7 @@ def c(text):
 @app.route('/python/<text>', strict_slashes=False)
 def python(text):
     """
-    Returns a string that prepends 'Python ' to the given text with underscores replaced by spaces.
+    Returns a string that prepends 'Python ' to the given text
     """
     return 'Python ' + text.replace('_', ' ')
 
