@@ -33,3 +33,9 @@ Tuesday, March 21 2023  18:53:40
 
 Tuesday, March 21 2023  20:12:23
 	To Ovy, in __init__ for models package, you didn't import `getenv` before using it
+
+Tuesday, March 21 2023  21:04:18
+	Move tablename assignment in state.py outside condition
+
+Tuesday, March 21 2023  21:26:41
+	To Ovy, in db_storage, where you check in init whether env is equal to test, you misspell `metadata`
