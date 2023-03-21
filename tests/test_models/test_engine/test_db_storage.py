@@ -9,7 +9,7 @@ import unittest
 # this will be used to get important MySQL Database details
 from os import getenv
 
-# Models  for Creating SQL tables inside the hbnb_test_db database
+# Models  for creating SQL tables inside the hbnb_test_db database
 from models.base_model import Base
 from models.user import User
 from models.state import State
