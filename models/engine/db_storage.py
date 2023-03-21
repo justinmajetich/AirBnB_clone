@@ -50,6 +50,9 @@ class DBStorage:
     def all(self, cls=None):
         """ query on the current database session"""
 
+        if not self.__session:
+            self.reload()
+            
         dict_objects = {}
         # class given
         if cls != None:
