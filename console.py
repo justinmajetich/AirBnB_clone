@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
             elif '.' in value and all(char.isdigit() for char in value.strip('-').replace('.', '', 1)):
                 value = float(value)
             # check id the value is integer
-            elif value.isdigit():
+            elif value.strip('-').isdigit():
                 value = int(value)
             else:
                 continue
