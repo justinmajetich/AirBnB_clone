@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
-from models import Base
-from sqlalchemy import Column, String, ForeignKey
+from models.base_model import Base
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
@@ -11,10 +11,7 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship('City', cascade='all, delete', back_populates="state")
-    state = relationship('State', back_populates="City")
-
-    name = ""
+    cities = relationship('City', backref="state", cascade='delete')
 
     if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property

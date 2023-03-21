@@ -16,8 +16,6 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        from models import storage
-
         self.id = kwargs.get('id', str(uuid.uuid4()))
         self.created_at = kwargs.get('created_at', datetime.now())
         self.updated_at = kwargs.get('updated_at', datetime.now())
@@ -29,7 +27,6 @@ class BaseModel:
                 elif key != '__class__':
                     # Everything will be added as an attribute except the class
                     setattr(self, key, value)
-
 
 
     def __str__(self):
