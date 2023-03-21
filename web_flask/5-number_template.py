@@ -1,23 +1,21 @@
 #!/usr/bin/python3
 
 """
-This module defines a Flask application with four routes:
+This module defines a Flask application with five routes:
 - '/'
 - '/hbnb'
 - '/c/<text>'
 - '/python/' (default value of 'text' is 'is cool')
 - '/python/<text>'
+- '/number/<n>'
+- '/number_template/<n>'
 
-Each route returns a string based on the input text.
+Each route returns a string based on the input text or a rendered HTML template.
 
-To run the application, you need to install Flask. You can do this by running:
-
-    pip install Flask
-
-Once Flask is installed, use the following command to start the application:
-    
-    python3 -m flask run --host=0.0.0.0 --port=5000
-
+Example usage:
+$ export FLASK_APP=7-airbnb_clone_v3.py
+$ export FLASK_ENV=development
+$ flask run
 """
 
 from flask import Flask, render_template
