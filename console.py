@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+from ast import Attribute
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -19,16 +20,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+        }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+        }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -115,16 +116,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        arguments = args.split(' ')  # splits the arguments
         if not args:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+        class_names = arguments[0]  # name of the class
+        if class_names not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        """Param syntax: <key name>=<value>"""
+        Attributes = {}
+        for parameter in arguments[1:]:
+            key, value = parameter.split('=')
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ')
+            elif '.' in value:
+                value = float(value)
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            Attributes[key] = value
+        new_instance = HBNBCommand.classes[class_names]()
+        new_instance.__dict__.update(Attributes)
         storage.save()
         print(new_instance.id)
         storage.save()
+        # new_instance = HBNBCommand.classes[args]()
+        # storage.save()
+        # print(new_instance.id)
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
