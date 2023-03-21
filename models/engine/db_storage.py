@@ -5,7 +5,7 @@ import os
 import models
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -36,6 +36,7 @@ class DBStorage:
         pswd = os.getenv("HBNB_MYSQL_PWD")
         host = os.getenv("HBNB_MYSQL_HOST")
         db_name = os.getenv("HBNB_MYSQL_DB")
+        env = os.getenv("HBNB_MYSQL_ENV")
         # create engine
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user,
@@ -44,15 +45,12 @@ class DBStorage:
                                               db_name),
                                       pool_pre_ping=True
                                       )
-        if os.getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
+        if env == "test":
+            Base.metadata.drop_all(bind=self.__engine)
 
 
     def all(self, cls=None):
         """ query on the current database session"""
-
-        if not self.__session:
-            self.reload()
 
         dict_objects = {}
         # class given
@@ -70,6 +68,7 @@ class DBStorage:
     def new(self, obj):
         """ add new object to the db session"""
         self.__session.add(obj)
+        self.save()
 
     def save(self):
         """ save all change by commit in the current db session"""
@@ -77,10 +76,9 @@ class DBStorage:
 
     def delete(self, obj=None):
         """ delete object from current db session"""
-        if not self.__session:
-            self.reload()
         if obj is not None:
             self.__session.delete(obj)
+        self.save()
 
     def reload(self):
         """ create db table & session"""
