@@ -30,7 +30,6 @@ class HBNBCommand(cmd.Cmd):
              'latitude': float, 'longitude': float
             }
 
-
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         exit()
@@ -66,18 +65,18 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         param_list_dict = {}
         for param in param_list:
             key_value = param.split("=")
             if len(key_value) != 2:
-               continue
+                continue
 
             key = key_value[0]
             value = key_value[1]
 
             if value.startswith('"') and value.endswith('"'):
-               value = value[1:-1].replace('_', ' ')
+                value = value[1:-1].replace('_', ' ')
             elif '.' in value:
                 if type(value) == float:
                     value = float(value)
@@ -153,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -285,6 +284,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
