@@ -31,4 +31,4 @@ class User(BaseModel, Base):
         reviews = relationship("Review", backref="user",
                                cascade="all, delete, delete-orphan")
     else:
-        email, password, first_name, last_name = ""
+        email = password = first_name = last_name = ""
