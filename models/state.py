@@ -12,11 +12,10 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete, delete-orphan",
-                          backref="state")
+    cities = relationship("City", cascade="all, delete, delete-orphan", backref="state")
 
     @property
-    def cities(self):
+    def cities(self) -> list:
         """Getter for all City instances with state_id == State.id"""
         city_list = []
         fs = FileStorage()

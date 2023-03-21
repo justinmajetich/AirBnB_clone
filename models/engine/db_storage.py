@@ -34,6 +34,7 @@ class DBStorage:
 
         # dialect -> mysql, driver -> mysqldb
         URL = "mysql+mysqldb://{}:{}@{}:3306/{}".format(USER, PWD, HOST, DB)
+        # create database engine
         self.__engine = create_engine(URL, pool_pre_ping=True)
 
         if environment == "test":
@@ -47,7 +48,7 @@ class DBStorage:
         """
         all_dict = {}
         # classes = [Amenity, City, Place, Review, State, User]
-        classes = [City, State]
+        classes = [City, State, User, Place]
         if cls:
             if isinstance(cls, str):
                 cls = eval(cls)
@@ -58,7 +59,6 @@ class DBStorage:
 
         else:
             for cls_name in classes:
-                # name = cls_name.__name__
                 query_all_rows = self.__session.query(cls_name)
                 for row in query_all_rows:
                     key = "{}.{}".format(type(row).__name__, row.id)

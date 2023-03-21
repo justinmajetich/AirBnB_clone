@@ -130,8 +130,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         elif args:
-            all_args = args.split(" ")
-            # print(all_args, len(all_args))
+            all_args = args.split(" ") # all_args is a list
+
             if len(all_args) == 1:  # only class is given
                 if args not in HBNBCommand.classes:
                     print("** class doesn't exist **")
@@ -143,18 +143,17 @@ class HBNBCommand(cmd.Cmd):
 
             # Parse key=val arguments on command line
             try:
-                cls_name, *dict_args = all_args  # store key=val in new list
-                # print(dict_args)
+                cls_name, *list_args = all_args  # store key=val in new list
             except IndexError:
                 pass
             if cls_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
 
-            if dict_args:
+            if list_args:
                 new_dict = {}
                 formatted_dict = {}
-                for string in dict_args:
+                for string in list_args:
                     key = re.search(r".+(?==)", string)
                     value = re.search(r"(?<==).+", string)
                     if not key or not value:
