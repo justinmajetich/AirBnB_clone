@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script defines a Flask application with four routes:
+This module defines a Flask application with four routes:
 - '/'
 - '/hbnb'
 - '/c/<text>'
