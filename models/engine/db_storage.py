@@ -25,7 +25,7 @@ class DBStorage:
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 getenv("HBNB_MYSQL_USER"),
                 getenv("HBNB_MYSQL_PWD"),
-                getenv("HBNB_MYSQL_HOST"),
+                getenv("HBNB_MYSQL_HOST", default="localhost"),
                 getenv("HBNB_MYSQL_DB")
             ),
             pool_pre_ping=True
@@ -59,20 +59,18 @@ class DBStorage:
     
     def new(self, obj):
         """ add the object to the current database session (self.__session) """
-
         self.__session.add(obj)
 
     def save(self): 
         """
         commit all changes of the current database session (self.__session)
         """
-
         self.__session.commit()
 
     def delete(self, obj=None):
         """ delete from the current database session obj if not None """
-
-        self.__session.delete(obj)
+        if obj:
+            self.__session.delete(obj)
 
     def reload(self):
         """Create all tables in the database and initialize a new session."""
