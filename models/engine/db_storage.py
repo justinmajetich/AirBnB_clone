@@ -1,4 +1,5 @@
-
+#!/usr/bin/python3
+"""db storage"""
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
@@ -30,15 +31,18 @@ class DBStorage:
         host = os.getenv('HBNB_MYSQL_HOST')
         database = os.getenv('HBNB_MYSQL_DB')
         user = os.getenv('HBNB_MYSQL_USER')
-        self.__engine = sqlalchemy.create_engine(
-            'mysql+mysqldb://{}:{}@{}:3306/{}'.format(user, password, host, database), pool_pre_ping=True)
+        string = 'mysql+mysqldb://{}:{}@{}:3306/{}'.format(user,
+                                                           password,
+                                                           host,
+                                                           database)
+        self.__engine = sqlalchemy.create_engine(string, pool_pre_ping=True)
         if os.getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """get all objects or objects of certain type"""
         data = {}
-        if cls == None or cls.__name__ not in self.classes:
+        if cls is None or cls.__name__ not in self.classes:
             for i in self.classes.keys():
                 queried = self.__session.query(self.classes[i]).all()
                 for j in queried:
@@ -61,12 +65,17 @@ class DBStorage:
 
     def delete(self, obj=None):
         """delete obj"""
-        if obj != None:
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
         """reload db"""
         Base.metadata.create_all(self.__engine)
-        session_maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_maker = sessionmaker(bind=self.__engine,
+                                     expire_on_commit=False)
         session = scoped_session(session_maker)
         self.__session = session()
+
+    def close(self):
+        """close session"""
+        self.__session.close()
