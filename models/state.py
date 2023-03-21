@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from os import getenv
+import models
 from models.base_model import BaseModel, Base
 from models.city import City
 from sqlalchemy import Column, String
@@ -13,7 +14,7 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", back_populates="states", cascade="delete")
+    cities = relationship("City", backref="states", cascade="delete")
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
@@ -22,6 +23,7 @@ class State(BaseModel, Base):
             with state_id equals to the current State.id => It will be the FileStorage
             relationship between State and City
             """
-            return [city for city in self.cities if city.state_id == self.id]
+            list = list(models.storage.all(City).values())
+            return [city for city in list if city.state_id == self.id]
         
 
