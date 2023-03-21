@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-statrs flask web application
+starts flask web application
 """
 from models import storage
 from flask import Flask
@@ -11,7 +11,8 @@ app = Flask(__name__)
 
 @app.route("/states", strict_slashes=False)
 def states():
-    """Displays an HTML page with a list of all States.
+    """
+    Displays an HTML page with a list of all States.
     States are sorted by name.
     """
     states = storage.all("State")
