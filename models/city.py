@@ -11,8 +11,9 @@ Base = declarative_base()
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     __tablename__ = 'cities'
-    places = relationship('Place', back_populates = 'cities',
-                          cascade = 'all, delete')
+    places = relationship('Place', back_populates='cities',
+                          cascade='all, delete')
+    state = relationship('State', back_populates='cities')
 
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
