@@ -161,6 +161,28 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("** no instance found **", output)
             self.assertIn("** no instance found **", output2)
 
+    def test_improved_create_command(self):
+        """
+        This method tests for the imporved functionalities of create
+        command with the console.
+        """
+        all_class = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
+        all_types = ['\"John_Doe\"', '89', '3.1416']
+
+        for test_class in all_class:
+            for test_type in all_types:
+                with patch('sys.stdout', new=StringIO()) as f:
+                    cmd = "create {} var={}".format(test_class, test_type)
+                    HBNBCommand().onecmd(cmd)
+                    test_id = f.getvalue()
+                    cmd = "show {} {}".format(test_class, test_id)
+                    HBNBCommand().onecmd(cmd)
+                    output = f.getvalue()
+                    self.assertIn('var', output)
+                    self.assertIn(test_type.strip('"').replace('_', ' '),
+                                  output)
+
     def test_update_command(self):
         """
             This method in this tests for the update command

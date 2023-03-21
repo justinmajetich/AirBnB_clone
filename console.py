@@ -47,14 +47,50 @@ class HBNBCommand(cmd.Cmd):
 
         valid <classes>: ['BaseModel', 'User', 'State', 'City',
                           'Amenity', 'Place', 'Review']
+
+        Usage 1: create <class name>
+        Usage 2: create <class name> <key name>=<value>
+        NOTE: Usage 2 requires <value> to be formarted properly.
+        i.e.    string value type with double quotes:
+                (all inner double quotes need to be escaped with a backslash)
+                name="John"
+                float value type with decimal without the quotes:
+                pi=3.1416
+                number value type (integer) defaults to:
+                age=14
         """
-        argv = line.split()
+        def create_obj(cls_name):
+            """Creates a new object and return it"""
+            obj = eval("{}()".format(cls_name))
+            return obj
+
+        if line.count('=') == 0:
+            argv = line.split()
+        else:
+            argv = line.split()[0].split()  # match existing method
+
         if len(argv) == 0:
             print("** class name missing **")
         elif len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
         else:
-            obj = eval("{}()".format(argv[0]))
+            obj = create_obj(argv[0])
+            if line.count('=') != 0:
+                argv = line.split(' ')[1:]
+                for arg in argv:
+                    try:
+                        key, value = arg.split('=')
+                        if value.find('"') >= 0:  # string
+                            value = value[1:-1]  # strip off the quotes
+                            value = value.replace('_', ' ')
+                            value = str(value)
+                        elif value.find('.') >= 0:  # float
+                            value = float(value)
+                        else:  # default
+                            value = int(value)
+                        obj.__dict__[key] = value
+                    except ValueError:
+                        continue
             obj.save()
             print(obj.id)
 
@@ -177,6 +213,8 @@ class HBNBCommand(cmd.Cmd):
                     obj.__dict__[argv[2]] = Type(argv[3].strip("\""))
                 except KeyError:
                     obj.__dict__[argv[2]] = argv[3].strip("\"")
+                except ValueError:
+                    pass
                 obj.save()
             except KeyError:
                 print("** no instance found **")
