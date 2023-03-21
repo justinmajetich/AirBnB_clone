@@ -8,11 +8,13 @@ from models.city import City
 from os import getenv
 
 storage = getenv("HBNB_TYPE_STORAGE")
+
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     if storage == 'db':
-        name = Column(String(128),nullable=False)
+        name = Column(String(128), nullable=False)
         cities = relationship("City", backref='states')
     else:
         name = ""
