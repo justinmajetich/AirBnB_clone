@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         dict = {}
         for i in range(len(list)):
             if '"' in list[i][1]:
-                list[i][1] = list[i][1].replace('"', '')
+                list[i][1] = list[i][1].replace('"', '').replace('_', ' ')
             elif '.' in list[i][1]:
                 list[i][1] = float(list[i][1])
             else:
