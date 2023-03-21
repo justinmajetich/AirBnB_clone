@@ -137,7 +137,8 @@ class HBNBCommand(cmd.Cmd):
                 # Split arguments into key and value
                 item = item.split('=')
                 key = item[0]
-                value = item[1]
+                value = item[1].strip("'\"")
+               # print(value.strip("'\""))
 
                 if not isinstance(value, (str, float, int)):
                     continue  # Skip the argument
