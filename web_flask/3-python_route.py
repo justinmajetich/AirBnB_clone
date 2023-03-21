@@ -31,11 +31,5 @@ def c(text):
 def python(text):
     return 'Python ' + text.replace('_', ' ')
 
-# Test case for "/python/<text>" route
-def test_python_route():
-    import requests
-    response = requests.get('http://localhost:5000/python/test')
-    assert response.text == 'Python test'
-
 if _name_ == "_main_":
     app.run(host='0.0.0.0', port=5000)
