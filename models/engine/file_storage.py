@@ -61,6 +61,6 @@ class FileStorage:
         if obj == None:
             return
         if obj in FileStorage.__objects:
-            el = [x for x in FileStorage.__objects if x == obj]
+            el = {x for x in FileStorage.__objects if x == obj}
             del el
             self.save()
