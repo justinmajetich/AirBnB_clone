@@ -15,7 +15,7 @@ class FileStorage:
         else:
             res = {}
             for k, v in FileStorage.__objects.items():
-                if v.__class__ is cls:
+                if v.__class__ is cls or v.__name__ is cls:
                     res[k] = v.__dict__
             return res
 
