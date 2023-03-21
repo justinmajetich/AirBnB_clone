@@ -5,6 +5,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import os
 import models
+import sqlalchemy
 
 
 class User(BaseModel, Base):
@@ -25,6 +26,7 @@ class User(BaseModel, Base):
     
     __tablename__ = "users"
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
+
         email = Column(
             String(128),
             nullable=False)
@@ -46,7 +48,7 @@ class User(BaseModel, Base):
             cascade="all, delete-orphan")
         reviews = relationship(
             "Review",
-            backref='user',
+            backref="user",
             cascade='all, delete-orphan')
     else:
         email = ""
