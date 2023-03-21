@@ -3,16 +3,12 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import os
-import models
-
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes
-    
+
         Attributs:
         ====================
-
             email : email of user
                     String, not null
             password: password of compte user
@@ -22,34 +18,23 @@ class User(BaseModel, Base):
             last_name: last name of user
                     String, not null
     """
-    
+
     __tablename__ = "users"
-    if os.getenv("HBNB_TYPE_STORAGE") == 'db':
-        email = Column(
-            String(128),
-            nullable=False)
-        password = Column(
-            String(128),
-            nullable=False
-        )
-        first_name = Column(
-            String(128),
-            nullable=False
-        )
-        last_name = Column(
-            String(128),
-            nullable=False
-        )
-        places = relationship(
-            "Place",
-            backref="user",
-            cascade="all, delete-orphan")
-        reviews = relationship(
-            "Review",
-            backref='user',
-            cascade='all, delete-orphan')
-    else:
-        email = ""
-        password = ""
-        first_name = ""
-        last_name =""
+
+    email = Column(
+        String(128),
+        nullable=False)
+    password = Column(
+        String(128),
+        nullable=False
+    )
+    first_name = Column(
+        String(128),
+        nullable=False
+    )
+    last_name = Column(
+        String(128),
+        nullable=False
+    )
+    reviews = relationship('Review', backref='user', cascade='all, delete')
+    places = relationship('Place', backref='user', cascade='all, delete')
