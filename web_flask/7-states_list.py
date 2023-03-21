@@ -15,7 +15,10 @@ def states_list():
     states = sorted(list(storage.all(State).values()), 
                     key=lambda state: state.name)
     
+    # print states
     return render_template('7-states_list.html', states=states)
+
+# end session after every request
 
 
 @app.teardown_appcontext
