@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -74,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] =='{' and pline[-1] == '}'\
-                            and type(eval(pline)) ==dict:
+                            and type(eval(pline)) == dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -135,10 +136,12 @@ class HBNBCommand(cmd.Cmd):
             else:
                  list[i][1] = int(list[i][1])
             dict[list[i][0]] = list[i][1]
-
-        new_instance = HBNBCommand.classes[args_splited[0]](**dict)
+    
+        new_instance = HBNBCommand.classes[args_splited[0]]()
         storage.save()
         print(new_instance.id)
+        for key, value in dict.items():
+            exec(f"new_instance.{key} = value")
         storage.save()
 
     def help_create(self):
