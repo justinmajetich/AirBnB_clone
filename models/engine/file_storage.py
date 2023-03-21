@@ -29,8 +29,8 @@ class FileStorage:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
-                if (type(val) != dict):
-                    temp[key] = val.to_dict()
+                #print(f" DATA :  {type(val)} {val}")
+                temp[key] = val.to_dict()
             json.dump(temp, f)
 
     def reload(self):
@@ -61,7 +61,9 @@ class FileStorage:
         """ to delete obj from __objects """
         if obj == None:
             return
-        if obj in FileStorage.__objects:
-            el = {x for x in FileStorage.__objects if x == obj}
-            del el
-            self.save()
+        
+        save = [key for key in FileStorage.__objects.keys()] 
+        for k in save:
+            if (FileStorage.__objects[k].__class__ == obj):
+                del FileStorage.__objects[k]
+        self.save()
