@@ -147,6 +147,7 @@ class HBNBCommand(cmd.Cmd):
         # creates a new instance of the class specified by the user
         new_object = globals()[classname](**object_params)
 
+        print(new_object)
         # stores the new instance
         new_object.save()
 
