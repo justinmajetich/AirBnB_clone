@@ -125,15 +125,14 @@ class HBNBCommand(cmd.Cmd):
         for arg in args.split()[1:]:
             if '=' in arg:
                 continue
-            key, value = arg.split('=', 1)
-            print(f"{key}:{value}")
+            key, value = arg.split("=", 1)
             if not value:
                 continue
             if value[0] == '"' and value[-1] == '"' and len(value) > 1:
                 value1 = value[1:-2].replace('_', ' ')
                 if '"' in value1:
                     value = value1.split('"')
-                    value1 = value[0] + '\"' + value[1]
+                    value = value1.replace('\\"', '"')
             elif type(value) == float or type(value) == int:
                 value1 = value
 
