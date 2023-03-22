@@ -8,11 +8,15 @@
     <ul>
       {% for state in states %}
         <li>{{ state.id }}: <b>{{ state.name }}</b>
-          <ul>
-            {% for city in state.cities %}
-              <li>{{ city.id }}: <b>{{ city.name }}</b></li>
-            {% endfor %}
-          </ul>
+          {% if state.cities %}
+            <ul>
+              {% for city in state.cities %}
+                <li>{{ city.id }}: <b>{{ city.name }}</b></li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No cities found for this state</p>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
