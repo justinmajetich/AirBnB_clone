@@ -35,9 +35,9 @@ def num_route(n):
     return "{} is a number".format(n)
 
 @app.route('/number_template/<int:n>', methods=['GET'], strict_slashes=False)
-def num_route_template(n):
+def num_template(n):
     """Renders a template that displays the given number"""
-    return render_template("5-number.html", num=n)
+    return render_template("5-number.html", n=n)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
