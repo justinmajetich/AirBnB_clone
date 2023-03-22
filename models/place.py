@@ -1,18 +1,19 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project """
-from models.base_model import BaseModel
+""" City Module for HBNB project """
+from models.base_model import BaseModel, Base
+from models import storage_type
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class Place(BaseModel):
-    """ A place to stay """
-    city_id = ""
-    user_id = ""
-    name = ""
-    description = ""
-    number_rooms = 0
-    number_bathrooms = 0
-    max_guest = 0
-    price_by_night = 0
-    latitude = 0.0
-    longitude = 0.0
-    amenity_ids = []
+class City(BaseModel, Base):
+    """ The city class, contains state ID and name """
+    __tablename__ = 'cities'
+    if storage_type == 'db':
+        name = Column(String(128), nullable=False)
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        places = relationship('Place', backref='cities',
+                              cascade='all, delete, delete-orphan')
+    else:
+        name = ''
+        state_id = ''
