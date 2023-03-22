@@ -79,4 +79,6 @@ class FileStorage:
         
     def close(self):
         """ self explanatory """
+
         self.reload()
+

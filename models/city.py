@@ -19,6 +19,7 @@ class City(BaseModel, Base):
     
     """
     __tablename__ = 'cities'
+
     # if os.getenv("HBNB_TYPE_STORAGE") == 'db':
     name = Column(
         String(128),
@@ -32,3 +33,4 @@ class City(BaseModel, Base):
     # else:
     #     name = ""
     #     state_id = ""
+
