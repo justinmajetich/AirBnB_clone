@@ -3,6 +3,8 @@
 depending on the storage type,
 as specified by the environment variable ``HBNB_TYPE_STORAGE``"""
 
+from os import getenv
+
 
 storage_type = getenv("HBNB_TYPE_STORAGE", "Storage type not set")
 

@@ -4,8 +4,13 @@
 for the MySQL storage option for the Airbnb clone
 """
 from sqlalchemy import create_engine
-from models import Base, BaseModel, City, State
-from models import Place, Amenity, Review, User
+from models.state import State
+from models.city import City
+from models.base_model import BaseModel
+from models.user import User
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
 from sqlalchemy.orm import sessionmaker
 from os import getenv
 
@@ -16,13 +21,12 @@ class DBStorage():
     __engine = None
     __session = None
     __valid_classes = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "State": State,
-            "City": City,
-            "Place": Place,
-            "Amenity": Amenity,
-            "Review": Review,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Place": Place,
+        "Amenity": Amenity,
+        "Review": Review,
         }
 
     def __init__(self):
@@ -41,7 +45,7 @@ class DBStorage():
         self.__engine = create_engine(url, pool_pre_ping=True)
 
         if dev_environ == "test":
-            Base.metdata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Returns all instances of all the classes
@@ -49,7 +53,7 @@ class DBStorage():
 
         db_storage = []
 
-        if cls and cls in DBStorage.__valid_classes:
+        if cls and cls in DBStorage.__valid_classes.values():
             db_storage = self.__session.query(cls).all()
         else:
             for key in DBStorage.__valid_classes:
@@ -60,7 +64,8 @@ class DBStorage():
 
     def new(self, obj):
         """Adds an object to the current database session """
-        self.__session.add(obj)
+        if issubclass(obj, BaseModel):
+            self.__session.add(obj)
 
     def save(self):
         """Commits all changes of the current database session"""
