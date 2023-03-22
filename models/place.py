@@ -2,24 +2,11 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from models.amenity import Amenity
+# from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy.orm import relationship
 from models import storage_type
-from sqlalchemy.sql.schema import Table
 
-
-if storage_type == 'db':
-    place_amenity = Table('place amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('place.id'),
-                                 primary_key=True,
-                                 nullable=False),
-                          Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'),
-                                 primary_key=True,
-                                 nullable=False)
-                         )
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -52,8 +39,7 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
-        """Returns the list of Review instances with
-           place_id equals
+        """Returns the list of Review instances with place_id equals
            to the current place.id => It will be the FileStorage
            relationship between Place and Review
         """
@@ -63,7 +49,7 @@ class Place(BaseModel, Base):
         for rv in reviews.values():
             if rv.place_id == self.id:
                 filtered_reviews.append(rv)
-        return filtered_reviews  # returns reviews with same place id
+        return filtered_reviews  # returns reviews with same place i
 
         @property
         def amenities(self):
@@ -88,4 +74,4 @@ class Place(BaseModel, Base):
             if obj is not None:
                 if isinstance(obj, Amenity):
                     if obj.id not in self.amenity_ids:
-                        self.amenity_ids.append(obj.id) 
+                        self.amenity_ids.append(obj.id)
