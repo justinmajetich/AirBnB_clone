@@ -140,19 +140,19 @@ class HBNBCommand(cmd.Cmd):
             v = v.replace('_', ' ')
             attributs[k] = v.strip('"\'')
 
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        # if os.getenv('HBNB_TYPE_STORAGE') == 'db':
 
-            new_instance = HBNBCommand.classes[_cls]()
-            #use setattr to update new_instance param
-            for key, value in attributs.items():
-                if isinstance(value, int):
-                    value = int(value)
-                    if isinstance(value, str) and '.' in value:
-                        value = float(value)
-                setattr(new_instance, key, value)
-            print(new_instance.id)
-            storage.new(new_instance)
-            storage.save()
+        new_instance = HBNBCommand.classes[_cls]()
+        # #use setattr to update new_instance param
+        # for key, value in attributs.items():
+        #     if isinstance(value, int):
+        #         value = int(value)
+        #         if isinstance(value, str) and '.' in value:
+        #             value = float(value)
+        #     setattr(new_instance, key, value)
+        print(new_instance.id)
+        storage.new(new_instance)
+        storage.save()
             
 
 
