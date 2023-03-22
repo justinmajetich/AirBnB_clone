@@ -9,12 +9,15 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+from operator import itemgetter
+
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_route():
     """Renders a template to display all states and their cities."""
     states_dict = storage.all(State)
-    states_list = list(states_dict.values())
-    return render_template('8-cities_by_states.html', states=states_list)
+    states_list = [state.to_dict() for state in states_dict.values()]
+    sorted_states_list = sorted(states_list, key=itemgetter('name'))
+    return render_template('8-cities_by_states.html', states=sorted_states_list)
 
 
 @app.teardown_appcontext
