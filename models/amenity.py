@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the amenity class"""
+""" for us This is the amenity class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
