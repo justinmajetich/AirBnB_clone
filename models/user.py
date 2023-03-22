@@ -13,7 +13,6 @@ class User(BaseModel, Base):
 
         Attributs:
         ====================
-
             email : email of user
                     String, not null
             password: password of compte user
@@ -44,16 +43,3 @@ class User(BaseModel, Base):
         nullable=False,
         default=""
     )
-    places = relationship(
-        "Place",
-        backref="user",
-        cascade="all, delete-orphan")
-    reviews = relationship(
-        "Review",
-        backref="user",
-        cascade='all, delete-orphan')
-    # else:
-    #     email = ""
-    #     password = ""
-    #     first_name = ""
-    #     last_name =""

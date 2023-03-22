@@ -18,5 +18,3 @@ class Amenity(BaseModel, Base):
                                 viewonly=False)
     # else:
     #     name = ""
-
-
