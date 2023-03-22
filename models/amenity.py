@@ -8,4 +8,4 @@ from sqlalchemy import String, ForeignKey
 
 class Amenity(BaseModel, Base):
     __tablename__ = "amenities"
-    name = Mapped[str] = mapped_column(String(128), nullable=False)
+    name: Mapped[str] = mapped_column(String(128), nullable=False)

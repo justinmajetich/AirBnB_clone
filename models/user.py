@@ -14,6 +14,6 @@ class User(BaseModel, Base):
     __tablename__ = "users"
 
     email: Mapped[str] = mapped_column(String(128), nullable=False)
-    password = Mapped[str] = mapped_column(String(128), nullable=False)
-    first_name = Mapped[str] = mapped_column(String(128), nullable=False)
-    last_name = Mapped[str] = mapped_column(String(128), nullable=False)
+    password: Mapped[str] = mapped_column(String(128), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(128), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(128), nullable=False)
