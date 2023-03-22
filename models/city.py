@@ -6,6 +6,7 @@ from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 
+
 class City(BaseModel, Base):
     """ class for City
 
@@ -32,4 +33,3 @@ class City(BaseModel, Base):
     # else:
     #     name = ""
     #     state_id = ""
-

@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """ class State  """
 from sqlalchemy import Column, String
