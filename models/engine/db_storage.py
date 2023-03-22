@@ -84,8 +84,8 @@ class DBStorage:
             all_obj = self.__session.query(cls).all()
         else:
             for c in classes:
-                objs = self.__session.query(c).all()
-                all_obj.extend(objs)
+                for obj in self.__session.query(c).all():
+                    all_obj[obj]
         for obj in all_obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             result[key] = obj
