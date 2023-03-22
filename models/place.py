@@ -2,7 +2,6 @@
 """ Place Module for HBNB project """
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
-from models import storage
 from models.review import Review
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
@@ -38,6 +37,7 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """Returns the list of Review instances with place_id"""
+            from models import storage
             reviews = []
             for review in storage.all(Review).values():
                 if review.place_id == self.id:
@@ -47,6 +47,7 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """Returns the list of Amenity instances based on the attribute amenity_ids"""
+            from models import storage
             amenities = []
             for amenity in storage.all(Amenity).values():
                 if amenity.id in self.amenity_ids:
