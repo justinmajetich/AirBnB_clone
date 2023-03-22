@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-"""
-Starts a Flask web application to display States and their Cities
-"""
+"""Starts a Flask web application to display States and their Cities"""
 
 from models import storage
 from models.state import State
