@@ -4,26 +4,20 @@
 
 from models import storage
 from models.state import State
-from flask import Flask, render_template, teardown_appcontext
+from flask import Flask, render_template
 
-
-app = Flask(__name__)
-
-
-@app.teardown_appcontext
-def teardown_session(exception):
-    """ Remove the current SQLAlchemy Session """
-    storage.close()
-
+app = Flask(name)
 
 @app.route('/cities_by_states', strict_slashes=False)
-def display_states_cities():
-    """ Display States and their Cities """
-    states = storage.all(State).values()
-    states = sorted(states, key=lambda x: x.name)
+def cities_route():
+"""Renders a template to display all states and their cities"""
+states = storage.all('State')
+return render_template('8-cities_by_states.html', states=states)
 
-    return render_template('8-cities_by_states.html', states=states)
+@app.teardown_appcontext
+def teardown_appcontext(exception):
+"""Removes the current SQLAlchemy Session"""
+storage.close()
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+if name == 'main':
+app.run(host='0.0.0.0', port=5000)
