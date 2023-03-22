@@ -36,20 +36,19 @@ class DBStorage():
     def all(self, cls=None):
         """Returns the list of objects of one type of class. Return a
         dictionary like FileStorage"""
-        obj_types = {'User': User, 'State': State, 'City': City,
-                     'Amenity': Amenity, 'Place': Place, 'Review': Review}
         result = {}
         if cls is None:
-            for cls_type in obj_types:
-                for obj in self.__session.query(obj_types[cls_type]).all():
-                    key = f"{cls_type}.{obj.id}"
-                    result[key] = obj
-        else:
-            if isinstance(cls, str):
-                cls = obj_types[cls]
-            for obj in self.__session.query(cls).all():
-                key = f"{cls.__name__}.{obj.id}"
+            objects = self.__session.query(cls).all()
+            for obj in objects:
+                key = f"{type(obj).__name__}.{obj.id}"
                 result[key] = obj
+        else:
+            classes = [State, City, User, Place, Review, Amenity]
+            for class_ in classes:
+                objects = self.__session.query(class_).all()
+                for obj in objects:
+                    key = f"{type(obj).__name__}.{obj.id}"
+                    result[key] = obj
         return result
     
     def new(self, obj):
