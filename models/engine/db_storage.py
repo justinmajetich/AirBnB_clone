@@ -38,29 +38,34 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
+        #print(f"S: {self.__session}")
+        #print(f"E: {self.__engine}")
+
 
     def all(self, cls=None): 
         """ query on the current database session """
         dic = {}
         if cls is None:
-            q = self.__session.query(State).all()
-            q += self.__session.query(City).all()
-            q += self.__session.query(Review).all()
-            q += self.__session.query(User).all()
-            q += self.__session.query(Place).all()
-            q += self.__session.query(Amenity).all()
-        else:                      
+            q = self.__session.query(State, City, Place, Review, User).all()
+        else:
             q = self.__session.query(cls).all()
+
         for obj in q:
-            dic[f"{obj.name}.{obj.id}"] = obj
+            delattr(obj,"_sa_instance_state")
+            dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
+
         return dic
         
     def new(self, obj):
         """ add the object to the current database session """
+        #print(f"{obj} created")
+        self.__session.add(obj)
         self.__session.add(obj)
     
     def save(self):
         """ commit all changes of the current database session """
+        self.__session.commit()
+        #print("Saved")
         self.__session.commit()
         
     def delete(self, obj=None):
