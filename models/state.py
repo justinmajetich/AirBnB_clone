@@ -5,9 +5,9 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import relationship
-
+from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Mapped[str] = mapped_column(String(128), nullable=False)
+    name = Column(String(128), nullable=False)
