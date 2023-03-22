@@ -1,27 +1,29 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
-import unittest
-from models.base_model import BaseModel
-from models import storage
 import os
+import unittest
+
+from models import storage
+from models.base_model import BaseModel
 
 
-class test_fileStorage(unittest.TestCase):
+@unittest.skipIf(
+    os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
+class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
-
     def setUp(self):
         """ Set up test environment """
         del_list = []
-        for key in storage._FileStorage__objects.keys():
+        for key in storage.all().keys():
             del_list.append(key)
         for key in del_list:
-            del storage._FileStorage__objects[key]
+            del storage.all()[key]
 
     def tearDown(self):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        Exception:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):
@@ -31,6 +33,7 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        new.save()
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is obj)
@@ -57,14 +60,15 @@ class test_fileStorage(unittest.TestCase):
     def test_save(self):
         """ FileStorage save method """
         new = BaseModel()
-        storage.save()
+        new.save()
         self.assertTrue(os.path.exists('file.json'))
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
-        storage.save()
+        new.save()
         storage.reload()
+        loaded = None
         for obj in storage.all().values():
             loaded = obj
         self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
@@ -98,50 +102,14 @@ class test_fileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
+        temp = ''
+        new.save()
+        for key, value in storage.all().items():
+            if value is new:
+                temp = key
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)
-
-    # Test creating an object with string, integer and float attributes
-    def test_create_object_with_params(self):
-        self.cli.do_create("BaseModel name=\"My house\" number=123 rating=4.5")
-        obj = storage.all()["BaseModel." + self.cli.last_id]
-        self.assertEqual(obj.name, "My house")
-        self.assertEqual(obj.number, 123)
-        self.assertEqual(obj.rating, 4.5)
-
-    # Test creating an object with a string that has quotes and underscores
-    def test_create_object_with_quoted_param(self):
-        self.cli.do_create("BaseModel name=\"My_little_house\"")
-        obj = storage.all()["BaseModel." + self.cli.last_id]
-        self.assertEqual(obj.name, "My_little_house")
-
-    # Test creating an object with multiple parameters
-    def test_create_object_with_multiple_params(self):
-        self.cli.onecmd('create User name="John Doe" \
-                age=30 email="johndoe@example.com"')
-        obj_id = self.cli.output.split()[3]
-        obj = storage.all()['User.{}'.format(obj_id)]
-        self.assertEqual(obj.name, 'John Doe')
-        self.assertEqual(obj.age, 30)
-        self.assertEqual(obj.email, 'johndoe@example.com')
-
-    # Test creating object with integer parameter
-    def test_create_object_with_integer_param(self):
-        self.cli.onecmd('create BaseModel age=25')
-        obj_id = self.cli.output.split()[3]
-        obj = storage.all()['BaseModel.{}'.format(obj_id)]
-        self.assertEqual(obj.age, 25)
-
-    # Test creating object with float parameter
-    def test_create_object_with_float_param():
-        self.cli.onecmd('create BaseModel price=10.99')
-        obj_id = self.cli.output.split()[3]
-        obj = storage.all()['BaseModel.{}'.format(obj_id)]
-        self.assertEqual(obj.price, 10.99)
