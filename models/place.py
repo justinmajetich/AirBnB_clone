@@ -30,6 +30,7 @@ class Place(BaseModel, Base):
 
     reviews = relationship("Review", backref="place")
     amenities = relationship('Amenity', secondary=place_amenity, viewonly=False, overlaps="place_amenities")
+    '''
     if not os.environ.get("HBNB_TYPE_STORAGE") == "db":
         @property
         def reviews(self):
@@ -57,3 +58,4 @@ class Place(BaseModel, Base):
                 amenity_ids.append(obj.id)
             else:
                 pass
+    '''
