@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """ Console Module """
-import cmd
 import sys
 import shlex
+import cmd
 from models import storage
-from datetime import datetime
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -13,10 +12,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-
-
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """ Contains the functionality for the HBNB console """
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -118,14 +115,10 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """ Create an object of any class"""
 
-        if not arg:
-            raise SyntaxError()
         ArgLine = arg.split(" ")
-        print(ArgLine)
 
         # stock command and add () to maque command valid
         _cls = ArgLine[0]
-        print(_cls)
         if not ArgLine[0]:
             print("** class name missing **")
             return
@@ -143,16 +136,17 @@ class HBNBCommand(cmd.Cmd):
             attributs[k] = v.strip('"\'')
 
         new_instance = HBNBCommand.classes[_cls]()
-        #use setattr to update new_instance param
+            #use setattr to update new_instance param
         for key, value in attributs.items():
             if isinstance(value, int):
                 value = int(value)
-                if '.' in value:
-                    value = float(value)
+            elif isinstance(value, str) and '.' in value:
+                value = float(value)
             setattr(new_instance, key, value)
-
-        new_instance.save()
+        storage.new(new_instance)
+        storage.save()
         print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -183,7 +177,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -215,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -242,7 +236,6 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
 
         print(print_list)
-        return print_list
 
     def help_all(self):
         """ Help information for the all command """
@@ -252,7 +245,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
