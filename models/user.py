@@ -10,6 +10,7 @@ import sqlalchemy
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes
+
         Attributs:
         ====================
             email : email of user
@@ -42,16 +43,3 @@ class User(BaseModel, Base):
         nullable=False,
         default=""
     )
-    places = relationship(
-        "Place",
-        backref="user",
-        cascade="all, delete-orphan")
-    reviews = relationship(
-        "Review",
-        backref="user",
-        cascade='all, delete-orphan')
-    # else:
-    #     email = ""
-    #     password = ""
-    #     first_name = ""
-    #     last_name =""

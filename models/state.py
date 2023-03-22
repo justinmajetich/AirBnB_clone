@@ -2,7 +2,6 @@
 #!/usr/bin/python3
 """ class State  """
 from sqlalchemy import Column, String
-
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 import os
@@ -21,7 +20,6 @@ class State(BaseModel, Base):
     else:
 
         name = ""
-
         @property
         def cities(self):
             from models import storage

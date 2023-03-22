@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """ Console Module """
-import sys
 import shlex
 import cmd
-from models import storage
+import sys
+import os
 from models.base_model import BaseModel, Base
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -135,17 +136,23 @@ class HBNBCommand(cmd.Cmd):
             v = v.replace('_', ' ')
             attributs[k] = v.strip('"\'')
 
+        # if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+
         new_instance = HBNBCommand.classes[_cls]()
-            #use setattr to update new_instance param
-        for key, value in attributs.items():
-            if isinstance(value, int):
-                value = int(value)
-            elif isinstance(value, str) and '.' in value:
-                value = float(value)
-            setattr(new_instance, key, value)
+        for k,v in attributs.items():
+            new_instance.__dict__[k] = v
+        # #use setattr to update new_instance param
+        # for key, value in attributs.items():
+        #     if isinstance(value, int):
+        #         value = int(value)
+        #         if isinstance(value, str) and '.' in value:
+        #             value = float(value)
+        #     setattr(new_instance, key, value)
+        print(new_instance.id)
         storage.new(new_instance)
         storage.save()
-        print(new_instance.id)
+
+
 
 
     def help_create(self):
