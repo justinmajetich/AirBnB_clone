@@ -54,10 +54,10 @@ class BaseModel:
             # if kwarg (if object exist) with update, create
             # delete class and update value with value
             if '__class__' in kwargs.keys():
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
                 del kwargs['__class__']
             else:
                 # if kwargs but not object exist
