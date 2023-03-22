@@ -4,7 +4,6 @@ from models.base_model import BaseModel
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import String, ForeignKey
-from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
