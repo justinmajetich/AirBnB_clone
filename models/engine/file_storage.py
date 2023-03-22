@@ -78,3 +78,4 @@ class FileStorage:
         """ calls reload()
         """
         self.reload()
+
