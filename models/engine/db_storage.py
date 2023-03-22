@@ -10,9 +10,10 @@ from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
+import models
 
 
-class DBStorage:
+class DBStorage():
     """ DataBase Storage """
 
     __engine = None
@@ -41,16 +42,36 @@ class DBStorage:
 
         dictionary = {}
 
-        if cls:
-            objs = self.__session.query(cls)
+        classes = [
+            "BaseModel",
+            "User",
+            "State",
+            "City",
+            "Amenity",
+            "Place",
+            "Review"
+            ]
 
+        if cls:
+            if isinstance(cls, str):
+                objs = self.__session.query(eval(cls)).all()
+            else:
+                objs = self.__session.query(cls).all()
+
+            for obj in objs:
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                dictionary[key] = obj
         else:
-            objs = self.__session.query(User, State, City, Amenity, Place, Review)
+            objs = self.__session.query(State).all()
+            objs += self.__session.query(City).all()
+            objs += self.__session.query(User).all()
+            objs += self.__session.query(Place).all()
+            objs += self.__session.query(Review).all()
+            objs += self.__session.query(Amenity).all()
 
         for obj in objs:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             dictionary[key] = obj
-
         return dictionary
     
     def new(self, obj):
