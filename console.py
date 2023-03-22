@@ -19,15 +19,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+            'number_rooms': int, 'number_bathrooms': int,
+            'max_guest': int, 'price_by_night': int,
+            'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -73,9 +73,9 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[- 1] is'}'\
                             and type(eval(pline)) is dict:
-                        _args = pline
+                                _args = pline
                     else:
                         _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        
+
         if not args:
             print("** class name missing **")
             return
@@ -123,12 +123,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        
-        argv = args.split()[1:]
-
         kwargs = {}
-        for arg in argv:
+        for arg in args.split()[1:]:
+            if '=' not in arg:
+                continue
             key, value = arg.split('=', 1)
+            if not value:
+                continue
             if value[0] == '"' and value[-1] == '"' and len(value) > 1:
                 value = value[1:-1].replace('_', ' ')
                 value = value.replace('\\"', '"')
@@ -143,10 +144,7 @@ class HBNBCommand(cmd.Cmd):
                 continue
             kwargs[key] = value
 
-        for key, value in kwargs.items():
-            print(key, value)
-
-        new_instance = HBNBCommand.classes[args.split()[0]]()
+        new_instance = HBNBCommand.classes[args.split()[0]](**kwargs)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -344,6 +342,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
