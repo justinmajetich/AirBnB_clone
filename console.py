@@ -131,10 +131,12 @@ class HBNBCommand(cmd.Cmd):
             key = param.split('=')[0]
             val = param.split('=')[1]
             if val.startswith('"'):
-                if not val.endswith('"') or val.count('"') > 2:
+                if not val.endswith('"') or val.count('"') > 2\
+                        or len(val) == 2:
                     continue
                 if '_' in val:
                     val = val.replace('_', ' ')
+                val = val.split('"')[1]
             elif '.' in val:
                 if val.count('.') > 1:
                     continue
@@ -145,9 +147,8 @@ class HBNBCommand(cmd.Cmd):
                 continue
             kwargs.update({key: val})
         new_instance = HBNBCommand.classes[_cls](**kwargs)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -178,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -229,11 +230,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -246,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -342,6 +343,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
