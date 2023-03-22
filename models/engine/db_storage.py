@@ -48,21 +48,33 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(bind=self.__engine)
 
-
     def all(self, cls=None):
         """ query on the current database session"""
 
         dict_objects = {}
-        # class given
-        if cls != None:
-            for obj in self.__session.query(cls).all():
-                dict_objects.update({'{}.{}'.
-                                     format(type(cls).__name__, obj.id,): obj})
+        # OLD VERSION
+        # if cls != None:
+        #     for obj in self.__session.query(cls).all():
+        #         dict_objects.update({'{}.{}'.
+        #                              format(type(cls).__name__, obj.id,): obj})
+        # else:
+        #     for k, v in Class_name.items():
+        #         for obj in self.__session.query(v):
+        #             dict_objects.update({'{}.{}'.
+        #                                  format(type(obj).__name__, obj.id,): obj})
+        # return (dict_objects)
+
+        if cls is None:
+            # call all cls name
+            all_obj = self.__session.query(
+                Amenity, City, Place, Review, State, User).all()
         else:
-            for k, v in Class_name.items():
-                for obj in self.__session.query(v):
-                    dict_objects.update({'{}.{}'.
-                                         format(type(obj).__name__, obj.id,): obj})
+            all_obj = self.__session.query(cls).all()
+
+        # add all_obj in dict
+        for obj in all_obj:
+            dict_objects[obj.__class__.__name__ + '.' + obj.id] = obj
+
         return (dict_objects)
 
     def new(self, obj):
