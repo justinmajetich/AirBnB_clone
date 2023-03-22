@@ -9,8 +9,6 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
-from operator import itemgetter
-
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_route():
     """Renders a template to display all states and their cities."""
