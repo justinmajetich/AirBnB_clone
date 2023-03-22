@@ -150,7 +150,12 @@ class HBNBCommand(cmd.Cmd):
         elif split_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
+        else:
+            new_instance = HBNBCommand.classes[args]()
+            new_instance.save()
+            print(new_instance.id)
+            storage.save()
+            return
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
