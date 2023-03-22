@@ -1,1 +1,1 @@
-To be updated
+AirBnB clone - MySQL
