@@ -51,7 +51,7 @@ class DBStorage:
     def all(self, cls=None):
         """ query on the current database session"""
 
-        #dict_objects = {}
+        # dict_objects = {}
         # OLD VERSION
         # if cls != None:
         #     for obj in self.__session.query(cls).all():
@@ -64,20 +64,17 @@ class DBStorage:
         # format(type(obj).__name__, obj.id,): obj})
         # return (dict_objects)
 
-        #if cls is None:
-            # call all cls name
-            #all_obj = self.__session.query(
-                #Amenity, City, Place, Review, State, User).all()
-        #else:
-            #all_obj = self.__session.query(cls).all()
-
+        # if cls is None:
+        # call all cls name
+        # all_obj = self.__session.query(
+        # Amenity, City, Place, Review, State, User).all()
+        # else:
+        # all_obj = self.__session.query(cls).all()
         # add all_obj in dict
-        #for obj in all_obj:
-            #dict_objects[obj.__class__.__name__ + '.' + obj.id] = obj
-
-        #return (dict_objects)
-
-        #test3
+        # for obj in all_obj:
+        # dict_objects[obj.__class__.__name__ + '.' + obj.id] = obj
+        # return (dict_objects)
+        # test3 79%
         classes = [State, City, User, Place, Review, Amenity]
         result = {}
         if isinstance(cls, str):
@@ -91,8 +88,6 @@ class DBStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             result[key] = obj
         return result
-
-
 
     def new(self, obj):
         """ add new object to the db session"""
