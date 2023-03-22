@@ -42,6 +42,7 @@ class FileStorage:
             for key, val in temp.items():
                 #print(f" DATA :  {type(val)} {val}")
                 temp[key] = val.to_dict()
+                del temp[key]["_sa_instance_state"]
             json.dump(temp, f)
 
     def reload(self):

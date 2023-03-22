@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy import String, ForeignKey
-from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text, Float
+from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text, Float, ForeignKey
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
