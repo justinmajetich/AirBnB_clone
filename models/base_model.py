@@ -23,7 +23,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            print(kwargs)
+            #print(kwargs)
             for key, value in kwargs.items():
                     if key == '__class__':
                         continue
