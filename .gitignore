@@ -1,5 +1,4 @@
 # ignore all logs
 __pycache__
-__init__.py
 file.json
 test.py
