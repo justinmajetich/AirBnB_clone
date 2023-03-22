@@ -27,8 +27,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes_list = [User, Place, State, City, Amenity, Review]
-
 
 class DBStorage:
     """
@@ -77,9 +75,12 @@ class DBStorage:
         uses it directly.
         """
         if cls is None:
-            objs = self.__session.query(classes_list[0]).all()
-            for i in range(1, len(classes_list)):
-                objs.extend(self.__session.query(classes_list[i].all()))
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         else:
             if isinstance(cls, str):
                 cls = eval(cls)
