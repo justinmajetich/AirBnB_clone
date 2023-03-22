@@ -25,7 +25,6 @@ class BaseModel:
         else:
             print(kwargs)
             for key, value in kwargs.items():
-                if not hasattr(self, key):
                     setattr(self, key, value)
             try:
                 kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
