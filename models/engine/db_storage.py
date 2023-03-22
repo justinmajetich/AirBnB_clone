@@ -22,6 +22,8 @@ class DBStorage:
     __engine = None
     __session = None
 
+    classes = [Amenity, City, Place, Review, State, User]
+
     def __init__(self):
         """Instantiate the DBStorage class"""
 
@@ -37,6 +39,22 @@ class DBStorage:
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """query on the current database"""
+        objcts = []
+        dico = {}
+        if cls is None:
+            for item in self.classes:
+                objcts.extend(self.__session.query(item).all())
+        else:
+            if type(cls) is str:
+                cls = eval(cls)
+            objcts = self.__session.query(cls).all()
+
+        for obj in objcts:
+            dico[obj.__class__.__name__ + '.' + obj.id] = obj
+        return dico
 
     def new(self, obj):
         """Adds the object to the database"""
