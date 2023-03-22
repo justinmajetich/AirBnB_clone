@@ -228,12 +228,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        if not line:
+        if not args:
             o = storage.all()
             print([o[k].__str__() for k in o])
             return
         try:
-            args = line.split(" ")
+            args = args.split(" ")
             if args[0] not in self.__classes:
                 raise NameError()
 
