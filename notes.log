@@ -39,3 +39,7 @@ Tuesday, March 21 2023  21:04:18
 
 Tuesday, March 21 2023  21:26:41
 	To Ovy, in db_storage, where you check in init whether env is equal to test, you misspell `metadata`
+
+Wednesday, March 22 2023  09:08:59
+	To Ovy, in db_storage, remove `BaseModel` from valid_classes since it doesn't inherit from `Base` and does not have
+	a table.
