@@ -8,7 +8,16 @@ from os import getenv
 
 
 class State(BaseModel, Base):
-    """ State class """
+    """
+    Represents a state for a MySQL database.
+
+    Inherits from SQLAlchemy Base and links to the MySQL table states.
+
+    Attributes:
+        __tablename__ (str): The name of the MySQL table to store States.
+        name (sqlalchemy String): The name of the State.
+        cities (sqlalchemy relationship): The State-City relationship.
+    """
     storage = getenv("HBNB_TYPE_STORAGE")
 
     __tablename__ = "states"
@@ -16,7 +25,7 @@ class State(BaseModel, Base):
     cities = relationship('City', backref='state', cascade='all, delete')
 
 
-    if  storage == 'fs':
+    if storage == 'fs':
         @property
         def cities(self):
             """Returning the cities in the current state"""
