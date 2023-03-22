@@ -81,11 +81,18 @@ class DBStorage:
 
         classes = [State, City, User, Place, Review, Amenity]
         if cls:
-            objs = self.__session.query(cls).all()
+            if isinstance(cls, str):
+                cls = eval(cls)
+            all_obj = self.__session.query(cls).all()
         else:
-            objs = [obj for c in classes for obj in self.__session.query(c).all()]
-        return {f"{type(obj).__name__}.{obj.id}": obj for obj in objs}
-
+            all_obj = []
+            for model_class in model_classes:
+                all_obj += self.__session.query(model_class).all()
+        result_dict = {}
+        for obj in all_obj:
+            key = f"{type(obj).__name__}.{obj.id}"
+            result_dict[key] = obj
+        return result_dict
 
     def new(self, obj):
         """ add new object to the db session"""
