@@ -3,6 +3,9 @@
 import unittest
 from models.base_model import BaseModel
 from console import HBNBCommand
+import sys
+from io import StringIO
+import io
 
 
 class TestConsole(unittest.TestCase):
@@ -25,19 +28,24 @@ class TestConsole(unittest.TestCase):
         """ test the create command """
         console = self.create()
         console.onecmd("create City")
-        self.assertIsInstance(sys.stdout.getvalue(), str)
+        out = StringIO()
+        self.assertIsInstance(out.getvalue(), str)
 
     def test_create_error1(self):
         """ test the create command """
         console = self.create()
         console.onecmd("create")
-        self.assertEqual(sys.stdout.getvalue(), "** class name missing **")
+        sys.stdout = io.StringIO()
+        out = sys.stdout.getvalue()
+        self.assertEqual(out, "** class name missing **")
     
     def test_create_error2(self):
         """ test the create command """
         console = self.create()
         console.onecmd("create blabla")
-        self.assertEqual(sys.stdout.getvalue(), "** class doesn't exist **")
+        sys.stdout = io.StringIO()
+        out = sys.stdout.getvalue()
+        self.assertEqual(out, "** class doesn't exist **")
     
     def test_show(self):
         """ test the show command """
@@ -45,31 +53,33 @@ class TestConsole(unittest.TestCase):
         console.onecmd("create City")
         city_id = sys.stdout.getvalue()
         console.onecmd(f"show City {city.id}")
-        self.assertIsInstance(sys.stdout.getvalue(), str)
+        self.assertIsInstance(StringIO().getvalue(), str)
 
     def test_show_error1(self):
         """ test the show command """
         console = self.create()
         console.onecmd("create City")
-        city_id = sys.stdout.getvalue()
         console.onecmd(f"show")
-        self.assertEqual(sys.stdout.getvalue(), "** class name missing **")
+        sys.stdout = io.StringIO()
+        out = sys.stdout.getvalue()
+        self.assertEqual(out, "** class name missing **")
 
     def test_show_error2(self):
         """ test the show command """
         console = self.create()
         console.onecmd("create City")
-        city_id = sys.stdout.getvalue()
         console.onecmd(f"show City")
-        self.assertEqual(sys.stdout.getvalue(), "** instance id missing **")
+        sys.stdout = io.StringIO()
+        out = sys.stdout.getvalue()
+        self.assertEqual(out, "** instance id missing **")
 
     def test_show_error2(self):
         """ test the show command """
         console = self.create()
         console.onecmd("create City")
-        city_id = sys.stdout.getvalue()
-        console.onecmd(f"show Bla {city.id}")
-        self.assertEqual(sys.stdout.getvalue(), "** class doesn't exist **")
+        city_id = StringIO().getvalue()
+        output = console.onecmd(f"show Bla {city.id}")
+        self.assertEqual(output, "** class doesn't exist **")
 
     def test_destroy_error1(self):
         """ test the destroy command """
@@ -99,13 +109,15 @@ class TestConsole(unittest.TestCase):
         console = self.create()
         console.onecmd("create User first_name = 'Gabriel' email='test@mail.com' password='g@br!el'")
         console.onecmd("all")
-        self.assertIn("Gabriel", sys.stdout.getvalue())
+        sys.stdout = StringIO()
+        out = sys.stdout.getvalue()
+        self.assertIn("Gabriel", out)
 
     def test_count(self):
         """ test the count command """
         console = self.create()
         console.onecmd("create City")
-        self.assertEqual('2', HBNBCommand.count())
+        self.assertEqual('2', self.count())
     
     def test_update_1(self):
         """ test the update command """
@@ -119,5 +131,7 @@ class TestConsole(unittest.TestCase):
         console = self.create()
         console.onecmd("create User")
         console.onecmd("update User")
-        self.assertEqual("instance id missing", sys.stdout.getvalue())
+        output = StringIO()
+        out = output.getvalue()
+        self.assertEqual("instance id missing", out)
     
