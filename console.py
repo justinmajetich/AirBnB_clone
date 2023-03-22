@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+
 import shlex
 import cmd
 import sys
@@ -12,6 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console """
@@ -139,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
         # if os.getenv('HBNB_TYPE_STORAGE') == 'db':
 
         new_instance = HBNBCommand.classes[_cls]()
-        for k,v in attributs.items():
+        for k, v in attributs.items():
             new_instance.__dict__[k] = v
         # #use setattr to update new_instance param
         # for key, value in attributs.items():
@@ -151,9 +153,6 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         storage.new(new_instance)
         storage.save()
-
-
-
 
     def help_create(self):
         """ Help information for the create method """
