@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#!/usr/bin/python3
 """ State Module for HBNB project """
 import os
 from sqlalchemy import Column, String

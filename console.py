@@ -143,16 +143,16 @@ class HBNBCommand(cmd.Cmd):
             )
             for param in params:
                 param_match = re.fullmatch(param_pattern, param)
-                if param_match is not None:
+                if param_match != None:
                     key_name = param_match.group('name')
                     str_v = param_match.group('t_str')
                     float_v = param_match.group('t_float')
                     int_v = param_match.group('t_int')
-                    if float_v is not None:
+                    if float_v != None:
                         obj_kwargs[key_name] = float(float_v)
-                    if int_v is not None:
+                    if int_v != None:
                         obj_kwargs[key_name] = int(int_v)
-                    if str_v is not None:
+                    if str_v != None:
                         obj_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
         else:
             class_name = args
@@ -179,10 +179,7 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
-        
-        
-        
-    
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -330,7 +327,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -338,7 +335,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] is '\"':
