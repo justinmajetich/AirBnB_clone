@@ -11,8 +11,25 @@ import os
 from sqlalchemy.orm import sessionmaker, scoped_session
 from urllib.parse import quote_plus
 from models.base_model import Base
+
+
+# Define relationships
 State.cities = relationship(City, back_populates="states")
+
 City.states = relationship(State, back_populates="cities")
+City.places = relationship(Place, back_populates="cities")
+
+User.places = relationship(Place, back_populates="users",
+                           cascade="all, delete")
+User.reviews = relationship(Review, back_populates="users")
+
+Place.users = relationship(User, back_populates="places")
+Place.cities = relationship(City, back_populates="places")
+Place.reviews = relationship(Review, back_populates="places",
+                             cascade="all, delete")
+
+Review.users = relationship(User, back_populates="reviews")
+Review.places = relationship(Place, back_populates="reviews")
 
 
 class DBStorage:
