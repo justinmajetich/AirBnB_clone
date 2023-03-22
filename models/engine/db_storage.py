@@ -46,17 +46,12 @@ class DBStorage:
 
         dic = {}
         if cls is None:
-            q = self.__session.query(State).all()
-            for obj in q:
-                dic[f"{obj.name}.{obj.id}"] = obj
-                print(f'in {dic}')
-            print(f'out {dic}')
-            return dic
+            q = self.__session.query(State, City).all()
         else:
             q = self.__session.query(cls).all()
-            for obj in q:
-                print(obj.id)
-                        
+
+        for obj in q:
+            dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
         return dic
         
     def new(self, obj):

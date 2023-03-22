@@ -117,16 +117,17 @@ class HBNBCommand(cmd.Cmd):
         new_dict = {}
         split_arg = args.split(" ")
         if len(split_arg) >= 2:
-            Value = split_arg[1].split("=")[1].strip('"')
-            Key = split_arg[1].split("=")[0]
-            new_dict[Key] = Value
+            for word in split_arg[1:]:
+                Value = word.split("=")[1].strip('"')
+                Key = word.split("=")[0]
+                new_dict[Key] = Value
 
             new_instance = HBNBCommand.classes[split_arg[0]](**new_dict)
             print(new_instance.id)
+            #delattr(new_instance, '_sa_instance_state')
             storage.new(new_instance)
             storage.save()
 
-        pass
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -235,8 +236,9 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            print(args)
-            return storage.all(HBNBCommand.classes[args])
+            #print(type(HBNBCommand.classes[args]))
+            print(storage.all(HBNBCommand.classes[args]))
+            return
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
