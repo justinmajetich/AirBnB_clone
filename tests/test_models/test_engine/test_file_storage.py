@@ -21,7 +21,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except err:
             pass
 
     def test_obj_list_empty(self):
@@ -116,7 +116,7 @@ class test_fileStorage(unittest.TestCase):
         self.assertEqual(obj.number, 123)
         self.assertEqual(obj.rating, 4.5)
 
-    # Test creating an object with a string attribute that has quotes and underscores
+    # Test creating an object with a string that has quotes and underscores
     def test_create_object_with_quoted_param(self):
         self.cli.do_create("BaseModel name=\"My_little_house\"")
         obj = storage.all()["BaseModel." + self.cli.last_id]
@@ -124,7 +124,8 @@ class test_fileStorage(unittest.TestCase):
 
     # Test creating an object with multiple parameters
     def test_create_object_with_multiple_params(self):
-        self.cli.onecmd('create User name="John Doe" age=30 email="johndoe@example.com"')
+        self.cli.onecmd('create User name="John Doe" \
+                age=30 email="johndoe@example.com"')
         obj_id = self.cli.output.split()[3]
         obj = storage.all()['User.{}'.format(obj_id)]
         self.assertEqual(obj.name, 'John Doe')
@@ -144,4 +145,3 @@ class test_fileStorage(unittest.TestCase):
         obj_id = self.cli.output.split()[3]
         obj = storage.all()['BaseModel.{}'.format(obj_id)]
         self.assertEqual(obj.price, 10.99)
-
