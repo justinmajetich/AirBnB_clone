@@ -11,7 +11,7 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
-        print("State db")
+        #print("State db")
         cities = relationship("City", backref="states")
     else:
         name = ""

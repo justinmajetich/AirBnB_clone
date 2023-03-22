@@ -38,8 +38,8 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
-        print(f"S: {self.__session}")
-        print(f"E: {self.__engine}")
+        #print(f"S: {self.__session}")
+        #print(f"E: {self.__engine}")
 
 
     def all(self, cls=None): 
