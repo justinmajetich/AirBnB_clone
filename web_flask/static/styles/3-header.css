@@ -1,0 +1,13 @@
+header{
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border-bottom: solid 1px #CCCCCC;
+}
+header .logo{
+    height: inherit;
+    width: inherit;
+    background: url("../images/logo.png");
+    background-repeat: no-repeat;
+    margin-left: 20px;
+}

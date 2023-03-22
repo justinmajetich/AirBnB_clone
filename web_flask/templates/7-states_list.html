@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1>
+	<UL>
+	  {% for obj in storage.values()|sort(attribute="name") %}
+	      <LI> {{ obj.id }}: <B>{{ obj.name }}</B></LI>
+	  {% endfor %}
+        </UL>
+    </BODY>
+</HTML>

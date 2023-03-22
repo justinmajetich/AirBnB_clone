@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Holberton School</title>
+        <link rel="stylesheet" href="../static/styles/3-header.css">
+        <link rel="stylesheet" href="../static/styles/4-common.css">
+        <link rel="stylesheet" href="../static/styles/3-footer.css">
+        <link rel="stylesheet" href="../static/styles/6-filters.css">
+        <link rel="icon" href="../static/images/icon.png">
+    </head>
+
+    <body>
+        <header>
+            <div class="logo"></div>
+        </header>
+        <div class="container">
+            <section class="filters">
+                <button type="button">Search</button>
+                <div class="locations">
+                    <h3>States</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+		      {% for obj in storage.values()|sort(attribute="name") %}
+                        <li><h2>{{ obj.name }}</h2></li>
+                        <li>
+                            <ul class="popover_list">
+			    {% for city in obj.cities|sort(attribute="name") %}
+                                <li>{{ city.name }}</li>
+			    {% endfor %}
+                            </ul>
+                        </li>
+		      {% endfor %}
+                    </ul>
+                </div>
+                <div class="amenities">
+                    <h3>Amenities</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+		    {% for amen in amens.values()|sort(attribute="name") %}
+                        <li>{{ amen.name }}</li>
+		    {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <footer>
+            Holberton School
+        </footer>
+    </body>
+</html>
