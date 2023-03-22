@@ -74,21 +74,17 @@ class DBStorage:
         parameter is not a string, it assumes it is a class and
         uses it directly.
         """
-        if cls is None:
-            objs = self.__session.query(State).all()
-            objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
+        value = {}
+        if cls:
+            for obj in self.__session.query(cls):
+                key = '{}.{}'.format(type(obj).__name__, obj.id)
+                value[key] = obj
         else:
-            if isinstance(cls, str):
-                cls = eval(cls)
-
-            objs = self.__session.query(cls)
-
-        return {"{}.{}".format(
-                type(obj).__name__, obj.id): obj for obj in objs}
+            for cls in [Amenity, City, Place, Review, State, User]:
+                for obj in self.__session.query(cls):
+                    key = '{}.{}'.format(type(obj).__name__, obj.id)
+                    value[key] = obj
+        return value
 
     def new(self, obj):
         """
