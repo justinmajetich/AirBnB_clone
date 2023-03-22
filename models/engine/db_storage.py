@@ -86,7 +86,7 @@ class DBStorage:
 
             objs = self.__session.query(cls)
 
-            return {"{}.{}".format(
+        return {"{}.{}".format(
                 type(obj).__name__, obj.id): obj for obj in objs}
 
     def new(self, obj):
