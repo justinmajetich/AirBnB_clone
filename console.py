@@ -112,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
-        pass
+
     def create_with_db(args):
         new_dict = {}
         split_arg = args.split(" ")
@@ -125,8 +125,6 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.new(new_instance)
             storage.save()
-
-        pass
 
     def do_create(self, args):
         """ Create an object of any class"""
