@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance = HBNBCommand.classes[_cls]()
         for k,v in attributs.items():
-            new_instance.__dict__[attributs[k]] = v
+            new_instance.__dict__[k] = v
         # #use setattr to update new_instance param
         # for key, value in attributs.items():
         #     if isinstance(value, int):
