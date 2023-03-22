@@ -33,12 +33,10 @@ class User(BaseModel, Base):
     first_name = Column(
         String(128),
         nullable=True,
-        default=""
     )
     last_name = Column(
         String(128),
         nullable=True,
-        default=""
     )
     places = relationship(
         "Place",
