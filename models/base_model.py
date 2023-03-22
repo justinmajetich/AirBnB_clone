@@ -46,26 +46,36 @@ class BaseModel:
     """A base class for all hbnb models"""
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
 
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            # if kwarg (if object exist) with update, create
+            # delete class and update value with value
+            if '__class__' in kwargs.keys():
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                del kwargs['__class__']
+            else:
+                # if kwargs but not object exist
+                self.id = str(uuid.uuid4())
+                self.created_at = datetime.utcnow()
+                self.updated_at = datetime.utcnow()
+            # update the dict
             self.__dict__.update(kwargs)
-        for key, value in kwargs:
-            if key == "name":
-                self.id = value
-            elif key == "create_at":
-                self.created_at = value
-            elif key == "update_at":
-                self.updated_at = value
+            # self.__dict__.update(kwargs)
+        # for key, value in kwargs:
+        #     if key == "name":
+        #         self.id = value
+        #     elif key == "create_at":
+        #         self.created_at = value
+        #     elif key == "update_at":
+        #         self.updated_at = value
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -87,9 +97,8 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        for key in dictionary.keys():
-            if key == "_sa_instance_state":
-                del dictionary[key]
+        if "_sa_instance_state" in dictionary.keys():
+            del (dictionary["_sa_instance_state"])
         return dictionary
 
     def delete(self):
