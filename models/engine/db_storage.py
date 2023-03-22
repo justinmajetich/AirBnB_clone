@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 import sqlalchemy
 from sqlalchemy import inspect
+from models.city import City
+from models.state import State
+from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
@@ -11,12 +18,8 @@ class DBStorage:
     __engine = None
     __session = None
 
-    def __init__(self, engine=None, session=None):
+    def __init__(self):
         """ DOC """
-        from models.city import City
-        from models.state import State
-        from models.base_model import BaseModel, Base
-
         user = os.environ.get("HBNB_MYSQL_USER")
         password = os.environ.get("HBNB_MYSQL_PWD")
         host = os.environ.get("HBNB_MYSQL_HOST")
@@ -25,15 +28,19 @@ class DBStorage:
         self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}", pool_pre_ping=True)
         #self.__engine = create_engine(f"mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost:3306/hbnb_dev_db", pool_pre_ping=True)
         
+        self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}/{database}", pool_pre_ping=True)
+        #self.__engine = create_engine(f"mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost:3306/hbnb_dev_db", pool_pre_ping=True)
+
         Session = sessionmaker(bind=self.__engine)
         Session.configure(bind=self.__engine)
         self.__session = Session()
-
+        
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
         #print(f"S: {self.__session}")
         #print(f"E: {self.__engine}")
+
 
     def all(self, cls=None): 
         """ query on the current database session """
@@ -46,24 +53,27 @@ class DBStorage:
 
         dic = {}
         if cls is None:
-            q = self.__session.query(State, City).all()
+            q = self.__session.query(State, City, Place, Review, User).all()
         else:
             q = self.__session.query(cls).all()
 
         for obj in q:
             delattr(obj,"_sa_instance_state")
             dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
+
         return dic
         
     def new(self, obj):
         """ add the object to the current database session """
         print(f"{obj} created")
         self.__session.add(obj)
+        self.__session.add(obj)
     
     def save(self):
         """ commit all changes of the current database session """
         self.__session.commit()
         print("Saved")
+        self.__session.commit()
         
     def delete(self, obj=None):
         """ delete from the current database session obj if not None """
@@ -75,6 +85,8 @@ class DBStorage:
     def reload(self):
         """ create all tables in the database (feature of SQLAlchemy) """
         from sqlalchemy.ext.declarative import declarative_base
+        from models.city import City
+        from models.state import State
         
         Base = declarative_base()
         s = sessionmaker(bind=self.__engine, expire_on_commit=False)
