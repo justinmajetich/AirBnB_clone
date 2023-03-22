@@ -14,22 +14,33 @@ class FileStorage:
         """Returns a dictionary of models currently in storage
             all or only element of specified class
             """
+        # OLD CODE
+        # if cls is None:
+        #     return FileStorage.__objects
+        # else:
+        #     dict_all = {}
+        #     if cls is not str:
+        #         # select only name of class
+        #         cls = cls.__name__
+        #     for key, value in FileStorage.__objects.items():
+        #         if cls in key:
+        #             dict_all.update({key: value})
+        #     return (dict_all)
+
+        dict_all = {}
         if cls is None:
             return FileStorage.__objects
         else:
-            dict_all = {}
-            if cls is not str:
-                # select only name of class
-                cls = cls.__name__
             for key, value in FileStorage.__objects.items():
-                if cls in key:
-                    dict_all.update({key: value})
-            return (dict_all)
+                if value.__class__ == cls:
+                    dict_all[key] = value
+            return dict_all
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        if obj is not None:
-            self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        # if obj is not None:
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -74,6 +85,7 @@ class FileStorage:
             value = "{}.{}".format(obj.__class__.__name__, obj.id)
             # delete object del method
             del self.__objects[value]
+            self.save()
         except Exception:
             pass
         
