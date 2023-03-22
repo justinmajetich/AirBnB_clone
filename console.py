@@ -137,12 +137,12 @@ class HBNBCommand(cmd.Cmd):
         split_arg = args.split(" ")
         if len(split_arg) >= 2:
             new_instance = HBNBCommand.classes[split_arg[0]]()
-            storage.save()
+            obj = eval("{}()".format(split_arg[0]))
             print(new_instance.id)
             for arg in split_arg[1:]:
                 chaine_de_char = f"{split_arg[0]} {new_instance.id} {arg}"
-                #print(f"val: {chaine_de_char}")
                 HBNBCommand.do_update(self, chaine_de_char)
+            obj.save()
             return
         if not args:
             print("** class name missing **")
@@ -150,13 +150,7 @@ class HBNBCommand(cmd.Cmd):
         elif split_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        else:
-            new_instance = HBNBCommand.classes[args]()
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-            return
-
+    
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")

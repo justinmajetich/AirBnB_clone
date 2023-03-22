@@ -14,6 +14,8 @@ class State(BaseModel, Base):
         print("State db")
         cities = relationship("City", backref="states")
     else:
+        name = ""
+        
         @property
         def cities(self):
             """getter attribute cities that returns the list of City instances with
