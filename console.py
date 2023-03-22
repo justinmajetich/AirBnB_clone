@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         object_params = {}
-    
+
         for param in params:
             # Replace underscores with spaces in the value
             key, value = param.split('=')
@@ -133,14 +133,16 @@ class HBNBCommand(cmd.Cmd):
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('\\"', '"')
             # Check if the value is a float
-            elif '.' in value and all(char.isdigit() for char in value.strip('-').replace('.', '', 1)):
+            elif '.' in value and\
+                    all(char.isdigit()
+                        for char in value.strip('-').replace('.', '', 1)):
                 value = float(value)
             # check id the value is integer
             elif value.strip('-').isdigit():
                 value = int(value)
             else:
                 continue
-            
+
             # add a key and a value to the dictionary
             object_params[key] = value
 
@@ -153,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
 
         # prints the id of the new instance
         print(new_object.id)
-        
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -215,7 +217,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -347,6 +349,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
