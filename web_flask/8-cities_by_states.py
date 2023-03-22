@@ -13,8 +13,8 @@ app = Flask(__name__)
 def cities_route():
     """Renders a template to display all states and their cities."""
     states_dict = storage.all(State)
-    states_list = [state.to_dict() for state in states_dict.values()]
-    sorted_states_list = sorted(states_list, key=itemgetter('name'))
+    states_list = list(states_dict.values())
+    sorted_states_list = sorted(states_list, key=lambda x: x['name'])
     return render_template('8-cities_by_states.html', states=sorted_states_list)
 
 
