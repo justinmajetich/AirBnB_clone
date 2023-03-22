@@ -1,19 +1,17 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """This class defines a user by various attributes"""
     
     __tablename__ = "users"
 
-    email: Mapped[str] = mapped_column(String(128), nullable=False)
-    password: Mapped[str] = mapped_column(String(128), nullable=False)
-    first_name: Mapped[str] = mapped_column(String(128), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(128), nullable=False)
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=False)
+    last_name = Column(String(128), nullable=False)

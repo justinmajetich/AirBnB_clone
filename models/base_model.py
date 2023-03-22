@@ -12,14 +12,12 @@ from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text
 
 Base = declarative_base()
 
-class BaseModel:
+class BaseModel():
     """A base class for all hbnb models"""
 
-    __tablename__  = "basemodel"
-
-    id: Mapped[str] = mapped_column(primary_key=True, nullable=False)
-    created_at: Mapped(datetime) = Column(DateTime, default=datetime.now, nullable=False)
-    updated_at: Mapped(datetime) = Column(DateTime, default=datetime.now, nullable=False)
+    id = Column(String, primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
