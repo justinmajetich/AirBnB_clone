@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -112,9 +113,26 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    def create_with_db(args):
+        new_dict = {}
+        split_arg = args.split(" ")
+        if len(split_arg) >= 2:
+            Value = split_arg[1].split("=")[1].strip('"')
+            Key = split_arg[1].split("=")[0]
+            new_dict[Key] = Value
+
+            new_instance = HBNBCommand.classes[split_arg[0]](**new_dict)
+            print(new_instance.id)
+            storage.new(new_instance)
+            storage.save()
+
+        pass
 
     def do_create(self, args):
         """ Create an object of any class"""
+        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+            HBNBCommand.create_with_db(args)
+            return
         split_arg = args.split(" ")
         if len(split_arg) >= 2:
             new_instance = HBNBCommand.classes[split_arg[0]]()
@@ -132,9 +150,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         else:
-            
             new_instance = HBNBCommand.classes[args]()
-            
             storage.save()
             print(new_instance.id)
             storage.save()
@@ -214,6 +230,13 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            print(args)
+            return storage.all(HBNBCommand.classes[args])
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -326,7 +349,6 @@ class HBNBCommand(cmd.Cmd):
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
                     
-
                 # update dictionary with name, value pair
                 if not isinstance(att_val, (int, float)) and "_" in att_val:
                     att_val = att_val.replace("_", " ")
