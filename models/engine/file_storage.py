@@ -22,7 +22,7 @@ class FileStorage:
         else:
             new_dict = {}
             for key, value in FileStorage.__objects.items():
-                if value.__class__.__name__ == cls.__name__:
+                if isinstance(value, cls):
                     new_dict[key] = value
             return new_dict
 
@@ -35,7 +35,7 @@ class FileStorage:
         objects_dict = {}
         for key, value in self.__objects.items():
             objects_dict[key] = value.to_dict()
-        with open(self.__file_path, "w", encoding='utf-8') as f:
+        with open(self.__file_path, "w+", encoding='utf-8') as f:
             json.dump(objects_dict, f)
 
     def reload(self):
