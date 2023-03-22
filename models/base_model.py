@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base
 
+
 Base = declarative_base()
 Base.id = Column(String(60), nullable=False, primary_key=True)
 Base.created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
@@ -15,8 +16,10 @@ class BaseModel:
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        for key, value in kwargs.items():
+            if not hasattr(self, key):
+                setattr(self, key, value)
         if not kwargs:
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
