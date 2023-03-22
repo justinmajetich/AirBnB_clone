@@ -84,7 +84,7 @@ class DBStorage:
             all_obj = self.__session.query(cls).all()
         else:
             all_obj = []
-            objs.extend(self.__session.query(State).all())
+            objs = (self.__session.query(State).all())
             objs.extend(self.__session.query(City).all())
             objs.extend(self.__session.query(User).all())
             objs.extend(self.__session.query(Place).all())
