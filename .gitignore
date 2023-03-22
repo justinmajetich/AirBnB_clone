@@ -4,6 +4,8 @@ airbon_venv/
 .vscode/
 .idea/
 
+airbon_venv/
+
 # Vagrant
 .vagrant/
 
