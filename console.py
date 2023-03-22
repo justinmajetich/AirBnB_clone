@@ -231,28 +231,31 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+        if storage.__class__.__name__ == 'DBStorage':
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            #print(type(HBNBCommand.classes[args]))
-            print(storage.all(HBNBCommand.classes[args]))
-            return
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                #print(type(HBNBCommand.classes[args]))
+            ret = storage.all(HBNBCommand.classes[args])
+            for item in ret.values():
+                print_list.append(str(item))
+            print(print_list)
+            return print_list
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                if args not in HBNBCommand.classes:
+                    print("** class doesn't exist **")
+                    return
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    print_list.append(str(v))
 
-        print(print_list)
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
