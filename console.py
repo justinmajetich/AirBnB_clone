@@ -73,9 +73,9 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[- 1] is'}'\
+                    if pline[0] is '{' and pline[- 1] is '}' \
                             and type(eval(pline)) is dict:
-                                _args = pline
+                        _args = pline
                     else:
                         _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
@@ -115,24 +115,31 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        elif args.split()[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
-        print(new_instance.id)
+            return
+        kwargs = {}
+        for arg in args.split()[1:]:
+            if '=' in arg:
+                continue
+            key, value = arg.split("=", 1)
+            if not value:
+                continue
+            if value[0] == '"' and value[-1] == '"' and len(value) > 1:
+                value1 = value[1:-2].replace('_', ' ')
+                if '"' in value1:
+                    value = value1.split('"')
+                    value = value1.replace('\\"', '"')
+            elif type(value) == float or type(value) == int:
+                value1 = value
+
+            kwargs[key] = value
+
+        new_instance = HBNBCommand.classes[args.split()[0]](**kwargs)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
