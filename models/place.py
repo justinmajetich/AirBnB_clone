@@ -43,6 +43,8 @@ class Place(BaseModel, Base):
                 place_id equals to the current Place.id
             """
             reviews = models.storage.all(models.review.Review)
-            for key in reviews.key():
-                if reviews[key].place_id == self.id:
-                    return reviews[key]
+            place_reviews = []
+            for review in reviews.values():
+                if review.place_id == self.id:
+                    place_reviews.append(review)
+            return place_reviews
