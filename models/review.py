@@ -2,7 +2,7 @@
 """ Review module for the HBNB project """
 from typing import Optional
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 
 
 class Review(BaseModel, Base):
