@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 import models
-import os
+from os import getenv
 from models.base_model import BaseModel, Base
-import os
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 
@@ -68,33 +67,21 @@ class Place(BaseModel, Base):
         )
     latitude = Column(
         Float,
-        nullable=False,
+        nullable=True,
         )
     longitude = Column(
         Float,
-        nullable=False,
+        nullable=True,
         )
-    # amenity_ids = []
 
-    reviews = relationship(
-        "Review",
-        cascade="all, delete",
-        backref="places"
-        )
-    amenities = relationship(
-        "Amenity",
-        secondary='place_amenity',
-        viewonly=False,
-        back_populates="place_amenities"
-        )
-    if os.getenv("HBNB_TYPE_STORAGE") != 'db':
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
         def reviews(self):
             """Returns list of reviews associated with place"""
             from models import storage
             from models.review import Review
             my_list = []
-            for i in storage.all(Review).values():
+            for i in storage.all(Review):
                 if self.id == i.place_id:
                     my_list.append(i)
             return my_list
@@ -112,5 +99,18 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, value):
             from models.amenity import Amenity
-            if isinstance(value, Amenity):
+            if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
+    else:
+        # amenity_ids = []
+        reviews = relationship(
+            "Review",
+            backref='place',
+            cascade='delete')
+        amenities = relationship(
+            "Amenity",
+            secondary='place_amenity',
+            viewonly=False,
+            back_populates="place_amenities"
+            )
+
