@@ -50,20 +50,20 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
-        @property
-        def reviews(self):
-            """Returns the list of Review instances with
-               place_id equals
-               to the current place.id => It will be the FileStorage
-               relationship between Place and Review
-            """
-            from models import storage
-            filtered_reviews = []
-            reviews = storage.all(Review)
-            for rv in reviews.values():
-                if rv.place_id == self.id:
-                    filtered_reviews.append(rv)
-            return filtered_reviews  # returns reviews with same place id
+    @property
+    def reviews(self):
+        """Returns the list of Review instances with
+           place_id equals
+           to the current place.id => It will be the FileStorage
+           relationship between Place and Review
+        """
+        from models import storage
+        filtered_reviews = []
+        reviews = storage.all(Review)
+        for rv in reviews.values():
+            if rv.place_id == self.id:
+                filtered_reviews.append(rv)
+        return filtered_reviews  # returns reviews with same place id
 
         @property
         def amenities(self):
