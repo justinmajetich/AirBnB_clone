@@ -16,7 +16,7 @@ class FileStorage:
         else:
             my_dictionary = {}
             for key, value in self.__objects.items():
-                if cls.__name__ in key:
+                if isinstance(self.__objects[key], cls):
                     my_dictionary[key] = value
         return my_dictionary
 
@@ -60,6 +60,8 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from __objects"""
         if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
-            if key in self.__objects:
-                del self.__objects[key]
+            for key in self.__objects.keys():
+                if obj.id == self.__objects[key].id:
+                    del self.__objects[key]
+                    self.save()
+                    return
