@@ -25,18 +25,18 @@ class TestConsole(unittest.TestCase):
     
     """
     def test_quit(self):
-        """ test the quit command """
+         test the quit command 
         console = self.create()
         self.assertTrue(console.onecmd("quit"))
     
     def test_EOF(self):
-        """ test the EOF command """
+         test the EOF command 
         with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("EOF")
             self.assertEqual(mock_stdout.getvalue(), None)
     """
-    
+
     def test_create_normal(self):
         """ test the create command """
         console = self.create()
