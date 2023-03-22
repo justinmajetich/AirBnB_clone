@@ -3,7 +3,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
 from os import getenv
 
 
@@ -16,6 +15,7 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """ Returns the list of City instances with state_id """
+            from models.city import City
             from models import storage
             cities = []
             for city in storage.all(City).values():
