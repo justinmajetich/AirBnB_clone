@@ -83,9 +83,13 @@ class DBStorage:
         if isinstance(cls, str):
             all_obj = self.__session.query(cls).all()
         else:
-            for c in classes:
-                for obj in self.__session.query(c).all():
-                    all_obj[obj]
+
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         for obj in all_obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             result[key] = obj
