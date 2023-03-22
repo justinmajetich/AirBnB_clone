@@ -2,11 +2,24 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
-# from models.amenity import Amenity
+from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy.orm import relationship
 from models import storage_type
+from sqlalchemy.sql.schema import Table
 
+
+if storage_type == 'db':
+    place_amenity = Table('place amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('place.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False)
+                         )
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -37,16 +50,42 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
-    @property
-    def reviews(self):
-        """Returns the list of Review instances with place_id equals
-           to the current place.id => It will be the FileStorage
-           relationship between Place and Review
-        """
-        from models import storage
-        filtered_reviews = []
-        reviews = storage.all(Review)
-        for rv in reviews.values():
-            if rv.place_id == self.id:
-                filtered_reviews.append(rv)
-        return filtered_reviews  # returns reviews with same place id
+        @property
+        def reviews(self):
+            """Returns the list of Review instances with
+               place_id equals
+               to the current place.id => It will be the FileStorage
+               relationship between Place and Review
+            """
+            from models import storage
+            filtered_reviews = []
+            reviews = storage.all(Review)
+            for rv in reviews.values():
+                if rv.place_id == self.id:
+                    filtered_reviews.append(rv)
+            return filtered_reviews  # returns reviews with same place id
+
+        @property
+        def amenities(self):
+            ''' returns the list of Amenity instances
+                based on the attribute amenity_ids that
+                contains all Amenity.id linked to the Place
+            '''
+            from models import storage
+            all_amens = storage.all(Amenity)
+            lst = []
+            for amen in all_amens.values():
+                if amen.id in self.amenity_ids:
+                    lst.append(amen)
+            return lst
+
+        @amenities.setter
+        def amenities(self, obj):
+            ''' method for adding an Amenity.id to the
+                attribute amenity_ids. accepts only Amenity
+                objects
+            '''
+            if obj is not None:
+                if isinstance(obj, Amenity):
+                    if obj.id not in self.amenity_ids:
+                        self.amenity_ids.append(obj.id) 
