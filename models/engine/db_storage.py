@@ -2,6 +2,9 @@
 ''''''
 import os
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select
+from sqlalchemy.orm import scoped_session
 
 
 class DBStorage():
@@ -15,6 +18,39 @@ class DBStorage():
         HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine(
-            f"mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_HOST}\
+            f"mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}\
             @{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}",
             pool_pre_ping=True)
+
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(Session)
+
+    def all(self, cls=None):
+        """Returns a dictionary of models currently in storage"""
+        stmt = None
+        if cls is None:
+            stmt = select()
+            return self.__session.scalar(stmt)
+        else:
+            stmt = select(cls)
+        return self.__session.scalar(stmt)
+
+    def new(self, obj):
+        """Adds new object to storage dictionary"""
+        self.__session.add(obj)
+
+    def delete(self, obj=None):
+        """ to delete obj from __objects """
+        if obj is None:
+            return
+
+        self.__session.delete(obj)
+
+    def save(self):
+        self.__session.commit()
+
+    def reload(self):
+        """Loads storage dictionary from file"""
+        from models.base_model import Base
+
+        Base.metadata.create_all(self.__engine)
