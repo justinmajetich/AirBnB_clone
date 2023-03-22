@@ -6,6 +6,7 @@ from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
+Base = declarative_base()
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = "users"
