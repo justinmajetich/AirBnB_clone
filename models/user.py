@@ -3,17 +3,17 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
 import os
 import models
-
+import sqlalchemy
 
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes
-
+    
         Attributs:
         ====================
+
             email : email of user
                     String, not null
             password: password of compte user
@@ -23,7 +23,7 @@ class User(BaseModel, Base):
             last_name: last name of user
                     String, not null
     """
-
+    
     __tablename__ = "users"
     #if os.getenv("HBNB_TYPE_STORAGE") == 'db':
 
