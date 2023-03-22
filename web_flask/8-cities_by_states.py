@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 
-"""This module starts a Flask web application to display States and their Cities."""
+"""This module starts a Flask web application to display States and Cities."""
 
 from models import storage
 from models.state import State
 from flask import Flask, render_template
 
 app = Flask(__name__)
+
 
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_route():
