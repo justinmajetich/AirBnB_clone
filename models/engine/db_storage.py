@@ -63,6 +63,9 @@ class DBStorage:
         if (env == "test"):
             Base.metadata.drop_all(bind=self.__engine)
 
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                     expire_on_commit=False))
+
     def all(self, cls=None):
         """
         This method returns a dictionary containing all objects of a given
@@ -110,6 +113,7 @@ class DBStorage:
         """
         if obj is not None:
             self.__session.delete(obj)
+            self.save()
 
     def reload(self):
         """
@@ -120,6 +124,5 @@ class DBStorage:
         attribute of the DBStorage object.
         """
         Base.metadata.create_all(self.__engine)
-        s_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(s_factory)
+        Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
