@@ -32,22 +32,22 @@ class User(BaseModel, Base):
     )
     first_name = Column(
         String(128),
-        nullable=False,
+        nullable=True,
         default=""
     )
     last_name = Column(
         String(128),
-        nullable=False,
+        nullable=True,
         default=""
     )
     places = relationship(
         "Place",
         backref="user",
-        cascade="all, delete")
+        cascade="all, delete-orphan")
     reviews = relationship(
         "Review",
         backref="user",
-        cascade='all, delete')
+        cascade='all, delete-orphan')
     # else:
     #     email = ""
     #     password = ""
