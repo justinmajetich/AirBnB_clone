@@ -12,7 +12,7 @@ CREATE USER
   IDENTIFIED BY 'hbnb_test_pwd';
 
 -- Grant privileges to test user
-GRANT 'ALL PRIVILEGES'
+GRANT ALL PRIVILEGES
   ON hbnb_test_db.*
   TO 'hbnb_test'@'localhost';
 
