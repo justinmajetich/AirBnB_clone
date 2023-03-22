@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
-import json
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -25,7 +24,7 @@ class DBStorage():
         variable HBNB_ENV is equal to test.
         """
         self.__engine = create_engine(
-            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:{environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/{os.getenv('HBNB_MYSQL_DB')}",
+            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:{environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/{environ['HBNB_MYSQL_DB']}",
             pool_pre_ping=True,
         )
         if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
