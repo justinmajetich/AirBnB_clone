@@ -8,9 +8,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-import os
+from os import environ
 
 
 class DBStorage():
@@ -21,30 +21,36 @@ class DBStorage():
     def __init__(self):
         """
         Constructor
-        Connect to the database through self.__engine. Drop all tables if the environment variable HBNB_ENV is equal to test.
+        Connect to the database through self.__engine. Drop all tables if the environment
+        variable HBNB_ENV is equal to test.
         """
         self.__engine = create_engine(
-            f"mysql+mysqldb://{os.getenv('HBNB_MYSQL_USER')}:{os.getenv('HBNB_MYSQL_PWD')}@{os.getenv('HBNB_MYSQL_HOST')}/{os.getenv('HBNB_MYSQL_DB')}",
+            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:{environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/{os.getenv('HBNB_MYSQL_DB')}",
             pool_pre_ping=True,
         )
-        if os.getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+        if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
+            meta = MetaData()
+            meta.reflect(bind=self.__engine)
+            for table in reversed(meta.sorted_tables):
+                self.__engine.execute(table.delete())
 
     def all(self, cls=None):
-        """Returns the list of objects of one type of class. Return a dictionary like FileStorage"""
+        """Returns the list of objects of one type of class. Return a
+        dictionary like FileStorage"""
+        obj_types = {'User': User, 'State': State, 'City': City,
+                     'Amenity': Amenity, 'Place': Place, 'Review': Review}
         result = {}
         if cls is None:
-            objects = self.__session.query(cls).all()
-            for obj in objects:
-                key = f"{type(obj).__name__}.{obj.id}"
-                result[key] = obj
-        else:
-            classes = [User, State, City, Amenity, Place, Review]
-            for class_ in classes:
-                objects = self.__session.query(class_).all()
-                for obj in objects:
-                    key = f"{type(obj).__name__}.{obj.id}"
+            for cls_type in obj_types:
+                for obj in self.__session.query(obj_types[cls_type]).all():
+                    key = f"{cls_type}.{obj.id}"
                     result[key] = obj
+        else:
+            if isinstance(cls, str):
+                cls = obj_types[cls]
+            for obj in self.__session.query(cls).all():
+                key = f"{cls.__name__}.{obj.id}"
+                result[key] = obj
         return result
     
     def new(self, obj):
