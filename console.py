@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 continue
 
-        if args not in HBNBCommand.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
