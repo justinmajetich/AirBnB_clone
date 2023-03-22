@@ -14,7 +14,6 @@ Base = declarative_base()
 class BaseModel:
     """
         A base class for all hbnb models
-
         ATTRIBUTS:
         ============
             id : string 60char max, not null, unique
@@ -23,7 +22,6 @@ class BaseModel:
                 default: datetime now
             updated_at : datetime, not null,
                 default: datetime now
-
     """
     # if os.getenv("HBNB_TYPE_STORAGE") == 'db':
     id = Column(
@@ -56,10 +54,10 @@ class BaseModel:
             # if kwarg (if object exist) with update, create
             # delete class and update value with value
             if '__class__' in kwargs.keys():
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
                 del kwargs['__class__']
             else:
                 # if kwargs but not object exist

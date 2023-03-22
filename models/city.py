@@ -6,8 +6,9 @@ from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 
+
 class City(BaseModel, Base):
-    """ class for City 
+    """ class for City
 
         Attributs
         ===================
@@ -16,7 +17,6 @@ class City(BaseModel, Base):
                 String, not null
             state_id: ForeignKey (class State), not null string
             place: relationship with class Place
-    
     """
     __tablename__ = 'cities'
 
@@ -33,4 +33,3 @@ class City(BaseModel, Base):
     # else:
     #     name = ""
     #     state_id = ""
-

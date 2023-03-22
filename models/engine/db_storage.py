@@ -56,12 +56,12 @@ class DBStorage:
         # if cls != None:
         #     for obj in self.__session.query(cls).all():
         #         dict_objects.update({'{}.{}'.
-        #                              format(type(cls).__name__, obj.id,): obj})
+        # format(type(cls).__name__, obj.id,): obj})
         # else:
         #     for k, v in Class_name.items():
         #         for obj in self.__session.query(v):
         #             dict_objects.update({'{}.{}'.
-        #                                  format(type(obj).__name__, obj.id,): obj})
+        # format(type(obj).__name__, obj.id,): obj})
         # return (dict_objects)
 
         if cls is None:

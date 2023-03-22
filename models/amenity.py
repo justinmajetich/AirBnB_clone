@@ -14,9 +14,15 @@ class Amenity(BaseModel, Base):
     name = Column(
         String(128),
         nullable=False)
-    place_amenities = relationship('Place', secondary="place_amenity",
-                                viewonly=False)
+    place_amenities = relationship(
+        'Place',
+        secondary="place_amenity",
+        viewonly=False)
     # else:
     #     name = ""
 
-
+    #def __init__(self, *args, **kwargs):
+    #    """
+    #    Initializes the class with args and kwargs
+    #    """
+    #    super().__init__(*args, **kwargs)
