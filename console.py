@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-
 """ Console Module """
 import cmd
 import sys
@@ -127,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         name_pattern = r'(?P<name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
         class_match = re.match(name_pattern, args)
         obj_kwargs = {}
-        
+
         if class_match is not None:
             class_name = class_match.group('name')
             params_str = args[len(class_name):].strip()
@@ -143,16 +142,16 @@ class HBNBCommand(cmd.Cmd):
             )
             for param in params:
                 param_match = re.fullmatch(param_pattern, param)
-                if param_match != None:
+                if param_match is not None:
                     key_name = param_match.group('name')
                     str_v = param_match.group('t_str')
                     float_v = param_match.group('t_float')
                     int_v = param_match.group('t_int')
-                    if float_v != None:
+                    if float_v is not None:
                         obj_kwargs[key_name] = float(float_v)
-                    if int_v != None:
+                    if int_v is not None:
                         obj_kwargs[key_name] = int(int_v)
-                    if str_v != None:
+                    if str_v is not None:
                         obj_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
         else:
             class_name = args
@@ -179,7 +178,6 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
-
 
     def help_create(self):
         """ Help information for the create method """
