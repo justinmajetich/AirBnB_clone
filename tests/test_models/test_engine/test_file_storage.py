@@ -107,3 +107,41 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    # Test creating an object with string, integer and float attributes
+    def test_create_object_with_params(self):
+        self.cli.do_create("BaseModel name=\"My house\" number=123 rating=4.5")
+        obj = storage.all()["BaseModel." + self.cli.last_id]
+        self.assertEqual(obj.name, "My house")
+        self.assertEqual(obj.number, 123)
+        self.assertEqual(obj.rating, 4.5)
+
+    # Test creating an object with a string attribute that has quotes and underscores
+    def test_create_object_with_quoted_param(self):
+        self.cli.do_create("BaseModel name=\"My_little_house\"")
+        obj = storage.all()["BaseModel." + self.cli.last_id]
+        self.assertEqual(obj.name, "My_little_house")
+
+    # Test creating an object with multiple parameters
+    def test_create_object_with_multiple_params(self):
+        self.cli.onecmd('create User name="John Doe" age=30 email="johndoe@example.com"')
+        obj_id = self.cli.output.split()[3]
+        obj = storage.all()['User.{}'.format(obj_id)]
+        self.assertEqual(obj.name, 'John Doe')
+        self.assertEqual(obj.age, 30)
+        self.assertEqual(obj.email, 'johndoe@example.com')
+
+    # Test creating object with integer parameter
+    def test_create_object_with_integer_param(self):
+        self.cli.onecmd('create BaseModel age=25')
+        obj_id = self.cli.output.split()[3]
+        obj = storage.all()['BaseModel.{}'.format(obj_id)]
+        self.assertEqual(obj.age, 25)
+
+    # Test creating object with float parameter
+    def test_create_object_with_float_param():
+        self.cli.onecmd('create BaseModel price=10.99')
+        obj_id = self.cli.output.split()[3]
+        obj = storage.all()['BaseModel.{}'.format(obj_id)]
+        self.assertEqual(obj.price, 10.99)
+
