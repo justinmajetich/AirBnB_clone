@@ -78,19 +78,21 @@ class DBStorage:
         #return (dict_objects)
 
         #test3
-
-        classes = [State, City, User, Place, Review, Amenity]
         if cls:
             if isinstance(cls, str):
                 cls = eval(cls)
             all_obj = self.__session.query(cls).all()
         else:
             all_obj = []
-            for model_class in model_classes:
-                all_obj += self.__session.query(model_class).all()
+            objs.extend(self.__session.query(State).all())
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         result_dict = {}
         for obj in all_obj:
-            key = f"{type(obj).__name__}.{obj.id}"
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             result_dict[key] = obj
         return result_dict
 
