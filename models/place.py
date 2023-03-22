@@ -3,8 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 # from models.amenity import Amenity
-# from models.review import Review
-# from sqlalchemy.orm import relationship
+from models.review import Review
+from sqlalchemy.orm import relationship
 from models import storage_type
 
 
@@ -22,6 +22,8 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        reviews = relationship('Review', backref='place',
+                               cascade="all, delete-orphan")
     else:
         city_id = ""
         user_id = ""
@@ -34,3 +36,17 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    @property
+    def reviews(self):
+        """Returns the list of Review instances with place_id equals
+           to the current place.id => It will be the FileStorage
+           relationship between Place and Review
+        """
+        from models import storage
+        filtered_reviews = []
+        reviews = storage.all(Review)
+        for rv in reviews.values():
+            if rv.place_id == self.id:
+                filtered_reviews.append(rv)
+        return filtered_reviews  # returns reviews with same place id
