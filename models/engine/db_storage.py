@@ -11,11 +11,11 @@ from models.user import User
 from models.review import Review
 from models.place import Place
 from models.amenity import Amenity
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 
 
-class DBStorage():
+class DBStorage:
     """Defines the MySQL database storage class"""
 
     __engine = None
@@ -27,7 +27,7 @@ class DBStorage():
         "Place": Place,
         "Amenity": Amenity,
         "Review": Review,
-        }
+    }
 
     def __init__(self):
         """Initializes a ``DBStorage`` class instance
@@ -56,15 +56,15 @@ class DBStorage():
         if cls and cls in DBStorage.__valid_classes.values():
             db_storage = self.__session.query(cls).all()
         else:
-            for key in DBStorage.__valid_classes:
-                db_storage.extend(self.__session
-                                  .query(DBStorage.__valid_classes[key]).all())
+            for cls in DBStorage.__valid_classes.values():
+                db_storage.extend(self.__session.query(cls).all())
+
         return {"{}.{}".format(type(obj).__name__, obj.id): obj
                 for obj in db_storage}
 
     def new(self, obj):
         """Adds an object to the current database session """
-        if issubclass(obj, BaseModel):
+        if isinstance(obj, BaseModel):
             self.__session.add(obj)
 
     def save(self):
@@ -79,5 +79,7 @@ class DBStorage():
     def reload(self):
         """Reloads all the tables from the MySQL database"""
         Base.metadata.create_all(self.__engine, checkfirst=True)
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()

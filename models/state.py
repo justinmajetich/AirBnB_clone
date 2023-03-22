@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models import storage, storage_type
+from models import storage_type
 
 
 class State(BaseModel, Base):
@@ -19,8 +19,11 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """gets all ``City`` instances linked to a state"""
-            return [obj for obj in storage.all(City)
-                    .values() if obj.state_id == self.id]
+            from models import storage
+            from models.city import City
+
+            return [obj for obj in storage.all(City).values()
+                    if obj.state_id == self.id]
 
     def __repr__(self):
         """Returns a string representation of the ``State`` class"""
