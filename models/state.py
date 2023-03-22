@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"

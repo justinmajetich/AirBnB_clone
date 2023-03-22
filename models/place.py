@@ -3,10 +3,11 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text, Float, ForeignKey
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
 
-    __tablename__  = "place"
+    __tablename__ = "place"
 
     city_id = Column(String(60), ForeignKey("city.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("user.id"), nullable=False)

@@ -3,9 +3,10 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP, text
 
+
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    
+
     __tablename__ = "users"
 
     email = Column(String(128), nullable=False)

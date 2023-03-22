@@ -27,8 +27,8 @@ class FileStorage:
         """ to delete obj from __objects """
         if obj == None:
             return
-        
-        save = [key for key in FileStorage.__objects.keys()] 
+
+        save = [key for key in FileStorage.__objects.keys()]
         for k in save:
             if (FileStorage.__objects[k] == obj):
                 del FileStorage.__objects[k]
@@ -40,7 +40,7 @@ class FileStorage:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
-                #print(f" DATA :  {type(val)} {val}")
+                # print(f" DATA :  {type(val)} {val}")
                 temp[key] = val.to_dict()
                 del temp[key]["_sa_instance_state"]
             json.dump(temp, f)
@@ -56,15 +56,15 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
