@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         new_dict = self.parse_input(args[1:])
         new_instance = HBNBCommand.classes[args[0]](**new_dict)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def parse_input(self, list_input):
         new_dict = {}
@@ -225,11 +225,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            all_objs = storage.all(HBNBCommand.classes[args])
+            for k, v in all_objs.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            all_objs = storage.all()
+            for k, v in all_objs.items():
                 print_list.append(str(v))
 
         print(print_list)
