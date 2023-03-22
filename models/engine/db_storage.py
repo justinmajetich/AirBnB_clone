@@ -61,6 +61,10 @@ class DBStorage():
         """Saves storage dictionary change to file"""
         self.__session.commit()
     
+    def close(self):
+        """Close the session"""
+        self.__session.close()
+    
     def delete(self, obj=None):
         """Delete obj from __objects if it's inside, if obj is equal to None, do nothing"""
         if obj is not None:
