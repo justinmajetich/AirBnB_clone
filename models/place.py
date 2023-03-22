@@ -11,6 +11,9 @@ from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
     """ A place to stay """
+
+    __tablename__  = "place"
+
     city_id: Mapped[str] = mapped_column(String(60), ForeignKey("city.id"), nullable=False)
     user_id: Mapped[str] = mapped_column(String(60), ForeignKey("user.id"), nullable=False)
     name: Mapped[str] = mapped_column(String(128), nullable=False)
