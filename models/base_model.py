@@ -7,6 +7,7 @@ from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
@@ -27,7 +28,6 @@ class BaseModel:
                 elif key != '__class__':
                     # Everything will be added as an attribute except the class
                     setattr(self, key, value)
-
 
     def __str__(self):
         """Returns a string representation of the instance"""
