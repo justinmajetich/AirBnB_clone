@@ -39,10 +39,10 @@ class TestConsole(unittest.TestCase):
 
     def test_create_normal(self):
         """ test the create command """
-        console = self.create()
-        console.onecmd("create City")
-        out = StringIO()
-        self.assertIsInstance(out.getvalue(), str)
+        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            console = self.create()
+            console.onecmd("create City")
+            self.assertEqual(type(mock_stdout.getvalue()), str)
 
     def test_create_error1(self):
         """ test the create command """
@@ -116,7 +116,7 @@ class TestConsole(unittest.TestCase):
         """ test the all command """
         with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
             console = self.create()
-            console.onecmd("create User first_name = 'Gabriel' email='test@mail.com' password='g@br!el'")
+            console.onecmd('create User first_name="Gabriel" email="test@mail.com" password="g@br!el"')
             console.onecmd("all")
             self.assertIn("test@mail.com", mock_stdout.getvalue())
 
