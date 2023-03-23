@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>States and Cities</title>
+  </head>
+  <body>
+    <h1>States</h1>
+    <ul>
+      {% for state in states %}
+        <li>{{ state.id }}: <b>{{ state.name }}</b>
+          {% if state.cities %}
+            <ul>
+              {% for city in state.cities %}
+                <li>{{ city.id }}: <b>{{ city.name }}</b></li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No cities found for this state</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
