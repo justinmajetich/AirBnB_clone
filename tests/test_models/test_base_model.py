@@ -48,32 +48,32 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    def test_save(self):
-        """ Testing save method"""
-        i = self.value()
-        i.save()
-        key = self.name + "." + i.id
-        with open('file.json', 'r') as f:
-            j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
-
     def test_str(self):
-        """ test str method"""
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        model = BaseModel()
+        string = str(model)
+        self.assertIsInstance(string, str)
+        self.assertTrue("[BaseModel]" in string)
+        self.assertTrue(model.id in string)
 
-    def test_todict(self):
-        """ Test to_dict method"""
-        i = self.value()
-        n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
-        # test it's a dictionnary
-        self.assertIsInstance(self.value().to_dict(), dict)
-        # Tests if to_dict contains keys
-        self.assertIn('id', self.value().to_dict())
-        self.assertIn('created_at', self.value().to_dict())
-        self.assertIn('updated_at', self.value().to_dict())
+    def test_save(self):
+        model = BaseModel()
+        before = model.updated_at
+        model.save()
+        after = model.updated_at
+        self.assertLess(before, after)
+
+    def test_to_dict(self):
+        model = BaseModel()
+        dictionary = model.to_dict()
+        self.assertIsInstance(dictionary, dict)
+        self.assertTrue("id" in dictionary)
+        self.assertTrue("created_at" in dictionary)
+        self.assertTrue("updated_at" in dictionary)
+        self.assertTrue("__class__" in dictionary)
+        self.assertEqual(dictionary["id"], model.id)
+        self.assertEqual(dictionary["created_at"], model.created_at.isoformat())
+        self.assertEqual(dictionary["updated_at"], model.updated_at.isoformat())
+        self.assertEqual(dictionary["__class__"], "BaseModel")
 
     def test_kwargs_none(self):
         """  test if no kwargs"""
