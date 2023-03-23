@@ -88,7 +88,7 @@ class TestMySQL(unittest.TestCase):
         result = cursor.fetchone()[0]
         # Add a record
         cursor.execute("""INSERT INTO states (name)
-                       VALUES ('California') ('Arizona')""")
+                       VALUES ('California', 'Arizona')""")
         self.connection.commit()
         # Get the number of records after adding
         cursor.execute("SELECT COUNT(*) FROM states")
