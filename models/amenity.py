@@ -18,4 +18,3 @@ class Amenity(BaseModel, Base):
         secondary="place_amenity",
         viewonly=False
         )
-
