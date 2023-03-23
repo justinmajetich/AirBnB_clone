@@ -67,8 +67,8 @@ class TestMySQL(unittest.TestCase):
         cursor = self.connection.cursor()
         cursor.execute("INSERT INTO states (name) VALUES ('California')")
         self.connection.commit()
-        cursor.execute("UPDATE states SET name='New York' "
-                       "WHERE name='California'")
+        cursor.execute("""UPDATE states SET name='New York'
+                       WHERE name='California'""")
         self.connection.commit()
         cursor.execute("SELECT * FROM states WHERE name='New York'")
         result = cursor.fetchall()
@@ -80,3 +80,18 @@ class TestMySQL(unittest.TestCase):
         cursor.execute("SELECT * FROM states")
         result = cursor.fetchall()
         self.assertTrue(result)
+
+    def test_add_record(self):
+        """Get the number of records before adding"""
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM states")
+        result = cursor.fetchone()[0]
+        # Add a record
+        cursor.execute("""INSERT INTO states (name)
+                       VALUES ('California') ('Arizona')""")
+        self.connection.commit()
+        # Get the number of records after adding
+        cursor.execute("SELECT COUNT(*) FROM states")
+        result2 = cursor.fetchone()[0]
+        # Compare the two
+        self.assertEqual(result2, result + 1)
