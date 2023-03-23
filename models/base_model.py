@@ -16,7 +16,8 @@ else:
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60),unique=True, nullable=False, primary_key=True)
+
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
@@ -61,4 +62,5 @@ class BaseModel:
 
     def delete(self):
         """Delete the current instance from storage"""
+
         models.storage.delete(self)

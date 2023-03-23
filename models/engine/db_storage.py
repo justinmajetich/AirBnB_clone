@@ -31,7 +31,7 @@ class DBStorage:
         )
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
-   
+
     def all(self, cls=None):
         """
         Query on the current database session (self.__session) all objects
@@ -44,6 +44,8 @@ class DBStorage:
             objs = self.__session.query(cls)
 
         else:
+            objs = self.__session.query(User, State, City, Amenity,
+                                        Place, Review)
             objs = self.__session.query(User, State, City, Amenity, Place, Review)
 
         for obj in objs:
@@ -51,10 +53,11 @@ class DBStorage:
             dictionary[key] = obj
 
         return dictionary
-    
+
     def new(self, obj):
         """ add the object to the current database session (self.__session) """
         self.__session.add(obj)
+
 
     def save(self): 
         """
