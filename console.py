@@ -120,6 +120,8 @@ class HBNBCommand(cmd.Cmd):
             for word in split_arg[1:]:
                 Value = word.split("=")[1].strip('"')
                 Key = word.split("=")[0]
+                if "_" in Value:
+                    Value = Value.replace("_", " ")
                 new_dict[Key] = Value
 
             new_instance = HBNBCommand.classes[split_arg[0]](**new_dict)
@@ -357,6 +359,7 @@ class HBNBCommand(cmd.Cmd):
                 if not isinstance(att_val, (int, float)) and "_" in att_val and att_name != 'password':
                     att_val = att_val.replace("_", " ")
                 new_dict.__dict__.update({att_name: att_val})
+                #print(new_dict)
 
         new_dict.save()  # save updates to file
 
