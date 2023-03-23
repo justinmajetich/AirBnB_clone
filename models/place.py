@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 import models
-from os import getenv
+import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
@@ -21,8 +21,9 @@ place_amenity = Table(
         'amenity_id',
         String(60),
         ForeignKey('amenities.id'),
+        nullable=False,
         primary_key=True,
-        nullable=False))
+        ))
 
 
 class Place(BaseModel, Base):
