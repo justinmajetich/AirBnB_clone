@@ -25,8 +25,9 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
     """
-    This function returns a string containing "C " followed
-    by the value of the text variable with underscores replaced with spaces when called.
+    This function returns a string containing "C " followed by the
+    value of the text variable with underscores replaced with space
+    when called.
     """
     return 'C {}'.format(text.replace('_', ' '))
 
@@ -36,7 +37,8 @@ def c(text):
 def python(text):
     """
     This function returns a string containing "Python " followed
-    by the value of the text variable with underscores replaced with spaces when called.
+    by the value of the text variable with underscores replaced
+    with spaces when called.
     """
     return 'Python {}'.format(text.replace('_', ' '))
 
