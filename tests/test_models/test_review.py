@@ -27,3 +27,6 @@ class test_review(test_basemodel):
     def test_text(self):
         """ """
         self.assertEqual(type(self.obj.text), str)
+
+if __name__ == "__main__":
+    unittest.main()

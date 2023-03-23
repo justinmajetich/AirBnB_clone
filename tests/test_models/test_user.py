@@ -33,3 +33,6 @@ class test_User(test_basemodel):
     def test_password(self):
         """ """
         self.assertEqual(type(self.obj.password), str)
+
+if __name__ == "__main__":
+    unittest.main()

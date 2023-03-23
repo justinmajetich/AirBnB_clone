@@ -24,10 +24,11 @@ class test_City(test_basemodel):
             pass
 
     def is_subclass(self):
+        """ test subclass of BaseModel """
         self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
 
     def test_name(self):
-        """ """
+        """ tests the type """
         new = self.value()
         self.assertEqual(type(self.obj.name), str)
 
