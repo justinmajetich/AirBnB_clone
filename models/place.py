@@ -13,6 +13,7 @@ place_amenity = Table('place_amenity', Base.metadata,
         Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
 )
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -31,11 +32,11 @@ class Place(BaseModel, Base):
     amenities = relationship('Amenity', secondary=place_amenity, viewonly=False, overlaps="place_amenities")
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         amenity_ids = []
+
         @property
         def reviews(self):
-
-            """getter attribute cities that returns the list of City instances with
-            state_id equals to the current State.id"""
+            """getter attribute cities that returns the list of City
+            instances with state_id equals to the current State.id"""
             from models.__init__ import storage
             review_list = []
             for review in storage.all(Review).values():
@@ -52,7 +53,7 @@ class Place(BaseModel, Base):
                 if obj.id == self.amenity_ids:
                     amenities_list.append(obj)
             return amenities_list
-        
+
         @amenities.setter
         def amenities(self, obj):
             """ sets the amenities """
