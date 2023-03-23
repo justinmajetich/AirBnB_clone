@@ -137,10 +137,11 @@ class HBNBCommand(cmd.Cmd):
             dict[list[i][0]] = list[i][1]
 
         new_instance = HBNBCommand.classes[args_splited[0]]()
-        storage.save()
         print(new_instance.id)
         for key, value in dict.items():
+            setattr(new_instance, key, value)
             exec(f"new_instance.{key} = value")
+        storage.new(new_instance)
         storage.save()
 
     def help_create(self):
