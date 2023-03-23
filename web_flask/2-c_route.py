@@ -1,5 +1,4 @@
 #!/usr/bin/Python3
-
 """
 This script starts a Flask web application that listens on port 5000 and displays various messages when you visit different routes.
 
