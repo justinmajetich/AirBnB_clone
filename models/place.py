@@ -21,8 +21,8 @@ place_amenity = Table(
         'amenity_id',
         String(60),
         ForeignKey('amenities.id'),
-        nullable=False,
         primary_key=True,
+        nullable=False        
         ))
 
 
