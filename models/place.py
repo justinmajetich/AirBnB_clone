@@ -39,6 +39,7 @@ class Place(BaseModel, Base):
         ForeignKey("users.id"),
         nullable=False
         )
+        
     name = Column(
         String(128),
         nullable=False,
@@ -107,12 +108,12 @@ class Place(BaseModel, Base):
         # amenity_ids = []
         reviews = relationship(
             "Review",
-            backref='place',
+            backref='places',
             cascade='delete'
             )
         amenities = relationship(
             "Amenity",
             secondary='place_amenity',
             viewonly=False,
-            back_populates="place_amenities")
-
+            back_populates="place_amenities"
+            )
