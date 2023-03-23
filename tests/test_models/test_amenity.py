@@ -2,10 +2,11 @@
 """ """
 from models.amenity import Amenity
 import unittest
+import os
 
 
 class test_Amenity(unittest.TestCase):
-    """ """
+    """ tests for Amenity class """
 
     @classmethod
     def setUpClass(cls):
@@ -22,9 +23,11 @@ class test_Amenity(unittest.TestCase):
             pass
 
     def type_obj(self):
+        """ test type """
         self.assertEqual(type(self.obj.name), str)
 
     def is_subclass(self):
+        """ tests subclass of BaseModel """
         self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
 """
     def __init__(self, *args, **kwargs):
