@@ -22,16 +22,17 @@ class TestConsole(unittest.TestCase):
     def create(self):
         """ creates an instance of interpreter """
         return HBNBCommand()
-    
+
     """
     def test_quit(self):
-         test the quit command 
+         test the quit command
         console = self.create()
         self.assertTrue(console.onecmd("quit"))
-    
+
     def test_EOF(self):
-         test the EOF command 
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+         test the EOF command
+        with unittest.mock.patch('sys.stdout',
+        new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("EOF")
             self.assertEqual(mock_stdout.getvalue(), None)
@@ -39,28 +40,34 @@ class TestConsole(unittest.TestCase):
 
     def test_create_normal(self):
         """ test the create command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create City")
             self.assertEqual(type(mock_stdout.getvalue()), str)
 
     def test_create_error1(self):
         """ test the create command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create")
-            self.assertEqual(mock_stdout.getvalue(), "** class name missing **\n")
-    
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class name missing **\n")
+
     def test_create_error2(self):
         """ test the create command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create blabla")
-            self.assertEqual(mock_stdout.getvalue(), "** class doesn't exist **\n")
-    
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class doesn't exist **\n")
+
     def test_show(self):
         """ test the show command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create City")
             city_id = mock_stdout.getvalue()
@@ -69,61 +76,76 @@ class TestConsole(unittest.TestCase):
 
     def test_show_error1(self):
         """ test the show command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("show")
-            self.assertEqual(mock_stdout.getvalue(), "** class name missing **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class name missing **\n")
 
     def test_show_error2(self):
         """ test the show command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout', *
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("show City")
-            self.assertEqual(mock_stdout.getvalue(), "** instance id missing **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** instance id missing **\n")
 
     def test_show_error3(self):
         """ test the show command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             city_id = mock_stdout.getvalue()
             console.onecmd(f"show Bla {city_id}")
-            self.assertEqual(mock_stdout.getvalue(), "** class doesn't exist **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class doesn't exist **\n")
 
     def test_destroy_error1(self):
         """ test the destroy command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("destroy City")
-            self.assertEqual(mock_stdout.getvalue(), "** instance id missing **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** instance id missing **\n")
 
     def test_destroy_error2(self):
         """ test the destroy command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             city_id = mock_stdout.getvalue()
             console.onecmd(f"destroy Bla {city_id}")
-            self.assertEqual(mock_stdout.getvalue(), "** class doesn't exist **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class doesn't exist **\n")
 
     def test_destroy_error3(self):
         """ test the destroy command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             city_id = mock_stdout.getvalue()
             console.onecmd(f"destroy {city_id}")
-            self.assertEqual(mock_stdout.getvalue(), "** class name missing **\n")
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** class name missing **\n")
 
     def test_all(self):
         """ test the all command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
-            console.onecmd('create User first_name="Gabriel" email="test@mail.com" password="g@br!el"')
+            console.onecmd('create User first_name="Gabriel" \
+                            email="test@mail.com" password="g@br!el"')
             console.onecmd("all")
             self.assertIn("test@mail.com", mock_stdout.getvalue())
 
     def test_update_1(self):
         """ test the update command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("update User")
-            self.assertEqual(mock_stdout.getvalue(), "** instance id missing **\n")
-    
+            self.assertEqual(mock_stdout.getvalue(),
+                             "** instance id missing **\n")

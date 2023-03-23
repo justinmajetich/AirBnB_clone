@@ -26,41 +26,40 @@ class DBStorage:
         host = os.environ.get("HBNB_MYSQL_HOST")
         database = os.environ.get("HBNB_MYSQL_DB")
         env = os.environ.get("HBNB_ENV")
-        self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}", pool_pre_ping=True)
+        self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@ \
+                                      {host}:3306/{database}",
+                                      pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine)
         Session.configure(bind=self.__engine)
         self.__session = Session()
-        
+
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
 
-
-    def all(self, cls=None): 
+    def all(self, cls=None):
         """ query on the current database session """
         dic = {}
         if cls is None:
-            q = self.__session.query(State, City, Place, Review, User, Amenity).all()
+            q = self.__session.query(State, City,
+                                     Place, Review, User, Amenity).all()
         else:
             q = self.__session.query(cls).all()
 
         for obj in q:
-            delattr(obj,"_sa_instance_state")
+            delattr(obj, "_sa_instance_state")
             dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
-
         return dic
-        
+
     def new(self, obj):
         """ add the object to the current database session """
-        #print(f"{obj} created")
         self.__session.add(obj)
-    
+
     def save(self):
         """ commit all changes of the current database session """
         self.__session.commit()
-        #print("Saved")
-        
+
     def delete(self, obj=None):
         """ delete from the current database session obj if not None """
         if obj is None:
@@ -71,7 +70,7 @@ class DBStorage:
     def reload(self):
         """ create all tables in the database (feature of SQLAlchemy) """
         from sqlalchemy.ext.declarative import declarative_base
-        
+
         Base = declarative_base()
         s = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(s)
