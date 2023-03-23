@@ -1,0 +1,695 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "isExtraImport": true,
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "UUID",
+        "importPath": "uuid",
+        "description": "uuid",
+        "isExtraImport": true,
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "unittest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "unittest",
+        "description": "unittest",
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "storage",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "isExtraImport": true,
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "Amenity",
+        "importPath": "models.amenity",
+        "description": "models.amenity",
+        "isExtraImport": true,
+        "detail": "models.amenity",
+        "documentation": {}
+    },
+    {
+        "label": "Amenity",
+        "importPath": "models.amenity",
+        "description": "models.amenity",
+        "isExtraImport": true,
+        "detail": "models.amenity",
+        "documentation": {}
+    },
+    {
+        "label": "City",
+        "importPath": "models.city",
+        "description": "models.city",
+        "isExtraImport": true,
+        "detail": "models.city",
+        "documentation": {}
+    },
+    {
+        "label": "City",
+        "importPath": "models.city",
+        "description": "models.city",
+        "isExtraImport": true,
+        "detail": "models.city",
+        "documentation": {}
+    },
+    {
+        "label": "City",
+        "importPath": "models.city",
+        "description": "models.city",
+        "isExtraImport": true,
+        "detail": "models.city",
+        "documentation": {}
+    },
+    {
+        "label": "Place",
+        "importPath": "models.place",
+        "description": "models.place",
+        "isExtraImport": true,
+        "detail": "models.place",
+        "documentation": {}
+    },
+    {
+        "label": "Place",
+        "importPath": "models.place",
+        "description": "models.place",
+        "isExtraImport": true,
+        "detail": "models.place",
+        "documentation": {}
+    },
+    {
+        "label": "Review",
+        "importPath": "models.review",
+        "description": "models.review",
+        "isExtraImport": true,
+        "detail": "models.review",
+        "documentation": {}
+    },
+    {
+        "label": "Review",
+        "importPath": "models.review",
+        "description": "models.review",
+        "isExtraImport": true,
+        "detail": "models.review",
+        "documentation": {}
+    },
+    {
+        "label": "State",
+        "importPath": "models.state",
+        "description": "models.state",
+        "isExtraImport": true,
+        "detail": "models.state",
+        "documentation": {}
+    },
+    {
+        "label": "State",
+        "importPath": "models.state",
+        "description": "models.state",
+        "isExtraImport": true,
+        "detail": "models.state",
+        "documentation": {}
+    },
+    {
+        "label": "State",
+        "importPath": "models.state",
+        "description": "models.state",
+        "isExtraImport": true,
+        "detail": "models.state",
+        "documentation": {}
+    },
+    {
+        "label": "State",
+        "importPath": "models.state",
+        "description": "models.state",
+        "isExtraImport": true,
+        "detail": "models.state",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "models.user",
+        "description": "models.user",
+        "isExtraImport": true,
+        "detail": "models.user",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "models.user",
+        "description": "models.user",
+        "isExtraImport": true,
+        "detail": "models.user",
+        "documentation": {}
+    },
+    {
+        "label": "cmd",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "cmd",
+        "description": "cmd",
+        "detail": "cmd",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "storage",
+        "importPath": "models.__init__",
+        "description": "models.__init__",
+        "isExtraImport": true,
+        "detail": "models.__init__",
+        "documentation": {}
+    },
+    {
+        "label": "FileStorage",
+        "importPath": "models.engine.file_storage",
+        "description": "models.engine.file_storage",
+        "isExtraImport": true,
+        "detail": "models.engine.file_storage",
+        "documentation": {}
+    },
+    {
+        "label": "FileStorage",
+        "importPath": "models.engine.file_storage",
+        "description": "models.engine.file_storage",
+        "isExtraImport": true,
+        "detail": "models.engine.file_storage",
+        "documentation": {}
+    },
+    {
+        "label": "FileStorage",
+        "kind": 6,
+        "importPath": "models.engine.file_storage",
+        "description": "models.engine.file_storage",
+        "peekOfCode": "class FileStorage:\n    \"\"\"This class manages storage of hbnb models in JSON format\"\"\"\n    __file_path = 'file.json'\n    __objects = {}\n    def all(self, cls=None):\n        \"\"\"Returns a dictionary of models currently in storage\"\"\"\n        if cls == None:\n            # Si aucun argument \"cls\" n'est fourni, renvoie le dictionnaire de tous les objets stockés\n            return FileStorage.__objects\n        # Sinon, crée un nouveau dictionnaire contenant uniquement les objets de la classe spécifiée par \"cls\"",
+        "detail": "models.engine.file_storage",
+        "documentation": {}
+    },
+    {
+        "label": "Amenity",
+        "kind": 6,
+        "importPath": "models.amenity",
+        "description": "models.amenity",
+        "peekOfCode": "class Amenity(BaseModel):\n    name = \"\"",
+        "detail": "models.amenity",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "kind": 6,
+        "importPath": "models.base_model",
+        "description": "models.base_model",
+        "peekOfCode": "class BaseModel:\n    \"\"\"A base class for all hbnb models\"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\"Instatntiates a new model\"\"\"\n        if not kwargs:\n            from models import storage\n            self.id = str(uuid.uuid4())\n            self.created_at = datetime.now()\n            self.updated_at = datetime.now()\n            storage.new(self)",
+        "detail": "models.base_model",
+        "documentation": {}
+    },
+    {
+        "label": "City",
+        "kind": 6,
+        "importPath": "models.city",
+        "description": "models.city",
+        "peekOfCode": "class City(BaseModel):\n    \"\"\" The city class, contains state ID and name \"\"\"\n    state_id = \"\"\n    name = \"\"",
+        "detail": "models.city",
+        "documentation": {}
+    },
+    {
+        "label": "Place",
+        "kind": 6,
+        "importPath": "models.place",
+        "description": "models.place",
+        "peekOfCode": "class Place(BaseModel):\n    \"\"\" A place to stay \"\"\"\n    city_id = \"\"\n    user_id = \"\"\n    name = \"\"\n    description = \"\"\n    number_rooms = 0\n    number_bathrooms = 0\n    max_guest = 0\n    price_by_night = 0",
+        "detail": "models.place",
+        "documentation": {}
+    },
+    {
+        "label": "Review",
+        "kind": 6,
+        "importPath": "models.review",
+        "description": "models.review",
+        "peekOfCode": "class Review(BaseModel):\n    \"\"\" Review classto store review information \"\"\"\n    place_id = \"\"\n    user_id = \"\"\n    text = \"\"",
+        "detail": "models.review",
+        "documentation": {}
+    },
+    {
+        "label": "State",
+        "kind": 6,
+        "importPath": "models.state",
+        "description": "models.state",
+        "peekOfCode": "class State(BaseModel):\n    \"\"\" State class \"\"\"\n    name = \"\"",
+        "detail": "models.state",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 6,
+        "importPath": "models.user",
+        "description": "models.user",
+        "peekOfCode": "class User(BaseModel):\n    \"\"\"This class defines a user by various attributes\"\"\"\n    email = ''\n    password = ''\n    first_name = ''\n    last_name = ''",
+        "detail": "models.user",
+        "documentation": {}
+    },
+    {
+        "label": "test_fileStorage",
+        "kind": 6,
+        "importPath": "tests.test_models.test_engine.test_file_storage",
+        "description": "tests.test_models.test_engine.test_file_storage",
+        "peekOfCode": "class test_fileStorage(unittest.TestCase):\n    \"\"\" Class to test the file storage method \"\"\"\n    def setUp(self):\n        \"\"\" Set up test environment \"\"\"\n        del_list = []\n        for key in storage._FileStorage__objects.keys():\n            del_list.append(key)\n        for key in del_list:\n            del storage._FileStorage__objects[key]\n    def tearDown(self):",
+        "detail": "tests.test_models.test_engine.test_file_storage",
+        "documentation": {}
+    },
+    {
+        "label": "test_Amenity",
+        "kind": 6,
+        "importPath": "tests.test_models.test_amenity",
+        "description": "tests.test_models.test_amenity",
+        "peekOfCode": "class test_Amenity(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"Amenity\"\n        self.value = Amenity\n    def test_name2(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_amenity",
+        "documentation": {}
+    },
+    {
+        "label": "test_basemodel",
+        "kind": 6,
+        "importPath": "tests.test_models.test_base_model",
+        "description": "tests.test_models.test_base_model",
+        "peekOfCode": "class test_basemodel(unittest.TestCase):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = 'BaseModel'\n        self.value = BaseModel\n    def setUp(self):\n        \"\"\" \"\"\"\n        pass",
+        "detail": "tests.test_models.test_base_model",
+        "documentation": {}
+    },
+    {
+        "label": "test_City",
+        "kind": 6,
+        "importPath": "tests.test_models.test_city",
+        "description": "tests.test_models.test_city",
+        "peekOfCode": "class test_City(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"City\"\n        self.value = City\n    def test_state_id(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_city",
+        "documentation": {}
+    },
+    {
+        "label": "test_Place",
+        "kind": 6,
+        "importPath": "tests.test_models.test_place",
+        "description": "tests.test_models.test_place",
+        "peekOfCode": "class test_Place(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"Place\"\n        self.value = Place\n    def test_city_id(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_place",
+        "documentation": {}
+    },
+    {
+        "label": "test_review",
+        "kind": 6,
+        "importPath": "tests.test_models.test_review",
+        "description": "tests.test_models.test_review",
+        "peekOfCode": "class test_review(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"Review\"\n        self.value = Review\n    def test_place_id(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_review",
+        "documentation": {}
+    },
+    {
+        "label": "test_state",
+        "kind": 6,
+        "importPath": "tests.test_models.test_state",
+        "description": "tests.test_models.test_state",
+        "peekOfCode": "class test_state(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"State\"\n        self.value = State\n    def test_name3(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_state",
+        "documentation": {}
+    },
+    {
+        "label": "test_User",
+        "kind": 6,
+        "importPath": "tests.test_models.test_user",
+        "description": "tests.test_models.test_user",
+        "peekOfCode": "class test_User(test_basemodel):\n    \"\"\" \"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" \"\"\"\n        super().__init__(*args, **kwargs)\n        self.name = \"User\"\n        self.value = User\n    def test_first_name(self):\n        \"\"\" \"\"\"\n        new = self.value()",
+        "detail": "tests.test_models.test_user",
+        "documentation": {}
+    },
+    {
+        "label": "HBNBCommand",
+        "kind": 6,
+        "importPath": "console",
+        "description": "console",
+        "peekOfCode": "class HBNBCommand(cmd.Cmd):\n    \"\"\" Contains the functionality for the HBNB console\"\"\"\n    # determines prompt for interactive/non-interactive modes\n    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''\n    classes = {\n               'BaseModel': BaseModel, 'User': User, 'Place': Place,\n               'State': State, 'City': City, 'Amenity': Amenity,\n               'Review': Review\n              }\n    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']",
+        "detail": "console",
+        "documentation": {}
+    },
+    {
+        "label": "fs",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "fs = FileStorage()\n# All with nothing\nall_objs = fs.all()\nif len(all_objs.keys()) > 0:\n    print(\"all() is returning result when it should not\")\n    exit(1)\n# Create 2 States and 1 city\nsearch_keys = []\nnew_state = State()\nnew_state.name = \"California\"",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "all_objs",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "all_objs = fs.all()\nif len(all_objs.keys()) > 0:\n    print(\"all() is returning result when it should not\")\n    exit(1)\n# Create 2 States and 1 city\nsearch_keys = []\nnew_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)\nfs.save()",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "search_keys",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "search_keys = []\nnew_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_state = State()\nnew_state.name = \"Nevada\"\nfs.new(new_state)\nfs.save()",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_state",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_state = State()\nnew_state.name = \"Nevada\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_state.name",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_state = State()\nnew_state.name = \"Nevada\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_city = City()",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_state",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_state = State()\nnew_state.name = \"Nevada\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_city = City()\nnew_city.name = \"Las Vegas\"\nnew_city.state_id = new_state.id\nfs.new(new_city)\nfs.save()",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_state.name",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_state.name = \"Nevada\"\nfs.new(new_state)\nfs.save()\nsearch_keys.append(\"{}.{}\".format(\"State\", new_state.id))\nnew_city = City()\nnew_city.name = \"Las Vegas\"\nnew_city.state_id = new_state.id\nfs.new(new_city)\nfs.save()\ncity_search = \"{}.{}\".format(\"City\", new_city.id)",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_city",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_city = City()\nnew_city.name = \"Las Vegas\"\nnew_city.state_id = new_state.id\nfs.new(new_city)\nfs.save()\ncity_search = \"{}.{}\".format(\"City\", new_city.id)\nall_objs = fs.all(State)\nif len(all_objs.keys()) != 2:\n    print(\"all() is not returning all new State/City created\")\n    print(all_objs)",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_city.name",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_city.name = \"Las Vegas\"\nnew_city.state_id = new_state.id\nfs.new(new_city)\nfs.save()\ncity_search = \"{}.{}\".format(\"City\", new_city.id)\nall_objs = fs.all(State)\nif len(all_objs.keys()) != 2:\n    print(\"all() is not returning all new State/City created\")\n    print(all_objs)\n    exit(1)",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "new_city.state_id",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "new_city.state_id = new_state.id\nfs.new(new_city)\nfs.save()\ncity_search = \"{}.{}\".format(\"City\", new_city.id)\nall_objs = fs.all(State)\nif len(all_objs.keys()) != 2:\n    print(\"all() is not returning all new State/City created\")\n    print(all_objs)\n    exit(1)\nfor key_search in search_keys:",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "city_search",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "city_search = \"{}.{}\".format(\"City\", new_city.id)\nall_objs = fs.all(State)\nif len(all_objs.keys()) != 2:\n    print(\"all() is not returning all new State/City created\")\n    print(all_objs)\n    exit(1)\nfor key_search in search_keys:\n    if all_objs.get(key_search) is None:\n        print(\"State created should be in the list of objects\")\n        exit(1)",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "all_objs",
+        "kind": 5,
+        "importPath": "main.test",
+        "description": "main.test",
+        "peekOfCode": "all_objs = fs.all(State)\nif len(all_objs.keys()) != 2:\n    print(\"all() is not returning all new State/City created\")\n    print(all_objs)\n    exit(1)\nfor key_search in search_keys:\n    if all_objs.get(key_search) is None:\n        print(\"State created should be in the list of objects\")\n        exit(1)\nif all_objs.get(city_search) is not None:",
+        "detail": "main.test",
+        "documentation": {}
+    },
+    {
+        "label": "fs",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "fs = FileStorage()\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])\n# Create a new State\nnew_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "all_states",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "all_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])\n# Create a new State\nnew_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nprint(\"New State: {}\".format(new_state))",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "new_state",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "new_state = State()\nnew_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nprint(\"New State: {}\".format(new_state))\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "new_state.name",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "new_state.name = \"California\"\nfs.new(new_state)\nfs.save()\nprint(\"New State: {}\".format(new_state))\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])\n# Create another State",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "all_states",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "all_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])\n# Create another State\nanother_state = State()\nanother_state.name = \"Nevada\"\nfs.new(another_state)\nfs.save()\nprint(\"Another State: {}\".format(another_state))",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "another_state",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "another_state = State()\nanother_state.name = \"Nevada\"\nfs.new(another_state)\nfs.save()\nprint(\"Another State: {}\".format(another_state))\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])        ",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "another_state.name",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "another_state.name = \"Nevada\"\nfs.new(another_state)\nfs.save()\nprint(\"Another State: {}\".format(another_state))\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])        \n# Delete the new State",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "all_states",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "all_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])        \n# Delete the new State\nfs.delete(new_state)\n# All States\nall_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():",
+        "detail": "main_delete",
+        "documentation": {}
+    },
+    {
+        "label": "all_states",
+        "kind": 5,
+        "importPath": "main_delete",
+        "description": "main_delete",
+        "peekOfCode": "all_states = fs.all(State)\nprint(\"All States: {}\".format(len(all_states.keys())))\nfor state_key in all_states.keys():\n    print(all_states[state_key])",
+        "detail": "main_delete",
+        "documentation": {}
+    }
+]
