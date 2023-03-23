@@ -12,12 +12,15 @@ from sqlalchemy import create_engine
 
 
 class DBStorage:
-    """ DataBase Storage """
+    """
+    This class manages storage of hbnb models in a MySQL 
+    database using SQLAlchemy
+    """
     __engine = None
     __session = None
 
     def __init__(self):
-        """ initializes connection to database"""
+        """Initializes connection to database"""
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 getenv("HBNB_MYSQL_USER"),
@@ -51,17 +54,17 @@ class DBStorage:
         return dictionary
 
     def new(self, obj):
-        """ add the object to the current database session (self.__session) """
+        """Add the object to the current database session (self.__session)"""
         self.__session.add(obj)
 
     def save(self):
         """
-        commit all changes of the current database session (self.__session)
+        Commit all changes of the current database session (self.__session)
         """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """ delete from the current database session obj if not None """
+        """Delete from the current database session obj if not None"""
         if obj:
             self.__session.delete(obj)
 
