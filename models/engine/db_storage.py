@@ -46,7 +46,7 @@ class DBStorage:
         """ query on the current database session """
         dic = {}
         if cls is None:
-            q = self.__session.query(State, City, Place, Review, User).all()
+            q = self.__session.query(State, City, Place, Review, User, Amenity).all()
         else:
             q = self.__session.query(cls).all()
 
