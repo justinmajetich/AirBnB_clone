@@ -23,28 +23,39 @@ class FileStorage:
         }
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns a dictionary of models currently in storage
+
+        Args:
+            cls (class): class to filter objects by (optional)
+
+        Returns:
+            dict: dictionary of models in storage
+        """
         if cls is None:
             return self.__objects
-        else:
-            filtered_dict = {}
-            for key, value in self.__objects.items():
-                if type(value) is cls:
-                    filtered_dict[key] = value
-            return filtered_dict
+        return {key: val for key, val in self.__objects.items() if type(val) == cls}
 
     def delete(self, obj=None):
-        """Removes an object from the storage dictionary"""
+        """Removes an object from the storage dictionary
+        
+        Args:
+            obj (BaseModel): object to remove from storage dictionary
+        """
         if obj is not None:
-            obj_key = obj.to_dict()['__class__'] + '.' + obj.id
+            obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if obj_key in self.__objects.keys():
                 del self.__objects[obj_key]
+                self.save()
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.__objects.update(
-            {obj.to_dict()['__class__'] + '.' + obj.id: obj}
-        )
+        """Adds new object to storage dictionary
+
+        Args:
+            obj (BaseModel): object to add to storage dictionary
+        """
+        if obj:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            self.__objects[key] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -56,14 +67,13 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        classes = self.model_classes
-        if os.path.isfile(self.__file_path):
-            temp = {}
-            with open(self.__file_path, 'r') as file:
-                temp = json.load(file)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-
+        try:
+            with open(self.__file_path, 'r', encoding='utf-8') as file:
+                for key, val in json.load(file).items():
+                    val = eval(val['__class__'])(**val)
+                    self.__objects[key] = val
+        except FileNotFoundError:
+            pass
     def close(self):
         """Closes the storage engine."""
         self.reload()
