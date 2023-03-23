@@ -18,6 +18,7 @@ class User(BaseModel, Base):
         last_name = Column(String(128), nullable=True)
         created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
         updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+        places = relationship("Place", cascade="all, delete-orphan", backref="user")
     else:
         email = ''
         password = ''
