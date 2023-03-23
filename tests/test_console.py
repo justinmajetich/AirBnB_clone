@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
         output = io.StringIO()
         sys.stdout = output
         console = HBNBCommand()
-        console.onecmd("create State id='123' name=test")
+        console.onecmd("create User email=\"test\" password=\"123\" id=\"1\"")
         sys.stdout = sys.__stdout__
         expected_output = output.getvalue()
-        self.assertIn("test", expected_output)
+        self.assertIn("1", expected_output)
