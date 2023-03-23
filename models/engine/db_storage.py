@@ -13,6 +13,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import os
 """ DOC """
 
+
 class DBStorage:
     """ DOC """
     __engine = None
@@ -26,10 +27,6 @@ class DBStorage:
         database = os.environ.get("HBNB_MYSQL_DB")
         env = os.environ.get("HBNB_ENV")
         self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}", pool_pre_ping=True)
-        #self.__engine = create_engine(f"mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost:3306/hbnb_dev_db", pool_pre_ping=True)
-        
-        #self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}/{database}", pool_pre_ping=True)
-        #self.__engine = create_engine(f"mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost:3306/hbnb_dev_db", pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine)
         Session.configure(bind=self.__engine)
@@ -38,8 +35,6 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
-        #print(f"S: {self.__session}")
-        #print(f"E: {self.__engine}")
 
 
     def all(self, cls=None): 
