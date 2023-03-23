@@ -46,7 +46,7 @@ class DBStorage:
             q = self.__session.query(cls).all()
 
         for obj in q:
-            delattr(obj,"_sa_instance_state")
+            #delattr(obj,"_sa_instance_state") sert à rien
             dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
         return dic
