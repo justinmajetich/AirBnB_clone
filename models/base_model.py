@@ -25,11 +25,10 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a nei model"""
-        if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-        else:
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        if kwargs:
             if 'updated_at' in kwargs.keys():
                 key = 'updated_at'
                 kwargs[key] = datetime.strptime(kwargs[key],
@@ -47,7 +46,6 @@ class BaseModel:
                 del kwargs['__class__']
             if 'id' not in kwargs.keys():
                 self.id = str(uuid.uuid4())
-        ##self.save()
 
     def __str__(self):
         """Returns a string representation of the instance"""
