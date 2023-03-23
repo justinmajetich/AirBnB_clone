@@ -56,6 +56,6 @@ class Place(BaseModel, Base):
         def amenities(self, obj):
             """ sets the amenities """
             if isinstance(obj, Amenity):
-                self.amenity_ids = obj.id
+                self.amenity_ids.append(obj.id)
             else:
                 pass
