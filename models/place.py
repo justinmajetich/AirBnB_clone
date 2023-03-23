@@ -5,6 +5,8 @@ from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+from models.amenity import Amenity
+
 
 
 place_amenity = Table(
@@ -90,7 +92,6 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             from models import storage
-            from models.amenity import Amenity
             my_list = []
             for i in storage.all(Amenity).values():
                 if i.id in self.amenity_ids:
@@ -99,7 +100,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, value):
-            from models.amenity import Amenity
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
     else:
