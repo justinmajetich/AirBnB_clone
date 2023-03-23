@@ -149,12 +149,6 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
 
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
-    def test_db_create(self):
-        """Tests the create command with the database storage.
-        """
-
     def setUp(self):
         self.db = DBStorage()
         self.console = HBNBCommand()
