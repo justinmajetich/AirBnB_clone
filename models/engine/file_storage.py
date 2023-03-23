@@ -42,12 +42,9 @@ class FileStorage:
             obj (BaseModel): object to remove from storage dictionary
         """
         if obj is not None:
-            obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            obj_key = obj.to_dict()['__class__'] + '.' + obj.id
             if obj_key in self.__objects.keys():
                 del self.__objects[obj_key]
-                self.save()
-        else:
-            return
 
     def new(self, obj):
         """Adds new object to storage dictionary
