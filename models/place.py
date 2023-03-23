@@ -44,7 +44,7 @@ class Place(BaseModel, Base):
         )
     description = Column(
         String(1024),
-        nullable=False,
+        nullable=True,
         )
     number_rooms = Column(
         Integer,
@@ -107,7 +107,8 @@ class Place(BaseModel, Base):
         reviews = relationship(
             "Review",
             backref='place',
-            cascade='delete')
+            cascade='delete'
+            )
         amenities = relationship(
             "Amenity",
             secondary='place_amenity',
