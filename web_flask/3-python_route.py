@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" This script starts a web flask application"""
+
 from flask import Flask
 
 app = Flask(__name__)
