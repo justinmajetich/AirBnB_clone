@@ -2,10 +2,11 @@
 """ """
 from models.amenity import Amenity
 import unittest
+import os
 
 
 class test_Amenity(unittest.TestCase):
-    """ """
+    """ tests for Amenity class """
 
     @classmethod
     def setUpClass(cls):
