@@ -26,6 +26,7 @@ place_amenity = Table(
         nullable=False))
 
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -40,6 +41,7 @@ class Place(BaseModel, Base):
         ForeignKey("users.id"),
         nullable=False
         )
+        
     name = Column(
         String(128),
         nullable=False,
@@ -94,8 +96,8 @@ class Place(BaseModel, Base):
             from models import storage
             my_list = []
             for i in storage.all(Amenity).values():
-                if i.id in self.amenity_ids:
-                    my_list.append(i)
+                #if i.id in self.amenity_ids:
+                my_list.append(i)
             return my_list
 
         @amenities.setter
@@ -113,4 +115,5 @@ class Place(BaseModel, Base):
             "Amenity",
             secondary='place_amenity',
             viewonly=False,
+            back_populates="place_amenities"
             )
