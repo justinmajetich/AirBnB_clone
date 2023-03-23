@@ -41,13 +41,14 @@ class DBStorage:
 
     def all(self, cls=None):
         """ query on the current database session """
-        if os.getenv("HBNB_ENV") == "test":
-            return {}
         dic = {}
-        if cls is None:
-            q = self.__session.query(State, City, Place, Review, User, Amenity).all()
+        if os.getenv("HBNB_ENV") == "test":
+            q = self.__session.query(User).all()
         else:
-            q = self.__session.query(cls).all()
+            if cls is None:
+                q = self.__session.query(State, City, Place, Review, User, Amenity).all()
+            else:
+                q = self.__session.query(cls).all()
 
         for obj in q:
             # delattr(obj,"_sa_instance_state") sert à rien
