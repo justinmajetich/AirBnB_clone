@@ -3,11 +3,12 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
-# from uuid import UUID
 import json
 import os
+from test_models import storage_type
 
 
+@unittest.skipIf(storage_type == "db", "BaseModel class not in database")
 class test_basemodel(unittest.TestCase):
     """ """
 

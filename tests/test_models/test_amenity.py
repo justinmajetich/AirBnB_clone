@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
+from test_models import storage_type
 
 
 class test_Amenity(test_basemodel):
@@ -16,4 +17,5 @@ class test_Amenity(test_basemodel):
     def test_name2(self):
         """ """
         new = self.value()
-        self.assertEqual(type(new.name), str)
+        self.assertEqual(type(new.name), str if storage_type !=
+                         "db" else type(None))
