@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 """ """
+from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
 import unittest
-import os
 
 
 class test_Amenity(unittest.TestCase):
     """ tests for Amenity class """
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -29,6 +28,13 @@ class test_Amenity(unittest.TestCase):
     def is_subclass(self):
         """ tests subclass of BaseModel """
         self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
+
+    def dic_save(self):
+        obj = Place()
+        obj.name = "Flat"
+        place = obj.to_dict
+        self.assertTrue(type(place), dict)
+
 """
     def __init__(self, *args, **kwargs):
         """ """
@@ -41,6 +47,7 @@ class test_Amenity(unittest.TestCase):
         new = self.value()
         self.assertEqual(type(new.name), str)
 """
-    
+
+
 if __name__ == "__main__":
     unittest.main()

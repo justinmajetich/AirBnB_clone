@@ -7,7 +7,6 @@ import unittest
 
 class test_Place(test_basemodel):
     """ """
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -23,6 +22,10 @@ class test_Place(test_basemodel):
         cls.obj.latitude = 54353.5435
         cls.obj.longitude = 5436.7657
         cls.obj.amenity_ids = []
+
+    def is_subclass(self):
+        """ tests subclass of BaseModel """
+        self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
 
     def test_city_id(self):
         """ """
@@ -67,6 +70,7 @@ class test_Place(test_basemodel):
     def test_amenity_ids(self):
         """ """
         self.assertEqual(type(self.obj.amenity_ids), list)
+
 
 if __name__ == "__main__":
     unittest.main()

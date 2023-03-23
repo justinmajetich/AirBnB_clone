@@ -7,7 +7,6 @@ import unittest
 
 class test_User(test_basemodel):
     """ """
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -16,6 +15,10 @@ class test_User(test_basemodel):
         cls.obj.last_name = "Lars"
         cls.obj.email = "test@mail.com"
         cls.obj.password = "GREGE643"
+
+    def is_subclass(self):
+        """ tests subclass of BaseModel """
+        self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
 
     def test_first_name(self):
         """ """
@@ -33,6 +36,7 @@ class test_User(test_basemodel):
     def test_password(self):
         """ """
         self.assertEqual(type(self.obj.password), str)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -7,7 +7,6 @@ import unittest
 
 class test_review(test_basemodel):
     """ """
-
     @classmethod
     def setUpClass(cls):
         """set up for test"""
@@ -15,6 +14,10 @@ class test_review(test_basemodel):
         cls.obj.text = "Great !"
         cls.obj.place_id = "4534"
         cls.obj.user_id = "543"
+
+    def is_subclass(self):
+        """ tests subclass of BaseModel """
+        self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
 
     def test_place_id(self):
         """ """
@@ -27,6 +30,7 @@ class test_review(test_basemodel):
     def test_text(self):
         """ """
         self.assertEqual(type(self.obj.text), str)
+
 
 if __name__ == "__main__":
     unittest.main()
