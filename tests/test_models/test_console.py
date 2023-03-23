@@ -13,14 +13,15 @@ from models.base_model import BaseModel
 from models.user import User
 from tests import clear_stream
 
+
 class TestHBNBCommand(unittest.TestCase):
     """Represents the test class for the HBNBCommand class.
-	"""
+    """
     @unittest.skipIf(
-		os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
+        os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
     def test_fs_create(self):
         """Tests the create command with the file storage.
-		"""
+        """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
             cons.onecmd('create City name="Texas"')
@@ -38,9 +39,9 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("'name': 'Ahmed'", cout.getvalue().strip())
             self.assertIn("'age': 24", cout.getvalue().strip())
             self.assertIn("'height': 5.7", cout.getvalue().strip())
-	
+
     @unittest.skipIf(
-		os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_create(self):
         """Test CREATE command with DB storage
         """
@@ -76,7 +77,7 @@ class TestHBNBCommand(unittest.TestCase):
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
-            #showing a user instance
+            # showing a user instance
             obj = User(email="ayo15@gmail.com", password="123")
             dbc = MySQLdb.connect(
                 host=os.getenv('HBNB_MYSQL_HOST'),
