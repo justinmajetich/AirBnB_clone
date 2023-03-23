@@ -23,6 +23,8 @@ from models.engine.db_storage import DBStorage
 class TestConsole(unittest.TestCase):
     """this will test the console"""
 
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
     @classmethod
     def setUpClass(cls):
         """setup for the test"""
