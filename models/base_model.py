@@ -26,7 +26,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
-            setattr(self, key, value)
+                setattr(self, key, value)
             try:
                 kwargs['updated_at'] = datetime.\
                     strptime(kwargs['updated_at'],
