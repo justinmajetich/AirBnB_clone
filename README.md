@@ -70,6 +70,11 @@ Advanced syntax is implemented for the following commands:
 
 <br>
 <br>
+
+<center> <h2>Flowchart</h2> <br>
+<img src="https://user-images.githubusercontent.com/113889290/227192701-b12e1446-35f1-4d6d-bb7e-73ba3c3c6e4f.png">
+</center>
+
 <center> <h2>Examples</h2> </center>
 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=800&duration=4800&pause=1000&color=CF0000&vCenter=true&width=437&height=49&lines=Primary+Command+Syntax" alt="Typing SVG" /></a>
 
