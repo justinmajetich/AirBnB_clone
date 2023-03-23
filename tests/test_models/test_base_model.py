@@ -100,3 +100,6 @@ class test_basemodel(unittest.TestCase):
         new = BaseModel(**n)
         self.assertTrue(new.created_at == new.updated_at)
     """
+
+if __name__ == "__main__":
+    unittest.main()
