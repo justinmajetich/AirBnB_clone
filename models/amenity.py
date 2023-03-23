@@ -6,7 +6,6 @@ from sqlalchemy.orm import relationship
 from os import getenv
 
 
-
 class Amenity(BaseModel, Base):
     """ Amenity class """
     if getenv("HBNB_TYPE_STORAGE") == "db":
