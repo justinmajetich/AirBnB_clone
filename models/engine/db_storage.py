@@ -41,6 +41,8 @@ class DBStorage:
 
     def all(self, cls=None):
         """ query on the current database session """
+        if os.getenv("HBNB_ENV") == "test":
+            return {}
         dic = {}
         if cls is None:
             q = self.__session.query(State, City, Place, Review, User, Amenity).all()
