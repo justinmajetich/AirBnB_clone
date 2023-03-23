@@ -13,6 +13,5 @@ from os import getenv
 class test_databaseStorage(unittest.TestCase):
     def test_all(self):
         """ __objects is properly returned """
-        if getenv('HBNB_TYPE_STORAGE') == 'db':
-            storage = DBStorage()
-            self.assertIsInstance(storage, DBStorage)
+        storage = DBStorage()
+        self.assertIsInstance(storage, DBStorage)
