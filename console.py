@@ -126,10 +126,8 @@ class HBNBCommand(cmd.Cmd):
 
             new_instance = HBNBCommand.classes[split_arg[0]](**new_dict)
             print(new_instance.id)
-            #delattr(new_instance, '_sa_instance_state')
             storage.new(new_instance)
             storage.save()
-
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -357,10 +355,10 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                if not isinstance(att_val, (int, float)) and "_" in att_val and att_name != 'password':
+                if not isinstance(att_val, (int, float)) and "_" in att_val\
+                   and att_name != 'password':
                     att_val = att_val.replace("_", " ")
                 new_dict.__dict__.update({att_name: att_val})
-                # print(new_dict)
 
         new_dict.save()  # save updates to file
 

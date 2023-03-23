@@ -26,10 +26,9 @@ class DBStorage:
         host = os.environ.get("HBNB_MYSQL_HOST")
         database = os.environ.get("HBNB_MYSQL_DB")
         env = os.environ.get("HBNB_ENV")
-        self.__engine = create_engine\
-            (f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}",
-             pool_pre_ping=True)
-        self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}", pool_pre_ping=True)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}:3306/{}".
+                                      format(user, password, host, database),
+                                      pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine)
         Session.configure(bind=self.__engine)
@@ -46,7 +45,8 @@ class DBStorage:
             q = self.__session.query(User).all()
         else:
             if cls is None:
-                q = self.__session.query(State, City, Place, Review, User, Amenity).all()
+                q = self.__session.query(State, City, Place,
+                                         Review, User, Amenity).all()
             else:
                 q = self.__session.query(cls).all()
 
