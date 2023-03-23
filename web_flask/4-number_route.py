@@ -24,7 +24,7 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
     """
-    This function returns a string containing "C " followed by the value 
+    This function returns a string containing "C " followed by the value
     of the text variable with underscores replaced with spaces when called.
     """
     return 'C {}'.format(text.replace('_', ' '))
@@ -35,7 +35,8 @@ def c(text):
 def python(text):
     """
     This function returns a string containing "Python " followed by
-      the value of the text variable with underscores replaced with spaces when called.
+      the value of the text variable with underscores
+      replaced with spaces when called.
     """
     return 'Python {}'.format(text.replace('_', ' '))
 
@@ -43,7 +44,8 @@ def python(text):
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     """
-    This function returns a string containing "{n} is a number" if n is an integer when called.
+    This function returns a string
+    containing "{n} is a number" if n is an integer when called.
     """
     return '{} is a number'.format(n)
 
