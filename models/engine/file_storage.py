@@ -46,6 +46,8 @@ class FileStorage:
             if obj_key in self.__objects.keys():
                 del self.__objects[obj_key]
                 self.save()
+        else:
+            return
 
     def new(self, obj):
         """Adds new object to storage dictionary
