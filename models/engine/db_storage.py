@@ -43,7 +43,8 @@ Place.amenities = relationship("Amenity",
                                viewonly=False)
 Amenity.place_amenities = relationship("Place",
                                        secondary=place_amenity,
-                                       back_populates="amenities")
+                                       back_populates="amenities",
+                                       viewonly=False)
 
 
 class DBStorage:
