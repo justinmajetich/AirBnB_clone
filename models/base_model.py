@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+""" This module defines a base class for all models in our hbnb clone """
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -23,7 +23,6 @@ class BaseModel:
             updated_at : datetime, not null,
                 default: datetime now
     """
-    # if os.getenv("HBNB_TYPE_STORAGE") == 'db':
     id = Column(
         String(60),
         unique=True,
@@ -41,10 +40,9 @@ class BaseModel:
         default=datetime.utcnow()
     )
 
-    """A base class for all hbnb models"""
-
+    """ A base class for all hbnb models """
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
+        """ Instantiates a new model """
         if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
@@ -66,29 +64,20 @@ class BaseModel:
                 self.updated_at = datetime.utcnow()
             # update the dict
             self.__dict__.update(kwargs)
-            # self.__dict__.update(kwargs)
-        # for key, value in kwargs:
-        #     if key == "name":
-        #         self.id = value
-        #     elif key == "create_at":
-        #         self.created_at = value
-        #     elif key == "update_at":
-        #         self.updated_at = value
 
     def __str__(self):
-        """Returns a string representation of the instance"""
+        """ Returns a string representation of the instance """
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-
+        """ Updates updated_at with current time when instance is changed """
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """ Convert instance into dict format """
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
@@ -100,5 +89,5 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """ Delete the current instance from the storage"""
+        """ Delete the current instance from the storage """
         models.storage.delete(self)

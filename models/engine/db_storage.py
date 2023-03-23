@@ -31,13 +31,13 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        # call value in env
+        """ call value in env """
         user = os.getenv("HBNB_MYSQL_USER")
         pswd = os.getenv("HBNB_MYSQL_PWD")
         host = os.getenv("HBNB_MYSQL_HOST")
         db_name = os.getenv("HBNB_MYSQL_DB")
         env = os.getenv("HBNB_MYSQL_ENV")
-        # create engine
+        """ create engine """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user,
                                               pswd,
@@ -49,32 +49,7 @@ class DBStorage:
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """ query on the current database session"""
-
-        # dict_objects = {}
-        # OLD VERSION
-        # if cls != None:
-        #     for obj in self.__session.query(cls).all():
-        #         dict_objects.update({'{}.{}'.
-        # format(type(cls).__name__, obj.id,): obj})
-        # else:
-        #     for k, v in Class_name.items():
-        #         for obj in self.__session.query(v):
-        #             dict_objects.update({'{}.{}'.
-        # format(type(obj).__name__, obj.id,): obj})
-        # return (dict_objects)
-
-        # if cls is None:
-        # call all cls name
-        # all_obj = self.__session.query(
-        # Amenity, City, Place, Review, State, User).all()
-        # else:
-        # all_obj = self.__session.query(cls).all()
-        # add all_obj in dict
-        # for obj in all_obj:
-        # dict_objects[obj.__class__.__name__ + '.' + obj.id] = obj
-        # return (dict_objects)
-        # test3 79%
+        """ query on the current database session """
         classes = [State, City, User, Place, Review, Amenity]
         result = {}
         if isinstance(cls, str):
@@ -90,23 +65,22 @@ class DBStorage:
         return result
 
     def new(self, obj):
-        """ add new object to the db session"""
+        """ add new object to the db session """
         self.__session.add(obj)
         self.save()
 
     def save(self):
-        """ save all change by commit in the current db session"""
+        """ save all change by commit in the current db session """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """ delete object from current db session"""
+        """ delete object from current db session """
         if obj is not None:
             self.__session.delete(obj)
         self.save()
 
     def reload(self):
         """ create db table & session"""
-        # create all table
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(bind=self.__engine,
                                expire_on_commit=False)
