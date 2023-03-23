@@ -9,12 +9,9 @@ import os
 
 
 place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60), ForeignKey('places.id'),
-                             primary_key=True, nullable=False),
-                      Column('amenity_id', String(60),
-                             ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False))
-
+        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
+)
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -29,17 +26,15 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", backref="place")
-    amenities = relationship('Amenity', secondary=place_amenity,
-                             viewonly=False, overlaps="place_amenities")
 
+    reviews = relationship("Review", backref="place")
+    amenities = relationship('Amenity', secondary=place_amenity, viewonly=False)
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         amenity_ids = []
-
         @property
         def reviews(self):
-            """getter attribute cities that returns
-            the list of City instances with
+
+            """getter attribute cities that returns the list of City instances with
             state_id equals to the current State.id"""
             from models.__init__ import storage
             review_list = []
@@ -57,7 +52,7 @@ class Place(BaseModel, Base):
                 if obj.id == self.amenity_ids:
                     amenities_list.append(obj)
             return amenities_list
-
+        
         @amenities.setter
         def amenities(self, obj):
             """ sets the amenities """
