@@ -17,5 +17,5 @@ class Amenity(BaseModel, Base):
         'Place',
         secondary="place_amenity",
         viewonly=False,
-        backref='amenities'
+        back_populates='amenities'
         )
