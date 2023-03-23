@@ -20,7 +20,6 @@ class City(BaseModel, Base):
     """
     __tablename__ = 'cities'
 
-    # if os.getenv("HBNB_TYPE_STORAGE") == 'db':
     name = Column(
         String(128),
         nullable=False)
@@ -30,6 +29,3 @@ class City(BaseModel, Base):
         nullable=False)
     places = relationship(
         'Place', backref='cities', cascade='delete')
-    # else:
-    #     name = ""
-    #     state_id = ""
