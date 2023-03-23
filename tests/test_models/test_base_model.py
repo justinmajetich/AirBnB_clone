@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+""" Unittest for class BaseModel"""
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -9,38 +9,39 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """ Unittest for class base_model"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """ Tests initialization of model """
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ """
+        """ test setUp """
         pass
 
     def tearDown(self):
+        """ Test teardow method of test class"""
         try:
             os.remove('file.json')
         except:
             pass
 
     def test_default(self):
-        """ """
+        """ test default """
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """ Test kwargs """
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """ """
+        """  Test type int of kwargs"""
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -48,7 +49,7 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """ Testing save method"""
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -57,41 +58,47 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ """
+        """ test str method"""
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """ Test to_dict method"""
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
+        # test it's a dictionnary
+        self.assertIsInstance(self.value().to_dict(), dict)
+        # Tests if to_dict contains keys
+        self.assertIn('id', self.value().to_dict())
+        self.assertIn('created_at', self.value().to_dict())
+        self.assertIn('updated_at', self.value().to_dict())
 
     def test_kwargs_none(self):
-        """ """
+        """  test if no kwargs"""
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
     def test_kwargs_one(self):
-        """ """
+        """ test if only one kwarg"""
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
 
     def test_id(self):
-        """ """
+        """ test id type """
         new = self.value()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
-        """ """
+        """ test created attribute"""
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """ """
+        """  test updated attribute"""
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
