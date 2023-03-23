@@ -24,6 +24,7 @@ place_amenity = Table(
         nullable=False))
 
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -44,7 +45,7 @@ class Place(BaseModel, Base):
         )
     description = Column(
         String(1024),
-        nullable=False,
+        nullable=True,
         )
     number_rooms = Column(
         Integer,
@@ -113,4 +114,4 @@ class Place(BaseModel, Base):
             secondary='place_amenity',
             viewonly=False,
             back_populates="place_amenities"
-            )
+
