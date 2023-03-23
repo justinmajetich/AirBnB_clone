@@ -18,15 +18,17 @@ def cities_route():
     states_list = list(states_dict.values())
     sorted_states_list = sorted(states_list, key=lambda x: x['name'])
     for i in sorted_states_list:
-       cities = [d for d in city_list if d['state_id'] == i['id']] 
-       i['cities'] = sorted(cities, key=lambda x: x['name'])
-    return render_template('8-cities_by_states.html', states=sorted_states_list)
+        cities = [d for d in city_list if d['state_id'] == i['id']]
+        i['cities'] = sorted(cities, key=lambda x: x['name'])
+    return render_template('8-cities_by_states.html',
+                           states=sorted_states_list)
 
 
 @app.teardown_appcontext
 def teardown_appcontext(exception):
     """Removes the current SQLAlchemy Session."""
     storage.close()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
