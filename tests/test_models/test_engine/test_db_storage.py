@@ -27,11 +27,7 @@ class test_dbStorage(unittest.TestCase):
 
     def test_models(self):
         """ test of creating a models user with db """
-        db=_mysql.connect(host="localhost",
-                          port=3306,
-                          user="hbnb_test",
-                          password="hbnb_test_pwd",
-                          database="hbnb_test_db")
+        db=_mysql.connect("localhost", "hbnb_test", "hbnb_test_pwd", "hbnb_test_db")
         gab = User(name="Gabriel", password="zizicacamixtape", email="5652@holbertonstudents.com")
         gab.save()
         db.query("""SELECT * FROM users""")
