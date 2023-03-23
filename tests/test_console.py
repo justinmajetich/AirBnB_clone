@@ -76,7 +76,8 @@ class TestConsole(unittest.TestCase):
 
     def test_show_error2(self):
         """ test the show command """
-        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+        with unittest.mock.patch('sys.stdout',
+                                 new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("show City")
             self.assertEqual(mock_stdout.getvalue(), "** instance id missing **\n")

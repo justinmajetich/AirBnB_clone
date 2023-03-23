@@ -26,6 +26,9 @@ class DBStorage:
         host = os.environ.get("HBNB_MYSQL_HOST")
         database = os.environ.get("HBNB_MYSQL_DB")
         env = os.environ.get("HBNB_ENV")
+        self.__engine = create_engine\
+            (f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}",
+             pool_pre_ping=True)
         self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}@{host}:3306/{database}", pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine)
