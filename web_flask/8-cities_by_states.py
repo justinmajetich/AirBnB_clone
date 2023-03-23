@@ -18,7 +18,8 @@ def cities_route():
     states_list = list(states_dict.values())
     sorted_states_list = sorted(states_list, key=lambda x: x['name'])
     for i in sorted_states_list:
-       i['cities'] = [d for d in city_list if d['state_id'] == i['id']] 
+       cities = [d for d in city_list if d['state_id'] == i['id']] 
+       i['cities'] = sorted(cities, key=lambda x: x['name'])
     return render_template('8-cities_by_states.html', states=sorted_states_list)
 
 
