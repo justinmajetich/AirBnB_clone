@@ -9,38 +9,39 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """ Tests for the class BaseModel"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """ Initialization of the test for BaseModel"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ """
+        """ Test to check for setUp, which is to be ignored"""
         pass
 
     def tearDown(self):
+        """ Test to remove the file"""
         try:
             os.remove('file.json')
         except:
             pass
 
     def test_default(self):
-        """ """
+        """ Test to check for the default value"""
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """ Test to check for the kwargs"""
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """ """
+        """ Integer check for kwargs"""
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -48,7 +49,7 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """ Test to check for saving the file """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -57,41 +58,41 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ """
+        """ Test to check for the string"""
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """ Test to check for the to_dict method"""
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
     def test_kwargs_none(self):
-        """ """
+        """ Test for no kwargs"""
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
     def test_kwargs_one(self):
-        """ """
+        """ Test for one kwargs"""
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
 
     def test_id(self):
-        """ """
+        """ Test to check to for the id"""
         new = self.value()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
-        """ """
+        """ Test for the created_at class attribute"""
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """ """
+        """ Test for the updated_at class attribute"""
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
