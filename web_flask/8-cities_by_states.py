@@ -4,6 +4,7 @@
 
 from models import storage
 from models.state import State
+from models.city import City
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -13,8 +14,11 @@ app = Flask(__name__)
 def cities_route():
     """Renders a template to display all states and their cities."""
     states_dict = storage.all(State)
+    city_list = storage.all(City).values()
     states_list = list(states_dict.values())
     sorted_states_list = sorted(states_list, key=lambda x: x['name'])
+    for i in sorted_states_list:
+       i['cities'] = [d for d in city_list if d['state_id'] == i['id']] 
     return render_template('8-cities_by_states.html', states=sorted_states_list)
 
 
