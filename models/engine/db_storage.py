@@ -65,7 +65,13 @@ class DBStorage:
     def new(self, obj):
         """Adds an object to the current database session """
         if isinstance(obj, BaseModel):
-            self.__session.add(obj)
+            try:
+                self.__session.add(obj)
+                self.__session.flush()
+                self.__session.refresh(obj)
+            except Exception as e:
+                self.__session.rollback()
+                raise e
 
     def save(self):
         """Commits all changes of the current database session"""
