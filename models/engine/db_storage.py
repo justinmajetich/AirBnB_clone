@@ -1,5 +1,5 @@
 #!usr/bin/python3
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Table, Column, ForeignKey
 from sqlalchemy.orm import relationship
 from models.state import State
 from models.user import User
@@ -30,6 +30,19 @@ Place.reviews = relationship(Review, back_populates="places",
 
 Review.users = relationship(User, back_populates="reviews")
 Review.places = relationship(Place, back_populates="reviews")
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id',
+                             ForeignKey('places.id'), primary_key=True),
+                      Column('amenity_id',
+                             ForeignKey('amenities.id'), primary_key=True))
+Place.amenities = relationship("Amenity",
+                               secondary=place_amenity,
+                               back_populates="place_amenities")
+Amenity.place_amenities = relationship("Place",
+                                       secondary=place_amenity,
+                                       back_populates="amenities")
 
 
 class DBStorage:
