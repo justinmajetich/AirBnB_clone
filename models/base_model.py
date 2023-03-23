@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""Defines the BaseModel class."""
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -7,6 +7,7 @@ from os import getenv
 import uuid
 import models
 
+# Use declarative_base to create a base class for models (if using a database)
 if getenv("HBNB_TYPE_STORAGE") == "db":
     Base = declarative_base()
 else:
@@ -14,7 +15,7 @@ else:
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """Represents a base model in the system."""
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
@@ -47,7 +48,7 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """Converts instance into dict format."""
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':

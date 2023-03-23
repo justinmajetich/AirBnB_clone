@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
+"""Defines the User class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
@@ -9,8 +9,10 @@ from datetime import datetime
 
 
 class User(BaseModel, Base):
-    """This class defines a user by various attributes"""
+    """Represents a user in the system."""
+
     __tablename__ = 'users'
+
     if getenv("HBNB_TYPE_STORAGE") == "db":
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)

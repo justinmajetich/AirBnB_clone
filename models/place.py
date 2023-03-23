@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project """
+"""Defines the Place class."""
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
@@ -9,6 +9,7 @@ from os import getenv
 import models
 
 
+# Define a many-to-many relationship table for places and amenities
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity_table = Table("place_amenity", Base.metadata,
                                 Column("place_id", String(60),
@@ -20,7 +21,8 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """Represents a place to stay in the system."""
+
     __tablename__ = "places"
 
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -43,6 +45,7 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
+            """Returns the list of reviews associated with this place."""
             reviews_list = []
             for review in storage.all("Review").values():
                 if review.place_id == self.id:
@@ -51,6 +54,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            """Returns the list of amenities associated with this place."""
             amenities = []
             for amenity in list(models.storage.all(Amenity).values()):
                 if amenity.id in self.amenity_ids:
@@ -59,5 +63,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, value):
+            """Sets the list of amenities associated with this place."""
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)

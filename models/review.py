@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" Review module for the HBNB project """
+"""Defines the Review class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 
 
 class Review(BaseModel, Base):
-    """Class Review to store review information """
+    """Represents a review in the system."""
+
     __tablename__ = 'reviews'
 
     text = Column(String(1024), nullable=False)
