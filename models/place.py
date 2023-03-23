@@ -94,8 +94,8 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             my_list = []
             for i in storage.all(Amenity).values():
-                if i.id in self.amenity_ids:
-                    my_list.append(i)
+                #if i.id in self.amenity_ids:
+                my_list.append(i)
             return my_list
 
         @amenities.setter
@@ -114,5 +114,5 @@ class Place(BaseModel, Base):
             "Amenity",
             secondary='place_amenity',
             viewonly=False,
-            back_populates="place_amenities")
+            backref="place_amenities")
 
