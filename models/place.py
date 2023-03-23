@@ -8,6 +8,7 @@ from models.review import Review
 from os import getenv
 import models
 
+
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity_table = Table("place_amenity", Base.metadata,
                                 Column("place_id", String(60),
