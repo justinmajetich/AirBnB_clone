@@ -1,34 +1,33 @@
 #!/usr/bin/python3
-""" Unittest for class User"""
+""" Unittest for class Amenity """
 from tests.test_models.test_base_model import test_basemodel
-from models.user import User
-
-
-class test_User(test_basemodel):
-    """ Unittest for User class """
-
+from models.amenity import Amenity
+class test_Amenity(test_basemodel):
+    """ Unittest for amenity class"""
     def __init__(self, *args, **kwargs):
-        """ test of initilisation class User"""
+        """ test init of class """
         super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
-
-    def test_first_name(self):
-        """ test of firstname type attribute"""
+        self.name = "Amenity"
+        self.value = Amenity
+    def test_name2(self):
+        """ test type of name attribut"""
         new = self.value()
-        self.assertEqual(type(new.first_name), str)
+        self.assertEqual(type(new.name), str)
 
-    def test_last_name(self):
-        """ test of lastname type attribute"""
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+    def test_to_dict_Amenity(self):
+        """ test if dictionary works """
+        self.assertEqual('to_dict' in dir(self.amenity), True)
 
-    def test_email(self):
-        """ test of type email attribute """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+    @classmethod
+    def setUpClass(cls):
+        """ set up for test """
+        cls.amenity = Amenity()
+        cls.amenity.name = "Breakfast"
 
-    def test_password(self):
-        """  test of password type attribute"""
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+    @classmethod
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.amenity
+
+if __name__ == "__main__":
+    unittest.main()

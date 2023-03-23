@@ -68,8 +68,6 @@ class HBNBCommand(cmd.Cmd):
 
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
@@ -340,7 +338,6 @@ class HBNBCommand(cmd.Cmd):
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
-
         new_dict.save()  # save updates to file
 
     def help_update(self):
