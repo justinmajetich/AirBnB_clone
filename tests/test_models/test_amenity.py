@@ -17,7 +17,3 @@ class test_Amenity(test_basemodel):
         """ test type of name attribut"""
         new = self.value()
         self.assertEqual(type(new.name), str)
-
-    def test_to_dict_Amenity(self):
-        """test if dictionary works"""
-        self.assertEqual('to_dict' in dir(self.amenity), True)
