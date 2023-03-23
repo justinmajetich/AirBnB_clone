@@ -11,14 +11,14 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
-        #print("State db")
         cities = relationship("City", backref="states")
     else:
         name = ""
-        
+
         @property
         def cities(self):
-            """getter attribute cities that returns the list of City instances with
+            """getter attribute cities that returns
+            the list of City instances with
             state_id equals to the current State.id"""
             from models import storage
             city_list = []
