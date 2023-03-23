@@ -83,39 +83,50 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-        def do_create(self, arg):
+    def do_create(self, arg):
         """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
         Create a new class instance with given keys/values and print its id.
         """
         try:
             if not arg:
-                raise SyntaxError()
-            my_list = arg.split(" ")
+                raise SyntaxError
+            my_list = arg.strip(' ')
 
             kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
+            key, check, val = '', '', ''
+            for i in range(2, len(my_list)):
+                for j in range(len(my_list[i])):
+                    if my_list[i][j] != '=':
+                        key += my_list
+                    else:
+                        break
+            for i in range(2, len(my_list)):
+                for j in range(len(my_list[i])):
+                    check += str(my_list[i][j])
+                    if check:
+                        key += my_list
+                    else:
+                        break
                 if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
+                    value = value.strip('"').strip()
                 else:
                     try:
                         value = eval(value)
-                    except (SyntaxError, NameError):
+                    except(SyntaxError, NameError):
                         continue
                 kwargs[key] = value
 
-            if kwargs == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
+                if kwargs == {}:
+                    obj = eval(my_list[0])()
+                else:
+                    obj = eval(my_list[0])(**kwargs)
+                    storage.new(obj)
+                print(obj.id)
+                obj.save()
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesn't exist **")
+            print("** class dosen't exist **")
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
