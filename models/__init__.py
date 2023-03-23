@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module instantiates an object of class FileStorage"""
+"""Instantiates the storage system for the HBNB project."""
 from os import getenv
 
 
