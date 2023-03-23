@@ -26,7 +26,6 @@ place_amenity = Table(
         nullable=False))
 
 
-
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -41,7 +40,6 @@ class Place(BaseModel, Base):
         ForeignKey("users.id"),
         nullable=False
         )
-
     name = Column(
         String(128),
         nullable=False,
@@ -79,7 +77,21 @@ class Place(BaseModel, Base):
         nullable=True,
         )
 
-    if getenv("HBNB_TYPE_STORAGE") != 'db':
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+            # amenity_ids = []
+            reviews = relationship(
+                "Review",
+                backref='places',
+                cascade='delete'
+                )
+            amenities = relationship(
+                "Amenity",
+                secondary='place_amenity',
+                viewonly=False,
+                back_populates="place_amenities"
+                )
+
+    else:
         @property
         def reviews(self):
             """Returns list of reviews associated with place"""
@@ -96,24 +108,11 @@ class Place(BaseModel, Base):
             from models import storage
             my_list = []
             for i in storage.all(Amenity).values():
-                #if i.id in self.amenity_ids:
-                my_list.append(i)
+                if i.id in self.amenity_ids:
+                    my_list.append(i)
             return my_list
 
         @amenities.setter
         def amenities(self, value):
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
-    else:
-        # amenity_ids = []
-        reviews = relationship(
-            "Review",
-            backref='places',
-            cascade='delete'
-            )
-        amenities = relationship(
-            "Amenity",
-            secondary='place_amenity',
-            viewonly=False,
-            back_populates="place_amenities"
-            )
