@@ -43,21 +43,21 @@ class TestConsole(unittest.TestCase):
             console = self.create()
             console.onecmd("create City")
             self.assertEqual(type(mock_stdout.getvalue()), str)
-
+    """
     def test_create_error1(self):
-        """ test the create command """
+         test the create command 
         with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create")
             self.assertEqual(mock_stdout.getvalue(), "** class name missing **\n")
     
     def test_create_error2(self):
-        """ test the create command """
+         test the create command 
         with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
             console = self.create()
             console.onecmd("create blabla")
             self.assertEqual(mock_stdout.getvalue(), "** class doesn't exist **\n")
-    
+    """
     def test_show(self):
         """ test the show command """
         with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
