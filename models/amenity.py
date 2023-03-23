@@ -20,8 +20,7 @@ class Amenity(BaseModel, Base):
         viewonly=False)
     # else:
     #     name = ""
-
-    #def __init__(self, *args, **kwargs):
+    # def __init__(self, *args, **kwargs):
     #    """
     #    Initializes the class with args and kwargs
     #    """
