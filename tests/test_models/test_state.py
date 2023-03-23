@@ -17,6 +17,11 @@ class test_state(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(self.obj.name), str)
+    
+    def is_subclass(self):
+        """ tests subclass of BaseModel """
+        self.assertTrue(issubclass(self.obj.__class__, BaseModel), True)
+
 
 if __name__ == "__main__":
     unittest.main()
