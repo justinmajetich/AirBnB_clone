@@ -33,6 +33,7 @@ class Place(BaseModel, Base):
         amenity_ids = []
         @property
         def reviews(self):
+
             """getter attribute cities that returns the list of City instances with
             state_id equals to the current State.id"""
             from models.__init__ import storage
