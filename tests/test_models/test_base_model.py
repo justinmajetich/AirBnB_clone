@@ -9,38 +9,39 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """Test case Base model"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """initializes attributes"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ """
+        """empty"""
         pass
 
     def tearDown(self):
+        """rename file"""
         try:
             os.remove('file.json')
         except:
             pass
 
     def test_default(self):
-        """ """
+        """checks if an object of the specified class can be created"""
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """checks if creating a new object of the specified class"""
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """ """
+        """checks if creating a new object of the specified class"""
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -57,13 +58,13 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ """
+        """devuelve una cadena con un formato específico"""
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """checks if it returns a dictionary that is equal to the dictionary"""
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)

@@ -5,25 +5,25 @@ from models.review import Review
 
 
 class test_review(test_basemodel):
-    """ """
+    """Test case"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """attribute initialization"""
         super().__init__(*args, **kwargs)
         self.name = "Review"
         self.value = Review
 
     def test_place_id(self):
-        """ """
+        """check if the type is a string"""
         new = self.value()
         self.assertEqual(type(new.place_id), str)
 
     def test_user_id(self):
-        """ """
+        """check if the type is a string"""
         new = self.value()
         self.assertEqual(type(new.user_id), str)
 
     def test_text(self):
-        """ """
+        """check if the type is a string"""
         new = self.value()
         self.assertEqual(type(new.text), str)
