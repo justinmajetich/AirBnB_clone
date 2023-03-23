@@ -3,7 +3,9 @@
 import os
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+
 from models.base_model import BaseModel, Base
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -16,18 +18,15 @@ class State(BaseModel, Base):
         cities = relationship(
             'City',
             cascade='all, delete, delete-orphan',
-            backref='states'
+            backref='state'
         )
     else:
         @property
         def cities(self):
-            """Getter attribute cities that returns the list of City
-            instances with state_id equals to the current State.id
-            """
+            """Returns the cities in this State"""
             from models import storage
-            from models.city import City
-            cities = []
-            for key, value in storage.all(City).items():
+            cities_in_state = []
+            for value in storage.all(City).values():
                 if value.state_id == self.id:
-                    cities.append(value)
-            return cities
+                    cities_in_state.append(value)
+            return cities_in_state
