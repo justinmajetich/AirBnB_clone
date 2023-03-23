@@ -36,7 +36,7 @@ class test_basemodel(unittest.TestCase):
         try:
             os.remove('file.json')
         except:
-            pass
+            print("File does not exist")
 
     def test_default(self):
         """ """
