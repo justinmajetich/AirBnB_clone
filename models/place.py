@@ -80,7 +80,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
-        """ amenity_ids = [] """
+        """ Amenity_ids = [] """
         reviews = relationship(
             "Review",
             backref='places',
@@ -96,7 +96,7 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """Returns list of reviews associated with place"""
+            """ Returns list of reviews associated with place """
             from models import storage
             from models.review import Review
             my_list = []
