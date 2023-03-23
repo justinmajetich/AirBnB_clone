@@ -82,3 +82,4 @@ class DBStorage:
         """ calls remove()
         """
         self.__session.close()
+        
