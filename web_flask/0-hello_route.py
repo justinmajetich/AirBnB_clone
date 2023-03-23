@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script starts a Flask web application that listens on port 5000 and 
+This script starts a Flask web application that listens on port 5000 and
 displays "Hello HBNB!" when you visit the root URL (/).
 
 Usage:
