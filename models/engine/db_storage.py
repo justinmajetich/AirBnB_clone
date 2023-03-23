@@ -31,13 +31,12 @@ class DBStorage:
         Session = sessionmaker(bind=self.__engine)
         Session.configure(bind=self.__engine)
         self.__session = Session()
-        
+
         if env == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
 
-
-    def all(self, cls=None): 
+    def all(self, cls=None):
         """ query on the current database session """
         dic = {}
         if cls is None:
@@ -46,21 +45,21 @@ class DBStorage:
             q = self.__session.query(cls).all()
 
         for obj in q:
-            #delattr(obj,"_sa_instance_state") sert à rien
+            # delattr(obj,"_sa_instance_state") sert à rien
             dic[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
         return dic
-        
+
     def new(self, obj):
         """ add the object to the current database session """
-        #print(f"{obj} created")
+        # print(f"{obj} created")
         self.__session.add(obj)
-    
+
     def save(self):
         """ commit all changes of the current database session """
         self.__session.commit()
-        #print("Saved")
-        
+        # print("Saved")
+
     def delete(self, obj=None):
         """ delete from the current database session obj if not None """
         if obj is None:
@@ -71,7 +70,7 @@ class DBStorage:
     def reload(self):
         """ create all tables in the database (feature of SQLAlchemy) """
         from sqlalchemy.ext.declarative import declarative_base
-        
+
         Base = declarative_base()
         s = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(s)
