@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             for arg in split_arg[1:]:
                 chaine_de_char = f"{split_arg[0]} {new_instance.id} {arg}"
-                #print(f"val: {chaine_de_char}")
+                # print(f"val: {chaine_de_char}")
                 HBNBCommand.do_update(self, chaine_de_char)
             return
         if not args:
@@ -158,6 +158,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
             return
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -219,7 +220,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -237,7 +238,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-                #print(type(HBNBCommand.classes[args]))
+                # print(type(HBNBCommand.classes[args]))
             ret = storage.all(HBNBCommand.classes[args])
             for item in ret.values():
                 print_list.append(str(item))
@@ -321,7 +322,7 @@ class HBNBCommand(cmd.Cmd):
                 args = args[second_quote + 1:]
 
             args = args.partition("=")
-            #print(f"check args post partition: \n {args}")
+            # print(f"check args post partition: \n {args}")
 
             # if att_name was not quoted arg
             if not att_name and args[0] != ' ':
@@ -335,7 +336,7 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
-            #print(f"check args [list]:\n {args}")
+            # print(f"check args [list]:\n {args}")
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
@@ -354,12 +355,12 @@ class HBNBCommand(cmd.Cmd):
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
-                    
+
                 # update dictionary with name, value pair
                 if not isinstance(att_val, (int, float)) and "_" in att_val and att_name != 'password':
                     att_val = att_val.replace("_", " ")
                 new_dict.__dict__.update({att_name: att_val})
-                #print(new_dict)
+                # print(new_dict)
 
         new_dict.save()  # save updates to file
 
@@ -367,6 +368,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
