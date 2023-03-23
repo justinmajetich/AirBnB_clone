@@ -17,6 +17,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 
 
 class TestConsole(unittest.TestCase):
@@ -148,6 +149,30 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("update User " + my_id + " Name")
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+    def test_db_create(self):
+        """Tests the create command with the database storage.
+        """
+
+    def setUp(self):
+        self.db = DBStorage()
+        self.console = HBNBCommand()
+
+    def tearDown(self):
+        pass
+
+    def test_all(self):
+        # create some objects
+        self.console.onecmd(
+            "create User email='john@example.com' password='pass'")
+        self.console.onecmd(
+            "create User email='jane@example.com' password='pass'")
+        self.console.onecmd(
+            "create Place name='house' city_id='1' user_id='1'")
+        self.console.onecmd(
+            "create Place name='apartment' city_id='2' user_id='2'")
 
 
 if __name__ == "__main__":
