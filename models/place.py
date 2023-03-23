@@ -72,12 +72,15 @@ class Place(BaseModel, Base):
         )
     latitude = Column(
         Float,
+        default=None,
         nullable=True,
         )
     longitude = Column(
         Float,
+        default=None,
         nullable=True,
         )
+    amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
@@ -96,8 +99,8 @@ class Place(BaseModel, Base):
             from models import storage
             my_list = []
             for i in storage.all(Amenity).values():
-                #if i.id in self.amenity_ids:
-                my_list.append(i)
+                if i.id in self.amenity_ids:
+                    my_list.append(i)
             return my_list
 
         @amenities.setter
@@ -105,7 +108,7 @@ class Place(BaseModel, Base):
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
     else:
-        # amenity_ids = []
+
         reviews = relationship(
             "Review",
             backref='places',
