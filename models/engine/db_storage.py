@@ -46,6 +46,7 @@ class DBStorage:
         else:
             objs = self.__session.query(User, State, City, Amenity,
                                         Place, Review)
+            objs = self.__session.query(User, State, City, Amenity, Place, Review)
 
         for obj in objs:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
@@ -57,7 +58,8 @@ class DBStorage:
         """ add the object to the current database session (self.__session) """
         self.__session.add(obj)
 
-    def save(self):
+
+    def save(self): 
         """
         commit all changes of the current database session (self.__session)
         """

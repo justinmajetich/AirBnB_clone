@@ -137,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
 
             # Check if the argument is in the form of a key-value pair
             if len(argument_str) > 1:
+
                 # If is a string, remove quotes and
                 # replace underscores with spaces
                 if argument_str[1][0] == '"':
