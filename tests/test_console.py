@@ -3,7 +3,6 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-
 import os
 import json
 import console
