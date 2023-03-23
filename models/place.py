@@ -106,7 +106,7 @@ class Place(BaseModel, Base):
         # amenity_ids = []
         reviews = relationship(
             "Review",
-            backref='place',
+            backref='places',
             cascade='delete'
             )
         amenities = relationship(
