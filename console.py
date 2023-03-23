@@ -151,10 +151,10 @@ class HBNBCommand(cmd.Cmd):
 
 
         # Create the instance
-        params['updated_at'] = datetime.now().isoformat()
-        params['created_at'] = datetime.now().isoformat()
-        params['__class__'] = HBNBCommand.classes[class_name]
         params['id'] = str(uuid.uuid4())
+        params['created_at'] = datetime.now().isoformat()
+        params['updated_at'] = datetime.now().isoformat()
+        params['__class__'] = HBNBCommand.classes[class_name]
         new_instance = HBNBCommand.classes[class_name](**params)
         from models import storage
         storage.new(new_instance)
@@ -241,11 +241,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all().items():
+                print(str(v))   
+                # print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all():
                 print_list.append(str(v))
 
         print(print_list)
