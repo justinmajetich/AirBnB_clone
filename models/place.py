@@ -70,12 +70,15 @@ class Place(BaseModel, Base):
         )
     latitude = Column(
         Float,
+        default=None,
         nullable=True,
         )
     longitude = Column(
         Float,
+        default=None,
         nullable=True,
         )
+    amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
             # amenity_ids = []
