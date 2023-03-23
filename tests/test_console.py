@@ -20,7 +20,7 @@ from models.engine.db_storage import DBStorage
 
 
 class TestConsole(unittest.TestCase):
-    """this will test the console"""
+    """ this will test the console """
 
     @classmethod
     def setUpClass(cls):
