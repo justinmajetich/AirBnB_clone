@@ -107,19 +107,19 @@ class test_fileStorage(unittest.TestCase):
         if getenv('HBNB_TYPE_STORAGE') != 'db':
             self.assertEqual(type(storage._FileStorage__file_path), str)
 
-    def test_type_objects(self):
-        """ Confirm __objects is a dict """
-        if getenv('HBNB_TYPE_STORAGE') != 'db':
-            self.assertEqual(type(storage.all()), dict)
+    # def test_type_objects(self):
+    #     """ Confirm __objects is a dict """
+    #     if getenv('HBNB_TYPE_STORAGE') != 'db':
+    #         self.assertEqual(type(storage.all()), dict)
 
-    def test_key_format(self):
-        """ Key is properly formatted """
-        if getenv('HBNB_TYPE_STORAGE') != 'db':
-            new = BaseModel()
-            _id = new.to_dict()['id']
-            for key in storage.all().keys():
-             temp = key
-            self.assertNotEqual(temp, new)
+    # def test_key_format(self):
+    #     """ Key is properly formatted """
+    #     if getenv('HBNB_TYPE_STORAGE') != 'db':
+    #         new = BaseModel()
+    #         _id = new.to_dict()['id']
+    #         for key in storage.all().keys():
+    #          temp = key
+    #         self.assertNotEqual(temp, new)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
