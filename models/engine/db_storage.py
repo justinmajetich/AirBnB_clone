@@ -25,9 +25,7 @@ class DBStorage():
         variable HBNB_ENV is equal to test.
         """
         self.__engine = create_engine(
-            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:\
-                {environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/\
-                    {environ['HBNB_MYSQL_DB']}",
+            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:{environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/{environ['HBNB_MYSQL_DB']}",
             pool_pre_ping=True,
         )
         if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
