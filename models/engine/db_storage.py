@@ -37,10 +37,7 @@ class DBStorage():
     def all(self, cls=None):
         """Returns the list of objects of one type of class. Return a
         dictionary like FileStorage"""
-        obj_types = {
-            'User': User, 'State': State, 'City': City,
-            'Amenity': Amenity, 'Place': Place, 'Review': Review
-        }
+        obj_types = {'User': User, 'State': State, 'City': City, 'Amenity': Amenity, 'Place': Place, 'Review': Review}
         result = {}
         if cls is None:
             for cls_type in obj_types:
