@@ -56,5 +56,6 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
     
-    def delete (self)
-        from db_storage import DBstorage
+    def delete(self):
+        """ Delete the current instance """
+        models.storage.delete(self)
