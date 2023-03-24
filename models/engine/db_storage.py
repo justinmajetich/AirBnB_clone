@@ -42,7 +42,7 @@ class DBStorage:
         """ query on the current database session """
         dic = {}
         if os.getenv("HBNB_ENV") == "test":
-            q = self.__session.query(User).all()
+            q = self.__session.query(State).all()
         else:
             if cls is None:
                 q = self.__session.query(State, City, Place,
