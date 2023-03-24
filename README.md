@@ -24,6 +24,7 @@ This repository contains the initial stages of a student project to build a clon
 | 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
 
 <center><h3>This week</h3> </center>
+
 | Tasks | Files | Description |
 |-----|-----|------|
 | 0. Fork me if you can! | This repo | Having the code of other to simulate the industry |
