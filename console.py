@@ -235,20 +235,21 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            cls = self.get_class(args)
+            if cls not in HBNBCommand.classes.values():
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all().items():
-                print(str(v))   
+            for k, v in storage.all(cls).items():
+                print(str(v)) 
                 # print_list.append(str(v))
         else:
             for k, v in storage.all():
                 print_list.append(str(v))
 
-        print(print_list)
+
+    def get_class(self, class_str):
+        return getattr(sys.modules[__name__], class_str, None)
 
     def help_all(self):
         """ Help information for the all command """

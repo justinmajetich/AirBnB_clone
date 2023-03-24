@@ -46,10 +46,10 @@ class DBStorage:
 
     def all(self, cls=None):
         objects = {}
-        results = self.__engine.execute(select(State))
-        results = [State(**dict(zip(row.keys(), row))) for row in results.all()]
+        results = self.__engine.execute(select(cls))
+        results = [cls(**dict(zip(row.keys(), row))) for row in results.all()]
         for r in results:
-            objects[f"State.{r.id}"] = r
+            objects[f"{cls.__name__}.{r.id}"] = r
         return objects
 
         c = self.__engine.cursor()
