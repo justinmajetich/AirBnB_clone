@@ -7,6 +7,7 @@ import sys
 from io import StringIO
 import io
 import unittest.mock
+import os
 
 
 class TestConsole(unittest.TestCase):
@@ -118,8 +119,7 @@ class TestConsole(unittest.TestCase):
         with unittest.mock.patch('sys.stdout',
                                  new_callable=io.StringIO) as mock_stdout:
             console = self.create()
-            console.onecmd('create User first_name="Gabriel"\
-                           email="test@mail.com" password="g@br!el"')
+            console.onecmd('create User first_name="Gabriel"')
             console.onecmd("all User")
             self.assertIn("test@mail.com", mock_stdout.getvalue())
 
