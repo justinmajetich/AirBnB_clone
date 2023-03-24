@@ -35,15 +35,8 @@ class test_City(TestBaseModel):
             command = ["bash", "-c", "cat setup_mysql_dev.sql | mysql -hlocalhost -uroot"]
 
             # run the command as a subprocess
-            result = subprocess.run(command, capture_output=True, text=True)
+            subprocess.run(command, capture_output=True, text=True)
 
-            # check the result
-            if result.returncode == 0:
-                print("Command succeeded")
-                print(result.stdout)
-            else:
-                print("Command failed")
-                print(result.stderr)
             db = MySQLdb.connect(
                 host="localhost", user="hbnb_dev", passwd="hbnb_dev_pwd", db="hbnb_dev_db")
             cursor = db.cursor()
