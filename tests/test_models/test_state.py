@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+"""Test for state"""
 from tests.test_models.test_base_model import TestBaseModel
 from models.state import State
 from os import getenv
