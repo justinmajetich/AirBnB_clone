@@ -114,9 +114,8 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(mock_stdout.getvalue(),
                              "** class name missing **\n")
 
-    """
-    def test_all(self)
-        test the all command
+    def test_all(self):
+        """ test the all command """
         with unittest.mock.patch('sys.stdout',
                                  new_callable=io.StringIO) as mock_stdout:
             console = self.create()
@@ -124,7 +123,6 @@ class TestConsole(unittest.TestCase):
                            email="test@mail.com" password="g@br!el"')
             console.onecmd("all User")
             self.assertIn("test@mail.com", mock_stdout.getvalue())
-    """
 
     def test_update_1(self):
         """ test the update command """
