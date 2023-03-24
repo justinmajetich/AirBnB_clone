@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-""" Flask Routing Template """
+""" Flask routing template"""
 from flask import Flask
 from flask import render_template
-from models import storage
+from model import storage
 from models.state import State
 
 app = Flask(__name__)
-
 
 @app.route('/states_list',  strict_slashes=False)
 def display_states_list():
@@ -18,7 +17,6 @@ def display_states_list():
         # for city in dic_cities.values():
         states_list.append(state)
     return render_template('7-states_list.html', states=states_list)
-
 
 @app.teardown_appcontext
 def teardown_db(exception):
