@@ -119,9 +119,9 @@ class TestConsole(unittest.TestCase):
         with unittest.mock.patch('sys.stdout',
                                  new_callable=io.StringIO) as mock_stdout:
             console = self.create()
-            console.onecmd('create City name="Toulouse"')
-            console.onecmd("all City")
-            self.assertIn("Toulouse", mock_stdout.getvalue())
+            console.onecmd('create State name="France"')
+            console.onecmd("all State")
+            self.assertIn("France", mock_stdout.getvalue())
 
     def test_update_1(self):
         """ test the update command """
