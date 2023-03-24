@@ -8,20 +8,37 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def delete(self, obj=None):
+        """ Delete a instance obj """
+        if obj:
+            obj = obj.to_dict()
+            key = f"{obj['__class__']}.{obj['id']}"
+            del self.__objects[key]
+	    	
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        if cls:
+            cls = str(cls).split(" ")[1].split(".")[-1][:-2]
+            
+            __obj = {}
+            for k, v in self.__objects.items():
+                new_k = f"{cls}.{v.id}"
+                if new_k == k:
+                    __obj[k] = v
+            return __obj
         return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        __dict = obj.to_dict()
+        key = f"{__dict['__class__']}.{__dict['id']}"
+        self.__objects[key] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
+            for key, val in self.__objects.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
@@ -38,7 +55,7 @@ class FileStorage:
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
+                'Review': Review
                   }
         try:
             temp = {}

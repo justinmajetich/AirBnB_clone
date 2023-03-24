@@ -27,14 +27,12 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+             'latitude': float, 'longitude': float            }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
-
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
@@ -115,16 +113,39 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        # Convert keyword args to dict
+        _dict = {}
+        _cls = args
+        if "=" in args:
+            _cls, *_args = args.split(" ")
+            for arg in _args:
+                try:
+                    key, value = arg.split("=")
+                    _type = self.types.get(key)
+                    if _type:
+                        value = _type(value)
+                    else:
+                        value = value[1:-1]
+                        value = value.replace("_", " ")
+                        value = value.replace('"', '\\"')
+                    _dict[key] = value
+                except Exception as e:
+                    print(" <USAGE>::<class> <key=value>...")
+
+        print(args)
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        if not _dict:
+            new_instance = HBNBCommand.classes[_cls]()
+        else:
+            new_instance = HBNBCommand.classes[_cls](**_dict)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
