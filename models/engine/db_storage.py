@@ -59,6 +59,5 @@ class DBStorage():
 
     def reload(self):
         """Loads storage dictionary from file"""
-        print(self.__engine)
-        Base.metadata.create_all(bind=self.__engine)
+        Base.metadata.create_all(self.__engine)
 
