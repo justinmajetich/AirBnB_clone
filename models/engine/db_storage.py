@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-''''''
+'''  new engine DBSTORAGE '''
 
 import os
-from models.base_model import BaseModel
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -21,20 +20,15 @@ class DBStorage():
     __session = None
 
     def __init__(self):
-        HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = os.getenv('HBNB_MYSQL_PWD')
-        HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
+        db_user = os.getenv('HBNB_MYSQL_USER')
+        db_pwd = os.getenv('HBNB_MYSQL_PWD')
+        db_host = os.getenv('HBNB_MYSQL_HOST')
+        db_database = os.getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine(
-            f"mysql://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@\
-                {HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}",
-            pool_pre_ping=True)
-
-        self.__engine = create_engine(
-            f"mysql+pysql://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}\
-            @{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}",
-            pool_pre_ping=True)
+            f"mysql+mysqldb://{db_user}:{db_pwd}@\
+                {db_host}/{db_database}",
+            pool_pre_ping=True, echo=True)
 
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
@@ -65,5 +59,5 @@ class DBStorage():
 
     def reload(self):
         """Loads storage dictionary from file"""
-        Base.metadata.create_all(self.__engine)
-
+        print(self.__engine)
+        Base.metadata.create_all(bind=self.__engine)
