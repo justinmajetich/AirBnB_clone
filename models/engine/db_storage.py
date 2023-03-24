@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 
 class DBStorage:
     """
-    This class manages storage of hbnb models in a MySQL 
+    This class manages storage of hbnb models in a MySQL
     database using SQLAlchemy
     """
     __engine = None

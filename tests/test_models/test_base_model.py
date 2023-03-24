@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Test module for BaseModel"""
-
 import unittest
 import datetime
 import json

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+"""Test for User"""
 from tests.test_models.test_base_model import TestBaseModel
 from models.user import User
 from os import getenv
