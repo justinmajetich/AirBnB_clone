@@ -7,6 +7,7 @@ import sys
 from io import StringIO
 import io
 import unittest.mock
+import os
 
 
 class TestConsole(unittest.TestCase):
