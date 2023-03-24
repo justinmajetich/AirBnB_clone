@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
+from os import getenv
 
 
 class test_Place(test_basemodel):
