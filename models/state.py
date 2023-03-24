@@ -5,7 +5,7 @@ import models
 from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import relationaship
+from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     """ State class Attributes"""

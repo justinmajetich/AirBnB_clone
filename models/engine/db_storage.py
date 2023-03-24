@@ -52,8 +52,8 @@ class DBStorage:
             objs.extend(self.__session.query(City).all())
             objs.extend(self.__session.query(Amenity).all())
             objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query.(Review).all())
-        
+            objs.extend(self.__session.query(Review).all())
+
         dictionary = {}
         for i in range(len(objs)):
             key = "{}.{}".format(type(objs[i]).__name__, objs[i].id)
