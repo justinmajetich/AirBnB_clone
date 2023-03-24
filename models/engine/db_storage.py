@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''  new engine DBSTORAGE '''
+''' new engine DBSTORAGE'''
 
 import os
 from models.base_model import BaseModel, Base
