@@ -5,8 +5,17 @@ from os import getenv
 # from models import storage_type
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from models import storage
+from models.base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
 
 storage_type = getenv("HBNB_TYPE_STORAGE")
+
+class State(BaseModel, Base):
+    """Represents a State for a MySQL database"""
+
+    __tablename__ = 'states'
 
 
 class State(BaseModel, Base):
@@ -26,3 +35,4 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     cities.append(city)
             return cities
+        
