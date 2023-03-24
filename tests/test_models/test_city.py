@@ -47,6 +47,7 @@ class test_City(TestBaseModel):
             db = MySQLdb.connect(
                 host="localhost", user="hbnb_dev", passwd="hbnb_dev_pwd", db="hbnb_dev_db")
             cursor = db.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS states (name VARCHAR(255))")
             cursor.execute("SELECT COUNT(*) FROM states")
             result_before = cursor.fetchone()[0]
             subprocess.call(['echo', 'create State name=\"California\"',
