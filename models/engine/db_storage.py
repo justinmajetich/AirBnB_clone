@@ -20,11 +20,14 @@ class DBStorage():
     def __init__(self):
         """
         Constructor
-        Connect to the database through self.__engine. Drop all tables if the environment
+        Connect to the database through self.__engine.
+        Drop all tables if the environment
         variable HBNB_ENV is equal to test.
         """
         self.__engine = create_engine(
-            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:{environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/{environ['HBNB_MYSQL_DB']}",
+            f"mysql+mysqldb://{environ['HBNB_MYSQL_USER']}:\
+                {environ['HBNB_MYSQL_PWD']}@{environ['HBNB_MYSQL_HOST']}/\
+                    {environ['HBNB_MYSQL_DB']}",
             pool_pre_ping=True,
         )
         if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
@@ -54,26 +57,27 @@ class DBStorage():
                     key = f"{cls.__name__}.{obj.id}"
                     result[key] = obj
         return result
-    
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.__session.add(obj)
-    
+
     def save(self):
         """Saves storage dictionary change to file"""
         self.__session.commit()
-    
+
     def close(self):
         """Close the session"""
         self.__session.close()
-    
+
     def delete(self, obj=None):
-        """Delete obj from __objects if it's inside, if obj is equal to None, do nothing"""
+        """Delete obj from __objects if it's inside,
+        if obj is equal to None, do nothing"""
         if obj is not None:
             self.__session.delete(obj)
-    
+
     def reload(self):
         """Create current database session"""
-        Base.metadata.create_all(self.__engine)  # Create all tables in the database
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
