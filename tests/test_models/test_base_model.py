@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Test module for BaseModel"""
-
 import unittest
 import datetime
 import json
@@ -11,7 +10,6 @@ from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
     """Test class for BaseModel"""
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'

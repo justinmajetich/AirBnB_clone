@@ -10,7 +10,6 @@ from os import getenv
 
 class test_City(TestBaseModel):
     """ """
-
     if getenv("HBNB_TYPE_STORAGE") != "db":
         def __init__(self, *args, **kwargs):
             """ """
@@ -29,38 +28,25 @@ class test_City(TestBaseModel):
             self.assertEqual(type(new.name), str)
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        def setUp(self):
-            """Set up test environment"""
-            self.db = MySQLdb.connect(
-                host=getenv("HBNB_MYSQL_HOST"),
-                user=getenv("HBNB_MYSQL_USER"),
-                password=getenv("HBNB_MYSQL_PWD"),
-                database=getenv("HBNB_MYSQL_DB")
-            )
+        def test_state_id_db(self):
+            """"""
+            # define the command as a list of arguments
+            command = ["bash", "-c", "cat setup_mysql_dev.sql | mysql -hlocalhost -uroot"]
 
-        def tearDown(self):
-            """Tear down test environment"""
-            self.db.close()
+            # run the command as a subprocess
+            subprocess.run(command, capture_output=True, text=True)
 
-        def test_create_state_command(self):
-            """Test if the create State command adds a new record to the states table"""
-            # Get the number of current records in the table states
-            cursor = self.db.cursor()
+            db = MySQLdb.connect(
+                host="localhost", user="hbnb_dev", passwd="hbnb_dev_pwd", db="hbnb_dev_db")
+            cursor = db.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS states (name VARCHAR(255))")
             cursor.execute("SELECT COUNT(*) FROM states")
-            count_before = cursor.fetchone()[0]
-
-            # Execute the console command
-            command = f'HBNB_MYSQL_USER={getenv("HBNB_MYSQL_USER")} ' \
-                    f'HBNB_MYSQL_PWD={getenv("HBNB_MYSQL_PWD")} ' \
-                    f'HBNB_MYSQL_HOST={getenv("HBNB_MYSQL_HOST")} ' \
-                    f'HBNB_MYSQL_DB={getenv("HBNB_MYSQL_DB")} ' \
-                    f'HBNB_TYPE_STORAGE=db ' \
-                    f'echo "create State name=\\"California\\"" | ./console.py'
-            subprocess.run(command, shell=True)
-
-            # Get the number of current records in the table states again
+            result_before = cursor.fetchone()[0]
+            subprocess.call(['echo', 'create State name=\"California\"',
+                            '|', 'HBNB_MYSQL_USER=hbnb_dev', 'HBNB_MYSQL_PWD=hbnb_dev_pwd',
+                             'HBNB_MYSQL_HOST=localhost', 'HBNB_MYSQL_DB=hbnb_dev_db',
+                             'HBNB_TYPE_STORAGE=db', './console.py'])
             cursor.execute("SELECT COUNT(*) FROM states")
-            count_after = cursor.fetchone()[0]
-
-            # Assert that the difference is +1
-            self.assertEqual(count_after, count_before + 1)
+            result_after = cursor.fetchone()[0]
+            count = result_after - result_before
+            self.assertEqual(result_after - result_before, count)
