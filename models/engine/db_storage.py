@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
 from models.amenity import Amenity
-from models.base_model import *
+from models.base_model import BaseModel, Base
 from models.place import Place
 from models.review import Review
 from models.state import State

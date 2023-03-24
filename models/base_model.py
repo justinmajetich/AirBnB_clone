@@ -6,6 +6,15 @@ This module defines a base class for all models in our hbnb clone
 from uuid import uuid4
 from datetime import datetime
 import models
+from sqlalchemy.ext.declarative import declarative_base
+from os import getenv
+
+storage_type = getenv("HBNB_TYPE_STORAGE")
+
+if storage_type == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:

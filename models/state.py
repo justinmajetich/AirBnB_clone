@@ -8,6 +8,10 @@ import models
 from models.city import City
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from os import getenv
+from uuid import uuid4
+
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
@@ -16,10 +20,19 @@ class State(BaseModel, Base):
     Attributes
     """
     __tablename__ = "states"
-
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade='all, delete, delete-orphan',
+    if storage_type == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", cascade='all, delete, delete-orphan',
                           backref="state")
+    else:
+        name =""
+        state.id =""
+
+    def __init__(self, *args, **kwargs):
+        """initializes state"""
+        super().__init__(*args, **kwargs)
+        if not kwargs.get('id'):
+            self.id = str(uuid4())
 
     @property
     def cities(self):
