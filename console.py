@@ -204,7 +204,7 @@ class HBNBCommand(cmd.Cmd):
         key = f"{c_name}.{c_id}"
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -231,7 +231,7 @@ class HBNBCommand(cmd.Cmd):
         for obj in storage.all():
             if obj.startswith(f"{cls_name}."):
                 print(storage.all()[obj].__str__())
- 
+
     def help_all(self):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")
@@ -336,6 +336,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
