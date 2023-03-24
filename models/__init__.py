@@ -4,7 +4,8 @@ from os import getenv
 
 
 """
-This condition act like a 'switch' that allow us to change storage type directly by using environment variable
+This condition act like a 'switch' that allow us to change
+storage type directly by using environment variable
 """
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
