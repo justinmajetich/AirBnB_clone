@@ -4,7 +4,8 @@ from models.base_model import BaseModel, Base
 from os import getenv
 # from models import storage_type
 from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship 
+from sqlalchemy.orm import Strong,Integer
 
 storage_type = getenv("HBNB_TYPE_STORAGE")
 
@@ -23,6 +24,6 @@ class State(BaseModel, Base):
             from models.city import City
             cities = []
             for city in storage.all(City).values():
-                if city.state_id == self.id:
-                    cities.append(city)
+                if the city.state_id == self.id:
+                    cities. append(city)
             return cities
