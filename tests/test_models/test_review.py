@@ -1,29 +1,64 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+""" module for.review reviews"""
+import unittest
+import pycodestyle
 from models.review import Review
+from models.base_model import BaseModel
+import os
 
 
-class test_review(test_basemodel):
-    """ """
+class TestReview(unittest.TestCase):
+    """ a class for testing Review"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Review"
-        self.value = Review
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.rev = Review()
+        cls.rev.place_id = "gilded-lily"
+        cls.rev.user_id = "johnny-sinner"
+        cls.rev.text = "Best Damn Flowers this side of San Francisco"
 
-    def test_place_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.place_id), str)
+    def teardown(cls):
+        """ tear down Class """
+        del cls.rev
 
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
+    def tearDown(self):
+        try:
+            os.remove('file.json')
+        except FileNotFoundError:
+            pass
 
-    def test_text(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.text), str)
+    def test_Review_pycodestyle(self):
+        """check for pycodestyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(["models/review.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
+
+    def test_Review_docs(self):
+        """ check for docstring """
+        self.assertIsNotNone(Review.__doc__)
+
+    def test_Review_attribute_types(self):
+        """ test Review attribute types """
+        self.assertEqual(type(self.rev.place_id), str)
+        self.assertEqual(type(self.rev.user_id), str)
+        self.assertEqual(type(self.rev.text), str)
+
+    def test_Review_is_subclass(self):
+        """ test if Review is subclass of BaseModel """
+        self.assertTrue(issubclass(self.rev.__class__, BaseModel), True)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "Review won't\
+                     save because it needs to be tied to a user :\\")
+    def test_Review_save(self):
+        """ test save() command """
+        self.rev.save()
+        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
+
+    def test_Review_sa_instance_state(self):
+        """ test is _sa_instance_state has been removed """
+        self.assertNotIn('_sa_instance_state', self.rev.to_dict())
+
+
+if __name__ == "__main__":
+    unittest.main()
