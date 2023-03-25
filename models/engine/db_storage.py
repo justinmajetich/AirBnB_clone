@@ -53,6 +53,9 @@ class DBStorage:
 
         db_storage = []
 
+        if not issubclass(cls, BaseModel):
+            raise TypeError(f"{cls} is not a subclass of BaseModel")
+
         if cls and cls in DBStorage.__valid_classes.values():
             db_storage = self.__session.query(cls).all()
         else:
