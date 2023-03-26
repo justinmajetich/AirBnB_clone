@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models.engine.file_storage import FileStorage
-from models.engine.db_storage import DBStorage
-from models import storage
+
+
+
 from models.city import City
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, ForeignKey
@@ -17,7 +17,8 @@ class State(BaseModel, Base):
     cities = []
 
     @property
-    def scities(self):
+    def cities(self):
+        """ fetch cities from storage """
         cts = storage.all(City)
         objs = []
         for k, v in cts.items():
@@ -25,8 +26,5 @@ class State(BaseModel, Base):
                 objs.append(v)
         return objs
 
-    if isinstance(storage, DBStorage):
-        cities = relationship("City", back_populates='state',
-                              cascade="all, delete, delete-orphan")
-    elif isinstance(storage, FileStorage):
-        cities = scities
+    cities = relationship("City", back_populates='state',
+                          cascade="all, delete, delete-orphan")
