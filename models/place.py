@@ -30,6 +30,18 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
         user = relationship('User', backref='places')
+        place_amenity = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60),
+                                     ForeignKey('places.id'),
+                                     nullable=False, primary_key=True),
+                              Column('amenity_id', String(60),
+                                     ForeignKey('amenities.id'),
+                                     nullable=False, primary_key=True)
+                              )
+
+        amenities = relationship('Amenity', secondary=place_amenity,
+                                 back_populates="place_amenities",
+                                 viewonly=False)
     else:
         # Condition for task 9
         # if getenv("HBNB_TYPE_STORAGE") != "db":
@@ -43,3 +55,19 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     list_reviews.append(review)
             return list_reviews
+
+        @property
+        def amenities(self):
+            """ getter: return list of amenities """
+            list_amenities = []
+            dic_amenities = models.storage.all(Amenity)
+            for amenity in dic_amenities.values():
+                if amenity.id == self.place_amenity.amenity_id:
+                    list_amenities.append(amenity)
+            return list_amenities
+
+        @amenities.setter
+        def amenities(self, obj):
+            """ setter: append Amenity_id to amenity_ids """
+            if isinstance(obj, self.__class__):
+                amenity_ids.append(obj.id)
