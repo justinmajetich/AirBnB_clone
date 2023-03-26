@@ -24,14 +24,18 @@ class DBStorage():
         db_pwd = os.getenv('HBNB_MYSQL_PWD')
         db_host = os.getenv('HBNB_MYSQL_HOST')
         db_database = os.getenv('HBNB_MYSQL_DB')
+        db_env = os.environ.get("HBNB_ENV")
 
-        self.__engine = create_engine(
-            f"mysql+mysqldb://{db_user}:{db_pwd}@\
-                {db_host}/{db_database}",
-            pool_pre_ping=True, echo=True)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}:3306/{}".
+                                      format(user, password, host, database),
+                                      pool_pre_ping=True)
 
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
+
+        if db_env == "test":
+            Base.metadata.drop_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
