@@ -24,23 +24,23 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 nullable=False, primary_key=True),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 nullable=False, primary_key=True)
+                          )
+
     # Condition for task 9
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         # relation with class-table Reviews
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
         user = relationship('User', backref='places')
-        place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60),
-                                     ForeignKey('places.id'),
-                                     nullable=False, primary_key=True),
-                              Column('amenity_id', String(60),
-                                     ForeignKey('amenities.id'),
-                                     nullable=False, primary_key=True)
-                              )
-
         amenities = relationship('Amenity', secondary=place_amenity,
-                                 back_populates="place_amenities",
+                                 backref="place_amenities",
                                  viewonly=False)
     else:
         # Condition for task 9
