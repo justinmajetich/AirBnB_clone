@@ -7,7 +7,7 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     # Condition required for task 9
     # if getenv("HBNB_TYPE_STORAGE") == "db":
@@ -29,6 +29,7 @@ class Place(BaseModel):
         # relation with class-table Reviews
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
+        user = relationship('User', backref='places')
     else:
         # Condition for task 9
         # if getenv("HBNB_TYPE_STORAGE") != "db":

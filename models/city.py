@@ -5,7 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-
+from os import getenv
 
 
 class City(BaseModel, Base):
@@ -18,6 +18,8 @@ class City(BaseModel, Base):
 #    from models.engine.db_storage import DBStorage
 #    from models import storage
 #    if isinstance(storage, DBStorage):
-    state = relationship("State", back_populates="cities")
-    places = relationship('Place', backref='cities', cascade='all, delete, delete-orphan')
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        state = relationship("State", back_populates="cities")
+        places = relationship('Place', backref='cities',
+                              cascade='all, delete, delete-orphan')
 
