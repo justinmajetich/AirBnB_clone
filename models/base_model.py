@@ -1,58 +1,43 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
-
 import uuid
 from datetime import datetime
-import models
-from models import storage
+from sqlalchemy import String, Integer, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
-
-# create Base object for task 6
 Base = declarative_base()
 
 
-class BaseModel():
-    """This class will defines all common attributes/methods
-    for other classes
-    """
-    ''' Update class definition to use SQLAlchemy
-    '''
-    # attributes for task 6
-    id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-
+class BaseModel:
     """A base class for all hbnb models"""
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        """Instantiation of base model class
-        Args:
-            args: it won't be used
-            kwargs: arguments for the constructor of the BaseModel
-        Attributes:
-            id: unique id generated
-            created_at: creation date
-            updated_at: updated date
-        """
+        from models import storage
         if not kwargs:
-            # unique id
             self.id = str(uuid.uuid4())
-            # datetime when is created
-            self.created_at = self.updated_at = datetime.now()
-            # move it to save method for task 6
-            # afecta guardar de la 2
-            # models.storage.new(self)
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             if 'updated_at' in kwargs:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                                       kwargs['updated_at'],
+                                       '%Y-%m-%dT%H:%M:%S.%f')
             else:
-                # self.id = str(uuid.uuid4())
-                for key, value in kwargs.items():
-                    if key == "created_at" or key == "updated_at":
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                    if key != "__class__":
-                        setattr(self, key, value)
+                kwargs['updated_at'] = datetime.now()
+            if 'created_at' in kwargs:
+                kwargs['created_at'] = datetime.strptime(
+                                       kwargs['created_at'],
+                                       '%Y-%m-%dT%H:%M:%S.%f')
+            else:
+                kwargs['created_at'] = datetime.now()
+            if '__class__' in kwargs:
+                del kwargs['__class__']
+            kwargs.update({'id': str(uuid.uuid4())})
+            for k, v in kwargs.items():
+                setattr(self, k, v)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -63,7 +48,12 @@ class BaseModel():
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
+
+    def delete(self):
+        """ Deletes current instance from storage """
+        storage.delete()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -72,4 +62,6 @@ class BaseModel():
         dictionary.update({'__class__': self.__class__.__name__})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in dictionary:
+            del(dictionary['_sa_instance_state'])
         return dictionary

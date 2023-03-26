@@ -21,7 +21,10 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        FileStorage.__objects.update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        from models.base_model import BaseModel as base
+        if obj and isinstance(obj, base):
+            FileStorage.__objects.\
+                    update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def delete(self, obj=None):
         """ Delete obj if not None and exists """
@@ -30,6 +33,7 @@ class FileStorage:
             for k, v in self.all().items():
                 if k.split('.')[1] == obj.id:
                     FileStorage.__objects.pop(k)
+                    self.save()
                     break
 
     def save(self):
@@ -61,6 +65,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                    FileStorage.__objects[key] = \
+                            classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
