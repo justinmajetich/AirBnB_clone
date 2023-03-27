@@ -1,8 +1,5 @@
 #!/usr/bin/python3
- """
-     starts flask web app
-     listens on 0.0.0.0, port 5000
- """
+""" Script that runs an app with Flask framework """
 import sys
 from flask import Flask
 
