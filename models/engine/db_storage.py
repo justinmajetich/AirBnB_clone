@@ -22,7 +22,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Creates an engine"""
+        """creates an engine"""
 
         user = getenv("HBNB_MYSQL_USER")
         password = getenv("HBNB_MYSQL_PWD")
@@ -35,7 +35,6 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """All function"""
         cls_list = ["Reviews", "City", "State", "User",
                     "Place", "Amenity"]
         obj_list = []
@@ -51,24 +50,24 @@ class DBStorage:
                                obj.id): obj for obj in obj_list}
 
     def new(self, obj=None):
-        """New function"""
+        """new method"""
         self.__session.add(obj)
 
     def save(self):
-        """Save function"""
+        """save method"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete function"""
+        """delete method"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """Reload function"""
+        """reload method"""
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(
             bind=self.__engine, expire_on_commit=False))
 
     def close(self):
-        """Close session"""
+        """close method"""
         self.__session.close()
