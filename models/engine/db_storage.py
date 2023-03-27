@@ -1,73 +1,79 @@
 #!/usr/bin/python3
-"""Database storage"""
-
-
-from sqlalchemy.orm import scoped_session
+""""""
+from models.base_model import Base
 from os import getenv
 from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
-from models.base_model import Base
-from models.state import State
-from models.city import City
-from models.user import User
-from models.place import Place
 from models.amenity import Amenity
+from models.city import City
+from models.place import Place
 from models.review import Review
+from models.state import State
+from models.user import User
+
+classes = {"Amenity": Amenity, "City": City, "Place": Place, "Review": Review,
+                   "State": State, "User": User}
 
 
 class DBStorage:
-    """Database storage class"""
-
+    """"""
     __engine = None
     __session = None
 
     def __init__(self):
-        """creates an engine"""
-
+        """"""
         user = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
+        pwd = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
-        database = getenv("HBNB_MYSQL_DB")
+        db = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            user, password, host, database), pool_pre_ping=True)
+
+        # Engine creation
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(user, pwd, host, db),
+                                      pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        obj_dct = {}
-        qry = []
-        if cls is None:
-            for cls_typ in DBStorage.CDIC.values():
-                qry.extend(self.__session.query(cls_typ).all())
-        else:
-            if cls in self.CDIC.keys():
-                cls = self.CDIC.get(cls)
-            qry = self.__session.query(cls)
-        for obj in qry:
-            obj_key = "{}.{}".format(type(obj).__name__, obj.id)
-            obj_dct[obj_key] = obj
-        return obj_dct
+        """All method"""
+        my_dict = {}
 
-    def new(self, obj=None):
-        """new method"""
+        if cls is None:
+            for my_type in classes.keys():
+                for obj in self.__session.query(classes[my_type]).all():
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    my_dict[key] = obj
+        else:
+            if isinstance(cls, str):
+                cls = classes[cls]
+            for obj in self.__session.query(cls).all():
+                key = obj.__class__.__name__ + '.' + obj.id
+                my_dict[key] = obj
+
+        return my_dict
+
+    def new(self, obj):
+        """"""
         self.__session.add(obj)
 
     def save(self):
-        """save method"""
+        """"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete method"""
+        """"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """reload method"""
+        """"""
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(
-            bind=self.__engine, expire_on_commit=False))
+        newSession = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(newSession)
+        self.__session = Session
 
     def close(self):
-        """close method"""
+        """Closes scoped session"""
         self.__session.close()
