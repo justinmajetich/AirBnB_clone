@@ -9,6 +9,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
@@ -60,8 +61,6 @@ class FileStorage:
                 del self.__objects[key]
 
     def close(self):
-        """method for deserializing the JSON file to objects"""
-        try:
-            self.reload()
-        except Exception:
-            pass
+        """deserializes the JSON file to objects"""
+        self.reload()
+        
