@@ -68,3 +68,4 @@ class FileStorage:
     def close(self):
         """close method"""
         self.reload()
+        
