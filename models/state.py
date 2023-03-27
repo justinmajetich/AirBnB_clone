@@ -1,28 +1,32 @@
 #!/usr/bin/python3
-"""State class for AirBnb project"""
-from os import getenv
-import models
+""" State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class State(BaseModel, Base):
-    """State class that creates states table"""
+    """ State class """
+    type_storage = getenv("HBNB_TYPE_STORAGE")
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    if type_storage == 'db':
+        cities = relationship('City', cascade='all, delete',
+                              backref='state')
+
     else:
         @property
         def cities(self):
-            """Getter method that returns a list of City instances
-            related to the current State"""
+            """Getter class for City attributes"""
             from models import storage
-            cities = []
-            for city in storage.all(City).values():
-                if city.state_id == self.id:
-                    cities.append(city)
-            return cities
+            city_list = []
+            get_cities = storage.all(City).values()
+
+            for i in get_cities:
+                if i.state_id == self.id:
+                    city_list.append(i)
+            return city_list
+        
