@@ -35,19 +35,19 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        cls_list = ["Reviews", "City", "State", "User",
-                    "Place", "Amenity"]
-        obj_list = []
+        obj_dct = {}
+        qry = []
         if cls is None:
-            for cls_name in cls_list:
-                obj_list.extend(self.__session.query(cls_name).all())
-
+            for cls_typ in DBStorage.CDIC.values():
+                qry.extend(self.__session.query(cls_typ).all())
         else:
-            if type(cls) == str:
-                cls = eval(cls)
-            obj_list = self.__session.query(cls).all()
-        return {"{}.{}".format(type(obj).__name__,
-                               obj.id): obj for obj in obj_list}
+            if cls in self.CDIC.keys():
+                cls = self.CDIC.get(cls)
+            qry = self.__session.query(cls)
+        for obj in qry:
+            obj_key = "{}.{}".format(type(obj).__name__, obj.id)
+            obj_dct[obj_key] = obj
+        return obj_dct
 
     def new(self, obj=None):
         """new method"""
@@ -71,4 +71,3 @@ class DBStorage:
     def close(self):
         """close method"""
         self.__session.close()
-        
