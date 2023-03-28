@@ -18,9 +18,10 @@ def simple():
 def icky(text):
     return "C " + text.replace("_", " ")
 
+
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def monty(text):
-    text = "is cool"
     return "Python " + text.replace("_", " ")
 
 
