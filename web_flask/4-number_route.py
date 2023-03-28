@@ -28,7 +28,7 @@ def monty(text):
 @app.route("/number/<n>", strict_slashes=False)
 def pretty_ricky(n):
     if isinstance(n, int):
-        return n + " is a number"
+        return "{} is a number".format(n)
 
 
 if __name__ == "__main__":
