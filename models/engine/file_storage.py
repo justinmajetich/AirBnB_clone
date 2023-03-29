@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models import city, place, review, state, amenity, user, base_model
 
 
 class FileStorage:
@@ -8,18 +9,26 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    classes = {
+        'City': city.City,
+        'Place': place.Place,
+        'Review': review.Review,
+        'State': state.State,
+        'Amenity': amenity.Amenity,
+        'User': user.User
+    }
+
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage
-            Updated to return a list of objects of one type of class
-        """
-        if cls is None:
-            return self.__objects
-        else:
-            obj_dict = {}
-            for key, value in self.__objects.items():
-                if isinstance(value, cls):
-                    obj_dict[key] = value
-            return obj_dict
+        """Returns a dictionary of models currently in storage if cls specified, only returns that class"""
+        if cls is not None:
+            if cls in self.classes.keys():
+                cls = self.classes.get(cls)
+            spec_rich = {}
+            for ky, vl in self.__objects.items():
+                if cls == type(vl):
+                    spec_rich[ky] = vl
+            return spec_rich
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -45,9 +54,12 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
+            'City': city.City,
+            'Place': place.Place,
+            'Review': review.Review,
+            'State': state.State,
+            'Amenity': amenity.Amenity,
+            'User': user.User
         }
         try:
             temp = {}
