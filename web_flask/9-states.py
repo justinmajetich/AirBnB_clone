@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 @app.route("/states", strict_slashes=False)
 def states():
+    """Holds states"""
     states = storage.all("State")
     return render_template("9-states.html", state=states)
 
@@ -21,6 +22,7 @@ def states_id(id):
 
 @app.teardown_appcontext
 def teardown(exc):
+    """Remove current SQLALchemy sesh"""
     storage.close()
 
 
