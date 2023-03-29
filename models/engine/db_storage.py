@@ -27,17 +27,19 @@ class DBStorage():
             .format(user, password, host, database), pool_pre_ping=True)
 
     def all(self, cls=None):
-        all_classes = ["State", "City", "Amenity", "Place", "Review", "User"]
-        object_list = []
+        obj_dct = {}
+        qry = []
         if cls is None:
-            for all_classes in object_list:
-                object_list.extend(self.__session.query(all_classes))
+            for cls_typ in DBStorage.CDIC.values():
+                qry.extend(self.__session.query(cls_typ).all())
         else:
-            if type(cls) == str:
-                cls = eval(cls)
-            object_list = self.__session.query(cls).all()
-        return {"{}.{}".format(type(obj).__name__,
-                               obj.id): obj for obj in object_list}
+            if cls in self.CDIC.keys():
+                cls = self.CDIC.get(cls)
+            qry = self.__session.query(cls)
+        for obj in qry:
+            obj_key = "{}.{}".format(type(obj).__name__, obj.id)
+            obj_dct[obj_key] = obj
+        return obj_dct
 
     def new(self, obj):
         self.__session.add(obj)
