@@ -10,6 +10,8 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 from models.state import State
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm import scoped_session
 
 
 class DBStorage:
@@ -34,7 +36,7 @@ class DBStorage:
         """Query on the current database session all objects
         depending of the class name.
         """
-        all_class = [User, State, City, Amenity, Place, Review]
+        all_class = [City, State, User, Place, Review, Amenity]
         obj_list = []
         new_dict = {}
 
