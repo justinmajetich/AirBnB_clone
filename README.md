@@ -1,6 +1,6 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+Welcome to the initial stage of our student project, which aims to create a functional clone of the popular AirBnB website. This stage features a backend console interface that enables the user to manage program data efficiently. The console offers a range of commands that allow the user to create, update, and destroy objects and manage file storage. The program utilizes a JSON serialization/deserialization system, which ensures that storage remains persistent across sessions. Get ready to dive into this exciting project and help us create a successful clone of AirBnB!
 
 ---
 
@@ -140,3 +140,14 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+## Initial Authors:
+(https://github.com/justinmajetich)
+
+(https://github.com/eNobreg)
+
+## Collaborators:
+(https://github.com/MicoBledsoe)
+
+(https://github.com/jobabyyy)
+
