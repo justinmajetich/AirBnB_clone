@@ -76,4 +76,5 @@ class FileStorage:
                 self.save()
 
     def close(self):
+        """Reloads a sesh"""
         self.reload()
