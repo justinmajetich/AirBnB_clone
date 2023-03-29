@@ -7,24 +7,27 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
-storage = getenv("HBNB_TYPE_STORAGE")
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
-    """State class"""
-    if storage == "db":
-        __tablename__ = "states"
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state", cascade="delete")
+    """Name of table in database to link to"""
+    __tablename__ = "states"
 
-    else:
-        name = ""
+    """This class defines a user by name & state_id attributes"""
+    name = Column(String(128), nullable=False)
 
+    if storage_type != "db":
         @property
         def cities(self):
-            """Getter method"""
-            city_list = []
-            for city in models.storage.all("City").values():
+            """
+            Getter, returns list of City objects from storage linked
+            to current State
+            """
+            city_objs = []
+            for city in models.storage.all(City).values():
                 if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+                    city_objs.append(city)
+            return city_objs
+    else:
+        cities = relationship("City", backref="state", cascade="delete")
