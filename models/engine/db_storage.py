@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, MetaData
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
@@ -73,8 +73,9 @@ class DBStorage():
     def reload(self):
         """Creates current database session"""
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                     expire_on_commit=False))
+        my_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(my_session)
+        self.session = Session()
 
-        def close(self):
-            self.__session.close()
+    def close(self):
+        self.__session.close()
