@@ -2,7 +2,6 @@
 ''' DBSTORAGE '''
 
 import os
-from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -10,7 +9,7 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import select
 from sqlalchemy.orm import scoped_session
 
@@ -63,5 +62,8 @@ class DBStorage():
 
     def reload(self):
         """Loads storage dictionary from file"""
+        Base = declarative_base()
+        s = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(s)
         Base.metadata.create_all(self.__engine)
 
