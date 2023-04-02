@@ -1,10 +1,21 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
 import models
+
+
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -22,7 +33,10 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        reviews = relationship("Review", cascade="all, delete", backref="place")
+        reviews = relationship("Review", cascade="all, delete",
+                               backref="place")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -39,8 +53,23 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """returns the list of `Review` instances."""
-            review_list = []
+            review_lists = []
             for review in list(models.storage.all(Review).values()):
                 if review.place.id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenities(self):
+            """returns the list of `Amenity` instances."""
+            amenity_lists = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenity_lists.append(amenity)
+            return amenity_lists
+
+        @amenities.setter
+        def amenities(self, obj):
+            """handles `append` method"""
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
