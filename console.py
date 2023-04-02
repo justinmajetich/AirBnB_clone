@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -19,17 +19,25 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
+               'BaseModel': BaseModel,
+               'User': User,
+               'Place': Place,
+               'State': State,
+               'City': City,
+               'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
 
+    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+
+    types = {
+             'number_rooms': int,
+             'number_bathrooms': int,
+             'max_guest': int,
+             'price_by_night': int,
+             'latitude': float,
+             'longitude': float
+            }
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
@@ -55,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         if args:
-            args_list = args.split()
+            args_list = args.split(" ")
             class_name = args_list[0]
             param_list = args_list[1:]
 
@@ -66,18 +74,18 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         param_list_dict = {}
         for param in param_list:
             key_value = param.split("=")
             if len(key_value) != 2:
-               continue
+                continue
 
             key = key_value[0]
             value = key_value[1]
 
             if value.startswith('"') and value.endswith('"'):
-               value = value[1:-1].replace('_', ' ')
+                value = value[1:-1].replace('_', ' ').replace('"', '\\"')
             elif '.' in value:
                 if type(value) == float:
                     value = float(value)
@@ -88,9 +96,8 @@ class HBNBCommand(cmd.Cmd):
             param_list_dict[key] = value
 
         new_instance = HBNBCommand.classes[class_name](**param_list_dict)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -153,7 +160,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -172,11 +179,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -285,6 +292,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
