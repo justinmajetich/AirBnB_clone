@@ -6,9 +6,10 @@ from flask import render_template
 
 app = Flask(__name__)
 
-@app.route("/states_list",strict_slashes=False)
+
+@app.route("/states_list", strict_slashes=False)
 def listing():
-    from models.state import State 
+    from models.state import State
 
     State_item = storage.all(State)
     niice = {}
@@ -26,7 +27,7 @@ def listing():
 
 @app.teardown_appcontext
 def close_db(error):
-    from models.engine.db_storage import DBStorage 
+    from models.engine.db_storage import DBStorage
     if isinstance(storage, DBStorage):
         storage.close()
 
