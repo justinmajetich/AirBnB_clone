@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" connect flask """
 
 from flask import Flask
 
