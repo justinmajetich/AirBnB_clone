@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ a script that starts a Flask web application """
 from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -44,16 +45,9 @@ def number_only(n):
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
 def number_template(n):
+    """ using template for the first time """
     if isinstance(n, int):
-        return f"""<!DOCTYPE html>
-                        <HTML lang="en">
-                            <HEAD>
-                                <TITLE>HBNB</TITLE>
-                            </HEAD>
-                            <BODY>
-                                <H1>Number: {n}</H1>
-                            </BODY>
-                        </HTML>"""
+        return render_template("5-number.html", n=n)
     else:
         return
 
