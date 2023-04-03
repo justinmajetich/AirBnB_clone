@@ -11,7 +11,17 @@ def listing():
     from models.state import State 
 
     State_item = storage.all(State)
-    return render_template("7-states_list.html", state_item=State_item)
+    niice = {}
+    var_id = ""
+    var_name = ""
+    for _, v in State_item.items():
+        for k, x in v.to_dict().items():
+            if k == "id":
+                var_id = x
+            if k == "name":
+                var_name = x
+            niice[var_id] = var_name
+    return render_template("7-states_list.html", state_item=niice)
 
 
 @app.teardown_appcontext
