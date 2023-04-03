@@ -7,7 +7,7 @@
         <H1>States</H1>
         <UL>
             {% for lck in state_item|dictsort(false, 'value') %}
-            <LI>{{lck[0]|e}} : : <B>{{lck[1]|e}}</B></LI>
+            <LI>{{lck[0]|e}} :: <B>{{lck[1]|e}}</B></LI>
             {% endfor %}
         </UL>
     </BODY>
