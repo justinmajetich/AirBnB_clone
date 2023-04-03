@@ -1,6 +1,9 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+This repository contains the initial stages of a student project to build a clone of the AirBnB website. 
+* The first stage was to implement a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions. 
+* The second stage of the project was to replace the file storage by implementing a "DBStorage" MySQL database by using SQLAlchemy. Two MySQL servers are created: one for the development and one for the testing. 
+
 
 ---
 
@@ -19,6 +22,41 @@ This repository contains the initial stage of a student project to build a clone
 | 8. Create User class | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) | Dynamically implements a user class |
 | 9. More Classes | [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) [/models/place.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/place.py) [/models/city.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/city.py) [/models/amenity.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/amenity.py) [/models/state.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/state.py) [/models/review.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/review.py) | Dynamically implements more classes |
 | 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
+
+<center><h3>This week</h3> </center>
+
+| Tasks | Files | Description |
+|-----|-----|------|
+| 0. Fork me if you can! | This repo | Having the code of other to simulate the industry |
+| 1. Bug free! | N/A | All class modules are unittested |
+| 2. Console improvement |[console.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/console.py) | Updated the create to allow for object creation with key=value |
+| 3. MySql setup dev | [setup_mysql_dev.sql](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/setup_mysql_dev.sql) | File to create the db_dev and user_dev for the mysql server |
+| 4. MySql setup test | [setup_mysql_test.sql](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/setup_mysql_test.sql) | Created file to prepare the MySql server for test env |
+| 5. Delete object | [file_storage.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/engine/file_storage.py) | New public instance method to delete an object |
+| 6. DBStorage - States and Cities | [models/base_model.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/base_model.py), [models/city.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/city.py), [models/state.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/state.py), [models/engine/db_storage.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/engine/db_storage.py), [models/\_\_init\_\_.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/__init__.py) | Using SQLAlchemy to be able to switch from Json type of storage to SQL using python|
+| 7. DBStorage - User | [models/user.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/user.py) | Added Place for the DBStorage |
+| 8. DBStorage - Place | [models/place.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/place.py), [models/user.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/user.py), [models/city.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/city.py) | Added Place for the DBStorage |
+| 9. DBStorage - Review | [models/review.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/review.py), [models/user.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/user.py), [models/place.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/place.py) | Added Review for the DBStorage |
+| 10. DBStorage - Amenity... and BOOM!| [models/amenity.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/amenity.py), [models/place.py](https://github.com/PhYdrogen/holbertonschool-AirBnB_clone_v2/blob/master/models/place.py) | Added Amenity with relationship with other table|
+
+<br>
+<br>
+<center> <h2>Environment variables</h2> </center>
+
+The following environment variables are used:
+
+`HBNB_ENV`: running environment. It can be “dev” or “test”.
+
+`HBNB_MYSQL_USER`: the username of your MySQL
+
+`HBNB_MYSQL_PWD`: the password of your MySQL
+
+`HBNB_MYSQL_HOST`: the hostname of your MySQL
+
+`HBNB_MYSQL_DB`: the database name of your MySQL
+
+`HBNB_TYPE_STORAGE`: the type of storage used. It can be “file” (using FileStorage) or db (using DBStorage)
+
 <br>
 <br>
 <center> <h2>General Use</h2> </center>
@@ -68,7 +106,7 @@ Advanced syntax is implemented for the following commands:
 <br>
 <br>
 <center> <h2>Examples</h2> </center>
-<h3>Primary Command Syntax</h3>
+<h3>Primary Command Syntax with File Storage</h3>
 
 ###### Example 0: Create an object
 Usage: create <class_name>
@@ -106,6 +144,7 @@ Usage: update <class_name> <_id>
 'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
 (hbnb)
 ```
+
 <h3>Alternative Syntax</h3>
 
 ###### Example 0: Show all User objects
@@ -140,3 +179,19 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+<h3>Primary Command Syntax with DB Storage</h3>
+
+###### Example 0: Create an object
+```
+echo 'create State name="California"' | HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py 
+(hbnb)
+4c300c2d-e8cb-4588-a7ec-1a7700850674
+(hbnb) 
+```
+###### Example 1: Show all objects of a class
+```
+echo 'all State' | HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py 
+(hbnb) [[State] (95a5abab-aa65-4861-9bc6-1da4a36069aa) {'name': 'California', 'id': '95a5abab-aa65-4861-9bc6-1da4a36069aa', 'updated_at': datetime.datetime(2017, 11, 10, 0, 49, 54), 'created_at': datetime.datetime(2017, 11, 10, 0, 49, 54)}]
+(hbnb)
+```
