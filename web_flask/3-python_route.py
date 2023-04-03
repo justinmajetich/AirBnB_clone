@@ -21,14 +21,16 @@ def hbnb():
 def C_text(text):
     return "C {}".format(text.replace("_", " "))
 
+
 @app.route("/python/<text>")
 def python_text(text):
     return "Python {}".format(text.replace("_", " "))
-    
+
 
 @app.route("/python/")
 def python_notext():
-    return "Python {no_text}".format(no_text = "is cool")
+    return "Python {no_text}".format(no_text="is cool")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
