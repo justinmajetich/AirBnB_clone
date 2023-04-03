@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Flask hello world"""
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -35,6 +35,11 @@ def python_notext():
 @app.route("/number/<int:n>")
 def is_number(n):
     return ("{} is a number".format(n))
+
+
+@app.route("/number_template/<int:n>")
+def is_number_template(n):
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == '__main__':
