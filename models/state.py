@@ -18,10 +18,11 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        cities_list = []
-        for city in models.storage.all(City).values():
-            if self.id == city.state_id:
-                cities_list.append(city)
-        return cities_list
+        @property
+        def cities(self):
+            """Getter for cities when not using DBStorage engine."""
+            cities_list = []
+            for city in models.storage.all(City).values():
+                if self.id == city.state_id:
+                    cities_list.append(city)
+            return cities_list
