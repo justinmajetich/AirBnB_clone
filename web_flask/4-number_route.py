@@ -34,11 +34,12 @@ def python_default():
     return f"Python is cool"
 
 
-@app.route("/num/<n>", strict_slashes=False)
+@app.route("/number/<int:n>", strict_slashes=False)
 def number_only(n):
     if isinstance(n, int):
         return f"{n} is a number"
-    return ""
+    else:
+        return
 
 
 if __name__ == "__main__":
