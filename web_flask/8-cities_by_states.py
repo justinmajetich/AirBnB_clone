@@ -68,7 +68,6 @@ def states_list():
 
 @app.route("/cities_by_states")
 def cities_by_states():
-    """Display a HTML page with the list of all State objects and linked City objects"""
     states = list(storage.all(State).values())
     states.sort(key=lambda state: state.name)
     for state in states:
