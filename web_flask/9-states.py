@@ -89,13 +89,24 @@ def states():
 
 @app.route('/states/<id>')
 def states_by_id(id):
-    state = storage.get(State, id)
-    if state is None:
-        not_found = True
-    else:
+    existing_state = None
+    not_existing_state = State(name='Not found!')
+
+    for state in storage.all(State).values():
+        if state.name.lower() == id.lower():
+            existing_state = state
+            break
+
+    if existing_state:
+        state = existing_state
         not_found = False
         cities = state.cities
         cities.sort(key=lambda city: city.name)
+    else:
+        state = not_existing_state
+        not_found = True
+        cities = None
+
     states = list(storage.all(State).values())
     states.sort(key=lambda state: state.name)
     return render_template('9-states.html', state=state, cities=cities, states=states, not_found=not_found)
