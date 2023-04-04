@@ -24,12 +24,14 @@ def states_id(id):
     
     list_city = []
     state_obj = None
+    is_found = False
 
     state_item = storage.all(State).values()
     for state in state_item:
         obj = state.to_dict()
         if obj.get("id") == id:
             state_obj = obj
+            is_found = True
     
     city_item = storage.all(City).values()
     for city in city_item:
@@ -39,7 +41,7 @@ def states_id(id):
 
     list_city = sorted(list_city, key=lambda d: d['name'])
     return render_template("9-states.html",
-                           state_item=state_obj, city_item=list_city)
+                            state_item=state_obj, city_item=list_city, is_found=is_found)
     
 
 
