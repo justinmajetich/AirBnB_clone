@@ -10,10 +10,11 @@ app = Flask(__name__)
 @app.route("/states_list", strict_slashes=False)
 def listing():
     from models.state import State
-
-    states = storage.all(State)
-    sorted_states = sorted(states, key=lambda state: state.name)
-    return render_template("7-states_list.html", state_item=sorted_states)
+    lol = []
+    states = storage.all(State).values()
+    for state in states:
+        lol.append(state.to_dict())
+    return render_template("7-states_list.html", state_item=lol)
 
 
 @app.teardown_appcontext
