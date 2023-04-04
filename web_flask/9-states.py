@@ -16,12 +16,13 @@ def states():
         list_state.append(state.to_dict())
     list_state = sorted(list_state, key=lambda d: d['name'])
     return render_template("7-states_list.html", state_item=list_state)
-    
+
+
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id):
     from models.state import State
     from models.city import City
-    
+
     list_city = []
     state_obj = None
     is_found = False
@@ -32,17 +33,15 @@ def states_id(id):
         if obj.get("id") == id:
             state_obj = obj
             is_found = True
-    
+
     city_item = storage.all(City).values()
     for city in city_item:
         if city.to_dict().get("state_id") == id:
             list_city.append(city.to_dict())
 
-
     list_city = sorted(list_city, key=lambda d: d['name'])
-    return render_template("9-states.html",
-                            state_item=state_obj, city_item=list_city, is_found=is_found)
-    
+    return render_template("9-states.html", state_item=state_obj,
+                           city_item=list_city, is_found=is_found)
 
 
 @app.teardown_appcontext
