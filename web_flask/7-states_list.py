@@ -14,6 +14,8 @@ def listing():
     states = storage.all(State).values()
     for state in states:
         lol.append(state.to_dict())
+    print(lol)
+    lol = sorted(lol, key=lambda d: d['name'])
     return render_template("7-states_list.html", state_item=lol)
 
 
