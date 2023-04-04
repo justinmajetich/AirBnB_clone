@@ -22,6 +22,7 @@ def listing():
             if k == "name":
                 var_name = x
                 niice[var_id] = var_name
+    # print(niice)
     return render_template("7-states_list.html", state_item=niice)
 
 
