@@ -12,10 +12,9 @@ def cities_by_state():
     from models.state import State
     from models.city import City
 
-    state_item = []
-    city_item = []
+    city_item = storage.all(City)
+    state_item = storage.all(State)
     return render_template("8-cities_by_states.html", state_item=state_item, city_item=city_item)
-    pass
 
 
 @app.teardown_appcontext
