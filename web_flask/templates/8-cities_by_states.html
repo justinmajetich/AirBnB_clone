@@ -6,16 +6,18 @@
     <BODY>
         <H1>States</H1>
         <UL>
-            {% for %}
+            {% for state in state_item %}
             <LI>{{state.id}}: <B>{{state.name}}</B>
                 <UL>
-                        {% for %}
-                        <LI>{{cities.id}}: <B>{{cities.name}}</B></LI>
-                        {% %}
+                        {% for city in city_item %}
+                        {% if state.id == city.state_id %}
+                        <LI>{{city.state_id}}: <B>{{city.name}}</B></LI>
+                        {% endif %}
+                        {% endfor %}
 
                 </UL>
             </LI>
-            {% %}
+            {% endfor %}
         </UL>
     </BODY>
 </HTML>
