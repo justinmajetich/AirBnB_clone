@@ -43,6 +43,10 @@
 
 	overflow-y:auto;
 	max-height: 300px;
+
+}
+.popover::-webkit-scrollbar {
+    display: none;
 }
 
 .locations:hover .popover {

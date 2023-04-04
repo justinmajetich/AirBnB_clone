@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 @app.route("/hbnb_filters", strict_slashes=False)
 def states_id():
+    """ Get everything and show it """
     from models.state import State
     from models.city import City
     from models.amenity import Amenity
