@@ -22,6 +22,8 @@ def cities_by_state():
     #   print(state)
         list_state.append(state.to_dict())
     print(list_city)
+    list_city = sorted(list_city, key=lambda d: d['name'])
+    list_state = sorted(list_state, key=lambda d: d['name'])
     return render_template("8-cities_by_states.html", state_item=list_state, city_item=list_city)
 
 
