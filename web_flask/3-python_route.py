@@ -30,7 +30,7 @@ def c_text(text):
 # Définition de la première route, qui affiche "Python is cool" par défaut
 @app.route('/python/<text>', strict_slashes=False)
 # seconde route, permet de spécifier un texte à afficher à la place de is cool
-def python_text(text="is_cool"):
+def python_text(text):
     text = f"Python {text}"
     return text.replace("_", " ")
 
