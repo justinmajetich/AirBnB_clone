@@ -79,38 +79,24 @@ def cities_by_states():
         setattr(state, 'cities', cities)
     return render_template('8-cities_by_states.html', states=states)
 
-
-@app.route('/states')
 def states():
-    states = list(storage.all(State).values())
-    states.sort(key=lambda state: state.name)
-    return render_template('9-states.html', states=states)
+    all_states = storage.all(State).values()
+    sorted_states = sorted(all_states, key=attrgetter('name'))
+    return render_template('9-states.html', states=sorted_states, state=None)
 
 
 @app.route('/states/<id>')
-def states_by_id(id):
-    existing_state = None
-    not_existing_state = State(name='Not found!')
-
-    for state in storage.all(State).values():
-        if state.name.lower() == id.lower():
-            existing_state = state
-            break
-
-    if existing_state:
-        state = existing_state
-        not_found = False
-        cities = state.cities
-        cities.sort(key=lambda city: city.name)
+def state_cities(id):
+    state = storage.get(State, id)
+    if state:
+        if getenv('HBNB_TYPE_STORAGE') == 'db':
+            cities = state.cities
+        else:
+            cities = state.cities()
+        sorted_cities = sorted(cities, key=attrgetter('name'))
+        return render_template('9-states.html', state=state, cities=sorted_cities, states=None)
     else:
-        state = not_existing_state
-        not_found = True
-        cities = None
-
-    states = list(storage.all(State).values())
-    states.sort(key=lambda state: state.name)
-    return render_template('9-states.html', state=state, cities=cities, states=states, not_found=not_found)
-
+        return render_template('9-states.html', not_found=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
