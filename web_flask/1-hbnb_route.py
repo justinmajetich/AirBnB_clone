@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-""" 
-connect flask 
-"""
+""" connect flask """
 
 from flask import Flask
 
@@ -18,7 +16,8 @@ def hello():
     return 'Hello HBNB!'
 
 @app.route("/hbnb")
-def hello():
+def hbnb():
+    strict_slashes = False
     return 'HBNB'
 
 # Exécuter l'application si le script est exécuté directement (pas importé)
