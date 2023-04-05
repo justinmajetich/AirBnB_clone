@@ -79,25 +79,13 @@ def cities_by_states():
         setattr(state, 'cities', cities)
     return render_template('8-cities_by_states.html', states=states)
 
-@app.route('/states')
-def states():
-    all_states = storage.all(State).values()
-    sorted_states = sorted(all_states, key=attrgetter('name'))
-    return render_template('9-states.html', states=sorted_states, state=None)
-
-
-@app.route('/states/<id>')
+@app.route("/states", defaults={'id': None})
+@app.route("/states/<id>")
 def state_cities(id):
-    state = storage.get(State, id)
-    if state:
-        if getenv('HBNB_TYPE_STORAGE') == 'db':
-            cities = state.cities
-        else:
-            cities = state.cities()
-        sorted_cities = sorted(cities, key=attrgetter('name'))
-        return render_template('9-states.html', state=state, cities=sorted_cities, states=None)
-    else:
-        return render_template('9-states.html', not_found=True)
+    states = storage.all(State)
+    if id:
+        id = 'State.' + id
+    return render_template('9-states.html', states=states, id=id)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
