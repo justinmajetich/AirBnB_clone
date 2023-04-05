@@ -31,16 +31,16 @@ def do_deploy(archive_path):
         file_name = archive_path.split("/")[-1].split(".")[0]
 
         put(archive_path, '/tmp/')
-        run('mkdir /data/web_static/releases/{}'.format(file_name))
-        run('tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}'.
+        run('sudo mkdir /data/web_static/releases/{}'.format(file_name))
+        run('sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}'.
             format(file_name, file_name))
-        run('mv /data/web_static/releases/{}/web_static/* \
+        run('sudo mv /data/web_static/releases/{}/web_static/* \
             /data/web_static/releases/{}/'.
             format(file_name, file_name))
-        run('rm -rf /data/web_static/releases/{}/web_static'.format(file_name))
-        run('rm -rf /tmp/{}.tgz'.format(file_name))
-        run('rm -rf /data/web_static/current')
-        run('ln -sf /data/web_static/releases/{}/ /data/web_static/current'.
+        run('sudo rm -rf /data/web_static/releases/{}/web_static'.format(file_name))
+        run('sudo rm -rf /tmp/{}.tgz'.format(file_name))
+        run('sudo rm -rf /data/web_static/current')
+        run('sudo ln -sf /data/web_static/releases/{}/ /data/web_static/current'.
             format(file_name))
         return True
     except:
