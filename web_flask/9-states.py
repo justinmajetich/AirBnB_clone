@@ -80,6 +80,7 @@ def cities_by_states():
         setattr(state, 'cities', cities)
     return render_template('8-cities_by_states.html', states=states)
 
+
 @app.route("/states", defaults={'id': None})
 @app.route("/states/<id>")
 def state_cities(id):
@@ -87,6 +88,7 @@ def state_cities(id):
     if id:
         id = 'State.' + id
     return render_template('9-states.html', states=states, id=id)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
