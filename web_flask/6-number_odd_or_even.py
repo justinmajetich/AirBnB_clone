@@ -39,16 +39,15 @@ def python_text(text):
 def number(n):
     return f"{n} is a number"
 
-# Définition de la route "/number_template/" qui prend un entier "n" en paramètre
+# Définition de la route "/number_template/" qui prend un entier n en paramètre
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def render_t(n):
-    # Rendu du template "5-number.html" en passant la valeur de "n" en paramètre
+    # Rendu du template "5-number.html" en passant la valeur de n en paramètre
     return render_template('5-number.html', n=n)
 
 
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def render_t(n):
-    # Rendu du template "5-number.html" en passant la valeur de "n" en paramètre
     return render_template('6-number_odd_or_even.html', n=n)
 
 
