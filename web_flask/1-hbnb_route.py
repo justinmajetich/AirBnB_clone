@@ -15,10 +15,12 @@ def hello():
     # Retourner une chaîne de caractères en réponse à la requête HTTP
     return 'Hello HBNB!'
 
+
 @app.route("/hbnb")
 def hbnb():
     strict_slashes = False
     return 'HBNB'
+
 
 # Exécuter l'application si le script est exécuté directement (pas importé)
 if __name__ == '__main__':
