@@ -2,9 +2,9 @@
 # bash script to setup web server for hosting web_static
 
 # colors
-blue='\e<1;34m'
-green='\e<1;32m'
-reset='\033<0m'
+blue='\e[1;34m'
+green='\e[1;32m'
+reset='\033[0m'
 
 echo -e "\n\t${blue}Installing nginx if it's not installed${reset}\n"
 command -v nginx
@@ -17,7 +17,7 @@ echo -e "\n\t${blue}Creating the folders if they don't exist${reset}\n"
 if [ ! -d /data/web_static/releases/test/ ]; then
 	sudo mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
 fi
-mkdir -p /var/www/html /var/www/error
+sudo mkdir -p /var/www/html /var/www/error
 sudo chmod -R 755 /var/www
 echo "Hello World!" | sudo tee /var/www/html/index.html
 echo "Ceci n'est pas une page" | sudo tee /var/www/error/404.html
@@ -42,7 +42,7 @@ fi
 sudo ln -s /data/web_static/releases/test/ /data/web_static/current
 
 echo -e "\n\t${blue}Giving ownership of the /data/ folder to the ubuntu user and group${reset}\n"
-sudo chown -R ubuntu:ubuntu /data/
+sudo chown -R $USER:$USER /data/
 
 echo -e "\n\t${blue}Updating the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static${reset}\n"
 CONFIG="server {

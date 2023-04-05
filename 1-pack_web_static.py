@@ -19,7 +19,11 @@ def do_pack():
     try:
         print("Packing web_static to {}".format(file))
         local("tar -cvzf {} web_static".format(file))
-        print("web_static packed: {} -> {}Bytes".format(file, os.path.getsize(file)))
+        print("web_static packed: {} -> {}Bytes".format(
+            file,
+            os.path.getsize(file)
+            )
+            )
     except Exception:
         return None
     return file
