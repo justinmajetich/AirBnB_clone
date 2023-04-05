@@ -31,7 +31,7 @@ def do_deploy(archive_path):
         file_name = archive_path.split("/")[-1].split(".")[0]
 
         put(archive_path, '/tmp/')
-        run('sudo mkdir /data/web_static/releases/{}'.format(file_name))
+        run('sudo mkdir -p /data/web_static/releases/{}'.format(file_name))
         run('sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}'.
             format(file_name, file_name))
         run('sudo mv /data/web_static/releases/{}/web_static/* \
