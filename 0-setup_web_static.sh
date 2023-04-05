@@ -42,7 +42,7 @@ fi
 sudo ln -s /data/web_static/releases/test/ /data/web_static/current
 
 echo -e "\n\t${blue}Giving ownership of the /data/ folder to the ubuntu user and group${reset}\n"
-sudo chown -R $USER:$USER /data/
+sudo chown -R ubuntu:ubuntu /data/
 
 echo -e "\n\t${blue}Updating the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static${reset}\n"
 CONFIG="server {
