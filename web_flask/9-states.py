@@ -79,6 +79,7 @@ def cities_by_states():
         setattr(state, 'cities', cities)
     return render_template('8-cities_by_states.html', states=states)
 
+@app.route('/states')
 def states():
     all_states = storage.all(State).values()
     sorted_states = sorted(all_states, key=attrgetter('name'))
