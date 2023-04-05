@@ -26,7 +26,8 @@ def hbnb():
 @app.route("/c/<text>")
 def c_text():
     strict_slashes = False
-    return f"C {escape(text)}"
+    text = f"C {escape(text)}"
+    return text.replace("_", " ")
 
 
 # Exécuter l'application si le script est exécuté directement (pas importé)
