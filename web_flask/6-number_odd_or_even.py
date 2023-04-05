@@ -39,6 +39,7 @@ def python_text(text):
 def number(n):
     return f"{n} is a number"
 
+
 # Définition de la route "/number_template/" qui prend un entier n en paramètre
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def render_t(n):
