@@ -39,9 +39,11 @@ def python_text(text):
 def number(n):
     return f"{n} is a number"
 
+
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def render_t(n):
     return render_template('5-number.html', n=n)
+
 
 # Exécuter l'application si le script est exécuté directement (pas importé)
 if __name__ == '__main__':
