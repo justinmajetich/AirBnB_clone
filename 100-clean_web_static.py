@@ -1,32 +1,35 @@
 #!/usr/bin/python3
 """
-Fabric script that deletes out-of-date archives.
+Fabric script that deletes out-of-date archives using the do_clean function.
 """
 import os
 from fabric.api import *
 
-env.hosts = ['54.158.79.124', '54.146.64.149']
 env.user = 'ubuntu'
+env.hosts = ['54.158.79.124', '54.146.64.149']
 
 
 def do_clean(number=0):
     """
-    Deletes out-of-date archives from the web servers.
+    Deletes all unnecessary archives (all archives minus the number to keep)
+    in the versions folder and /data/web_static/releases folder of both web servers.
     Args:
         number (int): The number of archives to keep.
-    If number is 0 or 1, keeps only the most recent archive. If
-    number is 2, keeps the most and second-most recent archives,
-    etc.
     """
-     number = 1 if int(number) == 0 else int(number)
+    number = int(number)
+    if number < 1:
+        return
+    elif number == 1:
+        local('ls -1t versions/ | tail -n +2 | xargs -I {} rm versions/{}')
+    else:
+        local('ls -1t versions/ | tail -n +{} | xargs -I {} rm versions/{}'
+              .format(number + 1, '{}'))
+    with cd('/data/web_static/releases'):
+        run('ls -1t | tail -n +{} | xargs -I {} rm -rf /data/web_static/releases/{}'
+            .format(number + 1, '{}'))
 
-    archives = sorted(os.listdir("versions"))
-    [archives.pop() for i in range(number)]
-    with lcd("versions"):
-        [local("rm ./{}".format(a)) for a in archives]
 
-    with cd("/data/web_static/releases"):
-        archives = run("ls -tr").split()
-        archives = [a for a in archives if "web_static_" in a]
-        [archives.pop() for i in range(number)]
-        [run("rm -rf ./{}".format(a)) for a in archives]
+def deploy():
+    """Deploys the web_static content to the web servers"""
+    # ... previous deploy code ...
+    do_clean(2)
