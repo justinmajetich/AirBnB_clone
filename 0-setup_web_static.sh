@@ -16,14 +16,11 @@ fi
 sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
 
-#Create the direrctories
-folder="/data/web_static/shared"
-
 # Check if the folder exists
-if [ ! -d "$folder" ]; then
+if [ ! -d "/data/web_static/shared/" ]; then
     # Create the folder if it does not exist
     echo "Folder does not exist. Creating folder..."
-    sudo mkdir -p "$folder"
+    sudo mkdir -p "/data/web_static/shared/"
     echo "Folder has been created."
 else
     # Print a message if the folder already exists
@@ -33,10 +30,10 @@ fi
 folder="/data/web_static/releases/test"
 
 # Check if the folder exists
-if [ ! -d "$folder" ]; then
+if [ ! -d "/data/web_static/releases/test/" ]; then
     # Create the folder if it does not exist
     echo "Folder does not exist. Creating folder..."
-    sudo mkdir -p "$folder"
+    sudo mkdir -p "/data/web_static/releases/test/"
     echo "Folder has been created."
 else
     # Print a message if the folder already exists
@@ -57,13 +54,14 @@ echo "HTML file has been created at /data/web_static/releases/test/index.html"
 if [ -L "$/data/web_static/current" ]; then
     sudo rm "/data/web_static/releases/test/"
 fi
-sudo ln -s "/data/web_static/current" "/data/web_static/releases/test"
+sudo ln -sf "/data/web_static/current" "/data/web_static/releases/test"
 
 echo "Symbolic link has been created at /data/web_static/releases/test"
-sudo chown -R "ubuntu:ubuntu" "/data"
+sudo chown -hR ubuntu:ubuntu "/data"
 
 #configure Nginx
 sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # Restart Nginx
 sudo service nginx restart
 echo "Nginx configuration has been updated to serve $source_path to /hbnb_static"
+
