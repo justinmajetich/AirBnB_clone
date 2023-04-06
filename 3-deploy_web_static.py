@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Fabric script that creates and distributes an archive"""
+""" Fabric script that creates and distributes the archive"""
 
 import os
 from datetime import datetime
