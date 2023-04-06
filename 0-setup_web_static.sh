@@ -27,7 +27,7 @@ FILE_CONTENT=\
 </html>"
 
 PATH_TO_INDEX="$TEST_FOLDER"/index.html
-sudo echo -e "$FILE_CONTENT" > $PATH_TO_INDEX
+echo -e "$FILE_CONTENT" > $PATH_TO_INDEX
 
 # Create a symbolic link called 'current' to test folder.
 sudo ln -sf $TEST_FOLDER /data/web_static/current 
