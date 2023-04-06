@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #Set up my server for deployment
+
+#Install Nginx
 if ! command -v nginx &> /dev/null
 then
     #--Install Nginx if it is not installed
@@ -12,42 +14,32 @@ else
     echo "Nginx is already installed."
 fi
 echo
-
-#--starting nginx service
-sudo service nginx start
+#Allow a firewall
 sudo ufw allow 'Nginx HTTP'
-echo
-#--Create the directories
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
-echo
 
-echo "The Dir's are created"
 
-if [ -d "/data/web_static/current" ];
-then
-    echo "path /data/web_static/current exists"
-    sudo rm -rf /data/web_static/current;
-fi;
-echo
-
-#Create a fake HTML file /data/web_static/releases/test/index.html (with simple content, to test your Nginx configuration)
-echo "<h1>NGS's Test Page</h1>  <p>This page is created to test the Nginx configuration.</p>" > /data/web_static/releases/test/index.html
-echo "HTML file has been created at /data/web_static/releases/test/index.html"
-echo
-# Create the new symbolic link
-if [ -L "/data/web_static/current" ]; then
-  sudo  rm /data/web_static/current
-  echo "Removed existing symlink: /data/web_static/current"
+#Create the Directories
+if [ ! -d "/data/web_static/releases/test" ]; then
+  sudo mkdir -p /data/web_static/releases/test
 fi
-echo
-ln -s /data/web_static/releases/test /data/web_static/current
-echo "Created new symlink: /data/web_static/current -> /data/web_static/releases/test"
+
+if [ ! -d "/data/web_static/shared" ]; then
+  mkdir -p /data/web_static/shared
+fi
+
+#Create a fake HTML file to test Nginx
+echo "<h1>NGS's Test Page</h1>  <p>This page is created to test the Nginx configuration.</p>" > /data/web_static/releases/test/index.html
+
+#change owner and group
 sudo chown -hR ubuntu:ubuntu /data
-echo
-#configure Nginx
-echo "alias /hbnb_static /data/web_static/current" | sudo tee /etc/nginx/sites-available/default > /dev/null
-# Restart Nginx
+
+
+#create a symbolic link
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+
+#update Nginx configuration
+sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+
+#restart NGINX
 sudo service nginx restart
-echo "Nginx configuration has been updated to serve $source_path to /hbnb_static"
-echo
 
