@@ -1,4 +1,5 @@
-mport os
+#!/usr/bin/python3
+import os
 from fabric.api import *
 
 env.hosts = ['100.25.19.204', '54.157.159.85']
