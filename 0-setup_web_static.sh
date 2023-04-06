@@ -1,28 +1,16 @@
 #!/usr/bin/env bash
 # Sets up a web server for deployment of web_static.
 
-# Install Nginx if it's not already installed
-if [ $(dpkg-query -W -f='${Status}' nginx 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-  sudo apt-get update
-  sudo apt-get install nginx -y
-fi
+apt-get update
+apt-get install -y nginx
 
-# Create necessary folders if they don't exist
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
-
-# Create a fake HTML file
+mkdir -p /data/web_static/releases/test/
+mkdir -p /data/web_static/shared/
 echo "Holberton School" > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Create symbolic link
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-
-# Change ownership and of /data/ folder
-sudo chown -R ubuntu:ubuntu /data/
+chown -R ubuntu /data/
 chgrp -R ubuntu /data/
-
-# backup default server config file
-# sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
 
 printf %s "server {
     listen 80 default_server;
@@ -35,7 +23,7 @@ printf %s "server {
         index index.html index.htm;
     }
     location /redirect_me {
-        return 301 https://github.com/chineduCoded;
+        return 301 http://cuberule.com/;
     }
     error_page 404 /404.html;
     location /404 {
@@ -44,5 +32,4 @@ printf %s "server {
     }
 }" > /etc/nginx/sites-available/default
 
-# Restart Nginx
-sudo service nginx restart
+service nginx restart

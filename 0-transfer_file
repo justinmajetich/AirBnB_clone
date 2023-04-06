@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Transfers a file from Holberton's client to another.
+# Accepts four arguments:
+#+    The path to the file to be transferred.
+#+    The IP of the server to transfer the file to.
+#+    The username that scp connects with.
+#+    The path to the SSH private key that scp uses.
+
+if [ $# -lt 4 ]
+then
+  echo "Usage: 0-transfer_file PATH_TO_SSH_KEY PATH_TO_FILE USERNAME@IP"
+else
+  scp -i "$4" "$1" "$3"@"$2":~
+fi
