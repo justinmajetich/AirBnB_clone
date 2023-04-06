@@ -2,66 +2,52 @@
 #Set up my server for deployment
 if ! command -v nginx &> /dev/null
 then
-    # Install Nginx if it is not installed
+    #--Install Nginx if it is not installed
     echo "Nginx is not installed. Installing..."
     sudo apt-get -y update
     sudo apt-get -y install nginx
     echo "Nginx has been installed."
 else
-    # Print a message if Nginx is already installed
+    #--Print a message if Nginx is already installed
     echo "Nginx is already installed."
 fi
+echo
 
-# starting nginx service
+#--starting nginx service
 sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
-
-# Check if the folder exists
-if [ ! -d "/data/web_static/shared/" ]; then
-    # Create the folder if it does not exist
-    echo "Folder does not exist. Creating folder..."
-    sudo mkdir -p "/data/web_static/shared/"
-    echo "Folder has been created."
-else
-    # Print a message if the folder already exists
-    echo "Folder already exists."
-fi
-
-folder="/data/web_static/releases/test"
-
-# Check if the folder exists
-if [ ! -d "/data/web_static/releases/test/" ]; then
-    # Create the folder if it does not exist
-    echo "Folder does not exist. Creating folder..."
-    sudo mkdir -p "/data/web_static/releases/test/"
-    echo "Folder has been created."
-else
-    # Print a message if the folder already exists
-    echo "Folder already exists."
-fi
+echo
+#--Create the directories
+sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
+echo
 
 echo "The Dir's are created"
 
+if [ -d "/data/web_static/current" ];
+then
+    echo "path /data/web_static/current exists"
+    sudo rm -rf /data/web_static/current;
+fi;
+echo
+
 #Create a fake HTML file /data/web_static/releases/test/index.html (with simple content, to test your Nginx configuration)
-cat <<EOF > "/data/web_static/releases/test/index.html"
-        <h1>NGS's Test Page</h1>
-        <p>This page is created to test the Nginx configuration.</p>
-EOF
-
+echo "<h1>NGS's Test Page</h1>  <p>This page is created to test the Nginx configuration.</p>" > /data/web_static/releases/test/index.html
 echo "HTML file has been created at /data/web_static/releases/test/index.html"
-
-# Create the new symbolic link and change ownership
-if [ -L "$/data/web_static/current" ]; then
-    sudo rm "/data/web_static/releases/test/"
+echo
+# Create the new symbolic link
+if [ -L "/data/web_static/current" ]; then
+  sudo  rm /data/web_static/current
+  echo "Removed existing symlink: /data/web_static/current"
 fi
-sudo ln -sf "/data/web_static/current" "/data/web_static/releases/test"
-
-echo "Symbolic link has been created at /data/web_static/releases/test"
-sudo chown -hR ubuntu:ubuntu "/data"
-
+echo
+ln -s /data/web_static/releases/test /data/web_static/current
+echo "Created new symlink: /data/web_static/current -> /data/web_static/releases/test"
+sudo chown -hR ubuntu:ubuntu /data
+echo
 #configure Nginx
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+echo "alias /hbnb_static /data/web_static/current" | sudo tee /etc/nginx/sites-available/default > /dev/null
 # Restart Nginx
 sudo service nginx restart
 echo "Nginx configuration has been updated to serve $source_path to /hbnb_static"
+echo
 
