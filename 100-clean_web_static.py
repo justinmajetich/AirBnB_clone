@@ -2,8 +2,7 @@
 """
 Fabric script that deletes out-of-date archives.
 """
-
-from fabric.api import from fabric.api import env, lcd, cd, run, local
+from fabric.api import env, lcd, cd, run, local
 from os import path
 
 env.hosts = ['54.158.79.124', '54.146.64.149']
