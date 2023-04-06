@@ -1,19 +1,30 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-# deploy sending
-
-"""deploy archive usign fabric"""
-
-from fabric.api import sudo, env, put
+#!/usr/bin/python3
+# Compress before sending
+"""Compress usign fabric -- all in one"""
+from fabric.api import sudo, env, put, local
 import os
+import datetime
+
 
 env.hosts = ['54.209.141.133', '100.26.221.3']
 
 
-def do_deploy(archive_path):
-    """deploy archive to server"""
+def do_pack():
+    """compress function"""
+    try:
+        local("mkdir -p versions")
+        date = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        local("tar -cvzf versions/web_static_{}.tgz web_static".format(date))
+        return "versions/web_static_{}.tgz".format(date)
+    except Exception:
+        return None
 
+
+archive_path = do_pack()
+
+
+def deploy():
+    """deploy archive to server"""
     if not os.path.isfile(archive_path):
         return False
     try:
