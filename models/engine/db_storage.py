@@ -83,4 +83,4 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
     
     def close(self):
-        return self.__session.remove()
+        self.__session.remove()
