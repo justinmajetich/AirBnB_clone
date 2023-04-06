@@ -54,15 +54,22 @@ def deploy():
 
 
 def do_clean(number=0):
-    """Deletes out-of-date archives."""
+    """Deletes out-of-date archives.
+    Args:
+        number (int): The number of archives to keep.
+    """
     number = int(number)
-    if number < 0:
-        return
-    if number == 0 or number == 1:
+    if number < 1:
         number = 1
-    else:
-        number += 1
-    with cd('/data/web_static/releases'):
-        local('ls -1t | tail -n +{} | xargs -I {{}}rm -rf{{}}'.format(number))
-    with cd('/versions'):
-        local('ls -1t | tail -n +{} | xargs -I {{}}rm -rf{{}}'.format(number))
+    archives_path = "versions/"
+    with cd(archives_path):
+        archives = sorted(os.listdir(archives_path))
+        for archive in archives[:-number]:
+            path_to_delete = os.path.join(archives_path, archive)
+            local("rm {}".format(path_to_delete))
+    releases_path = "/data/web_static/releases/"
+    with cd(releases_path):
+        releases = run("ls -1t").split()
+        for release in releases[:-number]:
+            path_to_delete = os.path.join(releases_path, release)
+            run("sudo rm -rf {}".format(path_to_delete))
