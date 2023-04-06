@@ -17,7 +17,7 @@ sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
 
 #Create the direrctories
-folder="/data/web_static/shared/"
+folder="/data/web_static/shared"
 
 # Check if the folder exists
 if [ ! -d "$folder" ]; then
@@ -30,7 +30,7 @@ else
     echo "Folder already exists."
 fi
 
-folder="/data/web_static/releases/test/"
+folder="/data/web_static/releases/test"
 
 # Check if the folder exists
 if [ ! -d "$folder" ]; then
@@ -57,10 +57,10 @@ echo "HTML file has been created at /data/web_static/releases/test/index.html"
 if [ -L "$/data/web_static/current" ]; then
     sudo rm "/data/web_static/releases/test/"
 fi
-sudo ln -s "/data/web_static/current" "/data/web_static/releases/test/"
+sudo ln -s "/data/web_static/current" "/data/web_static/releases/test"
 
-echo "Symbolic link has been created at /data/web_static/releases/test/"
-sudo chown -R "ubuntu:ubuntu" "/data/"
+echo "Symbolic link has been created at /data/web_static/releases/test"
+sudo chown -R "ubuntu:ubuntu" "/data"
 
 #configure Nginx
 sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
