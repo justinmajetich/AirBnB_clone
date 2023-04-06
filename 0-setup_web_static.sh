@@ -4,7 +4,6 @@
 #Install Nginx
 sudo apt-get -y update
 sudo apt-get -y install nginx
-#Allow a firewall
 sudo ufw allow 'Nginx HTTP'
 
 #Create the Directories
@@ -13,7 +12,13 @@ sudo mkdir -p /data/web_static/shared
 sudo touch /data/web_static/releases/test/index.html
 
 #Create a fake HTML file to test Nginx
-echo "<h1>NGS's Test Page</h1>  <p>This page is created to test the Nginx configuration.</p>" > /data/web_static/releases/test/index.html
+sudo echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" > /data/web_static/releases/test/index.html
 
 #change owner and group
 sudo chown -hR ubuntu:ubuntu /data
