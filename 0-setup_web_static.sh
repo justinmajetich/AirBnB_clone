@@ -3,17 +3,15 @@
 # Install Nginx if not already installed
 if ! command -v nginx &> /dev/null
 then
-    echo "Nginx not found. Installing..."
     sudo apt-get update
     sudo apt-get -y install nginx
-    echo "Nginx installed successfully"
 fi
 
 # Create necessary folders
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared /data/web_static/current
 
 # Create a fake HTML file for testing Nginx configuration
-sudo echo "<html><head><title>Test HTML file</title></head><body><p>This is a test HTML file.</p></body></html>" > /data/web_static/releases/test/index.html
+echo "<html><head><title>Test HTML file</title></head><body><p>This is a test HTML file.</p></body></html>" > /data/web_static/releases/test/index.html
 
 # Create a symbolic link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
