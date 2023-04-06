@@ -19,7 +19,7 @@ do
 done
 
 # Create fake HTML file for testing Nginx configuration
-sudo echo "<html><head></head><body>Holberton School</body></html>" > /data/web_static/releases/test/index.html
+sudo echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html
 echo "Fake HTML file created at /data/web_static/releases/test/index.html"
 
 # Create symbolic link
