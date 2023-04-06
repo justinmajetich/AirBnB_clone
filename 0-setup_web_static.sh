@@ -23,6 +23,14 @@ sudo echo "<html>
 #change owner and group
 sudo chown -hR ubuntu:ubuntu /data
 
+#prevent overwriting
+if [ -d "/data/web_static/current" ];
+then
+    echo "path /data/web_static/current exists"
+    sudo rm -rf /data/web_static/current;
+fi;
+echo -e "\e[1;32m prevent overwrite\e[0m"
+echo
 
 #create a symbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
