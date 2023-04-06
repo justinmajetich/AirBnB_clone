@@ -6,31 +6,31 @@
 # Install nginx engine if not exist.
 NGX_STATUS=$(dpkg -s nginx 2>/dev/null | grep -c "ok installed")
 
-if [ "$PKG_STATUS" -eq 0 ]; then
+if [ "$NGX_STATUS" -eq 0 ]; then
     sudo apt-get update
     sudo apt-get -y install nginx
 fi
 
 # Create the test folder recurlsively if not exist.
-TEST_FOLDER='/data/web_static/releases/test/'
+TEST_FOLDER='/data/web_static/releases/test'
 sudo mkdir -p $TEST_FOLDER
+sudo mkdir -p /data/web_static/shared/
 
 # Create a fake HTML file (index.html) inside of test folder.
 FILE_CONTENT=\
-"
-<html>
+"<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>
-"
-PATH_TO_INDEX="$TEST_FOLDER"index.html
+</html>"
+
+PATH_TO_INDEX="$TEST_FOLDER"/index.html
 sudo echo -e "$FILE_CONTENT" > $PATH_TO_INDEX
 
 # Create a symbolic link called 'current' to test folder.
-sudo ln -sf $TEST_FOLDER /data/web_static/current
+sudo ln -sf $TEST_FOLDER /data/web_static/current 
 
 # Give ownership of the /data/ folder to the ubuntu user AND group
 sudo chown -R ubuntu:ubuntu /data/
