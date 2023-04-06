@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check if Nginx is installed
+#Set up my server for deployment
 if ! command -v nginx &> /dev/null
 then
     # Install Nginx if it is not installed
@@ -16,8 +16,33 @@ fi
 sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
 
-#Create the dirs
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
+#Create the direrctories
+folder="/data/web_static/shared/"
+
+# Check if the folder exists
+if [ ! -d "$folder" ]; then
+    # Create the folder if it does not exist
+    echo "Folder does not exist. Creating folder..."
+    sudo mkdir -p "$folder"
+    echo "Folder has been created."
+else
+    # Print a message if the folder already exists
+    echo "Folder already exists."
+fi
+
+folder="/data/web_static/releases/test/"
+
+# Check if the folder exists
+if [ ! -d "$folder" ]; then
+    # Create the folder if it does not exist
+    echo "Folder does not exist. Creating folder..."
+    sudo mkdir -p "$folder"
+    echo "Folder has been created."
+else
+    # Print a message if the folder already exists
+    echo "Folder already exists."
+fi
+
 echo "The Dir's are created"
 
 #Create a fake HTML file /data/web_static/releases/test/index.html (with simple content, to test your Nginx configuration)
@@ -38,7 +63,7 @@ echo "Symbolic link has been created at /data/web_static/releases/test/"
 sudo chown -R "ubuntu:ubuntu" "/data/"
 
 #configure Nginx
-echo "alias /hbnb_static $source_path;" | sudo tee /etc/nginx/sites-available/default > /dev/null
+sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # Restart Nginx
 sudo service nginx restart
 echo "Nginx configuration has been updated to serve $source_path to /hbnb_static"
