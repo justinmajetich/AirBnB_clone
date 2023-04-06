@@ -3,29 +3,14 @@
 
 #Install Nginx
 sudo apt-get -y update
-if ! command -v nginx &> /dev/null
-then
-    #--Install Nginx if it is not installed
-    echo "Nginx is not installed. Installing..."
-    sudo apt-get -y install nginx
-    echo "Nginx has been installed."
-else
-    #--Print a message if Nginx is already installed
-    echo "Nginx is already installed."
-fi
-echo
+sudo apt-get -y install nginx
 #Allow a firewall
 sudo ufw allow 'Nginx HTTP'
 
-
 #Create the Directories
-if [ ! -d "/data/web_static/releases/test" ]; then
-  sudo mkdir -p /data/web_static/releases/test
-fi
-
-if [ ! -d "/data/web_static/shared" ]; then
- sudo mkdir -p /data/web_static/shared
-fi
+sudo mkdir -p /data/web_static/releases/test
+sudo mkdir -p /data/web_static/shared
+sudo touch /data/web_static/releases/test/index.html
 
 #Create a fake HTML file to test Nginx
 echo "<h1>NGS's Test Page</h1>  <p>This page is created to test the Nginx configuration.</p>" > /data/web_static/releases/test/index.html
