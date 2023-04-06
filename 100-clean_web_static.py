@@ -54,22 +54,25 @@ def deploy():
 
 
 def do_clean(number=0):
-    """Deletes out-of-date archives.
+    """Deletes out-of-date archives of the static files.
     Args:
-        number (int): The number of archives to keep.
+        number (Any): The number of archives to keep.
     """
-    number = int(number)
-    if number < 1:
-        number = 1
-    archives_path = "versions/"
-    with cd(archives_path):
-        archives = sorted(os.listdir(archives_path))
-        for archive in archives[:-number]:
-            path_to_delete = os.path.join(archives_path, archive)
-            local("rm {}".format(path_to_delete))
-    releases_path = "/data/web_static/releases/"
-    with cd(releases_path):
-        releases = run("ls -1t").split()
-        for release in releases[:-number]:
-            path_to_delete = os.path.join(releases_path, release)
-            run("sudo rm -rf {}".format(path_to_delete))
+    archives = os.listdir('versions/')
+    archives.sort(reverse=True)
+    start = int(number)
+    if not start:
+        start += 1
+    if start < len(archives):
+        archives = archives[start:]
+    else:
+        archives = []
+    for archive in archives:
+        os.unlink('versions/{}'.format(archive))
+    cmd_parts = [
+        "rm -rf $(",
+        "find /data/web_static/releases/ -maxdepth 1 -type d -iregex",
+        " '/data/web_static/releases/web_static_.*'",
+        " | sort -r | tr '\\n' ' ' | cut -d ' ' -f{}-)".format(start + 1)
+    ]
+    run(''.join(cmd_parts))
