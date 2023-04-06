@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #nginx automate config
+apt-get update -y
+apt-get install nginx -y
 mkdir -p /data/
 mkdir -p /data/web_static/
 mkdir -p /data/web_static/releases/
