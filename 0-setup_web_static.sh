@@ -4,7 +4,7 @@
 html="
 <html>
     <body>
-        <p>Test run!</p>
+        <p>Ahmed and Samuel Airbnb_v2 project</p>
     </body>
 </html>
 "
@@ -15,7 +15,8 @@ sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 printf "%s" "$html" >> /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -R ubuntu:ubuntu /data/
+sudo chown -R ubuntu:ubuntu /data
+sudo chgrp -R ubuntu /data/
+
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
 sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n' /etc/nginx/sites-available/default
-sudo service nginx restart

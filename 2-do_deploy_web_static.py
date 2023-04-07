@@ -11,7 +11,7 @@
 from fabric.api import env, put, run
 import os.path
 
-env.hosts = ['3.229.122.175', '35.171.146.79']
+env.hosts = ["52.3.247.63", "54.234.100.112"]
 env.user = "ubuntu"
 env.key_filename = '~/.ssh/school'
 # env.use_ssh_config
@@ -36,5 +36,6 @@ def do_deploy(archive_path):
         run('echo "New version deployed!"')
         return True
     except BaseException:
-        # run('echo "wahala!"')
         return False
+        # run('echo "wahala!"')
+
