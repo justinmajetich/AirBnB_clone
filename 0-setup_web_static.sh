@@ -36,6 +36,7 @@ sudo ln -sf $TEST_FOLDER /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 # Nginx configurations Update
+HOST_NAME=$(hostname)
 NGX_CONFIG=\
 "server {
         listen 80 default_server;
@@ -45,12 +46,15 @@ NGX_CONFIG=\
         server_name _;
 
 	location / {
+                add_header X-Served-By $HOST_NAME
 		try_files \$uri \$uri/ =404;
 	}
 
         location /hbnb_static/ {
                 alias /data/web_static/current/;
+                add_header X-Served-By $HOST_NAME
         }
+
         error_page 404 /404.html;
         location  /404.html {
             internal;
@@ -61,6 +65,7 @@ NGX_CONFIG=\
         }
 }
 "
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 echo "$NGX_CONFIG" > /etc/nginx/sites-available/default
 
 if [ "$(pgrep -c nginx)" -le 0 ];
