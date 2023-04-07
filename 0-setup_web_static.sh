@@ -12,7 +12,7 @@ sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/
 
 # Create a fake HTML file for testing
-echo "Ahmed and Samuel Airbnb_v2 project" | sudo tee /data/web_static/releases/test/index.html
+echo "Ahmed and Samuel Airbnb_v2 project" > /data/web_static/releases/test/index.html
 
 # Create symbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
