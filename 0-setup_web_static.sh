@@ -46,13 +46,13 @@ NGX_CONFIG=\
         server_name _;
 
 	location / {
-                add_header X-Served-By $HOST_NAME
+                add_header X-Served-By $HOST_NAME;
 		try_files \$uri \$uri/ =404;
 	}
 
         location /hbnb_static/ {
                 alias /data/web_static/current/;
-                add_header X-Served-By $HOST_NAME
+                add_header X-Served-By $HOST_NAME;
         }
 
         error_page 404 /404.html;
