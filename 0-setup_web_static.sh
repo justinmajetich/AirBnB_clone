@@ -17,8 +17,7 @@ sudo mkdir -p $TEST_FOLDER
 sudo mkdir -p /data/web_static/shared/
 
 # Create a fake HTML file (index.html) inside of test folder.
-FILE_CONTENT=\
-"<html>
+FILE_CONTENT="<html>
   <head>
   </head>
   <body>
@@ -27,7 +26,7 @@ FILE_CONTENT=\
 </html>"
 
 PATH_TO_INDEX="$TEST_FOLDER"/index.html
-echo -e "$FILE_CONTENT" > $PATH_TO_INDEX
+echo "$FILE_CONTENT" > $PATH_TO_INDEX
 
 # Create a symbolic link called 'current' to test folder.
 sudo ln -sf $TEST_FOLDER /data/web_static/current 
@@ -37,8 +36,7 @@ sudo chown -R ubuntu:ubuntu /data/
 
 # Nginx configurations Update
 HOST_NAME=$(hostname)
-NGX_CONFIG=\
-"server {
+NGX_CONFIG="server {
         listen 80 default_server;
         listen [::]:80 default_server;
         root /var/www/html;
@@ -63,8 +61,8 @@ NGX_CONFIG=\
         if (\$request_filename ~ redirect_me){
             rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
         }
-}
-"
+}"
+
 echo "Ceci n'est pas une page" > /var/www/html/404.html
 echo "$NGX_CONFIG" > /etc/nginx/sites-available/default
 
