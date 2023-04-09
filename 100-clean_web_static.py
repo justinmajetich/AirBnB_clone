@@ -102,4 +102,5 @@ def do_clean(number=0):
         # Delect local archives
         local("rm -f versions/{}".format(x))
 
-    # run("rm -rf /data/web_static/releases/{}".format(x.split('.')[0]))
+    with cd("/data/web_static/releases/"):
+        run("ls -1 -r | tail -n +{} | xargs rm -rf".format(recent + 1))
