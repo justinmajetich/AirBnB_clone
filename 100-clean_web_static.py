@@ -94,9 +94,11 @@ def do_clean(number=0):
     #  Sort versions from oldest to most recent
     sorted_v = sorted(versions, key=split_string)
     # Get the number to keep
-    recent = 1 if number == 0 else int(number)  # Can not be 0
+    number = int(number)
+    recent = 1 if number == 0 else number  # Can not be 0
     #  Loop and delete remote oldest versions except for most recent
-    for x in sorted_v[:-recent]:
+    sorted_v = sorted_v[recent:] if recent < len(sorted_v) else []
+    for x in sorted_v:
         # check current host
         if host == env.hosts[1]:
             local("rm -f versions/{}".format(x))
