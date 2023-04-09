@@ -99,7 +99,7 @@ def do_clean(number=0):
     #  Loop and delete remote oldest versions except for most recent
     sorted_v = sorted_v[recent:] if recent < len(sorted_v) else []
     for x in sorted_v:
-        # check current host
-        if host == env.hosts[1]:
-            local("rm -f versions/{}".format(x))
-        run("rm -rf /data/web_static/releases/{}".format(x.split('.')[0]))
+        # Delect local archives
+        local("rm -f versions/{}".format(x))
+
+    # run("rm -rf /data/web_static/releases/{}".format(x.split('.')[0]))
