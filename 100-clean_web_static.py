@@ -92,7 +92,7 @@ def do_clean(number=0):
     host = env.host  # Get the current remote host server.
     versions = os.listdir("versions/")
     #  Sort versions from oldest to most recent
-    sorted_v = sorted(versions, key=split_string)
+    sorted_v = sorted(versions, key=split_string, reverse=True)
     # Get the number to keep
     number = int(number)
     recent = 1 if number == 0 else number  # Can not be 0
