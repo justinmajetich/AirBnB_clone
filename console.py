@@ -132,7 +132,6 @@ class HBNBCommand(cmd.Cmd):
                 except Exception as e:
                     print(" <USAGE>::<class> <key=value>...")
 
-        print(args)
         if not args:
             print("** class name missing **")
             return
@@ -144,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = HBNBCommand.classes[_cls]()
         else:
             new_instance = HBNBCommand.classes[_cls](**_dict)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -176,7 +175,10 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            obj = storage.all(self.classes[c_name])
+            print(obj)
+            instance = obj[key]
+            print(instance)
         except KeyError:
             print("** no instance found **")
 
@@ -227,11 +229,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            _class = self.classes[args]
+            for k, v in storage.all(_class).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -244,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
