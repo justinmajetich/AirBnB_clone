@@ -12,7 +12,7 @@ from datetime import datetime
 
 env.hosts = ['54.237.210.251', '54.237.14.69']
 env.user = 'ubuntu'
-env.key_filename = '~/.ssh/*.pub'
+env.key_filename = '~/.ssh/*.pem'
 
 
 def do_pack():
