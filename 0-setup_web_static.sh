@@ -45,7 +45,7 @@ SERVER_CONFIG=\
       root /var/www/html;
       internal;
     }
-    location /hbtn_static {
+    location /hbnb_static {
       alias /data/web_static/current/;
     }
 }"
