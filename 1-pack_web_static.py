@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 This script creates an archive of a given folder
 """
@@ -18,5 +18,5 @@ def do_pack():
         local("tar -cvzf versions/{} web_static".format(file_name))
         archive_path = "versions/{}".format(file_name)
         return archive_path
-    except:
+    Exception:
         return None
