@@ -11,8 +11,6 @@ from datetime import datetime
 
 
 env.hosts = ['54.237.210.251', '54.237.14.69']
-env.user = 'ubuntu'
-env.key_filename = '~/.ssh/*.pem'
 
 
 def do_pack():
@@ -42,49 +40,35 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
-    Distributes an archive to web servers and deploys it.
+    Distributes an archive to web servers.
 
     Args:
-        archive_path: The file path of the compressed archive to be deployed.
+        archive_path (str): The path of the archive to distribute.
 
     Returns:
-        True if all operations have been done correctly, False otherwise.
+        bool: True if all operations have been done correctly, otherwise False.
     """
-    if not os.path.exists(archive_path):
-        print("Archive not found at: {}".format(archive_path))
+    if not exists(archive_path):
         return False
-
     file_name = archive_path.split("/")[-1]
-    folder_name = "/data/web_static/releases/" + file_name[:-4]
-
-    try:
-        # Upload archive to server
-        put(archive_path, "/tmp/")
-
-        # Create directory to uncompress archive
-        run("mkdir -p {}".format(folder_name))
-
-        # Uncompress archive into folder
-        run("tar -xzf /tmp/{} -C {}".
-            format(file_name, folder_name))
-
-        # Delete archive from server
-        run("rm /tmp/{}".format(file_name))
-
-        # Move contents of folder up one level
-        run("mv {}/* {}".format(folder_name, folder_name + "/.."))
-
-        # Remove empty folder
-        run("rm -rf {}".format(folder_name))
-
-        # Remove symbolic link
-        run("rm -rf /data/web_static/current")
-
-        # Create new symbolic link
-        run("ln -s {} /data/web_static/current".format(folder_name + "/"))
-        print("New version deployed!")
-        return True
-
-    except Exception as e:
-        print("An unexpected error occurred: {}".format(str(e)))
+    name = file_name.split(".")[0]
+    tmp_file = "/tmp/" + file_name
+    rel_path = "/data/web_static/releases/" + name
+    sudo("mkdir -p {}".format(rel_path))
+    if put(archive_path, tmp_file).failed:
         return False
+    if run("tar -xzf {} -C {}".
+           format(tmp_file, rel_path)).failed:
+        return False
+    if run("rm {}".format(tmp_file)).failed:
+        return False
+    if run("mv {}/web_static/* {}".format(rel_path, rel_path)).failed:
+        return False
+    if run("rm -rf {}/web_static".format(rel_path)).failed:
+        return False
+    if run("rm -rf /data/web_static/current").failed:
+        return False
+    if run("ln -s {} /data/web_static/current".
+           format(rel_path)).failed:
+        return False
+    return True
