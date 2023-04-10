@@ -3,9 +3,7 @@ from fabric.api import put, run, local, env
 from os import path
 
 
-env.password = "root"
 env.hosts = ["54.208.68.9", "35.153.19.3"]
-env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
