@@ -12,9 +12,10 @@ from datetime import datetime
 def do_pack():
     """
     Compresses the web_static folder into a .tgz archive.
-    
-    The archive is stored in the versions folder and is named based on the current date and time.
-    
+
+    The archive is stored in the versions folder and
+    is named based on the current date and time.
+
     Returns:
         The file path of the compressed archive on success, None otherwise.
     """
