@@ -14,7 +14,9 @@ sudo ufw allow 'Nginx HTTP'
 # Create folders and make necessary folders and config changes
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
 echo "Ceci n'est pas une page" > /var/www/html/404.html
-echo "<h1>bovntyhvnter.tech test file</h1>" > /data/web_static/releases/test/index.html
+
+INDEX_CONTENT="<h1>bovntyhvnter.tech test file</h1>"
+echo "$INDEX_CONTENT" > /data/web_static/releases/test/index.html
 
 #--prevent overwrite
 if [ -d "/data/web_static/current" ];
