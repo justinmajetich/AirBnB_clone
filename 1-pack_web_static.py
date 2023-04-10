@@ -12,6 +12,10 @@ def do_pack():
     """
     Generates a .tgz archive from the contents of the web_static folder
     The archive is named based on current date and time.
+
+    Returns:
+        Path to archive if created successfully
+        None otherwise
     """
     try:
         current_time = datetime.utcnow().strftime('%Y%m%d%H%M%S')
