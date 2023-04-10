@@ -34,13 +34,13 @@ $index_content = "<html>
 </html>
 "
 file { '/data/web_static/releases/test/index.html':
-  ensure  => present,
+  ensure  => 'present',
   content => $index_content,
 }
 
 # Create a symbolic link called 'current' to test folder.
 file { '/data/web_static/current':
-  ensure => link,
+  ensure => 'link',
   target => '/data/web_static/releases/test',
 }
 
@@ -50,10 +50,18 @@ exec { 'chown /data/ folder':
   path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
+exec { '/var/www/html':
+  ensure => 'directory'
+}
+
+file { '/var/www/html/index.html':
+  ensure  => 'present',
+  content => "Hello World!\n"
+}
+
 # Nginx configurations Update
-file { 'Nginx default config file':
-  ensure  => link,
-  path    => '/etc/nginx/sites-enabled/default',
+file { '/etc/nginx/sites-enabled/default':
+  ensure  => 'present',
   content =>
 "
 server {
@@ -82,6 +90,11 @@ server {
 ",
 }
 
+file { '/var/www/html/404.html':
+  ensure  => 'present',
+  content => "Ceci n'est pas une page - Error page\n"
+}
+
 # restart nginx
 exec { 'restart service':
   command => 'sudo service nginx restart',
@@ -93,4 +106,3 @@ service { 'nginx':
   ensure  => running,
   require => Package['nginx'],
 }
-
