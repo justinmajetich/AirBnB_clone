@@ -50,18 +50,10 @@ exec { 'chown /data/ folder':
   path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
-exec { '/var/www/html':
-  ensure => directory,
-}
-
-file { '/var/www/html/index.html':
-  ensure  => present,
-  content => "Hello World!\n",
-}
-
 # Nginx configurations Update
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => present,
+file { 'Nginx default config file':
+  ensure  => link,
+  path    => '/etc/nginx/sites-enabled/default',
   content =>
 "
 server {
@@ -90,9 +82,14 @@ server {
 ",
 }
 
+# create index file
+file { '/var/www/html/index.html':
+  content => "Hello World!\n",
+}
+
+# create index file
 file { '/var/www/html/404.html':
-  ensure  => present,
-  content => "Ceci n'est pas une page - Error page\n",
+  content => "Ceci n'est pas une page\n",
 }
 
 # restart nginx
