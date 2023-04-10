@@ -17,7 +17,7 @@ echo "Ceci n'est pas une page" > /var/www/html/404.html
 echo "<h1>bovntyhvnter.tech test file</h1>" > /data/web_static/releases/test/index.html
 
 #--prevent overwrite
-if [ -d "/data/web_static/current" ]:
+if [ -d "/data/web_static/current" ];
 then
     echo "path /data/web_static/current exists"
     sudo rm -rf /data/web_static/current;
@@ -34,14 +34,14 @@ SERVER_CONFIG=\
 "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
+    add_header X-Served-By \$hostname;
     root   /var/www/html;
-    index  index.html index.htm;
+    index  index.html index.htm index.nginx-debian.html;
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
     error_page 404 /404.html;
-    location /404 {
+    location /404.html {
       root /var/www/html;
       internal;
     }
@@ -50,7 +50,7 @@ SERVER_CONFIG=\
     }
 }"
 
-bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-available/default"
+echo -e "$SERVER_CONFIG" > /etc/nginx/sites-available/default
 
 # Symbolically link sites-available to sites-enabled
 sudo ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
