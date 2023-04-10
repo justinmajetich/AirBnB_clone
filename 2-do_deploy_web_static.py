@@ -6,8 +6,9 @@ The archive is named based on the current date and time.
 """
 
 import os
-from fabric.api import local, env, put, run
+from fabric.api import local, env, put, run, sudo
 from datetime import datetime
+from fabric.contrib.files import exists
 
 
 env.hosts = ['54.237.210.251', '54.237.14.69']
@@ -54,7 +55,7 @@ def do_deploy(archive_path):
     name = file_name.split(".")[0]
     tmp_file = "/tmp/" + file_name
     rel_path = "/data/web_static/releases/" + name
-    sudo("mkdir -p {}".format(rel_path))
+    run("mkdir -p {}".format(rel_path))
     if put(archive_path, tmp_file).failed:
         return False
     if run("tar -xzf {} -C {}".
@@ -69,6 +70,6 @@ def do_deploy(archive_path):
     if run("rm -rf /data/web_static/current").failed:
         return False
     if run("ln -s {} /data/web_static/current".
-           format(rel_path)).failed:
+           format(rel_path), True).failed:
         return False
     return True
