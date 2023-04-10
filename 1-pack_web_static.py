@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 This script creates an archive of a given folder
+The script is run by the fabric library
 """
 
 from fabric.api import local
@@ -8,7 +9,10 @@ from datetime import datetime
 
 
 def do_pack():
-    """Generates a .tgz archive from the contents of the web_static folder"""
+    """
+    Generates a .tgz archive from the contents of the web_static folder
+    The archive is named based on current date and time.
+    """
     try:
         current_time = datetime.utcnow().strftime('%Y%m%d%H%M%S')
         file_name = "web_static_" + current_time + ".tgz"
