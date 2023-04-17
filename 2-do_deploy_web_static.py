@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-script that distributes an archive to your web servers,
+script to distributes an archive to your web servers,
 using the function do_deploy
 """
 import os
