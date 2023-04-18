@@ -131,7 +131,23 @@ class HBNBCommand(cmd.Cmd):
         obj = {}
         for s in params:
             ls = s.split('=')
-            obj[ls[0]] = eval(ls[1])
+            value = ls[1]
+            if value.startswith('"') and value.endswith('"'):
+                if len(value.split('"')) > 3:
+                    valuei = value[1:-1].replace('"', '\\"') + value[-1]
+                    value = value[0] + valuei
+                value = eval(value)
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            obj[ls[0]] = value
 
         new_instance = HBNBCommand.classes[all_args[0]]()
         for k, v in obj.items():
