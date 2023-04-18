@@ -137,11 +137,11 @@ class HBNBCommand(cmd.Cmd):
                 kwargs[key] = value
             except ValueError:
                 pass
-
         if not kwargs:
-            print("** attributes missing **")
+            the_class = self.classes[args[0]]()
+            the_class.save()
+            print(the_class.id)
             return
-
         instance = self.classes[args[0]]()
         for key, value in kwargs.items():
             setattr(instance, key, value)
