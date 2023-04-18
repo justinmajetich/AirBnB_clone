@@ -138,9 +138,9 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 pass
         if not kwargs:
-            the_class = self.classes[args[0]]()
-            the_class.save()
-            print(the_class.id)
+            instance = self.classes[args[0]]()
+            instance.save()
+            print(instance.id)
             return
         instance = self.classes[args[0]]()
         for key, value in kwargs.items():
