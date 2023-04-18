@@ -114,9 +114,9 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        args = shlex.split(args)
+        args = shlex.split(arg)
         if len(args) == 0:
             print("** class name missing **")
             return
@@ -124,9 +124,7 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(args) == 1:
-            print("** instance name missing **")
-            return
+
         params = {}
         for param in args[1:]:
             try:
@@ -136,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                     value = value.replace('\\', '"')
                     params[key] = value
                 elif '.' in value:
-                    params[key] =float(value)
+                    params[key] = float(value)
                 else:
                     params[key] = int(value)
             except ValueError:
