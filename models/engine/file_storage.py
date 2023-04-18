@@ -48,3 +48,13 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    @classmethod
+    def set_path(cls, file_path: str):
+        """To change the save file path."""
+        cls.__file_path = file_path
+
+    @classmethod
+    def new_object(cls):
+        """Object storage."""
+        cls.__objects = {}
