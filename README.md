@@ -75,7 +75,7 @@ python3 -m unittest discover tests
 **The MySQL version and DBStorage implementation was done by:**
 - Jonathan Boomni
   - [GitHub](https://github.com/boomni)
-  - [Mail](rejoiceoye1@gmail.com)
+  - [Email](mailto:rejoiceoye1@gmail.com)
 
 - Astro David
   - []()
