@@ -1,7 +1,7 @@
 -- Creating hbnb_dev_db database
 -- Privileges for new user (hbnb_dev)
-CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
-CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
-GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
-GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
+CREATE DATABASE IF NOT EXISTS HBNB_MYSQL_DB;
+CREATE USER IF NOT EXISTS 'HBNB_MYSQL_USER'@'HBNB_MYSQL_HOST' IDENTIFIED BY 'HBNB_MYSQL_PWD';
+GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'HBNB_MYSQL_USER'@'HBNB_MYSQL_HOST';
+GRANT SELECT ON performance_schema.* TO 'HBNB_MYSQL_USER'@'HBNB_MYSQL_HOST';
 FLUSH PRIVILEGES;
