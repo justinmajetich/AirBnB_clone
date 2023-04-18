@@ -128,7 +128,12 @@ class HBNBCommand(cmd.Cmd):
         for pair in args[1:]:
             try:
                 key, value = pair.split('=')
-                value = value.strip('"').replace("_", " ")
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace("_", " ").replace('\\"', '"')
+                elif "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
                 kwargs[key] = value
             except ValueError:
                 pass
