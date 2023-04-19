@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """
-        Creates a new instance of BaseModel, 
+        Creates a new instance of BaseModel,
         saves it (to the JSON file) and prints the id
         Should take in 'key value' parameters
         """
@@ -124,13 +124,10 @@ class HBNBCommand(cmd.Cmd):
             if not args:
                 raise SyntaxError()
             my_list = args.split(" ")
-            
+            except SyntaxError:
+                print("** class name missing **")
 
-
-        except SyntaxError:
-            print("** class name missing **")
-
-        except NameError:    
+        except NameError:
             print("** class doesn't exist **")
 
     def help_create(self):
@@ -194,7 +191,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -301,7 +298,6 @@ class HBNBCommand(cmd.Cmd):
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
-
         # iterate through attr names and values
         for i, att_name in enumerate(args):
             # block only runs on even iterations
@@ -326,6 +322,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
