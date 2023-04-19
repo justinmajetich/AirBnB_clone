@@ -55,3 +55,9 @@ class DBStorage:
         """Add the object to the current database session"""
         self.__session.add(obj)
 
+    def delete(self, obj=None):
+        """Delete from the current database session obj if not None"""
+        if obj:
+            self.__session.delete(obj)
+
+
