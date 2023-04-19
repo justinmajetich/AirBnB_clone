@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     v = float(v)
                 else:
                     v = int(v)
-                setarr(new_instance, k, v)
+                setattr(new_instance, k, v)
             except ValueError:
                 continue
         storage.save()

@@ -15,6 +15,7 @@ class FileStorage:
         if cls:
             for key in self.__objects:
                 seperate = key.replace(".", " ")
+                
                 if (seperate == cls.__name__):
                     lis[key] = self.__objects[key]
                 return lis
@@ -37,7 +38,7 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj:
-            key = ("{}.{}".format(type(obj).__name__), obj.id)
+            key = ("{} {}".format(type(obj).__name__), obj.id)
             del self.__objects[key]
 
     def reload(self):
