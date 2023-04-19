@@ -8,6 +8,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 classes = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -21,9 +22,18 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        dic = {}
+        if cls:
+            all_dict = self.__objects
+            for key in all_dict:
+                my_list = shlex.split(key.replace('.', ' '))
+                if (my_list[0] == cls.__name__):
+                    dic[key] = self.__objects[key]
+            return (dic)
+        else:
+            return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
