@@ -1,7 +1,7 @@
 -- A script that prepare a MySql server for the project
 
 -- Creating User
-CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnbLog#2';
+CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 
 -- Creating DataBase
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
