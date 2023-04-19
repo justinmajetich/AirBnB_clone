@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """
-        Creates a new instance of BaseModel, 
+        Creates a new instance of BaseModel,
         saves it (to the JSON file) and prints the id
         Should take in 'key value' parameters
         """
@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
         my_list = args.split(" ")
         class_name = my_list[0]
         params = class_name[1:]
-        
+
         new_instance = HBNBCommand.classes[class_name]()
         for param in params:
             try:
@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
                     v = v[1:-1]
                 if "." in v:
                     v = float(v)
-                else :
+                else:
                     v = int(v)
                 setarr(new_instance, k, v)
             except ValueError:
@@ -148,7 +148,6 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -343,6 +342,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
