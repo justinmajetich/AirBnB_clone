@@ -114,46 +114,36 @@ class HBNBCommand(cmd.Cmd):
         pass
 
    def do_create(self, arg):
-    """Create a new instance of a class"""
+    """Create a new instance of a class."""
     if not arg:
         print("** class name missing **")
         return
-
     args = arg.split()
-    if args[0] not in self.classes:
+    class_name = args[0]
+    if class_name not in self.classes:
         print("** class doesn't exist **")
         return
-
-    cls = self.classes[args[0]]
-    kwargs = {}
+    params = {}
     for param in args[1:]:
-        if '=' not in param:
-            continue
-
-        key, value = param.split('=', 1)
-        if not value:
-            continue
-
-        if value.startswith('"') and value.endswith('"'):
-            # Handle string values
-            value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-        elif '.' in value:
-            # Handle float values
-            try:
+        try:
+            key, value = param.split("=")
+            if value.startswith('"') and value.endswith('"'):
+                # Handle string values
+                value = value[1:-1].replace("_", " ").replace('\\"', '"')
+            elif "." in value:
+                # Handle float values
                 value = float(value)
-            except ValueError:
-                continue
-        elif value.isdigit():
-            # Handle integer values
-            value = int(value)
-        else:
-            continue
-
-        kwargs[key] = value
-
-    obj = cls(**kwargs)
-    obj.save()
-    print(obj.id)
+            else:
+                # Handle integer values
+                value = int(value)
+            params[key] = value
+        except ValueError:
+            # Skip parameters that don't match the expected format
+            pass
+    instance = self.classes[class_name](**params)
+    self.storage.new(instance)
+    self.storage.save()
+    print(instance.id)
  
     def help_create(self):
         """ Help information for the create method """
