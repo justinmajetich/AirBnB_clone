@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """returns the list of objects of one type of class"""
         lis = {}
 
         if cls:
@@ -37,7 +37,7 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj:
-            key = ("{} {}".format(type(obj).__name__), obj.id)
+            key = ("{}.{}".format(type(obj).__name__), obj.id)
             del self.__objects[key]
 
     def reload(self):
