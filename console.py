@@ -124,11 +124,13 @@ class HBNBCommand(cmd.Cmd):
             if not args:
                 raise SyntaxError()
             my_list = args.split(" ")
-            except SyntaxError:
-                print("** class name missing **")
+        except SyntaxError:
+            print("** class name missing **")
+            return
 
-        except NameError:
+        if my_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
 
     def help_create(self):
         """ Help information for the create method """
