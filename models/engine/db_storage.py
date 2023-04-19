@@ -60,4 +60,9 @@ class DBStorage:
         if obj:
             self.__session.delete(obj)
 
-
+    def reload(self):
+        """Create tables in database and creates current database session"""
+        Base.metadata.create_all(self.__engine)
+        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session = scoped_session(session)
+        self.__session = session()
