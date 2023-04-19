@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-from shlex import split
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -178,9 +177,10 @@ class HBNBCommand(cmd.Cmd):
         saving the newly created object,
         and printing the id attribute of the new instance
         """
-        new_instance = HBNBCommand.classes[class_name](**kwargs)
-        new_instance.save()
+        new_instance = HBNBCommand.classes[class_name]()
+        new_instance.__dict__.update(kwargs)
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
