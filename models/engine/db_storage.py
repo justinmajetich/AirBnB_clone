@@ -2,6 +2,7 @@
 """
     New engine DB storage
 """
+
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
@@ -26,3 +27,26 @@ class DBStorage:
                             'mysql+mysqldb://{}:{}@{}/{}'.format(
                                  user, passwd, host, db),
                              pool_pre_ping=True)
+
+    def all(self, cls=None):
+        """Query on current db session all objects"""
+        self.__session = sessionmaker(bind=engine)()
+        d = {}
+        if cls and isinstance(cls, str):
+            cls = eval(cls)
+            objects = self.__session.query(cls)
+            for obj in objects:
+                k = "{}.{}".format(type(obj).__name__, obj.id)
+                d[k] = obj
+            return d
+        for obj in [User, State, City, Amenity, Place, Review]:
+            objects = self.__session.query(obj)
+            for obj in objects:
+                k = "{}.{}".format(type(obj).__name__, obj.id)
+                d[k] = obj
+        return d
+
+
+    def save(self):
+        """Commit all changes of the current database"""
+        self.__session.commit()
