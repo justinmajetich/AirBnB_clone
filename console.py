@@ -120,7 +120,6 @@ class HBNBCommand(cmd.Cmd):
         Should take in 'key value' parameters
         """
 
-<<<<<<< HEAD
         if not args:
             print("** class name missing **")
             return
@@ -149,19 +148,6 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
-=======
-        try:
-            if not args:
-                raise SyntaxError()
-            my_list = args.split(" ")
-        except SyntaxError:
-            print("** class name missing **")
-            return
-
-        if my_list[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
->>>>>>> master
 
     def help_create(self):
         """ Help information for the create method """
