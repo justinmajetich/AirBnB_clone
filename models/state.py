@@ -12,6 +12,7 @@ class State(BaseModel):
     name = Column(String(128), nullable=False)
     cities = relationship('City', cascade='delete', backref='state')
 
+    @property
     def cities(self):
         """
         returns the list of City instances with state_id equals to the current State.id
