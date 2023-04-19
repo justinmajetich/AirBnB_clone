@@ -1,13 +1,22 @@
-body {
-	margin:0px;
-	padding:0px;
+/*
+ * === Global style ===
+ */
 
-	color: #484848;
-	font-size: 14px;
-	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+/* Global style */
+body{
+    color: #484848;
+    font: 14px Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+html, body {
+   width: 100%;
+   overflow-x: hidden;
+}
+.container{
+   margin: 30px auto;
+   max-width: 1000px;
 }
 
-.container {
-    max-width: 1000px;
-    margin: 30px auto;
+/*strong*/
+strong {
+  font-weight: bold;
 }
