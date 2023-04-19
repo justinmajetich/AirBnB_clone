@@ -50,3 +50,8 @@ class DBStorage:
     def save(self):
         """Commit all changes of the current database"""
         self.__session.commit()
+
+    def new(self, obj):
+        """Add the object to the current database session"""
+        self.__session.add(obj)
+
