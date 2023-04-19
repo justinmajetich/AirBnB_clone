@@ -3,5 +3,5 @@ git add .
 echo "Type in commit message: "
 read message
 git commit -m "$message"
-git push
+git push --set-upstream origin kings-branch
 echo "==================================DONE================================="
