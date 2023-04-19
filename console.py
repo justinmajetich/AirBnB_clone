@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         cls = args.partition(' ')[0]
         args = args.partition(' ')[2].split()  # args is now a list
-        print(len(args))
+
         if not args:
             print("** class name missing **")
             return
@@ -131,6 +131,28 @@ class HBNBCommand(cmd.Cmd):
             for arg in args:
                 if '=' in arg:
                     key, value = arg.split('=')
+
+                    if ' ' in value:
+                        continue
+
+                    # skip if value contains space
+                    value = value.replace('_', ' ')
+                    
+                    # format params
+                    if value.startswith('"') and value.endswith('"'):
+                        # format as string
+                        value = value.strip('"')
+                        value = value.replace('\\"', '%22')
+                        if '"' in value:
+                            continue
+                        value = value.replace('%22', '"')
+                        value = str(value)
+                    elif '.' in value:
+                        # format as float
+                        value = float(value)
+                    else:
+                        # format as integer => default case
+                        value = int(value)
                     new_instance.__dict__.update({key: value})
 
         storage.save()
