@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 v = v.replace("_", " ")
                 v = v.replace('"', '\\')
                 if v[0] == '"' and v[-1] == '"' and len(v) > 1:
-                    v = v[1:-1]
+                    v = v[1: -1]
                 if "." in v:
                     v = float(v)
                 else:
