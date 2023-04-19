@@ -152,7 +152,10 @@ class HBNBCommand(cmd.Cmd):
                         value = float(value)
                     else:
                         # format as integer => default case
-                        value = int(value)
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            continue
                     new_instance.__dict__.update({key: value})
 
         storage.save()
