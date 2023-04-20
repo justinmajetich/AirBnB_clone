@@ -39,9 +39,7 @@ class DBStorage:
         self.__session = sessionmaker(bind=self.__engine)()
         d = {}
         if cls and isinstance(cls, str):
-            print("cls1", cls)
             cls = eval(cls)
-            print("clsa 2", cls)
             objects = self.__session.query(cls)
             for obj in objects:
                 k = "{}.{}".format(type(obj).__name__, obj.id)
@@ -62,6 +60,7 @@ class DBStorage:
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
+        self.save()
 
     def delete(self, obj=None):
         """Delete from the current database session obj if not None"""

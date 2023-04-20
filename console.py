@@ -152,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[all_args[0]]()
         for k, v in obj.items():
             setattr(new_instance, k, v)
-        storage.save()
+        new_instance.save()
         # new_instance = HBNBCommand.classes[all_args[0]]()
         print(new_instance.id)
         storage.save()
@@ -231,7 +231,6 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
@@ -241,7 +240,8 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all(args).items():
+            print(storage.all())
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
