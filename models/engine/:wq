@@ -5,15 +5,15 @@
 
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
 from models.base_model import Base
-from models.place import Place
-from models.user import User
-from models.state import State
+""" Import all models that dependen on Base"""
 from models.city import City
+from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
-
+from models.state import State
+from models.user import User
 
 class DBStorage:
     """Database storage engine"""
@@ -36,20 +36,19 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on current db session all objects"""
-        self.__session = sessionmaker(bind=self.__engine)()
+        self.__session = sessionmaker(bind=engine)()
         d = {}
         if cls and isinstance(cls, str):
             cls = eval(cls)
             objects = self.__session.query(cls)
             for obj in objects:
-                k = "{}.{}".format(obj.__class__.__name__, obj.id)
+                k = "{}.{}".format(type(obj).__name__, obj.id)
                 d[k] = obj
             return d
-
         for obj in [User, State, City, Amenity, Place, Review]:
-            objects = self.__session.query(obj).all()
+            objects = self.__session.query(obj)
             for obj in objects:
-                k = "{}.{}".format(obj.__class__.__name__, obj.id)
+                k = "{}.{}".format(type(obj).__name__, obj.id)
                 d[k] = obj
         return d
 
@@ -61,7 +60,6 @@ class DBStorage:
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
-        self.save()
 
     def delete(self, obj=None):
         """Delete from the current database session obj if not None"""
@@ -72,4 +70,5 @@ class DBStorage:
         """Create tables in database and creates current database session"""
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session)()
+        session = scoped_session(session)
+        self.__session = session()

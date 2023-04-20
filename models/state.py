@@ -6,7 +6,7 @@ import os
 from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-
+from models import storage_type
 
 class State(BaseModel, Base):
     """ State class """
@@ -16,4 +16,3 @@ class State(BaseModel, Base):
         cities = relationship("City", backref="state", cascade="all, delete")
     else:
         name = ""
-
