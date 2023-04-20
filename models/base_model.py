@@ -3,7 +3,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, DATETIME
+import os
 
 Base = declarative_base()
 
@@ -11,9 +12,9 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     # Class attributes
-    id = Column(Integer, primary_key=True, nullable=False)
-    created_at = Column(Date, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(Date, default=datetime.utcnow(), nullable=False)
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DATETIME, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DATETIME, default=datetime.utcnow(), nullable=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -23,16 +24,23 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            # kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+            #                                         '%Y-%m-%dT%H:%M:%S.%f')
+            # kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+            #                                         '%Y-%m-%dT%H:%M:%S.%f')
             for key, value in kwargs.items():
-                if key != 'created_at' or key != 'updated_at':
+                if key == 'created_at' or key == 'updated_at':
+                    value = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
                     setattr(self, key, value)
-
-            # self.__dict__.update(kwargs)
+                if key != '__class__':
+                    setattr(self, key, value)
+            if os.getenv("HBNB_TYPE_STORAGE") == "db":
+                if not hasattr(kwargs, 'id'):
+                    setattr(self, 'id', str(uuid.uuid4()))
+                if not hasattr(kwargs, 'created_at'):
+                    setattr(self, 'created_at', datetime.now())
+                if not hasattr(kwargs, 'updated_at'):
+                    setattr(self, 'updated_at', datetime.now())
 
 
     def __str__(self):
@@ -56,11 +64,11 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary.keys():
-            del dictionary['_sa_instance_state']
+            del(dictionary['_sa_instance_state'])
         return dictionary
 
     def delete(self):
-        del self
+        """Deletes current instance from db"""
         from models import storage
         storage.delete(self)
 
