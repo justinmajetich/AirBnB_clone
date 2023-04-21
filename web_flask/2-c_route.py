@@ -40,7 +40,8 @@ def c(text):
     Returns:
         str: C with given text
     """
-    return f"C {text.replace('_', ' ')}"
+    text = text.replace('_', ' ')
+    return "C {}".format(text)
 
 
 if __name__ == "__main__":
