@@ -1,0 +1,21 @@
+    Updates a city based on id
+    ---
+    tags:
+      - Cities
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+        description: id of the city
+      - name: update_request
+        in: body
+        required: true
+
+    responses:
+      404:
+        description: city not found!
+      400:
+        description: Not a valid JSON
+      200:
+        description: Request completed successfully

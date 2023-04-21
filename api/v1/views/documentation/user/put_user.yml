@@ -1,0 +1,19 @@
+    updates user information
+    ---
+    tags:
+      - Users
+    parameters:
+      - name: user_id
+        in: path
+        type: string
+        required: true
+        description: The id of the user to update
+      - name: update_request
+        in: body
+        required: true
+
+    responses:
+      404:
+        description: user not found!
+      200:
+        description: request executed successfully

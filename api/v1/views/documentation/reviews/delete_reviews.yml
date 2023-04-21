@@ -1,0 +1,15 @@
+    Deletes a review based on the id provided
+    ---
+    tags:
+      - Reviews
+    parameters:
+      - name: review_id
+        in: path
+        type: string
+        required: true
+        description: The uuid of the review to delete
+    responses:
+      404:
+        description: Review not found!
+      200:
+        description: Deletion request sucessful

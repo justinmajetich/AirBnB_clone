@@ -1,0 +1,15 @@
+    deletes a city based on id
+    ---
+    tags:
+      - Cities
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+        description: id of the city
+    responses:
+      404:
+        description: City  not found!
+      200:
+        description: Request completed successfully

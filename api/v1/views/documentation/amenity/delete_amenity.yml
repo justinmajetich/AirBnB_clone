@@ -1,0 +1,20 @@
+    Removes an amenity of the specified location
+    ---
+    tags:
+      - Amenities
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+        description: the unique id of the place
+      - name: amenity_id
+        in: path
+        type: string
+        required: true
+        description: the id of the amenity to remove
+    responses:
+      404:
+        description: place not found / amenity not found / amenity not found in place
+      200:
+        description: request executed successfully

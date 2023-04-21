@@ -1,0 +1,56 @@
+Retrieves a place
+---
+tags:
+  - Places
+parameters:
+  - name: place_id
+    in: path
+    type: string
+    required: true
+    description: the unique id of the place
+responses:
+  200:
+    description: Successful request
+    schema:
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: time of creation of the instance
+        updated_at:
+           type: string
+           description: time of last update of the instance
+        id:
+          type: string
+          description: The uuid of the state instance
+        description:
+           type: string
+           description: Description of the place
+        latitude:
+           type: number
+           description: Latitude of the place
+        longitude:
+           type: number
+           description: Longitude of the place
+        max_guest:
+           type: integer
+           description: Number of guests possible
+        name:
+           type: string
+           description: name of the place
+        number_bathrooms:
+           type: integer
+           description: Number of bathrooms
+        number_rooms:
+           type: integer
+           description: Number of rooms
+        price_by_night:
+           type: number
+           description: Price of the night
+        user_id:
+           type: string
+           description: uuid of the owner
+
+  404:
+    description: Place not found

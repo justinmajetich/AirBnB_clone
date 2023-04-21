@@ -1,0 +1,20 @@
+    Deletes an amenity from a place based on the ids provided
+    ---
+    tags:
+      - Place_Amenities
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+        description: The uuid of the place with the amenity
+      - name: amenity_id
+        in: path
+        type: string
+        required: true
+        description: The uuid of the amenity to delete
+    responses:
+      404:
+        description: Amenity or Place not found!
+      200:
+        description: Deletion request sucessful

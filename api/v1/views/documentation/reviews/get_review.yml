@@ -1,0 +1,34 @@
+Retrieves a Review
+---
+tags:
+  - Reviews
+parameters:
+  - name: review_id
+    in: path
+    type: string
+    required: true
+    description: the unique id of the review
+responses:
+  200:
+    description: Successful request
+    schema:
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: time of creation of the instance
+        updated_at:
+           type: string
+           description: time of last update of the instance
+        id:
+          type: string
+          description: The uuid of the state instance
+        text:
+           type: string
+           description: Description of the place
+        place_id:
+           type: string
+           description: uuid of the place
+  404:
+    description: Place not found

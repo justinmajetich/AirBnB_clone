@@ -1,0 +1,36 @@
+get a list of cities based on the state_id
+---
+tags:
+  - Cities
+parameters:
+  - name: state_id
+    in: path
+    type: string
+    required: true
+    description: The uniqe id of the state
+responses:
+  404:
+    description: No state is linked to the ID!
+  200:
+    description: Request completed successfully
+    schema:
+      type: array
+      items:
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: time of creation of the instance
+          updated_at:
+             type: string
+             description: time of last update of the instance
+          id:
+            type: string
+            description: The uuid of the instance
+          state_id:
+             type: string
+             description: uuid of the city's state
+          name:
+             type: string
+             description: city name
