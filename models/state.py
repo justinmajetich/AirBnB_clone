@@ -13,7 +13,6 @@ class State(BaseModel, Base):
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
         cities = relationship('City', cascade='all,delete', backref='state')
-
     else:
         name = ""
 
@@ -29,7 +28,7 @@ class State(BaseModel, Base):
             """gets the entire storage a dictionary"""
             for city in cities.values():
                 """cities.value returns list of the city objects"""
-                if city.state_id == self.id:
-                    """if the object.state.id ==self.id"""
+                if city.state_id == State.id:
+                    """if the object.state.id == self.id"""
                     related_cities.append(city)
             return related_cities
