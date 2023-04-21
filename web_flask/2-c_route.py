@@ -18,9 +18,9 @@ def HBNB():
     return 'HBNB'
 
 
-@app.route('/c/<c_variable>', strict_slashes=False)
-def cisfun(c_variable):
-    return 'C {}'.format(c_variable.replace('_', ' '))
+@app.route('/c/<text>', strict_slashes=False)
+def cisfun(text):
+    return 'C {}'.format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
