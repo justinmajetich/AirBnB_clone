@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 A script that starts a flask web application
+And returns Hello HBNB!
 """
 from flask import Flask
 app = Flask(__name__)
