@@ -10,31 +10,29 @@ from models import storage, storage.all(...)
 app = Flask(__name__)
 
 
-@app.route('/states', strict_slashes=False)
+@app.route("/states", strict_slashes=False)
 def states():
+    """Displays an HTML page with a list of all States.
+    States are sorted by name.
     """
-    Display a HTML page with the list of all State objects
-    """
-    states = storage.all(State)
-    return render_template('9-states.html', states=states_sorted)
+    states = storage.all("State")
+    return render_template("9-states.html", state=states)
 
 
-@app.route('/states/<id>', strict_slashes=False)
-def states_cities(id):
-    """
-    Display a HTML page with the list of City objects linked to a State
-    """
-     for state in storage.all("State").values():
-        if state.id == id: 
+@app.route("/states/<id>", strict_slashes=False)
+def states_id(id):
+    """Displays an HTML page with info about <id>, if it exists."""
+    for state in storage.all("State").values():
+        if state.id == id:
             return render_template("9-states.html", state=state)
     return render_template("9-states.html")
 
+
 @app.teardown_appcontext
-def close_session(exception):
-    """ 
-    Remove the current SQLAlchemy Session after each request
-    """
+def teardown(exc):
+    """Remove the current SQLAlchemy session."""
     storage.close()
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
