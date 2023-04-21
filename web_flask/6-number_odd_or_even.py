@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 /number/<n>: display “n is a number” only if n is an integer
+jinja2 checks for even and odd number and return it stated
 """
 from flask import Flask, render_template
 app = Flask(__name__)
