@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 /number/<n>: display “n is a number” only if n is an integer
+using render template to render the html
 """
 from flask import Flask, render_template
 app = Flask(__name__)
