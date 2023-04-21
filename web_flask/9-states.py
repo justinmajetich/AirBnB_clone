@@ -1,44 +1,28 @@
 #!/usr/bin/python3
 """
-Script that starts a Flask web application
+starts a Flask web application
 """
 
 from flask import Flask, render_template
+from models import *
 from models import storage
-from models.state import State
-
 app = Flask(__name__)
 
 
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<state_id>', strict_slashes=False)
+def states(state_id=None):
+    """display the states and cities listed in alphabetical order"""
+    states = storage.all("State")
+    if state_id is not None:
+        state_id = 'State.' + state_id
+    return render_template('9-states.html', states=states, state_id=state_id)
+
+
 @app.teardown_appcontext
-def close_session(exception):
-    """
-    Remove the current SQLAlchemy Session after each request
-    """
+def teardown_db(exception):
+    """closes the storage on teardown"""
     storage.close()
 
-
-@app.route('/states', strict_slashes=False)
-def states():
-    """
-    Display a HTML page with the list of all State objects
-    """
-    states = storage.all(State).values()
-    states_sorted = sorted(states, key=lambda x: x.name)
-    return render_template('9-states.html', states=states_sorted)
-
-
-@app.route('/states/<id>', strict_slashes=False)
-def states_cities(id):
-    """
-    Display a HTML page with the list of City objects linked to a State
-    """
-    state = storage.get(State, id)
-    for state in storage.all("State").values():
-        if state.id == id: 
-            return render_template("9-states.html", state=state)
-    return render_template("9-states.html")
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port='5000')
