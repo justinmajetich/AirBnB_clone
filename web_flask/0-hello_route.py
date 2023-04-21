@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 """ This script starts the wsgi application and the web page
 at any ip address of 0.0.0.0 in port 5000
 """
