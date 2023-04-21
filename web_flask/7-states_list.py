@@ -16,12 +16,12 @@ def display_states_list():
     Renders an HTML page with a list of
     all State objects present in the database.
     """
-    states = storage.all("State").values()
+    states = storage.all("State")
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
-def teardown_db(exception):
+def teardown_db(exc):
     """
     Removes the current SQLAlchemy Session after each request.
     """
