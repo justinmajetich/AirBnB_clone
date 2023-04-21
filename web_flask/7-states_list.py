@@ -17,8 +17,7 @@ def display_states_list():
     all State objects present in the database.
     """
     states = storage.all("State").values()
-    states_sorted = sorted(states, key=lambda state: state.name)
-    return render_template('7-states_list.html', states=states_sorted)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
