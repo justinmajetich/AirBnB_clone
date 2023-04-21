@@ -1,0 +1,29 @@
+    Posts a new place.
+    ---
+    tags:
+      - Places
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+        description: The id of the City to link to
+      - name: user_id and name
+        in: body
+        required: true
+        requires:
+          - user_id
+          - name
+        properties:
+          user_id:
+            type: string
+          name:
+            type: string
+
+    responses:
+      404:
+        description: resource not found!
+      400:
+        description: missing user_id, name or invalid JSON
+      201:
+        description: Successful request

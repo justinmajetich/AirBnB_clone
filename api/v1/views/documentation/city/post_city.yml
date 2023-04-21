@@ -1,0 +1,26 @@
+    Post a new city
+    ---
+    tags:
+      - Cities
+    parameters:
+      - state_id:
+        in: path
+        type: string
+        required: true
+        description: the unique id of the city state
+      - name: body_request
+        in: body
+        required: true
+        requires:
+          - name
+        properties:
+          name:
+            type: string
+
+    responses:
+      404:
+        description: State not found!
+      400:
+        description: Not a valid JSON or missing name
+      201:
+        description: Request completed successfully

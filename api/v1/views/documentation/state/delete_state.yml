@@ -1,0 +1,15 @@
+    Deletes a state based on the id provided
+    ---
+    tags:
+      - States
+    parameters:
+      - name: state_id
+        in: path
+        type: string
+        required: true
+        description: The uuid of the state to delete
+    responses:
+      404:
+        description: State not found!
+      200:
+        description: Deletion request sucessful

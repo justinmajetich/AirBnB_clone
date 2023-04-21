@@ -1,0 +1,19 @@
+    Updates the state info based on ID
+    ---
+    tags:
+      - States
+    parameters:
+      - name: state_id
+        in: path
+        type: string
+        required: true
+        description: the unique id of the state
+      - name: request
+        in: body
+        required: true
+
+    responses:
+      404:
+        description: State not found
+      200:
+        description: Request executed successfully

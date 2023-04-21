@@ -1,0 +1,25 @@
+gets all amenities of a place
+---
+tags:
+  - Amenities
+responses:
+  200:
+    description: request executed successfully
+    schema:
+      type: array
+      items:
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: time of creation of the instance
+          updated_at:
+             type: string
+             description: time of last update of the instance
+          id:
+            type: string
+            description: The uuid of the instance
+          name:
+             type: string
+             description: amenity name

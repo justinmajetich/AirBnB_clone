@@ -1,0 +1,19 @@
+    Posts a new state.
+    ---
+    tags:
+      - States
+    parameters:
+      - name: request
+        in: body
+        required: true
+        requires:
+          - name
+        properties:
+          name:
+            type: string
+
+    responses:
+      400:
+        description: Missing name or Not Valid JSON
+      201:
+        description: Request completed successfully

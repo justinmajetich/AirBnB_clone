@@ -1,0 +1,22 @@
+    posts a new user
+    ---
+    tags:
+      - Users
+    parameters:
+      - name: user_and_password
+        in: body
+        required: true
+        requires:
+          - email:
+          - password:
+        properties:
+          email:
+            type: string
+          password:
+            type: string
+
+    responses:
+      400:
+        description: Missing email/password or not a JSON
+      201:
+        description: successfully created user
