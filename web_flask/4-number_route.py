@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-/number/<n>: display “n is a number” only if n is an integer
+/number/<n>: display “n is a number” if and only if n is an integer
 """
 from flask import Flask
 app = Flask(__name__)
