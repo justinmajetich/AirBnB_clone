@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 @app.route('/states_list', strict_slashes=False)
-def display_states_list():
+def states_list():
     """
     Renders an HTML page with a list of
     all State objects present in the database.
@@ -21,7 +21,7 @@ def display_states_list():
 
 
 @app.teardown_appcontext
-def teardown_db(exc):
+def teardown(exc):
     """
     Removes the current SQLAlchemy Session after each request.
     """
