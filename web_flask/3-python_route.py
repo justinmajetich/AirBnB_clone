@@ -29,7 +29,7 @@ def C(text):
     return "C %s" % text
 
 @app.route('/python')
-@app.route('/python/(<text>)')
+@app.route('/python/<text>')
 def Python(text="is cool"):
     """ display “Python ”, followed by the value of the text variable
         (replace underscore _ symbols with a space )"""
