@@ -37,10 +37,12 @@ def Python(text="is cool"):
 
 @app.route('/number/<int:n>')
 def number(n):
-    return f"{n} is a number"
+    """Display n is a number"""
+    return "%s is a number" % n
 
 @app.route('/number_template/<int:n>')
 def number_temp(n):
+    """Display page of html having the variable n"""
     return render_template("5-number.html", number=n)
 
 if __name__ == "__main__":
