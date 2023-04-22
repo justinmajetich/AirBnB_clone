@@ -26,11 +26,7 @@ def C(text):
 
 @app.route('/python')
 @app.route('/python/(<text>)')
-def Python(text):
-
-    if len(text) == 0:
-        return "Python is cool"
-
+def Python(text = "is cool"):
     text = text.replace('_', ' ')
     return "Python is %" % text
 
