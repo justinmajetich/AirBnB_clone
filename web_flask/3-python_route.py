@@ -26,9 +26,9 @@ def C(text):
 
 @app.route('/python')
 @app.route('/python/(<text>)')
-def Python(text = "is cool"):
+def Python(text="is cool"):
     text = text.replace('_', ' ')
-    return "Python is %" % text
+    return "Python is %s" % text
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
