@@ -24,6 +24,7 @@ def C(text):
     text = text.replace('_', ' ')
     return "C %s" % text
 
+@app.route('/python')
 @app.route('/python/(<text>)')
 def Python(text):
 
