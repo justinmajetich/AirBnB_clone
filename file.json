@@ -1,1 +1,1 @@
-{"City.None": {"updated_at": "2023-04-22T20:20:37.453140", "state_id": null, "name": "Page", "__class__": "City"}, "State.None": {"updated_at": "2023-04-22T20:20:37.450053", "__class__": "State", "name": "Arizona"}}
+{"State.None": {"updated_at": "2023-04-22T21:28:47.055627", "name": "Arizona", "__class__": "State"}, "City.None": {"__class__": "City", "name": "Page", "updated_at": "2023-04-22T21:28:47.057768", "state_id": null}}
