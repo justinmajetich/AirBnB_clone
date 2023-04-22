@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""states"""
+"""cities by states"""
 
 from flask import Flask, render_template
 from models import storage

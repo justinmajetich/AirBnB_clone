@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-starts a Flask web application
+List of all states and list of cities if state_id is given
 """
 
 from flask import Flask, render_template
@@ -15,7 +15,7 @@ app = Flask(__name__)
 def states(state_id=None):
     """display the states and cities listed in alphabetical order"""
     states = storage.all(State)
-    if state_id is not None:
+    if state_id:
         state_id = 'State.' + state_id
     return render_template('9-states.html', states=states, state_id=state_id)
 
