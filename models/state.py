@@ -16,6 +16,10 @@ class State(BaseModel, Base):
     else:
         name = ""
 
+    def __init__(self, *args, **kwargs):
+        """initializes state"""
+        super().__init__(*args, **kwargs)
+
     if models.dbstorage != "db":
         @property
         def cities(self):
@@ -28,7 +32,7 @@ class State(BaseModel, Base):
             """gets the entire storage a dictionary"""
             for city in cities.values():
                 """cities.value returns list of the city objects"""
-                if city.state_id == State.id:
+                if city.state_id == self.id:
                     """if the object.state.id == self.id"""
                     related_cities.append(city)
             return related_cities
