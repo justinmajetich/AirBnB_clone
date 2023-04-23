@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """This is the state class"""
-from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import BaseModel, Base
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
 import models
+from os import getenv
+from models.base_model import Base
+from models.base_model import BaseModel
 from models.city import City
-import shlex
+from sqlalchemy import Column
+from sqlalchemy import String
+from sqlalchemy.orm import relationship
+
 
 class State(BaseModel, Base):
     """This is the class for State
