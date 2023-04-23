@@ -9,18 +9,18 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage
-           If cls is provided, returns a dictionary containing
-           only objects of that class.
         """
-        if not cls:
-            return self.__objects
-        elif isintance(cls, str):
-            return {key: value for key, value in self.__objects.items()
-                    if value.__class__name__ = cls}
+        Returns a list of objects of one type of class
+        An optional filtering
+        """
+        if cls == None:
+            return FileStorage.__objects
         else:
-            return {key: value for key value in self.__objects.items()
-                    if value.__class__ = cls}
+            objs = {}
+            for k, v in FileStorage.__objects.items():
+                if isinstance(v, cls):
+                    objs[k] = v
+            return objs
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
