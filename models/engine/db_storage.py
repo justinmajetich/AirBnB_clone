@@ -19,7 +19,6 @@ HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
 HBNB_MYSQL_PWD = os.getenv('HBNB_MYSQL_PWD')
 HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
 HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
-# HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
 
 classes = {"User": User, "State": State, "City": City,
            "Amenity": Amenity, "Place": Place, "Review": Review}
@@ -65,8 +64,10 @@ class DBStorage:
         if obj is not None:
             try:
                 self.__session.add(obj)
+                self.__session.flush()
+                self.__session.refresh(obj)
             except Exception as e:
-                pass
+                self.__session.rollback()
 
     def save(self):
         """Commit all changes of the current db session
