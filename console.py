@@ -114,8 +114,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        args = args.split()
         """ Create an object of any class"""
+        args = args.split()
         if len(args) == 0:
             print("** class name missing **")
             return
@@ -128,6 +128,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
 
     def parse_input(self, list_input):
+        """Parse Input"""
         new_dict = {}
         for item in list_input:
             if '=' in item:
