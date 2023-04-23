@@ -4,6 +4,7 @@ The application listens on 0.0.0.0, port 5000.
 Routes:
     /states_list: HTML page with a list of all State objects in DBStorage.
 """
+from models import storage
 from flask import Flask
 from flask import render_template
 
