@@ -7,13 +7,14 @@ from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
+
 class BaseModel(Base):
     """A base class for all hbnb models"""
     __abstract__ = True
 
     id = Column(String(60), nullable=False, unique=True, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, defualt=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -28,7 +29,7 @@ class BaseModel(Base):
                 if key == 'created_at' or key == 'updated_at':
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != '__class__':
-                     setattr(self, key, value)
+                    setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
             if 'updated_at' not in kwargs:
