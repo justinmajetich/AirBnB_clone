@@ -6,9 +6,11 @@ from datetime import datetime
 from sqlalchemy import Column, String, DATETIME
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = object
+
 if storage_type == 'db':
     Base = declarative_base()
+else:
+    Base = object
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
