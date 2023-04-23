@@ -141,5 +141,3 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 
-# To be updated
-# 0x04. AirBnB clone - Web framework<br/>
