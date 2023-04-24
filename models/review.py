@@ -13,7 +13,7 @@ class Review(BaseModel, Base):
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     text = Column(String(1024), nullable=False)
 
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
+#    if getenv('HBNB_TYPE_STORAGE') == 'db':
         # relation with class-table Reviews
-        place = relationship('Place', backref='reviews')
-        user = relationship('User', backref='reviews')
+#        place = relationship('Place', backref='reviews')
+#        user = relationship('User', backref='reviews')

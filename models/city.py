@@ -14,11 +14,11 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
     name = Column(String(128), nullable=False)
-    state = []
+#    state = []
 #    from models.engine.db_storage import DBStorage
 #    from models import storage
 #    if isinstance(storage, DBStorage):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        state = relationship("State", back_populates="cities")
+#        state = relationship("State", backref="cities")
         places = relationship('Place', backref='cities',
                               cascade='all, delete, delete-orphan')

@@ -38,10 +38,10 @@ class Place(BaseModel, Base):
         # relation with class-table Reviews
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
-        user = relationship('User', backref='places')
+#        user = relationship('User', backref='places')
         amenities = relationship('Amenity', secondary=place_amenity,
-                                 backref="place_amenities",
-                                 viewonly=False)
+                                 viewonly=False,
+				 back_populates="place_amenities")
     else:
         # Condition for task 9
         # if getenv("HBNB_TYPE_STORAGE") != "db":

@@ -4,7 +4,6 @@
 import models
 from os import getenv
 from models.base_model import BaseModel, Base
-from models.city import City
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column,  Integer, String
 from sqlalchemy.orm import relationship
@@ -25,6 +24,7 @@ class State(BaseModel, Base):
     else:
         name = ""
 
+        from models.city import City
         # Added for task 6
         # if getenv("HBNB_TYPE_STORAGE") == "file":
         @property

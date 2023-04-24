@@ -80,6 +80,13 @@ class DBStorage:
 
     def reload(self):
         """ reload all tables and data """
+        from models.state import State
+        from models.user import User
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+        from models.place import Place
+
         Base.metadata.create_all(self.__engine)
         if self.__session:
             self.__session.close_all()
