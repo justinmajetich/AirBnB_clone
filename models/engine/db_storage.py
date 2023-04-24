@@ -69,6 +69,10 @@ class DBStorage:
             self.__session.commit()
             self.__session.close()
 
+    def close(self):
+        """ close session """
+        self.__session.remove()
+
     def delete(self, obj=None):
         """ delete obj if not none from session """
         if obj and isinstance(obj, base):
