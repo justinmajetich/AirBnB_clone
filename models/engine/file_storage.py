@@ -36,6 +36,10 @@ class FileStorage:
                     self.save()
                     break
 
+    def close(self):
+        """ calls reload method """
+        self.reload()
+
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
