@@ -29,8 +29,12 @@ def dynamic_city_route(id):
     all_states = storage.all(State)
     for state in all_states.values():
         if id == state.id:
-            return render_template('9-states.html', page="details", state=state)
-    return render_template('9-states.html', page="not found", state=all_states)
+            return render_template('9-states.html',
+                                   page="details",
+                                   state=state)
+    return render_template('9-states.html',
+                           page="not found",
+                           state=all_states)
 
 
 @app.teardown_appcontext
