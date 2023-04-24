@@ -4,7 +4,7 @@ from flask import Flask
 from os import environ
 from flask import render_template
 app = Flask(__name__)
-environ.FLASK_APP = '4-number_route.py'
+environ.FLASK_APP = '6-numer_odd_or_even.py'
 
 
 @app.route('/', strict_slashes=False)
