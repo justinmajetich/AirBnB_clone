@@ -48,12 +48,12 @@ class DBStorage:
             for c in classes.values():
                 objs = self.__session.query(c).all()
                 for obj in objs:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     result[key] = obj
         else:
             objs = self.__session.query(cls).all()
             for obj in objs:
-                key = f"{obj.__class__.__name__}.{obj.id}"
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 result[key] = obj
         return result
 
