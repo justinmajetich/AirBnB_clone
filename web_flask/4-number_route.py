@@ -71,7 +71,7 @@ def num_route(n):
     Returns:
         str: n 'is a number' if n is a number
     """
-    return "{}is a number".format(n)
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":
