@@ -2,7 +2,7 @@
 """
 This script serves multiple URLs with given variables
 """
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
