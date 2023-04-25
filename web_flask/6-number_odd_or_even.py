@@ -2,7 +2,7 @@
 """
 This script serves multiple URLs with given variables
 """
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
@@ -71,7 +71,7 @@ def num_route(n):
     Returns:
         str: n 'is a number' if n is a number
     """
-    return "{}is a number".format(n)
+    return "{} is a number".format(n)
 
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
