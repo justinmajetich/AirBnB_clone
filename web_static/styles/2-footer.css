@@ -1,9 +1,24 @@
+/* 
+==============================================
+Footer
+==============================================
+*/
 footer {
-	position: fixed;
-	bottom: 0;
-	background-color: #00FF00;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
+  background-color: #00ff00;
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/* 
+==============================================
+Footer text
+==============================================
+*/
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 60px;
+  text-align: center;
 }
