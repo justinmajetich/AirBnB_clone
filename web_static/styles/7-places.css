@@ -1,32 +1,42 @@
+/* 
+==============================================
+styles the body and the class places
+==============================================
+*/
+body {
+  margin: 0;
+  padding: 0;
+  color: #484848;
+  font-size: 14px;
+  font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .places {
-	display: block;
-	margin: 45px auto;
-	text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
-article {
-	display: inline-block;
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #FF5A5F;
-	border-radius: 4px;
-	text-align: center;
+.container .places h1 {
+  font-size: 30px;
+  width: 100%;
+  margin-left: 2%;
 }
 
-h1 {
-	float: left;
-	text-align: left;
-	width: 95%;
-	display: block;
-	margin-top: 0px;
-	margin-left: 20px;
-	margin-bottom: 5px;
-	font-size: 30px;
+.container .places h2 {
+  font-size: 30px;
+  margin: 0;
+  margin-left: 30%;
 }
 
-article h2 {
-	font-size: 30px;
-	padding: 0px;
-	margin: auto;
+.container .places .place1,
+.place2,
+.place3,
+.place4 {
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  float: left;
 }
