@@ -143,9 +143,9 @@ class HBNBCommand(cmd.Cmd):
         elif args_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         my_dict = self._create_key_value_dict(args_split[1:])
-        new_instance = HBNBCommand.classes[args_split[0]](**my_dict)
-        print(new_instance.id)
-        new_instance.save()
+        new_object = HBNBCommand.classes[args_split[0]](**my_dict)
+        print(new_object.id)
+        new_object.save()
 
     def help_create(self):
         """ Help information for the create method """
