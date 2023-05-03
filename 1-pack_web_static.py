@@ -2,11 +2,11 @@
 from fabric.api import local
 import os
 from datetime import datetime
-# Compress before sending
+"""Compress before sending"""
 
 def do_pack():
-    # Creating the archive name
-    timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+    """ Creating the archive name """
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     archive_name = "web_static_" + timestamp + ".tgz"
 
     # Creating the folder if it doesn't exist
