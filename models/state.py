@@ -24,11 +24,11 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-        from models.city import City
         # Added for task 6
         # if getenv("HBNB_TYPE_STORAGE") == "file":
         @property
         def cities(self):
+            from models.city import City
             list_of_cities = []
             dic_cities = models.storage.all(City)
             # for city in dic_cities.items():
