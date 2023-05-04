@@ -1,7 +1,7 @@
 #!/usr/bin/python3
+# Deploy archive
 from fabric.api import env, put, run
 import os
-"""Deploy archive"""
 
 
 # Define the host, user, and private key as fabric environment variable
