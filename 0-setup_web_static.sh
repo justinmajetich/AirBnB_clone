@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #Script that sets up the web servers for deployment of web_static.
 
-server="n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
+server="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
 file="/etc/nginx/sites-available/default"
 sudo apt-get update -y
 sudo apt-get install nginx -y
