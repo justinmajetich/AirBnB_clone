@@ -12,3 +12,4 @@ rm -f "/data/web_static/current"; ln -s "/data/web_static/releases/test/" "/data
 sudo chown -hR ubuntu:ubuntu "/data/"
 sudo sed -i "29i\ $server" "$file"
 sudo service nginx restart
+exit 0
