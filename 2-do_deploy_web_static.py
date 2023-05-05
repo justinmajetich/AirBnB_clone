@@ -4,7 +4,11 @@
 """
 from fabric.api import env, put, run
 import os
+
+
 env.hosts = ['18.206.207.43', '100.26.50.89']
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_deploy(archive_path):
@@ -17,7 +21,7 @@ def do_deploy(archive_path):
             otherwise returns False
     """
     # check if the archive path does exist
-    if os.path.exists(archive_path) is False:
+    if not os.path.exists(archive_path):
         return False
     # Get the archive name without its extension (.tgz)
     archive_name = archive_path.split("/")[-1]
