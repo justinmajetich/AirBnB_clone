@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Deploy archive
+# A module that can deploy archive
 from fabric.api import env, put, run
 import os
 
@@ -9,7 +9,14 @@ env.hosts = ['18.206.207.43', '100.26.50.89']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to my web server"""
+    """Distributes an archive to web servers
+
+    Args:
+        archive_path (str): path to the archive file
+
+    Return: True if all operations have been done correctly
+            otherwise returns False
+    """
     # check if the archive path does exist
     if not os.path.exists(archive_path):
         return False
