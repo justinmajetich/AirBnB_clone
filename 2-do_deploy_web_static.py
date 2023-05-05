@@ -6,7 +6,7 @@ import shlex
 import os
 
 
-env.hosts = ['35.231.33.237', '34.74.155.163']
+env.hosts = ['54.236.48.165', '100.25.192.36']
 env.user = "ubuntu"
 
 
@@ -36,5 +36,5 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(releases_path))
         print("New version deployed!")
         return True
-    except:
+    except ValueError:
         return False
