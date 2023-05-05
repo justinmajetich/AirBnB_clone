@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# A module that can deploy archive
+""" Fabric script (based on the file 1-pack_web_static.py) that distributes
+    an archive to your web servers, using the function do_deploy.
+"""
 from fabric.api import env, put, run
 import os
 env.hosts = ['18.206.207.43', '100.26.50.89']
@@ -18,7 +20,7 @@ def do_deploy(archive_path):
     if os.path.exists(archive_path) is False:
         return False
     # Get the archive name without its extension (.tgz)
-    archive_name = archive_path.split("/")[1]
+    archive_name = archive_path.split("/")[-1]
     archive_name_no_extension = archive_name.split(".")[0]
     # Uncompress the archive to
     # /data/web_static/releases/archive_name_no_extension
@@ -45,6 +47,5 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(destined_folder))
         print("New version deployed!")
         return True
-    except Exception as e:
-        print("Error: {}".format(e))
+    except:
         return False
