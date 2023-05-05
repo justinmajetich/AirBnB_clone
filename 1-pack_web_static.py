@@ -1,8 +1,8 @@
 #!/usr/bin/python3
+# A module that compress a file before sending
 from fabric.api import local
 import os
 from datetime import datetime
-"""Compress before sending"""
 
 
 def do_pack():
