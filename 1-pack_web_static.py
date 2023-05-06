@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# A module that compress a file before sending
+""" A fabric script that generates a .tgz archive from the contents
+    of the web_static folder.
+"""
 from fabric.api import local
 import os
 from datetime import datetime
