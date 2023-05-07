@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""A Fabric script that archives the contents of web_static into tgz."""
+"""A Fabric script that archives the contents of web_static into a tgz file"""
 
 from datetime import datetime
 from fabric.api import local
@@ -7,7 +7,7 @@ from os.path import isdir
 
 
 def do_pack():
-    """Generate the archive."""
+    """Generate the tgz archive file"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         if isdir("versions") is False:
