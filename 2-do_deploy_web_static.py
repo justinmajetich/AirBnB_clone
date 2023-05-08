@@ -28,7 +28,8 @@ def do_deploy(archive_path):
     archive_name_no_extension = archive_name.split(".")[0]
     # Uncompress the archive to
     # /data/web_static/releases/archive_name_no_extension
-    destined_folder = f"/data/web_static/releases/{archive_name_no_extension}/"
+    destined_folder = "/data/web_static/releases/{}/"\
+                      .format(archive_name_no_extension)
 
     # Returns True if all operations have been done correctly,
     # otherwise returns False
