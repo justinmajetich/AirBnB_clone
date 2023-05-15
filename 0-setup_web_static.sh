@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#Script that sets up the web servers for deployment of web_static.
+#Script that configures the web servers to serve  web_static.
 server="\n\tlocation /web_static {\n\t\talias /data/web_static/current/;\n\t}"
 file="/etc/nginx/sites-available/default"
 sudo apt-get update -y
