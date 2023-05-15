@@ -5,6 +5,8 @@ into a tgz file"""
 from datetime import datetime
 from fabric.api import local
 from os.path import isdir
+import re
+import tarfile
 
 
 def do_pack():
