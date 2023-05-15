@@ -1,15 +1,44 @@
 #!/usr/bin/env bash
-#Script that sets up the web servers for deployment of web_static.
+# Script to configure the web server to serve web-static
+sudo apt-get update
+sudo apt-get install nginx
+sudo ufw allow 'Nginx HTTP'
 
-server="\n\tlocation /web_static {\n\t\talias /data/web_static/current/;\n\t}"
-file="/etc/nginx/sites-available/default"
-sudo apt-get update -y
-sudo apt-get install nginx -y
-sudo mkdir -p "/data/web_static/shared/"
-sudo mkdir -p "/data/web_static/releases/test/"
-echo "My Nginx" > "/data/web_static/releases/test/index.html"
-rm -f "/data/web_static/current"; ln -s "/data/web_static/releases/test/" "/data/web_static/current"
-sudo chown -hR ubuntu:ubuntu "/data/"
-sudo sed -i "29i\ $server" "$file"
+if [ ! -d /data/ ]; then
+	sudo mkdir /data/
+fi
+if [ ! -d /data/web_static/ ]; then
+	sudo mkdir /data/web_static/
+fi
+if [ ! -d /data/web_static/releases ]; then
+	sudo mkdir /data/web_static/releases/
+fi
+if [ ! -d /data/web_static/shared/ ]; then
+	sudo mkdir /data/web_static/shared/
+fi
+if [ ! -d /data/web_static/releases/test/ ]; then
+	sudo mkdir /data/web_static/releases/test/
+fi
+str=\
+"
+<html>
+<head>
+</head>
+<body>
+   Holberton School
+</body>
+</html>
+"
+if [ ! -f /data/web_static/releases/test/index.html ]; then
+	echo "$str" > /data/web_static/releases/test/index.html
+fi
+if [ -L /data/web_static/current ]; then
+	rm /data/web_static/current
+	ln -s /data/web_static/releases/test/ /data/web_static/current
+else
+	ln -s /data/web_static/releases/test/ /data/web_static/current
+fi
+sudo chown -R ubuntu:ubuntu /data/
+sudo sed -i "/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}" /etc/nginx/sites-enabled/default
+
 sudo service nginx restart
-exit 0
