@@ -37,6 +37,7 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
+
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -112,27 +113,36 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+    def do_create(self, arg):
+        """Create a new instance of a class"""
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-        except NameError:
+            return
+        class_name = args[0]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+            return
+        if len(args) == 1:
+            print("** instance name missing **")
+            return
+        attrs = {}
+        for attr in args[1:]:
+            if '=' in attr:
+                key, value = attr.split('=', 1)
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value and all(char.isdigit() or char == '.' for char in value):
+                    value = float(value)
+                elif value.isdigit():
+                    value = int(value)
+                else:
+                    continue
+                attrs[key] = value
+        new_instance = self.classes[class_name](**attrs)
         new_instance.save()
         print(new_instance.id)
-
+                 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -213,11 +223,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print_list.append(str(v))
+            for obj in storage.all(args).values():
+                print_list.append(str(obj))
         else:
-            for k, v in storage.all().items():
-                print_list.append(str(v))
+            for obj in storage.all("").values():
+                print_list.append(str(obj))
+
         print(print_list)
 
     def help_all(self):
