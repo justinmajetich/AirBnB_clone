@@ -2,6 +2,7 @@
 """ A script that lists states"""
 from flask import Flask, render_template
 from models import storage
+from operator import attrgetter
 app = Flask(__name__)
 
 
@@ -9,7 +10,7 @@ app = Flask(__name__)
 def states_list():
     """Display an HTML page"""
     states = storage.all('State').values()
-    states_sorted = sorted(states, key=lambda s: s.name)
+    states_sorted = sorted(states, key=attrgetter('name'))
     return render_template('7-states_list.html', States=states_sorted)
 
 
