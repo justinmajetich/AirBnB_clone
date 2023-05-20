@@ -3,8 +3,8 @@
 from flask import Flask, render_template
 from models import storage
 from models import State
-from models import City
 from operator import attrgetter
+
 
 app = Flask(__name__)
 
@@ -12,12 +12,9 @@ app = Flask(__name__)
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
     """Displays an HTML page"""
-    states = [obj for obj in storage.all().values() if isinstance(obj, State)]
-    cities = [obj for obj in storage.all().values() if isinstance(obj, City)]
+    states = storage.all(State).values()
     s_sorted = sorted(states, key=attrgetter('name'))
-    c_sorted = sorted(cities, key=attrgetter('name'))
-    return render_template('8-cities_by_states.html', States=s_sorted,
-                           Cities=c_sorted)
+    return render_template('8-cities_by_states.html', States=s_sorted)
 
 
 @app.teardown_appcontext
