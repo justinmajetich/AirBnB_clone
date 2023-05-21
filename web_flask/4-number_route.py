@@ -30,8 +30,8 @@ def p3iscool(text='is cool'):
     return 'Python ' + text.replace('_', ' ')
 
 
-@app.route('/number/<int:n>', strict_slashes-False)
-def number(n):
+@app.route('/number/<n>', strict_slashes-False)
+def isanum(n):
     """Function that returns is a number if n is an integer."""
     return "{:d} is a number".format(n)
 
