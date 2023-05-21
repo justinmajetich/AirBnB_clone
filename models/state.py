@@ -1,14 +1,15 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
+""" State Module for HBNB """
 from models.base_model import BaseModel, Base
 from models import storage_type
+from models import storage
 from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
-    """ State class / table model"""
+    """ Creates a state object"""
     __tablename__ = 'states'
     if storage_type == 'db':
         name = Column(String(128), nullable=False)
