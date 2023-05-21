@@ -19,7 +19,8 @@ def display_html():
     """Function called with /states_list route"""
     states = storage.all(State)
     dict_to_html = {value.id: value.name for value in states.values()}
-    return render_template("7-states_list.html", Table="States", items=dict_to_html)
+    return render_template("7-states_list.html",
+                           Table="States", items=dict_to_html)
 
 
 if __name__ == "__main__":

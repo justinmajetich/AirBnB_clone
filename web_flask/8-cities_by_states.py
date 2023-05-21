@@ -19,7 +19,8 @@ def teardown_session(exception):
 def display_html():
     """Function called with /states_list route"""
     states = storage.all(State)
-    return render_template("8-cities_by_states.html", Table="States", states=states)
+    return render_template("8-cities_by_states.html",
+                           Table="States", states=states)
 
 
 if __name__ == "__main__":

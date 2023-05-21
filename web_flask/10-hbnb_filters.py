@@ -22,7 +22,8 @@ def display_html():
     amenities = storage.all(Amenity)
 
     return render_template(
-        "10-hbnb_filters.html", states=states.values(), amenities=amenities.values()
+        "10-hbnb_filters.html", states=states.values(),
+        amenities=amenities.values()
     )
 
 
