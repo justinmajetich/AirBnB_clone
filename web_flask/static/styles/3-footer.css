@@ -1,0 +1,24 @@
+/* 
+==============================================
+footer
+==============================================
+*/
+footer {
+  background-color: white;
+  height: 60px;
+  width: 100%;
+  border-top: 1px solid #cccccc;
+  position: fixed;
+  bottom: 0;
+}
+/* 
+==============================================
+text
+==============================================
+*/
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 60px;
+  text-align: center;
+}
