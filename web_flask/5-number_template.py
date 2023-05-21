@@ -40,5 +40,7 @@ def isanum(n):
 def numtemplate(n):
     """Function that displays a web page if n is an integer."""
     return render_template('5-number.html', n=n)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000')
