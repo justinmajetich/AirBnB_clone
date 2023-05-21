@@ -1,0 +1,76 @@
+/* 
+==============================================
+stlyle the whole body
+==============================================
+*/
+body {
+  margin: 0;
+  padding: 0;
+  color: #484848;
+  font-size: 14px;
+  font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+/* style the place container */
+.places {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+/* styles h1 of place header */
+.container .places h1 {
+  font-size: 30px;
+  width: 100%;
+  margin-left: 2%;
+}
+/* styles h2 of place header */
+.container .places h2,
+.container .places .price_by_night  {
+  font-size: 30px;
+}
+/* styles all those different places */
+.container .places .place1,
+.place2,
+.place3,
+.place4 {
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+}
+/* information to place article */
+.price_by_night {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5a5f;
+  border: 4px solid #ff5a5f;
+  border-radius: 100px;
+  min-width: 60px;
+  height: 60px;
+  font: 30px;
+  float: right;
+  margin-top: -100px;
+}
+/* information about the icons */
+.information {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-between;
+  height: 80px;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  margin-top: 40px;
+  padding-left: 10%;
+}
+
+.max_guest,
+.number_rooms,
+.number_bathrooms {
+  width: 100px;
+}
+
+footer {
+  position: relative;
+}
