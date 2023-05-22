@@ -12,11 +12,13 @@ def hello_flask():
     """
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb')
 def hbnb():
     """Return string when route queried
     """
     return 'HBNB'
+
 
 if __name__ == '__main__':
     app.url_map.strict_slashes = False
