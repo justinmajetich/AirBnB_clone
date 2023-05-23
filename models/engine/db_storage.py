@@ -77,9 +77,8 @@ class DBStorage:
         '''commit all changes of the current db session'''
         self.__session.commit()
 
-    def delete(self, obj=None):
-        ''' deletes from the current databse session the obj
-            is it's not None
+    def delete(self, objBOB=None):
+        ''' deletes an object
         '''
         if obj is not None:
             self.__session.query(type(obj)).filter(
@@ -90,7 +89,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        self.__session = scoped_session(session_factory)()
+        Session = scoped_session(session_factory)
+        self.__session = Session()
 
     def close(self):
         """closes the working SQLAlchemy session"""
