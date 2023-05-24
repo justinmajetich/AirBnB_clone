@@ -16,7 +16,7 @@ def display_states():
 
 
 @app.teardown_appcontext
-def teardown(self)
+def teardown(self):
     """Clean-up SQLAlchemy Session"""
     storage.close()
 
