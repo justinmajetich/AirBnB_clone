@@ -84,7 +84,7 @@ class DBStorage:
             self.__session.query(type(obj)).filter(
                 type(obj).id == obj.id).delete()
 
-     def reload(self):
+    def reload(self):
         '''reloads the database'''
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
