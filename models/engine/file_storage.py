@@ -23,7 +23,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
+        if not cls:
             return self.__objects
         elif type(cls) == str:
             return {k: v for k, v in self.__objects.items()
@@ -34,26 +34,26 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        if obj is None
-            self.__objects[obj.__class__.__name__ + "." + obj.id] = obj
+        if obj is not None:
+            key = obj.__class__.__name__ + "." + obj.id
+            self.__objects[key] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
+        temp = {}
+        for key in self.__objects:
+            temp[key] = self.__objects[key].to_dict(save_to_disk=True)
         with open(self.__file_path, 'w') as f:
-            temp = {}
-            temp.update(self.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict(save_to_disk=True)
             json.dump(temp, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
         try:
-            temp = {}
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                for key in temp:
+                    self.all()[key] = classes[temp[key]
+                             ['__class__']](**temp[key])
         except FileNotFoundError:
             pass
 
@@ -63,11 +63,30 @@ class FileStorage:
         '''
         if obj is None:
             return
-        obj_key = obj.to_dict()['__class__'] + '.' + obj.id
-        if obj_key in self.__objects.keys():
-            del self.__objects[obj_key]
+        key = obj.to_dict()['__class__'] + '.' + obj.id
+        if key in self.__objects.keys():
+            del self.__objects[key]
             self.save()
 
     def close(self):
         """Call the reload method"""
         self.reload()
+
+    def get(self, cls, id):
+        """To get an object"""
+        if cls is not None and type(cls) is str and id is not None and\
+           type(id) is str and cls in classes:
+            key = cls + '.' + id
+            obj = self.__objects.get(key, None)
+            return obj
+        else:
+            return None
+
+    def count(self, cls=None):
+        """To count the total number of objects in storage"""
+        total_num = 0
+        if type(cls) == str and cls in classes:
+            total_num = len(self.all(cls))
+        elif cls is None:
+            total_num = len(self.__objects)
+        return total_num
