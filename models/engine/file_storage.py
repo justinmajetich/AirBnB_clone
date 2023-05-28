@@ -71,22 +71,3 @@ class FileStorage:
     def close(self):
         """Call the reload method"""
         self.reload()
-
-    def get(self, cls, id):
-        """To get an object"""
-        if cls is not None and type(cls) is str and id is not None and\
-           type(id) is str and cls in classes:
-            key = cls + '.' + id
-            obj = self.__objects.get(key, None)
-            return obj
-        else:
-            return None
-
-    def count(self, cls=None):
-        """To count the total number of objects in storage"""
-        total_num = 0
-        if type(cls) == str and cls in classes:
-            total_num = len(self.all(cls))
-        elif cls is None:
-            total_num = len(self.__objects)
-        return total_num
