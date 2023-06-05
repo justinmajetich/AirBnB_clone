@@ -198,4 +198,5 @@ With knowledge in JQuery, we will load objects from the client side using our ow
 
 ## Co-Authors
 Members who modified original codebase
-*	Ebube Gideon - [@holbertonschool.com]<onwutaebubegideon1555@gmail.com>
+*	Ebube Gideon - <onwutaebubegideon1555@gmail.com>
+	> [School](https://www.alxafrica.com)
