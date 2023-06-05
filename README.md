@@ -1,19 +1,13 @@
-# AirBnB_clone - The console
+# AirBnB clone - MySQL
+
+The main aim of this project is to integrate MySQL database into the AirBnB clone application. This helps the backend engineer switch between file storage and database storage.
 
 
-This major aim of this project is to deploy on a server a simple copy of the [AirBnB website](https://www.airbnb.com). It consists of the following:
+## What is MySQL?
 
-*	A command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging)
-*	A website (the front-end) that shows the final product to everybody: static and dynamic
-*	A database or files that store data (data = objects)
-*	An API that provides a communication interface between the front-end and your data (retrieve, create, delete, update them)
+MySQL is the world’s most popular open source database. According to DB-Engines, MySQL ranks as the second-most-popular database, behind Oracle Database. MySQL powers many of the most accessed applications, including Facebook, Twitter, Netflix, Uber, Airbnb, Shopify, and Booking.com.
 
-## The Console
-It is the command line interpreter that enables data model creation. Using the console, one can manage (``create``, ``update``, ``destroy``, etc) objects. The console equally facilitates the storage of objects to a JSON file and their subsequent reuse.
-
-It equally employs the help of a powerful storage system that gives an abstraction between objects and how they are stored and persisted. This means: from the console code (the command interpreter) and from the front-end and RestAPI, one won't have to pay attention to how objects are stored anymore. This abstraction will help one to change the type of storage easily without updating all of the codebase.
-
-The console will be a tool to validate this storage engine.
+Since MySQL is open source, it includes numerous features developed in close cooperation with users over more than 25 years. So it’s very likely that your favorite application or programming language is supported by MySQL Database.
 
 ## Usage:
 
@@ -202,6 +196,6 @@ This goal of this sub-project is to expose all the objects stored via a JSON web
 ## Web dynamic
 With knowledge in JQuery, we will load objects from the client side using our own RESTful API
 
-## Authors
-*	Ebube Gideon - [@holbertonschool.com](onwutaebubegideon1555@gmail.com)
-*	Lukman Asinmi - @holbertonschool.com
+## Co-Authors
+Members who modified original codebase
+*	Ebube Gideon - [@holbertonschool.com]<onwutaebubegideon1555@gmail.com>
