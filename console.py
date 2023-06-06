@@ -29,14 +29,19 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    # Some attributes that are not allowed to be modified manually
+    not_updatable = ["id", "created_at", "updated_at"]
 
     def preloop(self):
-        """Prints if isatty is false"""
+        """
+        Print if isatty is false
+        """
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
     def precmd(self, line):
-        """Reformat command line for advanced command syntax.
+        """
+        Reformat command line for advanced command syntax.
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
@@ -73,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if (pline[0] == '{') and (pline[-1] == '}')\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -87,34 +92,58 @@ class HBNBCommand(cmd.Cmd):
             return line
 
     def postcmd(self, stop, line):
-        """Prints if isatty is false"""
+        """
+        Print if isatty is false
+        """
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
-        exit()
+        """
+        Quit command to exit the program
+        Usage:
+        ======
+        quit
 
-    def help_quit(self):
-        """ Prints the help documentation for quit  """
-        print("Exits the program with formatting\n")
+        Example:
+        =======
+            (hbnb) quit
+        """
+        return True
 
     def do_EOF(self, arg):
-        """ Handles EOF to exit program """
-        print()
-        exit()
+        """
+        End of file marker for exit
+        Usage:
+        ======
+        <CTRL + D>
 
-    def help_EOF(self):
-        """ Prints the help documentation for EOF """
-        print("Exits the program without formatting\n")
+        Example:
+        ========
+            (hbnb) <CTRL + D>
+        """
+        print()
+        return True
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """
+        Executed when an empty line is entered in response to the prompt
+        """
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """
+        Create a new instance.
+        Usage:
+        ======
+        create <class name>
+
+        Example:
+        ========
+            (hbnb) create BaseModel
+            1234-1234-1234
+        """
         if not args:
             print("** class name missing **")
             return
@@ -126,13 +155,23 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         storage.save()
 
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
-
     def do_show(self, args):
-        """ Method to show an individual object """
+        """
+        Print the string representation of an instance based on
+        the class name and id.
+        Usage:
+        ======
+        show <class name> <id>
+
+        Alternative use:
+        ================
+        <class name>.show(<id>)
+
+        Example:
+        ========
+            (hbnb) show BaseModel 1234-1234-1234
+            (hbnb) BaseModel.(1234-1234-1234)
+        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -159,13 +198,22 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def help_show(self):
-        """ Help information for the show command """
-        print("Shows an individual instance of a class")
-        print("[Usage]: show <className> <objectId>\n")
-
     def do_destroy(self, args):
-        """ Destroys a specified object """
+        """
+        Delete an instance based on the class name and id.
+        Usage:
+        ======
+        destroy <class name> <id>
+
+        Alternative use:
+        ================
+        <class name>.destroy(<id>)
+
+        Example:
+        ========
+            (hbnb) destroy BaseModel 1234-1234-1234
+            (hbnb) BaseModel.destroy(1234-1234-1234)
+        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -187,18 +235,30 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self):
-        """ Help information for the destroy command """
-        print("Destroys an individual instance of a class")
-        print("[Usage]: destroy <className> <objectId>\n")
-
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
+        """
+        Print all string representation of all instances based on
+        the class name or not.
+        Usage:
+        ======
+        all [<class name>]
+
+        Alternative use:
+        ================
+        <class name>.all()
+
+        Example:
+        ========
+            (hbnb) all
+            (hbnb)
+            (hbnb) all BaseModel
+            (hbnb) BaseModel.all()
+        """
         print_list = []
 
         if args:
@@ -215,26 +275,55 @@ class HBNBCommand(cmd.Cmd):
 
         print(print_list)
 
-    def help_all(self):
-        """ Help information for the all command """
-        print("Shows all objects, or all of a class")
-        print("[Usage]: all <className>\n")
-
     def do_count(self, args):
-        """Count current number of class instances"""
+        """
+        Count current number of class instances
+        Usage:
+        ======
+        count <class name>
+
+        Alternative use:
+        ================
+        <class name>.count()
+
+        Example:
+        ========
+            (hbnb) count User
+            2
+            (hbnb) User.count()
+            2
+        """
         count = 0
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
 
-    def help_count(self):
-        """ """
-        print("Usage: count <class_name>")
-
     def do_update(self, args):
-        """ Updates a certain object with new info """
-        c_name = c_id = att_name = att_val = kwargs = ''
+        """
+        Update an instance based on class name and id.
+        NOTE:
+        *   only one attribute is updated at a time
+        *   The attributes ``id``, ``created_at`` and ``updated_at`` are not
+            allowed to be updated
+        Usage:
+        ======
+        update <class name> <id> <attribute name> "<attribute value>"
+
+        Alternative use:
+        ================
+        * <class name>.update(<id>, <attribute name>, <attribute value>)
+
+        * <class name>.update(<id>, <dictionary representation>)
+
+        Example:
+        ========
+            (hbnb) update BaseModel 1234-1234-1234 email "airbnb@gmail.com"
+            (hbnb) BaseModel.update(1234-1234-1234, email, "airbnb@gmail.com")
+            (hbnb) BaseModel.update(1234-1234-1234, \
+{"email": "airbnb@gmail.com"})
+        """
+        c_name = c_id = att_name = att_val = kwargs = str('')
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
@@ -272,7 +361,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if (args) and (args[0] == '\"'):  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +369,11 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if (not att_name) and (args[0] != ' '):
                 att_name = args[0]
+
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and (args[2][0] == '\"'):
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -291,6 +381,12 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
+
+        # Restrict updating of specific attributes
+        if att_name in HBNBCommand.not_updatable:
+            info = "** \"{}\" is not allowed to be updated **"
+            print(info.format(att_name))
+            return
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
@@ -315,10 +411,9 @@ class HBNBCommand(cmd.Cmd):
 
         new_dict.save()  # save updates to file
 
-    def help_update(self):
-        """ Help information for the update class """
-        print("Updates an object with new information")
-        print("Usage: update <className> <id> <attName> <attVal>\n")
 
+# Don't execute console if imported
 if __name__ == "__main__":
+    # Ensure that codebase works properly by running tests
+    # put the code here
     HBNBCommand().cmdloop()
