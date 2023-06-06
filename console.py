@@ -411,6 +411,38 @@ class HBNBCommand(cmd.Cmd):
 
         new_dict.save()  # save updates to file
 
+    # Auto-completion
+
+    def complete_create(self, text, line, begidx, endix):
+        """
+        Auto completion
+        """
+        return [i for i in self.classes if i.startswith(text)]
+
+    def complete_show(self, text, line, begidx, endix):
+        """
+        Auto completion
+        """
+        return [i for i in self.classes if i.startswith(text)]
+
+    def complete_all(self, text, line, begidx, endix):
+        """
+        Auto completion
+        """
+        return [i for i in self.classes if i.startswith(text)]
+
+    def complete_destroy(self, text, line, begidx, endix):
+        """
+        Auto completion
+        """
+        return [i for i in self.classes if i.startswith(text)]
+
+    def complete_update(self, text, line, begidx, endix):
+        """
+        Auto completion
+        """
+        return [i for i in self.classes if i.startswith(text)]
+
 
 # Don't execute console if imported
 if __name__ == "__main__":
