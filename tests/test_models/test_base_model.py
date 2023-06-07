@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" """
+"""
+Test for BaseModel class
+"""
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -9,38 +11,53 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """
+    Definition of tests for the class
+    """
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """
+        Initialize the class
+        """
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ """
+        """
+        Set up the method for each test
+        """
         pass
 
     def tearDown(self):
+        """
+        Tear down method for each test
+        """
         try:
             os.remove('file.json')
         except Exception:
             pass
 
     def test_default(self):
-        """ """
+        """
+        Ensure default instance creation works
+        """
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """
+        Ensure keyword arguments can be used to create instance of the class
+        """
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """ """
+        """
+        Ensure that integers can't be passed as keywords
+        """
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -48,7 +65,9 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """
+        Ensure that the save method in the class works properly
+        """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -57,25 +76,32 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ """
+        """
+        Ensure that the class instances are well represented in string format
+        """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """
+        Ensure that instances of the class can be returned as a dictionary
+        """
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
     def test_kwargs_none(self):
-        """ """
+        """
+        Ensure that `None` type can't be used as a keyword argument
+        """
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
     def test_kwargs_one(self):
-        """ """
+        """
+        """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
