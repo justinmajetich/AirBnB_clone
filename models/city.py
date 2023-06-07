@@ -1,9 +1,13 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
+"""
+Define the ``City`` class that inherits from the class ``BaseModel``
+"""
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """ The city class, contains state ID and name """
-    state_id = ""
-    name = ""
+    """
+    Define the class City
+    """
+    state_id = str()    # it will be State.id
+    name = str()
