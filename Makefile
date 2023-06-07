@@ -64,7 +64,7 @@ test: # Run the complete unittest
 fast_test: # Run the unittest but stop execution at first failure encountered
 	$(CC) $(FFLAGS)
 
-ready: test re # Ensure file is ready to be submitted
+ready: test check re # Ensure file is ready to be submitted
 
 else
 $(info "README.md missing")
