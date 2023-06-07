@@ -118,7 +118,7 @@ Usage: help
 <details>
 
 
-<summary>Alternative Syntax</summary>
+<summary>Alternative Syntax: Another way of using the console commands</summary>
 
 Users are able to issue a number of console command using an alternative syntax:
 
