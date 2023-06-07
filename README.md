@@ -118,7 +118,8 @@ Usage: help
 <details>
 
 
-##### Alternative Syntax
+<summary>Alternative Syntax</summary>
+
 Users are able to issue a number of console command using an alternative syntax:
 
 	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
@@ -169,6 +170,10 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 
+</details>
+
+
+<details>
 <summary>Supported classes: The classes for objects</summary>
 
 * BaseModel
