@@ -42,7 +42,7 @@ ifneq ($(strip $(ESS_FILES)), "")
 all: # Execute the program
 	$(CC) $(NAME)
 
-.PHONY: clean check cclean fclean re test fast_test
+.PHONY: clean check cclean fclean re test fast_test ready
 
 clean:	# Delete all temporary files and executable
 	$(RM) $(VIM_TMP) $(EMACS_TMP)
@@ -52,7 +52,8 @@ cclean: #delete only the cache directories
 
 fclean: cclean clean # delete all temporary files and cache directories
 
-re:	fclean all # Forcefully recompile all the source files
+re:	fclean all # Forcefully recompile all the source files \
+	and execute the program
 
 check: # Ensure source codes are $(CHECKER) compliant
 	$(CHECKER) $(SRC)
@@ -62,6 +63,8 @@ test: # Run the complete unittest
 
 fast_test: # Run the unittest but stop execution at first failure encountered
 	$(CC) $(FFLAGS)
+
+ready: test re # Ensure file is ready to be submitted
 
 else
 $(info "README.md missing")
