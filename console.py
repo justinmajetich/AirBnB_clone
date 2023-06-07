@@ -170,7 +170,7 @@ class HBNBCommand(cmd.Cmd):
         Example:
         ========
             (hbnb) show BaseModel 1234-1234-1234
-            (hbnb) BaseModel.(1234-1234-1234)
+            (hbnb) BaseModel.show(1234-1234-1234)
         """
         new = args.partition(" ")
         c_name = new[0]
