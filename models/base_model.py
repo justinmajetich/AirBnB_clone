@@ -1,13 +1,27 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""
+The class ``BaseModel`` defines all common attributes/methods for other classes
+"""
+
 import uuid
 from datetime import datetime
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """
+    Define the class ``BaseModel``
+    """
+
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """
+        Initialize a ``BaseModel`` instance
+
+        NB:
+            args = not used
+            kwargs = for creating an instance from a dictionary
+            ``created_at`` and ``updated_at`` found in kwargs is a string
+            format of time in ``isoformat``.
+        """
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -23,18 +37,28 @@ class BaseModel:
             self.__dict__.update(kwargs)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
+        """
+        Return the non-canonical string representation of
+        ``BaseModel`` instance
+        Format: [<class name>] (<self.id>) <self.__dict__>
+        """
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """
+        Update the public instance attribute ``updated_at``
+        with the current datetime
+        """
         from models import storage
         self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """
+        Return a dictionary containing all keys/values of ``__dict__``
+        of the instance:
+        """
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
