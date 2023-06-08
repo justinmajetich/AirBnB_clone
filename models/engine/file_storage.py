@@ -7,7 +7,7 @@ instances from file to JSON, vice versa
 import json
 
 
-class FileStorage:
+class FileStorage():
     """
     Serialize instances to JSON file and deserialze JSON file to instances
     """
@@ -64,3 +64,11 @@ class FileStorage:
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, key):
+        """
+        Delete an instance from `__objects` collection
+
+        Note: a KeyError exception is raised if the key does not exist
+        """
+        FileStorage.__objects.pop(key)

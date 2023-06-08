@@ -144,3 +144,22 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete(self):
+        """
+        Ensure that the delete method works properly:
+        * Should delete object if the key exists
+        * Should raise a `KeyError` exception if object does not exist
+        """
+        # Ensure that the newly created instance is in storage
+        new = BaseModel()
+        self.assertIn(new, storage.all().values())
+
+        cls = type(new).__name__.split('.')[-1]
+        key = cls + '.' + new.id
+        storage.delete(key)     # delete the object with that key from storage
+
+        # Ensure an error is raised if you try to delete a non-existing
+        # object
+        with self.assertRaises(KeyError):
+            storage.delete(key)
