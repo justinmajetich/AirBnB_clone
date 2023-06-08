@@ -5,10 +5,10 @@ CC = python3
 TEST = $(wildcard tests)
 
 # Flags for unittest
-UFLAGS = -m unittest discover $(TEST)
+UFLAGS = -m unittest discover
 
 # Flags for fail fast unittest
-FFLAGS = -m unittest discover -f $(TEST)
+FFLAGS = -m unittest discover -f
 
 # Name of executable
 NAME = $(wildcard console.py)
@@ -59,10 +59,10 @@ check: # Ensure source codes are $(CHECKER) compliant
 	$(CHECKER) $(SRC)
 
 test: # Run the complete unittest
-	$(CC) $(UFLAGS)
+	$(CC) $(UFLAGS) $(TEST)
 
 fast_test: # Run the unittest but stop execution at first failure encountered
-	$(CC) $(FFLAGS)
+	$(CC) $(FFLAGS) $(TEST)
 
 ready: test check re # Ensure file is ready to be submitted
 
