@@ -65,7 +65,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    def test_save(self):
+    def test_save_stores(self):
         """
         Ensure that the save method in the class works properly
         """
@@ -75,6 +75,21 @@ class test_basemodel(unittest.TestCase):
         with open('file.json', 'r') as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
+
+    def test_save_id(self):
+        """
+        Ensure that on saving a model, the `updated_at` attribute is
+        changed with the current time the object was saved
+        """
+        new = self.value()
+        updated_at = new.updated_at
+        # Modify the object
+        new.name = 'my_model'
+        new.my_number = 89
+        # Save the object
+        new.save()
+        # Ensure that the `updated_at` attribute is updated
+        self.assertNotEqual(updated_at, new.updated_at)
 
     def test_str(self):
         """
@@ -92,6 +107,20 @@ class test_basemodel(unittest.TestCase):
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
+    def test_kwargs_is_different(self):
+        """
+        Ensure that an object created by kwargs is different from the same
+        object created normally using no kwargs
+        """
+        my_model = self.value()
+        my_model.my_number = 89
+        my_model.name = "My_first_Model"
+
+        my_model_dict_rep = my_model.to_dict()
+        new_model = self.value(**my_model_dict_rep)
+
+        self.assertFalse(my_model is new_model)
+
     def test_kwargs_none(self):
         """
         Ensure that `None` type can't be used as a keyword argument
@@ -102,29 +131,32 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_one(self):
         """
+        Ensure that it is impossible to use one kwarg
         """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
 
     def test_id(self):
-        """ """
+        """
+        Ensure that the Identification key is a string
+        """
         new = self.value()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
-        """ """
+        """
+        Ensure that `created_at` attribute is a datetime.datetime
+        object
+        """
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """ """
+        """
+        Ensure that for new instances, created_at and updated_at
+        attributes should be the same
+        """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        """
-        print("new.created_at: {}\t|\tnew.updated_at {}".format(
-            new.created_at, new.updated_at))
-        """
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertEqual(new.updated_at, new.created_at)
