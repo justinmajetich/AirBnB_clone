@@ -173,9 +173,7 @@ class HBNBCommand(cmd.Cmd):
         Example:
         ========
             (hbnb) show BaseModel 1234-1234-1234
-            ...
             (hbnb) BaseModel.show(1234-1234-1234)
-            ...
         """
         new = args.partition(" ")
         c_name = new[0]
@@ -262,19 +260,14 @@ class HBNBCommand(cmd.Cmd):
 
         Alternative use:
         ================
-        * <class name>.all()
-        * .all()
+        <class name>.all()
 
         Example:
         ========
             (hbnb) all
-            ...
-            (hbnb) .all()
-            ...
+            (hbnb)
             (hbnb) all BaseModel
-            ...
             (hbnb) BaseModel.all()
-            ...
         """
         print_list = []
 
@@ -294,45 +287,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """
-        Count the current number of instances based on / not on class name
+        Count current number of class instances
         Usage:
         ======
-        count [<class name>]
+        count <class name>
 
         Alternative use:
         ================
-        * <class name>.count()
-        * .count()
+        <class name>.count()
 
         Example:
         ========
-            (hbnb) count
-            5
-            (hbnb) .count()
-            5
             (hbnb) count User
             2
             (hbnb) User.count()
             2
-            (hbnb) Amenity.count()
-            3
         """
-
-        if type(args) is str and len(args) == 0:   # args is an empty string
-            pass
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
         count = 0
         for k, v in storage._FileStorage__objects.items():
-            # count all instances
-            if type(args) is str and len(args) == 0:   # args is an empty str
+            if args == k.split('.')[0]:
                 count += 1
-            # count only instances of the specified class
-            elif (args in HBNBCommand.classes) and (args == k.split('.')[0]):
-                count += 1
-
         print(count)
 
     def do_update(self, args):
@@ -474,12 +448,6 @@ class HBNBCommand(cmd.Cmd):
         return [i for i in self.classes if i.startswith(text)]
 
     def complete_update(self, text, line, begidx, endix):
-        """
-        Auto completion
-        """
-        return [i for i in self.classes if i.startswith(text)]
-
-    def complete_count(self, text, line, begidx, endix):
         """
         Auto completion
         """
