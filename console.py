@@ -418,12 +418,6 @@ class HBNBCommand(cmd.Cmd):
 
             args = [att_name, att_val]
 
-        # Restrict updating of specific attributes
-        if att_name in HBNBCommand.not_updatable:
-            info = "** \"{}\" is not allowed to be updated **"
-            print(info.format(att_name))
-            return
-
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
 
@@ -438,6 +432,14 @@ class HBNBCommand(cmd.Cmd):
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
+
+                # Restrict updating of specific attributes
+                if att_name in HBNBCommand.not_updatable:
+                    info = "** The \"{}\" attribute is not allowed \
+to be updated **"
+                    print(info.format(att_name))
+                    return
+
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
