@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Creating a concole for the AirBnB_clone
+Creating a console for the AirBnB_clone
 """
 
 import cmd
