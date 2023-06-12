@@ -5,6 +5,7 @@ Creating a console for the AirBnB_clone
 
 import cmd
 import sys
+import shlex    # Unix shell - like syntax analyzer
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -46,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Reformat command line for advanced command syntax.
 
-        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
+        Usage: <Class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
         _cmd = _cls = _id = _args = str()    # initialize line elements
@@ -58,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
-            # isolate <class name>
+            # isolate <Class name>
             _cls = pline[:pline.find('.')]
 
             # isolate and validate <command>
@@ -138,22 +139,86 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """
         Create a new instance.
+
+        Param syntax: <key name>="<value>"
+
+        * Any double qoute inside the value must be escaped with a backslash
+        * All underscores in the value are replaced by spaces.
+
         Usage:
         ======
-        create <class name>
+        * create <Class name>
+        * create <Class name> <param 1> <param 2> <param 3>...
 
         Example:
         ========
             (hbnb) create BaseModel
             1234-1234-1234
+            (hbnb) create State name="Little_California" zip_location="103422"
+            1235-1235-1235
+            (hbnb) show State 1235-1235-1235
+            [State] (1235-1235-1235) {'id': '1235-1235-1235', \
+'created_at': datetime.datetime(2023, 6, 12, 18, 59, 0, 404960), \
+'updated_at': datetime.datetime(2023, 6, 12, 18, 59, 0, 404960), \
+'name': 'Little California', 'zip_location': 103422}
         """
+        # Fetch all arguments
+        try:
+            args = shlex.split(args, posix=True, comments=False)
+        except Exception as e:
+            print("**Error: {}**".format(e))
+            return
+
+        """
+        # Test to see actual arguments
+        for pos in range(len(args)):
+            print("\targ[{}]: '{}'".format(pos, args[pos]))
+        """
+
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        _class = args[0]
+        if _class not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        # Create a dictonary of attributes of the instance
+        attr = dict()
+        for arg in args[1:]:
+            # print("**arg: {}**".format(arg))
+            if "=" not in arg:
+                # If parameter is unrecognized, skip it
+                continue
+
+            key = arg.split("=")[0]
+            value = arg.split("=")[-1]
+
+            # Replace underscores in the value with by space
+            value = value.replace(str('_'), str(' '))
+
+            # convert the value to the required type
+            try:
+                value = float(value)
+            except ValueError:
+                pass
+            else:
+                if value == int(value):
+                    value = int(value)
+
+            # print("dict: '{}'".format({key: value}))    # test
+            attr.update({key: value})
+
+        # print("\nAttributes: '{}'\n".format(attr))      # test
+
+        new_instance = HBNBCommand.classes[_class]()
+
+        # Update the instance with the attributes
+        for key, value in attr.items():
+            setattr(new_instance, key, value)
+
+        # Save the instance to storage
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -164,11 +229,11 @@ class HBNBCommand(cmd.Cmd):
         the class name and id.
         Usage:
         ======
-        show <class name> <id>
+        show <Class name> <id>
 
         Alternative use:
         ================
-        <class name>.show(<id>)
+        <Class name>.show(<id>)
 
         Example:
         ========
@@ -208,11 +273,11 @@ class HBNBCommand(cmd.Cmd):
         Delete an instance based on the class name and id.
         Usage:
         ======
-        destroy <class name> <id>
+        destroy <Class name> <id>
 
         Alternative use:
         ================
-        <class name>.destroy(<id>)
+        <Class name>.destroy(<id>)
 
         Example:
         ========
@@ -258,11 +323,11 @@ class HBNBCommand(cmd.Cmd):
         the class name or not.
         Usage:
         ======
-        all [<class name>]
+        all [<Class name>]
 
         Alternative use:
         ================
-        * <class name>.all()
+        * <Class name>.all()
         * .all()
 
         Example:
@@ -297,11 +362,11 @@ class HBNBCommand(cmd.Cmd):
         Count the current number of instances based on / not on class name
         Usage:
         ======
-        count [<class name>]
+        count [<Class name>]
 
         Alternative use:
         ================
-        * <class name>.count()
+        * <Class name>.count()
         * .count()
 
         Example:
@@ -344,13 +409,13 @@ class HBNBCommand(cmd.Cmd):
             allowed to be updated
         Usage:
         ======
-        update <class name> <id> <attribute name> "<attribute value>"
+        update <Class name> <id> <attribute name> "<attribute value>"
 
         Alternative use:
         ================
-        * <class name>.update(<id>, <attribute name>, <attribute value>)
+        * <Class name>.update(<id>, <attribute name>, <attribute value>)
 
-        * <class name>.update(<id>, <dictionary representation>)
+        * <Class name>.update(<id>, <dictionary representation>)
 
         Example:
         ========
