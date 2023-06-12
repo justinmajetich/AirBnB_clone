@@ -65,10 +65,16 @@ class FileStorage():
         except FileNotFoundError:
             pass
 
-    def delete(self, key):
+    def delete(self, obj=None):
         """
         Delete an instance from `__objects` collection
 
-        Note: a KeyError exception is raised if the key does not exist
+        Note: if obj is None or obj is not in self.__objects, do nothing
         """
-        FileStorage.__objects.pop(key)
+        if obj is None:
+            return
+
+        for key, value in FileStorage.__objects.items():
+            if value == obj:
+                FileStorage.__objects.pop(key)
+                return

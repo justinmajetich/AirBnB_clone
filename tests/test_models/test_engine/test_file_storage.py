@@ -155,11 +155,16 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         self.assertIn(new, storage.all().values())
 
+        """
         cls = type(new).__name__.split('.')[-1]
         key = cls + '.' + new.id
-        storage.delete(key)     # delete the object with that key from storage
+        """
+        storage.delete(new)     # delete the object from storage
 
         # Ensure an error is raised if you try to delete a non-existing
         # object
-        with self.assertRaises(KeyError):
-            storage.delete(key)
+        try:
+            storage.delete(new)
+        except Exception as e:
+            self.fail("Exception raised on trying to delete an object that\
+is not in storage.\n{}".format(e))
