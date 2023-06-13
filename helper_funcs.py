@@ -45,13 +45,13 @@ can’t be recognized correctly by your program, it must be skipped
         return
 
     # match <key name>=<value>
-    paramRegex = re.compile(r"^(.*)=(.*)$")
+    paramRegex = re.compile(r"^(.+)(=)(.+)$")
     match = paramRegex.search(text)
     if match is None:
         return
 
     key_name = match.group(1)
-    value = match.group(2)
+    value = match.group(3)
 
     # Convert the value to the required type
     try:    # try converting to float
