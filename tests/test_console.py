@@ -2,7 +2,8 @@
 """Consle module"""
 import unittest
 from unittest.mock import patch
-from io import StringIO
+import cmd
+import sys
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
