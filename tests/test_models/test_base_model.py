@@ -129,6 +129,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
+    '''
     def test_kwargs_one(self):
         """
         Ensure that it is impossible to use one kwarg
@@ -136,6 +137,17 @@ class test_basemodel(unittest.TestCase):
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
+    '''
+
+    def test_kwargs(self):
+        """
+        Ensure that it is possible to use kwargs to initialize an instance
+        """
+        kwargs = {"name": "AirBnB clone", "city_id": 32}
+        new = self.value(**kwargs)
+
+        self.assertIn("name", new.to_dict())
+        self.assertIn("city_id", new.to_dict())
 
     def test_id(self):
         """

@@ -45,8 +45,8 @@ class test_fileStorage(unittest.TestCase):
         """
         new = BaseModel()
         for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
+            with self.subTest(obj=obj):
+                self.assertTrue(obj is new)
 
     def test_all(self):
         """
@@ -107,8 +107,10 @@ class test_fileStorage(unittest.TestCase):
         storage.save()
         storage.reload()
         for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+            with self.subTest(obj=obj):
+                self.assertEqual(
+                        new.to_dict()["id"],
+                        obj.to_dict()["id"])
 
     def test_reload_empty(self):
         """
@@ -152,8 +154,8 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         _id = new.to_dict()['id']
         for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+            with self.subTest(key=key):
+                self.assertEqual(key, "BaseModel" + '.' + _id)
 
     def test_storage_var_created(self):
         """
@@ -171,6 +173,7 @@ class test_fileStorage(unittest.TestCase):
         """
         # Ensure that the newly created instance is in storage
         new = BaseModel()
+        new.save()
         self.assertIn(new, storage.all().values())
 
         """

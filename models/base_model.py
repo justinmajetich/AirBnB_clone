@@ -6,12 +6,44 @@ The class ``BaseModel`` defines all common attributes/methods for other classes
 import uuid
 import models
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import (
+        Column,
+        String,
+        DateTime
+        )
+
+"""
+Note! BaseModel does /not/ inherit from Base. All other classes will \
+inherit from BaseModel to get common values (id, created_at, updated_at), \
+where inheriting from Base will actually cause SQLAlchemy to attempt to \
+map it to a table.
+"""
+Base = declarative_base()
 
 
 class BaseModel:
     """
     Define the class ``BaseModel``
+
+    Class attributes:
+    =================
+    * id (String): represents a column containing a unique string (60 chars)
+        * can't be null
+        * primary key
+
+    * created_at (DateTime): represents a column containing a datetime
+        * can't be null
+        * default value is the current datetime (use datetime.utcnow())
+
+    * updated_at (DateTime): represents a column containing a datetime
+        * can't be null
+        * default value is the current datetime (use datetime.utcnow())
     """
+
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
+    updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
     def __init__(self, *args, **kwargs):
         """
@@ -23,20 +55,23 @@ class BaseModel:
             ``created_at`` and ``updated_at`` found in kwargs is a string
             format of time in ``isoformat``.
         """
-        if not kwargs:
-            from models import storage
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            # created_at and updated_at should be the same for new instances
-            self.updated_at = self.created_at
-            models.storage.new(self)
-        else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = self.created_at
+
+        if kwargs is not None:
+            for key, value in kwargs.items():
+                # skip these keys
+                if key in ["__class__", "_sa_instance_state_"]:
+                    continue
+
+                # for datetime objects
+                if key in ["updated_at", "created_at"]:
+                    fmt = "%Y-%m-%dT%H:%M:%S.%f"
+                    kwargs[key] = datetime.strptime(kwargs[key], fmt)
+
+                # Update instance with this key, value pair
+                self.__dict__.update({key: value})
 
     def __str__(self):
         """
@@ -52,8 +87,8 @@ class BaseModel:
         Update the public instance attribute ``updated_at``
         with the current datetime
         """
-        from models import storage
         self.updated_at = datetime.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -65,6 +100,22 @@ class BaseModel:
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
+
+        # Return a different format of datetime objects
+        for key in ["created_at", "updated_at"]:
+            if type(dictionary[key]) == datetime:
+                dictionary[key] = self.created_at.isoformat()
+
+        # Remove unnecessary key
+        keys = ["_sa_instance_state"]
+        for key in keys:
+            if key in dictionary.keys():
+                del dictionary[key]
+
         return dictionary
+
+    def delete(self):
+        """
+        Delete this instance from storage
+        """
+        models.storage.delete(self)

@@ -202,7 +202,7 @@ class HBNBCommand(cmd.Cmd):
             setattr(new_instance, key, value)
 
         # Save the instance to storage
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
         storage.save()
 
@@ -296,7 +296,8 @@ class HBNBCommand(cmd.Cmd):
         """
         try:
             # Syntax: def storage(self, obj=None)
-            del storage.all()[key]
+            obj = storage.all()[key]
+            obj.delete()    # Remove instance from storage
             storage.save()
         except KeyError:
             print("** no instance found **")
