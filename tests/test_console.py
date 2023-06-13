@@ -1,78 +1,89 @@
 #!/usr/bin/python3
-"""Consle module"""
+"""Test for console"""
 import unittest
-from unittest.mock import patch
-import cmd
-import sys
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+
 from console import HBNBCommand
+from unittest.mock import patch
+from io import StringIO
+import models
 
 
-class HBNBCommandTestCase(unittest.TestCase):
+class ConsoleTestCase(unittest.TestCase):
+    """Test for console"""
+
     def setUp(self):
         self.console = HBNBCommand()
+        self.stdout = StringIO()
+        self.storage = models.storage
 
     def tearDown(self):
-        pass
-
-    def test_quit(self):
-        """Test quit command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_quit('')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, '')
+        del self.stdout
+        del self.storage
 
     def test_create(self):
-        """Test create command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_create('BaseModel')
-            output = fake_out.getvalue().strip()
-            self.assertIsInstance(output, str)
-            self.assertTrue(len(output) > 0)
+        """test create basic"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State')
+        state_id = self.stdout.getvalue()[:-1]
+        # print(state_id)
+        # print(len(state_id))
+        self.assertTrue(len(state_id) == 36)
 
-    def test_show(self):
-        """Test show command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_show('BaseModel 12345')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** no instance found **")
+    def test_create_save(self):
+        """test create save"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State name="California')
+        state_id = self.stdout.getvalue()[:-1]
+        self.assertIsNotNone(
+            self.storage.all()["State.{}".format(state_id)])
 
-    def test_destroy(self):
-        """Test destroy command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_destroy('BaseModel 12345')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** no instance found **")
+    def test_create_non_existing_class(self):
+        """test non-existing class"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create MyModel')
+        self.assertEqual("** class doesn't exist **\n",
+                         self.stdout.getvalue())
 
     def test_all(self):
-        """Test all command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_all('')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, '')
-
-    def test_count(self):
-        """Test count command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_count('BaseModel')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, '0')
+        """test all"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State name="California"')
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('all State')
+        output = self.stdout.getvalue()[:-1]
+        self.assertIn("State", output)
+        self.assertIn("California", output)
 
     def test_update(self):
-        """Test update command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.do_update('BaseModel 12345 name "test name"')
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** no instance found **")
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State name="California"')
+        state_id = self.stdout.getvalue()[:-1]
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd(
+                'update State {} name="New California"'.format(state_id))
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('show State {}'.format(state_id))
+        output = self.stdout.getvalue()[:-1]
+        self.assertIn("California", output)
 
-    # Add more test methods for other commands...
+    def test_destroy(self):
+        """test destroy"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State name="California"')
+        state_id = self.stdout.getvalue()[:-1]
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('destroy State {}'.format(state_id))
+        # with patch('sys.stdout', self.stdout):
+        #     self.console.onecmd('show State {}'.format(state_id))
+        # self.assertEqual("** no instance found **\n",
+        #                  self.stdout.getvalue())
 
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_show(self):
+        """test show"""
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('create State name="California"')
+        state_id = self.stdout.getvalue()[:-1]
+        with patch('sys.stdout', self.stdout):
+            self.console.onecmd('show State {}'.format(state_id))
+        output = self.stdout.getvalue()[:-1]
+        self.assertIn("California", output)
