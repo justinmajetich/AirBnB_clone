@@ -1,7 +1,11 @@
+#!/usr/bin/python3
+"""Test for console"""
 import unittest
+
+from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
-from console import HBNBCommand
+import models
 
 
 class HBNBCommandTestCase(unittest.TestCase):
