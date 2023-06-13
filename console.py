@@ -330,11 +330,16 @@ class HBNBCommand(cmd.Cmd):
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
                 return
+            """
             for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
+            """
+            _cls = HBNBCommand.classes[args]
+
+            for k, v in storage.all(_cls).items():
+                print_list.append(str(v))
         else:
             for k, v in storage.all().items():
                 print_list.append(str(v))

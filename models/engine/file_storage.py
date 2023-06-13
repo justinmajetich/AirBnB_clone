@@ -14,11 +14,29 @@ class FileStorage():
     __file_path = "file.json"   # Path to the JSON file
     __objects = dict()      # Stores all objects by <class name>.id
 
-    def all(self):
+    def all(self, cls=None):
         """
-        Return a dictionary of models currently in storage
+        Return a dictionary of objects currently in storage
+        cls (optional): The class of objects to return
         """
-        return FileStorage.__objects
+        if cls is None:
+            return FileStorage.__objects
+
+        # cls is not None
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        all_objs = dict()
+        for key, obj in FileStorage.__objects.items():
+            if type(obj) == cls:
+                all_objs.update({key: obj})
+
+        return all_objs
 
     def new(self, obj):
         """
