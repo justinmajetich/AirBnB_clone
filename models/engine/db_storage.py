@@ -1,9 +1,6 @@
 #!/usr/bin/python3
-
 """db_storage.py use database"""
-
 import os
-
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
@@ -22,8 +19,6 @@ class DBStorage:
 
     """
     To set the environment variables, depending on your operating system:
-    export MY_VARIABLE=<MY_VARIABLE_VALUE>  (Linux)
-    set MY_VARIABLE=<MY_VARIABLE_VALUE>  (Windows)
     """
 
     def __init__(self):
