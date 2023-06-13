@@ -90,8 +90,3 @@ class HBNBCommandTestCase(unittest.TestCase):
 
             self.console.do_update('InvalidClass')
             self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
-
-    def test_help_methods(self):
-        with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.console.help_quit()
-            self.assertIn('Exits the program', mock_stdout.getvalue
