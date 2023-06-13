@@ -6,6 +6,7 @@ Creating a console for the AirBnB_clone
 import cmd
 import sys
 import shlex    # Unix shell - like syntax analyzer
+from helper_funcs import param_to_dict
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -184,31 +185,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        # Create a dictonary of attributes of the instance
+        # Create a dictonary of attributes for the instance
         attr = dict()
         for arg in args[1:]:
-            # print("**arg: {}**".format(arg))
-            if "=" not in arg:
-                # If parameter is unrecognized, skip it
-                continue
-
-            key = arg.split("=")[0]
-            value = arg.split("=")[-1]
-
-            # Replace underscores in the value with by space
-            value = value.replace(str('_'), str(' '))
-
-            # convert the value to the required type
-            try:
-                value = float(value)
-            except ValueError:
-                pass
-            else:
-                if value == int(value):
-                    value = int(value)
-
-            # print("dict: '{}'".format({key: value}))    # test
-            attr.update({key: value})
+            # convert parameter string to dictionary
+            element = param_to_dict(arg)
+            if (type(element) == dict) and (len(element) != 0):
+                attr.update(element)
 
         # print("\nAttributes: '{}'\n".format(attr))      # test
 
