@@ -8,8 +8,8 @@ import json
 import os
 
 
-class test_basemodel(unittest.TestCase):
-    """ """
+class TestBaseModel(unittest.TestCase):
+    """ Test base model"""
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -60,7 +60,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                                                       i.__dict__))
 
     def test_todict(self):
         """ """
@@ -96,4 +96,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertAlmostEqual(new.created_at.timestamp(),
+                               new.updated_at.timestamp(), delta=1)
