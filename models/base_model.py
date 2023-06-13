@@ -4,6 +4,7 @@ The class ``BaseModel`` defines all common attributes/methods for other classes
 """
 
 import uuid
+import models
 from datetime import datetime
 
 
@@ -28,7 +29,7 @@ class BaseModel:
             self.created_at = datetime.now()
             # created_at and updated_at should be the same for new instances
             self.updated_at = self.created_at
-            storage.new(self)
+            models.storage.new(self)
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
@@ -53,7 +54,7 @@ class BaseModel:
         """
         from models import storage
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """
