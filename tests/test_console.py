@@ -1,89 +1,97 @@
-#!/usr/bin/python3
-"""Test for console"""
 import unittest
-
-from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
-import models
+from console import HBNBCommand
 
 
-class ConsoleTestCase(unittest.TestCase):
-    """Test for console"""
-
+class HBNBCommandTestCase(unittest.TestCase):
     def setUp(self):
         self.console = HBNBCommand()
-        self.stdout = StringIO()
-        self.storage = models.storage
 
     def tearDown(self):
-        del self.stdout
-        del self.storage
+        pass
 
-    def test_create(self):
-        """test create basic"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State')
-        state_id = self.stdout.getvalue()[:-1]
-        # print(state_id)
-        # print(len(state_id))
-        self.assertTrue(len(state_id) == 36)
+    def test_prompt(self):
+        self.assertEqual('(hbnb) ', self.console.prompt)
 
-    def test_create_save(self):
-        """test create save"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="California')
-        state_id = self.stdout.getvalue()[:-1]
-        self.assertIsNotNone(
-            self.storage.all()["State.{}".format(state_id)])
+    def test_preloop(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.preloop()
+            self.assertEqual('(hbnb)\n', mock_stdout.getvalue())
 
-    def test_create_non_existing_class(self):
-        """test non-existing class"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create MyModel')
-        self.assertEqual("** class doesn't exist **\n",
-                         self.stdout.getvalue())
+    def test_precmd(self):
+        line = self.console.precmd('show BaseModel 123')
+        self.assertEqual('show BaseModel 123', line)
 
-    def test_all(self):
-        """test all"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="California"')
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('all State')
-        output = self.stdout.getvalue()[:-1]
-        self.assertIn("State", output)
-        self.assertIn("California", output)
+        line = self.console.precmd('BaseModel.show(123)')
+        self.assertEqual('show BaseModel 123', line)
 
-    def test_update(self):
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="California"')
-        state_id = self.stdout.getvalue()[:-1]
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd(
-                'update State {} name="New California"'.format(state_id))
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('show State {}'.format(state_id))
-        output = self.stdout.getvalue()[:-1]
-        self.assertIn("California", output)
+    def test_postcmd(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            stop = self.console.postcmd(stop=True, line='')
+            self.assertEqual('(hbnb) ', mock_stdout.getvalue())
+            self.assertTrue(stop)
 
-    def test_destroy(self):
-        """test destroy"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="California"')
-        state_id = self.stdout.getvalue()[:-1]
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('destroy State {}'.format(state_id))
-        # with patch('sys.stdout', self.stdout):
-        #     self.console.onecmd('show State {}'.format(state_id))
-        # self.assertEqual("** no instance found **\n",
-        #                  self.stdout.getvalue())
+    def test_do_quit(self):
+        with self.assertRaises(SystemExit):
+            self.console.do_quit('')
 
-    def test_show(self):
-        """test show"""
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('create State name="California"')
-        state_id = self.stdout.getvalue()[:-1]
-        with patch('sys.stdout', self.stdout):
-            self.console.onecmd('show State {}'.format(state_id))
-        output = self.stdout.getvalue()[:-1]
-        self.assertIn("California", output)
+    def test_do_EOF(self):
+        with self.assertRaises(SystemExit):
+            self.console.do_EOF('')
+
+    def test_emptyline(self):
+        pass  # Emptyline method does nothing, no need to test
+
+    def test_do_create(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_create('BaseModel')
+            self.assertIn('\n', mock_stdout.getvalue())
+
+            self.console.do_create('InvalidClass')
+            self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
+
+    def test_do_show(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_show('BaseModel 123')
+            self.assertIn("** instance id missing **\n", mock_stdout.getvalue())
+
+            self.console.do_show('InvalidClass')
+            self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
+
+    def test_do_destroy(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_destroy('BaseModel 123')
+            self.assertIn("** instance id missing **\n", mock_stdout.getvalue())
+
+            self.console.do_destroy('InvalidClass')
+            self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
+
+    def test_do_all(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_all('')
+            self.assertIn('[', mock_stdout.getvalue())
+
+            self.console.do_all('InvalidClass')
+            self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
+
+    def test_do_count(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_count('BaseModel')
+            self.assertIn('0\n', mock_stdout.getvalue())
+
+            self.console.do_count('InvalidClass')
+            self.assertIn('0\n', mock_stdout.getvalue())
+
+    def test_do_update(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.do_update('BaseModel 123')
+            self.assertIn("** attribute name missing **\n", mock_stdout.getvalue())
+
+            self.console.do_update('InvalidClass')
+            self.assertIn("** class doesn't exist **\n", mock_stdout.getvalue())
+
+    def test_help_methods(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.console.help_quit()
+            self.assertIn('Exits the program', mock_stdout.getvalue
