@@ -13,6 +13,9 @@ from sqlalchemy import (
         DateTime,
         ForeignKey
         )
+from sqlalchemy.orm import (
+        relationship
+        )
 
 """
 Note! BaseModel does /not/ inherit from Base. All other classes will \
