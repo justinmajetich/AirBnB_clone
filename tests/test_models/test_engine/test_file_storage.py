@@ -56,6 +56,24 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
+    def test_all_cls(self):
+        """
+        Ensure that FileStorage can return specific classes
+        using the all method
+        """
+        from models.state import State
+        from models.city import City
+
+        base_1 = BaseModel()
+        base_2 = City()
+        state_1 = State()
+        state_2 = State()
+
+        cls = State     # class to test
+        for key, value in storage.all(cls).items():
+            with self.subTest(key=key, value=value):
+                self.assertIsInstance(value, cls)
+
     def test_base_model_instantiation(self):
         """
         Ensure that file is not created on BaseModel save
