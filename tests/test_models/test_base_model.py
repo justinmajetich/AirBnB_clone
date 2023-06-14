@@ -15,6 +15,8 @@ class test_basemodel(unittest.TestCase):
     """
     Definition of tests for the class
     """
+    # Set maxDiff to see all output on error comparison
+    maxDiff = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -95,9 +97,24 @@ class test_basemodel(unittest.TestCase):
         """
         Ensure that the class instances are well represented in string format
         """
+        unnecessary_keys = ["_sa_instance_state"]
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+
+        # Ensure unnecessary keys are not returned in string representation
+        for key in str(i):
+            with self.subTest(key=key):
+                self.assertNotIn(key, unnecessary_keys)
+
+        # Make a new copy of self
+        rep = dict()
+        for key, value in i.__dict__.items():
+            if key in unnecessary_keys:
+                continue
+            else:
+                rep.update({key: value})
+
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(
+            self.name, i.id, rep))
 
     def test_todict(self):
         """

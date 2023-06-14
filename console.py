@@ -21,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) '
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -37,12 +37,15 @@ class HBNBCommand(cmd.Cmd):
     # Some attributes that are not allowed to be modified manually
     not_updatable = ["id", "created_at", "updated_at"]
 
+    '''
     def preloop(self):
         """
         Print if isatty is false
         """
+        print("** precmd **")      # test
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end='')
+    '''
 
     def precmd(self, line):
         """
@@ -96,13 +99,16 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
+    '''
     def postcmd(self, stop, line):
         """
         Print if isatty is false
         """
+        print("** postcmd **")      # test
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
+    '''
 
     def do_quit(self, command):
         """

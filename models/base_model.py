@@ -84,7 +84,17 @@ class BaseModel:
         Format: [<class name>] (<self.id>) <self.__dict__>
         """
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        dictionary = dict()
+
+        # Remove unnecesary attributes
+        unnecessary_attr = ["_sa_instance_state"]
+        for key, value in self.__dict__.items():
+            if key in unnecessary_attr:
+                continue
+            else:
+                dictionary.update({key: value})
+
+        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
 
     def save(self):
         """
@@ -111,12 +121,16 @@ class BaseModel:
                 dictionary[key] = self.created_at.isoformat()
 
         # Remove unnecessary key
-        keys = ["_sa_instance_state"]
-        for key in keys:
-            if key in dictionary.keys():
-                del dictionary[key]
+        unnecessary_keys = ["_sa_instance_state"]
+        final_dict = dict()
+        for key, value in dictionary.items():
+            if key in unnecessary_keys:
+                # skip unnecessary attributes
+                continue
+            else:
+                final_dict.update({key: value})
 
-        return dictionary
+        return final_dict
 
     def delete(self):
         """
