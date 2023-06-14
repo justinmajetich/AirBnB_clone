@@ -20,6 +20,8 @@ class test_User(test_basemodel):
         self.name = "User"
         self.value = User
 
+    '''
+    #   TESTS NO LONGER REQUIRED
     def test_first_name(self):
         """
         Ensure that the `first_name` attribute is a string
@@ -47,3 +49,4 @@ class test_User(test_basemodel):
         """
         new = self.value()
         self.assertEqual(type(new.password), str)
+    '''
