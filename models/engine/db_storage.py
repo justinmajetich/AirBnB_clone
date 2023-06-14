@@ -12,7 +12,6 @@ from models.review import Review
 from models.state import State
 
 
-
 class DBStorage:
     """Defines dbstorage class"""
     _engine = None
