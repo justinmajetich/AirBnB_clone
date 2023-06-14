@@ -7,7 +7,8 @@ from models.base_model import Base
 from models.base_model import (
         Column,
         String,
-        ForeignKey
+        ForeignKey,
+        relationship
         )
 
 
@@ -27,3 +28,7 @@ class City(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+
+    # Relationships
+    places = relationship("Place", backref="cities",
+                          cascade="all, delete, delete-orphan")

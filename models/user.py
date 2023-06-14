@@ -8,7 +8,8 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from models.base_model import (
         Column,
-        String
+        String,
+        relationship
         )
 
 
@@ -28,6 +29,9 @@ class User(BaseModel, Base):
     * last_name (String): represents a column containing a string
         (128 characters)
         * can be null
+
+    # Relationship:
+    * places : refers to all the places owned by the user
     """
     __tablename__ = "users"
 
@@ -35,3 +39,7 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
+
+    # Relationships
+    places = relationship("Place", backref="user",
+                          cascade="all, delete, delete-orphan")

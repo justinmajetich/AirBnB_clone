@@ -20,10 +20,12 @@ class State(BaseModel, Base):
     """
     Define the class State
 
-    * __tablename__: represents the table name, cities
+    * __tablename__: represents the table name, 'cities'
     * name (String): represents a column containing a string (128 characters)
         * can't be null
-    * cities (list): represents a list of 'City' objects linked to this
+
+    # Relationship:
+    * cities : represents a list of 'City' objects linked to this
         'State' instance
     """
     __tablename__ = "states"
