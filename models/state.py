@@ -48,10 +48,3 @@ class State(BaseModel, Base):
                     objs.append(obj)
 
             return objs
-
-    def __init__(self, *args, **kwargs):
-        """
-        Add extra initialization for instance
-        """
-        super().__init__(*args, **kwargs)
-        self.name = str()

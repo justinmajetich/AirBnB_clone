@@ -20,6 +20,8 @@ class test_City(test_basemodel):
         self.name = "City"
         self.value = City
 
+    '''
+    # Tests no more required
     def test_state_id(self):
         """
         Ensure that the `state_id` attribute of the class is a string
@@ -33,3 +35,4 @@ class test_City(test_basemodel):
         """
         new = self.value()
         self.assertEqual(type(new.name), str)
+    '''

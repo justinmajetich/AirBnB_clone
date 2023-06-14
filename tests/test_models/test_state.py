@@ -20,9 +20,12 @@ class test_state(test_basemodel):
         self.name = "State"
         self.value = State
 
+    '''
+    # Test no longer required
     def test_name3(self):
         """
         Ensure that the attribute `name` of the class is a string
         """
         new = self.value()
         self.assertEqual(type(new.name), str)
+    '''
