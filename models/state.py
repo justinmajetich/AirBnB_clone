@@ -32,6 +32,7 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
+    # Relationship:
     if isinstance(storage, DBStorage):
         # DBStorage relationsip between 'State' and 'City'
         cities = relationship("City", backref="state",

@@ -32,6 +32,7 @@ class User(BaseModel, Base):
 
     # Relationship:
     * places : refers to all the places owned by the user
+    * reviews : refers to all the reviews made by the user
     """
     __tablename__ = "users"
 
@@ -43,3 +44,5 @@ class User(BaseModel, Base):
     # Relationships
     places = relationship("Place", backref="user",
                           cascade="all, delete, delete-orphan")
+    reviews = relationship("Review", backref="user",
+                           cascade="all, delete, delete-orphan")

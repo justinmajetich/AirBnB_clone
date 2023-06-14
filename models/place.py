@@ -4,6 +4,9 @@ Define the ``Place`` class that inherits from the class ``BaseModel``
 and the declarative base class 'Base'
 """
 
+from models import storage
+from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 from models.base_model import BaseModel
 from models.base_model import Base
 from models.base_model import (
@@ -62,3 +65,23 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = list(str())   # list of Amenity.id
+
+    # Relationships:
+    if isinstance(storage, DBStorage):
+        # DBStorage relationship between 'Place' and 'Review'
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete, delete-orphan")
+    elif isinstance(storage, FileStorage):
+        # FileStorage relationship between 'Place' and 'Review'
+        @property
+        def reviews(self):
+            """
+            Return a list of 'Review' instances with place_id equal to
+            self.id
+            """
+            objs = list()
+            for obj in storage.all():
+                if obj.place_id == self.id:
+                    objs.append(obj)
+
+            return objs

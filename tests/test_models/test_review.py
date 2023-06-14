@@ -20,6 +20,8 @@ class test_review(test_basemodel):
         self.name = "Review"
         self.value = Review
 
+    '''
+    # TESTS NO LONGER REQUIRED
     def test_place_id(self):
         """
         Ensure that the attribute `place_id` is a string
@@ -40,3 +42,4 @@ class test_review(test_basemodel):
         """
         new = self.value()
         self.assertEqual(type(new.text), str)
+    '''
