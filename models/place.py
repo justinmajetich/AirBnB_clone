@@ -19,7 +19,7 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 
 class Place(BaseModel, Base):
-    """Defines the Place class """
+    """ A place to stay """
     __tablename__ = 'places'
 
     city_id = Column(String(60), ForeignKey("cities.id", ondelete="CASCADE"),
@@ -45,7 +45,8 @@ class Place(BaseModel, Base):
     if os.getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def reviews(self):
-            """Returns the list of Review instances."""
+            """Returns the list of Review instances with place_id equals
+            to the current Place.id."""
 
             reviews = list(models.storage.all(Review).values())
 
@@ -54,7 +55,8 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """Returns the list of Amenity instances."""
+            """Returns the list of Amenity instances based on
+            the attribute amenity_ids that contains all Amenity.id."""
 
             amenities = list(models.storage.all(Amenity).values())
 

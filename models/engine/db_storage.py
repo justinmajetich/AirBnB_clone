@@ -1,24 +1,24 @@
 #!/usr/bin/python3
-"""New dbStorage engine"""
+"""New engine DBStorage"""
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.place import Place
-from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.user import User
-from models.city import City
-from models.review import Review
 from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class DBStorage:
-    """Defines dbstorage class"""
+    """The new database storage class"""
     _engine = None
     _session = None
 
     def __init__(self):
-        """Initialize dbstorage"""
+        """Initialize the DBStorage class"""
         self._engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'
                                      .format(os.getenv('HBNB_MYSQL_USER'),
                                              os.getenv('HBNB_MYSQL_PWD'),
@@ -65,5 +65,5 @@ class DBStorage:
         self._session = Session()
 
     def close(self):
-        """Closes the session"""
+        """Close the session"""
         self._session.close()
