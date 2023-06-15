@@ -47,6 +47,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @mock.patch('models.storage')
     def test_save(self, mock_storage):
         """Test that save method updates `updated_at` and calls
         `storage.save`"""
