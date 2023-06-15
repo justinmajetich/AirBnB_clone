@@ -14,6 +14,7 @@ from models.review import Review
 
 class DBStorage:
     """The new database storage class"""
+
     _engine = None
     _session = None
 
