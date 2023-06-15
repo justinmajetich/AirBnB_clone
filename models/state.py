@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" State Module for our hbnb project """
+""" State Module for HBNB project """
 
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
@@ -10,7 +10,7 @@ import os
 
 
 class State(BaseModel, Base):
-    """ defines the class State """
+    """ State class """
     __tablename__ = 'states'
 
     name = Column(String(128), nullable=False)
@@ -22,6 +22,7 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            """ Returns the list of Cities"""
+            """ Returns the list of City instances with state_id
+            equals to the current State.id. """
             return [city for city in models.storage.all(City).values()
                     if city.state_id == self.id]
