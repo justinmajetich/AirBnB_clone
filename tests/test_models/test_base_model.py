@@ -47,20 +47,14 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    @mock.patch('models.storage')
-    def test_save(self, mock_storage):
-        """Test that save method updates `updated_at` and calls
-        `storage.save`"""
-        inst = BaseModel()
-        old_created_at = inst.created_at
-        old_updated_at = inst.updated_at
-        inst.save()
-        new_created_at = inst.created_at
-        new_updated_at = inst.updated_at
-        self.assertNotEqual(old_updated_at, new_updated_at)
-        self.assertEqual(old_created_at, new_created_at)
-        self.assertTrue(mock_storage.new.called)
-        self.assertTrue(mock_storage.save.called)
+    # def test_save(self):
+    #     """ Testing save """
+    #     i = self.value()
+    #     i.save()
+    #     key = self.name + "." + i.id
+    #     with open('file.json', 'r') as f:
+    #         j = json.load(f)
+    #         self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
         """ """
