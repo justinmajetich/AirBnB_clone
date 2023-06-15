@@ -13,7 +13,8 @@ from sqlalchemy import (
         Integer,
         Float,
         DateTime,
-        ForeignKey
+        ForeignKey,
+        Table
         )
 from sqlalchemy.orm import (
         relationship

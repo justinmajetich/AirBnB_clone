@@ -19,3 +19,18 @@ else:
 
 # Reload the storage
 storage.reload()
+
+"""
+NOTE:
+    In this extra imports, A special comment `# noqa: E402` is included.
+    This comment tells 'pycodestyle' to ignore ERROR E402.
+    This error is raised if import statements are located 'not at the top
+    of the file'
+"""
+# Extra imports
+from models.state import State      # noqa: E402
+from models.place import Place      # noqa: E402
+from models.city import City        # noqa: E402
+from models.user import User        # noqa: E402
+from models.review import Review    # noqa: E402
+from models.amenity import Amenity  # noqa: E402
