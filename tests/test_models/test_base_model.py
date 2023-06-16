@@ -68,12 +68,14 @@ class test_basemodel(unittest.TestCase):
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE"), 'db')
     def test_kwargs_none(self):
         """ """
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE"), 'db')
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
