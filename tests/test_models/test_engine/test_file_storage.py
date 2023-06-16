@@ -8,6 +8,10 @@ from models.base_model import BaseModel
 from models import storage
 import os
 
+TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE")
+if TYPE_STORAGE == "db":
+    exit(0)
+
 
 class test_fileStorage(unittest.TestCase):
     """
