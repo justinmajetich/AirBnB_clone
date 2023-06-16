@@ -1,0 +1,4 @@
+# Files to ignore
+
+# ignore python cache files
+__pycache__
