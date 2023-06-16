@@ -1,31 +1,36 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import unittest
-
+import os
 import models
 from models.base_model import BaseModel
-import os
 
-
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "skip if not db")
 class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
-        """ Set up test environment """
-        self.storage = models.storage
-        del_list = []
-        for key in self.storage.__objects.keys():
-            del_list.append(key)
-        for key in del_list:
-            del self.storage.__objects[key]
+        """Set up test environment"""
+        storage_type = os.getenv('HBNB_TYPE_STORAGE')
+        if storage_type == 'db':
+            from models.engine.db_storage import DBStorage
+            self.storage = DBStorage()
+            self.storage.reload()
+        else:
+            self.storage = models.storage
+
+        self.storage.delete_all()
 
     def tearDown(self):
         """ Remove storage file at end of tests """
-        try:
-            os.remove('file.json')
-        except:
-            pass
+        storage_type = os.getenv('HBNB_TYPE_STORAGE')
+        if storage_type == 'db':
+            self.storage._DBStorage__session.close()
+            self.storage._DBStorage__engine.dispose()
+        else:
+            try:
+                os.remove('file.json')
+            except FileNotFoundError:
+                pass
 
         del self.storage
 
