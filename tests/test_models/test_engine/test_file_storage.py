@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """ Module for testing file FileStorage"""
 import unittest
-from models.base_model import BaseModel  # Import BaseModel from models.base_model
-from models import FileStorage
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 import os
-
 
 class TestFileStorage(unittest.TestCase):
     """ Class to test the file FileStorage method """
