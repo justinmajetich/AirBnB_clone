@@ -21,9 +21,7 @@ class TestFileStorage(unittest.TestCase):
         """Remove storage file at the end of tests"""
         storage_type = os.getenv('HBNB_TYPE_STORAGE')
         if storage_type == 'db':
-            self.storage._DBStorage__session.close_all()
-            self.storage._DBStorage__session.remove()
-            self.storage._DBStorage__engine.dispose()
+            pass
         else:
             try:
                 os.remove('file.json')
