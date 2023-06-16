@@ -18,7 +18,7 @@ class TestFileStorage(unittest.TestCase):
             self.storage.delete(obj)
 
     def tearDown(self):
-    """Remove storage file at the end of tests"""
+        """Remove storage file at the end of tests"""
         storage_type = os.getenv('HBNB_TYPE_STORAGE')
         if storage_type == 'db':
             self.storage._DBStorage__session.close_all()
