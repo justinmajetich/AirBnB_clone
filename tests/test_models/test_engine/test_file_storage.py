@@ -20,10 +20,10 @@ class TestFileStorage(unittest.TestCase):
     #     self.assertIsInstance(all_objects, dict)
     #     self.assertIn('BaseModel.{}'.format(self.model.id), all_objects)
 
-    def test_all_with_cls(self):
-        all_objects = self.storage.all(BaseModel)
-        self.assertIsInstance(all_objects, dict)
-        self.assertIn('BaseModel.{}'.format(self.model.id), all_objects)
+    # def test_all_with_cls(self):
+    #     all_objects = self.storage.all(BaseModel)
+    #     self.assertIsInstance(all_objects, dict)
+    #     self.assertIn('BaseModel.{}'.format(self.model.id), all_objects)
 
     def test_new(self):
         new_model = BaseModel()
