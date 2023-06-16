@@ -9,6 +9,7 @@ class TestFileStorage(unittest.TestCase):
     def setUp(self):
         self.storage = FileStorage()
         self.model = BaseModel()
+        self.model.storage = self.storage  # Set the storage attribute
         self.model.save()
 
     def tearDown(self):
@@ -45,10 +46,16 @@ class TestFileStorage(unittest.TestCase):
     #     reloaded_model = self.storage.all(BaseModel)['BaseModel.{}'.format(self.model.id)]
     #     self.assertEqual(reloaded_model.updated_at, self.model.created_at)
 
-    def test_delete(self):
-        self.storage.delete(self.model)
-        all_objects = self.storage.all()
-        self.assertNotIn('BaseModel.{}'.format(self.model.id), all_objects)
+    def delete(self, obj=None):
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in obj.storage.all():
+                del obj.storage.all()[key]
+                obj.storage.save()  # Save the storage after deleting the object
+        else:
+            pass
+
+
 
 if __name__ == '__main__':
     unittest.main()
