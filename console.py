@@ -135,38 +135,41 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
+        # get class name from args
         _cls = args.partition(" ")[0]
 
-        # _args look like 'name="California" state_id="0001"'
-        # create **kwargs from _args
-        _args = args.partition(" ")[2]
-        _kwargs = {}
-        for arg in _args.split(" "):
-            # arg looks like 'name="California"'
-            # split arg into key, value pair
-            arg = arg.split("=")
-            # arg looks like ['name', '"California"']
-            # strip quotes from value
-            arg[1] = arg[1].replace('"', '')
-            # arg looks like ['name', 'California']
-            # add to kwargs
-            _kwargs[arg[0]] = arg[1]
-
+        # check if class exists
         if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        # create new instance of class with **kwargs
+        # create new instance of class
         new_instance = HBNBCommand.classes[_cls]()
+        print(new_instance.id)
         storage.save()
 
-        print(new_instance.id)
+        # _args look like 'name="California" state_id="0001"'
+        # create **kwargs from _args
+        _args = args.partition(" ")[2]
 
-        # update new_instance with args
-        # call self.do_update() with args
-        for key, value in _kwargs.items():
-            args = _cls + ' ' + new_instance.id + ' ' + key + ' ' + value
-            self.do_update(args)
+        if _args:
+            _kwargs = {}
+            for arg in _args.split(" "):
+                # arg looks like 'name="California"'
+                # split arg into key, value pair
+                arg = arg.split("=")
+                # arg looks like ['name', '"California"']
+                # strip quotes from value
+                arg[1] = arg[1].replace('"', '')
+                # arg looks like ['name', 'California']
+                # add to kwargs
+                _kwargs[arg[0]] = arg[1]
+
+            # update new_instance with args
+            # call self.do_update() with args
+            for key, value in _kwargs.items():
+                args = _cls + ' ' + new_instance.id + ' ' + key + ' ' + value
+                self.do_update(args)
 
     def help_create(self):
         """ Help information for the create method """
