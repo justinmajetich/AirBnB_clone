@@ -43,43 +43,59 @@ class HBNBCommand(cmd.Cmd):
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
-        # scan for general formating - i.e '.', '(', ')'
-        if not ('.' in line and '(' in line and ')' in line):
+        # scan for general formating - i.e '.', '(', ')', '='
+        if not ('.' in line and '(' in line and ')' in line and '=' in line):
             return line
 
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
-            # isolate <class name>
-            _cls = pline[:pline.find('.')]
+            # [State.create()]
+            # [State.all()].find('.') -> 5
+            # _cls = pline[:5] -> State
 
-            # isolate and validate <command>
-            _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
-                raise Exception
+            # check if plin contains '='
+            if '=' in pline:
+                first_space = pline.find(' ')
+                second_space = pline.find(' ', first_space + 1)
 
-            # if parantheses contain arguments, parse them
-            pline = pline[pline.find('(') + 1:pline.find(')')]
-            if pline:
-                # partition args: (<id>, [<delim>], [<*args>])
-                pline = pline.partition(', ')  # pline convert to tuple
+                _cmd = pline[:first_space]
+                _cls = pline[first_space + 1:second_space]
+                _args = pline[second_space + 1:]
 
-                # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
+                line = ' '.join([_cmd, _cls, _args])
+            # check if pline contains '.'
+            elif '.' in pline:
+                # isolate <class name>
+                _cls = pline[:pline.find('.')]
 
-                # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
+                # isolate and validate <command>
+                _cmd = pline[pline.find('.') + 1:pline.find('(')]
+                if _cmd not in HBNBCommand.dot_cmds:
+                    raise Exception
+
+                # if parantheses contain arguments, parse them
+                pline = pline[pline.find('(') + 1:pline.find(')')]
                 if pline:
-                    # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
-            line = ' '.join([_cmd, _cls, _id, _args])
+                    # partition args: (<id>, [<delim>], [<*args>])
+                    pline = pline.partition(', ')  # pline convert to tuple
+
+                    # isolate _id, stripping quotes
+                    _id = pline[0].replace('\"', '')
+                    # possible bug here:
+                    # empty quotes register as empty _id when replaced
+
+                    # if arguments exist beyond _id
+                    pline = pline[2].strip()  # pline is now str
+                    if pline:
+                        # check for *args or **kwargs
+                        if pline[0] is '{' and pline[-1] is '}' \
+                                and type(eval(pline)) is dict:
+                            _args = pline
+                        else:
+                            _args = pline.replace(',', '')
+                            # _args = _args.replace('\"', '')
+                line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
             pass
@@ -118,13 +134,39 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        _cls = args.partition(" ")[0]
+
+        # _args look like 'name="California" state_id="0001"'
+        # create **kwargs from _args
+        _args = args.partition(" ")[2]
+        _kwargs = {}
+        for arg in _args.split(" "):
+            # arg looks like 'name="California"'
+            # split arg into key, value pair
+            arg = arg.split("=")
+            # arg looks like ['name', '"California"']
+            # strip quotes from value
+            arg[1] = arg[1].replace('"', '')
+            # arg looks like ['name', 'California']
+            # add to kwargs
+            _kwargs[arg[0]] = arg[1]
+
+        if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        # create new instance of class with **kwargs
+        new_instance = HBNBCommand.classes[_cls]()
         storage.save()
+
         print(new_instance.id)
-        storage.save()
+
+        # update new_instance with args
+        # call self.do_update() with args
+        for key, value in _kwargs.items():
+            args = _cls + ' ' + new_instance.id + ' ' + key + ' ' + value
+            self.do_update(args)
 
     def help_create(self):
         """ Help information for the create method """
@@ -187,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +361,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
