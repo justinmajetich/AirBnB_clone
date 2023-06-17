@@ -1,4 +1,3 @@
 venv/
-tests/
 *__pycache__/
 file.json
