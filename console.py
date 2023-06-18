@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+""" Code for Console Module """
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -13,7 +13,7 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """ Code Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -31,12 +31,12 @@ class HBNBCommand(cmd.Cmd):
             }
 
     def preloop(self):
-        """Prints if isatty is false"""
+        """ Code Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
     def precmd(self, line):
-        """Reformat command line for advanced command syntax.
+        """A Reformat command line for advanced command syntax.
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
@@ -87,17 +87,17 @@ class HBNBCommand(cmd.Cmd):
             return line
 
     def postcmd(self, stop, line):
-        """Prints if isatty is false"""
+        """Code Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
+        """ How to exit the HBNB console"""
         exit()
 
     def help_quit(self):
-        """ Prints the help documentation for quit  """
+        """ Code Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
     def do_EOF(self, arg):
@@ -106,15 +106,15 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def help_EOF(self):
-        """ Prints the help documentation for EOF """
+        """ Code Prints the help documentation for EOF """
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """ Code Overrides the emptyline method of CMD """
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Code Creates an object of any class"""
         if not args:
             print("** class name missing **")
             return
@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: create <className>\n")
 
     def do_show(self, args):
-        """ Method to show an individual object """
+        """ How to show an individual object """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
