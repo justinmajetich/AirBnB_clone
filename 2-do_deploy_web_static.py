@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Code that Compress web static package
+"""Compress web static package
 """
 from fabric.api import *
 from datetime import datetime
@@ -12,7 +12,7 @@ env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_deploy(archive_path):
-        """code to Deploy web files to server
+        """Deploy web files to server
         """
         try:
                 if not (path.exists(archive_path)):
