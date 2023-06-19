@@ -47,7 +47,6 @@ class HBNBCommand(cmd.Cmd):
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
-        
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
@@ -117,10 +116,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        
+
         arglist = args.split(' ')
         _cls = arglist[0]
-        
+
         kwarg = {}
         for param in arglist[1:]:
             param = param.replace(' ', '')
@@ -148,14 +147,14 @@ class HBNBCommand(cmd.Cmd):
         elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         new_instance = HBNBCommand.classes[_cls]()
-        
-        # this line sets the attribute of the object 
+
+        # this line sets the attribute of the object
         # according to the given parameters
         for _key, _val in kwarg.items():
             setattr(new_instance, _key, _val)
-        
+
         print(new_instance.id)
         storage.save()
 
