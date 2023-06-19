@@ -128,22 +128,23 @@ class HBNBCommand(cmd.Cmd):
 
         else:
         #if args[0] in HBNBCommand.classes:
+
             dicts = {}
 
             for arr in args[1:]:
                 if "=" in arr:
-                    arr.split('=')
-                    k = arr[0]
-                    v = arr[1]
+                    arrs = arr.split('=')
+                    k = arrs[0]
+                    v = arrs[1]
 
                     if v[0] == v[-1] == '"':
                         v.replace('"', '')
                         v.replace('_', ' ')
 
                     else:
-                        try:
+                        if '.' in v:
                             v = float(v)
-                        except:
+                        else:
                             try:
                                 v = int(v)
                             except:
@@ -152,9 +153,9 @@ class HBNBCommand(cmd.Cmd):
 
 
         new_instance = HBNBCommand.classes[args[0]](**dicts)
-        #storage.save()
         print(new_instance.id)
-        storage.save()
+        #storage.save()
+        new_instance.save()
 
 
        # else:
