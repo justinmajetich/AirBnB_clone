@@ -124,11 +124,22 @@ class HBNBCommand(cmd.Cmd):
         kwarg = {}
         for param in arglist[1:]:
             param = param.replace(' ', '')
-            param = param.replace('"', '')
-            param = param.replace("'", '')
-            param = param.replace('_', ' ')
             if '=' in param:
                 _key, _val = param.split('=')
+                if '"' in _val:
+                    _val = _val.replace('"', '')
+                    _val = _val.replace('_', ' ')
+                    _val = str(_val)
+                elif '.' in _val:
+                    try:
+                        _val = float(_val)
+                    except Exception as mess:
+                        continue
+                elif _val:
+                    try:
+                        _val = int(_val)
+                    except Exception as mess:
+                        continue
                 kwarg[_key] = _val
 
         if not args:
