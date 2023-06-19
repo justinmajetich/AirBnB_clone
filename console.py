@@ -115,16 +115,23 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        # split the args to determine if it consists of kwargs
+        args = args.split(' ')
+        c_name = args[0]
+        if not c_name:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        if len(args) > 1:
+            # return the rest of the argument as dictionary
+            dictionary = HBNBCommand.to_dict(args[1:])
+        new_instance = HBNBCommand.classes[c_name]()
+        if dictionary is not None:
+            new_instance.__dict__.update(dictionary)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +326,34 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    @staticmethod
+    def to_dict(arg_list):
+        """Convert the list of keyword arguments to a dictionary"""
+        _dict = {}
+        for ele in arg_list:
+            if '=' not in ele:
+                continue
+            key = ele[:ele.find('=')]
+            value = ele[ele.find('='):].strip('=').replace('_', ' ')
+            # check if it is a valid string. NB: numbers in quotes are considered strings
+            if type(value) is str and value.startswith('"') and value.endswith('"'):
+                value = value.strip('"')
+                if '"' in value: # if the value contains quotes in between
+                    value = value.replace('"','\\"')
+                _dict[key] = value
+            else: # else the value is either an integer or a float
+                try:
+                    if value.isdigit():
+                        value = int(value)
+                    else:
+                        value = float(value)
+                except Exception as e:
+                    pass
+                _dict[key] = value
+
+        return None if len(_dict) == 0 else _dict
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
