@@ -144,3 +144,4 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 AirBnB_clone_v2 contributors :
 Nazarene Wanyaga - https://github.com/nazarenegena
 Joe Wainaina - https://github.com/iamjoee
+Project Date 16-Jun-2023
