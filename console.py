@@ -116,6 +116,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         # split the args to determine if it consists of kwargs
+        dictionary = None
         args = args.split(' ')
         c_name = args[0]
         if not c_name:
@@ -194,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -332,24 +333,27 @@ class HBNBCommand(cmd.Cmd):
         """Convert the list of keyword arguments to a dictionary"""
         _dict = {}
         for ele in arg_list:
-            if '=' not in ele:
+            if '=' not in ele or ele == '='\
+                    or ele[0] == '=' or ele[len(ele) - 1] == '=':
                 continue
             key = ele[:ele.find('=')]
             value = ele[ele.find('='):].strip('=').replace('_', ' ')
-            # check if it is a valid string. NB: numbers in quotes are considered strings
-            if type(value) is str and value.startswith('"') and value.endswith('"'):
+            # check if it is a valid string. NB: numbers in quotes
+            # are considered strings
+            if type(value) is str and value.startswith('"') and \
+                    value.endswith('"'):
                 value = value.strip('"')
-                if '"' in value: # if the value contains quotes in between
-                    value = value.replace('"','\\"')
+                if '"' in value:  # if the value contains quotes in between
+                    value = value.replace('"', '\"')  # quotes are escaped
                 _dict[key] = value
-            else: # else the value is either an integer or a float
+            else:  # else the value is either an integer or a float
                 try:
                     if value.isdigit():
                         value = int(value)
                     else:
                         value = float(value)
                 except Exception as e:
-                    pass
+                    continue
                 _dict[key] = value
 
         return None if len(_dict) == 0 else _dict
