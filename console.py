@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3/
 """ Console Module """
 import cmd
 import sys
@@ -317,8 +317,4 @@ class HBNBCommand(cmd.Cmd):
 
     def help_update(self):
         """ Help information for the update class """
-        print("Updates an object with new information")
-        print("Usage: update <className> <id> <attName> <attVal>\n")
-
-if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+        print("Updates an object w
