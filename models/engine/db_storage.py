@@ -10,7 +10,7 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-from models.base_model import BaseModel
+
 
 class DBStorage:
     __engine = None
@@ -28,9 +28,9 @@ class DBStorage:
         # Drop table if env is test
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-  
+
     def all(self, cls=None):
-        """Query on the current database session""" 
+        """Query on the current database session"""
         classes = [State, City, User, Place, Review, Amenity]
         if cls is None:
             objs = []
