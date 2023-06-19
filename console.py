@@ -143,11 +143,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        # create new instance of class
-        new_instance = HBNBCommand.classes[_cls]()
-        print(new_instance.id)
-        storage.save()
-
+        # build kwargs from args
         # _args look like 'name="California" state_id="0001"'
         # create **kwargs from _args
         _args = args.partition(" ")[2]
@@ -165,11 +161,11 @@ class HBNBCommand(cmd.Cmd):
                 # add to kwargs
                 _kwargs[arg[0]] = arg[1]
 
-            # update new_instance with args
-            # call self.do_update() with args
-            for key, value in _kwargs.items():
-                args = _cls + ' ' + new_instance.id + ' ' + key + ' ' + value
-                self.do_update(args)
+        # create new instance of class
+        new_instance = HBNBCommand.classes[_cls](**_kwargs)
+        print(new_instance.id)
+        storage.new(new_instance)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """

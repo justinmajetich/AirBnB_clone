@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from models.base_model import Base
+# from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
@@ -8,13 +8,19 @@ from models.state import State
 from models.city import City
 from models.user import User
 from models.place import Place
-from models.review import Review
-from models.amenity import Amenity
+from models.base_model import Base
 
 
 class DBStorage:
     __engine = None
     __session = None
+
+    __classes = {
+        'State': State,
+        'City': City,
+        'User': User,
+        'Place': Place,
+    }
 
     def __init__(self):
         """Constructor of DBStorage class"""
@@ -31,14 +37,14 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database session"""
-        classes = [State, City, User, Place, Review, Amenity]
-        if cls is None:
-            objs = []
-            for c in classes:
-                objs += self.__session.query(c).all()
-        else:
-            objs = self.__session.query(cls).all()
-        return {'{}.{}'.format(type(o).__name__, o.id): o for o in objs}
+        for c in self.__classes:
+            if cls is None or cls == c or cls == self.__classes[c]:
+                objs = self.__session.query(self.__classes[c]).all()
+                return {'{}.{}'
+                        .format(type(o).__name__, o.id): o for o in objs}
+            else:
+                objs = self.__session.query(cls).all()
+            return {'{}.{}'.format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """Add the object to the current database session"""
@@ -55,7 +61,7 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the engine and initialize a session"""
-        Base.metadata.create_all(self.__engine)
+        # Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
