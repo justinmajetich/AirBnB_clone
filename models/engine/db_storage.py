@@ -40,7 +40,7 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a dictionary containing depending key: object
            pairs on the cls provided."""
-        if cls:
+        if cls is None:
             objects = self.__sesssion.query(State).all()
             objects.extend(self.__sesssion.query(City).all())
             objects.extend(self.__sesssion.query(Amenity).all())
@@ -49,8 +49,6 @@ class DBStorage:
             objects.extend(self.__sesssion.query(Review).all())
 
         else:
-            if type(cls) == str:
-                cls = literal_eval(cls)
             objects = self.__session.query(cls).all()
         return {"{}.{}".format(type(object).__name__, object.id): object
                 for object in objects}
