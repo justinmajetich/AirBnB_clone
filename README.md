@@ -1138,4 +1138,5 @@ Otherwise, you will have to re-write the console by replacing `precmd` by `defau
 ### Authors :black_nib
 
 * **Lucy Njeri Maina** <[NjeriMaina4172](https://github.com/NjeriMaina4172)>
+* **Bella Okafor** <[belladesign](https://github.com/belladesign)>
 * **Dennis Nderitu Kinyanjui** <[dennisnderitu254](https://github.com/dennisnderitu254)>
