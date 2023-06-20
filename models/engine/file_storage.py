@@ -1,95 +1,92 @@
 #!/usr/bin/python3
-"""Module for FileStorage class."""
-import datetime
+"""
+    Define class FileStorage
+"""
 import json
-import os
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
-
-    """Class for storing and retrieving data"""
+    '''
+        Serializes instances to JSON file and deserializes to JSON file.
+    '''
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """returns the dictionary __objects"""
-        return FileStorage.__objects
+    def all(self, cls=None):
+        '''
+            Return the dictionary
+        '''
+        fs_objects = {}
+        if cls:
+            if type(cls) is str and cls in classes:
+                for key, val in self.__objects.items():
+                    if cls == key.split('.')[0]:
+                        fs_objects[key] = val
+            elif cls.__name__ in classes:
+                for key, val in self.__objects.items():
+                    if cls.__name__ == key.split('.')[0]:
+                        fs_objects[key] = val
+        else:
+            return self.__objects
+        return fs_objects
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        '''
+            Set in __objects the obj with key <obj class name>.id
+            Aguments:
+                obj : An instance object.
+        '''
+        key = str(obj.__class__.__name__) + "." + str(obj.id)
+        value_dict = obj
+        FileStorage.__objects[key] = value_dict
 
     def save(self):
-        """ serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            d = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
-            json.dump(d, f)
-
-    def classes(self):
-        """Returns a dictionary of valid classes and their references"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {"BaseModel": BaseModel,
-                   "User": User,
-                   "State": State,
-                   "City": City,
-                   "Amenity": Amenity,
-                   "Place": Place,
-                   "Review": Review}
-        return classes
+        '''
+            Serializes __objects attribute to JSON file.
+        '''
+        objects_dict = {}
+        for key, val in FileStorage.__objects.items():
+            objects_dict[key] = val.to_dict()
+        with open(FileStorage.__file_path, mode='w', encoding="UTF8") as fd:
+            json.dump(objects_dict, fd)
 
     def reload(self):
-        """Reloads the stored objects"""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
-            # TODO: should this overwrite or insert?
-            FileStorage.__objects = obj_dict
+        '''
+            Deserializes the JSON file to __objects.
+        '''
+        try:
+            with open(FileStorage.__file_path, encoding="UTF8") as fd:
+                FileStorage.__objects = json.load(fd)
+            for key, val in FileStorage.__objects.items():
+                class_name = val["__class__"]
+                class_name = classes[class_name]
+                FileStorage.__objects[key] = class_name(**val)
+        except FileNotFoundError:
+            pass
 
-    def attributes(self):
-        """Returns the valid attributes and their types for classname"""
-        attributes = {
-            "BaseModel":
-                     {"id": str,
-                      "created_at": datetime.datetime,
-                      "updated_at": datetime.datetime},
-            "User":
-                     {"email": str,
-                      "password": str,
-                      "first_name": str,
-                      "last_name": str},
-            "State":
-                     {"name": str},
-            "City":
-                     {"state_id": str,
-                      "name": str},
-            "Amenity":
-                     {"name": str},
-            "Place":
-                     {"city_id": str,
-                      "user_id": str,
-                      "name": str,
-                      "description": str,
-                      "number_rooms": int,
-                      "number_bathrooms": int,
-                      "max_guest": int,
-                      "price_by_night": int,
-                      "latitude": float,
-                      "longitude": float,
-                      "amenity_ids": list},
-            "Review":
-            {"place_id": str,
-                         "user_id": str,
-                         "text": str}
-        }
-        return attributes
+    def delete(self, obj=None):
+        """
+        delete object from __objects if it's inside
+        """
+        if obj is not None:
+            key = obj.__class__.__name__ + "." + str(obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+        self.save()
+
+    def close(self):
+        """
+        call reload
+        """
+        self.reload()
