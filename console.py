@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         # Create a dictionary to hold the parsed parameters
         parsed_params = {}
 
-         # Parse the parameters
+        # Parse the parameters
         for param in params:
             # Split the parameter into key and value
             param_parts = param.split('=')
@@ -139,8 +139,8 @@ class HBNBCommand(cmd.Cmd):
             # Remove double quotes and replace underscores with spaces
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
-                value = value.replace('_',' ')
-                 # Try to parse the value as different types
+                value = value.replace('_', ' ')
+            # Try to parse the value as different types
             try:
                 parsed_value = int(value)
             except ValueError:
@@ -153,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
         # Create a new instance of the class with the parsed parameters
         # new_instance = HBNBCommand.classes[class_name](**parsed_params)
         setattr(new_instance, key, value)
-         # Save the new instance and print its ID
+        # Save the new instance and print its ID
         new_instance.save()
         print(new_instance.id)
 
@@ -350,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
