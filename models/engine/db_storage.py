@@ -41,12 +41,12 @@ class DBStorage:
         """Returns a dictionary containing depending key: object
            pairs on the cls provided."""
         if cls is None:
-            objects = self.__sesssion.query(State).all()
-            objects.extend(self.__sesssion.query(City).all())
-            objects.extend(self.__sesssion.query(Amenity).all())
-            objects.extend(self.__sesssion.query(Place).all())
-            objects.extend(self.__sesssion.query(User).all())
-            objects.extend(self.__sesssion.query(Review).all())
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            # objects.extend(self.__session.query(Amenity).all())
+            # objects.extend(self.__session.query(Place).all())
+            # objects.extend(self.__session.query(User).all())
+            # objects.extend(self.__session.query(Review).all())
 
         else:
             objects = self.__session.query(cls).all()
