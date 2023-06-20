@@ -5,8 +5,8 @@ from sqlalchemy import String, ForeignKey, Column
 
 
 class Review(BaseModel, Base):
-    """ 
-    Review class to store review information 
+    """
+    Review class to store review information
 
         attributes:
 
