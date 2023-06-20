@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import MySQLdb
 import shlex
 from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class Place(BaseModel, Base):
@@ -24,11 +25,12 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = []
 
-    if models.storage.__class__ is DBStorage:
-        reviews = relationship("Review", cascade='all,
-                               delete, delete-orphan', ref='place')
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review",
+                               cascade='all, delete, delete-orphan',
+                               ref='place')
 
-    elif models.storage.__class__ is FileStorage:
+    else:
         @property
         def reviews(self):
             """ this is a getter function for review objects """
