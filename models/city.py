@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 import MySQLdb
+from models.place import Place
+from sqlalchemy.orm import relationship
 
 
 class City(BaseModel, Base):

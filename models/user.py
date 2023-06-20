@@ -8,6 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import MySQLdb
 import shlex
 from sqlalchemy.orm import relationship
+from models.place import Place
 
 
 class User(BaseModel, Base):
