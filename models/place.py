@@ -5,11 +5,13 @@ from models.base_model import BaseModel
 
 class Place(BaseModel):
     """ A place to stay """
-    city_id = ""
-    user_id = ""
-    name = ""
-    description = ""
-    number_rooms = 0
+
+    __tablename__ = "places"
+    city_id = Column(Integer, ForeignKey("cities.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("states.id"), nullable=False)
+    name = Column(String(128), nullable=False)
+    description = Column(String(1024))
+    number_rooms = 
     number_bathrooms = 0
     max_guest = 0
     price_by_night = 0
