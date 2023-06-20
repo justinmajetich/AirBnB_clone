@@ -1,4 +1,3 @@
-guillaume@ubuntu:~/AirBnB_v2$ cat main_delete.py
 #!/usr/bin/python3
 """ Test delete feature
 """
