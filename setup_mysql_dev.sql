@@ -3,8 +3,8 @@ import mysql.connector
 def prepare_mysql_server():
     # Connect to the MySQL server (assuming default host and port)
     connection = mysql.connector.connect(
-        user = root,
-        password = mysql_17
+        user = root
+        password = root
     )
 
     "Create a cursor object to execute SQL queries"

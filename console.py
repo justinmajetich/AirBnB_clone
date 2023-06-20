@@ -73,8 +73,8 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) == dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -119,29 +119,45 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = arg.split()
-        class_name = args [0]
+        class_name = args[0]
 
-        if class_name not in HBNBCommand.classes:
+        if class_name not in self.classes:
             print("**class doesn't exist **")
             return
-        """Remove class name from args list"""
-        args = args[1:]
 
         """Parse parameters and their values"""
         params = {}
 
-        for param in args:
-        
-            key_value = arg.split("=")
-        if len(key_value) == 2:
-            key, value = key_value
-            parameters[key] = value.replace("_", " ")
-    """Create an instance of the class with the given parameters"""
-    new_instance = HBNBCommand.classes[class_name](**params)
+        for param in args[1:]:
 
-    storage.save()
-    print(new_instance.id)
-    storage.save()
+            split_param = param.split('=')
+        if len(split_param) != 2:
+         print("Invalid parameter format: {}" .format(param))
+         return
+
+        key = split_param[0]
+        value = split_param[1]
+
+        if value.startswith('"') and value.endswith('"'):
+            value = value[1:-1].replace('_' , ' ').replace('\\"', '"')
+        elif '.' in value:
+         try:
+            value - float(value)
+         except ValueError:
+          print("Invalid value for parameter '{}': {}".format(key, value))
+          return
+        else:
+         try:
+            value = int(value)
+         except ValueError:
+          print("Invalid value for parameter '{}': {}".format(key, value))
+          return
+
+         param[key] = value
+
+    instance = self.__class__.classes[class_name](**params)
+    instance.save()
+    print(instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -289,7 +305,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -336,6 +352,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
