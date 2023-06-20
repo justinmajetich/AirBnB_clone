@@ -2,8 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 import models
-from models.city import City
-from sqlalchemy import Column, Integer, String, MetaData, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 import MySQLdb
 import shlex
