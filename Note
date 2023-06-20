@@ -1,0 +1,13 @@
+This is a command line instruction for running Python unit tests using the unittest module with environment variables set.
+
+Here's what each part of the command does:
+
+HBNB_ENV=test sets the HBNB_ENV environment variable to test
+HBNB_MYSQL_USER=hbnb_test sets the HBNB_MYSQL_USER environment variable to hbnb_test
+HBNB_MYSQL_PWD=hbnb_test_pwd sets the HBNB_MYSQL_PWD environment variable to hbnb_test_pwd
+HBNB_MYSQL_HOST=localhost sets the HBNB_MYSQL_HOST environment variable to localhost
+HBNB_MYSQL_DB=hbnb_test_db sets the HBNB_MYSQL_DB environment variable to hbnb_test_db
+HBNB_TYPE_STORAGE=db sets the HBNB_TYPE_STORAGE environment variable to db
+python3 -m unittest discover tests runs the unittest module and discovers all tests in the tests directory
+2>&1 /dev/null redirects standard error output to standard output and discards it
+tail -n 1 displays the last line of output, which contains the summary of the test results
