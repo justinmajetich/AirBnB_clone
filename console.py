@@ -118,14 +118,16 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-            """This is a test branch """
-        new_instance = HBNBCommand.classes[args]()
+        params = args.split()
+        clname = params[0]
+        if clname not in HBNBCommand.classes:
+            print("** class doesn't exist")
+        new_instance = HBNBCommand.classes[clname]()
+        for i in range(1,len(params)):
+            kv_pair = params[i].split("=")
+            setattr(new_instance,kv_pair[0],eval(kv_pair[1].replace("_", " ")))
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
