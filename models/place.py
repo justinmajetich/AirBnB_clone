@@ -25,7 +25,8 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if models.storage.__class__ is DBStorage:
-        reviews = relationship("Review", cascade='all, delete, delete-orphan', ref='place')
+        reviews = relationship("Review", cascade='all,
+                               delete, delete-orphan', ref='place')
 
     elif models.storage.__class__ is FileStorage:
         @property
