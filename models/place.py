@@ -23,3 +23,18 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
+
+    if models.storage.__class__ is DBStorage:
+        reviews = relationship("Review", cascade='all, delete, delete-orphan', ref='place')
+
+    elif models.storage.__class__ is FileStorage:
+        @property
+        def reviews(self):
+            """ this is a getter function for review objects """
+
+            rev = []
+
+            for k, v in models.storage.all(Review).items():
+                if v.place_id == self.id:
+                    rev.append(v)
+            return rev
