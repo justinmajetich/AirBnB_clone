@@ -41,12 +41,12 @@ class HBNBCommand(cmd.Cmd):
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
+
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
-
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
@@ -73,13 +73,14 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
+            print(line)
 
         except Exception as mess:
             pass
@@ -115,14 +116,45 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
+        arglist = args.split(' ')
+        _cls = arglist[0]
+
+        kwarg = {}
+        for param in arglist[1:]:
+            param = param.replace(' ', '')
+            if '=' in param:
+                _key, _val = param.split('=')
+                if '"' in _val:
+                    _val = _val.replace('"', '')
+                    _val = _val.replace('_', ' ')
+                    _val = str(_val)
+                elif '.' in _val:
+                    try:
+                        _val = float(_val)
+                    except Exception as mess:
+                        continue
+                elif _val:
+                    try:
+                        _val = int(_val)
+                    except Exception as mess:
+                        continue
+                kwarg[_key] = _val
+
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[_cls]()
+
+        # this line sets the attribute of the object
+        # according to the given parameters
+        for _key, _val in kwarg.items():
+            setattr(new_instance, _key, _val)
+
         print(new_instance.id)
         storage.save()
 
@@ -319,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
