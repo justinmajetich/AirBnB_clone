@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+import shlex
 
 
 class FileStorage:
@@ -12,23 +13,28 @@ class FileStorage:
         """Returns a dictionary of models cls currently in storage"""
         res = {}
         if cls is not None:
-            for key, obj in FileStorage.__objects.items():
-                if cls == obj.__class__:
-                    res[key] = obj
-            return res
-        return FileStorage.__objects
+            for key in self.__objects:
+                part = key.replace('.', ' ')
+                part = shlex.split(part)
+                if (part[0] == cls.__name__):
+                    res[key] = self.__objects[key]
+            return (res)
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            self.__objects[key] = obj
+        """self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})"""
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
+        temp = {}
+        """temp.update(FileStorage.__objects)"""
+        for key, val in self.__objects.items():
+            temp[key] = val.to_dict()
+        with open(self.__file_path, 'w', encoding="UTF-8") as f:
             json.dump(temp, f)
 
     def reload(self):
@@ -48,10 +54,12 @@ class FileStorage:
                   }
         try:
             temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
+            with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                    value = eval(val["__class__"])(**val)
+                    self.__objects[key] = value
+                    """self.all()[key] = classes[val['__class__']](**val)"""
         except FileNotFoundError:
             pass
 
@@ -59,4 +67,4 @@ class FileStorage:
         """delete obj from __objects if it exist"""
         if obj is not None:
             key = type(obj).__name__ + '.' + obj.id
-            FileStorage.__objects.pop(key)
+            del self.__objects[key]

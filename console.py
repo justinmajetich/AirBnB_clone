@@ -47,6 +47,7 @@ class HBNBCommand(cmd.Cmd):
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
+
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
@@ -122,7 +123,12 @@ class HBNBCommand(cmd.Cmd):
 
         kwarg = {}
         for param in arglist[1:]:
-            param = param.replace(' ', '')
+            paramsplit = param.split("=")
+            paramsplit[1] = eval(paramsplit[1])
+            if type(paramsplit[1]) is str:
+                paramsplit[1] = paramsplit[1].replace("_", " ").replace('"', '\\"')
+            kwarg[paramsplit[0]] = paramsplit[1]
+            """
             if '=' in param:
                 _key, _val = param.split('=')
                 if '"' in _val:
@@ -140,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
                     except Exception as mess:
                         continue
                 kwarg[_key] = _val
-
+            """
         if not args:
             print("** class name missing **")
             return
@@ -148,15 +154,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[_cls]()
+        new_instance = HBNBCommand.classes[_cls](**kwarg)
 
         # this line sets the attribute of the object
         # according to the given parameters
-        for _key, _val in kwarg.items():
+        """for _key, _val in kwarg.items():
             setattr(new_instance, _key, _val)
-
-        print(new_instance.id)
+        """
         new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -238,11 +244,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
