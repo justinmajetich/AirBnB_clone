@@ -129,6 +129,58 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def parse_args(self, args):
+        """Parse args into kwargs.
+        args is a string of the form: <key>=<value> <key>=<value>
+        <value> may contain spaces.
+        """
+
+        # create empty kwargs
+        kwargs = {}
+
+        # track whether we are in a quote or have found an equal sign
+        equal = False
+        quote = False
+
+        # track key and value
+        key = value = ''
+
+        # iterate through args
+        for char in args:
+            # if not in quote and not equal sign, add to key and continue
+            if not equal and not quote and char not in ' =':
+                key += char
+                continue
+
+            # if equal sign, set equal to True and continue
+            if char == '=':
+                equal = True
+                continue
+
+            # if not in quote and character is a quote, set quote to True
+            if char == '\"' and not quote:
+                quote = True
+                continue
+
+            # if in quote and character is not a quote,
+            # add to value and continue
+            if quote and char != '\"':
+                value += char
+                continue
+
+            # if in quote and character is a quote,
+            # set quote to False and add to kwargs
+            # reset key and value and continue
+            # effectively skipping the space after the closing quote
+            if char == '\"' and quote:
+                quote = False
+                equal = False
+                kwargs[key] = value
+                key = value = ''
+                continue
+
+        return kwargs
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
@@ -144,22 +196,10 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # build kwargs from args
-        # _args look like 'name="California" state_id="0001"'
+        # _args look like 'name="New York" state_id="0001"'
         # create **kwargs from _args
         _args = args.partition(" ")[2]
-
-        if _args:
-            _kwargs = {}
-            for arg in _args.split(" "):
-                # arg looks like 'name="California"'
-                # split arg into key, value pair
-                arg = arg.split("=")
-                # arg looks like ['name', '"California"']
-                # strip quotes from value
-                arg[1] = arg[1].replace('"', '')
-                # arg looks like ['name', 'California']
-                # add to kwargs
-                _kwargs[arg[0]] = arg[1]
+        _kwargs = self.parse_args(_args)
 
         # create new instance of class
         new_instance = HBNBCommand.classes[_cls](**_kwargs)
