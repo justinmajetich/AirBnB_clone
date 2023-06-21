@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
         key = value = ''
 
         # iterate through args
-        for i in range(len(args)):
+        for i in range(0, len(args)):
             # if not in quote and not equal sign, add to key and continue
             if not equal and (not quote or not number) and args[i] not in ' =':
                 key += args[i]
@@ -169,16 +169,10 @@ class HBNBCommand(cmd.Cmd):
                 quote = True
                 continue
 
-            if number and args[i] == ' ':
+            if number and (args[i] == ' ' or i == len(args) - 1):
                 number = False
                 equal = False
-
-                try:
-                    value = int(value)
-                except ValueError:
-                    value = float(value)
-
-                kwargs[key] = value
+                kwargs[key] = self.types[key](value)
                 key = value = ''
                 continue
 
