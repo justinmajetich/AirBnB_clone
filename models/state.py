@@ -21,10 +21,16 @@ class State(BaseModel, Base):
         cities (sqlalchemy relationship): The State-City relationship.
     """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City",  backref="state", cascade="delete")
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship(
+                                "City", backref="state",
+                                cascade="all, delete-orphan"
+                                )
 
-    if getenv("HBNB_TYPE_STORAGE") != "db":
+    else:
+        name = ''
+
         @property
         def cities(self):
             """Get a list of all related City objects."""
