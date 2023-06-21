@@ -3,7 +3,6 @@
 from sqlalchemy.sql.schema import ForeignKey
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
-from models import storage_type
 from os import getenv
 
 class Review(BaseModel, Base):
