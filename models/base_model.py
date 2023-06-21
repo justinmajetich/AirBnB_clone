@@ -58,7 +58,7 @@ class BaseModel:
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(cls, self.id, self.to_dict())
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -74,7 +74,7 @@ class BaseModel:
     def delete(self):
         """Delete the current instance from the storage"""
         models.storage.delete(self)
-
+    '''
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
@@ -84,10 +84,34 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
 
+
+
         # update the to_dict() method of your BaseModel class to remove the
         # key _sa_instance_state from the dictionary returned by this method
         # only if this key exists
         if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
+        return dictionary
+    '''
+
+    def to_dict(self):
+        """Convert instance into dict format"""
+        dictionary = {}
+        for key, value in self.__dict__.items():
+
+            # if key is equal to _sa_instance_state, skip it
+            if key != '_sa_instance_state':
+                dictionary[key] = value
+
+        dictionary['__class__'] = type(self).__name__
+        dictionary['created_at'] = self.created_at.isoformat()
+        dictionary['updated_at'] = self.updated_at.isoformat()
+
+        # if storage is DBStorage, remove the key _sa_instance_state
+        if type(models.storage).__name__ == 'DBStorage':
+            dictionary.pop('_sa_instance_state', None)
+
+        if '__class__' in dictionary:
+            del dictionary['__class__']
 
         return dictionary
