@@ -2,15 +2,17 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models.review import Review
-from sqlalchemy import String, ForeignKey, Column, Integer, Float
+from models.engine.file_storage import FileStorage
 from os import getenv
+from sqlalchemy import String, ForeignKey, Column, Integer, Float
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
     """
     The Place Class Object, inherits from BaseModel and Base
 
-    attributes:
+    Attributes:
 
         city_id (string): foreign key from cities id
         user_id (string): foreign key from states id
@@ -26,7 +28,7 @@ class Place(BaseModel, Base):
 
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
-    user_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
     number_rooms = Column(Integer, default=0, nullable=False)
