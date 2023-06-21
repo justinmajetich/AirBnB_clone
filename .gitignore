@@ -8,3 +8,4 @@ tests/test_models/test_engine/__pycache__/
 main_delete.py
 .vscode
 file.sh
+test_file.py
