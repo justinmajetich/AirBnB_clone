@@ -2,10 +2,6 @@
 """ holds class Amenity"""
 import models
 from models.base_model import BaseModel, Base
-<<<<<<< HEAD
-from sqlalchemy import Column, String
-=======
->>>>>>> f130fcd35520c96a54d594ea8d33bc4debf940dd
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String
@@ -24,4 +20,3 @@ class Amenity(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes Amenity"""
         super().__init__(*args, **kwargs)
-        
