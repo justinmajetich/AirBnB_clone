@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -303,14 +303,15 @@ class HBNBCommand(cmd.Cmd):
 
         if args:
             class_name = args.split(' ')[0]  # extract the class name
-            if class_name not in HBNBCommand.classes:
+            if class_name not in HBNBCommand.classes:  # check if class exists
                 print("** class doesn't exist **")
                 return
-            for obj in storage.all().values():
-                if type(obj).__name__ == class_name:
+            for obj in storage.all().values():  # iterate through all objects
+                if type(obj).__name__ == class_name:  # check if class matches
                     print_list.append(str(obj))
         else:
-            print_list = [str(obj) for obj in storage.all().values()]
+            print_list = [str(obj)
+                          for obj in storage.all().values()]  # print all objs
 
         print_list = '[' + ', '.join(print_list) + ']'
         print(print_list)
