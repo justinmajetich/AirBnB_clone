@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,23 +114,35 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
+    def do_create(self, args):
         """ Create an object of any class"""
-        args = arg.split()
-        if not args[0]:
-            print("** class name missing **")
+        args = args.split()
+        if not args:
+            print("* class name missing *")
             return
         elif args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+            print("* class doesn't exist *")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
-        for argg in args[1:]:
-            key, value = argg.split('=')
 
-            if value[0] == "\"" and value[-1] == "\"":
-                value = value[1:-1]
-            value = value.replace("_", "").replace('"', '\\"')
-            setattr(new_instance, key, value)
+        new_instance = self.classes[args[0]]()
+        if len(args) > 0:
+            my_list = [args[i] for i in range(1, len(args))]
+            my_dict = {}
+            for item in my_list:
+                new_dict = {item.split('=')[0]: item.split('=')[1]}
+                my_dict.update(new_dict)
+            # my_dict = {item.split('=')[0]: item.split('=')[1]\
+            # for item in my_list}
+            pattern = re.compile(r'_')
+            pattern2 = re.compile(r'"')
+            for key, value in my_dict.items():
+                use = pattern.sub(" ", value)
+                use2 = pattern2.sub(r'', use)
+                d = HBNBCommand.types
+                if key in d:
+                    use2 = d[key](use2)
+
+                setattr(new_instance, key, use2)
 
         storage.save()
         print(new_instance.id)
@@ -196,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -328,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
