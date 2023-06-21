@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from models import storage
+import models
 from models.review import Review
 
 
@@ -27,7 +27,7 @@ class Place(BaseModel, Base):
     def reviews(self):
         """ getter for reviews """
         review_list = []
-        for key, value in storage.all(Review).items():
+        for key, value in models.storage.all(Review).items():
             if value.place_id == self.id:
                 review_list.append(value)
         return review_list
