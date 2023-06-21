@@ -113,9 +113,9 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        if not arg:
             print("** class name missing **")
             return
         args = arg.split()
@@ -126,38 +126,34 @@ class HBNBCommand(cmd.Cmd):
             return
 
         """Parse parameters and their values"""
-        params = {}
+        instance = eval(class_name)()
 
         for param in args[1:]:
 
             split_param = param.split('=')
-        if len(split_param) != 2:
-         print("Invalid parameter format: {}" .format(param))
-         return
+            if len(split_param) != 2:
+                continue
 
-        key = split_param[0]
-        value = split_param[1]
+            key = split_param[0]
+            value = split_param[1]
 
-        if value.startswith('"') and value.endswith('"'):
-            value = value[1:-1].replace('_' , ' ').replace('\\"', '"')
-        elif '.' in value:
-         try:
-            value - float(value)
-         except ValueError:
-          print("Invalid value for parameter '{}': {}".format(key, value))
-          return
-        else:
-         try:
-            value = int(value)
-         except ValueError:
-          print("Invalid value for parameter '{}': {}".format(key, value))
-          return
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_' , ' ').replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
 
-         param[key] = value
-
-    instance = self.__class__.classes[class_name](**params)
-    instance.save()
-    print(instance.id)
+            setattr(instance, key, value)
+        
+        instance.save()
+        print(instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -313,10 +309,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
