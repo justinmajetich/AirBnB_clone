@@ -111,7 +111,9 @@ class BaseModel:
         if type(models.storage).__name__ == 'DBStorage':
             dictionary.pop('_sa_instance_state', None)
 
+        '''
         if '__class__' in dictionary:
             del dictionary['__class__']
+        '''
 
         return dictionary
