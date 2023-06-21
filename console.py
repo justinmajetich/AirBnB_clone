@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
                             # _args = _args.replace('\"', '')
                 line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
@@ -141,44 +141,64 @@ class HBNBCommand(cmd.Cmd):
         # track whether we are in a quote or have found an equal sign
         equal = False
         quote = False
+        number = False
 
         # track key and value
         key = value = ''
 
         # iterate through args
-        for char in args:
+        for i in range(len(args)):
             # if not in quote and not equal sign, add to key and continue
-            if not equal and not quote and char not in ' =':
-                key += char
+            if not equal and (not quote or not number) and args[i] not in ' =':
+                key += args[i]
                 continue
 
             # if equal sign, set equal to True and continue
-            if char == '=':
+            if args[i] == '=':
                 equal = True
                 continue
 
+            if equal and not quote and not number and args[i-1] == '=' and \
+                    args[i] != '\"':
+                number = True
+                value += args[i]
+                continue
+
             # if not in quote and character is a quote, set quote to True
-            if char == '\"' and not quote:
+            if args[i] == '\"' and not quote:
                 quote = True
+                continue
+
+            if number and args[i] == ' ':
+                number = False
+                equal = False
+
+                try:
+                    value = int(value)
+                except ValueError:
+                    value = float(value)
+
+                kwargs[key] = value
+                key = value = ''
                 continue
 
             # if in quote and character is not a quote,
             # add to value and continue
-            if quote and char != '\"':
-                value += char
+            if (quote or number) and args[i] != '\"':
+                value += args[i]
                 continue
 
             # if in quote and character is a quote,
             # set quote to False and add to kwargs
             # reset key and value and continue
             # effectively skipping the space after the closing quote
-            if char == '\"' and quote:
+            if args[i] == '\"' and quote:
                 quote = False
                 equal = False
+                number = False
                 kwargs[key] = value
                 key = value = ''
                 continue
-
         return kwargs
 
     def do_create(self, args):
