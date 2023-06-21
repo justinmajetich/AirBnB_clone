@@ -37,7 +37,7 @@ class TestConsole_create(TestCase):
             self.assertIn(f"Amenity.{output}", storage.all().keys())
 
     def test_create_kwargs(self):
-        """Testing the create method with 
+        """Testing the create method with
            keyword arguments
 
            Usage: create <class> <param 1> <param 2> <param 3>
@@ -64,7 +64,8 @@ class TestConsole_create(TestCase):
 
         with self.subTest('invalid kwargs get skipped'):
             with mock.patch('sys.stdout', new=StringIO()) as f:
-                line = 'create Place city_id= "0001" max_guest = 10 name ="Pheonix"'
+                line = 'create Place city_id= "0001" \
+                    max_guest = 10 name ="Pheonix"'
                 HBNBCommand().onecmd(line)
                 output = f.getvalue().strip('\n')
                 obj_dict = storage.all()[f"Place.{output}"].__dict__
@@ -80,4 +81,3 @@ class TestConsole_create(TestCase):
                 obj_dict = storage.all()[f"Place.{output}"].__dict__
                 self.assertNotIn('My_Little_House', obj_dict.values())
                 self.assertIn('My Little House', obj_dict.values())
-
