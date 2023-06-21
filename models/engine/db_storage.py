@@ -19,7 +19,7 @@ class DBStorage:
         'State': State,
         'City': City,
         'User': User,
-        'Place': Place,
+        # 'Place': Place,
     }
 
     def __init__(self):
@@ -39,14 +39,16 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database session"""
-        for c in self.__classes:
-            if cls is None or cls == c or cls == self.__classes[c]:
-                objs = self.__session.query(self.__classes[c]).all()
-                return {'{}.{}'
-                        .format(type(o).__name__, o.id): o for o in objs}
-            else:
-                objs = self.__session.query(cls).all()
-            return {'{}.{}'.format(type(o).__name__, o.id): o for o in objs}
+        if cls is not None:
+            for c in self.__classes:
+                if cls == c or cls == self.__classes[c]:
+                    objs = self.__session.query(self.__classes[c]).all()
+        else:
+            objs = []
+            for c in self.__classes:
+                objs.extend(self.__session.query(self.__classes[c]).all())
+
+        return {'{}.{}'.format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """Add the object to the current database session"""

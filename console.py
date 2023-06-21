@@ -287,7 +287,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in HBNBCommand.classes:  # check if class exists
                 print("** class doesn't exist **")
                 return
-            for obj in storage.all().values():  # iterate through all objects
+            for obj in storage.all(class_name).values():  # iterate through all objects
                 if type(obj).__name__ == class_name:  # check if class matches
                     print_list.append(str(obj))
         else:
