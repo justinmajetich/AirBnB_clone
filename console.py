@@ -133,9 +133,9 @@ class HBNBCommand(cmd.Cmd):
             new_instance.__dict__.update(dictionary)
         try:
             new_instance.save()
+            print(new_instance.id)
         except Exception as e:
-            pass
-        print(new_instance.id)
+            print(e.args[0])
 
     def help_create(self):
         """ Help information for the create method """
@@ -219,10 +219,20 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    cls = type(v).__name__
+                    id = v.id
+                    v = v.to_dict()
+                    del v['__class__']
+                    print_list.append('[{}] ({}) {}'
+                                      .format(cls, id, v))
         else:
             for k, v in storage.all().items():
-                print_list.append(str(v))
+                cls = type(v).__name__
+                id = v.id
+                v = v.to_dict()
+                del v['__class__']
+                print_list.append('[{}] ({}) {}'
+                                    .format(cls, id, v))
 
         print(print_list)
 
