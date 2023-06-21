@@ -131,7 +131,10 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[c_name]()
         if dictionary is not None:
             new_instance.__dict__.update(dictionary)
-        new_instance.save()
+        try:
+            new_instance.save()
+        except Exception as e:
+            pass
         print(new_instance.id)
 
     def help_create(self):
