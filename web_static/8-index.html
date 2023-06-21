@@ -1,129 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>AirBnB clone</title>
 
-		<link rel="shortcut icon" href="images/icon.ico" >
+<head>
+    <title>AirBnb Clone</title>
+    <link rel="stylesheet" href="styles/4-common.css">
+    <link rel="stylesheet" href="styles/3-header.css">
+    <link rel="stylesheet" href="styles/3-footer.css">
+    <link rel="stylesheet" href="styles/6-filters.css">
+    <link rel="stylesheet" href="styles/8-places.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+</head>
 
-		<link rel="stylesheet" href="styles/4-common.css"/>
-		<link rel="stylesheet" href="styles/3-header.css"/>
-		<link rel="stylesheet" href="styles/3-footer.css"/>
-		<link rel="stylesheet" href="styles/6-filters.css"/>
-		<link rel="stylesheet" href="styles/8-places.css"/>
-	</head>
-    <body>
-		<header>
-			<div id="header_logo"></div>
-		</header>
-		<div class="container">
-			<section class="filters">
-				<button>Search</button>
-				<div class="locations">
-					<h3>States</h3>
-					<h4>California, Arizona...</h4>
-					<ul class="popover">
-						<li><h2>Arizona</h2>
-							<ul>
-								<li><h4>Page</h4></li>
-								<li><h4>Page2</h4></li>
-							</ul></li>
-						<li><h2>California</h2>
-							<ul>
-								<li><h4>San Francisco</h4></li>
-								<li><h4>Los Altos</h4></li>
-							</ul></li>
-					</ul>
-				</div>
-				<div class="amenities">
-					<h3>Amenities</h3>
-					<h4>Internet, Kitchen...</h4>
-					<ul class="popover">
-						<li><h4>Internet</h4></li>
-						<li><h4>TV</h4></li>
-						<li><h4>Kitchen</h4></li>
-						<li><h4>Iron</h4></li>
-					</ul>
-				</div>
-
-			</section>
-			<section class="places">
-				<h1>Places</h1>
-				<article>
-					<div class="headline">
-						<h2>My home</h2>
-						<div class="price_by_night">$80</div>
-					</div>
-					<div class="information">
-						<div class="max_guest">
-							<div class="guest_icon"></div>
-							<p>2 Guests</p>
-						</div>
-						<div class="number_rooms">
-							<div class="bed_icon"></div>
-							<p>1 Bedroom</p>
-						</div>
-						 <div class="number_bathrooms">
-							<div class="bath_icon"></div>
-							<p>1 Bathroom</p>
-						</div>
-					</div>
-					<div class="user"><b>Owner</b>: John Lennon</div>
-					<div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+<body>
+    <header>
+        <div class="logo"></div>
+    </header>
+    <div class="container">
+        <section class="filters">
+            <button type="button">Search</button>
+            <div class="locations">
+                <h3>States</h3>
+                <h4>California, Arizona...</h4>
+                <ul class="popover">
+                    <li>
+                        <h2>Arizona:</h2>
+                    </li>
+                    <li>
+                        <ul class="popover_list">
+                            <li>Page</li>
+                            <li>Page2</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h2>California:</h2>
+                    </li>
+                    <li>
+                        <ul class="popover_list">
+                            <li>San Francisco</li>
+                            <li>Los Altos</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="amenities">
+                <h3>Amenities</h3>
+                <h4>Internet, Kitchen...</h4>
+                <ul class="popover">
+                    <li>Internet</li>
+                    <li>TV</li>
+                    <li>Kitchen</li>
+                    <li>Iron</li>
+                </ul>
+            </div>
+        </section>
+        <section class="places">
+            <div class="places_title">
+                <h1>Places</h1>
+            </div>
+            <div class="articles">
+                <article>
+                    <div class="price_title">
+                        <div class="article_title">
+                            <h2>My Home</h2>
+                        </div>
+                        <div class="price_by_night">
+                            <div class="price">
+                                $80
+                            </div>
+                        </div>
                     </div>
-				</article>
-				<article>
-					<div class="headline">
-						<h2>Tiny house</h2>
-						<div class="price_by_night">$65</div>
-					</div>
-					<div class="information">
+                    <div class="information">
                         <div class="max_guest">
-                            <div class="guest_icon"></div>
-                            <p>4 Guests</p>
+                            <div class="guest_icon">
+                            </div>
+                            <div class="guest_number">
+                                <h2>2 Guests</h2>
+                            </div>
                         </div>
                         <div class="number_rooms">
-                            <div class="bed_icon"></div>
-                            <p>2 Bedroom</p>
+                            <div class="rooms_icon">
+                            </div>
+                            <div class="rooms_number">
+                                <h2>1 Bedroom</h2>
+                            </div>
                         </div>
-                         <div class="number_bathrooms">
-                            <div class="bath_icon"></div>
-                            <p>1 Bathroom</p>
+                        <div class="number_bathrooms">
+                            <div class="bathrooms_icon">
+                            </div>
+                            <div class="bathrooms_number">
+                                <h2>1 Bathroom</h2>
+                            </div>
                         </div>
                     </div>
-					<div class="user"><b>Owner</b>: Adrienne</div>
-					<div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <div class="user">
+                        <b>Owner:</b> John Lennon
                     </div>
-				</article>
-				<article>
-					<div class="headline">
-						<h2>A suite</h2>
-						<div class="price_by_night">$180</div>
-					</div>
-					<div class="information">
+                    <div class="description">
+                        This is a lovely 1 bedroom and 1 bathroom apartment than can
+                        accomodate 2 people. It locates at center of Shangai
+                        and next to subway line 1, 1 stop to People Square, 2 stops to
+                        Bund, 3 stops to Jingan Temple.
+                    </div>
+                </article>
+                <article>
+                    <div class="price_title">
+                        <div class="article_title">
+                            <h2>Tiny House</h2>
+                        </div>
+                        <div class="price_by_night">
+                            <div class="price">
+                                $80
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information">
                         <div class="max_guest">
-                            <div class="guest_icon"></div>
-                            <p>5 Guests</p>
+                            <div class="guest_icon">
+                            </div>
+                            <div class="guest_number">
+                                <h2>4 Guests</h2>
+                            </div>
                         </div>
                         <div class="number_rooms">
-                            <div class="bed_icon"></div>
-                            <p>3 Bedroom</p>
+                            <div class="rooms_icon">
+                            </div>
+                            <div class="rooms_number">
+                                <h2>2 Bedrooms</h2>
+                            </div>
                         </div>
-                         <div class="number_bathrooms">
-                            <div class="bath_icon"></div>
-                            <p>2 Bathroom</p>
+                        <div class="number_bathrooms">
+                            <div class="bathrooms_icon">
+                            </div>
+                            <div class="bathrooms_number">
+                                <h2>1 Bathroom</h2>
+                            </div>
                         </div>
                     </div>
-					<div class="user"><b>Owner</b>: Betty Holberton</div>
-					<div class="description">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</div>
-				</article>
-			</section>
-		</div>
-		<footer>
-			<p>Holberton School</p>
-		</footer>
-	</body>
+                    <div class="user">
+                        <b>Owner:</b> Adrienne
+                    </div>
+                    <div class="description">
+                        Our place is a private, affordable stand-alone guest house
+                        centrally located just minutes to French Quarters, downtown,
+                        The Fair Groundz(Jazz Fest) and City Park. The guest house is
+                        a quaint, 400 square ft. with a full bath, mini kitchen, & living
+                        room. The extra high cellings make the home feel more
+                        spacious. The sofa converts to a bed also. We have a hand
+                        made counter area that adds character to the room and a
+                        great porch/deck to relax on and have a glass of Merlot.
+
+                    </div>
+                </article>
+                <article>
+                    <div class="price_title">
+                        <div class="article_title">
+                            <h2>A Suite</h2>
+                        </div>
+                        <div class="price_by_night">
+                            <div class="price">
+                                $190
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information">
+                        <div class="max_guest">
+                            <div class="guest_icon">
+                            </div>
+                            <div class="guest_number">
+                                <h2>2 Guests</h2>
+                            </div>
+                        </div>
+                        <div class="number_rooms">
+                            <div class="rooms_icon">
+                            </div>
+                            <div class="rooms_number">
+                                <h2>1 Bedroom</h2>
+                            </div>
+                        </div>
+                        <div class="number_bathrooms">
+                            <div class="bathrooms_icon">
+                            </div>
+                            <div class="bathrooms_number">
+                                <h2>1 Bathroom</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user">
+                        <b>Owner:</b> Ayomide Suara
+                    </div>
+                    <div class="description">
+                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+    <footer>
+        Best School
+    </footer>
+</body>
+
 </html>
