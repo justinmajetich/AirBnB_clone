@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import uuid
 from os import getenv
 
-time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
+time_fmt = '%Y-%m-%d %H:%M:%S.%f'
 
 if getenv("HBNB_TYPE_STORAGE") == 'db':
     Base = declarative_base()
