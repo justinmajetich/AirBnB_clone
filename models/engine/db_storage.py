@@ -5,7 +5,6 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
@@ -23,7 +22,7 @@ class DBStorage:
         """Initialize DBStorage instance"""
         user = getenv('HBNB_MYSQL_USER')
         password = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST', default='localhost')
+        host = getenv('HBNB_MYSQL_HOST')
         database = getenv('HBNB_MYSQL_DB')
         env = getenv('HBNB_ENV')
 
