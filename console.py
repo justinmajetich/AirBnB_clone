@@ -140,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
                 value = value.replace('_', ' ')
+
             # Try to parse the value as different types
             try:
                 parsed_value = int(value)
