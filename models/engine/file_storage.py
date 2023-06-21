@@ -14,8 +14,9 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            self.__objects[key] = obj
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
@@ -45,6 +46,39 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                        self.__objects[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+    def delete(self, obj=None):
+        """
+        Deletes an object from __objects if it exists.
+
+        Args:
+            obj: The object to be deleted.
+
+        Returns:
+            None
+        """
+        if obj is None:
+            return
+
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
+
+    def all(self, cls=None):
+        """
+        Returns a list of objects of a specific class type or all objects.
+
+        Args:
+            cls: The class type of objects to be retrieved.
+
+        Returns:
+            A list of objects of the specified class type or all objects.
+        """
+        if cls is not None:
+         if not isinstance(cls, type):
+            cls = eval(cls)
+         return {key: obj for key, obj in self.__objects.items() if type(obj) == cls}
+         return self.__objects
