@@ -12,6 +12,6 @@ GRANT SELECT
     ON `performance_schema`.*
     TO 'hbnb_test'@'localhost' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES
-    ON `hbnb_dev_db`.*
+    ON `hbnb_test_db`.*
     TO 'hbnb_test'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
