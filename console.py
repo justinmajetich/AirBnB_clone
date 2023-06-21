@@ -312,8 +312,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print_list = [str(obj) for obj in storage.all().values()]
 
+        print_list = '[' + ', '.join(print_list) + ']'
         print(print_list)
-
 
     def help_all(self):
         """ Help information for the all command """

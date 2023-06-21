@@ -35,6 +35,8 @@ class DBStorage:
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
+        Base.metadata.create_all(self.__engine)
+
     def all(self, cls=None):
         """Query on the current database session"""
         for c in self.__classes:
