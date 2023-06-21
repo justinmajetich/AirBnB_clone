@@ -60,3 +60,8 @@ class BaseModel:
         # Remove _sa_instance_state if it exists
         dictionary.pop('_sa_instance_state', None)
         return dictionary
+
+    def delete(self):
+        """deletes current instance from storage"""
+        from models import storage
+        storage.delete(self)

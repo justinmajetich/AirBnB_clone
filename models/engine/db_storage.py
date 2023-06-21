@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from base_model import Base
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
 import os
 
 class DBStorage:
@@ -29,7 +29,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
 
         # Create the session
-        self.__session = sessionmaker(bind=self.__engine)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine))
 
     def all(self, cls=None):
         """Query all objects based on class"""
