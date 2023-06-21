@@ -1,7 +1,17 @@
+#!/usr/bin/python3
+"""Sql database storage module"""
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-import os
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.review import Review
+from models.user import User
+from os import getenv
+
 
 class DBStorage:
     __engine = None
@@ -10,19 +20,19 @@ class DBStorage:
     def __init__(self):
         """Initialize DBStorage"""
          # Retrieve MySQL configuration from environment variables
-        mysql_user = os.environ.get('HBNB_MYSQL_USER')
-        mysql_password = os.environ.get('HBNB_MYSQL_PWD')
-        mysql_host = os.environ.get('HBNB_MYSQL_HOST', 'localhost')
-        mysql_database = os.environ.get('HBNB_MYSQL_DB')
+        user = getenv('HBNB_MYSQL_USER')
+        pwd = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        db = getenv('HBNB_MYSQL_DB')
 
         # Create the engine
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.
-            format(mysql_user, mysql_password, mysql_host, mysql_database),
+            format(user, pwd, host, db),
             pool_pre_ping=True)
 
         # Drop all tables if HBNB_ENV is 'test'
-        if os.environ.get('HBNB_ENV') == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
         # Create all tables
@@ -35,17 +45,18 @@ class DBStorage:
         """Query all objects based on class"""
         objects = {}
         if cls:
-            query = self.__session().query(cls)
+            query = self.__session.query(cls)
             for obj in query:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 objects[key] = obj
         else:
             for cls in Base.__subclasses__():
-                query = self.__session().query(cls)
+                query = self.__session.query(cls)
                 for obj in query:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     objects[key] = obj
         return objects
+
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
@@ -61,7 +72,9 @@ class DBStorage:
 
     def reload(self):
         """Create all tables and recreate the database session"""
-        Base.metadata.create_all(self.__engine)
-        self.scoped___session = (sessionmaker(
+        self.__session = Base.metadata.create_all(self.__engine)
+        sesh = (sessionmaker(
             bind=self.__engine,
             expire_on_commit=False))
+        Session = scoped_session(sesh)
+        self.__session = Session()

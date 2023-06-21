@@ -139,7 +139,8 @@ class HBNBCommand(cmd.Cmd):
             # Remove double quotes and replace underscores with spaces
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
-                value = value.replace('_', ' ')
+                value = value.replace("_", " ")
+                value = value.replace("\\", "''")
 
             # Try to parse the value as different types
             try:

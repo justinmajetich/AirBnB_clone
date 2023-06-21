@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
-import os
+from os import getenv
 
-storage_type =  os.environ.get('HBNB_TYPE_STORAGE')
-
-if storage_type == 'db':
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     """Instantiates an object of class DBStorage"""
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
