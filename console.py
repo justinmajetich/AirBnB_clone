@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,13 +118,46 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        # Split the arguments into class name and parameters
+        args_list = args.split()
+        new_instance = eval(args_list[0])()
+        params = args_list[1:]
+
+        # Create a dictionary to hold the parsed parameters
+        parsed_params = {}
+
+        # Parse the parameters
+        for param in params:
+            # Split the parameter into key and value
+            param_parts = param.split('=')
+            if len(param_parts) < 2:
+                continue
+
+            key = param_parts[0]
+            value = param_parts[1]
+            # Remove double quotes and replace underscores with spaces
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+                value = value.replace("_", " ")
+                value = value.replace("\\", "''")
+
+            # Try to parse the value as different types
+            try:
+                parsed_value = int(value)
+            except ValueError:
+                try:
+                    parsed_value = float(value)
+                except ValueError:
+                    parsed_value = value
+
+        parsed_params[key] = parsed_value
+        # Create a new instance of the class with the parsed parameters
+        # new_instance = HBNBCommand.classes[class_name](**parsed_params)
+        setattr(new_instance, key, value)
+        # Save the new instance and print its ID
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +305,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +313,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -319,6 +352,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
