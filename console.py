@@ -219,20 +219,14 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
-                    cls = type(v).__name__
-                    id = v.id
-                    v = v.to_dict()
+                    cls, id, v = (type(v).__name__, v.id, v.to_dict())
                     del v['__class__']
-                    print_list.append('[{}] ({}) {}'
-                                      .format(cls, id, v))
+                    print_list.append('[{}] ({}) {}'.format(cls, id, v))
         else:
             for k, v in storage.all().items():
-                cls = type(v).__name__
-                id = v.id
-                v = v.to_dict()
+                cls, id, v = (type(v).__name__, v.id, v.to_dict())
                 del v['__class__']
-                print_list.append('[{}] ({}) {}'
-                                  .format(cls, id, v))
+                print_list.append('[{}] ({}) {}'.format(cls, id, v))
 
         print(print_list)
 
