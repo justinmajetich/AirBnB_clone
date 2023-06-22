@@ -1,0 +1,10 @@
+#!/bin/bash
+# make SURE TO RUN WITH source
+# source ./tests/setup_env_for_tests
+# script to setup env vars for testing dbstorage
+export HBNB_MYSQL_USER=hbnb_dev
+export HBNB_MYSQL_PWD=hbnb_dev_pwd
+export HBNB_MYSQL_HOST=localhost
+export HBNB_MYSQL_DB=hbnb_dev_db
+export HBNB_TYPE_STORAGE=db
+export HBNB_ENV=dev

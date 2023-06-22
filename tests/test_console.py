@@ -102,6 +102,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.HBNB.onecmd("create asdfsfsd")
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
+<<<<<<< HEAD
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_create(self):
@@ -166,6 +167,14 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("'number_rooms': 4", output)
             self.assertIn("'latitude': 37.77", output)
             self.assertNotIn("'longitude'", output)
+=======
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create User email="asdf" password="asdf"')
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("all User")
+            self.assertEqual(
+                "[[User]", f.getvalue()[:7])
+>>>>>>> bd80b1d8555084f6d9eceb803f95fd3e1a2fc0a4
 
     def test_show(self):
         """Test show command."""
