@@ -10,6 +10,9 @@ env.hosts = ['54.197.135.244', '54.167.3.103']
 env.key_filename = '~/.ssh/id_rsa'
 
 def do_deploy(archive):
+    """
+        Distributes archive to web servers
+    """
     if not exists(archive):
         return False
 
