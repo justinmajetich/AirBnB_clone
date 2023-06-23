@@ -4,7 +4,7 @@
 
 from os import getenv
 from sqlalchemy import (create_engine)
-from models.BaseModel import Base
+from models.base_model import Base
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 from models.user import User
@@ -72,4 +72,4 @@ class DBStorage():
         Base.metadata.create_all(self.__engine)
         ses_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
-        self.__session = Session()Base.metadata.create_all(self.__engine)
+        self.__session = Session()
