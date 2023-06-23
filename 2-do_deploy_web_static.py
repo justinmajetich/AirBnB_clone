@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# this script distributes archives to web servers
 from fabric.api import env, put, run, local
 from os.path import exists, isdir
 import os.path
