@@ -13,6 +13,8 @@ def do_deploy(archive_path):
     if not exists(archive_path):
         return False
     try:
+
+
         file_name = archive_path.split("/")[-1]
         name = file_name.split(".")[0]
         path_name = "/data/web_static/releases/" + name
@@ -24,10 +26,14 @@ def do_deploy(archive_path):
         run("rm -rf {}/web_static".format(path_name))
         run('rm -rf /data/web_static/current')
         run('ln -s {}/ /data/web_static/current'.format(path_name))
+                # Create 'hbnb_static' directory if it doesn't exist
+        if not isdir("/var/www/html/hbnb_static"):
+            run("sudo mkdir -p /var/www/html/hbnb_static")
+
+        # Sync 'hbnb_static' with 'current'
+        run("sudo cp -r /data/web_static/current/* /var/www/html/hbnb_static/")
+
+        print("New version deployed!")
         return True
     except Exception:
         return False
-
-# Run the script like this:
-# $ fab -f 2-do_deploy_web_static.py
-# do_deploy:archive_path=versions/file_name.tgz
