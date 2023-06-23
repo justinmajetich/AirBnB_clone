@@ -12,13 +12,11 @@ from datetime import datetime
 
 def do_pack():
     """
-        function to compress directory into .tgz archive
-        Return: Success - '.tgz' archive path
-                Failure - None
+        compress directory to .tgz archive
     """
-    now = datetime.now()
-    now = now.strftime('%Y%m%d%H%M%S')
-    archive_path = 'versions/web_static_' + now + '.tgz'
+    time = datetime.now()
+    time = time.strftime('%Y%m%d%H%M%S')
+    archive_path = 'versions/web_static_' + time + '.tgz'
 
     local('mkdir -p versions/')
     result = local('tar -cvzf {} web_static/'.format(archive_path))
