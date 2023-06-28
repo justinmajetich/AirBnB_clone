@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Get the number of commits in the repository
+commit_count=$(git rev-list --count HEAD)
+
+# Define the commit message with the commit count
+commit_message="updates ($commit_count commits)"
+
+# Add all changes to the staging area
+git add .
+
+# Commit the changes with the updated commit message
+git commit -m "$commit_message"
+
+# Push the changes to the remote repository
+git push
