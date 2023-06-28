@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
     a script that starts a Flask web application
+    and adds several routes for navigation.
 """
 from flask import Flask
 
