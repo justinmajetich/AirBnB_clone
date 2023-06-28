@@ -8,6 +8,8 @@ from models.city import City
 import models
 import os
 
+storage_type = os.getenv("HBNB_TYPE_STORAGE")
+
 
 class State(BaseModel, Base):
     """ State class """
@@ -15,10 +17,9 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    if storage_type == "db":
         cities = relationship('City', backref='state',
                               cascade='all, delete-orphan')
-
     else:
         @property
         def cities(self):

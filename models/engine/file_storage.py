@@ -65,3 +65,7 @@ class FileStorage:
                 self.save()
         else:
             pass
+
+    def close(self):
+        """Calls the reload() method to deserialize the JSON file to objects"""
+        self.reload()
