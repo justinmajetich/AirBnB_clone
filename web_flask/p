@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Get the number of commits in the repository
+# Get the number of commits in the current repository
 commit_count=$(git rev-list --count HEAD)
 
 # Define the commit message with the commit count
-commit_message="updates ($commit_count commits)"
+commit_message="updates #($commit_count commits)"
 
 # Add all changes to the staging area
 git add .
