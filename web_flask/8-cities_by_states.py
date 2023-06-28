@@ -6,17 +6,15 @@ from models.state import State
 
 
 app = Flask(__name__)
-app.url_map.strict_slashes = Falses
+app.url_map.strict_slashes = False
 
 @app.teardown_appcontext
 def teardown_appcontext(exception):
-    """Remove the current SQLAlchemy Session after each request."""
     storage.close()
 
 
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
-    """Display a HTML page with a list of states and their cities."""
     states = storage.all(State).values()
     states_sorted = sorted(states, key=lambda s: s.name)
 
