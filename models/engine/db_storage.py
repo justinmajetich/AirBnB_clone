@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -20,10 +20,12 @@ class DBStorage:
     def __init__(self):
         """Initialize the DBStorage class"""
         self._engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'
-                                     .format(os.getenv('HBNB_MYSQL_USER'),
-                                             os.getenv('HBNB_MYSQL_PWD'),
-                                             os.getenv('HBNB_MYSQL_HOST'),
-                                             os.getenv('HBNB_MYSQL_DB')),
+                                     .format(os.getenv('HBNB_MYSQL_USER', 'hbnb_dev'),
+                                             os.getenv(
+                                                 'HBNB_MYSQL_PWD', 'hbnb_dev_pwd'),
+                                             os.getenv(
+                                                 'HBNB_MYSQL_HOST', 'localhost'),
+                                             os.getenv('HBNB_MYSQL_DB', 'hbnb_dev_db')),
                                      pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self._engine)
@@ -42,6 +44,7 @@ class DBStorage:
                 key = obj.__class__.__name__ + '.' + obj.id
                 new_dict[key] = obj
         return new_dict
+
 
     def new(self, obj):
         """Adds a new object to the database"""
