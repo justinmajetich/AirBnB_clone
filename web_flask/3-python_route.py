@@ -25,11 +25,13 @@ def c_text(text):
     return 'C {}'.format(text)
   
 
-@app.route('/python/<text>', strict_slashes=False)
-def c_text(text):
-    """ Display prompt """
-    text = text.replace('_', ' ')
-    return 'C {}'.format(text)
+@app.route("/python/<text>")
+def python_is_cool(text="is cool", strict_slashes=False):
+    """
+    Display 'Python' followed by the value of text
+    Replace underscore _ symbols with a space
+    """
+    return "Python {}".format(text.replace("_", " "))
 
 
 if __name__ == "__main__":
