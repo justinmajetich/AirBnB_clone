@@ -2,6 +2,7 @@ import unittest
 from console import HBNBCommand
 from io import StringIO
 from unittest.mock import patch
+from models import storage
 
 class TestConsole(unittest.TestCase):
     def setUp(self):

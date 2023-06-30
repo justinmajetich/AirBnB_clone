@@ -146,8 +146,9 @@ class HBNBCommand(cmd.Cmd):
                     value = int(value)
                 # set attribute of new instance with key and converted value
                 setattr(new_instance, key, value)
-            except:
+            except Exception as e:
                 # if error value(conversion) or attr(set) skip param & continue
+                print(f"An error occurred: {str(e)}")
                 continue
         new_instance.save()
         print(new_instance.id)
