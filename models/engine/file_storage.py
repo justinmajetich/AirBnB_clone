@@ -25,7 +25,7 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
     
-    def delete(self, obj=none)
+    def delete(self, obj=none):
         if obj is None:
             return
         obj_key = "{}.{}".format(obj.__class.__name, obj.id)
