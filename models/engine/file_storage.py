@@ -36,7 +36,7 @@ class FileStorage:
         """deletes obj from _objects. if obj is equal to None then nothing happens"""
         if obj is None:
             return
-        obj_key = "{}.{}".format(obj.__class.__name, obj.id)
+        obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
         if obj_key in self.__objects:
             del self.__objects[obj_key]
                     
