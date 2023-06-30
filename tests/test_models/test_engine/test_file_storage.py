@@ -1,32 +1,31 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import unittest
-import os
+
 import models
 from models.base_model import BaseModel
+import os
 
+
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "skip if not db")
 class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
-        """Set up test environment"""
+        """ Set up test environment """
         self.storage = models.storage
-        self.storage.reload()
-
-        # Delete all objects individually
-        for obj in list(self.storage.all().values()):
-            self.storage.delete(obj)
+        del_list = []
+        for key in self.storage._FileStorage__objects.keys():
+            del_list.append(key)
+        for key in del_list:
+            del self.storage._FileStorage__objects[key]
 
     def tearDown(self):
-        """Remove storage file at the end of tests"""
-        storage_type = os.getenv('HBNB_TYPE_STORAGE')
-        if storage_type == 'db':
+        """ Remove storage file at end of tests """
+        try:
+            os.remove('file.json')
+        except:
             pass
-        else:
-            try:
-                os.remove('file.json')
-            except FileNotFoundError:
-                pass
 
         del self.storage
 
@@ -92,10 +91,9 @@ class TestFileStorage(unittest.TestCase):
         new.save()
         self.assertTrue(os.path.exists('file.json'))
 
-    # def test_type_path(self):
-    #     """Confirm __file_path is string"""
-    #     self.assertEqual(type(self.storage.file_path), str)
-
+    def test_type_path(self):
+        """ Confirm __file_path is string """
+        self.assertEqual(type(self.storage._FileStorage__file_path), str)
 
     def test_type_objects(self):
         """ Confirm __objects is a dict """
