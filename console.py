@@ -114,45 +114,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        # split the input args by spaces
-        args = args.split(" ")
-        # if no args , print error and exit method
-        if not args:
+        param = args.split(' ')
+        if not param:
             print("** class name missing **")
             return
-        # if arg[0]classname not in list print error & exit
-        elif args[0] not in HBNBCommand.classes:
+        elif param[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # Create a new instance of class specified in arg[0]
-        new_instance = HBNBCommand.classes[args[0]]()
-        # for each param after arg[0]'classname'...
-        for param in args[1:]:
+        new_instance = HBNBCommand.classes[param[0]]()
+        for param_indx in range(1, len(param)):
             try:
-                # split args(param) into key:value at the '='
-                key, value = param.split('=')
-                # if value contains '.' convert to float
-                if '.' in value:
-                    value = float(value)
-                # if value starts with " its a string
-                elif '"' in value:
-                    # replace _ with space, unescape ", strip ""
-                    value = value. \
-                        replace('_', ''). \
-                        replace('\"', '"'). \
-                        strip('"')
-                # if value doesnt have . or start with " its an int
-                else:
-                    value = int(value)
-                # set attribute of new instance with key and converted value
-                setattr(new_instance, key, value)
-            except Exception as e:
-                # if error value(conversion) or attr(set) skip param & continue
-                print(f"An error occurred: {str(e)}")
+                param_1 = param[param_indx].split('=')
+                key = param_1[0]
+                value = param_1[1]
+                value = value.replace('_', ' ')
+                value = value.replace('\"', '')
+                if type(value) in (str, int, float):
+                    setattr(new_instance, key, value)
+            except Exception:
                 continue
-        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
