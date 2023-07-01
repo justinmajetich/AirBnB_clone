@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 from models.base_model import BaseModel, Base
 from models.state import State
@@ -11,7 +11,20 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+#user = os.getenv('HBNB_MYSQL_USER')
+#pw = os.getenv('HBNB_MYSQL_PWD')
+#host = os.getenv('HBNB_MYSQL_HOST')
+#db = os.getenv('HBNB_MYSQL_DB')
+#env = os.getenv('HBNB_ENV')
 
+# classes = {
+#    'City': City,
+#    'User': User,
+#    'Review': Review,
+#    'State': State,
+#    'Place': Place,
+#    'Amenity': Amenity
+#    }
 
 class DBStorage:
     __engine = None
