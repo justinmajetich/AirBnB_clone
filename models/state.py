@@ -11,7 +11,6 @@ from models import storage
 
 class State(BaseModel, Base):
     """ State class """
-
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     if models.storage_type == 'db':
@@ -20,7 +19,6 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """city getter"""
-            from models.engine.db_storage import DBStorage
             city_list = []
             for city in storage.all(City).values():
                 if city.state_id == self.id:

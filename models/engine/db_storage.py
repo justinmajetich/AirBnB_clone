@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
-from os import getenv
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 from models.base_model import BaseModel, Base
@@ -11,17 +11,19 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+
+
 class DBStorage:
     __engine = None
     __session = None
 
     def __init__(self):
         """ the init that give HBNB envelopes?"""
-        user = getenv('HBNB_MYSQL_USER')
-        pw = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST')
-        db = getenv('HBNB_MYSQL_DB')
-        env = getenv('HBNB_ENV')
+        user = os.getenv('HBNB_MYSQL_USER')
+        pw = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        db = os.getenv('HBNB_MYSQL_DB')
+        env = os.getenv('HBNB_ENV')
 
         dir = "mysql+mysqldb://{}:{}@{}/{}"\
             .format(user, pw, host, db)
@@ -58,7 +60,5 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        # Import 'State' here
-        from models.state import State
         # Rest of the code
         pass
