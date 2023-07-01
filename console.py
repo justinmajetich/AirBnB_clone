@@ -132,14 +132,14 @@ class HBNBCommand(cmd.Cmd):
                 # split args(param) into key:value at the '='
                 key, value = param.split('=')
                 # if value contains '.' convert to float
-                if ',' in value:
+                if '.' in value:
                     value = float(value)
                 # if value starts with " its a string
                 elif '"' in value:
                     # replace _ with space, unescape ", strip ""
                     value = value. \
-                        replace('_', ' '). \
-                        replace('\\"', '"'). \
+                        replace('_', ''). \
+                        replace('\"', '"'). \
                         strip('"')
                 # if value doesnt have . or start with " its an int
                 else:
