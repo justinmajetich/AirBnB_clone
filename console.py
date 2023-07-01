@@ -133,6 +133,7 @@ class HBNBCommand(cmd.Cmd):
                 if "=" not in param:
                     continue
                 key, value = param.split('=', 2)
+                value = value.replace("_", " ")
                 if value[0] == '"' and value[-1] == '"':   #tests if value is a string
                     value = value[1:-1]         #takes out quotes
                 elif value.find(".") != -1: #tests if value if a float
