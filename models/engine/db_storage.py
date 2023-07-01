@@ -58,4 +58,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-       
+        # Import 'State' here
+        from models.state import State
+        # Rest of the code
+        pass

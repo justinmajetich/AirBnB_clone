@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
+from models.engine.db_storage import DBStorage
 from models.base_model import BaseModel, Base
 from models.city import City
 import models
@@ -10,6 +11,7 @@ from models import storage
 
 class State(BaseModel, Base):
     """ State class """
+
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     if models.storage_type == 'db':
@@ -17,7 +19,8 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            """city getter"""            
+            """city getter"""
+            from models.engine.db_storage import DBStorage
             city_list = []
             for city in storage.all(City).values():
                 if city.state_id == self.id:
