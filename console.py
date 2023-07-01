@@ -118,8 +118,9 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        """ spliting arguments """
-        args_list = args.split()
+        else:
+            args_list = args.split()
+
         class_name = args_list[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
@@ -129,8 +130,24 @@ class HBNBCommand(cmd.Cmd):
         """spliting parameters"""
         if len(args_list) > 1:
             for param in args_list[1:]:
-                value = param.split('=', 2)
-            print(value[1])
+                if "=" not in param:
+                    continue
+                key, value = param.split('=', 2)
+                if value[0] == '"' and value[-1] == '"':   #tests if value is a string
+                    value = value[1:-1]         #takes out quotes
+                elif value.find(".") != -1: #tests if value if a float
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+
+                setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
