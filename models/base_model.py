@@ -63,6 +63,7 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
 
-    """is this not how you reference that stuff in memory?"""
+    """is this not how you reference that stuff??"""
+    """                       FIX THIS <-------------!@!!"""
     def delete(self):
         models.storage.delete(self)
