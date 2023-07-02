@@ -8,7 +8,7 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is not None:
             # using dictionary comprehension to create a new dictionary where each key-value pair is included if the value is an instance of the specified class (cls).
