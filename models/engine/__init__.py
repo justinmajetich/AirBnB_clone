@@ -4,6 +4,7 @@
 DONT FORGET THEM U DUMPPASS!!!!!!!"""
 import os
 
+"""conditional that checks the value of the environment table"""
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()

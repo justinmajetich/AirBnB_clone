@@ -7,17 +7,24 @@ from models.base_model import Base
 
 
 class DBStorage:
+    """private class attributes"""
     __engine = None
     __session = None
     
+    """the all important __init__ *bows head*"""
     def __init__(self):
+        """link to the user, data retrieved from environment variables"""
         user = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
         database = os.getenv('HBNB_MYSQL_DB')
+        """just in case we need it"""
         env = os.getenv('HBNB_ENV')
         
-        """I MAKe-A the ENGINE! *pASTA hANDS emoJI*"""
+        """
+        I MAKe-A the ENGINE! *pASTA hANDS emoJI* 
+        uses data grabbed from above 5 lines
+        """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                        .format(user, password, host, database),
                                        pool_pre_ping=True)
