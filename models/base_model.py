@@ -17,7 +17,7 @@ class BaseModel:
                         nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -46,9 +46,23 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
+        """
+        Update to_dict() method of the class BaseModel: 
+        remove the key _sa_instance_state from the dictionary returned by this
+        method only if this key exists
+        its a tuple so it needs a comma right?? <-- check that
+        """        
+        buff_dictionary = {}
+        if "sa_instance_state" in buff_dictionary:
+            del buff_dictionary["_sa_instance_state",]
+
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+    """is this not how you reference that stuff in memory?"""
+    def delete(self):
+        models.storage.delete(self)
