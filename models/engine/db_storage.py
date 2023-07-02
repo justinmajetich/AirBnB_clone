@@ -10,21 +10,22 @@ from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+from models import engine
 
-#user = os.getenv('HBNB_MYSQL_USER')
-#pw = os.getenv('HBNB_MYSQL_PWD')
-#host = os.getenv('HBNB_MYSQL_HOST')
-#db = os.getenv('HBNB_MYSQL_DB')
-#env = os.getenv('HBNB_ENV')
+user = os.getenv('HBNB_MYSQL_USER')
+pw = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+db = os.getenv('HBNB_MYSQL_DB')
+env = os.getenv('HBNB_ENV')
 
-# classes = {
-#    'City': City,
-#    'User': User,
-#    'Review': Review,
-#    'State': State,
-#    'Place': Place,
-#    'Amenity': Amenity
-#    }
+classes = {
+    'City': City,
+    'User': User,
+    'Review': Review,
+    'State': State,
+    'Place': Place,
+    'Amenity': Amenity
+    }
 
 class DBStorage:
     __engine = None
@@ -32,13 +33,8 @@ class DBStorage:
 
     def __init__(self):
         """ the init that give HBNB envelopes?"""
-        user = os.getenv('HBNB_MYSQL_USER')
-        pw = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-        env = os.getenv('HBNB_ENV')
 
-        dir = "mysql+mysqldb://{}:{}@{}/{}"\
+        dir = "mysql+mysqldb://{}:{}@{}/{}" \
             .format(user, pw, host, db)
 
         self.__engine = create_engine(dir, pool_pre_ping=True)
@@ -46,21 +42,20 @@ class DBStorage:
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-
     def all(self, cls=None):
-        session = self.__session
-        objects = {}
-        if cls:
-            objects = session.query(cls).all()
+        class_dict = {}
+        if not cls:
+            for actual_class in classes.values():
+                object_list = self.__session.query(actual_class).all()
+                for obj in object_list:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    class_dict[key] = obj
         else:
-            classes = [User, State, City, Amenity, Place, Review]
-            for cls in classes:
-                objects.update(session.query(cls).all())
-        obj_dict = {}
-        for obj in objects:
-            key = '{}.{}'.format(type(obj).__name__, obj.id)
-            obj_dict[key] = obj
-        return obj_dict
+            object_list = self.__session.query(cls).all()
+            for obj in object_list:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                class_dict[key] = obj
+        return class_dict
 
     def new(self, obj):
         self.__session.add(obj)
@@ -73,5 +68,9 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        # Rest of the code
-        pass
+        """ method reload creates a session
+        """
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
