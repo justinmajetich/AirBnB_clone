@@ -10,7 +10,19 @@ class FileStorage:
 
     def all(self):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if cls is not None:
+            # using dictionary comprehension to create a new dictionary where each key-value pair is included if the value is an instance of the specified class (cls).
+            return {key: value for key, value in self.__objects.items() if isinstance(value, cls)}
+        else:
+            # by using self.__objects it allows subclasses of FileStorage to override the __objects attribute if needed.
+            return self.__objects
+
+    def delete(self, obj=None):
+        """ Deletes obj from the file storage if it exists """
+        if obj is not None:
+            obj_key = obj.__class__.__name__ + '.' + obj.id
+            if obj_key in self.__objects:
+                del self.__objects[obj_key]
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
