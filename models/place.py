@@ -31,17 +31,21 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=true)
     amenity_ids = []
     reviews = relationship("Review", backref='place',
-                          cascade='all, delete, delete-orphan')
-    # for FileStorage: getter attribute reviews that returns the list of Review 
-    # instances with place_id equals to the current Place.id => It will be the 
+                           cascade='all, delete, delete-orphan')
+    # for FileStorage: getter attribute reviews that returns the list of Review
+    # instances with place_id equals to the current Place.id => It will be the
     # FileStorage relationship between Place and Review
     amenities = relationship("Amenity",
-                                 secondary=place_amenity,
-                                 back_populates='place_amenities',
-                                 viewonly=False)
+                             secondary=place_amenity,
+                             back_populates='place_amenities',
+                             viewonly=False)
     # for FileStorage:
-    # Getter attribute amenities that returns the list of Amenity instances based
-    # on the attribute amenity_ids that contains all Amenity.id linked to the Place
-    # Setter attribute amenities that handles append method for adding an Amenity.id
-    # to the attribute amenity_ids. This method should accept only Amenity object,
+    # Getter attribute amenities that returns
+    # the list of Amenity instances based
+    # on the attribute amenity_ids that contains
+    # all Amenity.id linked to the Place
+    # Setter attribute amenities that handles
+    # append method for adding an Amenity.id
+    # to the attribute amenity_ids. This method
+    # should accept only Amenity object,
     # otherwise, do nothing.
