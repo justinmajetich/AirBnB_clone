@@ -65,5 +65,6 @@ class BaseModel:
 
     """is this not how you reference that stuff??"""
     """                       FIX THIS <-------------!@!!"""
+    """THIS SEEMS WRONG"""
     def delete(self):
-        models.storage.delete(self)
+        self.storage.delete(self)
