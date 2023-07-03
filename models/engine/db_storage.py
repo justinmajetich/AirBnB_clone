@@ -25,3 +25,23 @@ class DBStorage:
                                       pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """does something"""
+        pass
+
+    def new(self, obj):
+        """add obj to current database session"""
+        pass
+
+    def save(self):
+        """commit all changes of the current datatbase session"""
+        pass
+
+    def delete(self, obj=None):
+        """delete obj from the current database session if obj is not None"""
+        pass
+
+    def reload(self):
+        """does something"""
+        pass
