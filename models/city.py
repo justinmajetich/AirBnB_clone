@@ -11,3 +11,7 @@ class City(BaseModel, Base):
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
     places = relationship('Place', backref='cities', cascade='all, delete, delete-orphan')
+
+    """relationship between state and city"""
+    state_id = Column(int, ForeignKey('states.id'))
+    state = relationship("State", backref="cities")
