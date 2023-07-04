@@ -2,6 +2,9 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel
 from sqlalchemy.orm import relationship
+from sqalchemy import Column, String
+from models.city import City
+import os
 
 if os.getenv("HBNB_TYPE_STORAGE") == 'DB':
     
