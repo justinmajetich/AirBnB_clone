@@ -14,6 +14,9 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from os import getenv
 
+classes = {'User': User, 'Place': Place, 'State': State,
+           'City': City, 'Review': Review, 'Amenity': Amenity}
+
 class DBStorage:
     __engine = None
     __session = None
@@ -40,7 +43,6 @@ class DBStorage:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 new_dict[key] = obj
         else:
-            classes = ["City", "State", "User", "Place", "Review"]
             for class_name in classes:
                 objs = self.__session.query(class_name).all()
                 for obj in objs:
