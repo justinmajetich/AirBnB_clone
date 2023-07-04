@@ -143,8 +143,14 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 
 ----
 
-# Version 2
+# Version 2 Developer Notes
 
 ## Task 02
 
 update `do_create` to allow for object creation with given parameters.
+
+### Noteworthy functions, methods, and operations
+
+Used by the original developers
+
+* `list.find(character)` returns the position of `character` in `list`.
