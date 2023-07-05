@@ -12,7 +12,3 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
-
-    if getenv('HBNB_TYPE_STORAGE') == 'db'
-        places = relationships("Place", backref="user", cascade='all, delete')
-        reviews = relationship("Review", backref="user", cascade='all, delete')
