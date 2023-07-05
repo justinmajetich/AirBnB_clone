@@ -114,21 +114,21 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-         """create <Class name> <param 1> <param 2> <param 3>..."""
-         if not args:
+        """create <Class name> <param 1> <param 2> <param 3>..."""
+        if not args:
             print("** class name missing **")
             return
-         
-         params = args.split()
-         class_name = params[0]
-         
-         if class_name not in HBNBCommand.classes:
+
+        params = args.split()
+        class_name = params[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-    
+
     '''extract the parameters and their values'''
     kwargs = {}
-    
+
     for param in params[1:]:
         if '=' not in param:
             continue
@@ -321,8 +321,8 @@ class HBNBCommand(cmd.Cmd):
             if not att_val and args[2]:
                 att_val = args[2].partition(' ')[0]
 
-
             args = [att_name, att_val]
+
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
@@ -351,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
