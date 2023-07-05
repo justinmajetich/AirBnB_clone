@@ -154,3 +154,16 @@ update `do_create` to allow for object creation with given parameters.
 Used by the original developers
 
 * `list.find(character)` returns the position of `character` in `list`.
+
+## Task3
+
+**tseting**
+
+`cat setup_mysql_dev.sql | mysql -hlocalhost -uroot -p`
+* Password:
+
+`echo "SHOW DATABASES;" | mysql -uhbnb_dev -p | grep hbnb_dev_db`
+ *Password: `hbnb_dev_db`
+
+`echo "SHOW GRANTS FOR 'hbnb_dev'@'localhost';" | mysql -uroot -p`
+* Password:
