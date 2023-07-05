@@ -218,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -322,7 +322,6 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
-
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
