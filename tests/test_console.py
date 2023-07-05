@@ -61,9 +61,9 @@ class ConsoleTestCase(unittest.TestCase):
 
         created_object = BaseModel.get(object_id)
 
-
         self.assertEqual(created_object.name, "My House")
         self.assertEqual(created_object.value, 100.5)
+
 
 if __name__ == '-_main__':
     unittest.main()
