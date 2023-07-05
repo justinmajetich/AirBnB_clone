@@ -1,0 +1,11 @@
+#!/bin/bash
+git add .
+echo "Commit Message:"
+read commit_message
+git commit -m "$commit_message"
+result=$?
+if [ $result -eq 0 ]; then
+	git push
+else
+	echo "Commit Failed"
+fi
