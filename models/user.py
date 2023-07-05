@@ -5,6 +5,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
+    """ This class deines a user by various attributes """
     __tablename__ = 'users'
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
