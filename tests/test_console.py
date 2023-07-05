@@ -5,7 +5,9 @@ from console import HBNBCommand
 from io import StringIO
 from test_models import test_base_model
 
+
 class ConsoleTestCase(unittest.TestCase):
+
     def setUp(self):
         '''set up test dependants'''
         self.console = HBNBCommand()
@@ -53,11 +55,13 @@ class ConsoleTestCase(unittest.TestCase):
         output = captured_output.getvalue().strip()
 
         object_id = output.split('\n')[0]
-        
+
         expected_output = object_id
         self.assertEqual(output, expected_output)
 
         created_object = BaseModel.get(object_id)
+
+
         self.assertEqual(created_object.name, "My House")
         self.assertEqual(created_object.value, 100.5)
 
