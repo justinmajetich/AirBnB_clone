@@ -21,7 +21,7 @@ class ConsoleTestCase(unittest.TestCase):
         output = self.console.onecmd("help")
 
         expected_output = self.assertEqual(output.strip(),
-                                        expected_output.strip())
+                                            expected_output.strip())
 
     def test_help_invalid_command(self):
         '''test help w invalid command'''
