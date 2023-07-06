@@ -7,9 +7,10 @@
 from datetime import datetime
 from fabric.api import local
 
+
 def do_pack():
     """
-    Returns the archive path if archive has been 
+    Returns the archive path if archive has been
     correctly gernerated else return None
     """
 
@@ -18,7 +19,7 @@ def do_pack():
     archive_path = "versions/web_static_{}.tgz".format(date)
     tgz_archive = local("tar -cvzf {} web_static".format(archive_path))
 
-    if tgz_archiv.succeeded:
+    if tgz_archive.succeeded:
         return archive_path
     else:
         return None
