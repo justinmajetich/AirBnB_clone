@@ -14,6 +14,7 @@ from models.review import Review
 from io import StringIO
 import sys
 
+
 class TestHBNBCommand(unittest.TestCase):
     def setUp(self):
         """Set up testing environment"""
@@ -32,8 +33,8 @@ class TestHBNBCommand(unittest.TestCase):
         self.hbnb_command.onecmd("create InvalidClass")
         self.assertEqual("** class doesn't exist **\n", sys.stdout.getvalue())
         sys.stdout = sys.__stdout__  # reset redirection
-
     # Add more tests for each command...
+
 
 if __name__ == '__main__':
     unittest.main()
