@@ -16,7 +16,7 @@ class DBStorage:
     __engine = None
     __session = None
     __all_classes = {'User': User, 'Place': Place, 'State': State,
-           'City': City, 'Review': Review, 'Amenity': Amenity}
+                     'City': City, 'Review': Review, 'Amenity': Amenity}
 
     def __init__(self):
         """DBStorage Class"""
@@ -32,7 +32,7 @@ class DBStorage:
                                       pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
-            
+
             self.reload()
 
     def all(self, cls=None):
