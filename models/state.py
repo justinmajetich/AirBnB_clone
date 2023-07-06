@@ -8,15 +8,17 @@ from os import getenv
 import models
 import os
 
+
 if os.getenv("HBNB_TYPE_STORAGE") == 'db':
- 
+
     class State(BaseModel, Base):
         """ State class """
 
         __tablename__ = "states"
         name = Column(String(128), nullable=False)
 
-        cities = relationship("City", backref="state", cascade="all, delete-orphan")
+        cities = relationship("City", backref="state",
+                              cascade="all, delete-orphan")
 
 else:
 
@@ -26,8 +28,8 @@ else:
 
         @property
         def cities(self):
-            """ 
-            Returns list of City instances with state id = to the current State id
+            """
+            Returns list of City instances with state id
             """
 
             list_cities = []
