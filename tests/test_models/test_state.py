@@ -4,7 +4,7 @@ from tests.test_models.test_base_model import test_basemodel
 from models.state import State
 
 
-class test_state(test_basemodel):
+class test_State(test_basemodel):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -12,8 +12,9 @@ class test_state(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "State"
         self.value = State
+        self.state = self.value()
+        self.state.name = "California"
 
-    def test_name3(self):
+    def test_name(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+        self.assertEqual(type(self.state.name), str)
