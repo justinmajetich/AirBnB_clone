@@ -10,8 +10,10 @@
     <LINK rel="stylesheet" href="../static/styles/6-filters.css">
     <LINK rel="icon" href="../static/images/icon.png">
   </HEAD>
+
   <BODY>
     <HEADER></HEADER>
+
     <DIV class="container">
       <SECTION class="filters">
         <DIV class="locations">
@@ -19,31 +21,33 @@
           <H4>&nbsp;</H4>
           <DIV class="popover">
             <UL>
-              {% for state in states.values()|sort(attribute="name") %}
+            {% for state in states.values()|sort(attribute="name") %}
               <LI><STRONG>{{ state.name }}</STRONG>
                 <UL>
-                  {% for city in state.cities|sort(attribute="name") %}
+                {% for city in state.cities|sort(attribute="name") %}
                   <LI>{{ city.name }}</LI>
-                  {% endfor %}
+                {% endfor %}
                 </UL>
               </LI>
-              {% endfor %}
+            {% endfor %}
             </UL>
           </DIV>
+
         </DIV><DIV class="amenities">
           <H3>Amenities</H3>
           <H4>&nbsp;</H4>
           <UL class="popover">
-            {% for amenity in amenities.values()|sort(attribute="name") %}
+          {% for amenity in amenities.values()|sort(attribute="name") %}
             <LI>{{ amenity.name }}</LI>
-            {% endfor %}
+          {% endfor %}
           </UL>
         </DIV>
         <BUTTON>Search</BUTTON>
       </SECTION>
     </DIV>
+
     <FOOTER>
       Holberton School
     </FOOTER>
-  </BODY> 
+  </BODY>
 </HTML>
