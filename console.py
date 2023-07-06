@@ -10,11 +10,11 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-##does it work? 
+#
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -120,27 +119,31 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             list_args = args.split()
-        
+
         class_name = list_args[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         new_instance = HBNBCommand.classes[class_name]()
-        
+
         for param in list_args[1:]:
             try:
                 key, value = param.split("=")
                 if value[0] == value[-1] == "\"":
-                    actual_value = value[1:-1].replace('\\\"','\"').replace('_', ' ')
-                elif '.'in value:
+                    actual_value = (
+                        value[1:-1]
+                        .replace('\\\"', '\"')
+                        .replace('_', ' ')
+                    )
+                elif '.' in value:
                     actual_value = float(value)
                 else:
                     actual_value = int(value)
                 setattr(new_instance, key, actual_value)
             except (ValueError, TypeError):
                 continue
-            
+
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -206,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -338,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
