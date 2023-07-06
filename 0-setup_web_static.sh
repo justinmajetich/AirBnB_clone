@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Sets up a web server for deployment of web_static.
+# Devops
 
 apt-get update
 apt-get install -y nginx
@@ -25,7 +26,7 @@ printf %s "server {
     }
 
     location /redirect_me {
-	return 301 http://cuberule.com/;
+	return 301 http://youtube.com/;
     }
 
     error_page 404 /404.html;
