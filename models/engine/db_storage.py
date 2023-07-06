@@ -33,16 +33,19 @@ class DBStorage:
                                       pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
+            
+            self.__all_classes = classes
+            self.reload
 
     def all(self, cls=None):
         """query on the database"""
         if cls is None:
             temp = []
-            for c in self.__all_classes.values():
+            for c in self.classes.values():
                 temp.extend(self.__session.query(c).all())
         else:
             if type(cls) is str:
-                cls = self.__all_classes.get(cls.lower())
+                cls = self.classes.get(cls.lower())
                 if cls is None:
                     return {}
             temp = self.__session.query(cls).all()
