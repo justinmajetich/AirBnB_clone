@@ -10,14 +10,13 @@ from models.review import Review
 from models.place import Place
 from models.city import City
 
-classes = {'User': User, 'Place': Place, 'State': State,
-           'City': City, 'Review': Review, 'Amenity': Amenity}
-
 
 class DBStorage:
     """DataBase Storage"""
     __engine = None
     __session = None
+    __all_classes = {'User': User, 'Place': Place, 'State': State,
+           'City': City, 'Review': Review, 'Amenity': Amenity}
 
     def __init__(self):
         """DBStorage Class"""
@@ -34,18 +33,17 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
             
-            self.__all_classes = classes
-            self.reload
+            self.reload()
 
     def all(self, cls=None):
         """query on the database"""
         if cls is None:
             temp = []
-            for c in self.classes.values():
+            for c in self.__all_classes.values():
                 temp.extend(self.__session.query(c).all())
         else:
             if type(cls) is str:
-                cls = self.classes.get(cls.lower())
+                cls = self.__all_classes.get(cls.lower())
                 if cls is None:
                     return {}
             temp = self.__session.query(cls).all()
