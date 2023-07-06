@@ -3,7 +3,7 @@
 # Working with fabfile
 import os.path
 from datetime import datetime
-from fabric.api import local
+from fabric import task, local
 
 
 def do_pack():
