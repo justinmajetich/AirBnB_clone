@@ -1,37 +1,16 @@
 #!/usr/bin/python3
-"""
-creates and distributes an archive to your web servers
-fab -f 3-deploy_web_static.py deploy -i ssh-key -u ubuntu
-"""
-
-from datetime import datetime
+# Fabfile to distribute an archive to a web server.
 import os.path
-from fabric.api import put, run, env, local
+from fabric.api import env
+from fabric.api import put
+from fabric.api import run
 
-env.hosts = ['35.243.128.200', '3.239.120.96']
-
-
-def do_pack():
-    """
-    making an archive on web_static folder
-    """
-    dt = datetime.utcnow()
-    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
-                                                         dt.month,
-                                                         dt.day,
-                                                         dt.hour,
-                                                         dt.minute,
-                                                         dt.second)
-    if os.path.isdir("versions") is False:
-        if local("mkdir -p versions").failed is True:
-            return None
-    if local("tar -cvzf {} web_static".format(file)).failed is True:
-        return None
-    return file
+env.hosts = ["104.196.168.90", "35.196.46.172"]
 
 
 def do_deploy(archive_path):
     """Distributes an archive to a web server.
+
     Args:
         archive_path (str): The path of the archive to distribute.
     Returns:
@@ -68,13 +47,3 @@ def do_deploy(archive_path):
            format(name)).failed is True:
         return False
     return True
-
-
-def deploy():
-    """
-    Create and distribute an archive to a web server
-    """
-    file = do_pack()
-    if file is None:
-        return False
-    return do_deploy(file)
