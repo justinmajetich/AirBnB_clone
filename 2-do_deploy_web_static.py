@@ -31,7 +31,7 @@ def do_deploy(archive_path):
     Fabric script that distributes an archive to your web servers,
     using the function
     """
-    if os.path.exist(archive_path):
+    if os.path.exists(archive_path):
         archive_file = archive_path[9:]
         newfileversion = "/data/web_static/releases/" + archive_file[:-4]
         archiveFilePath = "/tmp/" + archive_file
