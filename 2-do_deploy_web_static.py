@@ -40,7 +40,7 @@ def do_deploy(archive_path):
         run("sudo mkdir -p {}".format(newfileversion))
 
         run("sudo tar -xzf {} -C {}/".format(archive_file, newfileversion))
-        run("sudo rm -rf {}".format(archiveFilePath))
+        run("sudo rm -rf {}".format(archive_file))
         run("sudo mv {}/web_static/* {}".format(newfileversion,
                                                 newfileversion))
 
