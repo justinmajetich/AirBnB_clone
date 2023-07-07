@@ -5,8 +5,8 @@ from datetime import datetime
 from fabric.api import *
 import os
 
-env.user = "ubuntu"
 env.hosts = ['54.197.44.197', '34.207.227.83']
+env.user = "ubuntu"
 
 
 def do_pack():
@@ -47,7 +47,8 @@ def do_deploy(archive_path):
         run("sudo rm -rf {}/web_static".format(newfileversion))
         run("sudo rm -rf /data/web_static/current")
         run("sudo ln -s {} /data/web_static/current".format(newfileversion))
-        print("Success")
+
+        print("New version deployed!")
         return True
 
     return False
