@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-
-"""
+""" AirBnB clone - Deploy static using fabric """
 
 from datetime import datetime
 from fabric.api import *
@@ -30,6 +28,8 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
+    Fabric script that distributes an archive to your web servers,
+    using the function
     """
     if os.path.exist(archive_path):
         archive_file = archive_path[9:]

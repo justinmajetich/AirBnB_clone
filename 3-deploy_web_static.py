@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-
+AirBnB clone - Deploy static using fabric
 """
 
 from datetime import datetime
@@ -30,6 +30,8 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
+    Fabric script that distributes an archive to your web servers,
+    using the function
     """
     if os.path.exist(archive_path):
         archive_file = archive_path[9:]
@@ -57,8 +59,8 @@ def deploy():
     """
     creates and distributes an archive to your web servers
     """
-    path = do_pack
+    archivePath = do_pack
     if path:
-        do_deploy(path)
+        do_deploy(archivePath)
     else:
         return False
