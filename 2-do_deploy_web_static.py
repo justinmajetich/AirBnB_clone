@@ -33,21 +33,20 @@ def do_deploy(archive_path):
     """
     if os.path.exist(archive_path):
         archive_file = archive_path[9:]
+        newfileversion = "/data/web_static/releases/" + archive_file[:-4]
         archiveFilePath = "/tmp/" + archive_file
 
         put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(newfileversion))
 
-        newRemotePath = "/data/web_static/releases/" + archive_path[:-4]
-        run("sudo mkdir -p {}".format(newRemotePath))
-
-        run("sudo tar -xzvf {} -C {}/".format(archiveFilePath, newRemotePath))
+        run("sudo tar -xzvf {} -C {}/".format(archiveFilePath, newfileversion))
         run("sudo rm -rf {}".format(archiveFilePath))
-        run("sudo mv {}/web_static/* {}".format(newRemotePath,
-                                                newRemotePath))
+        run("sudo mv {}/web_static/* {}".format(newfileversion,
+                                                newfileversion))
 
-        run("sudo rm -rf {}/web_static".format(newRemotePath))
+        run("sudo rm -rf {}/web_static".format(newfileversion))
         run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(newRemotePath))
+        run("sudo ln -s {} /data/web_static/current".format(newfileversion))
         print("Success")
         return True
     else:
