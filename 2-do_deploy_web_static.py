@@ -22,13 +22,20 @@ def do_deploy(archive_path):
     """
     if not os.path.isdir("versions"):
         os.mkdir("versions")
-    cur_time = datetime.now().strftime("%Y%m%d%H%M%S")
-    output = "versions/web_static_{}.tgz".format(cur_time)
+    cur_time = datetime.now()
+    output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        cur_time.year,
+        cur_time.month,
+        cur_time.day,
+        cur_time.hour,
+        cur_time.minute,
+        cur_time.second
+    )
     try:
         print("Packing web_static to {}".format(output))
         local("tar -cvzf {} web_static".format(output))
-        archive_size = os.stat(output).st_size
-        print("web_static packed: {} -> {} Bytes".format(output, archive_size))
+        archize_size = os.stat(output).st_size
+        print("web_static packed: {} -> {} Bytes".format(output, archize_size))
     except Exception:
         output = None
     return output
@@ -59,3 +66,11 @@ def do_deploy(archive_path):
     except Exception:
         success = False
     return success
+
+
+if __name__ == "__main__":
+    output = do_deploy()
+    if output:
+        print("Archive file successfully created: {}".format(output))
+    else:
+        print("Failed to create archive file")
