@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+'''
+fabric script to distribute an archive to web servers
+using the function do_deploy:
+'''
+
+import os
+from datetime import datetime
+from fabric.api import env, local, put, run, runs_once
+
+
+env.hosts = ['54.242.198.186', '3.85.168.10']
+
+
+        print('New version deployed!')
+        success = True
+    except Exception:
+        success = False
+    return success
