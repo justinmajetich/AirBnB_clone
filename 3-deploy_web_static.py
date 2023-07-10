@@ -72,4 +72,13 @@ def deploy():
     file = do_pack()
     if file is None:
         return False
-    return do_deploy(file)
+    if not do_deploy(file):
+        return False
+
+    # Additional steps to create my_index.html
+    my_index_content = "<html>\n\t<body>\n\t\tNew version with my_index.html\n\t</body>\n</html>"
+    my_index_path = "/data/web_static/releases/{}/my_index.html".format(file.split("/")[-1].split(".")[0])
+    if run("echo '{}' | sudo tee {}".format(my_index_content, my_index_path)).failed is True:
+        return False
+
+    return True
