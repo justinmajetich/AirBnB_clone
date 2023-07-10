@@ -21,9 +21,10 @@ def do_pack():
     )
     try:
         print("Packing web_static to {}".format(output))
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -czvf {} web_static".format(output))
         size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, size))
-    except Exception:
+    except Exception as e:
+        print("Error packing web_static:", str(e))
         output = None
     return output
