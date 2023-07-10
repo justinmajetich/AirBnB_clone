@@ -4,7 +4,7 @@ Fabric script method:
     do_deploy: deploys archive to webservers
 Usage:
     fab -f 2-do_deploy_web_static.py
-    do_deploy:archive_path=versions/web_static_20220928193100.tgz
+    do_deploy:archive_path=versions/web_static_20230710143917.tgz
     -i my_ssh_private_key -u ubuntu 
 """
 from fabric.api import env, put, run
