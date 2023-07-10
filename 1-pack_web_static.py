@@ -11,15 +11,18 @@ def do_pack():
     if not os.path.isdir("versions"):
         os.mkdir("versions")
     d_time = datetime.now()
-    formatted_month = "{:02d}".format(d_time.month)  # Format month with leading zero
-    formatted_day = "{:02d}".format(d_time.day)  # Format day with leading zero
+    formatted_month = "{:02d}".format(d_time.month)
+    formatted_day = "{:02d}".format(d_time.day)
+    formatted_hour = "{:02d}".format(d_time.hour)
+    formatted_minute = "{:02d}".format(d_time.minute)
+    formatted_second = "{:02d}".format(d_time.second)
     output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
         d_time.year,
         formatted_month,
         formatted_day,
-        d_time.hour,
-        d_time.minute,
-        d_time.second
+        formatted_hour,
+        formatted_minute,
+        formatted_second
     )
     try:
         print("Packing web_static to {}".format(output))
@@ -29,4 +32,3 @@ def do_pack():
     except Exception:
         output = None
     return output
-
