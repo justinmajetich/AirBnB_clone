@@ -9,12 +9,14 @@ Usage:
 """
 from fabric.api import env, put, run
 import os.path
-env.hosts = ["44.192.81.96", "3.236.224.97"]
+env.hosts = ["54.210.88.216", "52.205.99.41"]
 
 
 def do_deploy(archive_path):
     """
     Deploy archive to web server
+    Args:
+    archive_path : path for the archive file
     """
     if os.path.isfile(archive_path) is False:
         return False
