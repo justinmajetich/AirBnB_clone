@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
+def hello_():
     """if rout as above,
     returns as below
     """
@@ -23,7 +23,7 @@ def hello_world():
 
 
 @app.route('/hbnb')
-def hello_world():
+def hello_hbnb():
     """if rout as above,
     returns as below
     """
