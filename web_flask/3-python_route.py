@@ -54,7 +54,7 @@ def hello_python_text(text=''):
     """if rout as above,
     returns as below
     """
-    if text == ''
+    if text == '':
         text = 'is cool'
 
     edited = text.replace('_', ' ')
