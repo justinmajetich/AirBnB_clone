@@ -21,7 +21,7 @@ If you were using Flask in a formal production setting, you could have other ser
 
 * example: `app.run (host = "10.100.100.10", port = 9566)`
 
-## Task2
+## Task2,3
 
 [routes with variables/parameters](https://pythonbasics.org/flask-tutorial-routes/)
 
