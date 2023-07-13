@@ -48,3 +48,12 @@ The example here creates the `route /sale/<transaction_id>`, where transaction_i
 ## Notes not directly related to a specific task
 
 [How to utilize one variable across multiple flask routes](https://stackoverflow.com/questions/27611216/how-to-pass-a-variable-between-flask-pages)
+
+## Task4
+
+apprach I am considering:
+
+it's basicaly jsut a conditional copy of task3.
+
+
+not to self: when done, unless new info is used, remove this sectoin and add task`4` to the above stack of tasks and their descriptions.
