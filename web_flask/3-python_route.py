@@ -48,5 +48,15 @@ def hello_c_text(text=''):
     edited = text.replace('_', ' ')
     return 'C ' + edited
 
+
+@app.route('/python/<text>')
+def hello_python_text(text='is cool'):
+    """if rout as above,
+    returns as below
+    """
+    edited = text.replace('_', ' ')
+    return 'Python ' + edited
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
