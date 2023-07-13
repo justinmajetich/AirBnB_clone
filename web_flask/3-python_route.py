@@ -49,7 +49,7 @@ def hello_c_text(text=''):
     return 'C ' + edited
 
 @app.route('/python')
-def hello_python_text(text=''):
+def hello_python(text=''):
     """if rout as above,
     returns as below
     """
