@@ -50,10 +50,13 @@ def hello_c_text(text=''):
 
 
 @app.route('/python/<text>')
-def hello_python_text(text='is cool'):
+def hello_python_text(text=''):
     """if rout as above,
     returns as below
     """
+    if text == ''
+        text = 'is cool'
+
     edited = text.replace('_', ' ')
     return 'Python ' + edited
 
