@@ -1,5 +1,9 @@
 # Web Flask
 
+**Install Flask**
+
+`pip3 install Flask`
+
 
 ## Task0
 
