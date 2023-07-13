@@ -21,6 +21,29 @@ If you were using Flask in a formal production setting, you could have other ser
 
 * example: `app.run (host = "10.100.100.10", port = 9566)`
 
+## Task2
+
+[routes with variables/parameters](https://pythonbasics.org/flask-tutorial-routes/)
+
+"
+
+Parameters can be used when creating routes. A parameter can be a string (text) like this: `/product/cookie`.
+
+That would have this route and function
+
+    @app.route('/product/<name>')
+    def get_product(name):
+        return "The product is " + str(name)
+
+...
+
+The example here creates the `route /sale/<transaction_id>`, where transaction_id is a number.
+
+    @app.route('/sale/<transaction_id>')
+    def get_sale(transaction_id=0):
+        return "The transaction is "+str(transaction_id)
+
+"
 
 ## Notes not directly related to a specific task
 
