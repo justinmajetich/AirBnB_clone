@@ -48,6 +48,12 @@ def hello_c_text(text=''):
     edited = text.replace('_', ' ')
     return 'C ' + edited
 
+@app.route('/python')
+def hello_python_text(text=''):
+    """if rout as above,
+    returns as below
+    """
+    return 'Python is cool'
 
 @app.route('/python/<text>')
 def hello_python_text(text=''):
