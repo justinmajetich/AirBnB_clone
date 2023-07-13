@@ -20,3 +20,8 @@ If you were using Flask in a formal production setting, you could have other ser
 [**How to set the port and host**](https://stackoverflow.com/questions/49332853/how-set-the-host-and-the-port-of-a-flask-app-in-config-module)
 
 * example: `app.run (host = "10.100.100.10", port = 9566)`
+
+
+## Notes not directly related to a specific task
+
+[How to utilize one variable across multiple flask routes](https://stackoverflow.com/questions/27611216/how-to-pass-a-variable-between-flask-pages)
