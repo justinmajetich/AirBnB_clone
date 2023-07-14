@@ -17,10 +17,12 @@ def do_pack():
     local("mkdir -p versions")
     date = datetime.now().strftime("%Y%m%d%H%M%S")
     archive_pathh = "versions/web_static_{}.tgz".format(date)
+    print("Packing web_static to {}".format(archive_pathh))
     tgz_archive = local("tar -cvzf {} web_static".format(archive_pathh))
-
+    archive_size = local("stat -c %s versions/{}".format(archive_pathh), capture=True)
     if tgz_archive.succeeded:
         local("chmod 664 versions/*")
+        print("web_static packed: versions/{} -> {}Bytes".format(archive_pathh, archive_size))
         return archive_pathh
     else:
         return None
