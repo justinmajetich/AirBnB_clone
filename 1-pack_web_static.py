@@ -5,7 +5,7 @@
 """
 
 from datetime import datetime
-from fabric.api import local
+from fabric.api import *
 
 
 def do_pack():
@@ -16,10 +16,11 @@ def do_pack():
 
     local("mkdir -p versions")
     date = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_path = "versions/web_static_{}.tgz".format(date)
-    tgz_archive = local("tar -cvzf {} web_static/".format(archive_path))
+    archive_pathh = "versions/web_static_{}.tgz".format(date)
+    tgz_archive = local("tar -cvzf {} web_static".format(archive_pathh))
 
     if tgz_archive.succeeded:
-        return archive_path
+        local("chmod 664 versions/*")
+        return archive_pathh
     else:
         return None
