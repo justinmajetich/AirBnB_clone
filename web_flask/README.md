@@ -21,7 +21,7 @@ If you were using Flask in a formal production setting, you could have other ser
 
 * example: `app.run (host = "10.100.100.10", port = 9566)`
 
-## Task2,3,4
+## Task2,3
 
 [routes with variables/parameters](https://pythonbasics.org/flask-tutorial-routes/)
 
@@ -50,3 +50,8 @@ The example here creates the `route /sale/<transaction_id>`, where transaction_i
 [How to utilize one variable across multiple flask routes](https://stackoverflow.com/questions/27611216/how-to-pass-a-variable-between-flask-pages)
 
 
+## Task4
+
+### Potential Pitfall
+
+remember all input arguments are string.

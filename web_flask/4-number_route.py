@@ -66,11 +66,15 @@ def hello_python_text(text='is cool'):
 
 
 @app.route('/number/<n>')
-def hello_number(n=None):
+def hello_number(n=''):
     """if n is int, return it is a number
     """
-    if isinstance(n, int):
-        return str(n) + 'is a number'
+    try:
+        int(n)
+    except:
+        return ''
+    else:
+        return n +' is a number'
 
 
 if __name__ == '__main__':
