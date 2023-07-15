@@ -72,7 +72,7 @@ def hello_number(n=''):
     try:
         int(n)
     except:
-        return ''
+        return None
     else:
         return n + ' is a number'
 
