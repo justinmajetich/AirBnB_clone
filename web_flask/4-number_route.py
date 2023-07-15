@@ -20,6 +20,7 @@ Routes:
 /number/<n>:
     display “n is a number”
         only if n is an integer
+        replace "n" with the int given
 
 You must use the option strict_slashes=False in your route definition.
 """
@@ -62,6 +63,14 @@ def hello_python_text(text='is cool'):
     """
     edited = text.replace('_', ' ')
     return 'Python ' + edited
+
+
+@app.route('/number/<n>')
+def hello_number(n=None):
+    """if n is int, return it is a number
+    """
+    if isinstance(n, int):
+        return str(n) + 'is a number'
 
 
 if __name__ == '__main__':
