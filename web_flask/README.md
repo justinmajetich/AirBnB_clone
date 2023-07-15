@@ -56,4 +56,4 @@ apprach I am considering:
 it's basicaly jsut a conditional copy of task3.
 
 
-not to self: when done, unless new info is used, remove this sectoin and add task`4` to the above stack of tasks and their descriptions.
+not to self: when done, unless new info is used, remove this section and add task`4` to the above stack of tasks and their descriptions.
