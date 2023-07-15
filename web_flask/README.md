@@ -21,7 +21,7 @@ If you were using Flask in a formal production setting, you could have other ser
 
 * example: `app.run (host = "10.100.100.10", port = 9566)`
 
-## Task2,3
+## Task2,3,4
 
 [routes with variables/parameters](https://pythonbasics.org/flask-tutorial-routes/)
 
@@ -49,11 +49,4 @@ The example here creates the `route /sale/<transaction_id>`, where transaction_i
 
 [How to utilize one variable across multiple flask routes](https://stackoverflow.com/questions/27611216/how-to-pass-a-variable-between-flask-pages)
 
-## Task4
 
-apprach I am considering:
-
-it's basicaly jsut a conditional copy of task3.
-
-
-not to self: when done, unless new info is used, remove this section and add task`4` to the above stack of tasks and their descriptions.
