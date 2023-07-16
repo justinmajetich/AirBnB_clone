@@ -30,7 +30,7 @@ Routes:
 You must use the option strict_slashes=False in your route definition.
 """
 
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
@@ -75,6 +75,14 @@ def hello_number(n=0):
     """if n is int, return it is a number
     """
     return str(n) + ' is a number'
+
+
+@app.route('/number_template/<int:n>')
+def hello_number_template(n=0):
+    """if n is int, return a webpage
+    said webpage is in another file
+    """
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
