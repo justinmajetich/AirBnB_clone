@@ -65,16 +65,11 @@ def hello_python_text(text='is cool'):
     return 'Python ' + edited
 
 
-@app.route('/number/<n>')
-def hello_number(n=''):
+@app.route('/number/<int:n>')
+def hello_number(n=0):
     """if n is int, return it is a number
     """
-    try:
-        int(n)
-    except:
-        return None
-    else:
-        return n + ' is a number'
+    return str(n) + ' is a number'
 
 
 if __name__ == '__main__':

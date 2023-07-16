@@ -52,6 +52,8 @@ The example here creates the `route /sale/<transaction_id>`, where transaction_i
 
 ## Task4
 
+type specific params: https://stackoverflow.com/questions/14350920/define-a-route-for-url-ending-with-integer-in-python
+
 ### Potential Pitfall
 
 remember all input arguments are string.
