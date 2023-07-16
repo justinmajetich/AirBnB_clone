@@ -1,14 +1,12 @@
 #!/usr/bin/python3
-"""
-AirBnB clone - Deploy static using fabric
-"""
+""" AirBnB clone - Deploy static using fabric """
 
 from datetime import datetime
 from fabric.api import *
 import os
 
-env.user = "ubuntu"
 env.hosts = ['54.197.44.197', '34.207.227.83']
+env.user = "ubuntu"
 
 
 def do_pack():
@@ -41,7 +39,7 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(newfileversion))
 
-        run("sudo tar -xzvf {} -C {}/".format(archive_file, newfileversion))
+        run("sudo tar -xzf {} -C {}/".format(archive_file, newfileversion))
         run("sudo rm -rf {}".format(archive_file))
         run("sudo mv {}/web_static/* {}".format(newfileversion,
                                                 newfileversion))
@@ -49,10 +47,12 @@ def do_deploy(archive_path):
         run("sudo rm -rf {}/web_static".format(newfileversion))
         run("sudo rm -rf /data/web_static/current")
         run("sudo ln -s {} /data/web_static/current".format(newfileversion))
+
         print("New version deployed!")
         return True
-    else:
-        return False
+
+    return False
+
 
 def deploy():
     """
