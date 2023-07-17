@@ -10,37 +10,24 @@ You must use storage for fetching data from the storage engine
     storage.all(...)
 
 Routes:
-/: display “Hello HBNB!”
-/hbnb: display “HBNB”
-/c/<text>:
-    display “C ” followed by
-    the value of the text variable
-        (replace underscore _ symbols with a space )
-/python/<text>:
-    display “Python ”, followed by
-    the value of the text variable
-        (replace underscore _ symbols with a space )
-    default value of text is “is cool”
 
-/number/<n>:
-    display “n is a number”
-        only if n is an integer
-        replace "n" with the int given
+    /states_list: display a HTML page:
+        inside tag body:
+            H1 tag: “States”
+            UL tag:
+                with the list of
+                    all State objects present in DBStorage
+                        sorted by name (A->Z)
+                LI tag:
+                description of one State:
+                    <state.id>: <B><state.name></B>
 
-/number_template/<n>:
-    display a HTML page only if n is an integer
-        this page is a separate file called 5-number.html
-        H1 tag: “Number: n” inside the tag BODY
-
-/number_odd_or_even/<n>:
-    display a HTML page only if n is an integer:
-        this page is a separate file called 6-number_odd_or_even.html
-        H1 tag: “Number: n is even|odd” inside the tag BODY
 You must use the option strict_slashes=False in your route definition.
 """
 
 from flask import Flask, render_template
 app = Flask(__name__)
+from models import storage
 
 
 @app.route('/')
