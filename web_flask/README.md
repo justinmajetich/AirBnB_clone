@@ -58,7 +58,7 @@ type specific params: https://stackoverflow.com/questions/14350920/define-a-rout
 
 remember all input arguments are string.
 
-## Task5
+## Task5,6
 
 examples of `render_template`, which is how python displays webpages and html files:
 https://stackoverflow.com/questions/52473147/print-python-console-output-on-html-page-in-flask
