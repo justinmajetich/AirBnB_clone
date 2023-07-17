@@ -67,3 +67,6 @@ another exmaple: https://www.fullstackpython.com/flask-templating-render-templat
 
 you do need to `from flask import render_template`
 
+
+## Task7
+
