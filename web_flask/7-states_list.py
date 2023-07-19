@@ -45,20 +45,15 @@ def app_teardown(exception):
     storage.close()
 
 
-@app.route('/number_odd_or_even/<int:n>')
-def hello_odd_even(n=0):
-    """this module needs to be updated
-    to perform task 8
-
-    the html will look somthing like the below
-    {% for item in navigation %}
-
-    youu can search that in the jinja page to learn how to do it
+@app.route('/states_list')
+def states_list():
     """
-    polarity = 'odd'
-    if n % 2 == 0:
-        polarity = 'even'
-    return render_template('6-number_odd_or_even.html', n=n, polarity=polarity)
+    summons html page to list all
+    State objects present in DBStorage
+    sorted by name (A->Z)
+    """
+    states = storage.all('State').value
+    return render_template('7-states_list.html', states=states)
 
 
 if __name__ == '__main__':
