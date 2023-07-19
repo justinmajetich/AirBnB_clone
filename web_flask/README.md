@@ -75,3 +75,10 @@ you do need to `from flask import render_template`
 
 ## Task7
 
+This task was complete by default
+
+## Task8
+
+be careful of the file names.
+
+Task8 files are labled with the number 7, as per client request.
