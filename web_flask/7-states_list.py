@@ -32,8 +32,8 @@ You must use the option strict_slashes=False in your route definition.
 """
 
 from flask import Flask, render_template
-app = Flask(__name__)
 from models import storage
+app = Flask(__name__)
 
 
 @app.teardown_appcontext
@@ -52,7 +52,7 @@ def states_list():
     State objects present in DBStorage
     sorted by name (A->Z)
     """
-    states = storage.all('State').value
+    states = storage.all('State')
     return render_template('7-states_list.html', states=states)
 
 
