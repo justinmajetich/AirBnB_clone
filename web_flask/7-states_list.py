@@ -9,6 +9,11 @@ You must use storage for fetching data from the storage engine
     and
     storage.all(...)
 
+After each request you must remove the current SQLAlchemy Session:
+    Declare a method to handle @app.teardown_appcontext
+        In this method, call "storage.close()"
+
+
 Routes:
 
     /states_list: display a HTML page:
@@ -22,6 +27,7 @@ Routes:
                 description of one State:
                     <state.id>: <B><state.name></B>
 
+
 You must use the option strict_slashes=False in your route definition.
 """
 
@@ -30,10 +36,24 @@ app = Flask(__name__)
 from models import storage
 
 
+@app.teardown_appcontext
+def app_teardown(exception):
+    """method to handle
+    @app.teardown_appcontext
+    Call in this method: storage.close()
+    """
+    storage.close()
+
+
 @app.route('/number_odd_or_even/<int:n>')
 def hello_odd_even(n=0):
     """this module needs to be updated
     to perform task 8
+
+    the html will look somthing like the below
+    {% for item in navigation %}
+
+    youu can search that in the jinja page to learn how to do it
     """
     polarity = 'odd'
     if n % 2 == 0:

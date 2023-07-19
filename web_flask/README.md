@@ -6,6 +6,10 @@
 
 [how  to route in Python Flask](https://flask.palletsprojects.com/en/2.2.x/quickstart/#routing)
 
+
+The templates used are [Jinja 2 templates](https://jinja.palletsprojects.com/en/2.9.x/templates/)
+
+
 ## Task0,1
 
 [What is a web flask route?](https://stackoverflow.com/questions/49915758/what-is-flask-route):
