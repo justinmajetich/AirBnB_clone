@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """
+Currently, this is jsut a copy of task 9 (as assigned, task names are off by 1.)
 script that starts a Flask web application
 
 Your web application must be listening on 0.0.0.0, port 5000
