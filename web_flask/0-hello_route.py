@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-0-hello_route.py
+0-hello_route.py module
 """
 from flask import Flask
 
@@ -16,4 +16,5 @@ def hello():
 
 
 if __name__ == '__main__':
+    """ Main Function """
     app.run(host='0.0.0.0', port=5000)
