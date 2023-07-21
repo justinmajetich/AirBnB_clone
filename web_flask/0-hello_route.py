@@ -7,10 +7,13 @@ from flask import Flask
 app = Flask(__name__)
 
 """Route to display "Hello HBNB!" """
+
+
 @app.route('/', strict_slashes=False)
 def hello():
     """funtion that returns Hello HBNB!"""
     return "Hello HBNB!"
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
