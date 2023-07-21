@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-0-hello_route.py module
+0-hello_route.py: A script that starts a flask web application
 """
 from flask import Flask
 
