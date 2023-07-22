@@ -41,6 +41,30 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
+    def test_all_with_cls(self):
+        """all() returns objects of specified class"""
+        obj1 = BaseModel()
+        obj2 = BaseModel()
+
+        storage._FileStorage__objects['BaseModel' + '.' + obj1.id] = obj1
+        storage._FileStorage__objects['BaseModel' + '.' + obj2.id] = obj2
+
+        # Test all() with cls=BaseModel (should return objects of type
+        # BaseModel)
+        base_model_objects = storage.all(BaseModel)
+        self.assertIsInstance(base_model_objects, dict)
+        # Number of BaseModel objects added
+        self.assertEqual(len(base_model_objects), 2)
+
+        # Test all() with cls=OtherModel (should return an empty dictionary)
+        class OtherModel:
+            pass
+        other_model_objects = storage.all(OtherModel)
+        self.assertIsInstance(other_model_objects, dict)
+        self.assertEqual(
+            len(other_model_objects),
+            0)  # No OtherModel objects added
+
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
@@ -110,8 +134,6 @@ class test_fileStorage(unittest.TestCase):
 
     def test_delete_existing_object(self):
         """ Tests if delele() deletes an obj """
-        from models.engine.file_storage import FileStorage
-
         obj = BaseModel()
         storage._FileStorage__objects['BaseModel' + '.' + obj.id] = obj
 
@@ -123,8 +145,6 @@ class test_fileStorage(unittest.TestCase):
 
     def test_delete_nonexistent_object(self):
         """ Tests if delete() doesn't raise error if obj is non-existent """
-        from models.engine.file_storage import FileStorage
-
         obj = BaseModel()
 
         # Call delete() to remove the non-existent object
