@@ -21,7 +21,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except BaseException:
             pass
 
     def test_obj_list_empty(self):
@@ -107,3 +107,29 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_existing_object(self):
+        """ Tests if delele() deletes an obj """
+        from models.engine.file_storage import FileStorage
+
+        obj = BaseModel()
+        storage._FileStorage__objects['BaseModel' + '.' + obj.id] = obj
+
+        storage.delete(obj)
+
+        # Verify that the object is no longer present in the dictionary
+        self.assertNotIn('BaseModel' + '.' + obj.id,
+                         storage._FileStorage__objects)
+
+    def test_delete_nonexistent_object(self):
+        """ Tests if delete() doesn't raise error if obj is non-existent """
+        from models.engine.file_storage import FileStorage
+
+        obj = BaseModel()
+
+        # Call delete() to remove the non-existent object
+        # This should not raise any errors and have no effect
+        storage.delete(obj)
+
+        # Verify that the dictionary remains unchanged
+        self.assertEqual(len(storage._FileStorage__objects), 0)

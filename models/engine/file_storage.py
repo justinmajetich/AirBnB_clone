@@ -1,21 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-from models.base_model import BaseModel
-from models.amenity import Amenity
-from models.city import City
-from models.review import Review
-from models.state import State
-from models.user import User
-
-classes = {
-        'Amenity': Amenity,
-        'BaseModel': BaseModel,
-        'City': City,
-        'State': State,
-        'Review': Review,
-        'User': User
-}
 
 
 class FileStorage:
@@ -24,15 +9,11 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """returns the dictionary __objects"""
-        if cls is not None:
-            all_objs = {}
-            for k, v in self.__objects.items():
-                c = v.to_dict()['__class__']
-                if cls == c or cls == eval(c):
-                    all_objs[k] = v
-            return all_objs
-        return self.__objects
+        """Returns a dictionary of models currently in storage"""
+        if cls:
+            return {key: obj for key, obj in self.__objects.items()
+                    if isinstance(obj, cls)}
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -58,10 +39,10 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -72,12 +53,8 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        '''Deletes an object from the list of objects'''
-        if obj is not None:
-            k = obj.to_dict()['__class__'] + '.' + obj.id
-            if k in self.all():
-                del self.all()[k]
+        """Deletes obj from __objects"""
+        obj_id = obj.to_dict()['__class__'] + '.' + obj.id
 
-    def close(self):
-        '''Close the current file storage'''
-        self.reload()
+        if obj is not None and obj_id in self.__objects:
+            del self.__objects[obj_id]
