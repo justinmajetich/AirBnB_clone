@@ -73,3 +73,8 @@ class DBStorage():
         ses_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session()
+
+    def close(self):
+        """ tell our registry to dispose the session """
+        self.__session.remove()
+        """or self.__session.close()"""
