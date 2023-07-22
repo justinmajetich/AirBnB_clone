@@ -58,3 +58,10 @@ class FileStorage:
 
         if obj is not None and obj_id in self.__objects:
             del self.__objects[obj_id]
+
+    def all(self, cls=None):
+        """Returns a dictionary of models currently in storage"""
+        if cls:
+            return {key: obj for key, obj in self.__objects.items()
+                    if isinstance(obj, cls)}
+        return FileStorage.__objects
