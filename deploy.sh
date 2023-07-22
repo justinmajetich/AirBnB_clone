@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-SERVER="ubuntu@54.146.78.93"
+SERVER="ubuntu@3.85.168.10"
 ARCHIVE_PATH="versions/web_static_20230716023546.tgz"
 
 # Copy the archive to the server
