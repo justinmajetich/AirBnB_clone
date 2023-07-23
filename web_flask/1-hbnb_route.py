@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Flask web application
-Created on Tue Sep  1 11:15:54 2020
-@author: Robinson Montes
+
 """
 from flask import Flask
 app = Flask(__name__)
