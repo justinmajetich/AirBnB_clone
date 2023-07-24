@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """
-hahahahahahahhahahahahahahaha haha hahahah
+starts a Flask web application
 """
 
 from flask import Flask, render_template
 from models import storage, State, City
 
-app = = Flask(__name__)
+app = Flask(__name__)
 
 
 @app.teardown_appcontext
