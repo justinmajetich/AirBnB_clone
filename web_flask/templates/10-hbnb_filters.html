@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+        <LINK rel="stylesheet" type="text/css" href="/static/styles/4-common.css">
+        <LINK rel="stylesheet" type="text/css" href="/static/styles/3-header.css">
+        <LINK rel="stylesheet" type="text/css" href="/static/styles/3-footer.css">
+        <LINK rel="stylesheet" type="text/css" href="/static/styles/6-filters.css">
+    </HEAD>
+    <BODY>
+        <HEADER>
+            <DIV class="logo">
+                <IMG src="/static/images/logo.png" alt="HBNB logo">
+                <H1>HBNB</H1>
+            </DIV>
+            <DIV class="account">
+                <IMG src="/static/images/icon.png" alt="User icon">
+                <A href="#">John Smith</A>
+            </DIV>
+        </HEADER>
+        <SECTION class="filters">
+            <DIV class="amenities">
+                <H3>Amenities</H3>
+                <DIV class="popover">
+                    <UL>
+                        {% for amenity in amenities %}
+                            <LI>{{ amenity.name }}</LI>
+                        {% endfor %}
+                    </UL>
+                </DIV>
+            </DIV>
+            <DIV class="locations">
+                <H3>States</H3>
+                <DIV class="popover">
+                    <UL>
+                        {% for state in states %}
+                            <LI>{{ state.name }}</LI>
+                        {% endfor %}
+                    </UL>
+                </DIV>
+            </DIV>
+        </SECTION>
+        <FOOTER>
+            <P>Holberton School</P>
+            <P>HBNB is a clone of the AirBnB platform</P>
+        </FOOTER>
+    </BODY>
+</HTML>
