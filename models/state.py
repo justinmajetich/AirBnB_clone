@@ -32,4 +32,4 @@ class State(BaseModel, Base):
             for city in city_instances:
                 if city.state_id == self.id:
                     city_list.append(city)
-            return
+            return  city_list
