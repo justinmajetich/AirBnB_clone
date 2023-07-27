@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # File: 9-states.py
 # Authors: Yoshua Lopez - Ma paz Quirola - Laura Socarras
-# email: 
+# email:
 
 """"
 Script starts Flask web app
