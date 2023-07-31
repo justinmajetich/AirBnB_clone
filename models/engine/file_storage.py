@@ -48,3 +48,5 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+"""" BNB_MYSQL_USER=root HBNB_MYSQL_PWD=Camilo98714630. HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py """
