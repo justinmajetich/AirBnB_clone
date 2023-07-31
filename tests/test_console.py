@@ -17,16 +17,16 @@ class TestHBNBCommand(unittest.TestCase):
         return captured_output.getvalue().strip()
 
     def test_create(self):
-        with self.capture_stdout("create BaseModel") as id_:
-            self.assertTrue(id_ is not None)
-            self.assertTrue(len(id_) > 0)
+        id_ = self.capture_stdout("create BaseModel")
+        self.assertTrue(id_ is not None)
+        self.assertTrue(len(id_) > 0)
 
-        with self.capture_stdout("create BaseModel") as new_id:
-            self.assertNotEqual(id_, new_id)
+        new_id = self.capture_stdout("create BaseModel")
+        self.assertNotEqual(id_, new_id)
 
-        with self.capture_stdout(f'show BaseModel {id_}') as output:
-            self.assertIn(id_, output)
-            self.assertIn('BaseModel', output)
+        output = self.capture_stdout(f'show BaseModel {id_}')
+        self.assertIn(id_, output)
+        self.assertIn('BaseModel', output)
 
         self.cli.onecmd(f'destroy BaseModel {id_}')
         self.cli.onecmd(f'destroy BaseModel {new_id}')
