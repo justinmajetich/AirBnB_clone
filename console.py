@@ -123,10 +123,6 @@ class HBNBCommand(cmd.Cmd):
 
         object_params = {}
 
-        # add key update_at to object_params with value current of time
-        from datetime import datetime
-        object_params["updated_at"] = datetime.now()
-
         for param in params:
             """ Replace underscores with spaces in the value """
             key, value = param.split('=')
@@ -148,12 +144,6 @@ class HBNBCommand(cmd.Cmd):
 
             # add a key and a value to the dictionary
             object_params[key] = value
-
-            """ checks if 'updated_at' is in object_params """
-            if 'updated_at' not in object_params:
-                # add key "updated_at" to object_params with the value current time
-                from datetime import datetime
-                object_params["updated_at"] = datetime.now().isoformat()
 
         """ creates a new instance of the class specified by the user"""
         new_object = HBNBCommand.classes.get(classname)(**object_params)
