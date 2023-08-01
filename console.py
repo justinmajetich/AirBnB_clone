@@ -110,43 +110,37 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class with given parameters"""
+        """ Create an object of any class"""
+        parse = args.partition(" ")
+        class_name = parse[0]
+        param = parse[2]
+        param_dict = {}
         if not args:
             print("** class name missing **")
             return
-
-        """Extract the class name and parameters from the input"""
-        arg_parts = args.split()
-        class_name = arg_parts[0]
-        params = arg_parts[1:]
-
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        """Process the parameters and create a dictionary of attribute-value pairs"""
-        attr_dict = {}
-        for param in params:
-            key_value = param.split("=")
-            if len(key_value) == 2:
-                key, value = key_value
-                """Handle the case where the value starts and ends with double quotes"""
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace("_", " ").replace('\\"', '"')
-                """Try converting the value to float or int, otherwise keep it as a string"""
+        if len(args) - 1 > len(class_name):
+            parameters = args[(len(class_name) + 1):].split(" ")
+            for i in range(0, len(parameters)):
+                keysNvalues = parameters[i].split("=")
+                value = keysNvalues[1]
                 try:
-                    if '.' in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except ValueError:
-                    pass
-                attr_dict[key] = value
-
-        """Create an instance of the specified class with the given attributes"""
-        new_instance = HBNBCommand.classes[class_name](**attr_dict)
-        new_instance.save()
+                    value = int(keysNvalues[1])
+                except Exception:
+                    try:
+                        value = float(keysNvalues[1])
+                    except Exception:
+                        value = ''
+                        value += keysNvalues[1][1:-1].replace("_", " ")
+                param_dict[keysNvalues[0]] = value
+        if param_dict != {}:
+            new_instance = HBNBCommand.classes[class_name](**param_dict)
+        else:
+            new_instance = HBNBCommand.classes[class_name]()
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
