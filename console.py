@@ -123,14 +123,14 @@ class HBNBCommand(cmd.Cmd):
 
         object_params = {}
 
+        # add key update_at to object_params with value current of time
+        from datetime import datetime
+        object_params["updated_at"] = datetime.now()
+
         for param in params:
             """ Replace underscores with spaces in the value """
             key, value = param.split('=')
             value = value.replace('_', ' ')
-
-            # add key update_at to object_params with value current of time
-            from datetime import datetime
-            object_params["updated_at"] = datetime.now()
 
             """ checks if it is a string and removes the quotation marks """
             if value.startswith('"') and value.endswith('"'):
