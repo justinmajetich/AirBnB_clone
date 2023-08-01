@@ -128,6 +128,10 @@ class HBNBCommand(cmd.Cmd):
             key, value = param.split('=')
             value = value.replace('_', ' ')
 
+            # add key update_at to object_params with value current of time
+            from datetime import datetime
+            object_params["updated_at"] = datetime.now()
+
             """ checks if it is a string and removes the quotation marks """
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('\\"', '"')
