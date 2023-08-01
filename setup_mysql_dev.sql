@@ -1,4 +1,4 @@
--- Create a database
+-- Create database
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 -- Create user in localhost identified by password
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
