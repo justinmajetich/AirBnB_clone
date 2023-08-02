@@ -114,25 +114,30 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class with given parameters """
-        if not args:
-            print("** class name missing **")
-            return
+    """ Create an object of any class with given parameters """
+    if not args:
+        print("** class name missing **")
+        return
 
-        args_list = args.split()
-        class_name = args_list[0]
-        params = {}
+    # Separate the class name from the parameters
+    class_params = args.split(' ', 1)
+    class_name = class_params[0]
+    params = {}
 
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+    if class_name not in HBNBCommand.classes:
+        print("** class doesn't exist **")
+        return
 
-        args_list = args_list[1:]
+    if len(class_params) > 1:
+        # Split the parameters and their values
+        param_list = class_params[1].split()
 
-        for arg in args_list:
-            param_split = arg.split('=')
+        # Iterate through each parameter-value pair
+        for param in param_list:
+            # Split the parameter and its value
+            param_split = param.split('=')
             if len(param_split) != 2:
-                print("** Invalid parameter format. Skipping: {} **".format(arg))
+                print(f"** Invalid parameter format: {param}. Skipping. **")
                 continue
 
             key, value = param_split
@@ -151,10 +156,11 @@ class HBNBCommand(cmd.Cmd):
 
                 params[key] = value
 
-                new_instance = HBNBCommand.classes[class_name](**params)
-                storage.save()
-                print(new_instance.id)
-                storage.save()
+    # Create the new instance with the provided parameters
+    new_instance = HBNBCommand.classes[class_name](**params)
+    storage.save()
+    print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
