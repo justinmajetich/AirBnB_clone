@@ -10,7 +10,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls in None:
+        if cls == None:
             return self.__objects
         else:
             new_dict = {}
@@ -63,4 +63,3 @@ class FileStorage:
             if self.__objects[to_delete]:
                 del self.__objects[to_delete]
                 self.save()
-        
