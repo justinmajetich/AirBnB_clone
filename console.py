@@ -9,7 +9,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models import storage
+from models.__init__ import storage
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -110,37 +111,29 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        parse = args.partition(" ")
-        class_name = parse[0]
-        param = parse[2]
-        param_dict = {}
-        if not args:
-            print("** class name missing **")
-            return
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        if len(args) - 1 > len(class_name):
-            parameters = args[(len(class_name) + 1):].split(" ")
-            for i in range(0, len(parameters)):
-                keysNvalues = parameters[i].split("=")
-                value = keysNvalues[1]
+        """Create an object of any class"""
+        try:
+            if not args:
+                raise SyntaxError()
+            my_list = args.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            print("{}".format(obj.id))
+            for num in range(1, len(my_list)):
+                my_list[num] = my_list[num].replace('=', ' ')
+                attributes = split(my_list[num])
+                attributes[1] = attributes[1].replace('_', ' ')
                 try:
-                    value = int(keysNvalues[1])
-                except Exception:
-                    try:
-                        value = float(keysNvalues[1])
-                    except Exception:
-                        value = ''
-                        value += keysNvalues[1][1:-1].replace("_", " ")
-                param_dict[keysNvalues[0]] = value
-        if param_dict != {}:
-            new_instance = HBNBCommand.classes[class_name](**param_dict)
-        else:
-            new_instance = HBNBCommand.classes[class_name]()
-        print(new_instance.id)
-        storage.save()
+                    var = eval(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1]) is not tuple:
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
