@@ -113,52 +113,61 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    # def do_create(self, args):
-    #     """ Create an object of any class"""
-    #     if not args:
-    #         print("** class name missing **")
-    #         return
-    #     elif args not in HBNBCommand.classes:
-    #         print("** class doesn't exist **")
-    #         return
-    #     new_instance = HBNBCommand.classes[args]()
-    #     storage.save()
-    #     print(new_instance.id)
-    #     storage.save()
-
-    def do_create(self, line):
-        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+    def do_create(self, arg):
+        """Usage: create <Class name> <param 1> <param 2> <param 3>...
         Create a new class instance with given keys/values and print its id.
         """
         try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
+            if not arg:
+                raise SyntaxError("Missing arguments")
+
+            # Split the input arguments into class name and parameters
+            class_and_params = arg.split(" ", 1)
+            class_name = class_and_params[0]
+            params = class_and_params[1].split(" ") if len(class_and_params) > 1 else []
 
             kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
+            for param in params:
+                # Split the parameter into key and value
+                key_value = param.split("=", 1)
+                if len(key_value) == 2:
+                    key, value = key_value[0], key_value[1]
+
+                    # Handle different value types: string, float, integer
+                    if value.startswith('"') and value.endswith('"'):
+                        # String value: Remove surrounding quotes and replace underscores
+                        value = value[1:-1].replace("_", " ").replace('\\"', '"')
+                    elif "." in value:
+                        # Float value: Convert to float
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            continue
+                    else:
+                        # Integer value: Convert to integer
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            continue
+
+                    kwargs[key] = value
 
             if kwargs == {}:
-                obj = eval(my_list[0])()
+                obj = eval(class_name)()
             else:
-                obj = eval(my_list[0])(**kwargs)
+                obj = eval(class_name)(**kwargs)
                 storage.new(obj)
+
             print(obj.id)
             obj.save()
 
-        except SyntaxError:
-            print("** class name missing **")
+        except SyntaxError as e:
+            print(str(e))
         except NameError:
-            print("** class doesn't exist **")
+            print(f"** Class '{class_name}' doesn't exist **")
+
+    # Rest of the code...
+
 
     def help_create(self):
         """ Help information for the create method """
