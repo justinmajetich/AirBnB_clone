@@ -16,7 +16,7 @@ class FileStorage:
             filtered_objects = {}
             for key, obj in FileStorage.__objects.items():
                 if cls == obj.__class__:
-                    filtered_objects[key] = val
+                    filtered_objects[key] = obj
             return filtered_objects
 
     def new(self, obj):
