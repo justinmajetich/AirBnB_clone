@@ -13,9 +13,9 @@ class FileStorage:
         if cls is not None:
             dict = {}
             for key, value in self.__objects.items():
-                if cls == value.__class__.__name__:
+                if cls == value.__class__.__name__ or cls == value.__class__:
                     dict[key] = value
-                return dict
+            return dict
         return self.__objects
 
     def new(self, obj):
