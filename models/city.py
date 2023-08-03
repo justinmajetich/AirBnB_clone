@@ -14,5 +14,6 @@ class City(BaseModel, Base):
             cascade="all",
             backref=backref("cities", cascade="all"),
             passive_deletes=True
+    )
     state_id = ""
     name = ""
