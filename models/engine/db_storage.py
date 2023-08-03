@@ -17,4 +17,11 @@ classes = {"Amenity": Amenity,
            "State": State,
            "User": User}
 
-class DBstorage:
+class DBstorage():
+    """Class DBstorage"""
+    __engine = None
+    __session = None
+
+    def __init__(self):
+        """Mtehod Constructor"""
+        self.__engine
