@@ -1,5 +1,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship, backref
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -16,3 +18,19 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
+
+    # Relationship with the Review class for DBStorage
+    reviews = relationship(
+        'Review',
+        backref=backref('place', cascade='all, delete-orphan'),
+        cascade='all, delete-orphan'
+    )
+
+    # For FileStorage
+    @property
+    def reviews(self):
+        """Getter attribute to retrieve reviews linked to this 
+        place for FileStorage"""
+        from models import storage
+        return [review for review in storage.all(Review).values()
+                if review.place_id == self.id]

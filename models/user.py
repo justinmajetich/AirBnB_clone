@@ -19,3 +19,10 @@ class User(BaseModel, Base):
         backref=backref('user', cascade='all, delete-orphan'),
         cascade='all, delete-orphan'
     )
+
+    # Relationship with the Review class
+    reviews = relationship(
+        'Review',
+        backref=backref('user', cascade='all, delete-orphan'),
+        cascade='all, delete-orphan'
+    )
