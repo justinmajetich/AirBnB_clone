@@ -3,6 +3,7 @@ from sqlalchemy import Table, Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from models.review import Review
 from os import getenv
+from models.amenity import Amenity
 
 place_amenity = Table(
     'place_amenity', Base.metadata,
