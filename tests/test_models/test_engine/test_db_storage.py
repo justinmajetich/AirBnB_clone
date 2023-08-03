@@ -1,77 +1,70 @@
 #!/usr/bin/python3
-"""
-Test validation the class TestDBStorage
-"""
+"""test for file storage"""
 import unittest
-import os
-import tempfile
-from models import storage
-from models.engine.db_storage import DBStorage
+from os import getenv
+import MySQLdb
 from models.state import State
+from models.engine.db_storage import DBStorage
 
 
+@unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'Not db storage')
 class TestDBStorage(unittest.TestCase):
-    """Test Case """
+    '''this will test the DBStorage'''
 
     @classmethod
-    def setUpClass(cls):
-        """setting up a test environment for the class"""
-        cls.db_fd, cls.db_path = tempfile.mkstemp()
-        os.environ['HBNB_TYPE_STORAGE'] = 'db'
-        storage._FileStorage__objects.clear()
-        cls.storage = DBStorage()
-        cls.storage.reload()
+    def setUpClass(self):
+        """set up for test"""
+        self.User = getenv("HBNB_MYSQL_USER")
+        self.Passwd = getenv("HBNB_MYSQL_PWD")
+        self.Db = getenv("HBNB_MYSQL_DB")
+        self.Host = getenv("HBNB_MYSQL_HOST")
+        self.db = MySQLdb.connect(host=self.Host, user=self.User,
+                                  passwd=self.Passwd, db=self.Db,
+                                  charset="utf8")
+        self.query = self.db.cursor()
+        self.storage = DBStorage()
+        self.storage.reload()
 
     @classmethod
-    def tearDownClass(cls):
-        """
-        configures a database to be used as a data storage medium
-        """
-        os.close(cls.db_fd)
-        os.unlink(cls.db_path)
+    def teardown(self):
+        """at the end of the test this will tear it down"""
+        self.query.close()
+        self.db.close()
 
-    def setUp(self):
-        """
-        removes all objects in the base
-        """
-        del_list = []
-        for key in storage.all().keys():
-            del_list.append(key)
-        for key in del_list:
-            storage._DBStorage__session.delete(storage.all()[key])
-            storage._DBStorage__session.commit()
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'Not db storage')
+    def test_read_tables(self):
+        """existing tables"""
+        self.query.execute("SHOW TABLES")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 7)
 
-    def test_obj_list_empty(self):
-        """
-        checks that the __objects dictionary of the
-        FileStorage class instance is initially empty
-        """
-        self.assertEqual(len(storage.all()), 0)
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'Not db storage')
+    def test_no_element_user(self):
+        """no elem in users"""
+        self.query.execute("SELECT * FROM users")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
 
-    def test_reload(self):
-        """
-        checks if reload() of the FileStorage class works
-        correctly when the object storage file does not exist
-        """
-        self.assertEqual(storage.reload(), None)
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'Not db storage')
+    def test_no_element_cities(self):
+        """no elem in cities"""
+        self.query.execute("SELECT * FROM cities")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
 
-    def test_type_objects(self):
-        """
-        confirm that the __objects attribute of an instance
-        of a class that uses a dictionary data storage system
-        (storage.all()) is of type dictionary.
-        """
-        self.assertEqual(type(storage.all()), dict)
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'Not db storage')
+    def test_add(self):
+        """Test same size between storage() and existing db"""
+        self.query.execute("SELECT * FROM states")
+        query_rows = self.query.fetchall()
+        self.assertEqual(len(query_rows), 0)
+        state = State(name="Ebonyi")
+        state.save()
+        self.db.autocommit(True)
+        self.query.execute("SELECT * FROM states")
+        query_rows = self.query.fetchall()
+        self.assertEqual(len(query_rows), 1)
 
-    def test_store(self):
-        """checks that the object has been correctly saved in the database"""
-        new = State(name="Florida")
-        new.save()
-        _id = new.to_dict()['id']
-        self.assertIn(new.__class__.__name__ + '.' + _id,
-                      storage.all(type(new)).keys())
 
-    def test_storage_var_created(self):
-        """verifies that an object of class"""
-        from models.engine.db_storage import DBStorage
-        self.assertEqual(type(storage), DBStorage)
+if __name__ == "__main__":
+    unittest.main()
