@@ -1,75 +1,98 @@
-import os
+#!/usr/bin/python3
+""" This modules handles Database Storage """
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from os import getenv
+from models.base_model import Base
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.user import User
+from models.amenity import Amenity
 
-Base = declarative_base()
 
-
-class DatabaseManager:
+class DBStorage:
+    '''
+    Handles database engine
+    '''
     __engine = None
     __session = None
 
     def __init__(self):
-        """Method contructor"""
-        self.create_engine()
+        '''
+        Create engine for database
+        '''
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            getenv('HBNB_MYSQL_USER'),
+            getenv('HBNB_MYSQL_PWD'),
+            getenv('HBNB_MYSQL_HOST'),
+            getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True
+        )
 
-    @classmethod
-    def create_engine(cls):
-        """Method create engine"""
-        if cls.__engine is None:
-            mysql_user = os.environ.get("HBNB_MYSQL_USER")
-            mysql_password = os.environ.get("HBNB_MYSQL_PWD")
-            mysql_host = os.environ.get("HBNB_MYSQL_HOST", "localhost")
-            mysql_db = os.environ.get("HBNB_MYSQL_DB")
-            pool_pre_ping = True if os.environ.get("HBNB_ENV") == "test" else False
-
-            if all([mysql_user, mysql_password, mysql_db]):
-                cls.__engine = create_engine(
-                    f"mysql+mysqldb://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}",
-                    pool_pre_ping=pool_pre_ping
-                )
-                Base.metadata.create_all(cls.__engine)
-            else:
-                raise ValueError("Missing required environment variables for MySQL connection.")
-
-    @property
-    def session(self):
-        "method that make the connection"
-        if self.__session is None:
-            Session = sessionmaker(bind=self.__engine)
-            self.__session = Session()
-        return self.__session
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """method that print all"""
-        objects = {}
-        query_classes = [
-            User, State, City, Amenity, Place, Review
-        ]  # Add the classes corresponding to User, State, City, Amenity, Place, Review
+        '''
+        query for all objects on the current database session
+        '''
+        classes = {
+            "City": City,
+            "State": State,
+            "User": User,
+            "Place": Place,
+            "Review": Review,
+            "Amenity": Amenity,
+        }
+        result = {}
+        query_rows = []
 
-        if cls is None:
-            query_classes = query_classes
+        if cls:
+            '''Query for all objects belonging to cls'''
+            if type(cls) is str:
+                cls = eval(cls)
+            query_rows = self.__session.query(cls)
+            for obj in query_rows:
+                key = '{}.{}'.format(type(obj).__name__, obj.id)
+                result[key] = obj
+            return result
         else:
-            query_classes = [cls]
-
-        for cls in query_classes:
-            result = self.__session.query(cls).all()
-            for obj in result:
-                key = f"{obj.__class__.__name__}.{obj.id}"
-                objects[key] = obj
-
-        return objects
+            '''Query for all types of objects'''
+            for name, value in classes.items():
+                query_rows = self.__session.query(value)
+                for obj in query_rows:
+                    key = '{}.{}'.format(name, obj.id)
+                    result[key] = obj
+            return result
 
     def new(self, obj):
-        """create a new method"""
+        '''add the object to the current database session'''
         self.__session.add(obj)
 
     def save(self):
-        """Method save"""
+        '''commit all changes of the current database session'''
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Method delete"""
-        if obj:
-            self.__session.delete(obj)
+        '''delete obj from the current database session'''
+        self.__session.delete(obj)
+
+    def reload(self):
+        '''
+        - create all tables in the database
+        - create the current database session from the engine
+        '''
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
+
+    def close(self):
+        """
+        Because SQLAlchemy doesn't reload his `Session`
+        when it's time to insert new data, we force it to!
+        """
+        self.__session.close()
