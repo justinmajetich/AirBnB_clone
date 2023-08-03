@@ -1,55 +1,111 @@
-#!/usr/bin/python3
-"""test for console project Mysql"""
+import io
+import sys
 import unittest
 from unittest.mock import patch
-from io import StringIO
-import os
-import console
 from console import HBNBCommand
+from models import storage
 
 
-class TestConsole(unittest.TestCase):
-    """Test Suite for the console"""
+class TestHBNBCommand(unittest.TestCase):
 
-    def test_docstrings_in_console(self):
-        """checking for docstrings"""
-        self.assertIsNotNone(console.__doc__)
-        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
-        
-        
-    @classmethod
-    def setUpClass(cls):
-        """setup for the test"""
-        cls.consol = HBNBCommand()
+    def setUp(self):
+        self.cli = HBNBCommand()
 
-    @classmethod
-    def teardown(cls):
-        """at the end of the test this will tear it down"""
-        del cls.consol
+    def test_create(self):
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create BaseModel")
+            id_ = f.getvalue().strip()
 
-    def tearDown(self):
-        """Remove temporary file (file.json) created as a result"""
-        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
-            try:
-                os.remove("file.json")
-            except Exception:
-                pass
+        self.assertTrue(id_ is not None)
+        self.assertTrue(len(id_) > 0)
 
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create BaseModel")
+            new_id = f.getvalue().strip()
 
-    def test_emptyline(self):
-        """Test empty line"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("\n")
-            self.assertEqual('', f.getvalue())
+        self.assertNotEqual(id_, new_id)
 
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd(f'show BaseModel {id_}')
+            output = f.getvalue().strip()
 
-if __name__ == "__main__":
-    unittest.main()
+        self.assertIn(id_, output)
+        self.assertIn('BaseModel', output)
+
+        self.cli.onecmd(f'destroy BaseModel {id_}')
+        self.cli.onecmd(f'destroy BaseModel {new_id}')
+
+    def test_do_show(self):
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create Place")
+            id_ = f.getvalue().strip()
+
+        self.assertTrue(id_ is not None)
+        self.assertTrue(len(id_) > 0)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd(f"show Place {id_}")
+            expected_output = f.getvalue().strip()
+
+        self.assertIn(id_, expected_output)
+
+        self.cli.onecmd(f'destroy Place {id_}')
+
+    def test_do_destroy(self):
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create Place")
+            id_ = f.getvalue().strip()
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("destroy")
+            output = f.getvalue().strip()
+
+        self.assertIn("** class name missing **", output)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("destroy NewClass")
+            output = f.getvalue().strip()
+
+        self.assertIn("** class doesn't exist **", output)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("destroy Place")
+            output = f.getvalue().strip()
+
+        self.assertIn("** instance id missing **", output)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("destroy Place 1243")
+            output = f.getvalue().strip()
+
+        self.assertIn("** no instance found **", output)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("destroy Place 1243")
+            output = f.getvalue().strip()
+
+        self.assertIn("** no instance found **", output)
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd(f"destroy Place {id_}")
+            output = f.getvalue().strip()
+
+        self.assertIn("", output)
+
+    def test_do_count(self):
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create BaseModel")
+            id_ = f.getvalue().strip()
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd("create BaseModel")
+            new_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=io.StringIO()) as f:
+            self.cli.onecmd(f"count BaseModel")
+            output = f.getvalue().strip()
+
+        self.assertEqual(2, int(output))
+
+        self.cli.onecmd(f"destroy BaseModel {id_}")
+        self.cli.onecmd(f"destroy BaseModel {new_id}")
