@@ -319,6 +319,52 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+        
+        def do_create(self, arg):
+        """Create a new instance of a class"""
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = arg.split()
+        class_name = args[0]
+
+        if class_name not in self.all_classes:
+            print("** class doesn't exist **")
+            return
+
+        # Remove the class_name from the args list
+        args = args[1:]
+
+        # Process the parameters
+        params = {}
+        for param in args:
+            key, value = param.split("=")
+            key = key.strip()
+            value = value.strip()
+
+            if value.startswith('"') and value.endswith('"'):
+                # String value
+                value = value[1:-1].replace('_', ' ')
+            elif '.' in value:
+                # Float value
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                # Integer value
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+
+            params[key] = value
+
+        # Create the object with the given parameters
+        obj = self.all_classes[class_name](**params)
+        obj.save()
+        print(obj.id)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
