@@ -8,9 +8,17 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+    def all(self, cls=None):
+        """ Returns a dictionary of models currently in storage.  If a class
+        is specified, it returns objects of that class
+        """
+        if cls is None:
+            return FileStorage.__objects
+        dir_same_cls = {}
+        for key, value in FileStorage.__objects.items():
+            if value.__class__ == cls:
+                dir_same_cls[key] = value
+            return dir_same_cls
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -25,6 +33,17 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+    def delete(self, obj=None):
+        """ 
+        Deletes object from storage 
+        """
+        if obj is None:
+            return
+
+        key = obj.to_dict()['__class__'] + '.' + obj.id
+        if key in FileStorage.__objects:
+            del FileStorage.__objects[key]
+
     def reload(self):
         """Loads storage dictionary from file"""
         from models.base_model import BaseModel
@@ -36,15 +55,19 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+        def close(self):
+            """ Deserialize JSON to objects """
+            self.reload()
