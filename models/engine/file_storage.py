@@ -3,17 +3,19 @@
 import json
 
 
-class FileStorage:
+class FileStorage():
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
     def delete(self, obj=None):
+        """Deletes obj from __objects, if obj=None nothing happens"""
         if obj is not None:
             class_type = str(type(obj))[15:]
             class_name = class_type[class_type.find(".") + 1:-2]
             key = class_name + "." + obj.__dict__['id']
             del FileStorage.__objects[key]
+            self.save()
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
