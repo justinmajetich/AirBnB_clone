@@ -77,7 +77,7 @@ Usage: create <class_name>
 ```
 ```
 (hbnb) create BaseModel
-3aa5babc-efb6-4041-bfe9-3cc9727588f8
+3aa5babc-efb6-4041-bfe9-3cc9727588f8...
 (hbnb)                   
 ```
 ###### Example 1: Show an object
