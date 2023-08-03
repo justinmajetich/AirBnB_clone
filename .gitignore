@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+test_params_create.py
+file.json
+__pycache__/
+main.py
+tmp_console_main.py
