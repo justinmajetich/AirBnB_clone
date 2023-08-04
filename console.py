@@ -126,32 +126,33 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        if len(args) == 1:
-            print("** parameters missing **")
-            return
+        if cls in HBNBCommand.classes:
+            new_dict = {}
+            if len(args) == 1:
+                # print(args)
+                new_instance = HBNBCommand.classes[cls]()
+                # print(new_instance)
+                new_instance.save()
+                print(new_instance.id)
+            else:
+                for a in args:
+                    if "=" in a:
+                        key_value_list = a.split('=')
+                        key = key_value_list[0]
+                        value = key_value_list[1]
+                        if value[0] and value[-1] == '"':
+                            value = value[1:-1]
+                            if '_' in value:
+                                value = value.replace('_', '')
+                        else:
+                            value = eval(value)
 
-        new_dict = {}
-        for arg in args[1:]:
-            if '=' in arg:
-                key, value = arg.split('=')
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            pass
+                        new_dict[key] = value
 
-                new_dict[key] = value
-
-        new_instance = HBNBCommand.classes[cls]()
-        new_instance.__dict__.update(new_dict)
-        new_instance.save()
-
-        print(new_instance.id)
+                    new_instance = HBNBCommand.classes[cls]()
+                    new_instance.__dict__.update(new_dict)
+                    new_instance.save()
+                    print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
