@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-This module initializes the storage module based on the environment variable
-HBNB_TYPE_STORAGE.
-"""
+"""This module initializes HBNB_TYPE_STORAGE."""
 from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
