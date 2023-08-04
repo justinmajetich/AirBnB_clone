@@ -10,7 +10,7 @@ Base = declarative_base()
 
 class BaseModel:
     """
-    Defines the BaseModel class.
+    Defines the BaseModel class BaseModel.
 
     Attributes:
         id (sqlalchemy String): The BaseModel id.
