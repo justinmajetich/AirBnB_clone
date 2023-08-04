@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ DBStorage Module """
 
-
 from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
@@ -47,7 +46,7 @@ class DBStorage:
                     k = o.__class__.__name__ + '.' + o.id
                     a_dict[k] = o
         if cls in classes:
-            for o in self.__engine.query(classes[cls]):
+            for o in self.__session.query(classes[cls]):
                 k = o.__class__.__name__ + o.id
                 a_dict[k] = o
         return a_dict
