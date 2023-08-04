@@ -5,8 +5,7 @@ Test validation the class TestDBStorage
 import unittest
 import os
 import tempfile
-from models import storage
-from models.engine.db_storage import DBStorage
+from models.engine.db_storage import DBStorage, storage
 from models.state import State
 
 
