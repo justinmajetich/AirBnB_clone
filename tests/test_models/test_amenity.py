@@ -1,19 +1,60 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""test for amenity"""
+import unittest
+import os
 from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
-class test_Amenity(test_basemodel):
-    """ """
+class TestAmenity(unittest.TestCase):
+    """this will test the Amenity class"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    @classmethod
+    def setUpClass(cls):
+        """set up for test"""
+        cls.amenity = Amenity()
+        cls.amenity.name = "WiFi"
 
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    @classmethod
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.amenity
+
+    def tearDown(self):
+        """teardown"""
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
+
+    def test_checking_for_docstring_amenity(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(Amenity.__doc__)
+
+    def test_attributes_amenity(self):
+        """chekcing if amenity have attibutes"""
+        self.assertTrue('id' in self.amenity.__dict__)
+        self.assertTrue('created_at' in self.amenity.__dict__)
+        self.assertTrue('updated_at' in self.amenity.__dict__)
+        self.assertTrue('name' in self.amenity.__dict__)
+
+    def test_is_subclass_amenity(self):
+        """test if Amenity is subclass of Basemodel"""
+        self.assertTrue(issubclass(self.amenity.__class__, BaseModel), True)
+
+    def test_attribute_types_amenity(self):
+        """test attribute type for Amenity"""
+        self.assertEqual(type(self.amenity.name), str)
+
+    def test_save_amenity(self):
+        """test if the save works"""
+        self.amenity.save()
+        self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
+
+    def test_to_dict_amenity(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.amenity), True)
+
+
+if __name__ == "__main__":
+    unittest.main()
