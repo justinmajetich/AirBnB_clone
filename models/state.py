@@ -1,26 +1,33 @@
 #!/usr/bin/python3
-""" State Module for HBNB project for AirBNB_clone_v2"""
-
-
+""" State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.engine.file_storage import FileStorage
+from models.city import City
+from os import getenv
+import models
+import shlex
 
 
 class State(BaseModel, Base):
-    """ State class definition in the next line"""
-    __tablename__ = 'states'
+    """table of the class State"""
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship('City', backref='state')
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state")
 
     @property
     def cities(self):
-        """Getter attribute cities that returns the list of City instances"""
-        from models import storage
-        from models.city import City
-        new_list = []
-        for key, obj_city in storage.all(City).items():
-            if obj_city.state_id == self.id:
-                new_list.append(obj_city)
-        return new_list
+        """return the cities of the current state"""
+        var = models.storage.all()
+        lista = []
+        result = []
+        for key in var:
+            city = key.replace('.', ' ')
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                lista.append(var[key])
+        for elem in lista:
+            if (elem.state_id == self.id):
+                result.append(elem)
+        return (result)
