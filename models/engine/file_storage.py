@@ -17,7 +17,7 @@ class FileStorage:
         for key, value in FileStorage.__objects.items():
             if value.__class__ == cls:
                 dir_same_cls[key] = value
-            return dir_same_cls
+        return dir_same_cls
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
