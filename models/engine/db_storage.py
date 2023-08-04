@@ -31,7 +31,7 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
+                                        format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                                         pool_pre_ping=True)
         
@@ -40,17 +40,17 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database session"""
-        objects = {}
+        a_dict = {}
         if cls is None:
             for value in classes.values():
                 for o in self.__session.query(value):
                     k = o.__class__.__name__ + '.' + o.id
-                    objects[k] = o
+                    a_dict[k] = o
         if cls in classes:
             for 0 in self.__engine.query(classes[cls]):
                 k = o.__class__.__name__ + o.id
-                objects[k] = o
-        return objects
+                a_dict[k] = o
+        return a_dict
 
     def new(self, obj):
         """Add the object to the current database session"""
