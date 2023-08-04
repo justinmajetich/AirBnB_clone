@@ -1,16 +1,15 @@
 #!/usr/bin/python3
-""" File Storage Module """
+""" Module defines a class to manage file storage"""
 import json
 
 
 class FileStorage:
-    """ Serializes instances to a JSON file and deserializes JSON
-    file to instances"""
+    """ Serializes instances to a JSON file and deserializes JSON"""i
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """ Returns the list of objects of one type of class, 
+        """ Returns the list of objects of one type of class,
         if the class specified, return objects in class"""
         if cls is None:
             return FileStorage.__objects
@@ -21,7 +20,7 @@ class FileStorage:
             return dir_same_cls
 
     def new(self, obj):
-        """ Sets in __objects the obj with key <obj class name>.id """
+        """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
@@ -34,13 +33,13 @@ class FileStorage:
             json.dump(temp, f)
 
       def delete(self, obj=None):
-        """ Deletes obj from __objects if it exists """
-        if obj is None:
+          """Deletes obj from storage"""
+          if obj is None:
             return
-        
-        key = obj.to_dict()['__class__'] + '.' + obj.id
-        if key in FileStorage.__objects:
-            del FileStorage.__objects[key]
+          
+          key = obj.to_dict()['__class__'] + '.' + obj.id
+          if key in FileStorage.__objects:
+              del FileStorage.__objects[key]
 
 
     def reload(self):
