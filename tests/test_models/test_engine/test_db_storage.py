@@ -72,7 +72,11 @@ class TestDBStorage(unittest.TestCase):
 
     def test_storage_var_created(self):
         """verifies that an object of class"""
+
         self.assertEqual(type(self.storage), DBStorage)
+
+        from models.engine.db_storage import DBStorage
+        self.assertEqual(type(storage), DBStorage)
 
 
 if __name__ == "__main__":
