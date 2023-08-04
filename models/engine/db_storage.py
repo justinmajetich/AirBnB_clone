@@ -31,10 +31,10 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                        format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
+                                      format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
-                                        pool_pre_ping=True)
-        
+                                      pool_pre_ping=True)
+
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -47,7 +47,7 @@ class DBStorage:
                     k = o.__class__.__name__ + '.' + o.id
                     a_dict[k] = o
         if cls in classes:
-            for 0 in self.__engine.query(classes[cls]):
+            for o in self.__engine.query(classes[cls]):
                 k = o.__class__.__name__ + o.id
                 a_dict[k] = o
         return a_dict
