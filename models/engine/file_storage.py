@@ -9,15 +9,15 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """ Returns a dictionary of models currently in storage,
-        if the class specified, return objects in class"""
+        """Returns a dictionary of models currently in storage, if a class
+        is specified, it returns of objects of said class"""
         if cls is None:
             return FileStorage.__objects
         dir_same_cls = {}
         for key, value in FileStorage.__objects.items():
             if value.__class__ == cls:
                 dir_same_cls[key] = value
-            return dir_same_cls
+        return dir_same_cls
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -33,7 +33,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
-        """Deletes obj from storage"""
+        """Deletes object from storage"""
         if obj is None:
             return
 
