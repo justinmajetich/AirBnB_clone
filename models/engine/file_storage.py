@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Module defines a class to manage file storage"""
+""" Module defines a class to manage file storage for hbnb clone"""
 import json
 
 
 class FileStorage:
-    """ Serializes instances to a JSON file and deserializes JSON"""i
+    """This class manages storage of hbnb models in JSON format"""
     __file_path = "file.json"
     __objects = {}
 
@@ -24,7 +24,7 @@ class FileStorage:
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """ Serializes __objects to the JSON file (path: __file_path) """
+        """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -36,7 +36,7 @@ class FileStorage:
         """Deletes obj from storage"""
         if obj is None:
             return
-            
+
         key = obj.to_dict()['__class__'] + '.' + obj.id
         if key in FileStorage.__objects:
             del FileStorage.__objects[key]
