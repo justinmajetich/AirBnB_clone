@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ File Storage Module """
 import json
-from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -36,10 +35,10 @@ class FileStorage:
 
       def delete(self, obj=None):
         """ Deletes obj from __objects if it exists """
-        if obj is not None:
+        if obj is None:
             return
         
-        key = obj.to_dict()['__class__'] + ''.' + obj.id
+        key = obj.to_dict()['__class__'] + '.' + obj.id
         if key in FileStorage.__objects:
             del FileStorage.__objects[key]
 
