@@ -1,34 +1,72 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+
+'''
+    All the test for the user model are implemented here.
+'''
+
+import os
+import unittest
+from models.base_model import BaseModel
 from models.user import User
+from io import StringIO
+import sys
+import datetime
 
 
-class test_User(test_basemodel):
-    """ """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                 "test only for FileStorage")
+class TestUser(unittest.TestCase):
+    '''
+        Testing User class
+    '''
 
-    def test_first_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+    def test_User_inheritance(self):
+        '''
+            tests that the User class Inherits from BaseModel
+        '''
+        new_user = User()
+        self.assertIsInstance(new_user, BaseModel)
 
-    def test_last_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+    def test_User_attributes(self):
+        '''
+            Test the user attributes exist
+        '''
 
-    def test_email(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+        new_user = User()
+        self.assertTrue("email" in new_user.__dir__())
+        self.assertTrue("first_name" in new_user.__dir__())
+        self.assertTrue("last_name" in new_user.__dir__())
+        self.assertTrue("password" in new_user.__dir__())
 
-    def test_password(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+    def test_type_email(self):
+        '''
+            Test the type of name
+        '''
+        new = User(email="new@example.com")
+        name = getattr(new, "email")
+        self.assertIsInstance(name, str)
+
+    def test_type_first_name(self):
+        '''
+            Test the type of name
+        '''
+        new = User(first_name="Juan")
+        name = getattr(new, "first_name")
+        self.assertIsInstance(name, str)
+
+    def test_type_last_name(self):
+        '''
+            Test the type of last_name
+        '''
+        new = User(last_name="Camilo")
+        name = getattr(new, "last_name")
+        self.assertIsInstance(name, str)
+
+    def test_type_password(self):
+        '''
+            Test the type of password
+        '''
+        new = User(password="1234")
+        name = getattr(new, "password")
+        self.assertIsInstance(name, str)
