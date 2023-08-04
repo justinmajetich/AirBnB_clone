@@ -14,8 +14,8 @@ class FileStorage:
             dicty = {}
             for key, value in FileStorage.__objects.items():
                 cls_obj = key[:key.find('.')]
-            if cls.__name__ == cls_obj:
-                dicty.update({key: value})
+                if cls.__name__ == cls_obj:
+                    dicty.update({key: value})
             return dicty
         else:
             return FileStorage.__objects
@@ -61,11 +61,11 @@ class FileStorage:
             """delete obj from __objects"""
             if obj:
                 obj_id = obj.id
+                keys_to_delete = []
                 for key in FileStorage.__objects.keys():
                     key_id = key[key.find('.') + 1:]
                     if obj_id in key:
-                        del FileStorage.__objects[key]
-                        self.save()
-                        return
-            else:
-                pass
+                        keys_to_delete.append(key)
+                for key in keys_to_delete:
+                    del FileStorage.__objects[key]
+                self.save()
