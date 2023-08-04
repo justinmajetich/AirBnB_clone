@@ -31,7 +31,9 @@ from models.review import Review
 class DBStorage:
     """
     This class provides a storage
-
+    engine for the HBNB project. The class uses SQLAlchemy to connect
+    to a MySQL database and provides methods for creating, retrieving,
+    updating, and deleting objects from the database.
     """
     __engine = None
     __session = None
