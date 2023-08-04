@@ -149,10 +149,10 @@ class HBNBCommand(cmd.Cmd):
 
                         new_dict[key] = value
 
-                    new_instance = HBNBCommand.classes[cls]()
-                    new_instance.__dict__.update(new_dict)
-                    new_instance.save()
-                    print(new_instance.id)
+                new_instance = HBNBCommand.classes[cls]()
+                new_instance.__dict__.update(new_dict)
+                new_instance.save()
+                print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
