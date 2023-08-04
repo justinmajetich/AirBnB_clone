@@ -17,7 +17,6 @@ class TestDBStorage(unittest.TestCase):
         """setting up a test environment for the class"""
         cls.db_fd, cls.db_path = tempfile.mkstemp()
         os.environ['HBNB_TYPE_STORAGE'] = 'db'
-        DBStorage._DBStorage__objects.clear()
         cls.storage = DBStorage()
         cls.storage.reload()
 
@@ -33,19 +32,14 @@ class TestDBStorage(unittest.TestCase):
         """
         removes all objects in the base
         """
-        del_list = []
-        for key in DBStorage._DBStorage__objects.keys():
-            del_list.append(key)
-        for key in del_list:
-            DBStorage._DBStorage__session.delete(DBStorage._DBStorage__objects[key])
-            DBStorage._DBStorage__session.commit()
+        self.storage._DBStorage__session.remove()
 
     def test_obj_list_empty(self):
         """
         checks that the __objects dictionary of the
         FileStorage class instance is initially empty
         """
-        self.assertEqual(len(DBStorage._DBStorage__objects), 0)
+        self.assertEqual(len(self.storage.all()), 0)
 
     def test_reload(self):
         """
@@ -60,7 +54,7 @@ class TestDBStorage(unittest.TestCase):
         of a class that uses a dictionary data storage system
         (storage.all()) is of type dictionary.
         """
-        self.assertEqual(type(DBStorage._DBStorage__objects), dict)
+        self.assertEqual(type(self.storage.all()), dict)
 
     def test_store(self):
         """checks that the object has been correctly saved in the database"""
@@ -68,7 +62,7 @@ class TestDBStorage(unittest.TestCase):
         new.save()
         _id = new.to_dict()['id']
         self.assertIn(new.__class__.__name__ + '.' + _id,
-                      DBStorage._DBStorage__objects.keys())
+                      self.storage.all(type(new)).keys())
 
     def test_storage_var_created(self):
         """verifies that an object of class"""
