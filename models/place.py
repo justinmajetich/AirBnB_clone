@@ -29,32 +29,30 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = []
 
-    # Relationship with the Review class for DBStorage
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship(
-            'Review',
-            backref=backref('place', cascade='all, delete-orphan'),
-            cascade='all, delete-orphan')
-        amenities = relationship(
-            'Amenity', secondary='place_amenity', viewonly=False,
-            back_populates='place_amenities')
-    else:
-        # For FileStorage
-        @property
-        def reviews(self):
-            """Getter attribute to retrieve reviews linked to this
-            place for FileStorage"""
-            from models import storage
-            return [review for review in storage.all(Review).values()
-                    if review.place_id == self.id]
+    reviews = relationship(
+        'Review',
+        backref=backref('place', cascade='all, delete-orphan'),
+        cascade='all, delete-orphan')
+    amenities = relationship(
+        'Amenity', secondary='place_amenity', viewonly=False,
+        back_populates='place_amenities')
 
-        @property
-        def amenities(self):
-            """ Returns list of amenity ids """
-            return self.amenity_ids
+    # For FileStorage
+    @property
+    def reviews(self):
+        """Getter attribute to retrieve reviews linked to this
+        place for FileStorage"""
+        from models import storage
+        return [review for review in storage.all(Review).values()
+                if review.place_id == self.id]
 
-        @amenities.setter
-        def amenities(self, obj=None):
-            """ Appends amenity ids to the attribute """
-            if type(obj) is Amenity and obj.id not in self.amenity_ids:
-                self.amenity_ids.append(obj.id)
+    @property
+    def amenities(self):
+        """ Returns list of amenity ids """
+        return self.amenity_ids
+
+    @amenities.setter
+    def amenities(self, obj=None):
+        """ Appends amenity ids to the attribute """
+        if type(obj) is Amenity and obj.id not in self.amenity_ids:
+            self.amenity_ids.append(obj.id)
