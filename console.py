@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+import os
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -115,26 +116,29 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        list_args = list(args.split(' '))
+        arg_split = args.split(' ')
         if not args:
-            print("** class name missing **")
+            print("**have no class**")
             return
-        elif list_args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        elif arg_split[0] not in HBNBCommand.classes:
+            print("**clas doesn´t**")
             return
-        cl_name = list_args.pop(0)
-        ls_parm = list_args[:]
-        d_dict = {item.split('=')[0]: eval(item.split('=')[1])
-                  for item in ls_parm}
-
-        for k, v in d_dict.items():
-            if type(v) is str and "_" in v:
-                d_dict[k] = v.replace("_", " ")
-
-        new_instance = HBNBCommand.classes[cl_name]()
+        input_dict = {}
+        parameter_split = arg_split[1:]
+        for value in parameter_split:
+            parameter_key, parameter_value = value.split("=")
+            if (parameter_value[0] == '"'):
+                var_to_replace = parameter_value[1:-1].replace("_", " ")
+                input_dict[parameter_key] = var_to_replace
+            elif '.' in parameter_value:
+                parameter_value = float(parameter_value)
+                input_dict[parameter_key] = parameter_value
+            else:
+                parameter_value = int(parameter_value)
+                input_dict[parameter_key] = parameter_value
+        new_instance = HBNBCommand.classes[arg_split[0]]()
         new_instance.__dict__.update(d_dict)
-
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
