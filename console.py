@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ Console Module """
-import os
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -116,8 +115,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        line = args.split()
-        _cls = line[0]
+        pline = args.split()
+        _cls = pline[0]
         values = []
         names = []
         if not _cls:
@@ -126,16 +125,16 @@ class HBNBCommand(cmd.Cmd):
         elif _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for i in range(1, len(line)):
-            tup1a = line[i].partition('=')
-            names.append(tupla[0])
+        for i in range(1, len(pline)):
+            tup1 = pline[i].partition('=')
+            names.append(tupl[0])
             try:
-                if tupla[2][0] == '\"' and tupla[2][-1] == '\"':
-                    value = tupla[2].replace('\"', '')
+                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
+                    value = tupl[2].replace('\"', '')
                     value = value.replace('_', ' ')
                     values.append(value)
                 else:
-                    value = tupla[2]
+                    value = tupl[2]
                     if '.' in value or type(value) is float:
                         try:
                             value = float(value)
