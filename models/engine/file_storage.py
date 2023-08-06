@@ -10,15 +10,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        dictionary = {}
         if cls:
-            dicty = {}
             for key, value in FileStorage.__objects.items():
-                cls_obj = key[:key.find('.')]
-                if cls.__name__ == cls_obj:
-                    dicty.update({key: value})
-            return dicty
-        else:
-            return FileStorage.__objects
+                if value.__class__ == cls:
+                    dictionary[key] = value
+            return dictionary
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
