@@ -10,13 +10,12 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls:
-            dicty = {}
+        if cls is not None:
+            result = {}
             for key, value in FileStorage.__objects.items():
-                cls_obj = key[:key.find('.')]
-                if cls.__name__ == cls_obj:
-                    dicty.update({key: value})
-            return dicty
+               if key[:key.index('.')] == cls.__name__:
+                   result[key] = value
+            return result
         else:
             return FileStorage.__objects
 
@@ -59,13 +58,9 @@ class FileStorage:
 
         def delete(self, obj=None):
             """delete obj from __objects"""
-            if obj:
-                obj_id = obj.id
-                keys_to_delete = []
-                for key in FileStorage.__objects.keys():
-                    key_id = key[key.find('.') + 1:]
-                    if obj_id in key:
-                        keys_to_delete.append(key)
-                for key in keys_to_delete:
-                    del FileStorage.__objects[key]
-                self.save()
+            if obj is not None:
+                for key in list(FileStorage.__objects.keys()):
+                    if FileStorage.__objects[key] == obj:
+                        del FileStorage.__objects[key]
+            else:
+                pass
