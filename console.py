@@ -33,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb)', end=" ")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -115,46 +115,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pline = args.split()
-        _cls = pline[0]
-        values = []
-        names = []
-        if not _cls:
+        list_args = list(args.split(' '))
+        if not args:
             print("** class name missing **")
             return
-        elif _cls not in HBNBCommand.classes:
+        elif list_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for i in range(1, len(pline)):
-            tup1 = pline[i].partition('=')
-            names.append(tupl[0])
-            try:
-                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
-                    value = tupl[2].replace('\"', '')
-                    value = value.replace('_', ' ')
-                    values.append(value)
-                else:
-                    value = tupl[2]
-                    if '.' in value or type(value) is float:
-                        try:
-                            value = float(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-                    else:
-                        try:
-                            value = int(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-            except IndexError:
-                continue
-                  
-        dictionary = dict(zip(names, values))
+        cl_name = list_args.pop(0)
+        ls_parm = list_args[:]
+        d_dict = {item.split('=')[0]: eval(item.split('=')[1])
+                  for item in ls_parm}
 
-        new_instance = HBNBCommand.classes[_cls]()
-        new_instance.__dict__.update(dictionary)
-        new_instance.save()
+        for k, v in d_dict.items():
+            if type(v) is str and "_" in v:
+                d_dict[k] = v.replace("_", " ")
+
+        new_instance = HBNBCommand.classes[cl_name]()
+        new_instance.__dict__.update(d_dict)
+
+        storage.new(new_instance)
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -237,11 +218,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
+            for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
         print(print_list)
