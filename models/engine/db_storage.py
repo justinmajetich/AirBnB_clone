@@ -1,33 +1,41 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-import os
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from models.state import State
+from models.user import User
+from os import getenv
+from models.amenity import Amenity
+from models.base_model import BaseModel, Base
+from models.city import City
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage:
-    """This class manages storage of hbnb models in the
-    database with sqlalchemy
-    """
+    """This class manages an engine"""
     __engine = None
     __session = None
 
     def __init__(self):
-        user = os.getenv('HBNB_MYSQL_USER')
-        pwd = os.getenv('HBNB_MYSQL_PWD')
-        h = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine(f"mysql+mysqldb://{user}:{pwd}@{h}/{db}",
-                                      pool_pre_ping=True)
+        """for da DBStorage"""
+        ho = getenv("HBNB_MYSQL_HOST")
+        envr = getenv("HBNB_ENV")
+        ps = getenv("HBNB_MYSQL_PWD")
+        us = getenv("HBNB_MYSQL_USER")
+        db = getenv("HBNB_MYSQL_DB")
+        self.__engine = create_engine(f"mysql+mysqldb://{us}:{ps}@{ho}/{db}",
+                                      pool_pre_ping=True))
 
         def all(self, cls=None):
-            dic = {}
+            """ssession database"""
+            dicty = {}
             if cls is not None:
-                di = self.__session.query(cls).all()
-                for row in di:
-                    dic[f"{row.__class__.__name__}.{row.id}"] = row
-            return dic
+                objs = self.__session.query(cls).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + "." + obj.id
+                    dicty[key] = obj
+            return dicty
 
         def new(self, obj):
             self.__session.add(obj)
@@ -37,20 +45,12 @@ class DBStorage:
 
         def delete(self, obj=None):
             if obj is not None:
-            self.__session.query(obj.__class__).filter_by(id=obj.id).delete(synchronize_session=False)
-                            
+                self.__session.delete(obj)
 
         def reload(self):
             """Loads storage dictionary from a database"""
-            from models.base_model import BaseModel, Base
-            from models.user import User
-            from models.place import Place
-            from models.state import State
-            from models.city import City
-            from models.amenity import Amenity
-            from models.review import Review
-
-            Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-            self.__session = scoped_session(Session)
-
             Base.metadata.create_all(self.__engine)
+            session_factory = sessionmaker(bind=self.__engine,
+                                           expire_on_commit=False)
+            Session = scoped_session(session_factory)
+            self.__session = Session()
