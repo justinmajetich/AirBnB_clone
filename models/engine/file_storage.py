@@ -18,6 +18,17 @@ class FileStorage:
             return dicty
         return FileStorage.__objects
 
+    def delete(self, obj=None):
+        """delete obj from __objects if it exists"""
+        if obj:
+            for key, value in FileStorage.__objects.items():
+                if value == obj:
+                del FileStorage.__objects[key]
+                self.save()
+                return
+        else:
+            pass
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
