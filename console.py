@@ -33,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)', end=" ")
+            print('(hbnb)')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -115,27 +115,45 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        list_args = list(args.split(' '))
-        if not args:
+        arg_split = args.split()
+        values = []
+        names = []
+        if not arg_split[0]:
             print("** class name missing **")
             return
-        elif list_args[0] not in HBNBCommand.classes:
+        elif arg_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        cl_name = list_args.pop(0)
-        ls_parm = list_args[:]
-        d_dict = {item.split('=')[0]: eval(item.split('=')[1])
-                  for item in ls_parm}
+        for i in range(1, len(arg_split)):
+            tupl = arg_split[i].partition('=')
+            names.append(tupl[0])
+            try:
+                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
+                    value = tupl[2].replace('\"', '')
+                    value = value.replace('_', ' ')
+                    values.append(value)
+                else:
+                    value = tupl[2]
+                    if '.' in value or type(value) is float:
+                        try:
+                            value = float(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+                    else:
+                        try:
+                            value = int(value)
+                            values.append(value)
+                        except Exception:
+                            pass
+            except IndexError:
+                continue
 
-        for k, v in d_dict.items():
-            if type(v) is str and "_" in v:
-                d_dict[k] = v.replace("_", " ")
+        dicty = dict(zip(names, values))
 
-        new_instance = HBNBCommand.classes[cl_name]()
-        new_instance.__dict__.update(d_dict)
-
-        storage.new(new_instance)
-        storage.save()
+        new_instance = HBNBCommand.classes[arg_split[0]]()
+        new_instance.__dict__.update(dicty)
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -218,11 +236,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommandclasses[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
