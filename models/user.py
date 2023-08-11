@@ -8,24 +8,24 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
-db_engine = create_engine('sqlite:///mydatabase.db')
+if getenv("HBN_TYPE_STORAGE") == "db":
+    class User(BaseModel, Base):
+        """This class defines a user by various attributes"""
+        __tablename__ = "users"
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=False)
+        last_name = Column(String(128), nullable=False)
 
-Base = declarative_base()
+        places = relationship("Place", backref="user",
+                              cascade="all, delete-orphan")
+        reviews = relationship("Review", backref="user",
+                               cascade="all, delete-orphan")
 
-class User(Base):
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String, nullable=False)
-    email = Column(String, nullable=False)
-
-Base.metadata.create_all(db_engine)
-
-Session = sessionmaker(bind=db_engine)
-session = Session()
-
-new_user = User(username='john_doe', email='john@example.com')
-session.add(new_user)
-session.commit()
-
-session.close()
+elif getenv("HBN_TYPE_STORAGE") != "db":
+    class User(BaseModel):
+        """This class defines a user by various attributes"""
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
