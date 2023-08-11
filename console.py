@@ -116,45 +116,30 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         arg_split = args.split()
-        values = []
-        names = []
         if not arg_split[0]:
             print("** class name missing **")
             return
         elif arg_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for i in range(1, len(arg_split)):
-            tupl = arg_split[i].partition('=')
-            names.append(tupl[0])
-            try:
-                if tupl[2][0] == '\"' and tupl[2][-1] == '\"':
-                    value = tupl[2].replace('\"', '')
-                    value = value.replace('_', ' ')
-                    values.append(value)
-                else:
-                    value = tupl[2]
-                    if '.' in value or type(value) is float:
-                        try:
-                            value = float(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-                    else:
-                        try:
-                            value = int(value)
-                            values.append(value)
-                        except Exception:
-                            pass
-            except IndexError:
-                continue
-
-        dicty = dict(zip(names, values))
+        input_dict = {}
+        for value in arg_split[1:]:
+        parameter_key, parameter_value = value.split("=")
+            if (parameter_value[0] == '='):
+                var_to_replace = parameter_value[1:-1].replace("_", " ")
+                input_dict[parameter_key] = var_to_replace
+            elif '.' in parameter_value:
+                parameter_value = float(parameter_value)
+                input_dict[parameter_key] = parameter_value
+            else:
+                parameter_value = int(parameter_value)
+                input_dict[parameter_key] = parameter_value
 
         new_instance = HBNBCommand.classes[arg_split[0]]()
-        new_instance.__dict__.update(dicty)
-        new_instance.save()
+        new_instance.__dict__.update(input_dict)
+        storage.new(new_instance)
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
