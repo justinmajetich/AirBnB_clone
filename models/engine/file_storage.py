@@ -20,12 +20,13 @@ class FileStorage:
 
     def delete(self, obj=None):
         """delete obj from __objects if it exists"""
-        if obj:
+        if obj is not None:
+            keys_to_delete = []
             for key, value in FileStorage.__objects.items():
-                if value == obj:
+                if obj == value:
+                    keys_to_delete.append(key)
+            for key in keys_to_delete:
                 del FileStorage.__objects[key]
-                self.save()
-                return
         else:
             pass
 
@@ -64,15 +65,4 @@ class FileStorage:
                 for key, val in temp.items():
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
-            pass
-
-    def delete(self, obj=None):
-        """delete obj from __objects if it exists"""
-        if obj:
-            for key, value in FileStorage.__objects.items():
-                if value == obj:
-                del FileStorage.__objects[key]
-                self.save()
-                return
-        else:
             pass
