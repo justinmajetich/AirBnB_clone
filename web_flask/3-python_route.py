@@ -23,6 +23,7 @@ def c_route(text):
     return f"C {text_with_spaces}"
 
 
+@app.route('/python', defaults={'text': 'is_cool'})
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text):
     """python route, return text with spaces"""
