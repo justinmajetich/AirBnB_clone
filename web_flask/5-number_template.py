@@ -36,12 +36,12 @@ def number_route(n):
     return f"{n} is a number"
 
 
-@app.route("/number_template/<int:n>", strict_slashes=False)
-def number_html(n):
-    """return"""
-    return render_template("5-number.html", n=n)
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n):
+    """Number route, display a HTML page"""
+    return render_template('5-number.html', name=n)
 
 
 """Entry Point"""
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
