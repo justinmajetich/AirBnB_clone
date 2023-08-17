@@ -10,11 +10,11 @@ app = Flask(__name__)
 def states_list():
     """states_list route, return all states with ID and state"""
     states = storage.all(State)
-    return render_template('7-states_list.html', State=states.values())
+    return render_template('7-states_list.html', State=states)
 
 
 @app.teardown_appcontext
-def teardown_db():
+def teardown_db(*args, **kwargs):
     """Function to close the connection to the database"""
     storage.close()
 
