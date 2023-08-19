@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AirBnB clone</title>
+        <link rel="icon" type="image/x-icon" href="static/images/favicon.png">
+        <link rel="stylesheet" href="static/styles/4-common.css">
+        <link rel="stylesheet" href="static/styles/3-header.css">
+        <link rel="stylesheet" href="static/styles/6-filters.css">
+        <link rel="stylesheet" href="static/styles/3-footer.css">
+    </head>
+    <body>
+        <header>
+            <object type="image/png" data="static/images/logo.png"></object>
+        </header>
+        <div class="container">
+            <section class="filters">
+                <div class="locations">
+                    <div class="text"> 
+                        <h3><b><strong>States</strong></b></h3>
+                        <h4>&nbsp</h4>
+                    </div>
+                    <div class="popover">
+                        {% for state in states | sort(attribute="name") %}
+                        <LI><h2><B>&nbsp&nbsp&nbsp&nbsp{{ state.name }}</B></h2></LI>
+                            <UL id="inside">
+                                {% for city in state.cities | sort(attribute="name") %}
+                                    <LI><h4>{{ city.name }}</h4></LI>
+                                {% endfor %}
+                            </UL>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="amenities">
+                    <div class="text">
+                        <h3><b><strong>Amenities</strong></b></h3>
+                        <h4>&nbsp</h4>
+                    </div>
+                    <div class="popover">
+                    {% for amenity in amenities | sort(attribute="name") %}
+                        <LI><h4>{{ amenity.name }}</h4></LI>
+                    {% endfor %}
+                    </div>
+                </div>
+                <button>Search</button>
+            </section>
+        </div>
+        <footer>
+            <p>Holberton School</p>
+        </footer>
+    </body>
+</html>
