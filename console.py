@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,16 +116,48 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+
+        try:
+            if not args:
+                raise SyntaxError("** class name missing **")
+            
+            # split arg into a list
+            split_args = args.split(' ')
+            # extract class name from first element of the list
+            class_name = split_args[0]
+            
+            # check if class name exist in availabl;e classess
+            if class_name not in HBNBCommand.classes:
+                raise NameError("** class doesn't exist **")
+            
+            # create instance of specified class
+            new_instance = HBNBCommand.classes[class_name]()
+            # extract remain param as key-value pair
+            params = split_args[1:]
+            
+            # iterate over each parameter
+            for param in params:
+                # split param into key & val
+                key, value = param.split('=')
+                try:
+                    # verify the attribute value and handle errors
+                    attribute = HBNBCommand.verify_attribute(value)
+                except:
+                    continue
+                # if has an issue proceed next param
+                if not attribute:
+                    continue
+                # set attr on new instance
+                setattr(new_instance, key, attribute)
+            # save new instance
+            new_instance.save()
+            # print ID os created instance
+            print(new_instance.id)
+        # handle erro and exceptions
+        except SyntaxError as e:
+            print(e)
+        except NameError as e:
+            print(e)
 
     def help_create(self):
         """ Help information for the create method """
