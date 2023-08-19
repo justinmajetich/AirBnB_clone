@@ -118,13 +118,47 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        line = args.split(' ')
+        model = line[0]
+        if model not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        new_instance = HBNBCommand.classes[model]()
+        model_attr = {
+                State: ['name'],
+                Place: ['city_id', 'user_id', 'name', 'description',
+                        'number_rooms', 'number_bathrooms', 'max_guest',
+                        'price_by_night', 'latitude', 'longitude',
+                        'amenity_ids'],
+                Amenity: ['name'],
+                City: ['state_id', 'name'],
+                Review: ['place_id', 'user_id', 'text'],
+                User: ['email', 'password', 'first_name', 'last_name']
+            }
+        if new_instance.__class__ in model_attr:
+            allowed_attributes = model_attr[new_instance.__class__]
+            for part in line[1:]:
+                key, value = part.split('=')
+                if key in allowed_attributes:
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace('_', ' ').replace(
+                                '\"', '"')
+                    elif '.' in value:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            pass
+                    else:
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            pass
+                    setattr(new_instance, key, value)
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+        else:
+            print("try again geek")
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +353,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
