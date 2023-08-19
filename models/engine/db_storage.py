@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""New DataBase Storage"""
+"""New engine (DataBase)Storage"""
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from os import environ
