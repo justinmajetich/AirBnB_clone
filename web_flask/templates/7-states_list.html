@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HBNB</title>
+</head>
+<body>
+    <!-- Display a list of states with their IDs and names -->
+    <h1>States</h1>
+    <ul>
+        {% for state in states %}
+        <li>{{ state.id }}: <b>{{ state.name }}</b></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
