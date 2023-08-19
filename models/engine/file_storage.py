@@ -1,25 +1,23 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+""" Module defines a class to manage file storage for hbnb clone"""
 import json
 
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
-    __file_path = 'file.json'
+    __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage
-        If cls is not None, return only the objects of the specified class.
-        """
+        """Returns a dictionary of models currently in storage, if a class
+        is specified, it returns of objects of said class"""
         if cls is None:
             return FileStorage.__objects
-        else:
-            filtered_objects = {}
-            for key, obj in FileStorage.__objects.items():
-                if type(obj) == cls:
-                    filtered_objects[key] = obj
-            return filtered_objects
+        dir_same_cls = {}
+        for key, value in FileStorage.__objects.items():
+            if value.__class__ == cls:
+                dir_same_cls[key] = value
+        return dir_same_cls
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -34,8 +32,17 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+    def delete(self, obj=None):
+        """Deletes object from storage"""
+        if obj is None:
+            return
+
+        key = obj.to_dict()['__class__'] + '.' + obj.id
+        if key in FileStorage.__objects:
+            del FileStorage.__objects[key]
+
     def reload(self):
-        """Loads storage dictionary from file"""
+        """Load storage dictionary from file"""
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -58,15 +65,6 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-    def delete(self, obj=None):
-        """Deletes the object from __objects if it's inside.
-        If obj is equal to None, the method should not do anything.
-        """
-        if obj is not None:
-            key = obj.to_dict()['__class__'] + '.' + obj.id
-            if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
-
     def close(self):
-        """deserializing the JSON file to objects"""
+        """Deserializes JSON to objects"""
         self.reload()
