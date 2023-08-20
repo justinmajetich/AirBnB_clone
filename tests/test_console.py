@@ -93,6 +93,72 @@ class TestConsoleClass(unittest.TestCase):
             HBNBCommand().onecmd("create Unknown")
             self.assertEqual(msg.getvalue(), "** class doesn't exist **\n")
 
+    def test_create_all(self):
+        """Tests the create method with all"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertGreater(len(msg.getvalue()), 0)
+
+    def test_create_no_name(self):
+        """Tests the create method without a name"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State name="California"')
+            self.assertGreater(len(msg.getvalue()), 0)
+
+    def test_create_non_existing(self):
+        """Tests the show method with non existing class name"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State name="California"')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertIn("California", msg.getvalue())
+
+    def test_create_underscore(self):
+        """Tests the create method with an underscore"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State name="California_is_life"')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertIn("California is life", msg.getvalue())
+
+    def test_create_int(self):
+        """Tests the create method with an integer"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State money=500')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertIn("500", msg.getvalue())
+
+    def test_create_int_error(self):
+        """Tests the create method with an integer and a string"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State name=5055m')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertNotIn("5055m", msg.getvalue())
+
+    def test_create_float(self):
+        """Tests the create method with a float"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State people=2.5')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertIn("2.5", msg.getvalue())
+
+    def test_create_float_error(self):
+        """Tests the create method with a period '.' and a string"""
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('create State name=hello.world')
+            self.assertGreater(len(msg.getvalue()), 0)
+        with patch('sys.stdout', new=StringIO()) as msg:
+            HBNBCommand().onecmd('all State')
+            self.assertNotIn("hello.world", msg.getvalue())
+
     def test_show(self):
         """Tests if the show method works as intended"""
         with patch("sys.stdout", new=StringIO()) as msg:
@@ -232,9 +298,9 @@ class TestConsoleClass(unittest.TestCase):
 
     def test_update_no_name(self):
         """Tests the update method without a name"""
-        with patch("sys.stdout", new=StringIO()) as my_id:
+        with patch("sys.stdout", new=StringIO()) as msg:
             HBNBCommand().onecmd("create BaseModel")
-            class_id = my_id.getvalue()
+            class_id = msg.getvalue()
             self.assertGreater(len(class_id), 0)
         with patch("sys.stdout", new=StringIO()) as msg:
             HBNBCommand().onecmd(f"update BaseModel {class_id}")
