@@ -135,6 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 Review: ['place_id', 'user_id', 'text'],
                 User: ['email', 'password', 'first_name', 'last_name']
             }
+
         if new_instance.__class__ in model_attr:
             allowed_attributes = model_attr[new_instance.__class__]
             for part in line[1:]:
