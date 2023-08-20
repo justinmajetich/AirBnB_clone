@@ -32,7 +32,7 @@ class TestConsoleClass(unittest.TestCase):
     def test_pycodestyle(self):
         """Check console and test_console conform to pycodestyle"""
         style = pycodestyle.StyleGuide(quiet=False)
-        result = style.check_files(["tests/test_console.py"])
+        result = style.check_files(["console.py", "tests/test_console.py"])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
