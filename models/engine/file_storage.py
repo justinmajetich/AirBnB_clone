@@ -17,7 +17,7 @@ class FileStorage:
         if cls != "":
             for key, value in self.__objects.items():
                 if cls == key.split(".")[0]:
-                    new_dict[k] = value
+                    new_dict[key] = value
             return new_dict
         else:
             return self.__objects
@@ -55,10 +55,10 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-    
+
     def delete(self, obj=None):
         '''
         Deletes an obj
@@ -67,4 +67,3 @@ class FileStorage:
             key = str(obj.__class__.__name__) + "." + str(obj.id)
             FileStorage.__objects.pop(key, None)
             self.save()
-    
