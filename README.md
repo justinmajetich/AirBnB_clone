@@ -25,7 +25,7 @@ This repository contains the initial stage of a student project to build a clone
 
 1. First clone this repository.
 
-3. Once the repository is cloned locate the "console.py" file and run it as follows:
+3. Once the repository is cloned, locate the "console.py" file and run it as follows:
 ```
 /AirBnB_clone$ ./console.py
 ```
