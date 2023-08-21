@@ -116,30 +116,29 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        commands = args.split()
+        if not commands:
             print("** class name missing **")
             return
-        commands = args.split()
-        if commands[0] not in HBNBCommand.classes:
+        elif commands[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
         new_instance = HBNBCommand.classes[commands[0]]()
-        for kwarg in commands[1:]:
+        kwargs = {}
+        for kw in commands[1:]:
             try:
-                param = kwarg.split("=")
-                key = param[0]
-                val = param[1]
-                """If the key is a valid attribute of the object"""
+                kwarg = kw.split('=')
+                key = kwarg[0]
+                value = kwarg[1]
+                re.sub(r"-", " ", value)
                 if hasattr(new_instance, key):
-                    val = val.replace("_", " ")
-                    """Remove quote signs if present in value string"""
-                    try:
-                        val = eval(val)
-                    except NameError:
-                        pass
-                    setattr(new_instance, key, val)
-            except (IndexError, ValueError):
+                    setattr(new_instance, key, eval(value))
+                else:
+                    continue
+            except(ValueError, IndexError):
                 pass
+
         new_instance.save()
         print(new_instance.id)
 
