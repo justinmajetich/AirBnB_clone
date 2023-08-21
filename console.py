@@ -132,12 +132,12 @@ class HBNBCommand(cmd.Cmd):
                 key = kwarg[0]
                 value = kwarg[1]
                 if hasattr(new_instance, key):
-                    re.sub(r"_", " ", value)
+                    value = re.sub(r"_", " ", value)
                     try:
-                        val = eval(value)
+                        value = eval(value)
                     except (NameError):
                         pass
-                    setattr(new_instance, key, val)
+                    setattr(new_instance, key, value)
                 else:
                     continue
             except(ValueError, IndexError):
