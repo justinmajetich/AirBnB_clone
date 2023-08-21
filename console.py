@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
             return
         
         params = args_list[1:]
-        kwargs = {}
+        new_instance = HBNBCommand.classes[class_name]()
     
         for param in params:
             parts = param.split('=')
@@ -154,9 +154,7 @@ class HBNBCommand(cmd.Cmd):
                     print(f"Invalid integer value: {value}")
                     continue
         
-            kwargs[key] = value
-
-        new_instance = HBNBCommand.classes[class_name](**kwargs)
+        setattr(new_instance, key, value)
 
         storage.save()
         print(new_instance.id)
