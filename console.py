@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -118,10 +119,43 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        
+        args_list = args.split()
+        class_name = args_list[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        
+        params = args_list[1:]
+        new_instance = HBNBCommand.classes[class_name]()
+    
+        for param in params:
+            parts = param.split('=')
+            if len(parts) != 2:
+                #print(f"Invalid parameter format: {param}")
+                continue
+
+            key, value = parts
+            value = value.replace('_', ' ')
+
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    print(f"Invalid float value: {value}")
+                    continue
+            else:
+                try:
+                 value = int(value)
+                except ValueError:
+                    print(f"Invalid integer value: {value}")
+                    continue
+        
+        setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
