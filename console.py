@@ -140,14 +140,14 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         if isinstance(value, str) and value.startswith("\"")\
                                 and value.endswith("\""):
+                            value = value.strip("\"")
                             value = value.replace("_", " ")
-                            value = value.replace("\'", "\'")
                         else:
                             return
                     except ValueError:
                         return
 
-                setattr(new_instance, key, value)
+            setattr(new_instance, key, value)
 
         storage.save()
         print(new_instance.id)
