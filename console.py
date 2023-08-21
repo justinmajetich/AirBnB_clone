@@ -145,13 +145,13 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     value = float(value)
                 except ValueError:
-                    print(f"Invalid float value: {value}")
+                    #print(f"Invalid float value: {value}")
                     continue
             else:
                 try:
                  value = int(value)
                 except ValueError:
-                    print(f"Invalid integer value: {value}")
+                    #print(f"Invalid integer value: {value}")
                     continue
         
         setattr(new_instance, key, value)
