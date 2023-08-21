@@ -131,8 +131,8 @@ class HBNBCommand(cmd.Cmd):
                 kwarg = kw.split('=')
                 key = kwarg[0]
                 value = kwarg[1]
-                re.sub(r"_", " ", value)
                 if hasattr(new_instance, key):
+                    re.sub(r"_", " ", value)
                     setattr(new_instance, key, eval(value))
                 else:
                     continue
