@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[commands[0]]()
-        kwargs = {}
+        
         for kw in commands[1:]:
             try:
                 kwarg = kw.split('=')
