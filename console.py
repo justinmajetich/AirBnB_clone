@@ -113,15 +113,67 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        if not args:
+        if not line:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        # split the line string into args list
+        args = line.split()
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        # slice the args list dropping the class_name
+        args = args[1:]
+
+        # create a kwargs dictionary to use for
+        # instatiating a new object from a class
+        kwargs = {}
+
+        # iterate over every parameter in the args list
+        # and parse each parameter
+        for param in args:
+            # split the parameter using '=' delimiter into two
+            param = param.split("=")
+
+            # check that the split produces exactly two parts
+            if len(param) != 2:
+                # skip this 'bad' parameter
+                continue
+
+            key = param[0]
+            value = param[1]
+
+            # check if value of param starts & ends with double quotes
+            if (value.startswith('"') and
+               value.endswith('"')):
+                # we have a string value
+                # strip starting and ending double quotes
+                value = value[1:-1]
+                # replace all underscores in value with spaces
+                value = value.replace("_", " ")
+                # replace all escaped quotes with quotes
+                value = value.replace('\\"', '"')
+            elif ("." in value):  # if value is a float
+                try:  # try to cast it into a float
+                    value = float(value)
+                except Exception:  # if cast fails, skip curr param
+                    continue
+            else:  # for any other format of value
+                try:  # try to cast it into an int
+                    value = int(value)
+                except Exception:  # if cast fails, skip curr param
+                    continue
+
+            # add the key and parsed value to the kwargs dictionary
+            kwargs[key] = value
+
+        # instantiate the new object using the class_name &
+        # provided params stored in the kwargs dictionary
+        new_instance = HBNBCommand.classes[class_name](**kwargs)
         new_instance.save()
         print(new_instance.id)
 
