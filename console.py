@@ -140,10 +140,9 @@ class HBNBCommand(cmd.Cmd):
                     continue
             except(ValueError, IndexError):
                 pass
-
-        print(new_instance.id)
+                
         new_instance.save()
-
+        print(new_instance.id)
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
