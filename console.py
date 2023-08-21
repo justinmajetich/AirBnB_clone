@@ -114,14 +114,46 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class based on given arguments."""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        parts = args.split()
+        class_name = parts[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        attributes = {}
+        for part in parts[1:]:
+            if '=' in part:
+                key, value = part.split('=')
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1]
+                if '.' in value:
+                    value = float(value)
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        pass
+                attributes[key] = value
+
+        # Adding default values for missing attributes
+        required_attributes = ["id", "created_at", "updated_at"]
+        my_instance = BaseModel()
+        for attr in required_attributes:
+            if attr not in attributes:
+                if attr == "id":
+                    attributes[attr] = my_instance.id
+                if attr == "created_at":
+                    attributes[attr] = my_instance.created_at
+                if attr == "updated_at":
+                    attributes[attr] = my_instance.updated_at
+
+        new_instance = HBNBCommand.classes[class_name](**attributes)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
