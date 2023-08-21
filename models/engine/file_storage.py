@@ -17,7 +17,7 @@ class FileStorage:
         if cls != "":
             for key, value in self.__objects.items():
                 if cls == key.split(".")[0]:
-                    new_dict[k] = value
+                    new_dict[key] = value
             return new_dict
         else:
             return self.__objects
