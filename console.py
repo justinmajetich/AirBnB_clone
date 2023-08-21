@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[commands[0]]()
-        
+
         for kw in commands[1:]:
             try:
                 kwarg = kw.split('=')
@@ -133,7 +133,11 @@ class HBNBCommand(cmd.Cmd):
                 value = kwarg[1]
                 if hasattr(new_instance, key):
                     re.sub(r"_", " ", value)
-                    setattr(new_instance, key, eval(value))
+                    try:
+                        val = eval(value)
+                    except (NameError):
+                        pass
+                    setattr(new_instance, key, val)
                 else:
                     continue
             except(ValueError, IndexError):
