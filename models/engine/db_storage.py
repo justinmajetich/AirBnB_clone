@@ -48,7 +48,8 @@ class DBStorage():
                     query_obj.__class__.__name__, query_obj.id)
                 dict_objects[key] = query_obj
         else:
-            all_classes = [State, City, User]
+            all_classes = [State,
+                           City, User]
 
             for clss in all_classes:
                 for query_obj in self.__session.query(clss).all():
