@@ -22,7 +22,15 @@ class BaseModel:
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
+        """Instantiates a new model
+        Args:
+            args: will not be used
+            kwargs: arguments for the constructor of BaseModel
+        Attributes:
+            id: unique id
+            created_at: date of creation
+            updated_at: updated date
+        """
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -56,7 +64,7 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        the_dict = self.__dict__.copy()
+        the_dict = dict(self.__dict__)
         the_dict["__class__"] = str(type(self).__name__)
         the_dict['created_at'] = self.created_at.isoformat()
         the_dict['updated_at'] = self.updated_at.isoformat()
