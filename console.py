@@ -244,6 +244,7 @@ class HBNBCommand(cmd.Cmd):
         # to the list 'objs' then print the list
         for k in obj_dicts:
             objs.append(str(obj_dicts[k]))
+
         print("[", end="")
         print(", ".join(objs), end="")
         print("]")
