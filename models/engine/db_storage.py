@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
-This module defines the engine for the MySQL database
+    This module defines the engine for the MySQL database
 """
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -16,9 +17,8 @@ from models.review import Review
 
 
 class DBStorage():
-    """
-    database storage
-    """
+    """ database storage """
+    
     __engine = None
     __session = None
 
