@@ -21,7 +21,20 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default value=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    amenity_ids = []
+
+    """amenity_ids = []"""
  
+    """For DBStorage: class attribute reviews must represent a relationship with the class Review"""
+
+    if models.storage_type == 'db':
+        reviews = relationship("Review", cascade="all, delete", back_populates="place")
+    else:
+        @property
+        def reviews(self):
+            from models import storage
+            from models.review import Review
+            all_reviews = storage.all(Review)
+            return [review for review in all_reviews.values() if review.place_id == self.id]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
