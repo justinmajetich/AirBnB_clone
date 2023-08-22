@@ -9,7 +9,7 @@ from sqlalchemy import Column, String
 
 
 class State(BaseModel):
-    """ State class 
+    """ State class
     Attributes:
         name: input name
     """
