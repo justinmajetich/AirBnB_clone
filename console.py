@@ -220,11 +220,6 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self):
-        """ Help information for the destroy command """
-        print("Destroys an individual instance of a class")
-        print("[Usage]: destroy <className> <objectId>\n")
-
     def do_all(self, arg):
         """Prints string representations of instances"""
         from models import storage
@@ -235,19 +230,23 @@ class HBNBCommand(cmd.Cmd):
 
         # get all objects
         if (len(args) == 0):
-            objs = storage.all()
+            obj_dicts = storage.all()
         # get all objects of a specific class
         if (args[0] in classes):
             clsName = args[0]
-            objs = storage.all(eval(clsName))
+            obj_dicts = storage.all(eval(clsName))
         # if class is not registered; Error
         else:
             print('** class doesn\'t exist **')
             return False
-        
-        # print all objects from list 'objs'
-        print([objs[key].__str__() for key in objs])
 
+        # Save all object string representations from 'obj_dicts'
+        # to the list 'objs' then print the list
+        for k in obj_dicts:
+            objs.append(str(obj_dicts[k]))
+        print("[", end="")
+        print(", ".join(objs), end="")
+        print("]")
 
 
 
