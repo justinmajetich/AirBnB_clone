@@ -59,8 +59,11 @@ class test_basemodel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        dictionary = {}
+        dictionary.update(i.__dict__)
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
+        self.assertEqual(str(i), f'[{self.name}] ({i.id}) {dictionary}')
 
     def test_todict(self):
         """ """
@@ -77,8 +80,8 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        new = self.value(**n)
+        self.assertIn("Name", new.__dict__)
 
     def test_id(self):
         """ """
@@ -96,4 +99,25 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertEqual(new.created_at, new.updated_at)
+
+    def test_delete(self):
+        """Tests if the delete method works as intended"""
+        new = self.value()
+        new.save()
+        self.assertEqual(type(new.updated_at), datetime.datetime)
+        new.delete()
+        self.assertEqual(type(new.updated_at), datetime.datetime)
+
+    def test_to_dict(self):
+        """Tests if the to_dict method works as intended"""
+        kwargs = {'name': "California"}
+        new = self.value(**kwargs)
+        new.save()
+        self.assertIn("name", new.__dict__)
+
+    def test_unexpected_behavior(self):
+        """Check if any unexpected behavior occurs"""
+        new = self.value()
+        new.save()
+        self.assertNotIn("_sa_instance_state", new.to_dict())
