@@ -118,18 +118,30 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        #split args
+        args = args.split()
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        kwargs = {}
+        for i in range(1, len(args)):
+            k, v = tuple(args[i].split("="))
+            try:
+                if type(eval(v)) == str:
+                    kwargs[k] = v.strip('"').replace('_', ' ')
+                else:
+                    kwargs[k] = eval(v)
+            except Exception:
+                pass
+        new_instance = HBNBCommand.classes[args[0]](**kwargs)
         storage.save()
         print(new_instance.id)
-        storage.save()
+        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> <param 1> <param 2>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
