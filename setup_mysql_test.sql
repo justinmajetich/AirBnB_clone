@@ -1,12 +1,13 @@
 -- This script creates a MySQL server with the following:
--- Database name: hbnb_dev_db
--- User name: hbnb_dev
--- Password: hbnb_dev_pwd
+-- Database name: hbnb_test_db
+-- User name: hbnb_test
+-- Password: hbnb_test_pwd
 -- Hostname: localhost
--- Grants all privileges for hbnb_dev on hbnb_dev_db
--- Grants SELECT privilege for hbnb_dev on performance_schema
+-- Grants all privileges for hbnb_test on hbnb_test_db
+-- Grants SELECT privilege for hbnb_test on performance_schema
 
-CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
-GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
-GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
+CREATE DATABASE IF NOT EXISTS hbnb_test_db;
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
 FLUSH PRIVILEGES;
