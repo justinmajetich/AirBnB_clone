@@ -113,18 +113,54 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+    def do_create(self, input_line):
+    """Usage: create <class> <key1>=<value1> <key2>=<value2> ...
+    Create a new class instance with given keys and values, and print its ID.
+    """
+        try:
+            if not input_line:
+                raise SyntaxError()
+
+            # Split the input into a list of strings using whitespace as the delimiter
+            args_list = input_line.split(" ")
+
+            kwargs = {}
+
+            # Iterate through the arguments starting from the second element
+            for i in range(1, len(args_list)):
+                key, value = tuple(args_list[i].split("="))
+
+                # Check if the value is enclosed in double quotes
+                if value[0] == '"':
+                    # Remove double quotes and replace underscores with spaces in string value
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        # Skip if evaluation fails (for non-string values)
+                        continue
+
+                # Store the key-value pair in the kwargs dictionary
+                kwargs[key] = value
+
+            # If no keyword arguments, create an instance of the specified class without attributes
+            if kwargs == {}:
+                # Instantiate the class without attributes
+                new_object = eval(args_list[0])()
+            else:
+                # Create an instance of the class with provided keyword arguments
+                new_object = eval(args_list[0])(**kwargs)
+
+                storage.new(new_object)
+
+            print(new_object.id)
+
+            new_object.save()
+
+        except SyntaxError:
+            # Handle syntax errors if no input is provided
+            print("Invalid syntax. Please provide the necessary information.")
 
     def help_create(self):
         """ Help information for the create method """
