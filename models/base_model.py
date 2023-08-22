@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
+
 Base = declarative_base()
 
 
@@ -16,7 +17,7 @@ class BaseModel:
         created_at: datetime at creation
         updated_at: datetime of last update
     """
-    id = Column(String(60), primary_key=True, nullable=False)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
