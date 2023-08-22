@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This is the Amenity class."""
-
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
