@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from os import getenv
 import models
 from models.city import City
@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """ State class
     Attributes:
         name: input name
