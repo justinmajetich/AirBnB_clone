@@ -31,14 +31,21 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pairs of attributes.
         """
-        self.id = str(uuid4())
-        self.created_at = self.updated_at = datetime.utcnow()
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+        if "id" not in kwargs:
+            self.id = str(uuid4())
+        if "created_at" not in kwargs:
+            self.created_at = datetime.utcnow()
+        if "updated_at" not in kwargs:
+            self.updated_at = datetime.utcnow()
+        else:
+            self.id = str(uuid4())
+            self.created_at = self.updated_at = datetime.utcnow()
 
     def save(self):
         """Update updated_at with the current datetime."""
