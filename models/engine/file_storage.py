@@ -13,11 +13,11 @@ class FileStorage:
         if cls is None:
             return self.__objects
         cls_name = cls.__name__
-        dictionary = {}
+        dct = {}
         for key in self.__objects.keys():
             if key.split('.')[0] == cls_name:
-                dictionary[key] = self.__objects[key]
-        return dictionary
+                dct[key] = self.__objects[key]
+        return dct
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -49,7 +49,7 @@ class FileStorage:
                   }
         try:
             temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
+            with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
                     self.all()[key] = classes[val['__class__']](**val)
