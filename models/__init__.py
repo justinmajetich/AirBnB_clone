@@ -5,7 +5,6 @@
    creates a database storage engine (DBStorage).
 -> Otherwise, creates a file storage engine (FileStorage).
 """
-
 from os import getenv
 
 
