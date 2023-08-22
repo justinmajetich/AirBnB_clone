@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,6 +12,11 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -219,23 +225,31 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
-        print_list = []
+    def do_all(self, arg):
+        """Prints string representations of instances"""
+        from models import storage
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        # split command like arguments into an array
+        args = shlex.split(arg)
+        objs = []
+
+        # get all objects
+        if (len(args) == 0):
+            objs = storage.all()
+        # get all objects of a specific class
+        if (args[0] in classes):
+            clsName = args[0]
+            objs = storage.all(eval(clsName))
+        # if class is not registered; Error
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print('** class doesn\'t exist **')
+            return False
+        
+        # print all objects from list 'objs'
+        print([objs[key].__str__() for key in objs])
 
-        print(print_list)
+
+
 
     def help_all(self):
         """ Help information for the all command """
