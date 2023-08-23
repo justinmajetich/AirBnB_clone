@@ -10,7 +10,7 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), unique=True, nullable=False, primary_key= True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
     updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
 
@@ -56,8 +56,9 @@ class BaseModel:
                     dictionary[key] = value.isoformat()
                 else:
                     dictionary[key] = value
-        dictionary['__class__'] = self.__class__.__name__    
+        dictionary['__class__'] = self.__class__.__name__
         return dictionary
+
     def delete(self):
         """Deletes this BaseModel instance from the storage"""
         from models import storage
