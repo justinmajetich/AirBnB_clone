@@ -135,9 +135,9 @@ class HBNBCommand(cmd.Cmd):
                     value.replace('"', '\"')
                 setattr(new_instance, key, value)
             elif '.' in value:
-                setattr(new_instance, key, float(value)) 
+                setattr(new_instance, key, float(value))
             elif int(value):
-                setattr(new_instance, key, int(value)) 
+                setattr(new_instance, key, int(value))
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -335,6 +335,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
