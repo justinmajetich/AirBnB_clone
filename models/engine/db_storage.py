@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.orm import sessionmaker
 from os import getenv
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -18,7 +18,8 @@ from models.review import Review
 
 class DBStorage():
     """ database storage """
-    
+
+    __classes = [State, City, User, Place, Review, Amenity]
     __engine = None
     __session = None
 
