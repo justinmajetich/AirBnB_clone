@@ -187,8 +187,9 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("update User 12345")
             self.assertEqual("** no instance found **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create User email='yan@email.com'" +\
-                                " password='pd' first_name='ya' last_name='ti'")
+            self.console.onecmd("create User email='yan@email.com'" +
+                                " password='pd' first_name='ya'" +
+                                " last_name='ti'")
             self.console.onecmd("all User")
             obj = f.getvalue()
         user_id = obj[obj.find('(') + 1:obj.find(')')]
