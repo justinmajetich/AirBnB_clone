@@ -29,9 +29,30 @@ class Place(BaseModel, Base):
         place_id equals to the current Place.id
         """
         from models import storage
-        review_obj = []
+        my_obj = []
         extracted_reviews = storage.all('Review').values()
         for review in extracted_reviews:
             if self.id == review.place_id:
                 review_obj.append(review)
-        return review_obj
+        return my_obj
+
+    @property
+    def amenities(self):
+        """
+        Getter attrib that returns list based on amenity_ids
+        """
+        from models import storage
+        my_obj = []
+        extracted_amenities = storage.all('Amenity').values()
+        for amenity in extracted_amenities:
+            if self.id == amenity.amenity_ids:
+                my_obj.append(amenity)
+        return my_obj
+
+    @amenities.setter
+    def amenities(self, obj):
+        """
+        setter attrib to the amenity_ids attribute
+        """
+        if isinstance(obj, 'Amenity'):
+            self.amenity_id.append(obj.id)
