@@ -55,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
+            if _cmd not in self.dot_cmds:
                 raise Exception
 
             # if parantheses contain arguments, parse them
@@ -120,13 +120,13 @@ class HBNBCommand(cmd.Cmd):
         if not args[0]:
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         _args = args[1:]
         kwargs = {k_v.split('=')[0]: k_v.split('=')[1] for k_v in _args}
 
-        new_instance = HBNBCommand.classes[args[0]]()
+        new_instance = self.classes[args[0]]()
         for key, value in kwargs.items():
             if value.startswith('"'):
                 value = value.replace('_', ' ')
@@ -161,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if c_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -192,7 +192,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        if c_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -219,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            if args not in self.classes:
                 print("** class doesn't exist **")
                 return
             for k, v in storage._FileStorage__objects.items():
@@ -259,7 +259,7 @@ class HBNBCommand(cmd.Cmd):
         else:  # class name not present
             print("** class name missing **")
             return
-        if c_name not in HBNBCommand.classes:  # class name invalid
+        if c_name not in self.classes:  # class name invalid
             print("** class doesn't exist **")
             return
 
@@ -323,8 +323,8 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
+                if att_name in self.types:
+                    att_val = self.types[att_name](att_val)
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
