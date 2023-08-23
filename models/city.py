@@ -15,10 +15,8 @@ class City(BaseModel, Base):
     from models.place import Place
 
     __tablename__ = "cities"
-    name = ""
-    state_id = ""
 
-    if models.engine_type == "db":        
+    if models.engine_type == "db":
         state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
         name = Column(String(128), nullable=False)
 #        places = relationship("Place", backref="cities")
