@@ -10,6 +10,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
+import uuid
+import os
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,16 +118,55 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        ignored_attrs = ('id', 'created_at', 'updated_at', '__class__')
+        calss_name = ''
+        obj_kwargs = {}
+
+        if ' ' in args:
+            class_name, params_str = args.split(' ', 1)
+            params = params_str.split(' ')
+
+            for param in params:
+                key_val = param.split('=')
+                if len(key_val) != 2:
+                    continue
+                key_name, value = key_val
+                if '"' in value:
+                    value = value.replace(r'\"', '"')[1:-1].replace('_', ' ')
+                elif '.' in value:
+                    value = float(value)
+                elif value.isdigit():
+                    value = int(value)
+
+                obj_kwargs[key_name] = value
+        else:
+            class_name = args
+
+        if not class_name:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            if 'id' not in obj_kwargs:
+                obj_kwargs['id'] = str(uuid.uuid4())
+            if 'created_at' not in obj_kwargs:
+                obj_kwargs['created_at'] = str(datetime.now())
+            if 'updated_at' not in obj_kwargs:
+                obj_kwargs['updated_at'] = str(datetime.now())
+
+            new_instance = HBNBCommand.classes[class_name](**obj_kwargs)
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            new_instance = HBNBCommand.classes[class_name]()
+            for key, value in obj_kwargs.items():
+                if key not in ignored_attrs:
+                    setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
