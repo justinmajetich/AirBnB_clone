@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
+        exit(0)
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
         print()
-        exit()
+        exit(0)
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -237,6 +237,8 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
+
+            """Suggestive to use storage.delete"""
             del(storage.all()[key])
             storage.save()
         except KeyError:
@@ -256,10 +258,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
+            """ Suggestive user storage.all() """
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
+
+            """ Suggestive user storage.all() """
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
@@ -273,6 +278,8 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
+
+        """ Suggestive user storage.all() """
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
