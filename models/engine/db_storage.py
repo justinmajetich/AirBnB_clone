@@ -14,7 +14,7 @@ from models.state import State
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-models = {
+models_objs = {
         "User": User,
         "City": City,
         "State": State,
@@ -41,9 +41,9 @@ class DBStorage():
         db = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
         
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                                    user, pwd, host, db), pool_pre_ping=True)
-        self.__session = sessionmaker(bind=self.__engine)()
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(user, pwd, host, db), pool_pre_ping=True)
+        if env == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
@@ -56,8 +56,8 @@ class DBStorage():
                 key = obj.__class__.__name__ + '.' + obj.id
                 obj_dict[key] = obj
         else:
-            for mdl in models.values():
-                objs = self.__session.query(c).all()
+            for mdl in models_objs.values():
+                objs = self.__session.query(mdl).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     obj_dict[key] = obj

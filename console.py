@@ -14,7 +14,9 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """
+    Contains the functionality for the HBNB console
+    """
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -37,8 +39,8 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb)')
 
     def precmd(self, line):
-        """Reformat command line for advanced command syntax.
-
+        """
+        Reformat command line for advanced command syntax.
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -81,7 +83,6 @@ class HBNBCommand(cmd.Cmd):
                         _args = pline.replace(',', '')
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
-
         except Exception as mess:
             pass
         finally:
@@ -234,7 +235,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
-
         print(print_list)
 
     def help_all(self):
