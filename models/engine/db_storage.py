@@ -18,8 +18,6 @@ from models.review import Review
 
 class DBStorage():
     """ database storage """
-
-    __classes = [State, City, User, Place, Review, Amenity]
     __engine = None
     __session = None
 
