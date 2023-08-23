@@ -21,3 +21,17 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = []
     reviews = relationship("Review", backref='place', cascade="all, delete")
+
+    @property
+    def reviews(self):
+        """
+        Getter attribute to return the list of Review instances with
+        place_id equals to the current Place.id
+        """
+        from models import storage
+        review_obj = []
+        extracted_reviews = storage.all('Review').values()
+        for review in extracted_reviews:
+            if self.id == review.place_id:
+                review_obj.append(review)
+        return review_obj
