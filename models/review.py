@@ -7,7 +7,7 @@ from sqlalchemy.sql.schema import ForeignKey
 from models import storage_type
 
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """ Review class to store review information """
     __tablename__ = 'reviews'
     if storage_type == 'db':

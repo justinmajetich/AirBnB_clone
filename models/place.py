@@ -25,7 +25,7 @@ if storage_type == 'db':
         )
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ This class defines a place by various attributes """
     __tablename__ = 'places'
     if storage_type == 'db':
@@ -56,7 +56,7 @@ class Place(BaseModel):
         number_rooms = 0
         number_bathrooms = 0
         max_guest = 0
-        price_by_night = 0.0
+        price_by_night = 0
         latitude = 0.0
         longitude = 0.0
 
@@ -66,7 +66,7 @@ class Place(BaseModel):
             from models import storage
             all_revs = storage.all(Review)
             lst = []
-            for rev in all_revs, values():
+            for rev in all_revs.values():
                 if rev.place_id == self.id:
                     lst.append(rev)
             return lst
