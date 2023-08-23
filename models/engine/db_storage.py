@@ -18,7 +18,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.place import place_amenity
 
 classes = {"User": User, "State": State, "City": City,
-           "Amenity": Amenity, "Plave": Place, "Review": Review}
+           "Amenity": Amenity, "Place": Place, "Review": Review}
 
 
 class DBStorage:
