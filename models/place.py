@@ -13,7 +13,7 @@ from models.review import Review
 if storage_type == 'db':
     place_amenity = Table('Place_amenity', Base.metadata, Column(
         'place_id', String(60),
-        ForeignKey('places.id')
+        ForeignKey('places.id'),
         primary_key=True,
         nullable=False
         ),
