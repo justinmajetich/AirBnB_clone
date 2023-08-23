@@ -43,10 +43,9 @@ class Place(BaseModel, Base):
         """Update to the backref name"""
         amenities = relationship(
                 'Amenity', secondary=place_amenity,
-                viewonly=False, backref='place_amenities'
-                )
-    reviews = relationship(
-            "Review", backref='place' cascade="all, delete, delete-orphan"
+                viewonly=False, backref='place_amenities')
+        reviews = relationship(
+                "Review", backref='place', cascade="all, delete, delete-orphan"
             )
     else:
         city_id = ""
