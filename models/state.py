@@ -21,6 +21,10 @@ class State(BaseModel, Base):
 
         @property
         def cities(self):
+            """
+            Returns a City list instance with statid
+            """
+            from models import storage
             related_cities = []
             cities = storage.all(City)
             for city in cities.values():

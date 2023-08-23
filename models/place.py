@@ -79,7 +79,7 @@ if storage_type == 'db':
     place_amenity = Table('Place_amenity', Base.metadata, Column(
                 'place_id', String(60),
                 ForeignKey('places.id'),
-                primary_key=true,
+                primary_key=True,
                 nullable=False),
             Column(
                 'amenity_id', String(60),
