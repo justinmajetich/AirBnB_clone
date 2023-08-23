@@ -114,22 +114,54 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class with parameters """
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+    
+        args_list = args.split()
+        class_name = args_list[0]
+    
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
+    
+        new_instance = HBNBCommand.classes[class_name]()
         storage.save()
 
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        if len(args_list) > 1:
+            params = args_list[1:]
+            param_dict = {}
+
+            for param in params:
+                key_value = param.split("=")
+                if len(key_value) != 2:
+                    continue
+
+                key, value = key_value
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('\\"', '"').replace("_", " ")
+                elif "." in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+
+                param_dict[key] = value
+
+            for key, value in param_dict.items():
+                if hasattr(new_instance, key):
+                    setattr(new_instance, key, value)
+
+            storage.save()
+
+        print(new_instance.id)
+
 
     def do_show(self, args):
         """ Method to show an individual object """
