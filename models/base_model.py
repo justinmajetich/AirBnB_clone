@@ -3,7 +3,6 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from models import storage
 from sqlalchemy import Column, String, DATETIME
 
 Base = declarative_base()
@@ -59,3 +58,7 @@ class BaseModel:
                     dictionary[key] = value
         dictionary['__class__'] = self.__class__.__name__    
         return dictionary
+    def delete(self):
+        """Deletes this BaseModel instance from the storage"""
+        from models import storage
+        storage.delete(self)
