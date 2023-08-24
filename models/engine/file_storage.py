@@ -25,7 +25,7 @@ class FileStorage:
             class_name, instance_id = key.split('.')
             if class_name == cls.__name__:
                 f_o[key] = obj
-            return f_o
+        return f_o
 
     def delete(self, obj=None):
         """"
