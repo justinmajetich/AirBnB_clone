@@ -10,9 +10,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from datetime import datetime
-import uuid
-import os
 
 
 class HBNBCommand(cmd.Cmd):
@@ -22,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-        'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'State': State, 'City': City, 'Amenity': Amenity,
-        'Review': Review
-    }
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-        'number_rooms': int, 'number_bathrooms': int,
-        'max_guest': int, 'price_by_night': int,
-        'latitude': float, 'longitude': float
-    }
+             'number_rooms': int, 'number_bathrooms': int,
+             'max_guest': int, 'price_by_night': int,
+             'latitude': float, 'longitude': float
+            }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -118,55 +115,24 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        ignored_attrs = ('id', 'created_at', 'updated_at', '__class__')
-        calss_name = ''
-        obj_kwargs = {}
-
-        if ' ' in args:
-            class_name, params_str = args.split(' ', 1)
-            params = params_str.split(' ')
-
-            for param in params:
-                key_val = param.split('=')
-                if len(key_val) != 2:
-                    continue
-                key_name, value = key_val
-                if '"' in value:
-                    value = value.replace(r'\"', '"')[1:-1].replace('_', ' ')
-                elif '.' in value:
-                    value = float(value)
-                elif value.isdigit():
-                    value = int(value)
-
-                obj_kwargs[key_name] = value
-        else:
-            class_name = args
-
-        if not class_name:
+        try:
+            if not args:
+                raise SyntaxError()
+            arg_list = args.split(" ")
+            kw = {}
+            for arg in arg_list[1:]:
+                key, value = arg.split("=")
+                value = eval(value)
+                if isinstance(value, str):
+                    value = value.replace("_", " ").replace('"', '\\"')
+                kw[key] = value
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif class_name not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            if 'id' not in obj_kwargs:
-                obj_kwargs['id'] = str(uuid.uuid4())
-            if 'created_at' not in obj_kwargs:
-                obj_kwargs['created_at'] = str(datetime.now())
-            if 'updated_at' not in obj_kwargs:
-                obj_kwargs['updated_at'] = str(datetime.now())
-
-            new_instance = HBNBCommand.classes[class_name](**obj_kwargs)
-            new_instance.save()
-            print(new_instance.id)
-        else:
-            new_instance = HBNBCommand.classes[class_name]()
-            for key, value in obj_kwargs.items():
-                if key not in ignored_attrs:
-                    setattr(new_instance, key, value)
-            new_instance.save()
-            print(new_instance.id)
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -248,11 +214,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
