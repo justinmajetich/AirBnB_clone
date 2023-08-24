@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 from datetime import datetime
-import re
 import os
 import sys
 import uuid
