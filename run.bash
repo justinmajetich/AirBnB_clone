@@ -8,7 +8,7 @@ HBNB_MYSQL_PWD=''
 APP_FILE=''
 APP_ARGS=()
 
-# get the application or command to run
+# get the application to run
 if [[ ${#@} -gt 0 ]]; then
     file="$1"
     if [ -x "$file" ]; then
@@ -29,7 +29,7 @@ else
     exit 1
 fi
 
-# get the application environment
+# get the app environment
 if [[ ${#@} -gt 1 ]]; then
     HBNB_ENV="$2"
 else
@@ -39,7 +39,7 @@ else
     fi
 fi
 
-# get the storage mechanism
+# get the storage mechanisms
 if [[ ${#@} -gt 2 ]]; then
     HBNB_TYPE_STORAGE="$3"
 else
@@ -65,7 +65,7 @@ if [[ "$HBNB_TYPE_STORAGE" == 'db' ]]; then
 fi
 
 echo -e "Running \e[34m[$APP_FILE]\e[0m"
-# shellcheck disable=SC2086
+# shellchecks disable=SC2086
 env HBNB_MYSQL_USER="$HBNB_MYSQL_USER" \
   HBNB_MYSQL_HOST="$HBNB_MYSQL_HOST" \
   HBNB_MYSQL_DB="$HBNB_MYSQL_DB" \
