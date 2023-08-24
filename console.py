@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
                     except ValueError:
                         pass
                 param[key] = val
-        new_instance = HBNBCommand.classes[args|0]](**param)
+        new_instance = HBNBCommand.classes[args[0]](**param)
         storage.save()
         print(new_instance.id)
         storage.save()
