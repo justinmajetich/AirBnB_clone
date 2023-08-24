@@ -7,9 +7,9 @@ from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
-from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.city import City
 
 
 class HBNBCommand(cmd.Cmd):
@@ -119,18 +119,18 @@ class HBNBCommand(cmd.Cmd):
             if not args:
                 raise SyntaxError()
             arg_list = args.split(" ")
-            kw = {}
+            kwq = {}
             for arg in arg_list[1:]:
                 key, value = arg.split("=")
                 value = eval(value)
                 if isinstance(value, str):
                     value = value.replace("_", " ").replace('"', '\\"')
-                kw[key] = value
+                kwq[key] = value
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance = HBNBCommand.classes[arg_list[0]](**kwq)
         new_instance.save()
         print(new_instance.id)
 
