@@ -33,8 +33,8 @@ class FileStorage:
         """
         if obj:
             oo = type(obj).__name__
-            key = "{}.{}".format(oo, obj.id)
-            del self.__objects[key]
+            k = "{}.{}".format(oo, obj.id)
+            del self.__objects[k]
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
