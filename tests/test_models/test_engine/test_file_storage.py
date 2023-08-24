@@ -20,7 +20,7 @@ class test_fileStorage(unittest.TestCase):
     def tearDown(self):
         """ Remove storage file at end of tests """
         try:
-            os.remove('file.json')
+            os.remove("file.json")
         except:
             pass
 
@@ -44,7 +44,7 @@ class test_fileStorage(unittest.TestCase):
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
-        self.assertFalse(os.path.exists('file.json'))
+        self.assertFalse(os.path.exists("file.json"))
 
     def test_empty(self):
         """ Data is saved to file """
@@ -52,13 +52,13 @@ class test_fileStorage(unittest.TestCase):
         thing = new.to_dict()
         new.save()
         new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize('file.json'), 0)
+        self.assertNotEqual(os.path.getsize("file.json"), 0)
 
     def test_save(self):
         """ FileStorage save method """
         new = BaseModel()
         storage.save()
-        self.assertTrue(os.path.exists('file.json'))
+        self.assertTrue(os.path.exists("file.json"))
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
@@ -67,11 +67,11 @@ class test_fileStorage(unittest.TestCase):
         storage.reload()
         for obj in storage.all().values():
             loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+        self.assertEqual(new.to_dict()["id"], loaded.to_dict()["id"])
 
     def test_reload_empty(self):
         """ Load from an empty file """
-        with open('file.json', 'w') as f:
+        with open("file.json", "w") as f:
             pass
         with self.assertRaises(ValueError):
             storage.reload()
@@ -97,10 +97,10 @@ class test_fileStorage(unittest.TestCase):
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
-        _id = new.to_dict()['id']
+        _id = new.to_dict()["id"]
         for key in storage.all().keys():
             temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+        self.assertEqual(temp, "BaseModel" + "." + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
