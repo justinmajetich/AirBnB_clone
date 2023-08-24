@@ -18,7 +18,7 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
+    """Contain the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class insert"""
         ignored_attrs = ('id', 'created_at', 'updated_at', '__class__')
         class_name = ''
         name_pattern = r'(?P<name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
