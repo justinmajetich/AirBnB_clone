@@ -303,8 +303,7 @@ class HBNBCommand(cmd.Cmd):
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '"':
-                att_val = args[2][1 : args[2].find('"', 1)]
-
+                att_val = args[2][1: args[2].find('"', 1)]
             # if att_val was not quoted arg
             if not att_val and args[2]:
                 att_val = args[2].partition(" ")[0]
@@ -338,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
