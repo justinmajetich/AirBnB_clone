@@ -36,4 +36,3 @@ sudo sed -i '40i\'"$location" /etc/nginx/sites-available/default
 
 # Reload Nginx to load changes
 sudo service nginx restart
-sudo service nginx start
