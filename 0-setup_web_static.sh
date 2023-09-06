@@ -14,7 +14,7 @@ echo "<html>
   <head>
   </head>
   <body>
-    'The harder you live, the easier your life becomes.' by ME
+    Holberton School
   </body>
 </html>" > /data/web_static/releases/test/index.html
 
@@ -22,7 +22,6 @@ echo "<html>
 # to the /data/web_static/releases/test/ folder
 # If the symbolic link already exists, it should be deleted
 # and recreated every time the script is ran.
-sudo touch /data/web_static/current
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # Give ownership of the /data/ folder to the ubuntu user AND group
@@ -30,8 +29,8 @@ sudo chown -R -h ubuntu:ubuntu /data/
 
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
 # EX: https://mydomainname.tech/hbnb_static
-location='\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}'
-sed -i '/server_name _;/a '"$location"'' /etc/nginx/sites-available/default
+location='40i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}'
+sudo sed -i '/server_name _;/a '"$location" /etc/nginx/sites-available/default
 
 
 # Reload Nginx to load changes
