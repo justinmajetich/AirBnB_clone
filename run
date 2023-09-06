@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-location='\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}'
-sed -i '/server_name _;/a '"$location"'' file
+location='\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}'
+sudo sed -i '40i\'"$location" file
