@@ -15,7 +15,7 @@ def do_pack():
     try:
         # get current time and set it as follows:
         # <year><month><day><hour><minute><second>
-        crTime = dt.now().strftime("%Y%M%D%H%M%S")
+        crTime = dt.now().strftime("%Y%m%d%H%M%S")
 
         # create folder 'versions' if it doesn’t exist
         if isdir('versions') is not True:
@@ -26,7 +26,7 @@ def do_pack():
         archName = f'versions/web_static_{crTime}.tgz'
 
         # create an archive of the directory 'web_static'
-        local(f'tar -cfvz {archName} web_static')
+        local(f'tar -czvf {archName} web_static')
 
         # return the archive path
         return archName
