@@ -6,8 +6,8 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # create files
-sudo mkdir -p /data/web_static/shared/
-sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared
+sudo mkdir -p /data/web_static/releases/test
 
 # create HTML index page
 echo "<html>
@@ -35,3 +35,4 @@ sudo sed -i '/server_name _;/a '"$location" /etc/nginx/sites-available/default
 
 # Reload Nginx to load changes
 sudo service nginx restart
+sudo service nginx start
