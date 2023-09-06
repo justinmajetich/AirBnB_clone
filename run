@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+location='\\t\tlocation /hbnb_static/ {\n \t\t\t\talias /data/web_static/current/;\n\t\t}'
+sed -i '/server_name _;/a '"$location"'' file
