@@ -11,13 +11,7 @@ sudo mkdir -p /data/web_static/shared
 sudo mkdir -p /data/web_static/releases/test
 
 # create HTML index page
-echo "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>" > /data/web_static/releases/test/index.html
+echo "MA-Abahmane" | sudo tee /data/web_static/releases/test/index.html
 
 # create a symbolic link /data/web_static/current linked
 # to the /data/web_static/releases/test/ folder
@@ -35,4 +29,4 @@ sudo sed -i '40i\'"$location" /etc/nginx/sites-available/default
 
 
 # Reload Nginx to load changes
-sudo service nginx restart
+sudo service nginx reload
