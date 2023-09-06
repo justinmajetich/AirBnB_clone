@@ -15,11 +15,11 @@ def do_pack():
     try:
         # get current time and set it as follows:
         # <year><month><day><hour><minute><second>
-        crTime = dt.now().strftime("%Y%M%D%H%M%S")
+        crTime = dt.now().strftime("%Y%m%d%H%M%S")
 
         # create folder 'versions' if it doesn’t exist
-        if isdir('versions') is not True:
-            local('mkdir -p versions')
+        if isdir('versions') is False:
+            local('mkdir versions')
 
         # set archive name as follows:
         # web_static_<year><month><day><hour><minute><second>.tgz
