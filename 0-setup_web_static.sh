@@ -26,7 +26,7 @@ sudo chown -R -h ubuntu:ubuntu /data/
 # EX: https://mydomainname.tech/hbnb_static
 location='\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n'
 sudo sed -i '40i\'"$location" /etc/nginx/sites-available/default
-
+sudo sed -i '40i\'"$location" /etc/nginx/sites-enabled/default
 
 # Reload Nginx to load changes
 sudo service nginx reload
