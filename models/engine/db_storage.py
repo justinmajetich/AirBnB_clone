@@ -12,10 +12,6 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
-classes = {'User': User, 'Place': Place,
-           'State': State, 'City': City, 'Amenity': Amenity,
-           'Review': Review}
-
 
 class DBStorage:
     """Serializes instances to a database and deserializes from the database"""
@@ -40,13 +36,17 @@ class DBStorage:
     def all(self, cls=None):
         """Query on the current database session"""
         a_dict = {}
+        classes = {'User': User, 'Place': Place,
+                   'State': State, 'City': City, 'Amenity': Amenity,
+                   'Review': Review}
+
         if cls is None:
             for value in classes.values():
                 for o in self.__session.query(value):
                     k = o.__class__.__name__ + '.' + o.id
                     a_dict[k] = o
-        if cls in classes:
-            for o in self.__session.query(classes[cls]):
+        else:
+            for o in self.__session.query(classes[cls.__name__]):
                 k = o.__class__.__name__ + o.id
                 a_dict[k] = o
         return a_dict
