@@ -18,15 +18,15 @@ def do_pack():
         crTime = dt.now().strftime("%Y%m%d%H%M%S")
 
         # create folder 'versions' if it doesn’t exist
-        if isdir('versions') is False:
-            local('mkdir versions')
+        if isdir('versions') is not True:
+            local('mkdir -p versions')
 
         # set archive name as follows:
         # web_static_<year><month><day><hour><minute><second>.tgz
         archName = f'versions/web_static_{crTime}.tgz'
 
         # create an archive of the directory 'web_static'
-        local(f'tar -cfvz {archName} web_static')
+        local(f'tar -czvf {archName} web_static')
 
         # return the archive path
         return archName
