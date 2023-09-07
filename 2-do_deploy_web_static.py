@@ -39,7 +39,11 @@ def do_deploy(archive_path):
     """
     Sends archive to all web servers
     """
-    if os.path.exists(archive_path):
+    # if the archive file at path doesn't exist
+    if not os.path.exists(archive_path):
+        return False
+
+    try:
 
         archive_name = os.path.basename(archive_path)
 
@@ -61,7 +65,7 @@ def do_deploy(archive_path):
         # move all the content from inner web_static dir
         # into outer and delete the empty inner dir
         inner_dir = unarchive_dir + "/web_static"
-        run("mv " + inner_dir + "/* " + unarchive_dir)
+        run("rsync -av " + inner_dir + "/* " + unarchive_dir)
         run("rm -rf " + inner_dir)
 
         # delete and re-establish symlink to /data/web_static/current/ dir
@@ -69,6 +73,5 @@ def do_deploy(archive_path):
 
         return True
 
-    else:
+    except Exception:
         return False
-
