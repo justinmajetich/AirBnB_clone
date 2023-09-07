@@ -249,8 +249,6 @@ class HBNBCommand(cmd.Cmd):
         print(", ".join(objs), end="")
         print("]")
 
-
-
     def help_all(self):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")
@@ -355,6 +353,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
