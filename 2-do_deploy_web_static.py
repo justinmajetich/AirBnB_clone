@@ -67,5 +67,7 @@ def do_deploy(archive_path):
         # delete and re-establish symlink to /data/web_static/current/ dir
         run("ln -sfn " + unarchive_dir + " " + "/data/web_static/current")
 
+        return True
+
     except Exception:
         return False
