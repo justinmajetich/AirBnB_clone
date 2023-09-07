@@ -65,6 +65,6 @@ exec { 'sed':
   path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 } ->
 
-exec { 'restart nginx':
-  command => 'sudo service nginx restart',
+exec { 'nginx restart':
+  path => '/etc/init.d/'
 }
