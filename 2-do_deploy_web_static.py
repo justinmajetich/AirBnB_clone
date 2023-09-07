@@ -7,7 +7,7 @@
 
 from os.path import exists
 from datetime import datetime as dt
-from fabric.api import local, put, run, env
+from fabric.api import local, put, run
 
 env.hosts = ['34.203.33.172', '54.210.234.151']
 
