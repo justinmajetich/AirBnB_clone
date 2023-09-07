@@ -1,69 +1,48 @@
+# Define a Puppet class to configure the web server
 class web_server_setup {
 
-  # Update APT packages
-  exec { 'update':
-    command => '/usr/bin/apt-get update',
-  }
-
-  # Install Nginx package
   package { 'nginx':
-    ensure   => 'present',
-    provider => 'apt',
+    ensure => 'installed',
   }
 
-  # Create directory structure with defined types
-  web_directory { '/data/': }
-  web_directory { '/data/web_static/': }
-  web_directory { '/data/web_static/releases/': }
-  web_directory { '/data/web_static/shared/': }
-  web_directory { '/data/web_static/releases/test/': }
+  file { '/data/web_static/shared':
+    ensure  => 'directory',
+    recurse => true,
+  }
 
-  # Create HTML index page
+  file { '/data/web_static/releases/test':
+    ensure  => 'directory',
+    recurse => true,
+  }
+
   file { '/data/web_static/releases/test/index.html':
-    ensure  => 'present',
+    ensure  => 'file',
+    content => 'MA-Abahmane',
     owner   => 'ubuntu',
     group   => 'ubuntu',
-    content => "Holberton School Puppet\n",
   }
 
-  # Create symbolic link
   file { '/data/web_static/current':
-    ensure  => 'link',
-    target  => '/data/web_static/releases/test',
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
-    force   => true,
+    ensure => 'link',
+    target => '/data/web_static/releases/test',
+    force  => true,
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
   }
 
-  # Change ownership
-  exec { 'chown':
-    command => 'chown -R ubuntu:ubuntu /data/',
-    path    => '/usr/bin/:/usr/local/bin/:/bin/',
+  exec { 'change_ownership':
+    command     => 'chown -R ubuntu:ubuntu /data/',
     refreshonly => true,
   }
 
-  # Update Nginx configuration
-  exec { 'sed':
-    command => "sed -i '/^\\tlisten 80 default_server;$/i location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default",
-    path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    require => Package['nginx'],
+  file { '/etc/nginx/sites-available/default':
+    content => template('web_server_setup/nginx_config.erb'),
+    notify  => Service['nginx'],
   }
 
-  # Restart Nginx
   service { 'nginx':
     ensure  => 'running',
     enable  => true,
-    require => Exec['sed'],
+    require => File['/etc/nginx/sites-available/default'],
   }
 }
-
-define web_directory($path) {
-  file { $path:
-    ensure  => 'directory',
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
-    require => Package['nginx'],
-  }
-}
-
-include web_server_setup
