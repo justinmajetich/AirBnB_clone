@@ -1,48 +1,53 @@
-# Define a Puppet class to configure the web server
-class web_server_setup {
+# 
 
-  package { 'nginx':
-    ensure => 'installed',
-  }
+exec { 'update':
+  command  => 'sudo apt-get -y update',
+}
 
-  file { '/data/web_static/shared':
-    ensure  => 'directory',
-    recurse => true,
-  }
+exec { 'install Nginx':
+  command  => 'sudo apt-get -y install nginx',
+  require  => Exec['update'],
+}
 
-  file { '/data/web_static/releases/test':
-    ensure  => 'directory',
-    recurse => true,
-  }
+exec { 'start Nginx':
+  command  => 'sudo service nginx start',
+  require  => Exec['install Nginx'],
+}
 
-  file { '/data/web_static/releases/test/index.html':
-    ensure  => 'file',
-    content => 'MA-Abahmane',
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
-  }
+exec { 'create first directory':
+  command  => 'sudo mkdir -p /data/web_static/releases/test/',
+  require  => Exec['start Nginx'],
+}
 
-  file { '/data/web_static/current':
-    ensure => 'link',
-    target => '/data/web_static/releases/test',
-    force  => true,
-    owner  => 'ubuntu',
-    group  => 'ubuntu',
-  }
+exec { 'create second directory':
+  command  => 'sudo mkdir -p /data/web_static/shared/',
+  require  => Exec['create first directory'],
+}
 
-  exec { 'change_ownership':
-    command     => 'chown -R ubuntu:ubuntu /data/',
-    refreshonly => true,
-  }
+exec { 'content into html':
+  command  => 'echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html',
+  require  => Exec['create second directory'],
+}
 
-  file { '/etc/nginx/sites-available/default':
-    content => template('web_server_setup/nginx_config.erb'),
-    notify  => Service['nginx'],
-  }
+exec { 'symbolic link':
+  command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
+  require  => Exec['content into html'],
+}
 
-  service { 'nginx':
-    ensure  => 'running',
-    enable  => true,
-    require => File['/etc/nginx/sites-available/default'],
-  }
+exec { 'put location':
+  command  => 'sudo sed -i \'38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n\' /etc/nginx/sites-available/default',
+  require  => Exec['symbolic link'],
+}
+
+exec { 'restart Nginx':
+  command  => 'sudo service nginx restart',
+  require  => Exec['put location'],
+}
+
+file { '/data/':
+  ensure  => directory,
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  recurse => true,
+  require => Exec['restart Nginx'],
 }
