@@ -1,42 +1,53 @@
 #!/usr/bin/python3
-""" 
-#
 """
-from datetime import datetime
-from fabric.api import *
-import shlex
-import os
+    a Fabric script (based on the file 1-pack_web_static.py)
+    that distributes an archive to your web servers, using
+    the function do_deploy:
+"""
 
+from os.path import exists
+from datetime import datetime as dt
+from fabric.api import local, put, run, env
 
-env.hosts = ['34.203.33.172', '	54.210.234.151']
-env.user = "ubuntu"
+env.hosts = ['34.203.33.172', '54.210.234.151']
 
 
 def do_deploy(archive_path):
-    """ Deploys """
-    if not os.path.exists(archive_path):
+    """ a function that distributes an archive to web servers """
+
+    if exists(archive_path) is not True:
         return False
     try:
-        name = archive_path.replace('/', ' ')
-        name = shlex.split(name)
-        name = name[-1]
+        # save the archive to '/tmp/'
+        put(archive_path, '/tmp/')
 
-        wname = name.replace('.', ' ')
-        wname = shlex.split(wname)
-        wname = wname[0]
+        # get archive file name, name and the path to decompress archive
+        archName = archive_path.split('/')[-1]
+        Fname = archName.split('.')[0]
+        location = '/data/web_static/releases/'
 
-        releases_path = "/data/web_static/releases/{}/".format(wname)
-        tmp_path = "/tmp/{}".format(name)
+        # create the decompression file
+        run(f'mkdir -p {location}{Fname}/')
 
-        put(archive_path, "/tmp/")
-        run("mkdir -p {}".format(releases_path))
-        run("tar -xzf {} -C {}".format(tmp_path, releases_path))
-        run("rm {}".format(tmp_path))
-        run("mv {}web_static/* {}".format(releases_path, releases_path))
-        run("rm -rf {}web_static".format(releases_path))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(releases_path))
-        print("New version deployed!")
+        # decompress archive to created file
+        run(f'tar -xzf /tmp/{archName} -C {location}{Fname}/')
+
+        # delete the archive from the web server
+        run(f'rm /tmp/{archName}')
+
+        # move the files back
+        # linked to the new version of your code;
+        # (/data/web_static/releases/<archive filename without extension>)
+        run(f'mv {location}{Fname}/web_static/* {location}{Fname}/')
+        run(f'rm -rf {location}{Fname}/web_static')
+
+        # delete the symbolic link /data/web_static/current
+        # create a new the symbolic link /data/web_static/current
+        run(f'rm -rf /data/web_static/current')
+        newCode = f'{location}{Fname}/'
+        run(f'ln -s {newCode} /data/web_static/current')
+
         return True
     except:
         return False
+
