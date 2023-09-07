@@ -1,4 +1,5 @@
 # Redo the task #0 but by using Puppet:
+
 exec { 'update':
   command => '/usr/bin/apt-get update',
 } ->
