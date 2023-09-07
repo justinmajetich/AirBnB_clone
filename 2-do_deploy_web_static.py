@@ -7,7 +7,7 @@
 
 from os.path import exists
 from datetime import datetime as dt
-from fabric.api import local, put, run
+from fabric.api import local, put, run, env
 
 env.hosts = ['34.203.33.172', '54.210.234.151']
 
@@ -23,28 +23,29 @@ def do_deploy(archive_path):
 
         # get archive file name, name and the path to decompress archive
         archName = archive_path.split('/')[-1]
-        Fname = archive_path.split('/')[-1].split('.')[0]
+        Fname = archName.split('.')[0]
         location = '/data/web_static/releases/'
 
         # create the decompression file
         run(f'mkdir -p {location}{Fname}/')
 
         # decompress archive to created file
-        run(f'tar -fxz /tmp/{archName} -C {location}{Fname}/')
+        run(f'tar -xzf /tmp/{archName} -C {location}{Fname}/')
 
         # delete the archive from the web server
-        run(f'rm -r /tmp/{archName}')
+        run(f'rm /tmp/{archName}')
+
+
+        run(f'mv {location}{Fname}/web_static/* {location}{Fname}/')
+        run(f'rm -rf {location}{Fname}/web_static')
 
         # delete the symbolic link /data/web_static/current
-        run(f'mv {location}{Fname}/web_static/* {location}{Fname}/')
-        run(f'rm -rf {location}{Fname}/web_static/') 
-
         # create a new the symbolic link /data/web_static/current
-        # linked to the new version of your code; 
+        # linked to the new version of your code;
         # (/data/web_static/releases/<archive filename without extension>)
         run(f'rm -rf /data/web_static/current')
         newCode = f'{location}{Fname}/'
-        run(f'ln -s {newCode} /data/web_static/current') 
+        run(f'ln -s {newCode} /data/web_static/current')
 
         return True
     except Exception:
