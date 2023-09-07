@@ -79,5 +79,5 @@ exec { 'sed':
 } ->
 
 exec { 'nginx restart':
-  command => 'sudo service nginx restart',
+  path => '/etc/init.d/'
 }
