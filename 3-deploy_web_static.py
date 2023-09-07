@@ -14,7 +14,7 @@ def deploy():
     """ function that defines the deployment """
     try:
         archive_path = do_pack()
-    except:
+    except FileNotFoundError:
         return False
 
     return do_deploy(archive_path)
@@ -29,8 +29,9 @@ def do_pack():
         archive_path = 'versions/web_static_{}.tgz'.format(t.strftime(f))
         local('tar -cvzf {} web_static'.format(archive_path))
         return archive_path
-    except:
+    except FileNotFoundError:
         return None
+
 
 def do_deploy(archive_path):
     """ This function deploys """
@@ -58,5 +59,5 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(releases_path))
         print("New version deployed!")
         return True
-    except:
+    except FileExistsError:
         return False
