@@ -1,23 +1,69 @@
-#  Redo the task #0 but by using Puppet:
+class web_server_setup {
 
-exec { 'custom http header':
-command  => "
-sudo apt-get update;
-sudo apt-get upgrade -y;
-sudo apt-get install -y nginx;
+  # Update APT packages
+  exec { 'update':
+    command => '/usr/bin/apt-get update',
+  }
 
-sudo mkdir -p /data/web_static/shared;
-sudo mkdir -p /data/web_static/releases/test;
+  # Install Nginx package
+  package { 'nginx':
+    ensure   => 'present',
+    provider => 'apt',
+  }
 
-echo 'MA-Abahmane' | sudo tee /data/web_static/releases/test/index.html;
+  # Create directory structure with defined types
+  web_directory { '/data/': }
+  web_directory { '/data/web_static/': }
+  web_directory { '/data/web_static/releases/': }
+  web_directory { '/data/web_static/shared/': }
+  web_directory { '/data/web_static/releases/test/': }
 
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current;
+  # Create HTML index page
+  file { '/data/web_static/releases/test/index.html':
+    ensure  => 'present',
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    content => "Holberton School Puppet\n",
+  }
 
-sudo chown -R -h ubuntu:ubuntu /data/;
+  # Create symbolic link
+  file { '/data/web_static/current':
+    ensure  => 'link',
+    target  => '/data/web_static/releases/test',
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    force   => true,
+  }
 
-location='location /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n';
-sudo sed -i '40i\\t''$location' /etc/nginx/sites-available/default;
+  # Change ownership
+  exec { 'chown':
+    command => 'chown -R ubuntu:ubuntu /data/',
+    path    => '/usr/bin/:/usr/local/bin/:/bin/',
+    refreshonly => true,
+  }
 
-sudo service nginx restart;",
-provider => shell,
+  # Update Nginx configuration
+  exec { 'sed':
+    command => "sed -i '/^\\tlisten 80 default_server;$/i location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default",
+    path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    require => Package['nginx'],
+  }
+
+  # Restart Nginx
+  service { 'nginx':
+    ensure  => 'running',
+    enable  => true,
+    require => Exec['sed'],
+  }
 }
+
+define web_directory($path) {
+  file { $path:
+    ensure  => 'directory',
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    require => Package['nginx'],
+  }
+}
+
+include web_server_setup
