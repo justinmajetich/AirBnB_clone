@@ -39,7 +39,7 @@ def do_deploy(archive_path):
     """
     Sends archive to all web servers
     """
-    try:
+    if os.path.exists(archive_path):
 
         archive_name = os.path.basename(archive_path)
 
@@ -69,5 +69,6 @@ def do_deploy(archive_path):
 
         return True
 
-    except Exception:
+    else:
         return False
+
