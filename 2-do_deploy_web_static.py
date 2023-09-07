@@ -18,34 +18,24 @@ def do_deploy(archive_path):
     if exists(archive_path) is not True:
         return False
     try:
-        # save the archive to '/tmp/'
+        archName = archive_path.split("/")[-1]
+        Fname = archName.split(".")[0]
+
+        location = "/data/web_static/releases/"
+
         put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(location, Fname))
+        
+        #
+        run('tar -xzf /tmp/{} -C {}{}/'.format(archName, location, Fname))
+        run('rm /tmp/{}'.format(archName))
 
-        # get archive file name, name and the path to decompress archive
-        archName = archive_path.split('/')[-1]
-        Fname = archName.split('.')[0]
-        location = '/data/web_static/releases/'
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(location, Fname))
+        run('rm -rf {}{}/web_static'.format(location, Fname))
+        run('rm -rf /data/web_static/current')
 
-        # create the decompression file
-        run(f'mkdir -p {location}{Fname}/')
-
-        # decompress archive to created file
-        run(f'tar -xzf /tmp/{archName} -C {location}{Fname}/')
-
-        # delete the archive from the web server
-        run(f'rm /tmp/{archName}')
-
-
-        run(f'mv {location}{Fname}/web_static/* {location}{Fname}/')
-        run(f'rm -rf {location}{Fname}/web_static')
-
-        # delete the symbolic link /data/web_static/current
-        # create a new the symbolic link /data/web_static/current
-        # linked to the new version of your code;
-        # (/data/web_static/releases/<archive filename without extension>)
-        run(f'rm -rf /data/web_static/current')
-        newCode = f'{location}{Fname}/'
-        run(f'ln -s {newCode} /data/web_static/current')
+        #
+        run('ln -s {}{}/ /data/web_static/current'.format(location, Fname))
 
         return True
     except:
