@@ -13,12 +13,13 @@
 #   Your program should always exit successfully. Don’t forget to run your script on both of your web servers.
 
 exec { 'update':
-  command => '/usr/bin/apt-get update',
+    command => '/usr/bin/apt-get update',
+    ensure  => present,
 } ->
 
 package { 'nginx':
-  ensure   => 'present',
-  provider => 'apt'
+    ensure   => 'present',
+    provider => 'apt'
 } ->
 
 file { '/data/':
@@ -52,29 +53,29 @@ file { '/data/web_static/releases/test/':
 } ->
 
 file { '/data/web_static/releases/test/index.html':
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  ensure  => 'present',
-  content => "Holberton School Puppet\n",
-  path    => '/data/web_static/releases/test/index.html',
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    ensure  => 'present',
+    content => "Holberton School Puppet\n",
+    path    => '/data/web_static/releases/test/index.html',
 } ->
 
 file { '/data/web_static/current':
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  ensure  => 'link',
-  replace => 'yes',
-  target  => '/data/web_static/releases/test',
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    ensure  => 'link',
+    replace => 'yes',
+    target  => '/data/web_static/releases/test',
 } ->
 
 exec { 'chown -R ubuntu:ubuntu /data/':
-  path => '/usr/bin/:/usr/local/bin/:/bin/'
+    path => '/usr/bin/:/usr/local/bin/:/bin/'
 } ->
 
 exec { 'sed':
-  command => "sed -i \
+    command => "sed -i \
   '/^\tlisten 80 default_server;$/i location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default",
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 } ->
 
 exec { 'nginx_restart':
