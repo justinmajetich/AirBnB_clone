@@ -6,7 +6,6 @@
 """
 
 from os.path import exists
-from datetime import datetime as dt
 from fabric.api import local, put, run, env
 
 env.hosts = ['34.203.33.172', '54.210.234.151']
@@ -45,8 +44,7 @@ def do_deploy(archive_path):
         # delete the symbolic link /data/web_static/current
         # create a new the symbolic link /data/web_static/current
         run(f'rm -rf /data/web_static/current')
-        newCode = f'{location}{Fname}/'
-        run(f'ln -s {newCode} /data/web_static/current')
+        run(f'ln -s {location}{Fname}/ /data/web_static/current')
 
         return True
     except Exeption:
