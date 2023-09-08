@@ -15,16 +15,17 @@ env.hosts = ['34.203.33.172', '54.210.234.151']
 def do_deploy(archive_path):
     """ a function that distributes an archive to web servers """
 
-    if exists(archive_path) is not True:
-        return False
     try:
+        if exists(archive_path) is not True:
+            return False
         # save the archive to '/tmp/'
         put(archive_path, '/tmp/')
 
         # get archive file name, name and the path to decompress archive
-        archName = archive_path.split('/')[-1]
-        Fname = archName.split('.')[0]
         location = '/data/web_static/releases/'
+        archName = archive_path.split('/')[-1]
+        Fname =archive_path.split('/')[-1].split('.')[0]
+
 
         # create the decompression file
         run(f'mkdir -p {location}{Fname}/')
@@ -48,6 +49,6 @@ def do_deploy(archive_path):
         run(f'ln -s {newCode} /data/web_static/current')
 
         return True
-    except:
+    except Exeption:
         return False
 
