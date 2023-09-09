@@ -21,20 +21,35 @@ package { 'nginx':
     provider => 'apt'
 } ->
 
-define create_directory($path) {
-  file { $path:
-    owner  => 'ubuntu',
-    group  => 'ubuntu',
+file { '/data/':
     ensure => 'directory',
-  }
-}
+    group  => 'ubuntu',
+    owner  => 'ubuntu',
+} ->
 
-create_directory { '/data/': }
-create_directory { '/data/web_static/': }
-create_directory { '/data/web_static/releases/': }
-create_directory { '/data/web_static/shared/': }
-create_directory { '/data/web_static/releases/test/':
-}->
+file { '/data/web_static/':
+    ensure => 'directory',
+    group  => 'ubuntu',
+    owner  => 'ubuntu',
+} ->
+
+file { '/data/web_static/releases/':
+    ensure => 'directory',
+    group  => 'ubuntu',
+    owner  => 'ubuntu',
+} ->
+
+file { '/data/web_static/shared/':
+    ensure => 'directory',
+    group  => 'ubuntu',
+    owner  => 'ubuntu',
+} ->
+
+file { '/data/web_static/releases/test/':
+    ensure => 'directory',
+    group  => 'ubuntu',
+    owner  => 'ubuntu',
+} ->
 
 file { '/data/web_static/releases/test/index.html':
     owner   => 'ubuntu',
