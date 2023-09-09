@@ -74,13 +74,13 @@ target  => '/data/web_static/releases/test',
 } ->
 
 exec { 'chown -R ubuntu:ubuntu /data/':
-path => '/usr/bin/:/usr/local/bin/:/bin/'
+path => '/usr/bin/:/usr/local/bin/:/bin/' # set the ownership of the entire /data/ directory and its contents to the 'ubuntu' user and group.
 } ->
 
 exec { 'sed':
 command => "sed -i \
   '/^\tlisten 80 default_server;$/i location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default",
-path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', # update the Nginx configuration file to serve contents on path /hbnb_static/ (using alias)
 } ->
 
 exec { 'nginx_restart':
