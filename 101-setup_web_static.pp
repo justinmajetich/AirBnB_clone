@@ -61,7 +61,7 @@ file { '/data/web_static/releases/test/index.html':
 owner   => 'ubuntu',
 group   => 'ubuntu',
 ensure  => 'present',
-content => "Holberton School Puppet\n",
+content => "MA-Abahmane\n",
 path    => '/data/web_static/releases/test/index.html',
 } ->
 
