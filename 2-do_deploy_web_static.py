@@ -23,8 +23,7 @@ def do_deploy(archive_path):
         # get archive file name, name and the path to decompress archive
         location = '/data/web_static/releases/'
         archName = archive_path.split('/')[-1]
-        Fname =archive_path.split('/')[-1].split('.')[0]
-
+        Fname = archive_path.split('/')[-1].split('.')[0]
 
         # create the decompression file
         run(f'mkdir -p {location}{Fname}/')
@@ -49,4 +48,3 @@ def do_deploy(archive_path):
         return True
     except Exeption:
         return False
-
