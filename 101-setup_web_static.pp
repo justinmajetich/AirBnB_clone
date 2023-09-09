@@ -21,6 +21,12 @@ ensure   => 'present',
 provider => 'apt'
 } ->
 
+service { 'nginx':
+ensure  => 'running',
+enable  => true,
+require => Package['nginx'],
+} ->
+
 file { '/data/':
 ensure => 'directory',
 group  => 'ubuntu',
