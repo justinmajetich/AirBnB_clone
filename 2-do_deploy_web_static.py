@@ -10,14 +10,11 @@ from fabric.api import local, put, run, env
 
 env.hosts = ['34.203.33.172', '54.210.234.151']
 
-
 def do_deploy(archive_path):
     """ a function that distributes an archive to web servers """
     if exists(archive_path) is False:
             return False
-
     try:
-
         # get archive file name, name and the path to decompress archive
         archName = archive_path.split('/')[-1]
         Fpath = f"/data/web_static/releases/{archName.split('.')[0]}"
