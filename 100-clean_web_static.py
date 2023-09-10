@@ -12,16 +12,31 @@ env.user = "ubuntu"
 
 
 def do_clean(number=0):
-    """ delete files """
+    """ Delete unnecessary archives """
 
-    number = int(number)
+    to_keep = 0
+    Fpath = "/data/web_static/releases"
 
+    try:
+        number = int(number)
+
+        if (number < 0):
+            print("Invalid number")
+            return (1)
+
+    except Exception:
+        print("Wrong value passed")
+        return (1)
+
+    # get the number of files to keep
     if number == 0:
-        number = 2
+        to_keep = 1
     else:
-        number += 1
+        to_keep = number
 
-    local('cd versions ; ls -t | tail -n +{} | xargs rm -rf'.format(number))
+    # Delete all unnecessary archives in the local versions folder
+    local(f'cd version ; ls -t | tail -n +{to_keep + 1} | xargs rm -rf')
 
-    path = '/data/web_static/releases'
-    run('cd {} ; ls -t | tail -n +{} | xargs rm -rf'.format(path, number))
+    # Delete all unnecessary archives in the '/data/web_static/releases'
+    # folder of both of your web servers
+    run(f'cd {Fpath} ; ls -t | tail -n +{to_keep + 1} | xargs rm -rf')
