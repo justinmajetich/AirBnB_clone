@@ -17,16 +17,7 @@ def do_clean(number=0):
     to_keep = 0
     Fpath = "/data/web_static/releases"
 
-    try:
-        number = int(number)
-
-        if (number < 0):
-            print("Invalid number")
-            return (1)
-
-    except Exception:
-        print("Wrong value passed")
-        return (1)
+    number = int(number)
 
     # get the number of files to keep
     if number == 0:
