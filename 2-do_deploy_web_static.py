@@ -13,23 +13,23 @@ env.hosts = ['34.203.33.172', '54.210.234.151']
 
 def do_deploy(archive_path):
     """ a function that distributes an archive to web servers """
-     if exists(archive_path) is False:
+    if exists(archive_path) is False:
             return False
 
     try:
+
+        # get archive file name, name and the path to decompress archive
+        archName = archive_path.split('/')[-1]
+        Fpath = f"/data/web_static/releases/{archName.split('.')[0]}"
+
         # save the archive to '/tmp/'
         put(archive_path, '/tmp/')
 
-        # get archive file name, name and the path to decompress archive
-        location = '/data/web_static/releases/'
-        archName = archive_path.split('/')[-1]
-        Fname = archive_path.split('/')[-1].split('.')[0]
-
         # create the decompression file
-        run(f'mkdir -p {location}{Fname}/')
+        run(f'mkdir -p {Fpath}/')
 
         # decompress archive to created file
-        run(f'tar -xzf /tmp/{archName} -C {location}{Fname}/')
+        run(f'tar -xzf /tmp/{archName} -C {Fpath}/')
 
         # delete the archive from the web server
         run(f'rm /tmp/{archName}')
@@ -37,14 +37,14 @@ def do_deploy(archive_path):
         # move the files back
         # linked to the new version of your code;
         # (/data/web_static/releases/<archive filename without extension>)
-        run(f'mv {location}{Fname}/web_static/* {location}{Fname}/')
-        run(f'rm -rf {location}{Fname}/web_static')
+        run(f'mv {Fpath}/web_static/* {Fpath}/')
+        run(f'rm -rf {Fpath}/web_static')
 
         # delete the symbolic link /data/web_static/current
         # create a new the symbolic link /data/web_static/current
         run(f'rm -rf /data/web_static/current')
-        run(f'ln -s {location}{Fname}/ /data/web_static/current')
+        run(f'ln -s {Fpath}/ /data/web_static/current')
 
         return True
-    except Exeption:
+    except Exception:
         return False
