@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
                 valid_params.append(param)
             else:
                 try:
-                    param[1] = int(a[1])
+                    param[1] = int(param[1])
                     valid_params.append(param)
                 except:
                     try:
