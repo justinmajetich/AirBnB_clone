@@ -5,7 +5,7 @@ import time
 from fabric.api import local
 from fabric.operations import env, put, run
 
-env.hosts = ['54.210.122.141', '52.86.227.156']
+env.hosts = ['54.157.163.217', '34.229.67.91']
 
 
 def do_pack():
