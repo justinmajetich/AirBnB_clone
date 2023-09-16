@@ -126,7 +126,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Create a new instance of a specified class with given parameters"""
-        # schema = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
         schema = r"(^\w+)((?:\s+\w+=[^\s]+)+)?"
 
         m = re.match(schema, arg)
