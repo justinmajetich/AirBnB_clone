@@ -147,14 +147,19 @@ class HBNBCommand(cmd.Cmd):
             params = arg[1].split(" ")
             params = [param for param in params if param]
             for param in params:
+                if "=" not in param:
+                    continue
                 [name, value] = param.split("=")
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace("_", " ")
-                elif "." in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                kwargs[name] = value
+                try:
+                    if value[0] == '"' and value[-1] == '"':
+                        value = value[1:-1].replace("_", " ")
+                    elif "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    kwargs[name] = value
+                except:
+                    continue
 
         new_instance = HBNBCommand.classes[className]()
 
