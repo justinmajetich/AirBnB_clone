@@ -19,8 +19,6 @@ class DBStorage:
 	__engine = None
 	__session = None
 
-	tables = [User, Amenity, City, State, Place, Review]
-
 	def __init__(self):
 		"""init function for class"""
 		self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
@@ -34,14 +32,18 @@ class DBStorage:
 
 	def all(self, cls=None):
 		"""query on the current database session"""
-		query_datas = []
 		obj = {}
 		if cls is None:
-			for table in self.tables:
-				query_datas.extend(self.__session.query(table).all())
+			query_datas = self.__session.query(State).all()
+			query_datas.extend(self.__session.query(City).all())
+			query_datas.extend(self.__session.query(User).all())
+			query_datas.extend(self.__session.query(Place).all())
+			query_datas.extend(self.__session.query(Review).all())
+			query_datas.extend(self.__session.query(Amenity).all())
 		else:
-			if cls in self.tables:
-				query_datas.extend(self.__session.query(table).all())
+			tables = [User, Amenity, City, State, Place, Review]
+			if cls in tables:
+				query_datas.extend(self.__session.query(cls).all())
 		for data in query_datas:
 			key = f"{cls}.{data.id}"
 			obj[key] = data
@@ -65,9 +67,9 @@ class DBStorage:
 				self.__session.rollback()
 
 	def reload(self):
+		print("reload")
+		Base.metadata.create_all(self.__engine)
 		Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
 		scoped_Session = scoped_session(Session)
 		self.__session = scoped_Session()
-		Base.metadata.create_all(self.__engine)
-
 
