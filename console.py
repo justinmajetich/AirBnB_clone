@@ -25,15 +25,15 @@ class HBNBCommand(cmd.Cmd):
                }
 
     valid_keys = {
-               'BaseModel': ['id' , 'created_at', 'updated_at'], 
-               'User': ['id' , 'created_at', 'updated_at',  'email' , 'password', 'first_name', 'last_name'], 
+               'BaseModel': ['id' , 'created_at', 'updated_at'],
+               'User': ['id' , 'created_at', 'updated_at',  'email' , 'password', 'first_name', 'last_name'],
                'City': ['id' , 'created_at', 'updated_at', 'state_id', 'name'],
-               'State': ['id' , 'created_at', 'updated_at', 'name'], 
-               'Place': ['id' , 'created_at', 'updated_at', 'city_id', 'user_id' , 'name','number_rooms', 'number_bathrooms' ,'max_guest' ,'price_by_night' , 'latitude' ,'longitude'], 
+               'State': ['id' , 'created_at', 'updated_at', 'name'],
+               'Place': ['id' , 'created_at', 'updated_at', 'city_id', 'user_id' , 'name','number_rooms', 'number_bathrooms' ,'max_guest' ,'price_by_night' , 'latitude' ,'longitude'],
                'Amenity': ['id' , 'created_at', 'updated_at', 'name'],
                'Review': ['id' , 'created_at', 'updated_at', 'place_id', 'user_id', 'text']
                }
-              
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                     value = int(value)
             except ValueError:
                 is_valid_value = False
-        
+
         if is_valid_value:
             return value
         else:
@@ -320,7 +320,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -328,10 +328,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
