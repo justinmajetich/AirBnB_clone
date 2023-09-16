@@ -34,22 +34,22 @@ class DBStorage:
 		if cls is None:
 			query_datas = self.__session.query(State).all()
 			query_datas.extend(self.__session.query(City).all())
-			query_datas.extend(self.__session.query(User).all())
-			query_datas.extend(self.__session.query(Place).all())
-			query_datas.extend(self.__session.query(Review).all())
-			query_datas.extend(self.__session.query(Amenity).all())
+			# query_datas.extend(self.__session.query(User).all())
+			# query_datas.extend(self.__session.query(Place).all())
+			# query_datas.extend(self.__session.query(Review).all())
+			# query_datas.extend(self.__session.query(Amenity).all())
 		else:
-			tables = [User, Amenity, City, State, Place, Review]
-			if cls in tables:
-				query_datas.extend(self.__session.query(cls).all())
+			query_datas = self.__session.query(self.__session.query(cls).all())
+		print('from data', query_datas)
 		for data in query_datas:
-			key = f"{cls}.{data.id}"
+			key = f"{type(data).__name__}.{data.id}"
 			obj[key] = data
+		print('from obj',obj)
 		return obj
 	
 	def new(self, obj):
 		"""add the object to the current database session"""
-		if obj and obj in self.tables:
+		if obj:
 			self.__session.add(obj)
 
 	def save(self):
@@ -65,9 +65,7 @@ class DBStorage:
 				self.__session.rollback()
 
 	def reload(self):
-		print("reload")
 		Base.metadata.create_all(self.__engine)
 		Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
 		scoped_Session = scoped_session(Session)
 		self.__session = scoped_Session()
-

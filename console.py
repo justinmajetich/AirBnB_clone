@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         if not isinstance(arg, list):
             return
         params = [item for item in arg if '=' in item]
-        valid_params = []
+        valid_params = {}
         for item in params:
             param = item.split("=")
             if param[1].startswith('"') and param[1].endswith('"'):
@@ -126,17 +126,18 @@ class HBNBCommand(cmd.Cmd):
                 middle = middle.replace('"', '\"')
                 middle = middle.replace("_", " ")
                 param[1] = middle
-                valid_params.append(param)
+                # valid_params.append(param)
             else:
                 try:
                     param[1] = int(param[1])
-                    valid_params.append(param)
+                    # valid_params.append(param)
                 except:
                     try:
                         param[1] = float(param[1])
-                        valid_params.append(param)
+                        # valid_params.append(param)
                     except:
                         pass
+            valid_params[param[0]] = param[1]
         return(valid_params)
 
     def do_create(self, args):
@@ -149,11 +150,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         valid_param = HBNBCommand.process_params(cmd_list[1:])
-        new_instance = HBNBCommand.classes[cmd_list[0]]()
-        for key, val in valid_param:
-            setattr(new_instance, key, val)
-        print(new_instance.id)
-        storage.save()
+        if valid_param == {}:
+            obj = eval(cmd_list[0])()
+        else:
+            obj = eval(cmd_list[0])(**valid_param)
+            storage.new(obj)
+        print(obj.id)
+        obj.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -248,17 +251,17 @@ class HBNBCommand(cmd.Cmd):
         Usage: all or all <class>
         """
         obj_list = []
-        store = storage.all()
         if cmmd:
             args = cmmd.split(" ")
             if len(args) == 1:
                 if args[0] not in HBNBCommand.classes:
                     print("** class doesn't exist **")
                     return
-                for k, v in store.items():
-                    if k.split('.')[0] == args[0]:
-                        obj_list.append(str(v))
+                store = storage.all(eval(args[0]))
+                for v in store.values():
+                    obj_list.append(str(v))
         else:
+            store = storage.all()
             for item_obj in store.values():
                 obj_list.append(str(item_obj))
         print(obj_list)
