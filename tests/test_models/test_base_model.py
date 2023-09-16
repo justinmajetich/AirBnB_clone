@@ -126,6 +126,7 @@ class BaseModelTest(unittest.TestCase):
         self.assertEqual(obj1.updated_at, dt)
         self.assertEqual(obj1.id, "2023")
 
+
 # -- method save() -----------------------------
 class BaseModelSaveTest(unittest.TestCase):
     """test cases for BaseModel.save() method"""

@@ -107,6 +107,7 @@ class PlaceTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Place().to_dict("val")
 
+
 class PlaceSaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""
     @classmethod

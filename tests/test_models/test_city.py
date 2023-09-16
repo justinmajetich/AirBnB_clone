@@ -62,6 +62,7 @@ class CityTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             City().to_dict("val")
 
+
 class CitySaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""
     @classmethod

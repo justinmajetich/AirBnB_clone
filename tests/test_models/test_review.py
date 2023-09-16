@@ -67,6 +67,7 @@ class ReviewTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Review().to_dict("val")
 
+
 class ReviewSaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""
     @classmethod

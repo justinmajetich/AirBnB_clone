@@ -37,7 +37,6 @@ class StateTest(unittest.TestCase):
         state = State()
         self.assertEqual(datetime, type(state.updated_at))
 
-
     def test_State_two_states_diffrent_ids(self):
         """check two states have diffrent id"""
         state1 = State()
@@ -52,6 +51,7 @@ class StateTest(unittest.TestCase):
     def test_State_two_to_dict_with_arg(self):
         with self.assertRaises(TypeError):
             State().to_dict("val")
+
 
 class StateSaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""

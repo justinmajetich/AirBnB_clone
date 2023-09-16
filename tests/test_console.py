@@ -336,4 +336,3 @@ class ConsoleDestroyTest(unittest.TestCase):
             command = "show State {}".format(_id)
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertEqual("** no instance found **", op.getvalue().strip())
-

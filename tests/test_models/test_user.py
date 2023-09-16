@@ -72,6 +72,7 @@ class UserTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             User().to_dict("val")
 
+
 class UserSaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""
     @classmethod

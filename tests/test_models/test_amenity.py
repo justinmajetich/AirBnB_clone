@@ -57,6 +57,7 @@ class AmenityTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Amenity().to_dict("val")
 
+
 class AmenitySaveTest(unittest.TestCase):
     """test cases for Uer.save() method"""
     @classmethod
