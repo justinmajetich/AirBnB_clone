@@ -70,7 +70,7 @@ class DBStorage:
         from the engine (self.__engine)
         using a sessionmaker
         """
-        self.__session = Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(factory)
         self.__session = Session()
