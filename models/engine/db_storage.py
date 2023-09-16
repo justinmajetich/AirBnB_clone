@@ -12,8 +12,6 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-Base = declarative_base()
-
 class DBStorage:
 	"""Class definition for database"""
 	__engine = None
