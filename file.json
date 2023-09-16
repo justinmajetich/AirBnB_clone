@@ -1,0 +1,137 @@
+{
+	"State.eec87033-c17c-42d5-bda7-619866e5b970": {
+		"id": "eec87033-c17c-42d5-bda7-619866e5b970",
+		"created_at": "2023-09-16T17:58:06.481807",
+		"updated_at": "2023-09-16T17:58:06.481936",
+		"__class__": "State"
+	},
+	"State.b6bea0f4-5bbe-413f-92d7-463707f1f8c8": {
+		"id": "4dc46rec",
+		"created_at": "2023-09-16T18:35:28.669251",
+		"updated_at": "2023-09-16T18:35:28.669332",
+		"name": "Cairo",
+		"__class__": "State"
+	},
+	"State.89430ba7-c3ca-4a5c-889c-7cff24c76b85": {
+		"id": "89430ba7-c3ca-4a5c-889c-7cff24c76b85",
+		"created_at": "2023-09-16T19:13:44.388166",
+		"updated_at": "2023-09-16T19:13:44.388245",
+		"name": "Cairo",
+		"place": "north",
+		"__class__": "State"
+	},
+	"State.45c16290-1bcd-4672-beb1-c6a5140748bf": {
+		"id": "45c16290-1bcd-4672-beb1-c6a5140748bf",
+		"created_at": "2023-09-16T19:17:16.051739",
+		"updated_at": "2023-09-16T19:17:16.051744",
+		"name": "Cairo",
+		"place": "north",
+		"__class__": "State"
+	},
+	"State.070ce561-d144-47f1-92d0-6339dd020c72": {
+		"id": "070ce561-d144-47f1-92d0-6339dd020c72",
+		"created_at": "2023-09-16T19:20:21.696379",
+		"updated_at": "2023-09-16T19:20:21.696385",
+		"name": "cat create State name",
+		"__class__": "State"
+	},
+	"State.53905bcc-a6d2-4d0e-adfb-b8fa8136b315": {
+		"id": "53905bcc-a6d2-4d0e-adfb-b8fa8136b315",
+		"created_at": "2023-09-16T19:41:54.830159",
+		"updated_at": "2023-09-16T19:41:54.830215",
+		"name": "Alex",
+		"__class__": "State"
+	},
+	"State.83f6dfc5-69a6-48b3-981c-fe45b51f323c": {
+		"id": "83f6dfc5-69a6-48b3-981c-fe45b51f323c",
+		"created_at": "2023-09-16T19:42:09.048741",
+		"updated_at": "2023-09-16T19:42:09.048747",
+		"name": "Alex",
+		"place": "north",
+		"__class__": "State"
+	},
+	"State.c0e74a41-4fbb-4ab0-ab2c-1c6bb381f353": {
+		"id": "c0e74a41-4fbb-4ab0-ab2c-1c6bb381f353",
+		"created_at": "2023-09-16T19:42:48.373440",
+		"updated_at": "2023-09-16T19:42:48.373445",
+		"name": "Al_ex",
+		"__class__": "State"
+	},
+	"State.5aaa9a0c-d412-4a92-addd-4268ea181e48": {
+		"id": "5aaa9a0c-d412-4a92-addd-4268ea181e48",
+		"created_at": "2023-09-16T19:45:37.682433",
+		"updated_at": "2023-09-16T19:45:37.682438",
+		"name": "Alexa",
+		"__class__": "State"
+	},
+	"State.924b3327-382b-4bfa-925e-2e9eed4edf8b": {
+		"id": "924b3327-382b-4bfa-925e-2e9eed4edf8b",
+		"created_at": "2023-09-16T19:49:27.126905",
+		"updated_at": "2023-09-16T19:49:27.126910",
+		"name": "Alexa",
+		"__class__": "State"
+	},
+	"State.780b28de-f2c8-4ac7-b3db-e205ad8e5900": {
+		"id": "780b28de-f2c8-4ac7-b3db-e205ad8e5900",
+		"created_at": "2023-09-16T19:49:31.676279",
+		"updated_at": "2023-09-16T19:49:31.676286",
+		"name": "Ale_xa",
+		"__class__": "State"
+	},
+	"State.38c49b90-41d3-45f8-aa18-02e54ab85e71": {
+		"id": "38c49b90-41d3-45f8-aa18-02e54ab85e71",
+		"created_at": "2023-09-16T19:50:57.684102",
+		"updated_at": "2023-09-16T19:50:57.684107",
+		"name": "lex",
+		"__class__": "State"
+	},
+	"State.fcaef943-90c3-48db-a479-f1e256d0f2ea": {
+		"id": "fcaef943-90c3-48db-a479-f1e256d0f2ea",
+		"created_at": "2023-09-16T19:55:28.032855",
+		"updated_at": "2023-09-16T19:55:28.032860",
+		"name": "lex ",
+		"__class__": "State"
+	},
+	"Place.91d5d53f-b2df-4989-bbe7-6d7f1a5d8b54": {
+		"id": "91d5d53f-b2df-4989-bbe7-6d7f1a5d8b54",
+		"created_at": "2023-09-16T20:36:43.156519",
+		"updated_at": "2023-09-16T20:36:43.156524",
+		"name": "place",
+		"__class__": "Place"
+	},
+	"Place.1dfdabbb-79cd-44e0-98dd-f60ade0fbeea": {
+		"id": "1dfdabbb-79cd-44e0-98dd-f60ade0fbeea",
+		"created_at": "2023-09-16T20:36:55.707558",
+		"updated_at": "2023-09-16T20:36:55.707562",
+		"name": "myplace",
+		"__class__": "Place"
+	},
+	"Place.ac6e7a10-3c2a-4223-9728-6daec64c1563": {
+		"id": "ac6e7a10-3c2a-4223-9728-6daec64c1563",
+		"created_at": "2023-09-16T20:46:09.509816",
+		"updated_at": "2023-09-16T20:46:09.509820",
+		"name": "myplace",
+		"__class__": "Place"
+	},
+	"State.4f58059a-03c1-46c8-bc96-a8b447547df8": {
+		"id": "4f58059a-03c1-46c8-bc96-a8b447547df8",
+		"created_at": "2023-09-16T20:52:48.651082",
+		"updated_at": "2023-09-16T20:52:48.651086",
+		"name": "California",
+		"__class__": "State"
+	},
+	"State.6a88871f-dc6f-4724-85d8-46898fe2b4e7": {
+		"id": "6a88871f-dc6f-4724-85d8-46898fe2b4e7",
+		"created_at": "2023-09-16T20:52:48.653271",
+		"updated_at": "2023-09-16T20:52:48.653277",
+		"name": "Arizona",
+		"__class__": "State"
+	},
+	"Place.e664f303-8a56-447f-8970-d21522567516": {
+		"id": "e664f303-8a56-447f-8970-d21522567516",
+		"created_at": "2023-09-16T20:52:48.662393",
+		"updated_at": "2023-09-16T20:52:48.662399",
+		"name": "My little house",
+		"__class__": "Place"
+	}
+}
