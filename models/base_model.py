@@ -14,22 +14,26 @@ class BaseModel:
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+
+        id =  Column(Integer, primary_key=True, nullable=False)
+        created_at = Column(Datetime, default=datetime.utcnow(),
+                                     nullable=False)
+        updated_at = Column(Datetime, default=datetime.utcnow(),
+                                     nullable=False)
         if not kwargs:
             from models import storage
-            self.id = Column(Integer, primary_key=True, nullable=False)
-            self.created_at = Column(Datetime, default=datetime.utcnow(),
-                                     nullable=False)
-            self.updated_at = Column(Datetime, default=datetime.utcnow(),
-                                     nullable=False)
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
                 if not hasattr(self, key):
                     setattr(self, key, value)
-            kwargs['updated_at'] = Column(Datetime, default=datetime.utcnow(),
-                                          nullable=False)
-            kwargs['created_at'] = Column(Datetime, default=datetime.utcnow(),
-                                          nullable=False)
 
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
