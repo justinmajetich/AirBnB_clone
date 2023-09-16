@@ -1,7 +1,5 @@
 <center> <h1>0x02. AirBnB clone - MySQL
 </h1> </center>
-![Airbnb Logo](https://a0.muscache.com/airbnb/static/logotype_favicon-21cc8e6c6a2cca43f061d2dcabdf6e58.ico)
-
 
 Transition Between FileStorage and DBStorage:
 
