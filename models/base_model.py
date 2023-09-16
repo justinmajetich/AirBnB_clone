@@ -48,7 +48,7 @@ class BaseModel:
         #some changes are made
         self.updated_at = datetime.now()
         models.storage.new(self)
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
