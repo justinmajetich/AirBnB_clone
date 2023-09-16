@@ -141,7 +141,8 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 <center> <h1>AUTHORS</h1> </center>
-###### These individuals contributed to the hbnb project in this repository 
+<h3>These individuals contributed to the hbnb project in this repository</h3>
+
 * Ezra Nobrega <ezra.nobrega@outlook.com>
 * Justin Majetich <justinmajetich@gmail.com>
 * Mohamed Ezghoudi <mohamedezghoudi@gmail.com>
