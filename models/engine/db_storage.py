@@ -38,13 +38,13 @@ class DBStorage:
 			# query_datas.extend(self.__session.query(Place).all())
 			# query_datas.extend(self.__session.query(Review).all())
 			# query_datas.extend(self.__session.query(Amenity).all())
+			print('from data', query_datas)
 		else:
-			query_datas = self.__session.query(self.__session.query(cls).all())
-		print('from data', query_datas)
+			query_datas = self.__session.query(cls).all()
+			print('from obj', query_datas)
 		for data in query_datas:
 			key = f"{type(data).__name__}.{data.id}"
 			obj[key] = data
-		print('from obj',obj)
 		return obj
 	
 	def new(self, obj):

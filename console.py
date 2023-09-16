@@ -258,6 +258,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
                     return
                 store = storage.all(eval(args[0]))
+                print('from all console', store)
                 for v in store.values():
                     obj_list.append(str(v))
         else:
