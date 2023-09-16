@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,16 +113,45 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def process_params(arg):
+        """Process args passed to create method(command)"""
+        if not isinstance(arg, list):
+            return
+        params = [item for item in arg if '=' in item]
+        valid_params = []
+        for item in params:
+            param = item.split("=")
+            if param[1].startswith('"') and param[1].endswith('"'):
+                middle = param[1][1:-1]
+                middle = middle.replace('"', '\"')
+                middle = middle.replace("_", " ")
+                param[1] = middle
+                valid_params.append(param)
+            else:
+                try:
+                    param[1] = int(param[1])
+                    valid_params.append(param)
+                except:
+                    try:
+                        param[1] = float(param[1])
+                        valid_params.append(param)
+                    except:
+                        pass
+        return(valid_params)
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        cmd_list = args.split(' ')
+        if cmd_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        valid_param = HBNBCommand.process_params(cmd_list[1:])
+        new_instance = HBNBCommand.classes[cmd_list[0]]()
+        for key, val in valid_param:
+            setattr(new_instance, key, val)
         print(new_instance.id)
         storage.save()
 
@@ -272,7 +301,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +309,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
