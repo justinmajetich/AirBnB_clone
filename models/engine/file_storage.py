@@ -8,6 +8,10 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    @property
+    def cities(self):
+        """Retruns Cities in state"""
+        
 
     def delete(self, obj=None):
         """loop through __objects, compare each value of key with cls argument wich is object"""
