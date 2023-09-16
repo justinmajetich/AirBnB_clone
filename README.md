@@ -3,14 +3,15 @@
 
 Transition Between FileStorage and DBStorage:
 
-- it's common in industry projects to have a single storage system (e.g., FileStorage or DBStorage) active at a given time, rather than both simultaneously. To manage multiple storage 
-When switching from one storage system to another (e.g., from FileStorage to DBStorage), you may need to perform data migration if the data schema differs between the two systems. This migration process involves transferring existing data from the old storage system to the new one.
+- it's common in industry projects to have a single storage system (e.g., FileStorage or DBStorage) active at a given time, rather than both simultaneously.
+- To manage multiple storage
+When switching from one storage system to another (e.g., from FileStorage to DBStorage), you may need to perform data migration if the data schema differs between the two systems.
+This migration process involves transferring existing data from the old storage system to the new one.
 Adding Attributes for SQLAlchemy:
 
 - integrate SQLAlchemy into your project. To do this, you'll need to define SQLAlchemy models for your application's data.
-Class attributes with "weird" values likely indicate placeholder attributes for SQLAlchemy model definitions. These values serve as descriptions and mappings to the database columns.
-If you make changes to these attributes or add/remove attributes from your models, it's important to consider that this could affect your database schema. In development, recreating the database (with drop_all and create_all) is acceptable for simplicity. However, in production, you'd typically use migration mechanisms to update the database schema without data loss.
-Here's a high-level example of how you might define an SQLAlchemy model with placeholder attributes:
+- in production, you'd typically use migration mechanisms to update the database schema without data loss.
+- Here's a high-level example of how you might define an SQLAlchemy model with placeholder attributes:
 
 python
 Copy code
