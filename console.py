@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy import Column, String
 
+
 class HBNBCommand(cmd.Cmd):
     """Contains the functionality for the HBNB console"""
 
