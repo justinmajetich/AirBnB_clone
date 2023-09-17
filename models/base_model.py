@@ -57,3 +57,8 @@ class BaseModel:
     def delete(self):
         """Delete the current instance from storage."""
         models.storage.delete(self)
+
+#new code 
+    def __repr__(self):
+        """return a string representaion"""
+        return self.__str__()
