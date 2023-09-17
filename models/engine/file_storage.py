@@ -10,11 +10,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns the list of objects of one type of class"""
-        for k, v in FileStorage.__objects.items():
-            parts = k.split('.')   # State.eec87033-c17c-42d5-bda7-619866e5b970
-            className = parts[0]
-            if cls == className:
-                return FileStorage.__objects[k]
+        if cls is not None:
+            for k, v in FileStorage.__objects.items():
+                # State.eec87033-c17c-42d5-bda7-619866e5b970
+                parts = k.split('.')
+                className = parts[0]
+                if cls == className:
+                    return FileStorage.__objects[k]
 
         return FileStorage.__objects
 
@@ -27,8 +29,6 @@ class FileStorage:
                 if obj == v:
                     key = k
             del FileStorage.__objects[key]
-        else:
-            pass
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
