@@ -1,0 +1,39 @@
+Dropping hbnb_dev_db database if it exists...
+Executing MySQL setup script...
+Creating a new State...
+State ID: 5c3b9601-ece8-4933-988e-9655abdf01cc
+Listing all States...
+(hbnb)
+["[State] (5c3b9601-ece8-4933-988e-9655abdf01cc) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f35a9d52cd0>, 'name': 'California', 'id': '5c3b9601-ece8-4933-988e-9655abdf01cc', 'created_at': datetime.datetime(2023, 9, 17, 12, 52, 26), 'updated_at': datetime.datetime(2023, 9, 17, 12, 52, 26)}"]
+(hbnb) 
+Executing SQL query to list all States...
+*************************** 1. row ***************************
+        id: 5c3b9601-ece8-4933-988e-9655abdf01cc
+created_at: 2023-09-17 12:52:26
+updated_at: 2023-09-17 12:52:26
+      name: California
+Creating a new City with State ID: 5c3b9601-ece8-4933-988e-9655abdf01cc...
+(hbnb)
+cbdcfec3-2bc9-4385-b352-5dfe01b8ea6d
+(hbnb) 
+Listing all Cities...
+(hbnb)
+["[City] (cbdcfec3-2bc9-4385-b352-5dfe01b8ea6d) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fa6acfb5990>, 'name': 'San Francisco', 'updated_at': datetime.datetime(2023, 9, 17, 12, 52, 28), 'state_id': '5c3b9601-ece8-4933-988e-9655abdf01cc', 'id': 'cbdcfec3-2bc9-4385-b352-5dfe01b8ea6d', 'created_at': datetime.datetime(2023, 9, 17, 12, 52, 28)}"]
+(hbnb) 
+Creating another City with State ID: 5c3b9601-ece8-4933-988e-9655abdf01cc...
+(hbnb)
+eccedd49-fce9-4264-a017-d7e72bd57c57
+(hbnb) 
+Executing SQL query to list all Cities...
+*************************** 1. row ***************************
+        id: cbdcfec3-2bc9-4385-b352-5dfe01b8ea6d
+created_at: 2023-09-17 12:52:28
+updated_at: 2023-09-17 12:52:28
+      name: San Francisco
+  state_id: 5c3b9601-ece8-4933-988e-9655abdf01cc
+*************************** 2. row ***************************
+        id: eccedd49-fce9-4264-a017-d7e72bd57c57
+created_at: 2023-09-17 12:52:31
+updated_at: 2023-09-17 12:52:31
+      name: San Jose
+  state_id: 5c3b9601-ece8-4933-988e-9655abdf01cc
