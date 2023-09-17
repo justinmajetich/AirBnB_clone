@@ -21,11 +21,12 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside -
         if obj is equal to None, the method should not do anything"""
-        key = ''
-        for k, v in FileStorage.__objects.items():
-            if obj == v:
-                key = k
-        del FileStorage.__objects[key]
+        if obj is not None:
+            key = ''
+            for k, v in FileStorage.__objects.items():
+                if obj == v:
+                    key = k
+            del FileStorage.__objects[key]
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
