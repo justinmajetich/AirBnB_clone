@@ -70,7 +70,8 @@ class DBStorage:
         try:
             self.__session.commit()
             return True
-        except (IntegrityError, OperationalError):
+        #except (IntegrityError, OperationalError):
+        except Exception:
             return False
 
     def delete(self, obj=None):
