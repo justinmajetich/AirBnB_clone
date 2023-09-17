@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from ast import literal_eval
 
 
 class HBNBCommand(cmd.Cmd):
@@ -118,13 +119,29 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        cmds = args.split()
+        if cmds[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        else:
+            new_instance = HBNBCommand.classes[cmds[0]]()
+            for cmd in cmds[1:]:
+                param = cmd.split('=')
+                if len(param) == 2:
+                    key, val = param
+                    if val.startswith('"') and val.endswith('"'):
+                        val = val[1:-1].replace('_', ' ')
+                    else:
+                        val = literal_eval(val)
+                    # params[key] = val
+                    setattr(new_instance, key, val)
+            new_instance.save()
+            print(new_instance.id)
+        # new_instance = HBNBCommand.classes[cmds[0]](**params)
+        # storage.save()
+        # new_instance.save()
+        # print(new_instance.id)
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -199,7 +216,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        """print_list = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -213,7 +230,18 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print(print_list)"""
+        cmds = args.split()
+        if len(cmds) == 0:
+            for val in storage.all().values():
+                print(val)
+        elif len(cmds) == 1:
+            if cmds[0] not in HBNBCommand.classes.keys():
+                print("** class doesn't exist **")
+            else:
+                for key, val in storage.all().items():
+                    if key.startswith(cmds[0]):
+                        print(val)
 
     def help_all(self):
         """ Help information for the all command """
