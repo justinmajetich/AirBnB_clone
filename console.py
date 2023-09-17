@@ -258,14 +258,14 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
                     return
                 store = storage.all(eval(args[0]))
-                print('from all console', store)
                 for v in store.values():
                     obj_list.append(str(v))
         else:
             store = storage.all()
             for item_obj in store.values():
                 obj_list.append(str(item_obj))
-        print(obj_list)
+        for obj in obj_list:
+            print(obj)
 
     def help_all(self):
         """ Help information for the all command """

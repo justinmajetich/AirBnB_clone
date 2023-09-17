@@ -34,14 +34,12 @@ class DBStorage:
 		if cls is None:
 			query_datas = self.__session.query(State).all()
 			query_datas.extend(self.__session.query(City).all())
-			# query_datas.extend(self.__session.query(User).all())
+			query_datas.extend(self.__session.query(User).all())
 			# query_datas.extend(self.__session.query(Place).all())
 			# query_datas.extend(self.__session.query(Review).all())
 			# query_datas.extend(self.__session.query(Amenity).all())
-			print('from data', query_datas)
 		else:
 			query_datas = self.__session.query(cls).all()
-			print('from obj', query_datas)
 		for data in query_datas:
 			key = f"{type(data).__name__}.{data.id}"
 			obj[key] = data
