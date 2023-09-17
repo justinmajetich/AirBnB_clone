@@ -35,8 +35,8 @@ class DBStorage:
 			query_datas = self.__session.query(State).all()
 			query_datas.extend(self.__session.query(City).all())
 			query_datas.extend(self.__session.query(User).all())
-			# query_datas.extend(self.__session.query(Place).all())
-			# query_datas.extend(self.__session.query(Review).all())
+			query_datas.extend(self.__session.query(Place).all())
+			query_datas.extend(self.__session.query(Review).all())
 			# query_datas.extend(self.__session.query(Amenity).all())
 		else:
 			query_datas = self.__session.query(cls).all()
