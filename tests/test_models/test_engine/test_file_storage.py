@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import os
 
@@ -21,7 +22,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):
@@ -32,14 +33,20 @@ class test_fileStorage(unittest.TestCase):
         """ New object is correctly added to __objects """
         new = BaseModel()
         for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
+            self.assertTrue(new is obj)
 
     def test_all(self):
         """ __objects is properly returned """
         new = BaseModel()
         temp = storage.all()
         self.assertIsInstance(temp, dict)
+
+    def test_all_contain_obj(self):
+        """test all return the right object"""
+        new = BaseModel()
+        my_dict = storage.all()
+        for obj in my_dict.values():
+            self.assertTrue(obj == new)
 
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
@@ -61,7 +68,7 @@ class test_fileStorage(unittest.TestCase):
         self.assertTrue(os.path.exists('file.json'))
 
     def test_reload(self):
-        """ Storage file is successfully loaded to __objects """
+        """ Storage file is successfully reloaded to __objects """
         new = BaseModel()
         storage.save()
         storage.reload()
@@ -107,3 +114,20 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete(self):
+        """test the delete method of FileStorafe"""
+        new = BaseModel()
+        self.assertTrue(len(storage.all()) > 0)
+        storage.delete(new)
+        self.assertTrue(len(storage.all()) == 0)
+
+    def test_all(self):
+        """test the all method of FileStorage"""
+        base = BaseModel()
+        user = User()
+        for obj in storage.all(BaseModel).values():
+            self.assertTrue(type(obj) == BaseModel)
+
+        for obj in storage.all().values():
+            self.assertTrue(type(obj) == BaseModel or type(obj == User))
