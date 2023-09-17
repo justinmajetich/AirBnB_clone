@@ -9,7 +9,7 @@ from models.review import Review
 from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from os import getenv
 
 
@@ -70,7 +70,7 @@ class DBStorage:
         try:
             self.__session.commit()
             return True
-        except IntegrityError:
+        except (IntegrityError, OperationalError):
             return False
 
     def delete(self, obj=None):
