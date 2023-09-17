@@ -43,10 +43,9 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
         self.updated_at = datetime.datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        return models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
