@@ -27,8 +27,7 @@ class DBStorage:
         hb_env = getenv("HBNB_ENV")
 
         self.__engine = create_engine(
-            f"mysql+mysqldb://{hb_user}:{hb_pwd}@\
-                {hb_host}/{hb_db}",
+            f"mysql+mysqldb://{hb_user}:{hb_pwd}@{hb_host}/{hb_db}",
             pool_pre_ping=True,
         )
 
@@ -48,7 +47,7 @@ class DBStorage:
         query all classes or specific one"""
         allClasses = [User, Place, State, City, Amenity, Review]
         result = {}
-        if cls:
+        if cls is not None:
             for obj in self.__session.query(cls).all():
                 ClassName = obj.__class__.__name__
                 keyName = ClassName + "." + obj.id

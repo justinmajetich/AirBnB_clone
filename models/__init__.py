@@ -9,5 +9,4 @@ if StorageType == 'db':
     storage = DBStorage()
 else:
     storage = FileStorage()
-print("calling reloading")
 storage.reload()
