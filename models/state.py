@@ -13,3 +13,7 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False, unique=True)
     cities = relationship('City', cascade="all,delete", backref="state")
+    # TODO: for FileStorage: getter attribute cities that
+    # returns the list of City instances with state_id equals
+    # to the current State.id => It will be the FileStorage
+    # relationship between State and City
