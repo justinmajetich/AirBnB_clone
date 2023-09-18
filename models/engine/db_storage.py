@@ -4,7 +4,7 @@ from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
 from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import BaseModel
+from models.base_model import Base
 from models.state import State
 from models.city import City
 from models.user import User
@@ -66,7 +66,7 @@ class DBStorage:
 
     def reload(self):
         """configuration"""
-        BaseModel.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sec)
         self.__session = Session()
