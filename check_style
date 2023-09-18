@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# script to check the for python style issues
+
+FILES=$(find . -name "*.py" -type f);
+# read and loop through the FILES string.
+while IFS=' ' read -ra ADDR;
+do
+	for file in "${ADDR[@]}"; do
+		# process "$file"
+		pycodestyle "$file";
+	done;
+done <<< "$FILES";
