@@ -33,7 +33,10 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary"""
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
+        """
         dic = {}
         if cls:
             if type(cls) is str:
@@ -52,7 +55,7 @@ class DBStorage:
         return (dic)
 
     def new(self, obj):
-        """add a new element to the table"""
+        """add a new element in the table"""
         self.__session.add(obj)
 
     def save(self):
@@ -60,7 +63,7 @@ class DBStorage:
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete an element of the table"""
+        """delete an element in the table"""
         if obj:
             self.session.delete(obj)
 
