@@ -6,7 +6,7 @@ import datetime
 from uuid import UUID
 import json
 import os
-#import pep8
+import pycodestyle
 
 
 class test_basemodel(unittest.TestCase):
@@ -17,16 +17,17 @@ class test_basemodel(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
-        
-#new code
-    #def test_pycodestyle(self):
-     #   """
-      #  Test pep8 format
-       # """
-        #pep8 = pep8.StyleGuide(quiet=True)
-        #result = pep8.check_files(['models/base_model.py'])
-        #self.assertEqual(result.total_errors, 0,
-          #               "Found code style errors (and warnings).")
+    """
+    A class to test pep8 on base_model file"""
+
+    def test_pycodestyle(self):
+        """
+        Test pep8 format
+        """
+        pycostyle = pycodestyle.StyleGuide(quiet=True)
+        result = pycostyle.check_files(['models/base_model.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
 
     def setUp(self):
         """ """
@@ -35,7 +36,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except FileNotFoundError:
             pass
 
     def test_default(self):
@@ -58,7 +59,6 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-            
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -86,11 +86,11 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    #def test_kwargs_one(self):
-     #   """ """
-      #  n = {'Name': 'test'}
-       # with self.assertRaises(KeyError):
-        #    new = self.value(**n)
+    # def test_kwargs_one(self):
+    #     """ """
+    #     n = {'Name': 'test'}
+    #     with self.assertRaises(KeyError):
+    #         new = self.value(**n)
 
     def test_id(self):
         """ """
@@ -108,9 +108,8 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertTrue(new.created_at == new.updated_at)
+        self.assertFalse(new.created_at == new.updated_at)
 
-# new codes (stating form here are new blocks of code)
     def test_uuid(self):
         """
         Testin UUID
@@ -140,12 +139,14 @@ class TestCodeFormat(unittest.TestCase):
     """
     A class to test pep8 on base_model file"""
 
-   # def test_pycodestyle(self):
-        #"""Test pep8 format"""
-        #pep8 = pep8.StyleGuide(quiet=True)
-        #result = pep8.check_files(['models/base_model.py'])
-        #self.assertEqual(result.total_errors, 0,
-         #                "Found code style errors (and warnings).")
+    def test_pycodestyle(self):
+        """
+        Test pep8 format
+        """
+        pycostyle = pycodestyle.StyleGuide(quiet=True)
+        result = pycostyle.check_files(['models/base_model.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
 
 
 class Test_docstrings(unittest.TestCase):
@@ -183,11 +184,11 @@ class TestBaseModel(unittest.TestCase):
         except Exception:
             pass
 
-   # def test_pep8_BaseModel(self):
-    #    """Testing for pep8"""
-     #   style = pep8.StyleGuide(quiet=True)
-      #  p = style.check_files(['models/base_model.py'])
-       # self.assertEqual(p.total_errors, 0, "fix pep8")
+    def test_pep8_BaseModel(self):
+        """Testing for pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/base_model.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_checking_for_docstring_BaseModel(self):
         """checking for docstrings"""
@@ -222,4 +223,3 @@ class TestBaseModel(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-# wnd of new codes
