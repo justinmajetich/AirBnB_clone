@@ -1,3 +1,7 @@
+
+
+
+
 <center> <h1>HBNB - The Console</h1> </center>
 
 
@@ -30,8 +34,8 @@ This repository contains the initial stage of a student project to build a clone
 1. First clone this repository.
 
 3. Once the repository is cloned locate the "console.py" file and run it as follows:
-```
-/AirBnB_clone$ ./console.py
+```bash
+git clone https://github.com/azukauteh/AirBnB_clone_v2.git
 ```
 4. When this command is run the following prompt should appear:
 ```
@@ -144,3 +148,4 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
