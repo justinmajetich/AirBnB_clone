@@ -8,8 +8,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from models.place import Place
 
-
-
 #new code
 class City(BaseModel,Base):
     """This is the class for City
