@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import uuid
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,18 +115,51 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def extra_args(self, args_list):
+        """
+        This functions accepts the arguments passed
+        to the console and returns them as an object in
+        all the right formats
+         """
+        curr_time = datetime.utcnow()
+        base_dict = {
+            "id": str(uuid.uuid4()),
+            "created_at": curr_time,
+            "updated_at": curr_time
+        }
+        for i in args_list:
+            li = i.split('=')
+            if li[1][0] == '"' and li[1][-1] == '"':
+                pre_val = str(li[1].strip('"'))
+                val = pre_val.replace('_', ' ')
+                val = val.replace('"', '//"')
+            else:
+                try:
+                    val = int(li[1])
+                except(ValueError):
+                    try:
+                        val = float(li[1])
+                    except(ValueError):
+                        continue
+            base_dict[li[0]] = val
+        return base_dict
+
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        arg_list = args.split()
+        if not len(arg_list):
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        if len(arg_list) == 1:
+            new_instance = HBNBCommand.classes[arg_list[0]]()
+        else:
+            arg_dict = self.extra_args(arg_list[1:])
+            new_instance = HBNBCommand.classes[arg_list[0]](**arg_dict)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +307,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +315,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -319,6 +354,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
