@@ -1,11 +1,6 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
 
-<div style="background-color: #f0f0f0; padding: 20px;">
-    <h1 style="text-align: center;">HBNB</h1>
-</div>
-
-
 ...
 
 
