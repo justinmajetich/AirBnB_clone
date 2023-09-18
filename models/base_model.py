@@ -11,7 +11,6 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    __abstract__ = True  # This tells SQLAlchemy\not to create a table
     id = Column(String(60), nullable=False, unique=True, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
