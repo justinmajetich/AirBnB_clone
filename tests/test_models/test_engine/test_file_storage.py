@@ -31,9 +31,11 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
-        for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
+        new.save()
+        # for obj in storage.all().values():
+        #     temp = obj
+        temp = storage.all(BaseModel)['BaseModel.' + new.id]
+        self.assertTrue(temp is new)
 
     def test_all(self):
         """ __objects is properly returned """
@@ -63,10 +65,12 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
+        new.save()
         storage.save()
         storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
+        # for obj in storage.all().values():
+        #     loaded = obj
+        loaded = storage.all(BaseModel)['BaseModel.' + new.id]
         self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_reload_empty(self):
@@ -97,9 +101,13 @@ class test_fileStorage(unittest.TestCase):
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
+        new.save()
         _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
+        # for key in storage.all().keys():
+        #     temp = key
+        id = storage.all(BaseModel)['BaseModel.' + new.id].to_dict()['id']
+        temp = 'BaseModel' + '.' + id
+        self.assertTrue(temp in storage.all(BaseModel))
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):

@@ -56,17 +56,35 @@ class test_basemodel(unittest.TestCase):
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
+    # @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+    #                  os.environ.get('HBNB_TYPE_STORAGE') == 'db', "Skipped")
     def test_str(self):
         """ """
         i = self.value()
+        i_dict = i.__dict__.copy()
+        if '_sa_instance_state' in i_dict:
+            del i_dict['_sa_instance_state']
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                         i_dict))
+
+    # @unittest.skipIf('HBNB_TYPE_STORAGE' not in os.environ or
+    #     os.environ.get('HBNB_TYPE_STORAGE') != 'db', "Skipped")
+    def test_str(self):
+        """ """
+        i = self.value()
+        i_dict = i.__dict__.copy()
+        if '_sa_instance_state' in i_dict:
+            del i_dict['_sa_instance_state']
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
+                         i_dict))
 
     def test_todict(self):
         """ """
         i = self.value()
-        n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
+        i_dict = i.to_dict()
+        if '_sa_instance_state' in i_dict:
+            del i_dict['_sa_instance_state']
+        self.assertEqual(i.to_dict(), i_dict)
 
     def test_kwargs_none(self):
         """ """
