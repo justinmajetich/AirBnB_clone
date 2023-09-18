@@ -155,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
                     pass
                 kwargs[key] = value
             self.update_class_name(new_instance, kwargs)
-        storage.save()
+            storage.save()
         print(new_instance.id)
         storage.save()
 
