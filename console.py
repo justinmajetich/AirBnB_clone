@@ -116,39 +116,41 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Usage: create <class> <key 1>=<value 2> <key 2>=<value 2>
-        This method creates a new class instance with
-        given keys/values and print its id.
-        """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
-
-            kwargs = {}
-            for a in range(1, len(my_list)):
-                key, value = tuple(my_list[a].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                    kwargs[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
-        except SyntaxError:
+        def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        args_parts = shlex.split(args)
+        className = args_parts[0]  # state
+        pairs = args_parts[1:]  # ['name=Cairo', 'id=4dc46rec']
+
+        if className not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+
+        # now obj created- set attr
+        new_instance = HBNBCommand.classes[className]()
+        # loop key value pairs to extract each and setattr of new obj
+        for pair in pairs:
+            parts = pair.split("=")
+
+            attr_name = parts[0]
+            attr_value = parts[1]
+            # remove internal double quotes
+            attr_value = attr_value.replace('"', r'\"')
+            attr_value = attr_value.replace('_', ' ')
+
+            if '.' in attr_value:
+                attr_value = float(attr_value)
+            elif attr_value.isdigit():
+                attr_value = int(attr_value)
+            else:
+                setattr(new_instance, attr_name, attr_value)
+
+        storage.save()
+        print(new_instance.id)
+        storage.save()
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
