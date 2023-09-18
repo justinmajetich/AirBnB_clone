@@ -1,17 +1,14 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
-from models.base_model import BaseModel
-#new code
+"""This is the city class"""
 from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from models.place import Place
 
 
-#new code
-class City(BaseModel):
+class City(BaseModel, Base):
     """This is the class for City
     Attributes:
         state_id: The state id
