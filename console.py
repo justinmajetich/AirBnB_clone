@@ -122,37 +122,29 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not args:
                 raise SyntaxError()
-            my_list = args.split(" ")
-
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0])()
+            args_list = args.split(" ")
+            if args_list:
+                cls_name = args_list[0]  # extract class name
             else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
+                raise SyntaxError()
+            kwargs = {}
+            for pair in args_list[1:]:
+                key, value = pair.split("=")
+                if self.is_int(value):
+                    kwargs[key] = int(value)
+                elif self.is_float(value):
+                    kwargs[key] = float(value)
+                else:
+                    value = value.replace('_', ' ')
+                    kwargs[key] = value.strip('"\'')
+            obj = self.classes[cls_name](**kwargs)
+            storage.new(obj)
+            storage.save()  # save storage to file
+            print(obj.id)  # print id of created object class
         except SyntaxError:
             print("** class name missing **")
-        except NameError:
+        except KeyError:
             print("** class doesn't exist **")
-
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -342,6 +334,24 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+    
+    
+    @staticmethod
+    def is_int(n):
+        """ checks if integer"""
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def is_float(n):
+        try:
+            float(n)
+            return True
+        except ValueError:
+            return False
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
