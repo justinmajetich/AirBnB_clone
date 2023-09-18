@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -112,10 +112,9 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-        
+
     def do_create(self, args):
         """ Create an object of any class"""
-        #new code
         try:
             if not args:
                 raise SyntaxError()
@@ -135,14 +134,14 @@ class HBNBCommand(cmd.Cmd):
                     value = value.replace('_', ' ')
                     kwargs[key] = value.strip('"\'')
             obj = self.classes[cls_name](**kwargs)
-            storage.new(obj)
-            storage.save()  # save storage to file
+            storage.new(obj)  # save storage to file
+            obj.save()
             print(obj.id)  # print id of created object class
         except SyntaxError:
             print("** class name missing **")
         except KeyError:
             print("** class doesn't exist **")
-        
+
     def do_show(self, args):
         """ Method to show an individual object """
         new = args.partition(" ")
@@ -329,8 +328,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-    
-    
+
     @staticmethod
     def is_int(n):
         """ checks if integer"""
