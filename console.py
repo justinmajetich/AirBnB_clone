@@ -148,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
                     copy_value = value
                     if '.' in copy_value:
                         value = float(value)
-                    if '0' != copy_value[0] and '.' not in copy_value:
+                    elif '0' not in copy_value[0]:
                         value = int(value)
                 except ValueError:
                     pass
