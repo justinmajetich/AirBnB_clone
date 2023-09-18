@@ -10,6 +10,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 
 class BaseModel:
     """A base class for all hbnb models"""
+    #new code
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
@@ -44,6 +45,10 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
+    #new code 
+    def __repr__(self):
+        """return a string representaion"""
+        return self.__str__()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -59,7 +64,4 @@ class BaseModel:
         """Delete the current instance from storage."""
         models.storage.delete(self)
 
-#new code 
-    def __repr__(self):
-        """return a string representaion"""
-        return self.__str__()
+
