@@ -7,6 +7,7 @@ from os import getenv
 import models
 from models.review import Review
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -34,5 +35,5 @@ class Place(BaseModel, Base):
             reviews_list = []
             for review in list(reviews.values()):
                 if review.place_id == self.id:
-                        reviews_list.append(review)
+                    reviews_list.append(review)
             return reviews_list
