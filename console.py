@@ -113,18 +113,37 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def remove_quote(self, string):
+        """remove quote from a string"""
+        new_string = ""
+        for letters in string:
+            if letters == '"':
+                continue
+            new_string += letters
+        return new_string
+
     def do_create(self, args):
         """ Create an object of any class"""
+        select_dict = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif select_dict[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        if "=" in args:
+            kwargs = {}
+            for strings in select_dict[1:]:
+                key, value = strings.split("=")
+                if '"' in strings:
+                    value = self.remove_quote(value)
+                kwargs[key] = value
+            print(kwargs)
+            return
+            new_instance = HBNBCommand.classes[select_dict[0]](kwargs)
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
