@@ -27,7 +27,6 @@ class FileStorage:
         """deletes an object __if it exists"""
         if obj:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
-            print("Key:", key)
             del self.__objects[key]
 
     def save(self):
