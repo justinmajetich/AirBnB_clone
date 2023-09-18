@@ -19,9 +19,17 @@ class FileStorage:
                     filtered_objects[key] = obj
             return filtered_objects
 
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+
+    def delete(self, obj=None):
+        """deletes an object __if it exists"""
+        if obj:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            print("Key:", key)
+            del self.__objects[key]
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -55,10 +63,3 @@ class FileStorage:
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    def delete(self, obj=None):
-        """deletes an object __if it exists"""
-        if obj is not None:
-            key = f"{object.__class__.__name__}.{obj.id}"
-            if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
