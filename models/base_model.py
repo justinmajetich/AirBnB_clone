@@ -45,6 +45,11 @@ class BaseModel:
         storage.new(self)
         storage.save()
 
+    def delete(self):
+        """Updates updated_at with current time when instance is changed"""
+        from models import storage
+        storage.delete(self)
+
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
