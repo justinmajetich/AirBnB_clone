@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
+
 import uuid
+import models
 from models import storage
+from os import getenv
 from datetime import datetime
 
 
-
-time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
+timeformate = "%Y-%m-%dT%H:%M:%S.%f"
 
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
@@ -26,16 +28,18 @@ class BaseModel:
                 continue
             setattr(self, key, value)
             if type(self.created_at) is str:
-                self.created_at = datetime.strptime(self.created_at, time_fmt)
+                self.created_at = datetime.strptime(self.created_at, timeformate
+            )
             if type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(self.updated_at, time_fmt)
+                self.updated_at = datetime.strptime(self.updated_at, timeformate
+            )
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        """String representation of the BaseModel class"""
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
+                                            self.__dict__)
 
-    
+
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
