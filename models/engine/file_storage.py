@@ -56,6 +56,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """delete method for filestorage"""
         if obj is None:
             return
         obj_key = f"{type(obj).__name__}.{obj.__dict__['id']}"
