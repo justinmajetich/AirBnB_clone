@@ -2,12 +2,13 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
+from sqlachemy.orm import DeclarativeBase, Mapped
 
-
+Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -28,6 +29,10 @@ class BaseModel:
                     setattr(self, key, dt_obj)
                 else:
                     setattr(self, key, val)
+	__tablename__ = ''
+	id:Mapped[int] = mapped_column(primary_key=True, nullable=False, char=<60)
+	created_at:Mapped[] = mapped_column(nullable=False, default)
+
 
     def __str__(self):
         """Returns a string representation of the instance"""
