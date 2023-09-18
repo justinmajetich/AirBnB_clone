@@ -48,15 +48,15 @@ class FileStorage:
             json.dump(temp, f)
             
 # changes are made
-    #def reload(self):
-     #   """Loads storage dictionary from file"""
-      #  try:
-       #     with open(self.__file_path, 'r', encoding="UTF-8") as f:
-        #        for key, value in (json.load(f)).items():
-         #           value = eval(value["__class__"])(**value)
-          #          self.__objects[key] = value
-        #except FileNotFoundError:
-         #   pass
+    def reload(self):
+        """Loads storage dictionary from file"""
+        try:
+            with open(self.__file_path, 'r', encoding="UTF-8") as f:
+                for key, value in (json.load(f)).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value
+        except FileNotFoundError:
+            pass
 
     
     def reload(self):
