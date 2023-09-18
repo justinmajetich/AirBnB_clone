@@ -113,18 +113,50 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def remove_qoute(self, value):
+        """remove quote from a string"""
+        new_string = ""
+        for letter in value:
+            if letter == '"':
+                continue
+            new_string += letter
+        return new_string
+
+    def update_class_name(self, instance, dictionary):
+        """update class name"""
+        for key, value in dictionary.items():
+            setattr(instance, key, value)
+
     def do_create(self, args):
         """ Create an object of any class"""
+        split_string = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif split_string[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        if '=' in args:
+            kwargs = {}
+            for data in split_string[1:]:
+                key, value = data.split('=')
+                if '"' in value:
+                    value = self.remove_qoute(value)
+                    if '_' in value:
+                        value = value.replace('_', ' ')
+                try:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except ValueError:
+                    pass
+                kwargs[key] = value
+            new_instance = HBNBCommand.classes[split_string[0]]()
+            self.update_class_name(new_instance, kwargs)
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
