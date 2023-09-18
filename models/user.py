@@ -8,7 +8,7 @@ from models.place import Place
 from models.review import Review
 
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """This is the class for user
     Attributes:
         email: email address

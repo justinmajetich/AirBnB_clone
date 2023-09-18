@@ -11,7 +11,7 @@ from models.place import Place
 
 
 #new code
-class City(BaseModel, Base):
+class City(BaseModel):
     """This is the class for City
     Attributes:
         state_id: The state id

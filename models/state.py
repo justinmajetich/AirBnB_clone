@@ -12,7 +12,7 @@ import shlex
 
 
 #new code
-class State(BaseModel, Base):
+class State(BaseModel):
     """This is the class for State
     Attributes:
         name: input name
