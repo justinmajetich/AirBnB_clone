@@ -1,3 +1,8 @@
+# TEST FILES FROM ALX
+test_params_create
+file.json
+main_delete.py
+.vscode/settings.json
 models/__pycache__/__init__.cpython-38.pyc
 models/__pycache__/amenity.cpython-38.pyc
 models/__pycache__/base_model.cpython-38.pyc
@@ -11,8 +16,3 @@ models/engine/__pycache__/file_storage.cpython-38.pyc
 .vscode/settings.json
 main_delete.py
 file.json
-# TEST FILES FROM ALX
-test_params_create
-file.json
-main_delete.py
-.vscode/settings.json
