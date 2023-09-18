@@ -167,6 +167,32 @@ class TestConstructor(unittest.TestCase):
                 self.assertIsInstance(storage.all().get(
                     f"{k}."+f.getvalue()[:-1]), eval(k))
         self.assertTrue(os.path.isfile("file.json"))
+    
+    def test_create_key_values(self):
+        """test create"""
+        self.rest_file_storage()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('create City name="t"e_st"')
+            self.assertTrue("City."+f.getvalue()
+                                [:-1] in storage.all().keys())
+            self.assertIsInstance(storage.all().get(
+                    f"City."+f.getvalue()[:-1]), City)
+            self.assertIn("'name': 't\"e_st'", output)
+            
+    def test_docstrings(self):
+        """Check for docstrings."""
+        self.assertIsNotNone(HBNBCommand.__doc__)
+        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+        self.assertIsNotNone(HBNBCommand.count.__doc__)
+        self.assertIsNotNone(HBNBCommand.strip_clean.__doc__)
+        self.assertIsNotNone(HBNBCommand.default.__doc__)
 
     def test_show(self):
         """test create"""
