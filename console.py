@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from utils import parseArgs
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,17 +116,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        #split args to class name and dictionary of params key=value
+        domain, domainDict = parseArgs(args)
+        if not domain:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif domain not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[domain]()
+        for k, v in domainDict.items():
+            setattr(new_instance, k, v)
         storage.save()
         print(new_instance.id)
         storage.save()
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
