@@ -70,5 +70,38 @@
     "updated_at": "2023-09-18T13:09:10.976782",
     "name": "Em\\\"a d",
     "__class__": "User"
+  },
+  "User.1ec68d0c-c842-4600-9574-1a7e54dd0fdf": {
+    "id": "1ec68d0c-c842-4600-9574-1a7e54dd0fdf",
+    "created_at": "2023-09-18T13:12:46.119825",
+    "updated_at": "2023-09-18T13:12:46.119861",
+    "name": "Em\"a d",
+    "__class__": "User"
+  },
+  "User.7cf9cd7e-ae63-4206-a56a-6dcecada7767": {
+    "id": "7cf9cd7e-ae63-4206-a56a-6dcecada7767",
+    "created_at": "2023-09-18T13:23:07.005527",
+    "updated_at": "2023-09-18T13:23:07.005562",
+    "name": "Em\"a d",
+    "__class__": "User"
+  },
+  "City.9e12b581-10b2-4d9b-a9bc-ff37ec6322e5": {
+    "id": "9e12b581-10b2-4d9b-a9bc-ff37ec6322e5",
+    "created_at": "2023-09-18T13:43:05.977366",
+    "updated_at": "2023-09-18T13:43:05.977399",
+    "__class__": "City"
+  },
+  "City.58919a9e-aef4-458c-8cac-b2b1a21a5d90": {
+    "id": "58919a9e-aef4-458c-8cac-b2b1a21a5d90",
+    "created_at": "2023-09-18T13:43:24.201239",
+    "updated_at": "2023-09-18T13:43:24.201266",
+    "name": "t\"e st",
+    "__class__": "City"
+  },
+  "City.7f5915b7-fc25-4632-a148-42b8abb9f820": {
+    "id": "7f5915b7-fc25-4632-a148-42b8abb9f820",
+    "created_at": "2023-09-18T13:57:21.216069",
+    "updated_at": "2023-09-18T13:57:21.216107",
+    "__class__": "City"
   }
 }
