@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     if '.' in value:
                         value = float(value)
-                    else:
+                    elif '.' not in value and '0' not in value[0]:
                         value = int(value)
                 except ValueError:
                     pass
