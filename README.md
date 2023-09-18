@@ -144,3 +144,4 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 
 # CO - AUTHORS
 # OGUNSANYA TAOFEEQ <taofeeq.muhammad22@gmail.com>
+# AKAMIGBO VALENTINE <akamigboifeanyi22@gmail.com>
