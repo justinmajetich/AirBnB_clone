@@ -57,4 +57,6 @@ def parseValue(val):
 
 
 def parseString(val):
-    return val.replace('\"', "").replace('_', " ")
+    result_string = val[1:-1].replace('"', '\\"')
+
+    return result_string.replace('_', " ")
