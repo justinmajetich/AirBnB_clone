@@ -1,1 +1,67 @@
-{"State.7f689e34-9bb6-44bf-8fdf-8ba7cc1590ec": {"id": "7f689e34-9bb6-44bf-8fdf-8ba7cc1590ec", "created_at": "2023-09-18T12:36:21.846544", "updated_at": "2023-09-18T12:36:21.846575", "name": "California", "__class__": "State"}, "State.cd9a7b00-7042-48e3-b87b-82c5ce8fd939": {"id": "cd9a7b00-7042-48e3-b87b-82c5ce8fd939", "created_at": "2023-09-18T12:36:21.846821", "updated_at": "2023-09-18T12:36:21.846835", "name": "Arizona", "__class__": "State"}, "Place.dccdb714-0e8b-4139-aa70-a06dc21bd2c1": {"id": "dccdb714-0e8b-4139-aa70-a06dc21bd2c1", "created_at": "2023-09-18T12:36:21.847239", "updated_at": "2023-09-18T12:36:21.847270", "city_id": "0001", "user_id": "0001", "name": "My little house", "number_rooms": 4, "number_bathrooms": 2, "max_guest": 10, "price_by_night": 300, "latitude": 37.773972, "longitude": -122.431297, "__class__": "Place"}, "State.4caa4c35-c9fc-4026-8433-99415d72cc55": {"id": "4caa4c35-c9fc-4026-8433-99415d72cc55", "created_at": "2023-09-18T12:37:17.111596", "updated_at": "2023-09-18T12:37:17.111623", "name": "California", "__class__": "State"}, "State.2144281a-dd1a-4184-8739-6dc50b963f9c": {"id": "2144281a-dd1a-4184-8739-6dc50b963f9c", "created_at": "2023-09-18T12:37:17.111930", "updated_at": "2023-09-18T12:37:17.111945", "name": "Arizona", "__class__": "State"}, "Place.14dd1b73-d8b0-4437-95d1-961685bb9582": {"id": "14dd1b73-d8b0-4437-95d1-961685bb9582", "created_at": "2023-09-18T12:37:17.112816", "updated_at": "2023-09-18T12:37:17.112847", "city_id": "0001", "user_id": "0001", "name": "My little house", "number_rooms": 4, "number_bathrooms": 2, "max_guest": 10, "price_by_night": 300, "latitude": 37.773972, "longitude": -122.431297, "__class__": "Place"}}
+{
+  "State.7f689e34-9bb6-44bf-8fdf-8ba7cc1590ec": {
+    "id": "7f689e34-9bb6-44bf-8fdf-8ba7cc1590ec",
+    "created_at": "2023-09-18T12:36:21.846544",
+    "updated_at": "2023-09-18T12:36:21.846575",
+    "name": "California",
+    "__class__": "State"
+  },
+  "State.cd9a7b00-7042-48e3-b87b-82c5ce8fd939": {
+    "id": "cd9a7b00-7042-48e3-b87b-82c5ce8fd939",
+    "created_at": "2023-09-18T12:36:21.846821",
+    "updated_at": "2023-09-18T12:36:21.846835",
+    "name": "Arizona",
+    "__class__": "State"
+  },
+  "Place.dccdb714-0e8b-4139-aa70-a06dc21bd2c1": {
+    "id": "dccdb714-0e8b-4139-aa70-a06dc21bd2c1",
+    "created_at": "2023-09-18T12:36:21.847239",
+    "updated_at": "2023-09-18T12:36:21.847270",
+    "city_id": "0001",
+    "user_id": "0001",
+    "name": "My little house",
+    "number_rooms": 4,
+    "number_bathrooms": 2,
+    "max_guest": 10,
+    "price_by_night": 300,
+    "latitude": 37.773972,
+    "longitude": -122.431297,
+    "__class__": "Place"
+  },
+  "State.4caa4c35-c9fc-4026-8433-99415d72cc55": {
+    "id": "4caa4c35-c9fc-4026-8433-99415d72cc55",
+    "created_at": "2023-09-18T12:37:17.111596",
+    "updated_at": "2023-09-18T12:37:17.111623",
+    "name": "California",
+    "__class__": "State"
+  },
+  "State.2144281a-dd1a-4184-8739-6dc50b963f9c": {
+    "id": "2144281a-dd1a-4184-8739-6dc50b963f9c",
+    "created_at": "2023-09-18T12:37:17.111930",
+    "updated_at": "2023-09-18T12:37:17.111945",
+    "name": "Arizona",
+    "__class__": "State"
+  },
+  "Place.14dd1b73-d8b0-4437-95d1-961685bb9582": {
+    "id": "14dd1b73-d8b0-4437-95d1-961685bb9582",
+    "created_at": "2023-09-18T12:37:17.112816",
+    "updated_at": "2023-09-18T12:37:17.112847",
+    "city_id": "0001",
+    "user_id": "0001",
+    "name": "My little house",
+    "number_rooms": 4,
+    "number_bathrooms": 2,
+    "max_guest": 10,
+    "price_by_night": 300,
+    "latitude": 37.773972,
+    "longitude": -122.431297,
+    "__class__": "Place"
+  },
+  "User.99c64bf9-8156-434a-a6e3-583c00ac1565": {
+    "id": "99c64bf9-8156-434a-a6e3-583c00ac1565",
+    "created_at": "2023-09-18T13:07:32.569070",
+    "updated_at": "2023-09-18T13:07:32.569103",
+    "name": "\"Em\"a d\"",
+    "__class__": "User"
+  }
+}

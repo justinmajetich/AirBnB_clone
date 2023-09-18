@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
 
                 if attr_list[1][0] == '"' and attr_list[1][-1] == '"':
                     attr_value = attr_list[1].replace('_', ' ')
-                    attr_value = attr_value[1:-1].replace('"', '\"')
+                    
                 elif attr_list[1].isdigit():
                     attr_value = int(attr_list[1])
                 elif '.' in attr_list[1]:
