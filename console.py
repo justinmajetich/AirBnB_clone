@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
             obj = self.classes[cls_name](**kwargs)
             storage.new(obj)  # save storage to file
             obj.save()
-            print(obj.id)  # print id of created object class
+            print(obj.id)
         except SyntaxError:
             print("** class name missing **")
         except KeyError:
