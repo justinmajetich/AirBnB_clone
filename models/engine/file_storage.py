@@ -47,9 +47,11 @@ class FileStorage:
         Args:
             obj: given object
         """
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+        #if obj:
+         #   key = "{}.{}".format(type(obj).__name__, obj.id)
+          #  self.__objects[key] = obj
+        #change this with
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """serialize the file path to JSON file path
