@@ -9,3 +9,5 @@ models/__pycache__/user.cpython-38.pyc
 models/engine/__pycache__/__init__.cpython-38.pyc
 models/engine/__pycache__/file_storage.cpython-38.pyc
 .vscode/settings.json
+main_delete.py
+file.json
