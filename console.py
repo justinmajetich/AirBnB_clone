@@ -145,9 +145,10 @@ class HBNBCommand(cmd.Cmd):
                     if '_' in value:
                         value = value.replace('_', ' ')
                 try:
-                    if '.' in value:
+                    copy_value = value
+                    if '.' in copy_value:
                         value = float(value)
-                    elif '.' not in value and '0' not in value[0]:
+                    if '0' != copy_value[0] and '.' not in copy_value:
                         value = int(value)
                 except ValueError:
                     pass
