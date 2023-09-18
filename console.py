@@ -122,6 +122,11 @@ class HBNBCommand(cmd.Cmd):
             new_string += letters
         return new_string
 
+    def update_class_name(self, class_name, dict_data):
+        """update attribute of a class instance from dictionary"""
+        for key, value in dict_data.items():
+            setattr(class_name, key, value)
+
     def do_create(self, args):
         """ Create an object of any class"""
         select_dict = args.split()
@@ -138,9 +143,8 @@ class HBNBCommand(cmd.Cmd):
                 if '"' in strings:
                     value = self.remove_quote(value)
                 kwargs[key] = value
-            print(kwargs)
-            return
-            new_instance = HBNBCommand.classes[select_dict[0]](kwargs)
+            new_instance = HBNBCommand.classes[select_dict[0]]()
+            self.update_class_name(new_instance, kwargs)
             storage.save()
             print(new_instance.id)
             storage.save()
