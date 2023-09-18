@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
 
             if string_match is not None:
                 attr = string_match.group(1)
-                value = string_match.group(2).replace('_', ' ')
+                value = string_match.group(2).replace('_', ' ').replace('\\', '')
 
             integer_match = re.search(r'^(.+)=([0-9]+)$', arg)
 
