@@ -19,7 +19,6 @@ class FileStorage:
                     filtered_objects[key] = obj
             return filtered_objects
 
-
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
