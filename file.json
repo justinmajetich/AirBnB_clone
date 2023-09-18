@@ -95,5 +95,36 @@
         "salary": 100.5,
         "age": 15,
         "__class__": "User"
+    },
+    "User.4ff728f2-1da2-4f32-9f0d-eaf22e2c12e0": {
+        "id": "4ff728f2-1da2-4f32-9f0d-eaf22e2c12e0",
+        "created_at": "2023-09-19T00:16:46.645200",
+        "updated_at": "2023-09-19T00:16:46.645205",
+        "__class__": "User"
+    },
+    "User.6991ff0a-f8b5-476e-8147-c468688bd3e9": {
+        "id": "6991ff0a-f8b5-476e-8147-c468688bd3e9",
+        "created_at": "2023-09-19T00:16:56.528726",
+        "updated_at": "2023-09-19T00:16:56.528730",
+        "__class__": "User"
+    },
+    "User.f0b3ea75-fe6c-474b-9d6c-ad7d2b2c4f17": {
+        "id": "f0b3ea75-fe6c-474b-9d6c-ad7d2b2c4f17",
+        "created_at": "2023-09-19T00:17:06.172574",
+        "updated_at": "2023-09-19T00:17:06.172579",
+        "__class__": "User"
+    },
+    "User.dc716b06-bede-4cd2-972d-01941b1c1a59": {
+        "id": "dc716b06-bede-4cd2-972d-01941b1c1a59",
+        "created_at": "2023-09-19T00:17:12.048621",
+        "updated_at": "2023-09-19T00:17:12.048626",
+        "__class__": "User"
+    },
+    "User.5052bd64-5405-473d-b156-67ff4b28d265": {
+        "id": "5052bd64-5405-473d-b156-67ff4b28d265",
+        "created_at": "2023-09-19T00:17:21.730027",
+        "updated_at": "2023-09-19T00:17:21.730033",
+        "ke": "hamada",
+        "__class__": "User"
     }
 }
