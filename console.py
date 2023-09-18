@@ -136,6 +136,7 @@ class HBNBCommand(cmd.Cmd):
         elif split_string[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        new_instance = HBNBCommand.classes[split_string[0]]()
         if '=' in args:
             kwargs = {}
             for data in split_string[1:]:
@@ -153,11 +154,10 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     pass
                 kwargs[key] = value
-            new_instance = HBNBCommand.classes[split_string[0]]()
             self.update_class_name(new_instance, kwargs)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
