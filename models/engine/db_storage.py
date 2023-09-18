@@ -61,3 +61,4 @@ class DBStorage:
         if not obj:
             return
         self.__session.delete(obj)
+        self.save()

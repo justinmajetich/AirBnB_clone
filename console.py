@@ -153,6 +153,17 @@ class HBNBCommand(cmd.Cmd):
         new_instance.__dict__.update(params_dict)
         new_instance.save()
         print(new_instance.id)
+        # eventhoug new_instace.save() calls storage.save() after calling
+        # storage.new(self), storage.save() has to be called again.
+        # needed for changes in the same interactive session to take effect???
+        # bug might be caused by multiple storage imports in BaseModel at
+        # function level.
+        # In our AirBnB_clone we imported it once in BaseModel at module level,
+        # and there was no bug like this.
+        # If imported at module level for this case, will cause circular
+        # import, since in console.py (unlike ours) imports are done at module
+        # level.
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -213,12 +224,15 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-
-        try:
-            del (storage.all()[key])
-            storage.save()
-        except KeyError:
+        if key in storage.all(HBNBCommand.classes[c_name]):
+            storage.delete(storage.all(HBNBCommand.classes[c_name])[key])
+        else:
             print("** no instance found **")
+        # try:
+        #     del (storage.all()[key])
+        #     storage.save()
+        # except KeyError:
+        #     print("** no instance found **")
 
     def help_destroy(self):
         """ Help information for the destroy command """
