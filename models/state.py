@@ -12,4 +12,5 @@ class State(BaseModel):
 
     @property
     def cities(self):
+        """cities getter"""
         return cities
