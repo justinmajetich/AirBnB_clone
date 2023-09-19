@@ -42,18 +42,24 @@ class DBStorage:
     def all(self, cls=None):
         """ This Method returns all objects based on class """
         dictionary = {}
-        if cls == None:
-            class_list = [User, State, City, Amenity, Place]
+        if cls is  None:
+            class_list = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
             for a_class in class_list:
+                a_class = eval(a_class)
                 all_instance = self.__session.query(a_class)
                 for instance in all_instance:
                     key = f"{instance.name}.{instance.id}"
                     dictionary[key] = instance
         else:
+            if type(cls) == str:
+                cls = eval(cls)
+            print("")
             all_instance = self.__session.query(cls)
             for instance in all_instance:
                 key = f"{instance.name}.{instance.id}"
                 dictionary[key] = instance
+
+        print(dictionary)
 
         return dictionary
 
