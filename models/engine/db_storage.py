@@ -5,9 +5,26 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker, scoped_session
+
+from sqlalchemy import create_engine
+from os import getenv
+
+from models.user import User
 from models.state import State
 from models.city import City
-import os
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
+
+classes = {
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review,
+        }
 
 
 class DBStorage:
@@ -16,6 +33,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        """creates new dbstorage instances"""
         self.__engine = create_engine(
                 'mysql+mysqldb://{}:{}@{}/{}'
                 .format(os.environ.get('HBNB_MYSQL_USER'),
