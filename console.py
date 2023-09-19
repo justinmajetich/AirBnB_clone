@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -24,37 +25,6 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    class_key = {
-        "BaseModel": ["id", "created_at", "updated_at"],
-        "User": [
-            "id",
-            "created_at",
-            "updated_at",
-            "email",
-            "password",
-            "first_name",
-            "last_name",
-        ],
-        "City": ["id", "created_at", "updated_at", "state_id", "name"],
-        "State": ["id", "created_at", "updated_at", "name"],
-        "Place": [
-            "id",
-            "created_at",
-            "updated_at",
-            "city_id",
-            "user_id",
-            "name",
-            "number_rooms",
-            "number_bathrooms",
-            "max_guest",
-            "price_by_night",
-            "latitude",
-            "longitude",
-        ],
-        "Amenity": ["id", "created_at", "updated_at", "name"],
-        "Review": ["id", "created_at", "updated_at",
-                   "place_id", "user_id", "text"],
-    }
 
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -147,53 +117,38 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class with given parameters """
+        """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
 
         list_args = args.split()
-        class_name = list_args[0]
-    
-        if class_name not in HBNBCommand.classes:
+        class_ = list_args[0]
+        if list_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        attr_dict = {}
-
-        for param in list_args[1:]:
-            param_value = param.split('=')
-            if len(param_value) == 2:
-                key = param_value[0]
-                if key not in HBNBCommand.class_key[class_name]:
-                    continue
-                """
-                value = self.parse_value(param_array[1])
-                if value is not None:
-                    dict_params[key] = value
+        parameters = list_args[1:]
+        parameter_dict = {}
+        for parameter in parameters:
+            key, value = parameter.split('=')
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+                value = value.replace("_", " ")
+                value = value.replace('"', '\"')
+            else:
+                continue
+            try:
+                if '.' in value:
+                    value = float(value)
                 else:
-                    pass
-                """
-                value = param_value[1]
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-                elif '.' in value:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        continue
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        continue
-                        
-
-            attr_dict[key] = value
-        
-        new_instance = HBNBCommand.classes[class_name](**attr_dict)
+                    value = int(value)
+            except ValueError:
+                pass
+            parameter_dict[key] = value
+        new_instance = HBNBCommand.classes[class_](**parameter_dict)
         storage.save()
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
