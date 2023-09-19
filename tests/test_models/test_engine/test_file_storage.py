@@ -4,6 +4,8 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+from models.engine.file_storage import FileStorage
+from models.user import User
 
 
 class test_fileStorage(unittest.TestCase):
@@ -107,3 +109,66 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_method(self):
+        """deltes of from storage"""
+        new = BaseModel()
+        object_key = "{}.{}".format(type(new).__name__, new.id)
+        storage.delete(new)
+        self.assertNotIn(object_key, storage.all())
+
+
+    def test_all_with_class(self):
+        """all method returns objects of the given class"""
+        new1 = BaseModel()
+        new2 = BaseModel()
+        outcome = storage.all(BaseModel)
+        self.assertIn(new1, outcome.values())
+        self.assertIn(new2, outcome.values())
+
+    def test_delete_with_bad_objects(self):
+        """deleting bad objects"""
+        new = BaseModel()
+        bad_obj = BaseModel()
+        storage.delete(bad_obj)
+
+    def test_delete_with_many_obj(self):
+        """deleting manay objects"""
+
+        new1 = BaseModel()
+        new2 = BaseModel()
+
+        object_one = "{}.{}".format(type(new1).__name__, new1.id)
+        object_two = "{}.{}".format(type(new2).__name__, new2.id)
+
+        self.assertIn(object_one, storage.all())
+        self.assertIn(object_two, storage.all())
+
+        storage.delete(new1)
+        self.assertNotIn(object_one, storage.all())
+        self.assertIn(object_two, storage.all())
+
+    def test_all_emty_class(self):
+        """all method should return empty dict"""
+        class NonExistentClass:
+            pass
+        bad_class = NonExistentClass()
+        outcome = storage.all(bad_class)
+        self.assertEqual(len(outcome), 0)
+
+    def test_all_many_class_objects(self):
+        """return only objects of the requested class"""
+        new1 = BaseModel()
+        new2 = BaseModel()
+        new3 = User()
+
+        outcome1 = storage.all(BaseModel)
+        outcome2 = storage.all(User)
+
+        self.assertIn(new1, outcome1.values())
+        self.assertIn(new2, outcome1.values())
+        self.assertIn(new3, outcome2.values())
+
+
+if __name__ == "__main__":
+    unittest.main()

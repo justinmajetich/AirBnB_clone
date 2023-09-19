@@ -1,0 +1,8 @@
+test_params_create
+file.json
+
+__pycache__/
+models/__pycache__/
+models/engine/__pycache__/
+tests/__pycache__/
+main_delete.py
