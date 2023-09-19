@@ -30,6 +30,13 @@ class FileStorage:
         else:
             return self.__objects
 
+    def delete(self, obj=None):
+        print("**************")
+        print(FileStorage.__objects)
+        print("*******")
+        print(obj)
+        print("**************")
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
