@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ This is the storage engine for the DB """
-import os
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -44,7 +43,7 @@ class DBStorage:
         else:
             # If not i query all
             for item in classes:
-                objects = self.__session.query(item).all()
+                objects = self.__session.query(item)
                 for obj in objects:
                     key = f"{obj.__class__.__name__}.{obj.id}"
                     all_objs[key] = obj
@@ -71,3 +70,6 @@ class DBStorage:
             expire_on_commit=False
         ))
         self.__session = session()
+
+    def close(self):
+        self.__session.close()
