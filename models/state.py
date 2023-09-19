@@ -11,7 +11,7 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     cascade = "all, delete-orphan"
-    """When a state oblect is deleted, all lonked City objects are deleted"""
+    """When a state object is deleted, all linked City objects are deleted"""
     cities = relationship("City", backref="state", cascade=cascade)
 
     @property

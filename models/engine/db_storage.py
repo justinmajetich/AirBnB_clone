@@ -48,7 +48,7 @@ class DBStorage:
             for cls in classes:
                 query_result = self.__session.query(cls).all()
                 for obj in query_result:
-                    jey = f"{obj.__clss__.__name__}.{obj.id}"
+                    key = f"{obj.__clss__.__name__}.{obj.id}"
                     objects[key] = obj
         return objects
 
