@@ -144,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(**attr)
         storage.save()
-        print(new_instance)
         print(new_instance.id)
         
     def help_create(self):
@@ -228,7 +227,6 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            print(storage.all(args))
             for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))

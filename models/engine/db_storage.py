@@ -25,6 +25,14 @@ class DBStorage:
         HBNB_MYSQL_HOST = 'localhost'
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
+        print(HBNB_MYSQL_USER)
+        print(HBNB_MYSQL_PWD)
+
+        print(HBNB_MYSQL_HOST)
+
+        print(HBNB_MYSQL_DB)
+
+        print(HBNB_ENV)
 
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'
@@ -37,34 +45,22 @@ class DBStorage:
     def all(self, cls=None):
         all_objects = {}
         if cls is not None:
-            select = self.__session.query(cls)
+            print(type(cls))
+            if isinstance(cls, str):
+                cls_s = eval(cls)
+            else:
+                cls_s = cls
+            select = self.__session.query(cls_s)
         else:
-            select = self.__session.query()
+            select = self.__session.query().all()
         objects = select.all()
         for objct in objects:
                 all_objects["{}.{}"
                             .format(
                                 objct.__class__.__name__, objct.id
                                 )] = objct
-        
-        """
-        if cls is None:
-            for a_class in classes:
-                objects = self.__session.query(classes[a_class])
-                for objct in objects:
-                    key = "{}.{}".format(objct.__class__.__name__, objct.id)
-                    all_objects[key] = objct
-        else:
-            if type(cls) is str:
-                cls = eval(cls)()
-            objects = self.__session.query(cls)
-            for objct in objects:
-                key = "{}.{}".format(objct.__class__.__name__, objct.id)
-                all_objects[key] = objct
-        """
-
         return all_objects
-    
+
     def new(self, obj):
         self.__session.add(obj)
 
