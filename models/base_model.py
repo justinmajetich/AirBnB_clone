@@ -6,6 +6,9 @@ import models
 from models import storage
 from os import getenv
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime
+
 
 
 timeformate = "%Y-%m-%dT%H:%M:%S.%f"
@@ -13,10 +16,10 @@ timeformate = "%Y-%m-%dT%H:%M:%S.%f"
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
 
-    # if getenv("HBNB_TYPE_STORAGE") == 'db':
-    #     id = Column(String(60), nullable=False, primary_key=True)
-    #     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    #     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
@@ -55,3 +58,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+    def delete(self):
+        """Delete the current instance from storage."""
+        models.storage.delete(self)

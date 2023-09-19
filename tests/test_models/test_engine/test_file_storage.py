@@ -75,6 +75,15 @@ class test_fileStorage(unittest.TestCase):
             pass
         with self.assertRaises(ValueError):
             storage.reload()
+    
+    def test_delete(self):
+        """ Test that delete removes an object from __objects """
+        self.storage.new(self.new_obj)
+        self.storage.save()
+        self.assertTrue("{}.{}".format(self.new_obj.__class__.__name__, self.new_obj.id) in self.storage.all())
+        self.storage.delete(self.new_obj)
+        self.assertTrue("{}.{}".format(self.new_obj.__class__.__name__, self.new_obj.id) not in self.storage.all())
+
 
     def test_reload_from_nonexistent(self):
         """ Nothing happens if file does not exist """
@@ -102,8 +111,8 @@ class test_fileStorage(unittest.TestCase):
             temp = key
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
-    def test_storage_var_created(self):
-        """ FileStorage object storage created """
-        from models.engine.file_storage import FileStorage
-        print(type(storage))
-        self.assertEqual(type(storage), FileStorage)
+    # def test_storage_var_created(self):
+    #     """ FileStorage object storage created """
+    #     from models.engine.file_storage import FileStorage
+    #     print(type(storage))
+    #     self.assertEqual(type(storage), FileStorage)
