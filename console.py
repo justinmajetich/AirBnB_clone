@@ -143,6 +143,7 @@ class HBNBCommand(cmd.Cmd):
                             attr[key] = int(value)
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(**attr)
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         

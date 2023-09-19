@@ -25,19 +25,11 @@ class DBStorage:
         HBNB_MYSQL_HOST = 'localhost'
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        print(HBNB_MYSQL_USER)
-        print(HBNB_MYSQL_PWD)
-
-        print(HBNB_MYSQL_HOST)
-
-        print(HBNB_MYSQL_DB)
-
-        print(HBNB_ENV)
 
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'
             .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
-            pool_pre_ping=True
+            pool_pre_ping=True, pool_recycle=False
         )
         if HBNB_ENV == 'test':
             Base.metadata.drop_all(self.__engine)
