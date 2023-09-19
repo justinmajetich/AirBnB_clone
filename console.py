@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -125,16 +126,85 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """Create an object of any class"""
+        myargs = args.split(' ')
+        firstarg = myargs[0]
+
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        elif firstarg not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[firstarg]()
         storage.save()
-        print(new_instance.id)
-        storage.save()
+
+        if len(myargs) == 1:  # no params passed with a cls
+            print(new_instance.id)
+
+        if len(myargs) > 1:  # params are passed with a class
+            # print("we have params")
+            params = myargs[1:]
+            for param in params:
+                if '=' not in param:
+                    pass
+
+                attr_name = param.split('=')[0]
+                attr_val = param.split('=')[1]
+
+                regex = r'^\s*"(.*?)"\s*$'
+                match = re.search(regex, attr_val)
+
+                if match:  # or if match is not None:
+                    # found a match: get value between " "
+                    # only first match, get str within ""
+                    # print(f"match group[0] :{match.group(0)}")
+
+                    # update attr_val with string inside ""
+                    # todo ....
+                    attr_val_str = match.group(0)[1:-1]
+                    # or attr_val = match.group(1)
+
+                    # print(attr_val_str)
+
+                    # please implement escaped " or
+                    # non escaped " cases
+
+                elif attr_val[0] == '"':  # no match found
+                    # only leading " exist
+                    # print("## you forget to close double quotes##")
+                    pass
+
+
+                else:  # no leading " in attr_val
+                    # then it could be int or float type
+
+                    cast = None
+                    if re.search(r'[a-zA-Z]', attr_val):
+                        # attr_val conatain at least one letter
+                        # so it is a string
+                        # cast = None
+                        # then pass
+                        pass
+                    elif '.' in attr_val:
+                        # handle casting if input is a float
+                        cast = float
+
+                    else:  # it is an integer
+                        cast = int
+
+                try:
+                    attr_val = cast(attr_val)
+                except Exception:  # casting Failed
+                    pass
+
+                req_inst = f"{myargs[0]}.{new_instance}"
+                # create attribute
+                setattr(storage.all()[req_inst], attr_name, attr_val)
+                # storage.reload()
+                storage.save()
+
 
     def help_create(self):
         """Help information for the create method"""
@@ -290,7 +360,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(" ")
 
             # if att_name was not quoted arg
-            if not att_name and args[0] !=  " ":
+            if not att_name and args[0] != " ":
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '"':
