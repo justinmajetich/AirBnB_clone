@@ -127,7 +127,6 @@ class HBNBCommand(cmd.Cmd):
         for i in pair:
             less = i.split("=")
             dict[less[0]] = less[1].strip('"')
-        print(dict)
         new_instance = HBNBCommand.classes[arg[0]]()
         for attr, value in dict.items():
             setattr(new_instance, attr, value)
