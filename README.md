@@ -26,8 +26,8 @@ This repository contains the initial stage of a student project to build a clone
 1. First clone this repository.
 
 3. Once the repository is cloned locate the "console.py" file and run it as follows:
-```
-/AirBnB_clone$ ./console.py
+```bash
+git clone https://github.com/azukauteh/AirBnB_clone_v2.git
 ```
 4. When this command is run the following prompt should appear:
 ```
