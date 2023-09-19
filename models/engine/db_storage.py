@@ -40,27 +40,23 @@ class DBStorage:
             test_table.drop()
 
     def all(self, cls=None):
-        """ This Method returns all objects based on class """
+        """ This Method returns all objects brsed on class """
+        all_class = {
+                "City": City,
+                "State": State
+                }
         dictionary = {}
         if cls is  None:
-            class_list = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
-            for a_class in class_list:
-                a_class = eval(a_class)
-                all_instance = self.__session.query(a_class)
+            for a_class in all_class:
+                all_instance = self.__session.query(all_class[a_class].__table__).all()
                 for instance in all_instance:
                     key = f"{instance.name}.{instance.id}"
                     dictionary[key] = instance
         else:
-            if type(cls) == str:
-                cls = eval(cls)
-            print("")
-            all_instance = self.__session.query(cls)
+            all_instance = self.__session.query(all_class[cls]).all()
             for instance in all_instance:
                 key = f"{instance.name}.{instance.id}"
                 dictionary[key] = instance
-
-        print(dictionary)
-
         return dictionary
 
     def new(self, obj):
