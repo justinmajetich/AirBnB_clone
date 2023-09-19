@@ -4,7 +4,9 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlachemy.orm import DeclarativeBase, Mapped
 
+Base = declarative_base()
 Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
@@ -17,6 +19,8 @@ class BaseModel:
         """Instantiates a new model"""
       
         """if not kwargs:
+        """Instantiates a new model"""
+        if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -40,6 +44,21 @@ class BaseModel:
             else:
                 setattr(self, key, val)
 
+        else:
+            """kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)"""
+            attr = {k: v for k, v in kwargs.items() if k != '__class__'}
+            for key, val in attr.items():
+                if key in ['created_at', 'updated_at']:
+                    dt_obj = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
+                    setattr(self, key, dt_obj)
+                else:
+                    setattr(self, key, val)
+	
     def __str__(self):
         """Returns a string representation of the instance"""
         """cls = (str(type(self)).split('.')[-1]).split('\'')[0]
