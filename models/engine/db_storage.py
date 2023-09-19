@@ -4,7 +4,6 @@ Defining the db storage for the project
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from dotenv import load_dotenv
 import os
 from models.base_model import BaseModel, Base
 from models.state import State
@@ -13,7 +12,6 @@ from models.city import City
 from models.user import User
 from models.amenity import Amenity
 from models.review import Review
-load_dotenv()
 
 
 class DBStorage:
@@ -22,11 +20,11 @@ class DBStorage:
 
     def __init__(self):
 
-        db_user = os.getenv("HBNB_MYSQL_USER")
-        db_password = os.getenv("HBNB_MYSQL_PWD")
-        db_host = os.getenv("HBNB_MYSQL_HOST")
-        db_name = os.getenv("HBNB_MYSQL_DB")
-        db_env = os.getenv("HBNB_ENV")
+        db_user = os.environ.get("HBNB_MYSQL_USER")
+        db_password = os.environ.get("HBNB_MYSQL_PWD")
+        db_host = os.environ.get("HBNB_MYSQL_HOST")
+        db_name = os.environ.get("HBNB_MYSQL_DB")
+        db_env = os.environ.get("HBNB_ENV")
 
         db_url = f"mysql+mysqldb://{db_user}:{db_password}@{db_host}/{db_name}"
 
