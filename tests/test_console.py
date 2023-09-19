@@ -12,7 +12,7 @@ from console import HBNBCommand
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-# from tests import clear_stream
+from tests import clearStream
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -27,15 +27,15 @@ class TestHBNBCommand(unittest.TestCase):
             cons = HBNBCommand()
             cons.onecmd('create City name="Nevada"')
             mdl_id = cout.getvalue().strip()
-            clear_stream(cout)
+            clearStream(cout)
             self.assertIn('City.{}'.format(mdl_id), storage.all().keys())
             cons.onecmd('show City {}'.format(mdl_id))
             self.assertIn("'name': 'Nevada'", cout.getvalue().strip())
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('create User name="joe" age=20 height=3.5')
             mdl_id = cout.getvalue().strip()
             self.assertIn('User.{}'.format(mdl_id), storage.all().keys())
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('show User {}'.format(mdl_id))
             self.assertIn("'name': 'joe'", cout.getvalue().strip())
             self.assertIn("'age': 20", cout.getvalue().strip())
@@ -52,7 +52,7 @@ class TestHBNBCommand(unittest.TestCase):
             with self.assertRaises(sqlalchemy.exc.OperationalError):
                 cons.onecmd('create User')
             # creating a User instance
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('create User email="Joe20@gmail.com" password="123"')
             mdl_id = cout.getvalue().strip()
             dbc = MySQLdb.connect(
@@ -106,7 +106,7 @@ class TestHBNBCommand(unittest.TestCase):
             )
             cursor = dbc.cursor()
             cursor.execute('SELECT * FROM users WHERE id="{}"'.format(obj.id))
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('show User {}'.format(obj.id))
             result = cursor.fetchone()
             self.assertTrue(result is not None)
@@ -136,11 +136,11 @@ class TestHBNBCommand(unittest.TestCase):
             res = cursor.fetchone()
             prev_count = int(res[0])
             cons.onecmd('create State name="California"')
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('count State')
             cnt = cout.getvalue().strip()
             self.assertEqual(int(cnt), prev_count + 1)
-            clear_stream(cout)
+            clearStream(cout)
             cons.onecmd('count State')
             cursor.close()
             dbc.close()
