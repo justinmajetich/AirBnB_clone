@@ -67,7 +67,14 @@ class DBStorage(BaseModel):
 
     def new(self, obj):
         """adds new object to database"""
-        self.__session.add(obj)
+        if obj is not None:
+            try:
+                self.__session.add(obj)
+                self.__session.flush()
+                self.__session.reflesh(obj)
+            except Exception as e:
+                self.__session.rollback()
+                raise e
 
     def save(self):
         """commits chenges of current session"""
@@ -75,8 +82,9 @@ class DBStorage(BaseModel):
 
     def delete(self, obj=None):
         """deletes all tables fro database"""
-        if obj:
-            self.__session.delete(obj)
+        if obj is not None:
+            self.__session.query(type(obj)
+                    ).filter(type(obj).id == obj.id).delete()
 
     def reload(self):
         """creates table in db"""
@@ -85,8 +93,7 @@ class DBStorage(BaseModel):
                 sessionmaker(
                     bind=self.__engine, expire_on_commit=False)
                 )
-        session_scoped = scoped_session(session)
-        self.__session = session_scoped()
+        self.__session = scoped_session(session)()
 
     def close(self):
         """classes class session"""
