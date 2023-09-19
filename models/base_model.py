@@ -29,11 +29,7 @@ class BaseModel:
                     setattr(self, key, dt_obj)
                 else:
                     setattr(self, key, val)
-	__tablename__ = ''
-	id:Mapped[int] = mapped_column(primary_key=True, nullable=False, char=<60)
-	created_at:Mapped[] = mapped_column(nullable=False, default)
-
-
+	
     def __str__(self):
         """Returns a string representation of the instance"""
         """cls = (str(type(self)).split('.')[-1]).split('\'')[0]
