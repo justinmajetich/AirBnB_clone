@@ -115,7 +115,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-
         args_list = args.split()
         cls_name = args_list[0]
 
@@ -144,9 +143,8 @@ class HBNBCommand(cmd.Cmd):
             kwargs[param_name] = param_value
 
         new_instance = HBNBCommand.classes[cls_name](**kwargs)
-        storage.save()
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -221,6 +219,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        from models import storage as STORAGE
         print_list = []
 
         if args:
@@ -228,11 +227,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in STORAGE.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in STORAGE.all().items():
                 print_list.append(str(v))
 
         print(print_list)
