@@ -55,12 +55,20 @@ class BaseModel:
         dictionary = self.__dict__.copy()
         dictionary["__class__"] = self.__class__.__name__
 
-        for f in dictionary:
-            if type(dictionary[f]) is datetime:
-                dictionary[f] = dictionary[f].isoformat()
+        modification = {}
+        keys_to_delete = []
 
-            if "_sa_instance_state" in dictionary.keys():
-                del (dictionary["_sa_instance_state"])
+        for key, value in dictionary.items():
+            if isinstance(value, datetime):
+                modification[key] = value.isoformat()
+
+            if key == "_sa_instance_state":
+                keys_to_delete.append(key)
+
+        for key in keys_to_delete:
+            del dictionary[key]
+
+        dictionary.update(modification)
 
         return dictionary
 
