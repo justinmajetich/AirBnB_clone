@@ -5,11 +5,6 @@ from sqlalchemy import Column, String, ForeignKey
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    from models import dbStorage
-    if dbStorage == 'db':
-        __tablename__ = "cities"
-        state_id = Column(String(128), ForeignKey('states.id'), nullable=False)
-        name = Column(String(128), nullable=False)
-    else:
-        state_id = ""
-        name = ""
+    __tablename__ = "cities"
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    name = Column(String(128), nullable=False)
