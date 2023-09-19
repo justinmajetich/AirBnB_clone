@@ -1,21 +1,18 @@
 #!/usr/bin/python3
-"""This script defines the City class."""
-from models.base_model import Base
-from models.base_model import BaseModel
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
+"""Defines the City class."""
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 class City(BaseModel, Base):
-    """Represents a city in a MySQL database.
-
-    Inherits from SQLAlchemy Base and is linked to the MySQL table 'cities'.
+    """Represents a city for a MySQL database.
+    Inherits from SQLAlchemy Base and links to the MySQL table cities.
 
     Attributes:
-        __tablename__ (str): The name of the MySQL table for storing cities.
-        name (sqlalchemy String): The name of the city.
-        state_id (sqlalchemy String): The state ID of the city.
+        __tablename__ (str): The name of the MySQL table to store cities.
+        name (sqlalchemy String): The city name.
+        state_id (sqlalchemy String): The city's state id.
+        places (sqlalchemy relationship): The City-Place relationship.
     """
     __tablename__ = "cities"
     name = Column(String(128), nullable=False)
