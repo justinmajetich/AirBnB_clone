@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
                 new_dict[kv[0]] = value
             else:
                 try:
-                    if '.' in kv[1]:
+                    if "." in kv[1]:
                         new_dict[kv[0]] = float(kv[1])
                     else:
                         new_dict[kv[0]] = int(kv[1])
