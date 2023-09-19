@@ -4,6 +4,15 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+import json
+import unnittest
+import pep8
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class test_fileStorage(unittest.TestCase):
@@ -21,8 +30,14 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
+
+    def test_pep8_FileStorage(self):
+        """Tests pep8 style"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/file_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
@@ -107,3 +122,7 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+
+if __name__ == "__main__":
+    unittest.main()
