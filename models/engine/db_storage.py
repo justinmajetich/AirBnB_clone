@@ -7,6 +7,7 @@ from models.base_model import Base
 from models.state import State
 from models.city import City
 from models.user import User
+from models.place import Place
 
 DB_NAME = getenv("HBNB_MYSQL_DB")
 HOST = getenv("HBNB_MYSQL_HOST")
@@ -31,7 +32,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Returns query based on class passed to it """
-        classes = (City, State, User)
+        classes = (City, State, User, Place)
         all_objs: dict = {}
 
         if cls:
