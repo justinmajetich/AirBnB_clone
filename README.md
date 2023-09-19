@@ -17,7 +17,7 @@
   - [SQL Scripts](#sql-scripts)
   - [GitHub](#github)
 - [Tasks](#tasks)
-  - [0. Fork me if you can!](###0.-Fork-me-if-you-can!-(Mandatory))
+  - [0. Fork me if you can!](#0-fork-me-if-you-can-mandatory)
   - [1. Bug free!](#1-bug-free)
   - [2. Console improvements](#2-console-improvements)
   - [3. MySQL setup development](#3-mysql-setup-development)
