@@ -5,8 +5,7 @@ from models.base_model import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import relationship
-
-Base = declarative_base()
+from models.base_model import Base
 
 
 class City(BaseModel, Base):

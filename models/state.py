@@ -5,14 +5,13 @@ from sqlalchemy import Column, String, Integer
 from models.base_model import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+from models.base_model import Base
 
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    id = Column(Integer, primary_key=True)
     cities = relationship('City', back_populates='state',
                           cascade='all, delete-orphan')
 
