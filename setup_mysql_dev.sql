@@ -1,0 +1,12 @@
+-- this script sets up the dev envronement;
+-- it creates the db and also creates a user;
+CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
+-- creating new user named hbnb_dev;
+-- password : hbnb_dev_pwd if it dosen't exist;
+CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
+-- then grant privileges to the user;
+GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
+FLUSH PRIVILEGES;
+-- privilege for the user hbnb_dev in the db;
+GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
+FLUSH PRIVILEGES;
