@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,83 +114,119 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class with given parameters"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        # Split the arguments into class name and parameters
+        args_list = args.split()
+        class_name = args_list[0]
+        params = args_list[1:]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        # Create an instance of the specified class
+        new_instance = HBNBCommand.classes[class_name]()
+
+        # Process the parameters
+        for param in params:
+            # Split the parameter into key and value
+            key_value = param.split('=')
+            if len(key_value) != 2:
+                print("** invalid parameter format:", param)
+                continue
+
+            key, value = key_value
+
+            # Process the value based on its type
+            try:
+                # Check if it's a string value
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace('_', ' ')
+                # Check if it's a float value
+                elif '.' in value:
+                    value = float(value)
+                # Check if it's an integer value
+                else:
+                    value = int(value)
+
+                # Set the attribute of the instance with the processed value
+                setattr(new_instance, key, value)
+            except (ValueError, IndexError):
+                print("** invalid parameter value:", param)
+                continue
+
+        # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
-        storage.save()
 
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        def help_create(self):
+            """ Help information for the create method """
+            print("Creates a class of any type")
+            print("[Usage]: create <className>\n")
 
-    def do_show(self, args):
-        """ Method to show an individual object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
+        def do_show(self, args):
+            """ Method to show an individual object """
+            new = args.partition(" ")
+            c_name = new[0]
+            c_id = new[2]
 
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+            if c_id and ' ' in c_id:
+                c_id = c_id.partition(' ')[0]
 
-        if not c_name:
-            print("** class name missing **")
-            return
+            if not c_name:
+                print("** class name missing **")
+                return
 
-        if c_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+            if c_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        if not c_id:
-            print("** instance id missing **")
-            return
+            if not c_id:
+                print("** instance id missing **")
+                return
 
-        key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
-            print("** no instance found **")
+            key = c_name + "." + c_id
+            try:
+                print(storage._FileStorage__objects[key])
+            except KeyError:
+                print("** no instance found **")
 
-    def help_show(self):
-        """ Help information for the show command """
-        print("Shows an individual instance of a class")
-        print("[Usage]: show <className> <objectId>\n")
+        def help_show(self):
+            """ Help information for the show command """
+            print("Shows an individual instance of a class")
+            print("[Usage]: show <className> <objectId>\n")
 
-    def do_destroy(self, args):
-        """ Destroys a specified object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        def do_destroy(self, args):
+            """ Destroys a specified object """
+            new = args.partition(" ")
+            c_name = new[0]
+            c_id = new[2]
+            if c_id and ' ' in c_id:
+                c_id = c_id.partition(' ')[0]
 
-        if not c_name:
-            print("** class name missing **")
-            return
+            if not c_name:
+                print("** class name missing **")
+                return
 
-        if c_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+            if c_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        if not c_id:
-            print("** instance id missing **")
-            return
+            if not c_id:
+                print("** instance id missing **")
+                return
 
-        key = c_name + "." + c_id
+            key = c_name + "." + c_id
 
-        try:
-            del(storage.all()[key])
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
+            try:
+                del (storage.all()[key])
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
 
     def help_destroy(self):
         """ Help information for the destroy command """
@@ -319,6 +355,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
