@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel
-from sqlalchemy.ext.declarative import Base
+from sqlalchemy.ext.declarative import declarative_base
+
 from sqlalchemy.orm import relationship
+
+Base = declarative_base()
 
 
 class City(BaseModel, Base):

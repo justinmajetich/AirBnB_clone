@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, Integer
 from models.base_model import BaseModel
-from sqlalchemy.ext.declarative import Base
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, Column, String, Integer
-from sqlalchemy.orm import relationship, sessionmaker
-from models import storage
+
+Base = declarative_base()
 
 
 class State(BaseModel, Base):
@@ -21,7 +21,8 @@ class State(BaseModel, Base):
         """Returns the list of City instances
         with state_id equals to the current State.id
         """
-        stored = storage.all()
+        import models
+        stored = models.storage.all()
         for k, v in stored.items():
             if v[__class__] == 'State':
                 return [city for city in self.cities if

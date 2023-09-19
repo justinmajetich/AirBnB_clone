@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 
+
 class User(BaseModel, Base):
     """
     Definition of the User class for the users table in
@@ -26,9 +27,9 @@ class User(BaseModel, Base):
         Base (class): the declarative Base class from SQLAlchemy.
     """
 
-     __tablename__ = 'users'
+    __tablename__ = 'users'
 
-     email = Column(String(128), nullable=False)
-     password = Column(String(128), nullable=False)
-     first_name = Column(String(128), nullable=True)
-     last_name = Column(String(128), nullable=True)
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)

@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
-import sqlalchemy
 from datetime import datetime
-from sqlalchemy import base
-from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+
+from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
@@ -30,7 +29,7 @@ class BaseModel:
                                                      '%Y-%m-%dT%H:%M:%S.%f')
 
             for k, v in kwargs.items():
-                if k != __class__:
+                if k != '__class__':
                     setattr(self, k, v)
 
             del kwargs['__class__']
