@@ -4,12 +4,6 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
 
 usr = os.environ.get('HBNB_MYSQL_USER')
@@ -34,21 +28,26 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Get all object of specific class or all classes"""
-        allCls = [User, State, City, Amenity, Place, Review]
-        output = {}
-        if cls is None:
-            for unit_cls in allCls:
-                for value in self.__session.query(unit_cls).all():
-                    key = value.__class__.__name__ + '.' + value.id
-                    output[key] = value
-        else:
-            for unit_cls in allCls:
-                for value in self.__session.query(unit_cls).all():
-                    key = value.__class__.__name__ + '.' + value.id
-                    output[key] = value
+        """a public instance method that returns a dictionary
+        consisting of all queried class from the database"""
+        from models.amenity import Amenity
+        from models.user import User
+        from models.place import Place
+        from models.state import State, Base
+        from models.city import City, Base
+        from models.review import Review
 
-        return output
+        if cls is None:
+            cls = [State, City, User, Place, Review, Amenity]
+            query = []
+            for c in cls:
+                query.extend(self.__session.query(c).all())
+        else:
+            query = self.__session.query(cls).all()
+        cls_objs = {}
+        for obj in query:
+            cls_objs[obj.to_dict()['__class__'] + '.' + obj.id] = obj
+        return cls_objs
 
     def new(self, obj):
         """Add new object"""
