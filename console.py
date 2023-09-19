@@ -32,6 +32,39 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    class_keys = {
+        "BaseModel": ["id", "created_at", "updated_at"],
+        "User": [
+            "id",
+            "created_at",
+            "updated_at",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+        ],
+        "City": ["id", "created_at", "updated_at", "state_id", "name"],
+        "State": ["id", "created_at", "updated_at", "name"],
+        "Place": [
+            "id",
+            "created_at",
+            "updated_at",
+            "city_id",
+            "user_id",
+            "name",
+            "description",
+            "number_rooms",
+            "number_bathrooms",
+            "max_guest",
+            "price_by_night",
+            "latitude",
+            "longitude",
+            "amenity_ids"
+        ],
+        "Amenity": ["id", "created_at", "updated_at", "name"],
+        "Review": ["id", "created_at", "updated_at",
+                   "place_id", "user_id", "text"],
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -117,38 +150,48 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class with given parameters """
         if not args:
             print("** class name missing **")
             return
 
         list_args = args.split()
-        class_ = list_args[0]
-        if list_args[0] not in HBNBCommand.classes:
+        class_name = list_args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        parameters = list_args[1:]
-        parameter_dict = {}
-        for parameter in parameters:
-            key, value = parameter.split('=')
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1]
-                value = value.replace("_", " ")
-                value = value.replace('"', '\"')
-            else:
-                continue
-            try:
-                if '.' in value:
-                    value = float(value)
+
+        attr_dict = {}
+        new_instance = HBNBCommand.classes[class_name]()
+
+        for param in list_args[1:]:
+            param_value = param.split('=')
+            if len(param_value) == 2:
+                key = param_value[0]
+                if key not in HBNBCommand.class_keys[class_name]:
+                    continue
+                value = param_value[1]
+
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
                 else:
-                    value = int(value)
-            except ValueError:
-                pass
-            parameter_dict[key] = value
-        new_instance = HBNBCommand.classes[class_](**parameter_dict)
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                setattr(new_instance, key, value)
+
+
+            # attr_dict[key] = value
+
+        # new_instance = HBNBCommand.classes[class_name](**attr_dict)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
