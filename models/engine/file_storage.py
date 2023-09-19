@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -17,7 +18,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        dic ={}
+        dic = {}
 
         if cls:
             dictionary = self.__objects
@@ -29,13 +30,6 @@ class FileStorage:
             return (dic)
         else:
             return self.__objects
-
-    def delete(self, obj=None):
-        print("**************")
-        print(FileStorage.__objects)
-        print("*******")
-        print(obj)
-        print("**************")
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
