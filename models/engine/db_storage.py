@@ -45,7 +45,11 @@ class DBStorage:
         """ This Method returns all objects brsed on class """
         all_class = {
                 "City": City,
-                "State": State
+                "State": State,
+                "User": User,
+                "Review": Review,
+                "Place": Place,
+                "Amenity": Amenity
                 }
         dictionary = {}
         if cls is None:
