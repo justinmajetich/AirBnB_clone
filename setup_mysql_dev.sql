@@ -1,8 +1,7 @@
 -- Script to prepare the MySQL server for the project
 
 -- Create the database
-CREATE DATABASE IF NOT EXISTS 'hbnb_dev_db';
-USE 'hbnb_dev_db';
+CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
 -- Create the user
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
