@@ -4,7 +4,7 @@
 -- Creates a Password of hbnb_dev Set to --> hbnb_dev_pwd
 -- Give SELECT Previleges to hbnb_dev on hbnb_dev_db's Performance_schema
 
-
+DROP DATABASE IF EXISTS hbnb_dev_db;
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';

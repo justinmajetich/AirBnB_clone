@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" 
+"""
     This module instantiates an object of class FileStorage or DBStorage
     depending on the storage type
 """

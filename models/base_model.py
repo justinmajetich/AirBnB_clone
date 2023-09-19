@@ -13,12 +13,11 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
 
-
-    id =  Column(String(60), primary_key=True,unique=True, nullable=False)
+    id = Column(String(60), primary_key=True, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow(),
-                                     nullable=False)
+                        nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(),
-                                     nullable=False)
+                        nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -64,4 +63,5 @@ class BaseModel:
         for key, value in dictionary.items():
             if key == '_sa_instance_state':
                 del dictionary[key]
+                break
         return dictionary
