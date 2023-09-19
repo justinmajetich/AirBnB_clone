@@ -139,6 +139,7 @@ class HBNBCommand(cmd.Cmd):
                 if type(val) == str:
                     val = val.replace("_", " ").rstrip('"').lstrip('"')
                     new_dict[key] = val
+                # convert to the dict values to their different data types.
                 if key in self.types.keys():
                     new_dict[key] = self.types[key](val)
 
