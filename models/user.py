@@ -2,6 +2,7 @@
 """Defines the User class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """Represents a user for a database.
@@ -10,12 +11,14 @@ class User(BaseModel, Base):
 
     Attributes:
         __tablename__ (str): The name of the MySQL table to store users.
+        places (sqlalchemy relationship): The places owned by the user.
         email (sqlalchemy String): The user's email.
         password (sqlalchemy String): The user's password.
         first_name (sqlalchemy String): The user's first name.
         last_name (sqlalchemy String): The user's last name.
     """
     __tablename__ = "users"
+    places = relationship("Place", backref="user", cascade="all, delete-orphan")
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
