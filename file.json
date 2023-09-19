@@ -154,5 +154,107 @@
         "updated_at": "2023-09-19T00:31:55.177349",
         "p": "i have\\\"bought\\\"a mouse",
         "__class__": "User"
+    },
+    "State.d86b6ea6-2118-41ab-b8a9-cbffca7e3474": {
+        "id": "d86b6ea6-2118-41ab-b8a9-cbffca7e3474",
+        "created_at": "2023-09-19T07:06:47.336740",
+        "updated_at": "2023-09-19T07:06:47.336745",
+        "name": "California",
+        "__class__": "State"
+    },
+    "City.522bbf11-edea-49e6-a52a-fadcb981b50e": {
+        "id": "522bbf11-edea-49e6-a52a-fadcb981b50e",
+        "created_at": "2023-09-19T07:08:02.734720",
+        "updated_at": "2023-09-19T07:08:02.734724",
+        "name": "San Fransisco is super cool",
+        "__class__": "City"
+    },
+    "City.cc3a6a04-33c9-4039-816c-95a043eb5e21": {
+        "id": "cc3a6a04-33c9-4039-816c-95a043eb5e21",
+        "created_at": "2023-09-19T07:09:28.827668",
+        "updated_at": "2023-09-19T07:09:28.827673",
+        "name": "San Fransisco is super cool",
+        "__class__": "City"
+    },
+    "City.00e7c5dd-c9ae-4edb-94e8-4aa8ef5bffc8": {
+        "id": "00e7c5dd-c9ae-4edb-94e8-4aa8ef5bffc8",
+        "created_at": "2023-09-19T07:10:18.933349",
+        "updated_at": "2023-09-19T07:10:18.933353",
+        "state_id": "d86b6ea6-2118-41ab-b8a9-cbffca7e3474",
+        "name": "San Fransisco is super cool",
+        "__class__": "City"
+    },
+    "User.ede2d4c3-885e-4ef9-9d2a-115a2696371d": {
+        "id": "ede2d4c3-885e-4ef9-9d2a-115a2696371d",
+        "created_at": "2023-09-19T07:13:07.135443",
+        "updated_at": "2023-09-19T07:13:07.135447",
+        "email": "my@me.com",
+        "password": "pwd",
+        "first_name": "FN",
+        "last_name": "LN",
+        "__class__": "User"
+    },
+    "Place.97d93671-fe6b-4ad5-a6a1-36bfa1545d49": {
+        "id": "97d93671-fe6b-4ad5-a6a1-36bfa1545d49",
+        "created_at": "2023-09-19T07:16:02.151450",
+        "updated_at": "2023-09-19T07:16:02.151456",
+        "city_id": "00e7c5dd-c9ae-4edb-94e8-4aa8ef5bffc8",
+        "user_id": "ede2d4c3-885e-4ef9-9d2a-115a2696371d",
+        "name": "My house",
+        "description": "no description yet",
+        "number_rooms": 4,
+        "number_bathrooms": 0,
+        "max_guests": -3,
+        "price_by_night": 100,
+        "latitude": -120.12,
+        "longitude": 0.41921928,
+        "__class__": "Place"
+    },
+    "State.c4e0ef5a-c7b8-4c20-92ee-727bf49c2886": {
+        "id": "c4e0ef5a-c7b8-4c20-92ee-727bf49c2886",
+        "created_at": "2023-09-19T07:18:47.274793",
+        "updated_at": "2023-09-19T07:18:47.274797",
+        "name": "California",
+        "__class__": "State"
+    },
+    "City.b468800c-5303-4381-8487-d32105b559d5": {
+        "id": "b468800c-5303-4381-8487-d32105b559d5",
+        "created_at": "2023-09-19T07:20:33.238124",
+        "updated_at": "2023-09-19T07:20:33.238128",
+        "state_id": "c4e0ef5a-c7b8-4c20-92ee-727bf49c2886",
+        "name": "San Fransisco is super cool",
+        "__class__": "City"
+    },
+    "User.5527a2b5-b48f-4d29-a518-20bfb19912cc": {
+        "id": "5527a2b5-b48f-4d29-a518-20bfb19912cc",
+        "created_at": "2023-09-19T07:21:28.565690",
+        "updated_at": "2023-09-19T07:21:28.565693",
+        "email": "my@me.com",
+        "password": "pwd",
+        "first_name": "FN",
+        "last_name": "LN",
+        "__class__": "User"
+    },
+    "Place.b4366cfe-aef2-4b69-9eca-408dc1253694": {
+        "id": "b4366cfe-aef2-4b69-9eca-408dc1253694",
+        "created_at": "2023-09-19T07:24:10.173548",
+        "updated_at": "2023-09-19T07:24:10.173552",
+        "city_id": "b468800c-5303-4381-8487-d32105b559d5",
+        "user_id": "5527a2b5-b48f-4d29-a518-20bfb19912cc",
+        "name": "My house",
+        "description": "no description yet",
+        "rooms": 4,
+        "bathrooms": 1,
+        "max_guests": 3,
+        "price_by_night": 100,
+        "latitude": 120.12,
+        "longitude": 101.4,
+        "__class__": "Place"
+    },
+    "State.545c69f7-83d0-478a-9b6b-48d48cc0e333": {
+        "id": "545c69f7-83d0-478a-9b6b-48d48cc0e333",
+        "created_at": "2023-09-19T07:25:07.732345",
+        "updated_at": "2023-09-19T07:25:07.732349",
+        "__class__": "State"
     }
 }

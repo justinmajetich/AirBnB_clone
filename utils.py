@@ -10,7 +10,7 @@ def is_valid_param(param):
     Function to check if a string matches the pattern
     Use re.match() to check if the string matches the pattern from the start
     """
-    pattern = r'^[a-zA-Z0-9_]+=[a-zA-Z0-9_."]+$'
+    pattern = r'^[a-zA-Z0-9_]+=[a-zA-Z0-9_."@-]+$'
     return bool(re.match(pattern, param))
 
 
