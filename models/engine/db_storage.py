@@ -15,6 +15,8 @@ classes = {
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
         }
+
+
 class DBStorage:
     __engine = None
     __session = None
@@ -28,7 +30,8 @@ class DBStorage:
 
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'
-            .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
+            .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
+                    HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
             pool_pre_ping=True, pool_recycle=False
         )
         if HBNB_ENV == 'test':
@@ -37,7 +40,6 @@ class DBStorage:
     def all(self, cls=None):
         all_objects = {}
         if cls is not None:
-            print(type(cls))
             if isinstance(cls, str):
                 cls_s = eval(cls)
             else:
@@ -47,10 +49,10 @@ class DBStorage:
             select = self.__session.query().all()
         objects = select.all()
         for objct in objects:
-                all_objects["{}.{}"
-                            .format(
-                                objct.__class__.__name__, objct.id
-                                )] = objct
+            all_objects["{}.{}"
+                        .format(
+                            objct.__class__.__name__, objct.id
+                            )] = objct
         return all_objects
 
     def new(self, obj):
@@ -66,6 +68,7 @@ class DBStorage:
 
     def reload(self):
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
