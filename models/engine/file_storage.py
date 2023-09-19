@@ -28,8 +28,7 @@ class FileStorage:
                 if (partition[0] == cls.__name__):
                     dic[key] = self.__objects[key]
             return (dic)
-        else:
-            return self.__objects
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -66,4 +65,3 @@ class FileStorage:
         if obj is not None:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             del self.__objects[key]
-        return
