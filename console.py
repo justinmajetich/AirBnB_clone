@@ -125,8 +125,23 @@ class HBNBCommand(cmd.Cmd):
         pair = arg[1:]
         dict = {}
         for i in pair:
-            less = i.split("=")
-            dict[less[0]] = less[1].strip('"')
+            params = i.split("=")
+            if len(params) != 2:
+                continue
+            key, value = params
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            dict[key] = value
         new_instance = HBNBCommand.classes[arg[0]]()
         for attr, value in dict.items():
             setattr(new_instance, attr, value)
