@@ -12,7 +12,7 @@ from console import HBNBCommand
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-from tests import clear_stream
+# from tests import clear_stream
 
 
 class TestHBNBCommand(unittest.TestCase):
