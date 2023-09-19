@@ -2,7 +2,13 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 import shlex
-
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -39,13 +45,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -63,6 +62,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         """delete obj from __objects"""
-        if obj:
-            key = '{}.{}'.format(type(obj).__name__, obj.id)
-            del self.__objects[key]
+        if obj is None:
+            return
+        key = '{}.{}'.format(type(obj).__name__, obj.id)
+        del self.__objects[key]
