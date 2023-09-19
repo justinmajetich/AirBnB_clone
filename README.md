@@ -1,7 +1,39 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<center> <h1>0x02. AirBnB clone - MySQL
+</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+Transition Between FileStorage and DBStorage:
 
+- it's common in industry projects to have a single storage system (e.g., FileStorage or DBStorage) active at a given time, rather than both simultaneously.
+- To manage multiple storage
+When switching from one storage system to another (e.g., from FileStorage to DBStorage), you may need to perform data migration if the data schema differs between the two systems.
+This migration process involves transferring existing data from the old storage system to the new one.
+Adding Attributes for SQLAlchemy:
+
+- integrate SQLAlchemy into your project. To do this, you'll need to define SQLAlchemy models for your application's data.
+- in production, you'd typically use migration mechanisms to update the database schema without data loss.
+- Here's a high-level example of how you might define an SQLAlchemy model with placeholder attributes:
+
+python
+Copy code
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class YourModel(Base):
+    __tablename__ = 'your_table'
+
+    # Placeholder attributes for description and mapping
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255))
+    description = Column(String(255))
+
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+Remember that SQLAlchemy offers powerful features for defining your database schema, relationships between models, and more. You'll need to adapt these models to your specific application's data structure.
+
+Additionally, when transitioning between storage systems or making schema changes, always consider database backups and data migration strategies to minimize data loss and ensure a smooth transition.
 ---
 
 <center><h3>Repository Contents by Project Task</h3> </center>
@@ -25,15 +57,15 @@ This repository contains the initial stage of a student project to build a clone
 
 1. First clone this repository.
 
-3. Once the repository is cloned locate the "console.py" file and run it as follows:
+2. Once the repository is cloned locate the "console.py" file and run it as follows:
 ```
 /AirBnB_clone$ ./console.py
 ```
-4. When this command is run the following prompt should appear:
+1. When this command is run the following prompt should appear:
 ```
 (hbnb)
 ```
-5. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
+1. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
 
 ##### Commands
     * create - Creates an instance based on given class
@@ -53,7 +85,7 @@ This repository contains the initial stage of a student project to build a clone
 Users are able to issue a number of console command using an alternative syntax:
 
 	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
-Advanced syntax is implemented for the following commands: 
+Advanced syntax is implemented for the following commands:
 
     * all - Shows all objects the program has access to, or all objects of a given class
 
@@ -78,16 +110,16 @@ Usage: create <class_name>
 ```
 (hbnb) create BaseModel
 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb)                   
+(hbnb)
 ```
 ###### Example 1: Show an object
 Usage: show <class_name> <_id>
 
 ```
 (hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959), 
+[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959),
 'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
-(hbnb)  
+(hbnb)
 ```
 ###### Example 2: Destroy an object
 Usage: destroy <class_name> <_id>
@@ -95,14 +127,14 @@ Usage: destroy <class_name> <_id>
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 (hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 ** no instance found **
-(hbnb)   
+(hbnb)
 ```
 ###### Example 3: Update an object
 Usage: update <class_name> <_id>
 ```
 (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
 (hbnb) show BaseModel b405fc64-9724-498f-b405-e4071c3d857f
-[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889), 
+[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889),
 'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
 (hbnb)
 ```
