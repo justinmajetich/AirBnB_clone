@@ -85,9 +85,7 @@ class HBNBCommand(cmd.Cmd):
             pass
         finally:
             return line
-
     def postcmd(self, stop, line):
-        """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
@@ -125,9 +123,23 @@ class HBNBCommand(cmd.Cmd):
         pair = arg[1:]
         dict = {}
         for i in pair:
-            less = i.split("=")
-            dict[less[0]] = less[1].strip('"')
-        print(dict)
+            params = i.split("=")
+            if len(params) != 2:
+                continue
+            key, value = params
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            dict[key] = value
         new_instance = HBNBCommand.classes[arg[0]]()
         for attr, value in dict.items():
             setattr(new_instance, attr, value)
@@ -217,11 +229,17 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
+            for i, obj_str in enumerate(print_list):
+                print(f"[{obj_str}]", end=", "
+                      if i < len(print_list) - 1 else "")
+            print()
         else:
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
-
-        print(print_list)
+            for i, obj_str in enumerate(print_list):
+                print(f"[{obj_str}]", end=", "
+                      if i < len(print_list) - 1 else "")
+            print()
 
     def help_all(self):
         """ Help information for the all command """
