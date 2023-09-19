@@ -3,6 +3,7 @@
 import cmd
 import sys
 import uuid
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -329,15 +330,28 @@ class HBNBCommand(cmd.Cmd):
     def cmd_build_list(command):
         return list(command.split(" "))
 
-    @staticmethod
-    def build_dict(cmd_list):
+    @classmethod
+    def build_dict(cls,cmd_list):
         cmd_dict = {'created_at':datetime.now().isoformat()}
         cmd_dict['updated_at'] = cmd_dict['created_at']
         cmd_dict['id'] = str(uuid.uuid4())
         for elem in cmd_list:
             elem_list = elem.split("=")
-            cmd_dict[elem_list[0]] = elem_list[1]
+            cmd_dict[elem_list[0]] = cls.sanitize_inpt(elem_list[1])
         return cmd_dict
+
+    @staticmethod
+    def sanitize_inpt(args):
+        print(args)
+        if args[0] == '"':
+            args = args.replace('"','')
+            args = args.replace('_',' ')
+        elif re.search("\d+\.\d*", args):
+            args = float(args)
+        else:
+            args = int(args)
+        print(args)
+        return args
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
