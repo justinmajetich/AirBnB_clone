@@ -166,10 +166,19 @@ class HBNBCommand(cmd.Cmd):
                     attr_val_str = match.group(0)[1:-1]
                     # or attr_val = match.group(1)
 
-                    # print(attr_val_str)
+                    attr_val = attr_val_str.replace('_', ' ')
 
-                    # please implement escaped " or
-                    # non escaped " cases
+                    # implement escaped "
+                    
+                    # Define a pattern check if inside "
+                    # is escaped with a backslash \ or not
+                    pattern = r'^[^\s"]*(\\[\s"]*[^\s"]*)*$'
+
+                    # Check if string follow the requirement
+                    if re.match(pattern, attr_val):
+                        attr_val = attr_val_str.replace('\"', '"')
+                    else:  # found non escaped " case
+                        pass
 
                 elif attr_val[0] == '"':  # no match found
                     # only leading " exist
@@ -199,7 +208,7 @@ class HBNBCommand(cmd.Cmd):
                 except Exception:  # casting Failed
                     pass
 
-                req_inst = f"{myargs[0]}.{new_instance}"
+                req_inst = f"{myargs[0]}.{new_instance.id}"
                 # create attribute
                 setattr(storage.all()[req_inst], attr_name, attr_val)
                 # storage.reload()
