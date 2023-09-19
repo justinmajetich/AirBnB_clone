@@ -11,12 +11,18 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     # Uniquely identify each entry (row) in the table
-    id = Column(String(60), primary_key=True, nullable=False, unique=True) 
-    # store a datetime value and use `datetime.utcnow()` to get the current datetime.
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-
-
+    id = Column(String(60),
+                primary_key=True,
+                nullable=False,
+                unique=True)
+    # store a datetime value
+    # use `datetime.utcnow()`to get the current datetime.
+    created_at = Column(DateTime,
+                        nullable=False,
+                        default=datetime.utcnow)
+    updated_at = Column(DateTime,
+                        nullable=False,
+                        default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
