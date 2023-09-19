@@ -2,7 +2,6 @@
 """a script for DB Storage Engine"""
 import os
 from models.base_model import Base
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import create_engine
 from models.state import State
