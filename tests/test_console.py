@@ -18,6 +18,7 @@ from models.place import Place
 from models.review import Review
 import models
 
+
 class TestDoCreate(unittest.TestCase):
     """class test Do create method"""
 
@@ -50,39 +51,6 @@ class TestDoCreate(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             self.consolle.onecmd("create dog")
             self.assertEqual(message, f.getvalue())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
