@@ -1,7 +1,10 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage
+"""
+This module defines a class to manage file storage
 for hbnb clone
 """
+
+
 import json
 
 
@@ -61,10 +64,10 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        '''
+        """
         Method to delete obj from __objects if it’s inside.
         Otherwise, it does nothing.
-        '''
+        """
         if obj is not None:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if key in self.__objects:
