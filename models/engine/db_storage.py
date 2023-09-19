@@ -6,6 +6,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from dotenv import load_dotenv
 import os
+from models.base_model import BaseModel, Base
+from models.state import State
+from models.place import Place
+from models.city import City
+from models.user import User
+from models.amenity import Amenity
+from models.review import Review
 load_dotenv()
 
 
@@ -66,7 +73,6 @@ class DBStorage:
         Create all tables in the database and create the
         current database session.
         """
-        from models.base_model import Base
 
         Base.metadata.create_all(self.__engine)
 
