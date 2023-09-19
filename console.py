@@ -216,13 +216,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            if args:
-                all_instance = storage.all(args)
-            else:
-                all_instance = storage.all()
+
+            all_instance = storage.all(args)
             for k, v in all_instance.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                print_list.append(str(v))
         else:
             all_instance = storage.all()
             for k, v in all_instance.items():
@@ -334,6 +331,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

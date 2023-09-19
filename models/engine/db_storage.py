@@ -15,12 +15,13 @@ from models.review import Review
 from models.user import User
 from models.place import Place
 
+
 class DBStorage:
     """ This Class will handle all data base storage """
 
     __engine = None
     __session = None
-    
+
     environment = os.environ.get("HBNB_ENV")
     user = os.environ.get("HBNB_MYSQL_USER")
     password = os.environ.get("HBNB_MYSQL_PWD")
@@ -32,7 +33,8 @@ class DBStorage:
         self.__engine = create_engine(
                 'mysql+mysqldb://{}:{}@{}/{}'
                 .format(DBStorage.user, DBStorage.password,
-                    DBStorage.my_host, DBStorage.database), pool_pre_ping=True
+                        DBStorage.my_host, DBStorage.database),
+                pool_pre_ping=True
                 )
         if DBStorage.environment == "test":
             metadata = MetaData(bind=self.__engine)
@@ -46,17 +48,19 @@ class DBStorage:
                 "State": State
                 }
         dictionary = {}
-        if cls is  None:
+        if cls is None:
             for a_class in all_class:
-                all_instance = self.__session.query(all_class[a_class].__table__).all()
+                all_instance = self.__session.query(all_class[a_class]).all()
                 for instance in all_instance:
-                    key = f"{instance.name}.{instance.id}"
-                    dictionary[key] = instance
+                    key = f"{type(instance).__name__}.{instance.id}"
+                    instance.__dict__ = instance.to_dict()
+                    dictionary.update({key: instance})
         else:
             all_instance = self.__session.query(all_class[cls]).all()
             for instance in all_instance:
-                key = f"{instance.name}.{instance.id}"
-                dictionary[key] = instance
+                key = f"{type(instance).__name__}.{instance.id}"
+                instance.__dict__ = instance.to_dict()
+            dictionary.update({key: instance})
         return dictionary
 
     def new(self, obj):
@@ -64,8 +68,9 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
-       """ This Method commit all changes of the current database session """
-       self.__session.commit()
+        """ This Method commit all changes of the current database session
+        """
+        self.__session.commit()
 
     def delete(self, obj=None):
         """ delete from the current database session obj if not Non"""
@@ -73,9 +78,11 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """ create's all tables in the database and create's the current database session
+        """ create's all tables in the database and
+        create's the current database session
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
