@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This script defines the Place class."""
+"""Defines the Place class."""
 import models
 from os import getenv
 from models.base_model import Base
@@ -23,25 +23,24 @@ association_table = Table("place_amenity", Base.metadata,
                                  primary_key=True, nullable=False))
 
 class Place(BaseModel, Base):
-    """Represents a place in a MySQL database.
+    """Represents a Place for a MySQL database.
 
-    Inherits from SQLAlchemy Base and is linked to the MySQL table 'places'.
+    Inherits from SQLAlchemy Base and links to the MySQL table places.
 
     Attributes:
-        __tablename__ (str): The name of the MySQL table for storing places.
-        city_id (sqlalchemy String): The ID of the place's associated city.
-        user_id (sqlalchemy String): The ID of the user who owns the place.
-        name (sqlalchemy String): The name of the place.
-        description (sqlalchemy String): A description of the place.
-        number_rooms (sqlalchemy Integer): The number of rooms in the place.
-        number_bathrooms (sqlalchemy Integer): The number of bathrooms in the place.
-        max_guest (sqlalchemy Integer): The maximum number of guests the place can accommodate.
-        price_by_night (sqlalchemy Integer): The price per night for the place.
-        latitude (sqlalchemy Float): The latitude coordinate of the place.
-        longitude (sqlalchemy Float): The longitude coordinate of the place.
+        __tablename__ (str): The name of the MySQL table to store places.
+        city_id (sqlalchemy String): The place's city id.
+        user_id (sqlalchemy String): The place's user id.
+        name (sqlalchemy String): The name.
+        description (sqlalchemy String): The description.
+        number_rooms (sqlalchemy Integer): The number of rooms.
+        number_bathrooms (sqlalchemy Integer): The number of bathrooms.
+        max_guest (sqlalchemy Integer): The maximum number of guests.
+        price_by_night (sqlalchemy Integer): The price by night.
+        latitude (sqlalchemy Float): The place's latitude.
+        longitude (sqlalchemy Float): The place's longitude.
         reviews (sqlalchemy relationship): The Place-Review relationship.
-        amenities (sqlalchemy relationship): The Place-Amenity relationship.
-        amenity_ids (list): A list of IDs of linked amenities.
+        amenities (sqlalchemy relationship): The Many-to-Many Place-Amenity relationship.
     """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -57,17 +56,9 @@ class Place(BaseModel, Base):
     reviews = relationship("Review", backref="place", cascade="delete")
     amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False)
-    amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
-        @property
-        def reviews(self):
-            """Retrieve a list of all linked Reviews."""
-            review_list = []
-            for review in list(models.storage.all(Review).values()):
-                if review.place_id == self.id:
-                    review_list.append(review)
-            return review_list
+        amenity_ids = []
 
         @property
         def amenities(self):
@@ -80,6 +71,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, value):
-            if type(value) == Amenity:
+            if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
 
