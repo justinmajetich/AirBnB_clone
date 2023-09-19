@@ -123,6 +123,29 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+        def parse_value(self, value):
+        """ cast string to float or int if possible"""
+        is_valid_value = True
+        # To be a valid string it must be of at least length 2 i.e. ""
+        # To be a valid string it must begin and end with double quoatation i.e. "sdsds"
+        if len(value) >= 2 and value[0] == '"' and value[len(value) - 1] == '"':
+            value = value[1:-1]
+            value = value.replace('_', ' ')
+            value = value.replace('"', '\"')
+        else:
+            try:
+                if "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                is_valid_value = False
+
+        if is_valid_value:
+            return value
+        else:
+            return None
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
