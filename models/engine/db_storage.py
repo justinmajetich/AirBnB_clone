@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """This module defines a class to manage db storage for hbnb clone"""
-import os
+from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
+from models.amenity import Amenity
+from models.user import User
+from models.place import Place
+from models.state import State, Base
+from models.city import City, Base
+from models.review import Review
 
 
-usr = os.environ.get('HBNB_MYSQL_USER')
-pwd = os.environ.get('HBNB_MYSQL_PWD')
-host = os.environ.get('HBNB_MYSQL_HOST')
-db = os.environ.get('HBNB_MYSQL_DB')
-status = os.environ.get('HBNB_ENV')
+usr = getenv('HBNB_MYSQL_USER')
+pwd = getenv('HBNB_MYSQL_PWD')
+host = getenv('HBNB_MYSQL_HOST')
+db = getenv('HBNB_MYSQL_DB')
+status = getenv('HBNB_ENV')
 
 
 class DBStorage:
@@ -20,6 +26,7 @@ class DBStorage:
 
     def __init__(self):
         """Initialise DB"""
+
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(usr, pwd, host, db),
             pool_pre_ping=True)
@@ -28,26 +35,21 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """a public instance method that returns a dictionary
-        consisting of all queried class from the database"""
-        from models.amenity import Amenity
-        from models.user import User
-        from models.place import Place
-        from models.state import State, Base
-        from models.city import City, Base
-        from models.review import Review
+        """Get all object of specific class or all classes"""
 
+        allCls = [State, City]
+        output = {}
         if cls is None:
-            cls = [State, City, User, Place, Review, Amenity]
-            query = []
-            for c in cls:
-                query.extend(self.__session.query(c).all())
+            for unit_cls in allCls:
+                for value in self.__session.query(unit_cls).all():
+                    key = value.__class__.__name__ + '.' + value.id
+                    output[key] = value
         else:
-            query = self.__session.query(cls).all()
-        cls_objs = {}
-        for obj in query:
-            cls_objs[obj.to_dict()['__class__'] + '.' + obj.id] = obj
-        return cls_objs
+            for value in self.__session.query(cls).all():
+                key = value.__class__.__name__ + '.' + value.id
+                output[key] = value
+
+        return output
 
     def new(self, obj):
         """Add new object"""
