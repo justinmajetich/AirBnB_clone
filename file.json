@@ -1,0 +1,22 @@
+{
+    "State.d6663a22-f029-42dd-baaa-b652fdaffe5a": {
+        "id": "d6663a22-f029-42dd-baaa-b652fdaffe5a",
+        "created_at": "2023-09-19T05:02:37.528246",
+        "updated_at": "2023-09-19T05:02:37.528255",
+        "__class__": "State"
+    },
+    "State.f1cd8c13-48dd-4842-98d5-bba15d638f79": {
+        "id": "f1cd8c13-48dd-4842-98d5-bba15d638f79",
+        "created_at": "2023-09-19T05:06:49.968533",
+        "updated_at": "2023-09-19T05:06:49.968541",
+        "name": "California",
+        "__class__": "State"
+    },
+    "State.640d060b-dc12-47e2-8cf9-9ac2ab6d562e": {
+        "id": "640d060b-dc12-47e2-8cf9-9ac2ab6d562e",
+        "created_at": "2023-09-19T05:09:22.163634",
+        "updated_at": "2023-09-19T05:09:22.163639",
+        "name": "Arizona",
+        "__class__": "State"
+    }
+}
