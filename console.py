@@ -115,16 +115,123 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        ## A message for Godwin Okpe:
+        # I sincerely apologize for delaying the work. This create function is well, functional
+        # However, not bug proof hence the debug mode.
+        self.debug = 0
+        if self.debug:
+            print("{}".format(args))
+
+        args_list = args.split(" ")
+        class_name = args_list[0]
+        
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
+
+
+            if self.debug:   
+                print(class_name)
+
+
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        
+
+        args_dict = {}
+        for param in args_list:
+            arg_tuple = HBNBCommand.validate_param_syntax(param)
+    
+            if not arg_tuple:
+                continue
+
+            key = arg_tuple[0]
+            value = arg_tuple[1]
+
+
+
+            if self.debug:
+                print("Checked Validate_param")
+
+            typed_value = HBNBCommand.validate_param_value(value)
+
+            if self.debug:
+                print(f"Value is {typed_value} and is of type {type(typed_value).__name__}\n {key} = {typed_value}")
+
+            if not typed_value:
+                continue
+
+            args_dict[key] = typed_value
+
+
+        if self.debug:
+            print(args_dict)
+        
+
+
+        new_instance = HBNBCommand.classes[class_name]()
+        for key in args_dict.keys():
+            setattr(new_instance, key, args_dict[key])
+
         storage.save()
         print(new_instance.id)
         storage.save()
+
+    def validate_param_value(value):
+        debug = 0
+        if value[0] == '"':
+            if debug:
+                print("----------Assessing String")
+
+            value = value.strip('"')
+            if "_" in value:
+                value = value.replace("_"," ")
+                value = value.strip()
+            return (value)
+
+        else:
+            if debug:
+                print("-----------Assessing number")
+
+            value = value.strip()
+            if value.count(".") <= 1:
+                if "." in value:
+                    if debug:
+                        print("---------Prob float")
+
+                    try:
+                        typed_value = float(value)
+                        return(typed_value)
+                    except ValueError:
+                        return None
+
+                else:
+                    if debug:
+                        print("---------Prob int")
+                    try:
+                        typed_value = int(value)
+                        return(typed_value)
+                    except ValueError:
+                        return None
+            else:
+                return None
+
+    def validate_param_syntax(param):
+        debug = 0
+        if param.count("=") != 1:
+            return None
+
+        arg_tuple = param.split("=")
+        if '' in arg_tuple:
+            return None
+        if len(arg_tuple) != 2:
+            return None
+
+        if debug:
+            print (f"\n\nValidate_param_syntax:{arg_tuple}")
+        return (arg_tuple)
 
     def help_create(self):
         """ Help information for the create method """
