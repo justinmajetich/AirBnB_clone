@@ -28,8 +28,6 @@ class FileStorage:
                     class_obj[key] = value
             return class_obj
 
-        return FileStorage.__objects
-
     def new(self, obj):
         """
         Adds new object to storage dictionary
@@ -82,4 +80,4 @@ class FileStorage:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if key in self.__objects:
                 del self.__objects[key]
-            FileStorage.save(self)
+        FileStorage.save(self)
