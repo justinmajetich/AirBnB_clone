@@ -21,10 +21,9 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if kwargs:
-            if kwargs.get("__class__"):
-                kwargs.pop("__class__")
+            kwargs.pop("__class__", None)
             for k, v in kwargs.items():
-                if k == 'created_at' or k == 'updated_at':
+                if k in ('created_at', 'updated_at'):
                     setattr(self, k, datetime.fromisoformat(v))
                     continue
                 setattr(self, k, v)
