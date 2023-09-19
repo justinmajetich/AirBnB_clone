@@ -7,7 +7,6 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlachemy.orm import DeclarativeBase, Mapped
 
 Base = declarative_base()
-Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), nullable=False, primary_key=True)
@@ -19,8 +18,7 @@ class BaseModel:
         """Instantiates a new model"""
       
         """if not kwargs:
-        """Instantiates a new model"""
-        if not kwargs:
+        "if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
