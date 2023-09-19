@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.state import State
 from models.city import City
+from models.user import User
 
 DB_NAME = getenv("HBNB_MYSQL_DB")
 HOST = getenv("HBNB_MYSQL_HOST")
@@ -31,7 +32,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Returns query based on class passed to it """
-        classes = (City, State)
+        classes = (City, State, User)
         all_objs: dict = {}
 
         if cls:
