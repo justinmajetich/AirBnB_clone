@@ -4,17 +4,7 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-from models.state import State
-from models.city import City
-from models.user import User
-from models.place import Place
-from models.review import Review
-
-DB_NAME = getenv("HBNB_MYSQL_DB")
-HOST = getenv("HBNB_MYSQL_HOST")
-USERNAME = getenv("HBNB_MYSQL_USER")
-PASSWORD = getenv("HBNB_MYSQL_PWD")
-ENV = getenv("HBNB_ENV")
+import models.misc as misc
 
 
 class DBStorage:
@@ -24,16 +14,22 @@ class DBStorage:
 
     def __init__(self):
         """ Initializing instance """
+
         self.__engine = create_engine(
-            f"mysql+mysqldb://{USERNAME}:{PASSWORD}@127.0.0.1/{DB_NAME}",
+            "mysql+mysqldb://{}:{}@{}/{}".format(
+                    misc.USERNAME,
+                    misc.PASSWORD,
+                    misc.HOST,
+                    misc.DB_NAME
+                ),
             pool_pre_ping=True
         )
-        if ENV == 'test':
+
+        if misc.ENV == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ Returns query based on class passed to it """
-        classes = (City, State, User, Place, Review)
         all_objs: dict = {}
 
         if cls:
@@ -44,7 +40,7 @@ class DBStorage:
                 all_objs[key] = obj
         else:
             # If not i query all
-            for item in classes:
+            for item in misc.classes.values():
                 objects = self.__session.query(item)
                 for obj in objects:
                     key = f"{obj.__class__.__name__}.{obj.id}"
