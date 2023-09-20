@@ -85,6 +85,7 @@ class HBNBCommand(cmd.Cmd):
             pass
         finally:
             return line
+
     def postcmd(self, stop, line):
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')

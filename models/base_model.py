@@ -14,6 +14,7 @@ if (storage_engine == "db"):
 else:
     Base = object
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):

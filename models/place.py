@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-class Place(BaseModel):
+
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -21,8 +22,10 @@ class Place(BaseModel):
                            backref="place",
                            cascade="all, delete-orphan",
                            passive_deletes=True)
-    """
+
     def reviews(self):
-        Getter method for reviews.
+        """Getter method for reviews."""
+        from models import storage
         review_objs = storage.all("Review")
-        return [review for review in review_objs.values() if review.place_id == self.id]"""
+        return [review for review in review_objs.values()
+                if review.place_id == self.id]
