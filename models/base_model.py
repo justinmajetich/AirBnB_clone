@@ -60,8 +60,8 @@ class BaseModel(object):
         temp_dict["__class__"] = self.__class__.__name__
         temp_dict["created_at"] = self.created_at.isoformat()
         temp_dict["updated_at"] = self.updated_at.isoformat()
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
+        if "_sa_instance_state" in temp_dict:
+            del temp_dict["_sa_instance_state"]
         return temp_dict
 
     def delete(self):
