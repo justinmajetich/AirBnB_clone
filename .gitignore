@@ -1,0 +1,5 @@
+# Ignoring the pyc folders
+__pycache__/
+
+# Ignoring the storage file
+file.json
