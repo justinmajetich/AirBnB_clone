@@ -6,7 +6,7 @@ from models import storage_type
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    __tablename__ = 'User'
+    __tablename__ = 'users'
 
     if storage_type == "db":
         email = Column(String(128), nullable=False)
