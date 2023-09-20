@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Float, PrimaryKey
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, PrimaryKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+from models.amenity import Amenity
+from models import storage
+from models.review import Review
 
 place_amenity = Table("place_amenity", Base.metadata, 
                                Column('place_id', ForeignKey('place.id'), String(60), 
@@ -48,7 +51,7 @@ class Place(BaseModel, Base):
         def reviews(self):
             """ returns the list of Review instances """
             reviews_list = []
-            all_reviews = models.storage.all(Review)
+            all_reviews = storage.all(Review)
             for review in all_reviews.values():
                 if review.place_id == self.id:
                     reviews_list.append(review)
@@ -57,7 +60,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """returns the list of Amenity instances based on the attribute amenity_ids"""
             amenities_list = []
-            all_amenities = models.storage.all(Amenity)
+            all_amenities = storage.all(Amenity)
             for amenity in all_amenities.values():
                 if amenity.place_id == self.id:
                     amenities_list.append(amenity)
