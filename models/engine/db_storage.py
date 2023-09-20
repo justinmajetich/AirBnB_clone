@@ -53,7 +53,7 @@ class DBStorage:
         for obj in query_objs:
             class_name = obj.__class__.__name__
             key_name = f"{class_name}.{obj.id}"
-            result[key_name] = obj
+            objects[key_name] = obj
 
         return objects
 

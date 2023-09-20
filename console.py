@@ -190,7 +190,7 @@ class HBNBCommand(cmd.Cmd):
             # attr_dict[key] = value
 
         # new_instance = HBNBCommand.classes[class_name](**attr_dict)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
