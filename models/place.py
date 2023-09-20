@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -22,8 +23,8 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place")
     amenities = relationship("Amenity", secondary="place_amenity",
-    backref="place_amenities",
-    viewonly=False)
+                             backref="place_amenities",
+                             viewonly=False)
 
     if models.storage_t != 'db':
         @property
