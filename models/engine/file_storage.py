@@ -58,9 +58,5 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ Deletes __objects if they are found."""
-        # for key, val in FileStorage.__objects.items():
-        #     if val.id == obj.id:
-        del (self.all()[obj.to_dict()['__class__'] + '.' + obj.id])
-        # print("here")
-        # print(obj.__class__)
-        # if self.all().__contains__(obj):
+        if obj is not None:
+            del (self.all()[obj.to_dict()['__class__'] + '.' + obj.id])
