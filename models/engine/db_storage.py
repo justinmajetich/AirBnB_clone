@@ -37,7 +37,8 @@ class DBStorage:
     def all(self, cls=None):
         """Get all object of specific class or all classes"""
 
-        allCls = [State, City, User]
+        allCls = [State, City, Place]
+
         output = {}
         if cls is None:
             for unit_cls in allCls:
