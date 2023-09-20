@@ -7,7 +7,6 @@ from models.engine.file_storage import FileStorage
 
 if 'db' == getenv('HBNB_TYPE_STORAGE'):
     storage = DBStorage()
-    storage.reload()
 else:
     storage = FileStorage()
-    storage.reload()
+storage.reload()

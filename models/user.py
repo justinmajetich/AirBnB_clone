@@ -21,10 +21,11 @@ class User(BaseModel, Base):
                             nullable=True)
         last_name = Column(String(128),
                            nullable=True)
-        """
         places = relationship("Place",
                               backref="user",
                               cascade="all, delete-orphan")
+        """
+        places = relationship("Place", backref="user")
         reviews = relationship("Review",
                                backref="user",
                                cascade="all, delete-orphan")
