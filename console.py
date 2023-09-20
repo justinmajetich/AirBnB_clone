@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -380,6 +380,45 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     setattr(obj, args_list[2], self.parse_value(args_list[3]))
                 obj.save()
+    # def do_update(self, args):
+    #     '''
+    #         Update an instance based on the class name and id
+    #         sent as args.
+    #     '''
+    #     #
+    #     storage.reload()
+    #     args = shlex.split(args)
+    #     if len(args) == 0:
+    #         print("** class name missing **")
+    #         return
+    #     elif len(args) == 1:
+    #         print("** instance id missing **")
+    #         return
+    #     elif len(args) == 2:
+    #         print("** attribute name missing **")
+    #         return
+    #     elif len(args) == 3:
+    #         print("** value missing **")
+    #         return
+    #     try:
+    #         eval(args[0])
+    #     except NameError:
+    #         print("** class doesn't exist **")
+    #         return
+    #     key = args[0] + "." + args[1]
+    #     obj_dict = models.storage.all()
+    #     try:
+    #         obj_value = obj_dict[key]
+    #     except KeyError:
+    #         print("** no instance found **")
+    #         return
+    #     try:
+    #         attr_type = type(getattr(obj_value, args[2]))
+    #         args[3] = attr_type(args[3])
+    #     except AttributeError:
+    #         pass
+    #     setattr(obj_value, args[2], args[3])
+    #     obj_value.save()
 
     def help_update(self):
         """ Help information for the update class """
