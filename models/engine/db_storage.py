@@ -10,10 +10,14 @@ from models.city import City
 from models.review import Review
 from models.place import Place
 from models.user import User
+from sqlalchemy import text
 import sqlalchemy
 from os import getenv
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class DBStorage:
     """
@@ -29,9 +33,9 @@ class DBStorage:
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = getenv('HBNB_MY_DB')
+        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(HBNB_MYSQL_USER,HBNB_MYSQL_PWD,HBNB_MYSQL_HOST,HBNB_MYSQL_DB), pool_pre_ping=True)
+        self.__engine = create_engine("mysql://{}:{}@{}/{}".format(HBNB_MYSQL_USER,HBNB_MYSQL_PWD,HBNB_MYSQL_HOST,HBNB_MYSQL_DB), pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -39,20 +43,7 @@ class DBStorage:
         """
         retrieve all obj in the db
         """
-        my_dict = {}
-        if cls is None:
-            objects = self.__session.query().all()
-            for obj in objects:
-                name = obj.__class__.__name__
-                key = name + "." + obj.id
-                my_dict[key] = obj
-        return my_dict
-        objects = self.__session.query(cls).all()
-        for obj in objects:
-            name = obj.__class__.__name__
-            key = name + "." + obj.id
-            my_dict[key] = obj
-        return my_dict
+        pass
 
     def new(self, obj):
         '''
