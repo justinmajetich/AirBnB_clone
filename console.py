@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
             if value is None:
                 continue
             else:
-                seattr(new_instance, key, value)
+                setattr(new_instance, key, value)
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
