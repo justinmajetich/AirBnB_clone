@@ -10,15 +10,15 @@ import os
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
-    if (os.getenv(HBNB_TYPE_STORAGE) == 'db'):
+    if (os.getenv("HBNB_TYPE_STORAGE") == 'db'):
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
         reviews = relationship(
-            "Reviews", cascade='all, delete' backref='user')
+            "Reviews", cascade='all, delete', backref='user')
         places = relationship(
-                'Place', backerf='users', cascade='all, delete, delete-orphan')
+                'Place', backref='users', cascade='all, delete, delete-orphan')
     else:
         email = ''
         password = ''
