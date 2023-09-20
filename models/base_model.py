@@ -7,9 +7,9 @@ from datetime import datetime
 import sqlalchemy
 from sqlalchemy import String, Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from . import storage_type
+import models
 
-if storage_type == 'db':
+if models.storage_type == 'db':
     Base = declarative_base()
 else:
     Base = object
@@ -18,7 +18,7 @@ class BaseModel:
     """
     A base class for all hbnb models
     """
-    if storage_type == 'db':
+    if models.storage_type == 'db':
         id = Column(String(60), primary_key=True, nullable=False)
         created_at = Column(DateTime,
                             default=datetime.now(),
@@ -56,8 +56,8 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -76,4 +76,4 @@ class BaseModel:
         deleting an obj from
         storage
         """
-        storage.delete(self)
+        models.storage.delete(self)

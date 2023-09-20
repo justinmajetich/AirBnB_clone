@@ -146,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
         new_dict = self.parser(args)
         new_obj = HBNBCommand.classes[args.split()[0]]()
         new_obj.addAttribute(**new_dict)
-        storage.save()
+        new_obj.save()
         print(new_obj.id)
 
     def help_create(self):
