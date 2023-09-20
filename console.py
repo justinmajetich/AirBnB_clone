@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 y, z = x.split("=")
                 ex_arg[y] = z.strip('"')
         # print(ex_arg)
-        
+
         if not cls_name:
             print("** class name missing **")
             return
