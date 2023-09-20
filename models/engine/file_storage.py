@@ -20,10 +20,12 @@ class FileStorage:
         myDict = {}
         if (cls is None):
             return FileStorage.__objects
+        
         else:
             for key, value in FileStorage.__objects.items():
+                argClass = str(cls).split(".")[2]
                 className = key.split(".")
-                if (cls == className[0]):
+                if (argClass[:-2] == className[0]):
                     myDict[key] = value
             return (myDict)
 
@@ -63,10 +65,11 @@ class FileStorage:
         delete obj from __objects
         """
         if obj is not None:
-            for key, value in FileStorage.__objects.items():
+            myDict = dict(FileStorage.__objects)
+            for key, value in myDict.items():
                 if value == obj:
                     del (value)
                     del (FileStorage.__objects[key])
-            FileStorage.save()
+            self.save()
         else:
             pass
