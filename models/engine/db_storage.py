@@ -65,6 +65,6 @@ class DBStorage:
     def reload(self):
         """A method that reloads a session. saves all the tables
         and it uses scoped session"""
-        models.Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
