@@ -1,8 +1,8 @@
 import os
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
-from models.base_model import Base
-from models.user import User
+from models.base_model import Base  # Import the Base class first
+from models.user import User  # Import the User class after Base and before the other models
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
