@@ -28,7 +28,18 @@ class DBStorage:
         """
         create a DBStorage instance
         """
-        self.__engine = create_engine()
+        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
+        HBNB_MSQL_PWD = getenv('HBNB_MYSQL_PWD')
+        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
+        HBNB_MYSQL_DB = getenv('HBNB_MY_DB')
+        HBNB_ENV = getenv('HBNB_ENV')
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(HBNB_MYSQL_USER,
+                                             HBNB_MYSQL_PWD,
+                                             HBNB_MYSQL_HOST,
+                                             HBNB_MYSQL_DB))
+        if HBNB_ENV = "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
@@ -75,7 +86,10 @@ class DBStorage:
             reloading the objs from
             the db
             """
-            pass
+            Base.metadata.create_all(self.__engine)
+            fact = sessionmaker(bind=self.__engine, expire_on_commit=False)
+            Session = scoped_session(fact)
+            self.__session = Session
 
         def close(self):
             """
