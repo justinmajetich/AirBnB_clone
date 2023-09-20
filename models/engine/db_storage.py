@@ -1,6 +1,7 @@
 import os
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -26,8 +27,8 @@ class DBStorage:
             pool_pre_ping=True,
         )
         if os.getenv("HBNB_ENV") == "test":
-            models.Base.metadata.drop_all(self.__engine)
-        models.Base.metadata.create_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(
             sessionmaker(bind=self.__engine, expire_on_commit=False))
 
