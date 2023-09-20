@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             temp2 = temp[2].split(" ")
             for x in temp2:
                 y, z = x.split("=")
-                ex_arg[y] = z
+                ex_arg[y] = z.strip('"')
         # print(ex_arg)
         if not cls_name:
             print("** class name missing **")
