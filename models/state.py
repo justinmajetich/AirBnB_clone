@@ -26,5 +26,5 @@ class State(BaseModel, Base):
             myDict = storage.all(City)
             for key, value in myDict.items():
                 if value.state_id = self.id:
-                    myDict.append(value)
-            return (myDict)
+                    myList.append(value)
+            return (myList)
