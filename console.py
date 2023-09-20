@@ -128,18 +128,25 @@ class HBNBCommand(cmd.Cmd):
         temp = args.partition(" ")
         cls_name = temp[0]
         ex_arg = {}
-        if temp[2]:
-            temp2 = temp[2].split(" ")
-            for x in temp2:
-                y, z = x.split("=")
-                ex_arg[y] = z
-        # print(ex_arg)
+
         if not cls_name:
             print("** class name missing **")
             return
         elif cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        if temp[2]:
+            temp2 = temp[2].split(" ")
+            for x in temp2:
+                parts = x.split("=")
+                if len(parts) == 2:
+                    key, value = parts
+                    ex_arg[key] = value
+                else:
+                    print(f"Invalid argument: {x}")
+                #y, z = x.split("=")
+                #ex_arg[y] = z
+        # print(ex_arg)
         new_instance = HBNBCommand.classes[cls_name]()
         if ex_arg:
             for arg, value in ex_arg.items():
@@ -147,7 +154,6 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_instance, arg, value)
         new_instance.save()
         print(new_instance.id)
-        new_instance.save()
 
     def help_create(self):
         """Help information for the create method"""
