@@ -10,8 +10,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
 
-
 timeformate = "%Y-%m-%dT%H:%M:%S.%f"
+
+if getenv("HBNB_TYPE_STORAGE") == 'db':
+    Base = declarative_base()
+else:
+    Base = object
+
 
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
@@ -31,10 +36,12 @@ class BaseModel:
                 continue
             setattr(self, key, value)
             if type(self.created_at) is str:
-                self.created_at = datetime.strptime(self.created_at, timeformate
+                self.created_at = datetime.strptime(
+                    self.created_at,timeformate
             )
             if type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(self.updated_at, timeformate
+                self.updated_at = datetime.strptime(
+                    self.updated_at, timeformate
             )
 
     def __str__(self):
@@ -46,8 +53,8 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
