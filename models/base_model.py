@@ -12,7 +12,7 @@ from . import storage_type
 if storage_type == 'db':
     Base = declarative_base()
 else:
-    Base = obj
+    Base = object
 
 class BaseModel:
     """
