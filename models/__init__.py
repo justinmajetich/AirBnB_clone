@@ -15,7 +15,7 @@ classes = {"User": User, "BaseModel": BaseModel,
            "Review": Review}
 
 if (os.getenv("HBNB_TYPE_STORAGE") == 'db'):
-    from models.engine import file_storage
+    from models.engine import db_storage
     storage = db_storage.DBStorage()
     storage.reload()
 else:

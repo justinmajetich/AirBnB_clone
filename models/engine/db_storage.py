@@ -28,7 +28,7 @@ class DBStorage:
         create/initialize the engine
         """
         conn = "mysql+mysqldb://{}:{}@{}:3306/{}"
-        __engine = create_engine(conn.format(
+        self.__engine = create_engine(conn.format(
                                             os.getenv("HBNB_MYSQL_USER"),
                                             os.getenv("HBNB_MYSQL_PWD"),
                                             os.getenv("HBNB_MYSQL_HOST"),
@@ -51,9 +51,9 @@ class DBStorage:
         else:
             for key, value in classes.items():
                 if (key != "BaseModel"):
-                    queryData = self.session.query(value).all()
+                    queryData = self.__session.query(value).all()
                     if (queryData):
-                        for (data in queryData):
+                        for data in queryData:
                             key = "{}.{}".format(data.__class__.__name__, data.id)
                             myDict[key] = data
             return myDict
