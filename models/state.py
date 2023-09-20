@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel
-from sqlalchemy import Column String Foreignkey
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from models.__init__ import storage_type
+from models import storage_type
 
 
 class State(BaseModel, Base):
@@ -14,7 +14,7 @@ class State(BaseModel, Base):
     if storage_type == 'db':
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
-        cities = relationsip("City", backref="state")
+        cities = relationship("City", backref="state")
     else:
         name = ""
 

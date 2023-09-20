@@ -7,9 +7,12 @@ from datetime import datetime
 import sqlalchemy
 from sqlalchemy import String, Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from models.__init__ import storage, storage_type
+from . import storage_type
 
-Base = declarative_base()
+if storage_type == 'db':
+    Base = declarative_base()
+else:
+    Base = obj
 
 class BaseModel:
     """
@@ -20,7 +23,7 @@ class BaseModel:
         created_at = Column(DateTime,
                             default=datetime.now(),
                             nullable=False)
-        updated_at = Column(Datetime,
+        updated_at = Column(DateTime,
                             default=datetime.now(),
                             nullable=False)
 
