@@ -24,9 +24,10 @@ class FileStorage:
         else:
             for key, value in FileStorage.__objects.items():
                 className = key.split(".")
-                if (className[0] == cls):
+                if (cls == className[0]):
                     myDict[key] = value
             return (myDict)
+
 
     def new(self, obj):
         """Adds new object to storage dictionary"""

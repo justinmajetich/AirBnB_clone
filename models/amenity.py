@@ -7,8 +7,10 @@ from sqlalchemy.orm import relationship
 
 
 class Amenity(BaseModel, Base):
-    " The amenity class represents the object in each place
-    like wifi, toilet, swimming etc"
+    """
+    The amenity class represents the object in each place
+    like wifi, toilet, swimming etc
+    """
 
     __tablename__ = 'amenities'
 

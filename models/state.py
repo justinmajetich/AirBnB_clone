@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models import storage
+import models
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 import os
@@ -23,8 +23,8 @@ class State(BaseModel, Base):
             City.state_id == State.id
             """
             myList = []
-            myDict = storage.all(City)
+            myDict = models.storage.all(City)
             for key, value in myDict.items():
-                if value.state_id = self.id:
-                    myDict.append(value)
-            return (myDict)
+                if (value.state_id == self.id):
+                    myList.append(value)
+            return (myList)
