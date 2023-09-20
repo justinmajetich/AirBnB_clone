@@ -331,8 +331,8 @@ class HBNBCommand(cmd.Cmd):
         return list(command.split(" "))
 
     @classmethod
-    def build_dict(cls,cmd_list):
-        cmd_dict = {'created_at':datetime.now().isoformat()}
+    def build_dict(cls, cmd_list):
+        cmd_dict = {'created_at': datetime.now().isoformat()}
         cmd_dict['updated_at'] = cmd_dict['created_at']
         cmd_dict['id'] = str(uuid.uuid4())
         for elem in cmd_list:
@@ -344,14 +344,15 @@ class HBNBCommand(cmd.Cmd):
     def sanitize_inpt(args):
         print(args)
         if args[0] == '"':
-            args = args.replace('"','')
-            args = args.replace('_',' ')
-        elif re.search("\d+\.\d*", args):
+            args = args.replace('"', '')
+            args = args.replace('_', ' ')
+        elif re.search(r"\d+\.\d*", args):
             args = float(args)
         else:
             args = int(args)
         print(args)
         return args
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
