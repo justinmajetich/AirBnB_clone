@@ -16,7 +16,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently"""
+        """Returns a dictionary of models currently in storage"""
         if cls:
             if type(cls) == str:
                 cls = eval(cls)
@@ -28,11 +28,11 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """Provides a new instance of a class"""
+        """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Provides a save method for a class"""
+        """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -40,19 +40,14 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
-    def delete(self, obj=None):
-        """Allows to delete objects from the database"""
-        if obj is not None:
-            key = obj.to_dict()['__class__'] + '.' + obj.id
-            self.all().pop(key, None)
-
     def reload(self):
-        """Allows reload of the database"""
+        """Loads storage dictionary from file"""
+
         classes = {
-            'BaseModel': BaseModel,
-            'User': User, 'Place': Place, 'State': State,
-            'City': City, 'Amenity': Amenity, 'Review': Review
-        }
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -69,7 +64,7 @@ class FileStorage:
             del self.__objects[key]
 
     def close(self):
-        """
-        It is important to close the file
+        """Calls reload method for deserializing
+        the JSON file to objects
         """
         self.reload()
