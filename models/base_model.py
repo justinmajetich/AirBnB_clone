@@ -8,16 +8,31 @@ import uuid
 
 Base = declarative_base()
 
+
 class BaseModel:
-    """Represents the BaseModel class.
+    """the BaseMode Model.
     Attributes:
-        id (str): The UUID of the BaseModel.
-        created_at (datetime): The creation date of the BaseModel.
-        updated_at (datetime): The last update date of the BaseModel.
+        id: id of the BaseModel.
+        created_at: creation date of the BaseModel.
+        updated_at: update date of the BaseModel.
     """
-    id = Column(String(60), nullable=False, unique=True, primary_key=True, default=str(uuid.uuid4()))
+    id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+
+    def __init__(self, *args, **kwargs):
+        """The model initialization"""
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key in ["created_at", "updated_at"]:
+                    date = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, key, date)
+
+                elif key != "__class__":
+                    setattr(self, key, value)
 
     def save(self):
         """Updates updated_at with the current datetime."""
@@ -31,12 +46,13 @@ class BaseModel:
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values of __dict__ of the instance."""
-        new_dict = dict(self.__dict__)
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
-        new_dict["created_at"] = new_dict["created_at"].isoformat()
-        new_dict["updated_at"] = new_dict["updated_at"].isoformat()
-        return new_dict
+        dictionary = dict(self.__dict__)
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
+        dictionary["created_at"] = dictionary["created_at"].isoformat()
+        dictionary["updated_at"] = dictionary["updated_at"].isoformat()
+
+        return dictionary
 
     def __str__(self):
         """Returns a string representation of the instance."""

@@ -1,22 +1,21 @@
-i#!/usr/bin/python3
+#!/usr/bin/python3
 """This script defines the Review class."""
 from models.base_model import Base
 from models.base_model import BaseModel
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 class Review(BaseModel, Base):
-    """Represents a review in a MySQL database.
-
-    Inherits from SQLAlchemy Base and is linked to the MySQL table 'reviews'.
-
-    Attributes:
-        __tablename__ (str): The name of the MySQL table for storing reviews.
-        text (sqlalchemy String): The review description.
-        place_id (sqlalchemy String): The ID of the place associated with the review.
-        user_id (sqlalchemy String): The ID of the user who made the review.
+    """
+        This is the review model.
+        Inherits:
+            BasemMdel
+            Base
+        Attributes:
+            __tablename__: The name of the MySQL table for storing reviews.
+        text: review description.
+        place_id: id place, relatinship place
+        user_id: id user, relationship user
     """
     __tablename__ = "reviews"
     text = Column(String(1024), nullable=False)

@@ -4,18 +4,21 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
+
 class User(BaseModel, Base):
-    """Represents a user for a database.
+    """
+        This is the class modele
+        Inherits:
+                BAseModel
+                Base
 
-    Inherits from SQLAlchemy Base and links to the MySQL table users.
-
-    Attributes:
-        __tablename__ (str): The name of the MySQL table to store users.
-        places (sqlalchemy relationship): The places owned by the user.
-        email (sqlalchemy String): The user's email.
-        password (sqlalchemy String): The user's password.
-        first_name (sqlalchemy String): The user's first name.
-        last_name (sqlalchemy String): The user's last name.
+        Attributes:
+            __tablename__: table name in the database
+            places: user's  places, relationship with place
+            email: user's email.
+            password: user's password.
+            first_name: user's first name.
+        last_name: user's last name.
     """
     __tablename__ = "users"
     places = relationship("Place", backref="user", cascade="all, delete-orphan")
