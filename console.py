@@ -118,8 +118,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, cmdline):
-        """Usage: create <Class name> <param 1> <param 2> <param 3>...
-        Where param syntax: <key name>=<value>"""
+        """Creation of an object of any class with diff parameters"""
         ignored_att = ('__class__', 'id', 'created_at', 'updated_at')
         class_name = ''
         # Name pattern must match all requirements a-z or with _ or digits
@@ -182,6 +181,40 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("Usage: create <Class name> <param 1> <param 2> <param 3>...")
+        print("\tWhere Param syntax: <key name>=\"<value>\"")
+
+    def do_show(self, args):
+        """ Method to show an individual object """
+        new = args.partition(" ")
+        c_name = new[0]
+        c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+
+        if c_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        if not c_id:
+            print("** instance id missing **")
+            return
+
+        key = c_name + "." + c_id
+        try:
+            print(storage._FileStorage__objects[key])
+        except KeyError:
+            print("** no instance found **")
 
     def help_show(self):
         """ Help information for the show command """
