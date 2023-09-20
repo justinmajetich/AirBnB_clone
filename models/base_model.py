@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlachemy.orm import DeclarativeBase, Mapped
+from sqlalchemy.orm import declarative_base, Mapped
 
 Base = declarative_base()
 class BaseModel:
