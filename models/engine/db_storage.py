@@ -1,14 +1,13 @@
 import os
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
-from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-
+import models
 
 class DBStorage:
     """engine DBStorage connecting to MysqlAlchemy"""
@@ -27,8 +26,8 @@ class DBStorage:
             pool_pre_ping=True,
         )
         if os.getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
-        Base.metadata.create_all(self.__engine)
+            models.Base.metadata.drop_all(self.__engine)
+        models.Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(
             sessionmaker(bind=self.__engine, expire_on_commit=False))
 
@@ -65,6 +64,6 @@ class DBStorage:
     def reload(self):
         """A method that reloads a session. saves all the tables
         and it uses scoped session"""
-        Base.metadata.create_all(self.__engine)
+        models.Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
