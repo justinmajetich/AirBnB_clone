@@ -13,7 +13,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import Base
 
 
-
 class DBStorage:
     """ create the table for env"""
     __engine = None
@@ -54,8 +53,10 @@ class DBStorage:
         return (dic)
 
     def new(self, obj):
+
         """add a new element in the table
         """
+
         self.__session.add(obj)
 
     def save(self):
