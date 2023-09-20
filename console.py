@@ -138,14 +138,8 @@ class HBNBCommand(cmd.Cmd):
         if temp[2]:
             temp2 = temp[2].split(" ")
             for x in temp2:
-                parts = x.split("=")
-                if len(parts) == 2:
-                    key, value = parts
-                    ex_arg[key] = value
-                else:
-                    print(f"Invalid argument: {x}")
-                #y, z = x.split("=")
-                #ex_arg[y] = z
+                y, z = x.split("=")
+                ex_arg[y] = z.strip('"')
         # print(ex_arg)
         new_instance = HBNBCommand.classes[cls_name]()
         if ex_arg:
