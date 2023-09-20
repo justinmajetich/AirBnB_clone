@@ -38,6 +38,7 @@ class DBStorage:
         """Get all object of specific class or all classes"""
 
         allCls = [State, City, Place]
+
         output = {}
         if cls is None:
             for unit_cls in allCls:
