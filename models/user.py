@@ -12,5 +12,5 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
-    places = relationship("Place", backref="user", cascade="all, delete, delete_orphan")
-    reviews = relationship("Review", backref="user", cascade="all, delete, delete_orphan")
+    places = relationship("Place", backref="user", cascade="all, delete")
+    reviews = relationship("Review", backref="user", cascade="all, delete")
