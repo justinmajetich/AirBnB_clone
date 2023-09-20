@@ -17,5 +17,6 @@ class test_Amenity(test_basemodel):
     def test_name2(self):
         """ """
         new = self.value()
-        self.assertEqual(type(new.name), str if
-                            os.getenv("HBNB_TYPE_STORAGE") == "db" else None)
+        self.assertEqual(type(new.name), str if os.getenv(
+            "HBNB_TYPE_STORAGE") == "db" else None
+        )
