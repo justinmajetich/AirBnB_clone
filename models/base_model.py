@@ -3,7 +3,6 @@
 
 import uuid
 import models
-from models import storage
 from os import getenv
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -51,7 +50,7 @@ class BaseModel:
 
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """Updates updated_at with current time when instance is changed"""        
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
