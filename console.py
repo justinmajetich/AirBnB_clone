@@ -128,8 +128,9 @@ class HBNBCommand(cmd.Cmd):
         
         if len(arg_list) > 1:
             for param in arg_list[1:]:
+                print(param)
                 key, val = param.split('=')
-                if val[0] == '"':
+                if val[0] == '"' and val[-1] == '"':
                     val.replace("_", " ")
                     arg_dic.update({key: val.strip('"')})
                 elif val.find(".") != -1 and val.replace(".", "", 1).isdigit():
