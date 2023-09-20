@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer
+from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -16,8 +17,8 @@ class Place(BaseModel, Base):
     number_bathrooms = Column(Integer, nullable=False, default=0)
     max_guest = Column(Integer, nullable=False, default=0)
     price_by_night = Column(Integer, nullable=False, default=0)
-    latitude = Column(float, nullable=True)
-    longitude = Column(float, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
     reviews = relationship("Review",
                            backref="place",
                            cascade="all, delete-orphan",

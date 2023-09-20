@@ -9,6 +9,7 @@ import models
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
     name = Column(String(128), nullable=False)
     cities = relationship("City",
                           backref="state",
