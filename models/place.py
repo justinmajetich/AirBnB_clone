@@ -5,7 +5,6 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 import os
 from sqlalchemy.orm import relationship
 from models import storage
-from models.amenity import Amenity
 
 
 storageType = os.environ.get('HBNB_TYPE_STORAGE')
@@ -104,6 +103,7 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, inst=None):
+            from models.amenity import Amenity
             """amenities setter attribute function"""
             if inst.__class__ == Amenity:
                 self.amenity_ids.append(Amenity.id)
