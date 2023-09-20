@@ -129,18 +129,20 @@ class HBNBCommand(cmd.Cmd):
         cls_name = temp[0]
         ex_arg = {}
 
-        if not cls_name:
-            print("** class name missing **")
-            return
-        elif cls_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
         if temp[2]:
             temp2 = temp[2].split(" ")
             for x in temp2:
                 y, z = x.split("=")
                 ex_arg[y] = z.strip('"')
         # print(ex_arg)
+        
+        if not cls_name:
+            print("** class name missing **")
+            return
+        elif cls_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
         new_instance = HBNBCommand.classes[cls_name]()
         if ex_arg:
             for arg, value in ex_arg.items():
