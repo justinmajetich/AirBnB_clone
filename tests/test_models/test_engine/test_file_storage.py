@@ -7,7 +7,7 @@ from models import storage
 import os
 
 
-class test_fileStorage(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
@@ -31,10 +31,10 @@ class test_fileStorage(unittest.TestCase):
 
     def test_new(self):
         """ New object is correctly added to __objects """
-        new = BaseModel()
-        for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
+        obj = BaseModel()
+        obj_key = type(obj).__name__ + "." + obj.id
+        storage.new(obj)
+        self.assertIn(obj_key, storage.all())
 
     def test_all(self):
         """ __objects is properly returned """
@@ -58,9 +58,7 @@ class test_fileStorage(unittest.TestCase):
     def test_empty(self):
         """ Data is saved to file """
         new = BaseModel()
-        thing = new.to_dict()
         new.save()
-        new2 = BaseModel(**thing)
         self.assertNotEqual(os.path.getsize('file.json'), 0)
 
     def test_save(self):
@@ -72,11 +70,10 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
-        storage.save()
+        BaseModel.save(new)
         storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+        self.assertEqual(new.to_dict(),
+                         list(storage.all(BaseModel).values())[0].to_dict())
 
     def test_reload_empty(self):
         """ Load from an empty file """
@@ -107,20 +104,20 @@ class test_fileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+        new.save()
+        self.assertIn('BaseModel' + '.' + _id,
+                      storage.all())
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
     def test_del(self):
         """ Test delete method for FileStorage object """
-        accra = State(name="accra")
-        tema = State(name="tema")
+        accra = State()
+        tema = State()
+        accra.save(), tema.save()
         self.assertEqual(len(storage.all(State).keys()), 2)
         storage.delete(tema)
         self.assertEqual(len(storage.all(State).keys()), 1)
