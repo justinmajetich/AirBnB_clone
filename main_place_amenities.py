@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Test link Many-To-Many Place <> Amenity
 """
-import os
+import models
 from models import storage
 from models.state import State
 from models.city import City

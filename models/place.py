@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+import models
+import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
-import models
-import shlex
+
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
     place_amenity = Table("place_amenity", Base.metadata,
@@ -32,17 +33,13 @@ class Place(BaseModel, Base):
         number_bathrooms = Column(Integer, nullable=False, default=0)
         max_guest = Column(Integer, nullable=False, default=0)
         price_by_night = Column(Integer, nullable=False, default=0)
-        latitude = Column(Float)
-        longitude = Column(Float)
-        amenity_ids = []
-
-  
-        reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                               backref="place")
-
-        amenities = relationship("Amenity", secondary=place_amenity,
+        latitude = Column(Float, nullable=True)
+        longitude = Column(Float, nullable=True)
+        reviews = relationship("Review", cascade="all, delete, delete-orphan",
+                               backref="places")
+        amenities = relationship("Amenity", secondary='place_amenity',
                                  viewonly=False,
-                                 back_populates="place_amenities")
+                                 backref="place_amenities")
     else:
         city_id = ""
         user_id = ""
