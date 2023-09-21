@@ -1,5 +1,5 @@
 <center> <h1>0x02. AirBnB clone - MySQL</h1> </center>
-
+<p> Added SQLdatabase funtionionality to the AirBnB conole(Back_end), more specifically with the use of SQLAlchemy module </p>
 
 ---
 
