@@ -43,7 +43,7 @@ class Place(BaseModel, Base):
         latitude = Column(Float)
         longitude = Column(Float)
         reviews = relationship(
-            "Review", backref="place", cascade="all, delete, delete-orphan"
+            "Review", backref="place"
         )
 
         amenities = relationship(
@@ -76,13 +76,13 @@ class Place(BaseModel, Base):
             return list(filter(lambda review: review.place_id == self.id,
                                reviews))
 
-        # @property
-        # def amenities(self):
-        #     """Getter function for the amenity class"""
-        #     return self.amenity_ids
-        #
-        # @amenities.setter
-        # def amenities(self, obj: Amenity):
-        #     """Setter function for the amenities class"""
-        #     if isinstance(obj, Amenity):
-        #         self.amenity_ids.append(obj.id)
+        @property
+        def amenities(self):
+            """Getter function for the amenity class"""
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj: Amenity):
+            """Setter function for the amenities class"""
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)
