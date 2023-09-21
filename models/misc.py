@@ -6,6 +6,7 @@ from models.city import City
 from models.user import User
 from models.place import Place
 from models.review import Review
+from models.amenity import Amenity
 
 classes = {
     'User': User,
@@ -13,6 +14,7 @@ classes = {
     'Place': Place,
     'Review': Review,
     'State': State,
+    'Amenity': Amenity
 }
 
 DB_NAME = getenv("HBNB_MYSQL_DB")
