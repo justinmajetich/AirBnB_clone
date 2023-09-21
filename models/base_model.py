@@ -45,7 +45,10 @@ class BaseModel:
         models.storage.delete(self)
 
     def to_dict(self):
-        """Returns a dictionary containing all keys/values of __dict__ of the instance."""
+        """
+            Returns a dictionary containing all
+            keys/values of __dict__ of the instance.
+        """
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
@@ -59,5 +62,5 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance."""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
-
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)

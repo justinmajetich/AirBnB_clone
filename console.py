@@ -186,10 +186,6 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 setattr(new_instance, key, value)
 
-
-            # attr_dict[key] = value
-
-        # new_instance = HBNBCommand.classes[class_name](**attr_dict)
         new_instance.save()
         print(new_instance.id)
 

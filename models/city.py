@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
+
 class City(BaseModel, Base):
     """Represents a city for a database.
     Inherits:
@@ -16,7 +17,7 @@ class City(BaseModel, Base):
         state_id: state ID of the city foreign key
     """
     __tablename__ = "cities"
-    places = relationship("Place", backref="cities", cascade="all, delete-orphan")
+    places = relationship("Place", backref="cities",
+                          cascade="all, delete-orphan")
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-

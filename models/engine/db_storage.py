@@ -15,7 +15,7 @@ from models.review import Review
 class DBStorage:
     """
         DBStorage model
-        Attributes: 
+        Attributes:
             __engine
             __session
     """
@@ -79,4 +79,3 @@ class DBStorage:
     def close(self):
         """Closes the SQLAlchemy session."""
         self.__session.remove()
-
