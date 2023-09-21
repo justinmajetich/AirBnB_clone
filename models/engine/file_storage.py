@@ -22,11 +22,11 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
-            class_obj = {}
             for key, value in self.__objects.items():
-                if isinstance(value, cls):
-                    class_obj[key] = value
-            return class_obj
+                parts = key.split('.')
+                classname = parts[0]
+                if cls == classname:
+                    return self.__objects[key]
 
     def new(self, obj):
         """
