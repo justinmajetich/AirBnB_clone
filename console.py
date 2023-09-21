@@ -138,8 +138,8 @@ class HBNBCommand(cmd.Cmd):
                 value = value.replace('"', '\\"')
             elif "_" in value:
                 value = value.replace("_", " ")
-           # elif "." in value:
-                #value = float(value)
+            # elif "." in value:
+                # value = float(value)
             elif value.isdigit():
                 value = int(value)
             setattr(new_instance, key, value)
@@ -230,12 +230,12 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
-            # for k, v in storage._FileStorage__objects.items():
+                # for k, v in storage._FileStorage__objects.items():
                 # if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                print_list.append(str(v))
         else:
             for k, v in storage.all().items():
-            # for k, v in storage._FileStorage__objects.items():
+                # for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
         print(print_list)
