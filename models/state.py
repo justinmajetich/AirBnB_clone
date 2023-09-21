@@ -7,22 +7,23 @@ from os import getenv
 from models.city import City
 
 
-env_strg = getenv('HBNB_TYPE_STORAGE')
+env_strg = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
-    """ State class """
+    """State class"""
 
-    __tablename__ = 'states'
-    if env_strg == 'db':
+    __tablename__ = "states"
+    if env_strg == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='state', cascade='all, delete')
+        cities = relationship("City", backref="state", cascade="all, delete")
     else:
-        name = ''
+        name = ""
 
         @property
         def cities(self):
             from models import storage
+
             cityStrg = storage.all(City)
             cityList = []
             for city in cityStrg:

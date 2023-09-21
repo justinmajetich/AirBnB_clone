@@ -8,6 +8,7 @@ from models.user import User
 from models.state import State
 from models.city import City
 from models.place import Place
+from models.review import Review
 
 
 usr = getenv("HBNB_MYSQL_USER")
@@ -37,7 +38,7 @@ class DBStorage:
     def all(self, cls=None):
         """Get all object of specific class or all classes"""
 
-        allCls = [State, City, User, Place]
+        allCls = [State, City, User, Place, Review]
         output = {}
         if cls is None:
             for unit_cls in allCls:
