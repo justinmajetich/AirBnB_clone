@@ -2,10 +2,30 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from os import getenv
 from models.review import Review
+from models.amenity import Amenity
 
+
+place_amenity = Table(
+                    "place_amenity",
+                    Base.metadata,
+                    Column(
+                        "place_id",
+                        String(60),
+                        ForeignKey("places.id"),
+                        primary_key=True,
+                        nullable=False
+                        ),
+                    Column(
+                        "amenity_id",
+                        String(60),
+                        ForeignKey("amenities.id"),
+                        primary_key=True,
+                        nullable=False
+                        ),
+                    )
 
 class Place(BaseModel, Base):
     """A place to stay"""
@@ -26,6 +46,12 @@ class Place(BaseModel, Base):
                     "Review",
                     backref="place",
                     cascade="all, delete-orphan")
+        amenities = relationship(
+                    "Amenity",
+                    secondary=place_amenity,
+                    viewonly=False,
+                    back_populates="place_amenities"
+                    )
 
     else:
         city_id = ""
@@ -49,3 +75,20 @@ class Place(BaseModel, Base):
                 if review.id == place_id:
                     reviewList.append(review)
             return reviewList
+
+        @property
+        def amenities(self):
+            from models import storage
+
+            ameniList = []
+            for ameni in storage.all(Amenity):
+                if self.id == ameni.id:
+                    ameniList.append(ameni)
+            return ameniList
+
+        @amenities.setter
+        def amenities(self, ameniObj):
+            from models import storage
+
+            if isinstance(ameniObj, storage.all(Amenity)):
+                self.amenity_ids.append(ameniObj)
