@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """
-            returns the list of Amenity instances based on the attribute 
+            returns the list of Amenity instances based on the attribute
             amenity_ids that contains all Amenity.id linked to the Place
             """
             from models import storage
@@ -75,4 +75,3 @@ class Place(BaseModel, Base):
             if isinstance(obj, Amenity):
                 if obj.id not in self.amenity_ids:
                     self.amenity_ids.append(obj.id)
-
