@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ Console Module """
+
+import re
 import cmd
 import sys
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -10,6 +12,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import os
+import uuid
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,21 +24,21 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb) ', end="")
+            print('(hbnb)')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -87,6 +92,7 @@ class HBNBCommand(cmd.Cmd):
             return line
 
     def postcmd(self, stop, line):
+        """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
@@ -117,33 +123,18 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        arg = args.split(" ")
+        arg = args.split()
         if arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        pair = arg[1:]
-        dict = {}
-        for i in pair:
-            params = i.split("=")
-            if len(params) != 2:
-                continue
-            key, value = params
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    continue
-            dict[key] = value
         new_instance = HBNBCommand.classes[arg[0]]()
-        for attr, value in dict.items():
-            setattr(new_instance, attr, value)
+        for i in range(len(arg) - 1):
+            try:
+                key = arg[i + 1].split('=')[0]
+                val = arg[i + 1].split('=')[1].replace('_', ' ')
+                self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val))
+            except IndexError:
+                pass
         storage.save()
         print(new_instance.id)
 
@@ -227,20 +218,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-            for i, obj_str in enumerate(print_list):
-                print(f"[{obj_str}]", end=", "
-                      if i < len(print_list) - 1 else "")
-            print()
-        else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(eval(args)).items():
                 print_list.append(str(v))
-            for i, obj_str in enumerate(print_list):
-                print(f"[{obj_str}]", end=", "
-                      if i < len(print_list) - 1 else "")
-            print()
+        else:
+            for k, v in storage.all().items():
+                print_list.append(str(v))
+
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -349,7 +333,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    try:
-        HBNBCommand().cmdloop()
-    except KeyboardInterrupt:
-        print("\n\tBye! Bye 🥹")
+    HBNBCommand().cmdloop()
