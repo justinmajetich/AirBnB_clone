@@ -7,6 +7,25 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 from models.amenity import Amenity
 
+place_amenity = Table(
+    "place_amenity",
+    Base.metadata,
+    Column(
+        "place_id",
+        String(60),
+        ForeignKey("places.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+    Column(
+        "amenity_id",
+        String(60),
+        ForeignKey("amenities.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+)
+
 
 class Place(BaseModel, Base):
     """Class for Place Module"""
@@ -26,31 +45,13 @@ class Place(BaseModel, Base):
         reviews = relationship(
             "Review", backref="place", cascade="all, delete, delete-orphan"
         )
-        place_amenity = Table(
-            "place_amenity",
-            Base.metadata,
-            Column(
-                "place_id",
-                String(60),
-                ForeignKey("places.id"),
-                primary_key=True,
-                nullable=False,
-            ),
-            Column(
-                "amenity_id",
-                String(60),
-                ForeignKey("amenities.id"),
-                primary_key=True,
-                nullable=False,
-            ),
-        )
 
         amenities = relationship(
             "Amenity",
             secondary=place_amenity,
-            backref="place",
+            backref="place_amenities",
             viewonly=False,
-            overlaps="place_amenities,amenity",
+            # overlaps="place_amenities,amenity",
         )
     else:
         amenity_ids = []
