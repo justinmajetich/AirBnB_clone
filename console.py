@@ -138,8 +138,8 @@ class HBNBCommand(cmd.Cmd):
                 value = value.replace('"', '\\"')
             elif "_" in value:
                 value = value.replace("_", " ")
-            elif "." in value:
-                value = float(value)
+           # elif "." in value:
+                #value = float(value)
             elif value.isdigit():
                 value = int(value)
             setattr(new_instance, key, value)
