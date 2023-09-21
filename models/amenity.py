@@ -9,8 +9,8 @@ from sqlalchemy.orm import relationship
 class Amenity(BaseModel, Base):
     """Amenity Class"""
 
+    __tablename__ = "amenities"
     if getenv("HBNB_TYPE_STORAGE"):
-        __tablename__ = "amenities"
 
         name = Column(String(128), nullable=False)
 
