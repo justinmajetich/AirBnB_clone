@@ -27,7 +27,7 @@ class User(BaseModel, Base):
 
     else:
         email = ""
-        password = ""
+        _password = ""
         first_name = ""
         last_name = ""
 
@@ -38,9 +38,9 @@ class User(BaseModel, Base):
     @property
     def password(self):
         """returns password"""
-        return self.__password
+        return self._password
     
     @password.setter
     def password(self, value):
         """sets password"""
-        self.__password = value
+        self._password = value
