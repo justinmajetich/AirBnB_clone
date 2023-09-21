@@ -3,23 +3,27 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import os
 
+STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
 
     __tablename__ = "users"
-    id = Column(String(60), primary_key=True, nullable=False, unique=True)
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
-    places = relationship(
-        "Place",
-        backref="user",
-        cascade="all, delete-orphan",
-        passive_deletes=True
-    )
-    reviews = relationship("Review",
-                           backref="user",
-                           cascade="all,delete-orphan")
+    if STORAGE == "db":
+        id = Column(String(60), primary_key=True, nullable=False, unique=True)
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
+        places = relationship('Place', backref='user',
+                          cascade='all, delete-orphan')
+        reviews = relationship('Review', cascade="all, delete,\
+                            delete-orphan", backref='place')
+    else:
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
+
