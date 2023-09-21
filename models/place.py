@@ -54,6 +54,16 @@ class Place(BaseModel, Base):
             # overlaps="place_amenities,amenity",
         )
     else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        longitude = 0.0
         amenity_ids = []
 
         @property
@@ -66,13 +76,13 @@ class Place(BaseModel, Base):
             return list(filter(lambda review: review.place_id == self.id,
                                reviews))
 
-        # @property
-        # def amenities(self):
-        #     """Getter function for the amenity class"""
-        #     return self.amenity_ids
-        #
-        # @amenities.setter
-        # def amenities(self, obj: Amenity):
-        #     """Setter function for the amenities class"""
-        #     if isinstance(obj, Amenity):
-        #         self.amenity_ids.append(obj.id)
+        @property
+        def amenities(self):
+            """Getter function for the amenity class"""
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj: Amenity):
+            """Setter function for the amenities class"""
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)
