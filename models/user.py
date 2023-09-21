@@ -7,27 +7,22 @@ from sqlalchemy import Column, String
 
 
 class User(BaseModel, Base):
-    """This Represents the user basemodel """
-    __tablename__ = 'users'
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        email = Column(String(128),
-                       nullable=False)
-        _password = Column('password',
-                           String(128),
-                           nullable=False)
-        first_name = Column(String(128),
-                            nullable=True)
-        last_name = Column(String(128),
-                           nullable=True)
-        places = relationship("Place",
-                              backref="user",
-                              cascade="all, delete-orphan")
-        """
-        places = relationship("Place", backref="user")
-        reviews = relationship("Review",
-                               backref="user",
-                               cascade="all, delete-orphan")
-        """
+    """This Represents the user basemodel"""
+
+    __tablename__ = "users"
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        email = Column(String(128), nullable=False)
+        _password = Column("password", String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
+        places = relationship(
+                    "Place",
+                    backref="user",
+                    cascade="all, delete-orphan")
+        reviews = relationship(
+                    "Review",
+                    backref="user",
+                    cascade="all, delete-orphan")
     else:
         email = ""
         _password = ""

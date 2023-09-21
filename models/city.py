@@ -4,16 +4,18 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
-env_strg = getenv('HBNB_TYPE_STORAGE')
+
+env_strg = getenv("HBNB_TYPE_STORAGE")
 
 
 class City(BaseModel, Base):
-    """ The city class, contains state ID and name """
-    __tablename__ = 'cities'
+    """The city class, contains state ID and name"""
 
-    if env_strg == 'db':
+    __tablename__ = "cities"
+
+    if env_strg == "db":
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
         places = relationship("Place", backref="cities")
     else:
         name = ""
