@@ -18,8 +18,9 @@ class BaseModel:
             self.created_at = kwargs.get('created_at', datetime.now())
             self.updated_at = kwargs.get('updated_at', datetime.now())
             self.id = kwargs.get('id', str(uuid.uuid4()))
-            if 'class' in kwargs:
-                del kwargs['clas']
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    setattr(self, key, value)
             self.__dict__.update(kwargs)
 
     def __str__(self):
