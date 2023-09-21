@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from models.amenity import Amenity
+from models.review import Review
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
-from models import storage
 from sqlalchemy.orm import relationship
 import os
 
@@ -43,6 +44,7 @@ class Place(BaseModel, Base):
             getter attribute that returns the list of Review
             instances with place_id equals to the current Place.id
             """
+            from models import storage
             reviewss = storage.all(Review)
             review_list = []
             for review in reviewss.values():
@@ -56,6 +58,7 @@ class Place(BaseModel, Base):
             returns the list of Amenity instances based on the attribute 
             amenity_ids that contains all Amenity.id linked to the Place
             """
+            from models import storage
             amenitiess = storage.all(Amenity)
             amenity_list = []
             for amenity in amenitiess.values():
