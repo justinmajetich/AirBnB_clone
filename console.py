@@ -10,10 +10,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import re
-import os
-import uuid
-from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,6 +22,34 @@ class HBNBCommand(cmd.Cmd):
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
+    }
+    valid_keys = {
+        'BaseModel': ['id', 'created_at', 'updated_at'],
+        'User': [
+            'id',
+            'created_at',
+            'updated_at',
+            'email',
+            'password',
+            'first_name',
+            'last_name'],
+        'City': ['id', 'created_at', 'updated_at', 'state_id', 'name'],
+        'State': ['id', 'created_at', 'updated_at', 'name'],
+        'Place': [
+            'id',
+            'created_at'
+            'updated_at',
+            'city_id', 'user_id',
+            'name',
+            'number_rooms',
+            'number_bathrooms',
+            'max_guest',
+            'price_by_night',
+            'latitude',
+            'longitude'],
+        'Amenity': ['id', 'created_at', 'updated_at', 'name'],
+        'Review': ['id', 'created_at', 'updated_at',
+                   'place_id', 'user_id', 'text']
     }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -85,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception:
+        except Exception as mess:
             pass
         finally:
             return line
@@ -117,70 +141,62 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        all_attr = ('id', 'created_at', 'updated_at', '__class__')
-        class_name = ''
-        class_pat = r'(?P<name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
-        class_match = re.match(class_pat, args)
-        objects = {}
-        # find the right Command syntax
-        if class_match is not None:
-            class_name = class_match.group('name')
-            str_param = args[len(class_name):].strip()
-            params = str_param.split(' ')
-            str_pat = r'(?P<t_str>"([^"]|\")*")'
-            fp_pat = r'(?P<t_float>[-+]?\d+\.\d+)'
-            int_pat = r'(?P<t_int>[-+]?\d+)'
-            full_pat = '{}=({}|{}|{})'.format(class_pat, str_pat,
-                                              fp_pat, int_pat)
-            # check syntax of key and value pairs
-            for param in params:
-                param_match = re.fullmatch(full_pat, param)
-                if param_match is not None:
-                    key = param_match.group('name')
-                    str_value = param_match.group('t_str')
-                    fp_value = param_match.group('t_float')
-                    int_value = param_match.group('t_int')
-                    # address the string value syntax
-                    if str_value is not None:
-                        objects[key] = str_value[1:-1].replace('_', ' ')
-                    # address the floating point value syntax
-                    if fp_value is not None:
-                        objects[key] = float(fp_value)
-                    # address the integer value syntax
-                    if int_value is not None:
-                        objects[key] = int(int_value)
+    def parse_value(self, value):
+        """Attempt to cast string to float or int"""
+        is_valid_value = True
+        # A valid string must have a minimum length of 2 characters ""
+        # and must be enclosed within double quotation marks, such as "example"
+        if len(value) >= 2 and value[0] == '"'\
+                and value[len(value) - 1] == '"':
+            value = value[1:-1]
+            value = value.replace("_", " ")
         else:
-            class_name = args
-        if not class_name:
+            try:
+                if "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                is_valid_value = False
+
+        if is_valid_value:
+            return value
+        else:
+            return None
+
+    def do_create(self, line):
+        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+        Create a new class instance with given keys/values and print its id.
+        """
+        try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
+
+            kwargs = {}
+            for i in range(1, len(my_list)):
+                key, value = tuple(my_list[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+
+            if kwargs == {}:
+                obj = eval(my_list[0])()
+            else:
+                obj = eval(my_list[0])(**kwargs)
+                storage.new(obj)
+            print(obj.id)
+            obj.save()
+
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif class_name not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-        # save parsed objects using mysqldb'
-        if os.getenv("HBNB_TYPE_STORAGE") == 'db':
-            if not hasattr(objects, 'id'):
-                objects['id'] = str(uuid.uuid4())
-
-            if not hasattr(objects, 'created_at'):
-                objects['created_at'] = str(datetime.now())
-
-            if not hasattr(objects, 'updated_at'):
-                objects['updated_at'] = str(datetime.now())
-            # save to db storage
-            new_attr = HBNBCommand.classes[class_name](**objects)
-            new_attr.save()
-            print(new_attr.id)
-        else:
-            # save to filestorage
-            new_attr = HBNBCommand.classes[class_name]()
-            for key, value in objects.items():
-                if key not in all_attr:
-                    setattr(new_attr, key, value)
-            new_attr.save()
-            print(new_attr.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -211,7 +227,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage.all()[key])
+            print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -243,7 +259,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            storage.delete(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -262,11 +278,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -279,7 +295,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage.all().items():
+        for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
