@@ -12,16 +12,19 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+
 @app.route('/states_list', strict_slashes=False)
 def statesList():
     """ A function that lists all states records """
-    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
-    return render_template('7-states_list.html', states=states)
+    data = sorted(list(storage.all("State").values()), key=lambda x: x.name)
+
+    return render_template('7-states_list.html', states=data)
+
 
 @app.teardown_appcontext
-def teardown_bg(exception):
-    storage.close()
+def close_db(exception):
 
+    storage.close()
 
 
 if __name__ == '__main__':
