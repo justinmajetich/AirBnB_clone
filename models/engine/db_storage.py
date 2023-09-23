@@ -49,8 +49,8 @@ class DBStorage:
         '''
         add a new obj to th db
         '''
-        self.__session().add(obj)
-        self.__session.commit()
+        self.__session.add(obj)
+        #self.__session.commit()
 
     def save(self):
         '''
