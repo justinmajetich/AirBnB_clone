@@ -10,13 +10,11 @@ from models.city import City
 from models.review import Review
 from models.place import Place
 from models.user import User
-from sqlalchemy import text
-import sqlalchemy
 from os import getenv
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {"State": State, "City": City}
+classes = {"State": State, "City": City, "User": User}
 
 class DBStorage:
     """
