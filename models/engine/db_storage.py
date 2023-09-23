@@ -16,8 +16,7 @@ from os import getenv
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+classes = {"State": State, "City": City}
 
 class DBStorage:
     """
@@ -43,7 +42,21 @@ class DBStorage:
         """
         retrieve all obj in the db
         """
-        pass
+        my_dict = {}
+        objs = []
+        if cls is None:
+            for cl in classes.values():
+                objs += self.__session.query(cl).all()
+            for obj in objs:
+                key = obj.__class__.name + "." + obj.id
+                my_dict[key] = obj
+            return my_dict
+        else:
+            objs = self.__session.query(cls).all
+            for obj in objs:
+                key = obj.__class__.__name__ + "." + obj.id
+                my_dict[key] = obj
+            return my_dict
 
     def new(self, obj):
         '''
