@@ -21,9 +21,13 @@ def statesList():
     return render_template('7-states_list.html', states=data)
 
 
+@app.route('/hbnb_filters', strict_slashes=False)
+def page6():
+    """ display a HTML page like 6-index.html """
+    return render_template('10-hbnb_filters.html')
+
 @app.teardown_appcontext
 def close_db(exception):
-
     storage.close()
 
 
