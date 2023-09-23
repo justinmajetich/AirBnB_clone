@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             key = ele.split('=')[0]
             value = ele.split('=')[1]
             if "_" in value:
-                value = value.replace('_', ' ')
+                value.replace('_', ' ')
             try:
                 value = int(value)
             except Exception:
