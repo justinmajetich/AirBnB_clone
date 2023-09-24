@@ -28,7 +28,7 @@ def display_html(id=None):
                                items=dict_to_html)
 
     v = "State.{}".format(id)
-    if  v in states:
+    if v in states:
         return render_template('9-states.html',
                                Table="State: {}".format(states[v].name),
                                items=states[v])
