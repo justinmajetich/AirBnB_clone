@@ -1,15 +1,18 @@
-#!/usr/bin/python3 
+#!/usr/bin/python3
 """
 The scripts starts a Flask WebAPP
 """
 
-from flask import Flask 
+from flask import Flask
 
 app = Flask(__name__)
+
 
 @app.route("/", strict_slashes=False)
 def Hello_hbnb():
     return "Hello HBNB!"
+
+
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
     return "HBNB"
