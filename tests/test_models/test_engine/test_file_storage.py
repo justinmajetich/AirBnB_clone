@@ -117,3 +117,43 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+            
+    def test_reload_empty_file(self):
+        # Test reloading from an empty file
+            with open('file.json', 'w') as f:
+                    pass
+                    self.assertRaises(ValueError, storage.reload)
+
+    def test_reload_nonexistent_file(self):
+        # Test reloading from a nonexistent file
+        self.assertIsNone(storage.reload())
+
+    def test_reload_successful(self):
+        # Test reloading from a valid file
+        obj = BaseModel()
+        obj.save()
+        initial_data = storage.all()        
+        storage.reload()
+        reloaded_data = storage.all()
+        
+        self.assertEqual(initial_data, reloaded_data)
+
+    def test_delete_with_none(self):
+        obj = BaseModel()
+        obj.save()
+        initial_data = storage.all()
+        
+        storage.delete(None)
+        updated_data = storage.all()
+        
+        self.assertEqual(initial_data, updated_data)
+
+    def test_delete_successful(self):
+        obj = BaseModel()
+        obj.save()
+        initial_data = storage.all()
+        
+        storage.delete(obj)
+        updated_data = storage.all()
+        
+        self.assertNotIn(obj.__class__.__name__ + '.' + obj.id, updated_data)
