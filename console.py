@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import json
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -118,13 +119,50 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        commands = args[:]
+        commands = commands.partition(' ')
+        classes = commands[0]
+        if classes not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[classes]()
+        commands = commands[2]
+        new_dict = {}
+        while len(commands) != 0:
+            commands = commands.partition(" ")
+            parameter = commands[0].partition("=")
+            key = parameter[0]
+            value = parameter[2]
+            if value.isdecimal():
+                value = int(value)
+            else:
+                try:
+                    value = float(value)
+                except:
+                    if value[0] is '\"' and value[-1] is '\"':
+                        valid = 1
+                        value = value[1:-1]
+                        value = value.replace('_', ' ')
+                        index = value.find('\"', 1)
+                        for i in range(len(value)):
+                            if (i == 0 and value[i] == '"'):
+                                valid = 0
+                            if (value[i] == '"'):
+                                if (value[i - 1] != '\\'):
+                                    valid = 0
+                        if (valid == 0):
+                            commands = commands[2]
+                            continue
+                    else:
+                        commands = commands[2]
+                        continue
+            new_dict[key] = value
+            commands = commands[2]
+        new_instance.__dict__.update(new_dict)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -206,14 +244,18 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 print_list.append(str(v))
-
-        print(print_list)
+        else:
+            for k, v in storage.all().items():
+                print_list.append(str(v))
+        print("[", end="")
+        for i in range(len(print_list)):
+            if (i == len(print_list) - 1):
+                print(print_list[i], end="")
+            else:
+                print(print_list[i], end=", ")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
