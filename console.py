@@ -115,16 +115,17 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def parse_kwargs(arg_list: list):
-        # kwargs = {}
+        kwargs = {}
+        print(arg_list)
         class_arg = ''
         for arg in arg_list:
             class_arg = arg.split('=')
-            class_arg = {class_arg[0]: (class_arg[1])[1:-1]}
+            kwargs.update({class_arg[0]: (class_arg[1])[1:-1]})
             # for dic in class_arg:
             #     for key, val in dic.items():
             #         val = val[1:-1]
             #         kwargs[key] = val
-        return class_arg
+        return kwargs
 
     def do_create(self, args):
         """ Create an object of any class"""
