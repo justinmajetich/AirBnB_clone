@@ -116,15 +116,21 @@ class HBNBCommand(cmd.Cmd):
 
     def parse_kwargs(arg_list: list):
         kwargs = {}
-        print(arg_list)
         class_arg = ''
         for arg in arg_list:
+            if '=' not in arg:
+                continue
             class_arg = arg.split('=')
-            kwargs.update({class_arg[0]: (class_arg[1])[1:-1]})
-            # for dic in class_arg:
-            #     for key, val in dic.items():
-            #         val = val[1:-1]
-            #         kwargs[key] = val
+            key = class_arg[0]
+            val = class_arg[1]
+            if key in HBNBCommand.types:
+                val = HBNBCommand.types[key](val)
+            elif val[0] == val[-1] == '\"':
+                val = val[1:-1].replace('_', ' ')
+            else:
+                val = int(val)
+            kwargs.update({key: val})
+
         return kwargs
 
     def do_create(self, args):
@@ -134,7 +140,6 @@ class HBNBCommand(cmd.Cmd):
         kwargs = {}
         if len(args) > 1:
             kwargs = HBNBCommand.parse_kwargs(args[1:])
-        print(kwargs)
         if not class_name:
             print("** class name missing **")
             return
