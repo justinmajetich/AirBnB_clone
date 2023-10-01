@@ -17,18 +17,26 @@ class BaseModel:
             storage.new(self)
         else:
             if kwargs.get('id'):
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'],
+                    '%Y-%m-%dT%H:%M:%S.%f'
+                )
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'],
+                    '%Y-%m-%dT%H:%M:%S.%f'
+                )
                 del kwargs['__class__']
                 self.__dict__.update(kwargs)
             else:
                 kwargs['id'] = str(uuid.uuid4())
-                kwargs['updated_at'] = datetime.strptime(datetime.now().isoformat(),
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(datetime.now().isoformat(),
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                    datetime.now().isoformat(),
+                    '%Y-%m-%dT%H:%M:%S.%f'
+                )
+                kwargs['created_at'] = datetime.strptime(
+                    datetime.now().isoformat(),
+                    '%Y-%m-%dT%H:%M:%S.%f'
+                )
                 self.__dict__.update(kwargs)
                 storage.new(self)
 
