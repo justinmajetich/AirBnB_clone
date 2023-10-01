@@ -89,7 +89,7 @@ Usage: show <class_name> <_id>
 'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
 (hbnb)  
 ```
-###### Example 2: Destroy an object
+##### Example 2: Destroy an object
 Usage: destroy <class_name> <_id>
 ```
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
