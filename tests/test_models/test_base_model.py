@@ -97,3 +97,43 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+    #
+    # def test_created_at_str(self):
+    #     """ """
+    #     new = self.value()
+    #     self.assertEqual(type(new.created_at.isoformat()), str)
+    #
+    # def test_updated_at_str(self):
+    #     """ """
+    #     new = self.value()
+    #     self.assertEqual(type(new.updated_at.isoformat()), str)
+    #
+    # def test_save_update(self):
+    #     """ """
+    #     new = self.value()
+    #     n = new.to_dict()
+    #     new = BaseModel(**n)
+    #     self.assertFalse(new.created_at == new.updated_at)
+    #     new.save()
+    #     self.assertTrue(new.created_at == new.updated_at)
+    #
+    # def test_save_file(self):
+    #     """ """
+    #     new = self.value()
+    #     new.save()
+    #     with open('file.json', 'r') as f:
+    #         self.assertNotEqual(f.read(), '')
+    #
+    # def test_save_file_contents(self):
+    #     """ """
+    #     new = self.value()
+    #     new.save()
+    #     with open('file.json', 'r') as f:
+    #         self.assertEqual(json.load(f), {self.name + '.' + new.id:
+    #                          new.to_dict()})
+    # def  test_uuid(self):
+    #     """ """
+    #     new = self.value()
+    #     self.assertEqual(type(new.id), str)
+    #     self.assertEqual(type(UUID(new.id)), UUID)
+    #
