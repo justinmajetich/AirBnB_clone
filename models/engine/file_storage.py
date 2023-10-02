@@ -61,8 +61,8 @@ class FileStorage:
         delete obj from __objects if it’s inside -
         if obj is equal to None, the method should not do anything
         """
-        obj_dict = obj.to_dict()
-        key = f'{obj_dict["__class__"]}.{obj_dict["id"]}'
         if obj:
+            obj_dict = obj.to_dict()
+            key = f'{obj_dict["__class__"]}.{obj_dict["id"]}'
             if FileStorage.__objects.get(key):
                 del FileStorage.__objects[key]
