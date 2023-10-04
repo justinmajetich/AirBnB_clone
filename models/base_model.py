@@ -18,11 +18,6 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        from models import storage
-
-        storage_type = getenv('HBNB_TYPE_STORAGE')
-
-        # if storage_type == 'DBStorage':
 
         if not kwargs:
             self.id = str(uuid.uuid4())
