@@ -1,0 +1,9 @@
+SQLAlchemy==1.4.22
+mysqlclient==2.0.3
+pyparsing
+appdirs
+setuptools==40.1.0
+cryptography==2.8
+bcrypt==3.1.7
+pyNaCl==1.3.0
+Fabric3==1.14.post1
