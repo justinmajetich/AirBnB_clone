@@ -14,7 +14,7 @@ class FileStorage:
             obj = {}
             for key, val in FileStorage.__objects.items():
                 cls_type = key.split('.')[0]
-                if cls.__name__ == cls_type:
+                if cls == cls_type:
                     obj[key] = val
             return obj
         return FileStorage.__objects
