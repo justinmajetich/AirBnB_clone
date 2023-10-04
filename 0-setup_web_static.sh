@@ -20,7 +20,7 @@ ln -sf /data/web_static/releases/test/ /data/web_static/current
 chown -R ubuntu /data/ && chgrp -R ubuntu /data/
 
 # configure server
-printf  "server {
+printf %s "server {
     listen 80 default_server;
     listen [::]:80 default_server;
     add_header X-Served-By $HOSTNAME;

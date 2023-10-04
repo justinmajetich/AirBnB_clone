@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Fabric script that generates a .tgz archive 
+Fabric script that generates a .tgz archive
 from the contents of the web_static
 """
 from fabric import *
@@ -10,13 +10,13 @@ import os
 
 def do_pack():
     """this is a do pack fabric method"""
-    dt = dt.utcnow()
-    date =[dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second]
-    file_path = ("versions/web_static_{}{}{}{}{}{}.tgz".format(*date))
+    dt = dt.now()
+    date = dt.strftime("%Y%m%d%H%M%S")
+    file_path = ("versions/web_static_{}.tgz".format(date))
 
     if os.path.isdir("versions") is False:
         if local("mkdir -p versions").failed is True:
             return None
-    if local(f"tar -cvzf {filw_path} web_static").failed is True:
+    if local(f"tar -cvzf {file_path} web_static").failed is True:
         return None
     return file_path
