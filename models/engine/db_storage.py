@@ -18,7 +18,7 @@ class DBStorage():
     '''DBStorage class'''
     __engine = None
     __session = None
-    classes = [State, City]
+    classes = [State, City, User, Place]
 
     def __init__(self):
         '''instntiate DB object'''
