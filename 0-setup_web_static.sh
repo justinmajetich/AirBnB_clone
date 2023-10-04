@@ -17,12 +17,15 @@ html="<html><head></head><body>Welcome Page!</body></html>"
 # Checks if directories exists before creating them
 if [ ! -d "$root" ]; then
   sudo mkdir -p "$root/releases/test"
-  sudo chown -R "$USER":"$USER" "$root"
   sudo mkdir -p "$root/shared"
+  sudo chown -R "$USER":"$USER" "$root"
   echo "$html" | sudo tee "$root/releases/test/index.html" > /dev/null
   sudo ln -sf "$root/releases/test" "$root/current"
 fi
 
-sudo sed -i "37i \\\tlocation /hbnb_static/ {\n\t\talias $root/current/;\n\t}\n" /etc/nginx/sites-available/default
+nginx_cfg_loc="/etc/nginx/sites-available/default"
+if ! grep '/hbnb_static/' "$nginx_cfg_loc" > /dev/null; then
+  sudo sed -i "/server_name _;/a\\        location /hbnb_static/ {alias $root/current/;}" "$nginx_cfg_loc" > /dev/null
+fi
 
 sudo service nginx restart
