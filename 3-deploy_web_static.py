@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""Full deployment"""
 from fabric.api import local, env, run, put
 from os.path import exists
 env.hosts = ['<IP web-01>', '<IP web-02>']
