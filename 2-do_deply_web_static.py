@@ -3,11 +3,12 @@
 Fabric scripts that distribute an archive to web servers
 """
 import os
-from fabric.api import run, env, put
+from fabric.api import run, task, env, put
 
 env.hosts = ['52.3.245.154', '54.157.143.250']
 
 
+@task
 def do_deploy(archive_path):
     """ deploying archive function """
     if not os.path.exists(archive_path):
@@ -29,7 +30,8 @@ def do_deploy(archive_path):
         return False
 
     # Extract the contents of the archive to the new release directory
-    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(file, name)).failed:
+    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
+           format(file, name)).failed:
         return False
 
     # Remove the uploaded archive
@@ -37,12 +39,14 @@ def do_deploy(archive_path):
         return False
 
     # Move contents to the proper location
-    if run("mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/".
+    if run("mv /data/web_static/releases/{}/web_static/* \
+           /data/web_static/releases/{}/".
            format(name, name)).failed:
         return False
 
     # Remove the old web_static directory
-    if run("rm -rf /data/web_static/releases/{}/web_static".format(name)).failed:
+    if run("rm -rf /data/web_static/releases/{}/web_static".
+           format(name)).failed:
         return False
 
     # Remove the current symbolic link
