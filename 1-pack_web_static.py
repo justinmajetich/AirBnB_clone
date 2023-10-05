@@ -14,9 +14,9 @@ def do_pack():
     date = dt.strftime("%Y%m%d%H%M%S")
     file_path = ("versions/web_static_{}.tgz".format(date))
 
-    if os.path.exist("versions") is False:
+    if os.path.exists("versions") is False:
         if local("mkdir -p versions").failed is True:
             return None
-    if local(f"tar -cvzf {file_path} web_static").failed is True:
+    if local("tar -cvzf {} web_static".format(file_path)).failed is True:
         return None
     return file_path
