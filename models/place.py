@@ -1,9 +1,18 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+# from models.amenity import Amenity
 from models.base_model import Base, BaseModel
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from os import getenv
 from sqlalchemy.orm import relationship
+from models import storage
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -28,17 +37,31 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref="place",
                                cascade="all, delete, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False, back_populates="place_amenities")
     else:
         @property
         def reviews(self):
             '''return a reviews list'''
-            from models import storage
 
             reviwes_list = []
             for place in storage.all('Review'):
                 if place.place_id == self.id:
                     reviwes_list.append(place)
             return reviwes_list
+
+        @property
+        def amenities(self):
+            amenities_list = []
+            for amenity_obj in storage.all('Amenity').values():
+                if amenity_obj.id in self.amenity_ids:
+                    amenities_list.append(amenity_obj)
+            return amenities_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)
 
     def __init__(self, *args, **kwargs):
         """initializes place"""
