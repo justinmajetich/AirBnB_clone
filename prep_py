@@ -1,4 +1,4 @@
 #!/usr/bin/bash
-echo "#!/usr/bin/env python3" > $@
+echo "#!/usr/bin/python3" > $@
 chmod u+x $@
 vim $@
