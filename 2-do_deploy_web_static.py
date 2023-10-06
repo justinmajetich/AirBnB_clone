@@ -6,12 +6,13 @@ import os
 from fabric.api import run, task, env, put
 
 env.hosts = ['52.3.245.154', '54.157.143.250']
+env.user = 'ubuntu'
 
 
 @task
 def do_deploy(archive_path):
     """ deploying archive function """
-    if not os.path.exists(archive_path):
+    if not os.path.isdir(archive_path):
         return False
 
     file = archive_path.split("/")[-1]
