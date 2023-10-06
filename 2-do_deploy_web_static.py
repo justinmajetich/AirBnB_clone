@@ -12,7 +12,7 @@ env.user = 'ubuntu'
 @task
 def do_deploy(archive_path):
     """ deploying archive function """
-    if not os.path.isdir(archive_path):
+    if not os.path.exists(archive_path):
         return False
 
     file = archive_path.split("/")[-1]
