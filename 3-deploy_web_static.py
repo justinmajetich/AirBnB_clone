@@ -3,7 +3,8 @@
 Fabric scripts that distribute an archive to web servers
 """
 import os
-from fabric.api import run, task, env, put
+from fabric.api import run, task, env, put, local, runs_once
+from datetime import datetime
 
 env.hosts = ['52.3.245.154', '54.157.143.250']
 env.user = 'ubuntu'
@@ -62,6 +63,22 @@ def do_deploy(archive_path):
     return True
 
 
+@runs_once
+def do_pack():
+    """this is a do pack fabric method"""
+    dt = datetime.now()
+    date = dt.strftime("%Y%m%d%H%M%S")
+    file_path = ("versions/web_static_{}.tgz".format(date))
+
+    if os.path.exists("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf {} web_static".format(file_path)).failed is True:
+        return None
+    return file_path
+
+
+@task
 def deploy():
     """Deploy archive to web server."""
     archive = do_pack()
