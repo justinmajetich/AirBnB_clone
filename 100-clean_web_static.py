@@ -87,6 +87,28 @@ def deploy():
     return do_deploy(archive)
 
 
+@runs_once
+def clean_local(number):
+    """Remove unnecessary archives locally."""
+    local("ls -dt versions/* | tail -n +{} | sudo xargs rm -fr".format(number))
+
+
 @task
 def do_clean(number = 0):
+    """ Delete arvhive """
+    try:
+        number = int(number)
+    except ValueError:
+        return
 
+    if number < 0:
+        return
+
+    keep = number + 1
+
+    clean_local(number)
+
+    for host in env.hosts:
+        releases_path = "/data/web_static/releases"
+        with cd(releases_path):
+            archives = run("ls -1t | tail -n +{} | xargs rm -rf".format(number))
