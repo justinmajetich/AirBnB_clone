@@ -106,9 +106,7 @@ def do_clean(number = 0):
 
     keep = number + 1
 
-    clean_local(number)
+    clean_local(keep)
 
-    for host in env.hosts:
-        releases_path = "/data/web_static/releases"
-        with cd(releases_path):
-            archives = run("ls -1t | tail -n +{} | xargs rm -rf".format(number))
+    releases_path = "/data/web_static/releases"
+    run("ls -dt {} | tail -n +{} | xargs rm -rf".format(releases_path, keep))
