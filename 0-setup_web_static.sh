@@ -30,14 +30,11 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 # To configure nginx to server the content
-echo "server {
-    listen 80;
-    server_name _;
 
-    location /hbnb_static/ {
-        alias /data/web_static/current/;
-    }
+replace='# pass PHP scripts to FastCGI server'
 
-}" >> /etc/nginx/sites-available/default
+content='location /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}'
+
+sudo sed -i "s|$replace|$content|g" /etc/nginx/sites-available/default 
 
 sudo service nginx restart
