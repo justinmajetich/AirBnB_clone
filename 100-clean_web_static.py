@@ -1,14 +1,22 @@
 #!/usr/bin/python3
 """
-Distributes an archive to my web servers,
-using the function do_deploy
+Deletes out-of-date archives,
+using the function do_clean
 """
 from fabric.api import *
 from datetime import datetime
 import os
 
-env.hosts = ["54.90.9.192", "34.204.95.7"]
+env.hosts = ["54.144.136.64", "100.24.236.179"]
 env.user = "ubuntu"
+
+
+def deploy():
+    """Deploys archive"""
+    archive_path = do_pack()
+    if not archive_path:
+        return False
+    return do_deploy(archive_path)
 
 
 def do_pack():
@@ -28,6 +36,7 @@ def do_pack():
                 archive_path, os.path.getsize(archive_path)
             )
         )
+        return archive_path
     except:
         return None
 
@@ -54,3 +63,16 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
+
+def do_clean(number=0):
+    """Removes out of date archives locally and remotely"""
+    number = int(number)
+    if number == 0:
+        number = 2
+    else:
+        number += 1
+
+    local("cd versions; ls -t | tail -n +{} | xargs rm -rf".format(number))
+    releases_path = "/data/web_static/releases"
+    run("cd {}; ls -t | tail -n +{} | xargs rm -rf".format(releases_path, number))
