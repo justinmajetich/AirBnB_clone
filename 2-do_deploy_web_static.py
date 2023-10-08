@@ -32,7 +32,7 @@ def do_deploy(archieve_path):
     """
     upload the web_static achieve to the servers
     """
-     if not os.path.exists(archive_path):
+    if not os.path.exists(archive_path):
         return False
     archive_name = archive_path.split('/')[-1]
     folder_name = archive_name[:-4]
