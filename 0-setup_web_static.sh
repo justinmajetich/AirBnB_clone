@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Prepare web servers
+# This scripts Prepares the  web servers
 
-#install nginx
+#This will install nginx
 apt-get update -y
 apt-get install nginx -y
 
-#create dirs and files
+#This will create directorys and files...
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
-echo "Wills to the World yooo" > /data/web_static/releases/test/index.html
+echo "Hello Queensly Udongwo" > /data/web_static/releases/test/index.html
 
-# create symbolic link
+# create symbolic link for file
 ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 chown -hR ubuntu:ubuntu /data/
