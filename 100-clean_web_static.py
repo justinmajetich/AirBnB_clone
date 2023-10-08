@@ -101,8 +101,8 @@ def do_clean(number = 0):
     except ValueError:
         return
 
-    if number < 0:
-        return
+    if number == 0:
+        number = 1
 
     keep = number + 1
 
