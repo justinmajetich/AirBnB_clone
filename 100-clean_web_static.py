@@ -94,7 +94,7 @@ def clean_local(number):
 
 
 @task
-def do_clean(number = 0):
+def do_clean(number=0):
     """ Delete arvhive """
     try:
         number = int(number)
