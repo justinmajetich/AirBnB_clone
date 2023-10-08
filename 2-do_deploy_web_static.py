@@ -6,10 +6,6 @@ from fabric.api import *
 import os
 
 
-env.hosts = ['34.224.16.178', '54.174.245.13']
-env.key_filename = '~/.ssh/school'
-env.user = 'ubuntu'
-
 def do_pack():
     """
     archieving web_static dir
@@ -28,10 +24,15 @@ def do_pack():
     else:
         return None
 
-def do_deploy(archieve_path):
+
+def do_deploy(archive_path):
     """
     upload the web_static achieve to the servers
     """
+    env.hosts = ['34.224.16.178', '54.174.245.13']
+    env.key_filename = '~/.ssh/school'
+    env.user = 'ubuntu'
+
     if not os.path.exists(archive_path):
         return False
     archive_name = archive_path.split('/')[-1]
@@ -55,3 +56,7 @@ def do_deploy(archieve_path):
         print("New version deployed!")
         return True
 
+
+if __name__ == "__main__":
+    path = do_pack()
+    do_deploy(path)
