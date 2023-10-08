@@ -1,6 +1,6 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+This repo contains a command interpreter for the Holberton Airbnb project, as well as applications for web deployment. The console can be run from the command line and to create, manipulate, and store class objects in a JSON format or using a MySQL database. You'll also find a series of Flask web applications used for deployment of dynamic web content. collaborated on building out an API for the site side of the project.
 
 ---
 
