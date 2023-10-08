@@ -23,7 +23,8 @@ def do_pack():
     # To create version directory
     local('mkdir -p versions')
 
-    content = f"versions/web_static_{year}{month}{day}{hour}{minute}{second}.tgz"
+    content = f"versions/web_static_{year}{month}{day}{hour}\
+{minute}{second}.tgz"
     # content = f"versions/web_static_{timestamp}"
     # To generate the .tzg content
     result = local(f'tar -czvf {content} web_static/')
