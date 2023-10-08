@@ -27,16 +27,14 @@ def do_pack():
         local("tar -cvzf {} web_static".format(output))
         archive_size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, archive_size))
-    except Exception:
+    except Exception as e:
+        print(f"An error occurred during packaging: {str(e)}")
         output = None
     return output
 
 
 def do_deploy(archive_path):
-    """Deploys the static files to the host servers.
-    Args:
-        archive_path (str): The path to the archived static files.
-    """
+    """Deploys the static files to the host servers."""
     if not os.path.exists(archive_path):
         return False
     file_name = os.path.basename(archive_path)
@@ -54,34 +52,35 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(folder_path))
         print('New version deployed!')
         success = True
-    except Exception:
+    except Exception as e:
+        print(f"An error occurred during deployment: {str(e)}")
         success = False
     return success
 
 
+def deploy():
+    """Archives and deploys the static files to the host servers."""
+    archive_path = do_pack()
+    return do_deploy(archive_path) if archive_path else False
+
+
 def do_clean(number=0):
-    """Deletes out-of-date archives of the static files.
-
-    Args:
-        number (int): The number of archives to keep.
-    """
-    try:
-        number = int(number)
-    except ValueError:
-        print("Invalid number provided. Please provide a valid integer.")
-        return
-
-    if number < 0:
-        print("Number should be a non-negative integer.")
-        return
-
-    local("ls -1t versions/ | tail -n +{} | xargs -I {{}} rm -f versions/{{}}".format(number + 1))
-    run("ls -1t /data/web_static/releases/ | tail -n +{} | xargs -I {{}} rm -rf /data/web_static/releases/{{}}".format(number + 1))
-
-
-if __name__ == "__main__":
-    do_pack()
-    do_deploy("/tmp/web_static_20170315015620.tgz")  
-    # Call do_clean with the desired number of archives to keep
-    do_clean(2)
-
+    """Deletes out-of-date archives of the static files."""
+    archives = os.listdir('versions/')
+    archives.sort(reverse=True)
+    start = int(number)
+    if not start:
+        start += 1
+    if start < len(archives):
+        archives = archives[start:]
+    else:
+        archives = []
+    for archive in archives:
+        os.unlink('versions/{}'.format(archive))
+    cmd_parts = [
+        "rm -rf $(",
+        "find /data/web_static/releases/ -maxdepth 1 -type d -iregex",
+        " '/data/web_static/releases/web_static_.*'",
+        " | sort -r | tr '\\n' ' ' | cut -d ' ' -f{}-)".format(start + 1)
+    ]
+    run(''.join(cmd_parts))
