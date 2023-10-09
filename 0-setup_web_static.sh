@@ -1,12 +1,47 @@
-et up web servers for deployment of web_static
-apt update
-apt install nginx -y
-mkdir -p /data/web_static/releases/test
-mkdir /data/web_static/shared
-echo -e "<html>\n<head>\n</head>\n<body>\nHolberton School is driving me into the ground\n</body>\n</html>\n" > /data/web_static/releases/test/index.html
-ln -fs /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu:ubuntu /data/
+#!/usr/bin/env bash
+# script to sets up your web servers for the deployment of web_static
 
-sed -i "s|error_page 404 /404.html;|error_page 404 /404.html;\n\nlocation /hbnb_static {\n\talias /data/web_static/current/;\n}|" /etc/nginx/sites-available/default
+# update linux
+apt-get update
+#install nginx
+apt-get install -y nginx
 
+# create folder 'data'
+mkdir -p /data/web_static/shared/
+mkdir -p /data/web_static/releases/test/
+
+# create a dummy content
+echo 'This is Naziff website' > /data/web_static/releases/test/index.html
+
+# symbolic link
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+
+# change ownership and group
+chown -R ubuntu /data/ && chgrp -R ubuntu /data/
+
+# configure server
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
+
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
+
+    location /redirect_me {
+        return 301 http://naziff.tech/;
+    }
+
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
+
+# restart nginx
 service nginx restart
