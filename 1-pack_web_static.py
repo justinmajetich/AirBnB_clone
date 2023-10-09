@@ -3,14 +3,14 @@
 Fabric script that generates a .tgz archive
 from the contents of the web_static
 """
-from fabric import *
-from datetime import datetime as dt
+from fabric.api import local
+from datetime import datetime
 import os
 
 
 def do_pack():
     """this is a do pack fabric method"""
-    dt = dt.now()
+    dt = datetime.now()
     date = dt.strftime("%Y%m%d%H%M%S")
     file_path = ("versions/web_static_{}.tgz".format(date))
 
