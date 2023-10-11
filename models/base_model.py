@@ -22,6 +22,12 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
+    def addAttribute(self, **kwargs):
+        """method to add attribute
+            to an object
+        """
+        self.__dict__.update(kwargs)
+
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
