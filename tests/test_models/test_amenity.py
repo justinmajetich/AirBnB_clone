@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ """
+import os
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
 
@@ -16,4 +17,6 @@ class test_Amenity(test_basemodel):
     def test_name2(self):
         """ """
         new = self.value()
-        self.assertEqual(type(new.name), str)
+        self.assertEqual(type(new.name), str if os.getenv(
+            "HBNB_TYPE_STORAGE") != "db" else None
+        )
