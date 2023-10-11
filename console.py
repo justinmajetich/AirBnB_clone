@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,6 +12,11 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -73,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +121,38 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
+        input = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif input[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[input[0]]()
+        for element in input[1:]:
+            element = element.split("=")
+            if (len(element) == 2):
+                element[1] = element[1].replace("_", " ")
+
+                if element[1][0] != '"':
+                    try:
+                        element[1] = int(element[1])
+                    except:
+                        try:
+                            element[1] = float(element[1])
+                        except:
+                            pass
+                else:
+                    element[1] = element[1].replace('"', "")
+                element[0] = element[0].replace('"', "")
+                try:
+                    setattr(new_instance, element[0], element[1])
+                except:
+                    pass
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -192,28 +220,36 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self):
-        """ Help information for the destroy command """
-        print("Destroys an individual instance of a class")
-        print("[Usage]: destroy <className> <objectId>\n")
+    def do_all(self, arg):
+        """Prints string representations of instances"""
+        from models import storage
 
-    def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
-        print_list = []
+        # split command like arguments into an array
+        args = shlex.split(arg)
+        objs = []
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        # get all objects
+        if (len(args) == 0):
+            obj_dicts = storage.all()
+        # get all objects of a specific class
+        if (args[0] in classes):
+            clsName = args[0]
+            obj_dicts = storage.all(eval(clsName))
+        # if class is not registered; Error
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print('** class doesn\'t exist **')
+            return False
 
-        print(print_list)
+        # Save all object string representations from 'obj_dicts'
+        # to the list 'objs' then print the list
+        for k in obj_dicts:
+            objs.append(str(obj_dicts[k]))
+
+        print("[", end="")
+        print(", ".join(objs), end="")
+        print("]")
+
+
 
     def help_all(self):
         """ Help information for the all command """
@@ -272,7 +308,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +316,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
