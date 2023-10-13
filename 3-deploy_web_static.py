@@ -4,59 +4,49 @@ Fabric script that creates and distributes an archive to web servers
 and deploys it using the function deploy.
 """
 
-from fabric.api import env, local, run, put
-from os.path import exists, isdir
+from fabric.api import env, local, put, run
 from datetime import datetime
-import os
-
+from os.path import exists, isdir
 env.hosts = ['54.172.84.26', '52.23.177.182']
 
 
 def do_pack():
     """Create a compressed archive of the web_static folder"""
     try:
-        now = datetime.now()
-        archive_name = "web_static_{}.tgz".format(now.strftime("%Y%m%d%H%M%S"))
-        local("sudo mkdir -p versions")
-        local("sudo tar -cvzf versions/{} web_static".format(archive_name))
-        return "versions/{}".format(archive_name)
-    except Exception:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except:
         return None
 
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers and deploys it"""
-    if not exists(archive_path):
+    if exists(archive_path) is False:
         return False
-
     try:
-        archive_filename = os.path.basename(archive_path)
-        archive_no_ext = os.path.splitext(archive_filename)[0]
-
-        put(archive_path, "/tmp/")
-        run("sudo mkdir -p /data/web_static/releases/{}/"
-            .format(archive_no_ext))
-        run("sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
-            .format(archive_filename, archive_no_ext))
-        run("sudo rm /tmp/{}".format(archive_filename))
-        run("sudo mv /data/web_static/releases/{}/web_static/* \
-/data/web_static/releases/{}/".format(archive_no_ext, archive_no_ext))
-        run("sudo rm -rf /data/web_static/releases/{}/web_static"
-            .format(archive_no_ext))
-        run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
-            .format(archive_no_ext))
-
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
+        path = "/data/web_static/releases/"
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-
-    except Exception:
+    except:
         return False
 
 
 def deploy():
     """Deploys the web_static archive to the web server"""
     archive_path = do_pack()
-    if not archive_path:
+    if archive_path is None:
         return False
-
     return do_deploy(archive_path)
