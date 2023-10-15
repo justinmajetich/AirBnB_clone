@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""Script that start a Flask webapp"""
-
-
+"""Script that have 3 routes"""
 from flask import Flask
 
 
@@ -9,22 +7,22 @@ app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hell():
-    """function to return a string"""
+def hello():
+    """return Hello HBNB"""
     return "Hello HBNB!"
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hello_hbnb():
-    """prints hbnb"""
+    """return HBNB"""
     return "HBNB"
 
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_is_fun(text):
-    """"replace _ with spaces"""
+    """replace _ for spaces"""
     text = text.replace('_', ' ')
-    return f"c {text}"
+    return f" C {text}"
 
 
 if __name__ == '__main__':
