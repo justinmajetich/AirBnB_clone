@@ -39,21 +39,21 @@ def do_deploy(archive_path):
         file = archive_path.split('/')[-1]
         folder = ("/data/web_static/releases/" + file.split('.')[0])
         print(f"[{run('hostname -I')}] run: mkdir -p {folder}")
-        run("mkdir -p {}".format(folder))
+        run("sudo mkdir -p {}".format(folder))
         print(f"[{run('hostname -I')}] run: tar -xzf /tmp/{file} -C {folder}")
-        run("tar -xzf /tmp/{} -C {}".format(file, folder))
+        run("sudo tar -xzf /tmp/{} -C {}".format(file, folder))
         print(f"[{run('hostname -I')}] run: rm /tmp/{file}")
-        run("rm /tmp/{}".format(file))
+        run("sudo rm /tmp/{}".format(file))
         print(f"[{run('hostname -I')}] run: mv {folder}/web_static/*\
               {folder}/")
-        run("mv {}/web_static/* {}/".format(folder, folder))
+        run("sudo mv {}/web_static/* {}/".format(folder, folder))
         print(f"[{run('hostname -I')}] run: rm -rf {folder}/web_static")
-        run("rm -rf {}/web_static".format(folder))
+        run("sudo rm -rf {}/web_static".format(folder))
         print(f"[{run('hostname -I')}] run: rm -rf /data/web_static/current")
-        run("rm -rf /data/web_static/current")
+        run("sudo rm -rf /data/web_static/current")
         print(f"[{run('hostname -I')}] run: ln -s {folder}\
               /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(folder))
+        run("sudo ln -s {} /data/web_static/current".format(folder))
         print("New version deployed!")
         return True
     except Exception:
