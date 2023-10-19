@@ -34,8 +34,7 @@ def do_deploy(archive_path):
     if exists(archive_path) is False:
         return False
     try:
-        print(f"[{run('hostname -I')}] put: {archive_path} -> \
-              /tmp/{archive_path}")
+        print(f"[{run('hostname -I')}] put: {archive_path} -> /tmp/{archive_path}")
         put(archive_path, "/tmp/")
         file = archive_path.split('/')[-1]
         folder = ("/data/web_static/releases/" + file.split('.')[0])
