@@ -2,6 +2,11 @@
 """Fabric script that generates a .tgz archive from the contents of the
 web_static folder of your AirBnB Clone repo, using the function do_pack."""
 
+from fabric.api import env
+
+env.hosts = ['54.236.217.62', '100.26.229.89']
+env.user = 'ubuntu'
+
 
 def do_pack():
     '''Function that generates a .tgz archive from the contents of the
@@ -22,11 +27,9 @@ def do_pack():
 def do_deploy(archive_path):
     '''Function that distributes an archive to your web servers,
     using the function do_deploy.'''
-    from fabric.api import put, run, env
+    from fabric.api import put, run
     from os.path import exists
     print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
-    env.hosts = ['54.236.217.62', '100.26.229.89']
-    env.user = 'ubuntu'
     if exists(archive_path) is False:
         return False
     try:
