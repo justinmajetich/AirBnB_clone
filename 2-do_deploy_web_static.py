@@ -25,7 +25,8 @@ def do_deploy(archive_path):
     from fabric.api import put, run, env
     from os.path import exists
     print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
-    env.hosts = ['248522-web-01', '248522-web-02']
+    env.hosts = ['54.236.217.62', '100.26.229.89']
+    env.user = 'ubuntu'
     if exists(archive_path) is False:
         return False
     try:
