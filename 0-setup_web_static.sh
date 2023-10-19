@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Script that sets up your web servers for the deployment of web_static
 # Install nginx
 sudo apt-get update
 if ! which nginx > /dev/null 2>&1; then
