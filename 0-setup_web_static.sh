@@ -71,9 +71,9 @@ if ! grep -q "location /hbnb_static/ {" /etc/nginx/sites-available/default; then
     echo "$nginx_config" > /etc/nginx/sites-available/default
 fi
 
-if pgrep -x "nginx" > /dev/null
+if [ "$(pgrep -c nginx)" -gt 0 ];
 then
-    sudo service nginx reload
+    service nginx restart
 else
-    sudo service nginx start
+    service nginx start
 fi
