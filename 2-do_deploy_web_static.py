@@ -6,6 +6,7 @@ from fabric.api import env
 
 env.hosts = ['54.236.217.62', '100.26.229.89']
 env.user = 'ubuntu'
+env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_pack():
