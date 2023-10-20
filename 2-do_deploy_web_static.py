@@ -4,7 +4,6 @@ web_static folder of your AirBnB Clone repo, using the function do_pack."""
 
 from fabric.api import env
 
-env.use_ssh_config = True
 env.hosts = ['54.236.217.62', '100.26.229.89']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
@@ -31,10 +30,11 @@ def do_deploy(archive_path):
     using the function do_deploy.'''
     from fabric.api import put, run
     from os.path import exists
-    print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
-    if exists(archive_path) is False:
-        return False
+
     try:
+        print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
+        if exists(archive_path) is False:
+            return False
         print(f"[{run('hostname -I')}] put: {archive_path} -> /tmp/{archive_path}")
         put(archive_path, "/tmp/")
         file = archive_path.split('/')[-1]
