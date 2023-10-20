@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
+""" this is  class State"""
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
@@ -9,19 +9,27 @@ from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
-    """ State class """
-    name = Column(String(128), nullable=False)
-    __tablename__ = 'states'
+    """Representation of state """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = 'states'
+        name = Column(String(128),
+                      nullable=False)
         cities = relationship("City", cascade="all, delete",
-                backref="states")
+                              backref="states")
     else:
+        name = ""
+
+    def __init__(self, *args, **kwargs):
+        """initializes state"""
+        super().__init__(*args, **kwargs)
+
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
-            """returns City instances"""
-            l_cities = models.storage.all("City").values()
-            city_state = []
-            for city in l_cities:
+            """fs getter attribute that returns City instances"""
+            values_city = models.storage.all("City").values()
+            list_city = []
+            for city in values_city:
                 if city.state_id == self.id:
-                    city_state.append(city)
-            return city_state
+                    list_city.append(city)
+            return list_city
