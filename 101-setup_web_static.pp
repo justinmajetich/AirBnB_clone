@@ -25,26 +25,26 @@ package { 'nginx':
   ensure => 'directory'
 }
 
--> file { '/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test'
-}
-
 -> file { '/data/web_static/releases/test/index.html':
-  ensure  => 'file',
-  content => '<html>
+  ensure  => 'present',
+  content => "<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>',
+</html>"
 }
 
-exec { 'chown':
-  command => 'chown -R ubuntu:ubuntu /data/',
-  path    => ['/bin/', '/usr/bin/'],
+-> file { '/data/web_static/current':
+  ensure => 'link',
+  target => '/data/web_static/releases/test'
 }
+
+-> exec { 'chown -R ubuntu:ubuntu /data/':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+
 
 # nginx config
 
