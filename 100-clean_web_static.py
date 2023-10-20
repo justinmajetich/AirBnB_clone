@@ -59,3 +59,21 @@ def deploy():
         return value
     except Exception:
         return False
+
+
+def do_clean(number=0):
+    '''
+    Function that deletes out-of-date archives, using the function do_clean.
+    '''
+    from fabric.api import local
+    from os.path import exists
+
+    if int(number) == 0 or int(number) == 1:
+        number = 2
+    else:
+        number = int(number) + 1
+    local("cd versions; ls -t | tail -n +{} | xargs rm -rf --".format(number))
+    if exists("versions"):
+        return True
+    else:
+        return False
