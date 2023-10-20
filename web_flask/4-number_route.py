@@ -47,10 +47,8 @@ def display_num(n):
     """
     Display 'n' is number if n is int
     """
-    try:
-        return "{} is a number".format(n)
-    except ValueError:
-        abort(404)
+    return "{} is a number".format(n)
+    
 
 
 if __name__ == "__main__":
