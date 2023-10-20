@@ -26,35 +26,64 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    '''Function that distributes an archive to your web servers,
-    using the function do_deploy.'''
     from fabric.api import put, run
     from os.path import exists
-    print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
-    if exists(archive_path) is False:
-        return False
+    """Deploy web files to server
+    """
     try:
-        print(f"[{run('hostname -I')}] put: {archive_path} -> /tmp/{archive_path}")
-        put(archive_path, "/tmp/")
-        file = archive_path.split('/')[-1]
-        folder = ("/data/web_static/releases/" + file.split('.')[0])
-        print(f"[{run('hostname -I')}] run: mkdir -p {folder}")
-        run("sudo mkdir -p {}".format(folder))
-        print(f"[{run('hostname -I')}] run: tar -xzf /tmp/{file} -C {folder}")
-        run("sudo tar -xzf /tmp/{} -C {}".format(file, folder))
-        print(f"[{run('hostname -I')}] run: rm /tmp/{file}")
-        run("sudo rm /tmp/{}".format(file))
-        print(f"[{run('hostname -I')}] run: mv {folder}/web_static/*\
-              {folder}/")
-        run("sudo mv {}/web_static/* {}/".format(folder, folder))
-        print(f"[{run('hostname -I')}] run: rm -rf {folder}/web_static")
-        run("sudo rm -rf {}/web_static".format(folder))
-        print(f"[{run('hostname -I')}] run: rm -rf /data/web_static/current")
-        run("sudo rm -rf /data/web_static/current")
-        print(f"[{run('hostname -I')}] run: ln -s {folder}\
-              /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(folder))
-        print("New version deployed!")
-        return True
+        if not (exists(archive_path)):
+            return False
+
+        print(f"{run('hostname -I')}Executing task 'do_deploy'")
+        # upload archive
+        print(f"{run('hostname -I')} put: {archive_path} -> \
+/tmp/{archive_path}")
+        put(archive_path, '/tmp/')
+
+        # create target dir
+        timestamp = archive_path[-18:-4]
+        print(f"{run('hostname -I')} run: sudo mkdir -p /data/web_static/\
+releases/web_static_{timestamp}/")
+        run('sudo mkdir -p /data/web_static/\
+releases/web_static_{}/'.format(timestamp))
+
+        # uncompress archive and delete .tgz
+        print(f"{run('hostname -I')} run: sudo tar -xzf /tmp/{archive_path} \
+-C /data/web_static/releases/web_static_{timestamp}/")
+        run('sudo tar -xzf /tmp/web_static_{}.tgz -C \
+/data/web_static/releases/web_static_{}/'
+            .format(timestamp, timestamp))
+
+        # remove archive
+        print(f"{run('hostname -I')} run: sudo rm /tmp/{archive_path}")
+        run('sudo rm /tmp/web_static_{}.tgz'.format(timestamp))
+
+        # move contents into host web_static
+        print(f"{run('hostname -I')} run: sudo mv /data/web_static/\
+releases/web_static_{timestamp}/web_static/* /data/web_static/releases/\
+web_static_{timestamp}/")
+        run('sudo mv /data/web_static/releases/web_static_{}/web_static/* \
+/data/web_static/releases/web_static_{}/'.format(timestamp, timestamp))
+
+        # remove extraneous web_static dir
+        print(f"{run('hostname -I')} run: sudo rm -rf /data/web_static/\
+releases/web_static_{timestamp}/web_static")
+        run('sudo rm -rf /data/web_static/releases/\
+web_static_{}/web_static'
+            .format(timestamp))
+
+        # delete pre-existing sym link
+        print(f"{run('hostname -I')} run: sudo rm -rf /data/web_static/\
+current")
+        run('sudo rm -rf /data/web_static/current')
+
+        # re-establish symbolic link
+        print(f"{run('hostname -I')} run: sudo ln -s /data/web_static/\
+releases/web_static_{timestamp}/ /data/web_static/current")
+        run('sudo ln -s /data/web_static/releases/\
+web_static_{}/ /data/web_static/current'.format(timestamp))
     except Exception:
         return False
+    # return True on success
+    print(f"{run('hostname -I')} New version deployed!")
+    return True
