@@ -15,7 +15,7 @@ class FileStorage:
             class_name = cls.__name__
             for k, v in FileStorage.__objects.items():
                 if k.split('.')[0] == class_name:
-                    show_dict[k] = str(v)
+                    show_dict[k] = v
             return show_dict
         else:
             return FileStorage.__objects
