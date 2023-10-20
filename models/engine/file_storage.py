@@ -15,7 +15,7 @@ class FileStorage:
             class_name = cls.__name__
             for k, v in FileStorage.__objects.items():
                 if k.split('.')[0] == class_name:
-                    print_dict[k] = str(v)
+                    show_dict[k] = str(v)
             return show_dict
         else:
             return FileStorage.__objects
@@ -65,3 +65,7 @@ class FileStorage:
             if key in FileStorage.__objects:
                 del FileStorage.__objects[key]
                 self.save()
+
+    def close(self):
+        """deserializing the JSON file to objects"""
+        self.reload()
