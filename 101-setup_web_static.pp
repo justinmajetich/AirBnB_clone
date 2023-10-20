@@ -1,8 +1,28 @@
-# setup
+# Puppet for setup
+
+$nginx_conf = "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By ${hostname};
+    root   /var/www/html;
+    index  index.html index.htm;
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
+    location /redirect_me {
+        return 301 http://linktr.ee/firdaus_h_salim/;
+    }
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}"
 
 package { 'nginx':
-  ensure   => installed,
-  provider => 'apt',
+  ensure   => 'present',
+  provider => 'apt'
 }
 
 -> file { '/data':
@@ -27,13 +47,7 @@ package { 'nginx':
 
 -> file { '/data/web_static/releases/test/index.html':
   ensure  => 'present',
-  content => "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>"
+  content => "this webpage is found in data/web_static/releases/test/index.htm \n"
 }
 
 -> file { '/data/web_static/current':
@@ -45,55 +59,29 @@ package { 'nginx':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 
-
-# nginx config
-
-
-$nginx_conf = "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    add_header X-Served-By ${hostname};
-    root   /var/www/html;
-    index  index.html index.htm;
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-    location /redirect_me {
-        return 301 http://linktr.ee/firdaus_h_salim/;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
-    }
-}"
-
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'file',
-  content => $nginx_conf,
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+file { '/var/www':
+  ensure => 'directory'
 }
 
-file { 'var/www/html/index.html':
-  ensure  => 'file',
-  content => '<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>',
+-> file { '/var/www/html':
+  ensure => 'directory'
 }
 
-file { '/var/www/html/404.html':
-  ensure  => 'file',
-  content => "Ceci n'est pas une page\n",
+-> file { '/var/www/html/index.html':
+  ensure  => 'present',
+  content => "This is my first upload  in /var/www/index.html***\n"
 }
 
-service { 'nginx':
-  ensure  => 'running',
-  enable  => true,
-  require => Package['nginx'],
+-> file { '/var/www/html/404.html':
+  ensure  => 'present',
+  content => "Ceci n'est pas une page - Error page\n"
+}
+
+-> file { '/etc/nginx/sites-available/default':
+  ensure  => 'present',
+  content => $nginx_conf
+}
+
+-> exec { 'nginx restart':
+  path => '/etc/init.d/'
 }
