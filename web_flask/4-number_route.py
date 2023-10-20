@@ -40,6 +40,7 @@ def display_py(text):
     """
     text = text.replace("_", " ")
     return "Python {}".format(text)
+
 @app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
     """Displays 'n is a number' only if n is an integer."""
