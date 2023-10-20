@@ -1,55 +1,47 @@
 #!/usr/bin/python3
-"""
-This script starts a Flask web application with different routes.
-"""
+"""Simple Flask web application"""
 
-from flask import Flask
+from flask import Flask, abort
+
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def hello_hbnb():
-    """
-    Route that displays "Hello HBNB!"
-    """
+    """Display the text 'Hello HBNB!'"""
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """
-    Route that displays "HBNB"
-    """
+@app.route("/hbnb", strict_slashes=False)
+def say_hbnb():
+    """Display the text 'HBNB'"""
     return "HBNB"
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_is_fun(text):
-    """
-    Route that displays "C ", followed by the value of the text variable.
-    Replace underscore _ symbols with a space.
-    """
-    return "C {}".format(text.replace("_", " "))
+@app.route("/c/<text>", strict_slashes=False)
+def display_c(text):
+    """Display 'C' followed by the text variable."""
+    text = text.replace("_", " ")
+    return "C {}".format(text)
 
 
-@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def python_is_cool(text):
-    """
-    Route that displays "Python ", followed by the value of the text variable.
-    Replace underscore _ symbols with a space.
-    """
-    return "Python {}".format(text.replace("_", " "))
+@app.route("/python/", defaults={"text": "is cool"}, strict_slashes=False)
+@app.route("/python/<text>", strict_slashes=False)
+def display_py(text):
+    """Display 'Python' followed by the text variable."""
+    text = text.replace("_", " ")
+    return "Python {}".format(text)
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def is_a_number(n):
-    """
-    Route that displays "n is a number" only if n is an integer.
-    """
-    return "{} is a number".format(n)
+@app.route("/number/<n>", strict_slashes=False)
+def display_num(n):
+    """Display 'n' is number if n is int."""
+    try:
+        int_n = int(n)
+        return "{} is a number".format(int_n)
+    except ValueError:
+        abort(404)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
-
+    app.run(host="0.0.0.0", port=5000)
