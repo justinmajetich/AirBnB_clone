@@ -48,8 +48,8 @@ def display_num(n):
     Display 'n' is number if n is int
     """
     try:
-        x = int(n)
-        return "{} is a number".format(x)
+        int_n = int(n)
+        return "{} is a number".format(int_n)
     except ValueError:
         abort(404)
     
