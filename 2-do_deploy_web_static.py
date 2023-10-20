@@ -31,31 +31,20 @@ def do_deploy(archive_path):
     from fabric.api import put, run
     from os.path import exists
 
+    if exists(archive_path) is False:
+        return False
+
     try:
-        print(f"[{run('hostname -I')}] Executing task 'do_deploy'")
-        if exists(archive_path) is False:
-            return False
-        print(f"[{run('hostname -I')}] put: {archive_path} -> /tmp/{archive_path}")
         put(archive_path, "/tmp/")
         file = archive_path.split('/')[-1]
-        folder = ("/data/web_static/releases/" + file.split('.')[0])
-        print(f"[{run('hostname -I')}] run: mkdir -p {folder}")
+        folder = f"/data/web_static/releases/{file.split('.')[0]}"
         run("sudo mkdir -p {}".format(folder))
-        print(f"[{run('hostname -I')}] run: tar -xzf /tmp/{file} -C {folder}")
         run("sudo tar -xzf /tmp/{} -C {}".format(file, folder))
-        print(f"[{run('hostname -I')}] run: rm /tmp/{file}")
         run("sudo rm /tmp/{}".format(file))
-        print(f"[{run('hostname -I')}] run: mv {folder}/web_static/*\
-              {folder}/")
         run("sudo mv {}/web_static/* {}/".format(folder, folder))
-        print(f"[{run('hostname -I')}] run: rm -rf {folder}/web_static")
-        run("sudo rm -rf {}/web_static".format(folder))
-        print(f"[{run('hostname -I')}] run: rm -rf /data/web_static/current")
-        run("sudo rm -rf /data/web_static/current")
-        print(f"[{run('hostname -I')}] run: ln -s {folder}\
-              /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(folder))
-        print("New version deployed!")
+        run("sudo rm -fr {}/web_static".format(folder))
+        run("sudo rm -fr /data/web_static/current")
+        run("sudo ln -s {}/ /data/web_static/current".format(folder))
         return True
     except Exception:
         return False
