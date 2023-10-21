@@ -34,45 +34,50 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """
-        Method to retrieve all objects"""
-        if cls:
-            obj = self.__session.query(cls).all()
-            for o in obj:
-                k = "{}.{}".format(type(o).__name__, o.id)
-                objs[k] = o
-        else:
-            for c in classes:
-                obj = self.__session.query(c).all()
-                for o in obj:
-                    k = "{}.{}".format(type(o).__name__, o.id)
-                    objs[k] = o
-        return objs
+        with self.session_scope() as session:
+            if cls:
+                return session.query(cls).all()
+            else:
+                return session.query(User, State, City, Amenity, Place, Review).all()
 
     def new(self, obj):
-        """add ibjet to db"""
-        self.__session.add(obj)
+        with self.session_scope() as session:
+            session.add(obj)
 
     def save(self):
-        """
-        commit change of database"""
-        self.__session.commit()
+        with self.session_scope() as session:
+            session.commit()
 
     def delete(self, obj=None):
-        """method the delete from db session"""
-        if obj:
-            self.__session.delete(obj)
+        with self.session_scope() as session:
+            if obj:
+                session.delete(obj)
 
     def reload(self):
-        """
-        reloandig database"""
         Base.metadata.create_all(self.__engine)
-        ss_f = sessionmaker(bind=self.__engine,
-                            expire_on_commit=False)
+        ss_f = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(ss_f)
         self.__session = Session()
 
+    @contextmanager
+    def session_scope(self):
+        session = self.get_session()
+        try:
+            yield session
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+
+    def get_session(self):
+        if self.__session is None:
+            self.reload()
+        return self.__session
+
     def close(self):
-        """
-        Method close session"""
-        self.__session.close()
+        if self.__session:
+            self.__session.close()
+
+
