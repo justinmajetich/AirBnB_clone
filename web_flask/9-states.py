@@ -16,7 +16,7 @@ def states_list():
     return render_template("9-states.html", state=states)
 
 
-@app.route('/states/<id>',strict_slashes=False)
+@app.route('/states/<id>', strict_slashes=False)
 def city_list(id):
     """This method load cities in a state from the storage"""
     states = storage.all(State)
@@ -24,7 +24,9 @@ def city_list(id):
         if state.id == id:
             cities = state.cities
             return render_template("9-states.html", state=state, cities=cities)
+
     return render_template("9-states.html")
+
 
 @app.teardown_appcontext
 def close_session(execute):
