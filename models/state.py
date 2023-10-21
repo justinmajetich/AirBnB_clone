@@ -1,22 +1,20 @@
 #!/usr/bin/python3
-""" define class State"""
+"""Define class State"""
 import models
-from os import getenv
-from models.base_model import Base
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.city import City
-from sqlalchemy import Column
-from sqlalchemy import String
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
+from os import getenv
 
 class State(BaseModel, Base):
-    """Representation of state """
-      __tablename__ = "states"
+    """Representation of state"""
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City",  backref="state", cascade="delete")
-
-    if getenv("HBNB_TYPE_STORAGE") != "db":
+    
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    else:
         @property
         def cities(self):
             """Get a list of all related City objects."""
