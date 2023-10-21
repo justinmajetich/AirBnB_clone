@@ -1,0 +1,56 @@
+{% extends '../web_static/6-index.html' %}
+
+{% block content %}
+  {{ super() }}
+  <div class="container">
+    <div class="filters">
+      <!-- Filter by States -->
+      <div class="locations">
+        <h3>States</h3>
+        <div class="filter locations">
+          <h4>&nbsp;</h4>
+          <ul class="locations">
+            {% for state in states|sort(attribute="name") %}
+              <li>
+                <input type="checkbox" class="check" data-id="{{ state.id }}" data-name="{{ state.name }}">
+                {{ state.name }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Filter by Cities -->
+      <div class="locations">
+        <h3>Cities</h3>
+        <div class="filter locations">
+          <h4>&nbsp;</h4>
+          <ul class="locations">
+            {% for city in states.values().cities|sort(attribute="name") %}
+              <li>
+                <input type="checkbox" class="check" data-id="{{ city.id }}" data-name="{{ city.name }}">
+                {{ city.name }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Filter by Amenities -->
+      <div class="amenities">
+        <h3>Amenities</h3>
+        <div class="filter amenities">
+          <h4>&nbsp;</h4>
+          <ul class="amenities">
+            {% for amenity in amenities|sort(attribute="name") %}
+              <li>
+                <input type="checkbox" class="check" data-id="{{ amenity.id }}" data-name="{{ amenity.name }}">
+                {{ amenity.name }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
