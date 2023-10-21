@@ -1,8 +1,9 @@
 #!/usr/bin/python3
+"""
+Importing the flask module
+"""
+
 from flask import Flask
-
-"""Importing the flask module"""
-
 app = Flask(__name__)
 
 
