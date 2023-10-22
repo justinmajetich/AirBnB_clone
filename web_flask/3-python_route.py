@@ -31,7 +31,7 @@ def ctext(text):
 def pytext(text="is cool"):
     """A function that returns text"""
     text = text.replace("_", " ")
-    return f"python {text}"
+    return f"Python {text}"
 
 
 if __name__ == "__main__":
