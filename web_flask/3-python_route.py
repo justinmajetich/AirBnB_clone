@@ -28,7 +28,7 @@ def ctext(text):
 
 
 @app.route("/python/<text>", strict_slashes=False)
-def pytext(text):
+def pytext(text="is cool"):
     """A function that returns text"""
     text = text.replace("_", " ")
     return f"python {text}"
