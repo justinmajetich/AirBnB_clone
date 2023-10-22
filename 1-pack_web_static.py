@@ -16,13 +16,13 @@ def do_pack():
     using the function do_pack
     """
 
-    file = strftime("%Y%m%d%H%M%S")
+    archieve = strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")
         local("tar -czvf versions/web_static_{}.tgz web_static/"
-              .format(file))
+              .format(archieve))
 
-        return "versions/web_static_{}.tgz".format(file)
+        return "versions/web_static_{}.tgz".format(archieve)
 
-    except Exception as e:
+    except Exception:
         return None
