@@ -1,34 +1,49 @@
 #!/usr/bin/python3
-from fabric.api import put, run, local, env
+"""
+Deploy archive!
+"""
 from os import path
+from fabric.api import env, put, run
 
-
-env.hosts = ["54.167.24.215", "54.82.159.235"]
+env.hosts = ["34.231.110.206", "3.239.57.196"]
 
 
 def do_deploy(archive_path):
-    """Fabric script that distributes
-    an archive to your web server"""
-
+    """
+    Fabric script (based on the file 1-pack_web_static.py) that distributes an
+    archive to your web servers, using the function do_deploy
+    """
     if not path.exists(archive_path):
         return False
-    try:
-        tgzfile = archive_path.split("/")[-1]
-        print(tgzfile)
-        filename = tgzfile.split(".")[0]
-        print(filename)
-        pathname = "/data/web_static/releases/" + filename
-        put(archive_path, '/tmp/')
-        run("mkdir -p /data/web_static/releases/{}/".format(filename))
-        run("tar -zxvf /tmp/{} -C /data/web_static/releases/{}/"
-            .format(tgzfile, filename))
-        run("rm /tmp/{}".format(tgzfile))
-        run("mv /data/web_static/releases/{}/web_static/*\
-            /data/web_static/releases/{}/".format(filename, filename))
-        run("rm -rf /data/web_static/releases/{}/web_static".format(filename))
-        run("rm -rf /data/web_static/current")
-        run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-            .format(filename))
-        return True
-    except Exception as e:
+
+    file = archive_path.split("/")[-1]
+    archieve = file.split(".")[0]
+    load = "/tmp/{}".format(file)
+
+    if put(archive_path, load).failed:
         return False
+
+    present = '/data/web_static/releases/{}'.format(archieve)
+    if run("rm -rf {}".format(present)).failed:
+        return False
+
+    if run("mkdir -p {}".format(present)).failed:
+        return False
+
+    change_file = "tar -xzf /tmp/{} -C {}".format(
+        file, present
+    )
+    if run(change_file).failed:
+        return False
+
+    remove_file = "rm -f /tmp/{}".format(file)
+    if run(remove_file).failed:
+        return False
+
+    if run("rm -rf /data/web_static/current").failed:
+        return False
+
+    mv_file = "ln -s {} /data/web_static/current".format(present)
+    if run(mv_file).failed:
+        return False
+    return True
