@@ -16,7 +16,7 @@ def states():
 
 
 @app.route("/states/<id>", strict_slashes=False)
-def states_id(id):
+def stateId(id):
     """Print states if with id"""
     states = storage.all(State)
     for state in states:
