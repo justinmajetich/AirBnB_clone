@@ -10,6 +10,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class DBStorage:
     """engine DBStorage connecting to MysqlAlchemy"""
 
@@ -20,10 +21,10 @@ class DBStorage:
         """The init method that initializes an engine"""
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}:3306/{}".format(
-                os.getenv('HBNB_MYSQL_USER'),
-                os.getenv('HBNB_MYSQL_PWD'),
-                os.getenv('HBNB_MYSQL_HOST'),
-                os.getenv('HBNB_MYSQL_DB'),
+                os.getenv("HBNB_MYSQL_USER"),
+                os.getenv("HBNB_MYSQL_PWD"),
+                os.getenv("HBNB_MYSQL_HOST"),
+                os.getenv("HBNB_MYSQL_DB"),
             ),
             pool_pre_ping=True,
         )
@@ -70,3 +71,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
+
+    def close(self):
+        """A method that call remove() method on the private session attribute (self.__session)"""
+        self.__session.remove()
