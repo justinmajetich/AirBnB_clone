@@ -11,12 +11,21 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 def parse(args):
-    """Splits args into a list of a string (the class name) and a dictionary of parameters."""
+    """
+    Splits args into a list of a string (the class name)
+    and a dictionary of parameters.
+
+    Args:
+        args(str): The string to be parsed.
+    Returns:
+        List containing the class name and a dictionary of parameters.
+    """
 
     if not args:
         return None
-    
+
     parts = args.split()  # Split the input into parts by spaces
     class_name = parts[0]  # The first part is the class name
     param_dict = {}  # Create an empty dictionary to hold the parameters
@@ -25,21 +34,21 @@ def parse(args):
         if '=' in part:
             param_name, param_value = part.split('=')
             if param_value.startswith('"') and param_value.endswith('"'):
-                # Handle string values with possible underscores and escaped quotes
-                param_value = param_value[1:-1].replace('_', ' ').replace('"', '"')
+                # Handle string values with underscores and escaped quotes
+                param_value = param_value[1:-1].replace('_', ' ')
             elif '.' in param_value:
                 try:
                     # Try to convert to float
                     param_value = float(param_value)
                 except ValueError:
-                    # Handle the case when the value doesn't match the float format
+                    # Handle invalid float format
                     continue
             else:
                 try:
                     # Try to convert to integer
                     param_value = int(param_value)
                 except ValueError:
-                    # Handle the case when the value doesn't match the integer format
+                    # Handle invalid integer format
                     continue
 
             # Add the parameter to the dictionary
@@ -152,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         # Separate args into class name and parameters.
-        p_args = parse(args);
+        p_args = parse(args)
         if not p_args:
             print("** class name missing **")
             return
@@ -162,9 +171,10 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance = HBNBCommand.classes[p_args[0]]()
 
-        if args[1]: # Add specified parameters to the attributes in new_instance
+        if args[1]:
+            # Add specified parameters to the attributes in new_instance
             new_instance.__dict__.update(**p_args[1])
-        
+
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -362,6 +372,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
