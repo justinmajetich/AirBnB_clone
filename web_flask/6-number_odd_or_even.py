@@ -54,9 +54,11 @@ def numberEvenOdd(n):
     """A function that renders a template if n was int"""
     if isinstance(n, int):
         if n % 2 == 0:
-            return render_template("6-number_odd_or_even.html", number=n, info="even")
+            return render_template("6-number_odd_or_even.html",
+                                   number=n, info="even")
         else:
-            return render_template("6-number_odd_or_even.html", number=n, info="odd")
+            return render_template("6-number_odd_or_even.html",
+                                   number=n, info="odd")
 
 
 if __name__ == "__main__":
