@@ -18,10 +18,10 @@ def states():
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id):
     """Print states if with id"""
-    state = storage.get(State, id)
-    if state:
-        cities = sorted(state.cities, key=lambda city: city.name)
-        return render_template("9-states.html", state=state, cities=cities)
+    states = storage.all(State)
+    for state in states:
+        if state.id == id:
+            return render_template("9-states.html", state=state)
     return render_template("9-states.html")
 
 
