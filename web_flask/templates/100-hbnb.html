@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../static/styles/3-header.css"/>
 		<link rel="stylesheet" href="../static/styles/3-footer.css"/>
 		<link rel="stylesheet" href="../static/styles/6-filters.css"/>
+		<link rel="stylesheet" href="../static/styles/8-places.css"/>
 	</head>
     <body>
 		<header>
@@ -40,7 +41,33 @@
 						{% endfor %}
 					</ul>
 				</div>
-
+			</section>
+			<section class="places">
+				<h1>Places</h1>
+				{% for place in places.values()|sort(attribute="name") %}
+					<article>
+						<div class="headline">
+							<h2>{{ place.name }}</h2>
+							<div class="price_by_night">$80</div>
+						</div>
+						<div class="information">
+							<div class="max_guest">
+								<div class="guest_icon"></div>
+								<p>{{ place.max_guest }} Guest</p>
+							</div>
+							<div class="number_rooms">
+								<div class="bed_icon"></div>
+								<p>{{ place.number_rooms }} Bedroom</p>
+							</div>
+								<div class="number_bathrooms">
+								<div class="bath_icon"></div>
+								<p>{{ place.number_bathrooms }} Bathroom</p>
+							</div>
+						</div>
+							<div class="user"><b>Owner</b>: {{ place.user.first_name }} {{ place.user.last_name }}</div>
+							<div class="description">{{ place.description|safe }}</div>
+					</article>
+				{% endfor %}	
 			</section>
 		</div>
 		<footer>

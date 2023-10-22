@@ -18,7 +18,7 @@
 	border-right: 1px solid #DDDDDD;
 }
 
-.filter_amenities {
+.amenities {
 	display: inline;
 	vertical-align: middle;
 	height: 100%;
@@ -38,7 +38,7 @@
 	margin-left: -1px;
 	margin-top: 8px;
 	padding: 25px 0px;
-	overflow-y: scroll;
+	overflow-y: auto;
 
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
@@ -48,7 +48,7 @@
 	display: inline-block;
 }
 
-.filter_amenities:hover .popover {
+.amenities:hover .popover {
 	display: inline-block;
 }
 
