@@ -3,7 +3,7 @@
 Compress before sending
 """
 from os import path
-from time import datetime
+from datetime import datetime
 from datetime import date
 from fabric.api import local
 
