@@ -7,25 +7,25 @@ from models.city import City
 import os
 
 STORAGE = os.getenv("HBNB_TYPE_STORAGE")
+
+
 class State(BaseModel, Base):
-    """ State class """
-    __tablename__ = 'states'
+    """State class"""
+
+    __tablename__ = "states"
     if STORAGE == "db":
-        id = Column(String(60), primary_key=True, nullable=False, unique=True)
         name = Column(String(128), nullable=False)
-        cities = relationship("City",
-                            backref="state",
-                            cascade="all, delete-orphan")
+        cities = relationship("City", backref="state", cascade="all, delete-orphan")
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """Returns the cities"""
-        from models import storage
-        city_list = []
-        for key, value in storage.all(City).items():
-            if self.id == value.state_id:
-                city_list.append(value)
-        return city_list
+        @property
+        def cities(self):
+            """Returns the cities"""
+            from models import storage
 
+            city_list = []
+            for key, value in storage.all(City).items():
+                if self.id == value.state_id:
+                    city_list.append(value)
+            return city_list

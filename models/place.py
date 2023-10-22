@@ -13,7 +13,6 @@ class Place(BaseModel, Base):
 
     __tablename__ = 'places'
     if STORAGE == "db":
-        id = Column(String(60), primary_key=True, nullable=False, unique=True)
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
