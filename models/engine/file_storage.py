@@ -18,7 +18,8 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         myDict = {}
-        if (cls is None):
+        if cls is None:
+            print("Return from Filestorage")
             return FileStorage.__objects
         
         else:
@@ -27,6 +28,7 @@ class FileStorage:
                 className = key.split(".")
                 if (argClass[:-2] == className[0]):
                     myDict[key] = value
+            print("Return from model instance")
             return (myDict)
 
     def new(self, obj):

@@ -10,7 +10,7 @@ import os
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    if (os.getenv("HNBN_TYPE_STORAGE") == 'db'):
+    if (os.getenv("HBNB_TYPE_STORAGE") == 'db'):
         name = Column(String(128), nullable=False)
         cities = relationship("City", cascade='all, delete', backref='state')
     else:
@@ -25,6 +25,6 @@ class State(BaseModel, Base):
             myList = []
             myDict = models.storage.all(City)
             for key, value in myDict.items():
-                if (value.state_id == self.id):
+                if (value.state_id == sexlf.id):
                     myList.append(value)
             return (myList)

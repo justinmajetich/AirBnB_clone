@@ -21,7 +21,7 @@ class DBStorage:
     """
     """
     __engine = None
-    __Session = None
+    __session = None
 
     def __init__(self):
         """
