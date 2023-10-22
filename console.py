@@ -11,6 +11,42 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+def parse(args):
+    """Splits args into a list of a string (the class name) and a dictionary of parameters."""
+
+    if not args:
+        return None
+    
+    parts = args.split()  # Split the input into parts by spaces
+    class_name = parts[0]  # The first part is the class name
+    param_dict = {}  # Create an empty dictionary to hold the parameters
+
+    for part in parts[1:]:
+        if '=' in part:
+            param_name, param_value = part.split('=')
+            if param_value.startswith('"') and param_value.endswith('"'):
+                # Handle string values with possible underscores and escaped quotes
+                param_value = param_value[1:-1].replace('_', ' ').replace('"', '"')
+            elif '.' in param_value:
+                try:
+                    # Try to convert to float
+                    param_value = float(param_value)
+                except ValueError:
+                    # Handle the case when the value doesn't match the float format
+                    continue
+            else:
+                try:
+                    # Try to convert to integer
+                    param_value = int(param_value)
+                except ValueError:
+                    # Handle the case when the value doesn't match the integer format
+                    continue
+
+            # Add the parameter to the dictionary
+            param_dict[param_name] = param_value
+
+    return [class_name, param_dict]
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -73,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,13 +151,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        # Separate args into class name and parameters.
+        p_args = parse(args);
+        if not p_args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif p_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[p_args[0]]()
+
+        if args[1]: # Add specified parameters to the attributes in new_instance
+            new_instance.__dict__.update(**p_args[1])
+        
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -272,7 +315,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +323,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
