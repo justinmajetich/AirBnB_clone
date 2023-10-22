@@ -33,5 +33,6 @@ def pytext(text):
     text = text.replace("_", " ")
     return f"python {text}"
 
+
 if __name__ == "__main__":
     app.run()
