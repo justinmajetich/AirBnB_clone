@@ -19,7 +19,7 @@ def states():
 
 
 @app.teardown_appcontext
-def close_db(exception=None):
+def tear(exception=None):
     """
     Ensures that all the states are closed before returning to the database
     """
