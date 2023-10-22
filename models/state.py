@@ -25,6 +25,6 @@ class State(BaseModel, Base):
             myList = []
             myDict = models.storage.all(City)
             for key, value in myDict.items():
-                if (value.state_id == sexlf.id):
+                if (value.state_id == self.id):
                     myList.append(value)
             return (myList)
