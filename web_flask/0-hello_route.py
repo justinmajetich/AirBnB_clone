@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+<<<<<<< HEAD
 """Starts a Flask web application.
 
 The application listens on 0.0.0.0, port 5000.
@@ -18,3 +19,19 @@ def hello_hbnb():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
+=======
+"""Flask package"""
+
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/', strict_slashes=False)
+def hello_world():
+    """hello world testing"""
+    return 'Hello HBNB!'
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+>>>>>>> bf87d07253e6c91958f11e7666ed3c9257b311e7
