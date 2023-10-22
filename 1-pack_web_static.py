@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Compress before sending
+"""
+
 from os import path
 from time import strftime
 from fabric.api import local
@@ -12,13 +16,13 @@ def do_pack():
     using the function do_pack
     """
 
-    filename = strftime("%Y%m%d%H%M%S")
+    file = strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")
         local("tar -czvf versions/web_static_{}.tgz web_static/"
-              .format(filename))
+              .format(file))
 
-        return "versions/web_static_{}.tgz".format(filename)
+        return "versions/web_static_{}.tgz".format(file)
 
     except Exception as e:
         return None
