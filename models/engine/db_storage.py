@@ -44,12 +44,12 @@ class DBStorage:
                 cls = eval(cls)
             cls_d = self.__session.query(cls).all()
         else:
-            cls_d = self.__session.query(State).all()
-            cls_d.extend(self.__session.query(City).all())
-            cls_d.extend(self.__session.query(User).all())
-            cls_d.extend(self.__session.query(Amenity).all())
-            cls_d.extend(self.__session.query(Place).all())
-            cls_d.extend(self.__session.query(Review).all())
+            cls_d = self.__session.query(State,
+                                         City,
+                                         Place,
+                                         Review,
+                                         User,
+                                         Amenity).all()
         return {"{}.{}".format(type(ob).__name__, ob.id): ob for ob in cls_d}
 
     def new(self, obj):
