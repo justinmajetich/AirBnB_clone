@@ -59,3 +59,9 @@ class DBStorage:
         """Creates a new object in current database session"""
 
         self.__session.add(obj)
+
+    def delete(self, obj=None):
+        """Deletes an Object, if it exists"""
+
+        if obj is not None:
+            self.__session.delete(obj)
