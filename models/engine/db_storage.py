@@ -54,3 +54,8 @@ class DBStorage:
             cls_dict.extend(self.__session.query(Place).all())
             cls_dict.extend(self.__session.query(Review).all())
             return cls_dict
+
+    def new(self, obj):
+        """Creates a new object in current database session"""
+
+        self.__session.add(obj)
