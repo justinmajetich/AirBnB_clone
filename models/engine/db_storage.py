@@ -8,7 +8,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
 
@@ -75,7 +75,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine,
                                expire_on_commit=False)
-        self.__session = Session()
+        self.__session = scoped_session(Session)
 
     def close(self):
         """ Close the current session. """
