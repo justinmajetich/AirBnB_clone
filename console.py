@@ -2,6 +2,11 @@
 """ Console Module """
 import cmd
 import sys
+import os
+import re
+import uuid
+from datetime import datetime
+
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -118,29 +123,40 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        args_list = args.split()
-        if args_list[0] not in HBNBCommand.classes:
+        arg_list = args.split()
+        params = {}
+
+        if arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         
-        new_instance = HBNBCommand.classes[args_list[0]]()
-        for i in args_list[1:]:
-            args_1 = i.split("=")
-            if args_1[1][0] == "\"":
-                new_str = args_1[1][1:-1]
-                copy_str = new_str.replace("_", " ")
-                copy_str = copy_str.replace("\"", "\\\"")
-                new_instance.__dict__[args_1[0]] = copy_str
-            elif "." in args_1[1]:
-                try:
-                    new_instance.__dict__[args_1[0]] = float(args_1[1])
-                except:
-                    pass
-            else:
-                try:
-                    new_instance.__dict__[args_1[0]] = int(args_1[1])
-                except:
-                    pass
+        for param in arg_list[1:]:
+            # Split the parameter into key and value
+            split_param = param.split('=')
+            if len(split_param) == 2:
+                key, value = split_param
+
+                # Handle string values
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+
+                # Handle float values
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+
+                # Handle integer values
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+
+                params[key] = value
+
+        new_instance = HBNBCommand.classes[arg_list[0]](**params)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -225,11 +241,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -242,7 +258,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)

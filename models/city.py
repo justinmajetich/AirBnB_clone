@@ -3,19 +3,19 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-import models
+import os
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    if models.storage_type == 'db':
-        __tablename__ = 'cities'
+    __tablename__ = 'cities'
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         name = Column(String(128), nullable=False)
-        places = relationship("Place", backref="cities")
+        #places = relationship("Place", backref="cities")
     else:
         state_id = ""
         name = ""
 
-    def __init__(self, *args, **kwargs):
-        """constructor for city class"""
-        super().__init__(*args, **kwargs)
+    """def __init__(self, *args, **kwargs):
+        constructor for city class
+        super().__init__(*args, **kwargs)"""

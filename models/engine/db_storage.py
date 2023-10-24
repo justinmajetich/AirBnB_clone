@@ -30,7 +30,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """queries all objects depending on the clas name"""
-        from models.base_model import Base
+        from models.base_model import BaseModel
         from models.user import User
         from models.state import State
         from models.city import City
@@ -39,7 +39,7 @@ class DBStorage:
         from models.review import Review
 
         objects = {}
-        classes = [BaseModel, Amenity, City, Place, Review, State, User]
+        classes = [City, Place, Review, State, User, Amenity]
 
         if cls is None:
             classes = [cls for cls in classes if cls is not None]
@@ -70,8 +70,9 @@ class DBStorage:
     def reload(self):
         """create all tables in the database and current database session"""
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+        Session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))
+        self.__session = Session()
 
     def close(self):
         """ Closes the current session """
