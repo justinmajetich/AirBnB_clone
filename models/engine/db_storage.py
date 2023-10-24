@@ -65,3 +65,8 @@ class DBStorage:
 
         if obj is not None:
             self.__session.delete(obj)
+
+    def save(self):
+        """Saves changes to the session"""
+
+        self.__session.commit()
