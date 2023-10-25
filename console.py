@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ This is the console Module """
+
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -10,6 +11,42 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+def parse(args):
+    """
+    Splits args into a list of a string (the class name)
+    and a dictionary of parameters.
+
+    Args:
+        args(str): The string to be parsed.
+    Returns:
+        List containing the class name and a dictionary of parameters.
+    """
+
+    if not args:
+        return None
+
+    parts = args.split()  # Split the input into parts by spaces
+    class_name = parts[0]  # The first part is the class name
+    param_dict = {}  # Create an empty dictionary to hold the parameters
+
+    for part in parts[1:]:
+        if '=' in part:
+            param_name, param_value = part.split('=')
+            try:
+                param_value = eval(param_value)
+            except ValueError:
+                # Handle invalid input format
+                continue
+
+            if type(param_value) is str:
+                # Handle string values with underscores and escaped quotes
+                param_value = param_value.replace('_', ' ').replace('"', '\\"')
+            # Add the parameter to the dictionary
+            param_dict[param_name] = param_value
+
+    return [class_name, param_dict]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,22 +152,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+
+        p_args = parse(args)
+        if not p_args:
             print("** class name missing **")
-        except NameError:
+            return
+        elif p_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+            return
+
+        kw = p_args[1]
+        print(kw)
+        new_instance = HBNBCommand.classes[p_args[0]](**kw)
         new_instance.save()
         print(new_instance.id)
 
@@ -325,6 +358,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
