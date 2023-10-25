@@ -1,32 +1,33 @@
 #!/usr/bin/python3
-"""Starts a Flask web application.
+'''A simple Flask web application.
+'''
+from flask import Flask, render_template
 
-The application listens on 0.0.0.0, port 5000.
-Routes:
-    /states_list: HTML page with a list of all State objects in DBStorage.
-"""
 from models import storage
-from flask import Flask
-from flask import render_template
+from models.state import State
+
 
 app = Flask(__name__)
+'''The Flask application instance.'''
+app.url_map.strict_slashes = False
 
 
-@app.route("/states_list", strict_slashes=False)
+@app.route('/states_list')
 def states_list():
-    """Displays an HTML page with a list of all State objects in DBStorage.
-
-    States are sorted by name.
-    """
-    states = storage.all("State")
-    return render_template("7-states_list.html", states=states)
+    '''The states_list page.'''
+    all_states = list(storage.all(State).values())
+    all_states.sort(key=lambda x: x.name)
+    ctxt = {
+        'states': all_states
+    }
+    return render_template('7-states_list.html', **ctxt)
 
 
 @app.teardown_appcontext
-def teardown(exc):
-    """Remove the current SQLAlchemy session."""
+def flask_teardown(exc):
+    '''The Flask app/request context end event listener.'''
     storage.close()
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
