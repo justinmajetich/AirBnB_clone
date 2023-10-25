@@ -15,14 +15,21 @@ def states():
     return render_template("9-states.html", states=states)
 
 
+# @app.route("/states/<id>", strict_slashes=False)
 @app.route("/states/<id>", strict_slashes=False)
 def stateId(id):
     """Print states if with id"""
     states = storage.all(State)
-    for state in states:
-        if state.id == id:
-            return render_template("9-states.html", state=state)
-    return render_template("9-states.html")
+    if id:
+        st = ""
+        for state in states.values():
+            if state.id == id:
+                st = state
+        if st:
+            return render_template('9-states.html', state=st)
+        return render_template('9-states.html', error='404')
+    sort = sorted(states.values(), key=lambda state: state.name)
+    return render_template('9-states.html', states=sort)
 
 
 @app.teardown_appcontext
