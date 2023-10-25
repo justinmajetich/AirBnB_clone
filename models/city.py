@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 
+
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     __tablename__ = 'cities'
@@ -16,6 +17,6 @@ class City(BaseModel, Base):
             )if getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     places = relationship(
             "Place",
-            cascade='all, delete, delete-orphan', 
+            cascade='all, delete, delete-orphan',
             backref="cities"
             )if getenv('HBNB_TYPE_STORAGE') == 'db' else None
