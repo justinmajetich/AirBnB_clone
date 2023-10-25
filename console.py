@@ -162,7 +162,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         kw = p_args[1]
-        print(kw)
         new_instance = HBNBCommand.classes[p_args[0]](**kw)
         new_instance.save()
         print(new_instance.id)
