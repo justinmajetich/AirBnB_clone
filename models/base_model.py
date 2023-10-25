@@ -23,7 +23,8 @@ class BaseModel:
         else:
             for key, value in kwargs.items():
                 if key == 'created_at' or key == 'updated_at':
-                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                    setattr(self, key, datetime.fromisoformat(value))
+                    #value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != '__class__':
                     setattr(self, key, value)
             if 'id' not in kwargs:
@@ -60,4 +61,4 @@ class BaseModel:
 
     def delete(self):
         """deletes the current instance from the storage"""
-        models.storage.delete(self)
+        storage.delete(self)

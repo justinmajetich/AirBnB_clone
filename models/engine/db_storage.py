@@ -17,11 +17,11 @@ class DBStorage:
         """constructor for DBStorage class"""
         user = getenv('HBNB_MYSQL_USER')
         password = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST', 'localhost')
+        host = getenv('HBNB_MYSQL_HOST')
         database = getenv('HBNB_MYSQL_DB')
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.
                                       format(user, password, host, database),
                                       pool_pre_ping=True)
 
@@ -39,7 +39,7 @@ class DBStorage:
         from models.review import Review
 
         objects = {}
-        classes = [City, Place, Review, State, User, Amenity]
+        classes = [User, State, City, Amenity, Place, Review]
 
         if cls is None:
             classes = [cls for cls in classes if cls is not None]
