@@ -5,6 +5,7 @@ from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+
 class DBStorage:
     """Represents a database storage engine.
 
@@ -26,12 +27,14 @@ class DBStorage:
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
+        self.new_session()  # Create a new session
 
     def new_session(self):
         """Create a new session and set it as the active session."""
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = Session
 
     def all(self, cls=None):
         """Query on the current database session on objects of the class.
@@ -76,7 +79,8 @@ class DBStorage:
         db_env = getenv('HBNB_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(db_user, db_pwd, db_host, db_name),
+                                      .format(db_user, db_pwd, db_host,
+                                              db_name),
                                       pool_pre_ping=True)
 
         if db_env == 'test':
