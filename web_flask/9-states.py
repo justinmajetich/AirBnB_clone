@@ -19,10 +19,9 @@ def states():
 def states_id(id):
     '''Display a HTML page with a list of all states'''
     states = storage.all(State).values()
-    if states is None:
-        return render_template('9-states.html', state=None)
     for state in states:
         if state.id == id:
+            print(state)
             return render_template('9-states.html', state=state)
     return render_template('9-states.html', state=None)
 
