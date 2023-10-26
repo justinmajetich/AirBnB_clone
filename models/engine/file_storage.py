@@ -13,8 +13,6 @@ class FileStorage:
         if cls is not None:
             all_class = {}
             for objects in FileStorage.__objects:
-                print(f"{objects}: {FileStorage.__objects[objects]}")
-                print(f"{type(FileStorage.__objects[objects])}")
                 if type(FileStorage.__objects[objects]) == cls:
                     all_class.update({objects: FileStorage.__objects[objects]})
             return all_class
