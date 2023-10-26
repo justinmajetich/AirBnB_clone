@@ -8,13 +8,24 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+    def all(self, cls=None):
+        """Returns a dictionary of models of storage class"""
+        if cls is not None:
+            if type(cls) is str:
+                cls = eval(cls)
+            cls_dict = {}
+            for key, value in self.__objects.items():
+                if type(value) is cls:
+                    cls_dict[key] = value
+            return cls_dict
+        return self.__objects
 
-    def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+    def save(self):
+        """Saves dictionary of storage to file"""
+        t_dict = {obj: self.__objects[obj].to_dict()
+                     for obj in self.__objects.keys()}
+        with open(FileStorage.__file_path, 'w') as file:
+            json.dump(t_dict, file)
 
     def save(self):
         """Saves storage dictionary to file"""
