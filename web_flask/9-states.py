@@ -12,7 +12,8 @@ app = Flask(__name__)
 def states():
     """Display a HTML page with a list of all states"""
     states = storage.all(State).values()
-    return render_template('8-cities_by_states.html', states=states)
+    return render_template('9-states.html', states=states)
+
 
 @app.route('/states/<id>', strict_slashes=False)
 def states_id(id):
@@ -22,6 +23,7 @@ def states_id(id):
         if state.id == id:
             return render_template('9-states.html', state=state)
     return render_template('9-states.html', state=None)
+
 
 @app.teardown_appcontext
 def teardown_db(exception):
