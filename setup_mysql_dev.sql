@@ -1,0 +1,3 @@
+-- Prepares MySQL Server for AirBnB
+CREATE DATABASE IF NOT EXISTS hbnb_dev_db
+CREATE USER IF NOT EXISTS
