@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
+    def do_create(self, args):
         """ Create an object of any class"""
         args = args.split(" ")
 
@@ -128,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         
         param_dict = {}
         for i in range(1, len(args)):
-            key = args[1].split("=")
+            key = args[i].split("=")
             key[1] = key[1].replace('\"', '')
             key[1] = key[1].replace('_', ' ')
             param_dict[key[0]] = key[1]
