@@ -35,11 +35,6 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a list of specified Class or All classes"""
 
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker()
-        Session.configure(bind=self.__engine)
-        self.__session = Session()
-
         cls_dict = {}
         if cls is not None:
             if type(cls) is str:
@@ -54,3 +49,27 @@ class DBStorage:
             cls_dict.extend(self.__session.query(Place).all())
             cls_dict.extend(self.__session.query(Review).all())
             return cls_dict
+
+    def new(self, obj):
+        """Creates a new object in current database session"""
+
+        self.__session.add(obj)
+
+    def delete(self, obj=None):
+        """Deletes an Object, if it exists"""
+
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def save(self):
+        """Saves changes to the session"""
+
+        self.__session.commit()
+
+    def reload(self):
+        """Creates a session in the database"""
+
+        Base.metadata.create_all(self.__engine)
+        Session = sessionmaker()
+        Session.configure(bind=self.__engine)
+        self.__session = Session()
