@@ -23,18 +23,9 @@ class FileStorage:
     def save(self):
         """Saves dictionary of storage to file"""
         t_dict = {obj: self.__objects[obj].to_dict()
-                     for obj in self.__objects.keys()}
+                  for obj in self.__objects.keys()}
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(t_dict, file)
-
-    def save(self):
-        """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -56,6 +47,6 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
