@@ -115,33 +115,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split(" ")
-
-        first = args[0]
-        if not args[0]:
+        if not args:
             print("** class name missing **")
             return
-
-        elif first not in HBNBCommand.classes:
+        params = args.split(" ")
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
-        param = {}
-
-        for key_value in args[1:]:
-            key, value = key_value.split("=")
-
-            value = value.replace('_', ' ')
-            param[key] = value.strip('"\'')
-
-        new_instance = HBNBCommand.classes[param]()
-        for key, value in param.items():
-            new_instance.__dict__[key] = value
-
-        print(new_instance.id)
+        else:
+            new_instance = HBNBCommand.classes[params[0]]()
+            self.update_instance(params, new_instance)
         storage.new(new_instance)
+        print(new_instance.id)
         storage.save()
-        
+
+    def update_instance(self, args, instance):
+        """Transform a string in dictionary"""
+        for idx in range(1, len(args)):
+            key, value = args[idx].split('=')
+            if value[0] is value[-1] in ['"', "'"]:
+                value = value.strip("\"'").replace('_', ' ')
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+            setattr(instance, key, value)
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
