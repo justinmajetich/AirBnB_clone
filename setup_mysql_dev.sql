@@ -1,4 +1,4 @@
--- Creates a MySQL server  with:
+-- Creates a MySQL server with:
 --   Database hbnb_dev_db.
 --   User hbnb_dev with password hbnb_dev_pwd in localhost.
 --   Grants all privileges for hbnb_dev on hbnb_dev_db.
