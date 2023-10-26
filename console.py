@@ -135,10 +135,14 @@ class HBNBCommand(cmd.Cmd):
             key, value = args[idx].split('=')
             if value[0] is value[-1] in ['"', "'"]:
                 value = value.strip("\"'").replace('_', ' ')
-            elif "." in value[1]:
-                value[1] = float(value[1])
             else:
-                value[1] = int(value[1])
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
             setattr(instance, key, value)
 
     def help_create(self):
