@@ -20,8 +20,7 @@ def states_id(id):
     '''Display a HTML page with a list of all states'''
     states = storage.all(State).values()
     for state in states:
-        if state.id == id:
-            print(state)
+        if state.id == id and state.cities:
             return render_template('9-states.html', state=state)
     return render_template('9-states.html', state=None)
 
