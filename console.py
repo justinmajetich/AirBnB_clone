@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
 
                 elif "." in first[1]:
                     first[1] = float(first[1])
-                
+
                 else:
                     first[1] = int(first[1])
                 setattr(new_instance, first[0]. first[1])
