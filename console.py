@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Michael Editted 2:29 PM
 """ Console Module """
 import cmd
 import sys
@@ -130,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
