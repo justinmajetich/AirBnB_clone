@@ -15,7 +15,7 @@ class FileStorage:
         else:
             objs_class = {}
             for key, obj in self.__objects.items():
-                if isinstance(obj, cls):
+                if type(obj) is cls:
                     objs_class[key] = obj
             return objs_class
 
@@ -59,7 +59,7 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes object from __objects if it exists"""
         if obj is not None:
-            key = f"{type(obj).__name}.{obj.id}"
+            key = f"{type(obj).__name__}.{obj.id}"
             if key in self.__objects:
                 del self.__objects[key]
                 self.save()
