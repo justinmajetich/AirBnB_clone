@@ -116,44 +116,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = args.split(" ")
+
         if not args:
             print("** class name missing **")
             return
-        # Setting class name and parameters to the arguements.
-        class_name, *params = args.split()
-
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exists **")
-            return
         
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class name missing **")
+            return
+
         param_dict = {}
-        for param in params:
-            #Splitting the paramerter into the key and value
-            if "=" in param:
-                key, value = param.split("=", 1)
-            else:
-                # If there is not '=' found, slip the parameter
-                continue
 
-            #Process the value
-            if value.startswith('"') and value.endswith('"'):
-                # String value
-                value = value[1:-1].replace('\\', '"').replace('_', ' ')
-            elif re.match(r'~\d+\.\d+$', value):
-                # Float value
-                value = float(value)
-            elif re.match(r'^\d+$', value):
-                # Integer value
-                value = int(value)
-            else:
-                continue
-
+        for param in args[1:]:
+            key, value = param.split("=", 1)
+            value = value.replace('\"', '').replace('_', ' ')
             param_dict[key] = value
 
-        new_instance = HBNBCommand.classes[class_name](**param_dict)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        new_intance = HBNBCommand.classes[class_name](**param_dict)
+        new_intance.save()
+        print(new_intance.id)
 
     def help_create(self):
         """ Help information for the create method """
