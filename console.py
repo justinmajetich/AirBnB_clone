@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         elif args[0] not in HBNBCommand.classes:
-            print("** class name missing **")
+            print("** class doesn't exist **")
             return
         
         param_dict = {}
