@@ -58,8 +58,9 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ removes a key value pair stored in __objects """
-        key = obj.to_dict()['__class__'] + '.' + obj.id
-        if key in self.__objects:
-            self.__objects.pop(key)
+        if obj is not None:
+            key = obj.to_dict()['__class__'] + '.' + obj.id
+            if key in self.__objects:
+                self.__objects.pop(key)
         else:
             pass
