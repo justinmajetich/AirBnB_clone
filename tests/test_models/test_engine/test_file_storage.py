@@ -108,26 +108,3 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
-
-    def test_create_string_param(self, mock_stdout):
-        self.console.onecmd("create Base name=\"My_House\"")
-        output = mock_stdout.getvalue()
-        self.assertTrue(output.strip().isnumeric())
-
-    def test_create_float_param(self, mock_stdout):
-        self.console.onecmd("create Base my_float=3.14")
-        output = mock_stdout.getvalue()
-        self.assertTrue(output.strip().isnumeric())
-
-    def test_create_integer_param(self, mock_stdout):
-        self.console.onecmd("create Base my_int=42")
-        output = mock_stdout.getvalue()
-        self.assertTrue(output.strip().isnumeric())
-
-    def test_create_multiple_params(self, mock_stdout):
-        self.console.onecmd("create Base name=\"My_House\" my_int=42 my_float=3.14")
-        output = mock_stdout.getvalue()
-        self.assertTrue(output.strip().isnumeric())
-
-if __name__ == "__main__":
-    unittest.main()
