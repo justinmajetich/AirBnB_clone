@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is'}' \
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -321,6 +321,7 @@ class HBNBCommand(cmd.Cmd):
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
+
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
