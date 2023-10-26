@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>AirBnB</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/png" href="../static/images/icon.png">
+    <link rel="stylesheet" type="text/css" href="../static/styles/6-filters.css">
+    <link rel="stylesheet" type="text/css" href="../static/styles/4-common.css">
+    <link rel="stylesheet" type="text/css" href="../static/styles/3-header.css">
+    <link rel="stylesheet" type="text/css" href="../static/styles/3-footer.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+        </div>
+    </header>
+    <div class="container">
+        <section class="filters">
+            <div class="locations">
+                <h3>States</h3>
+                <h4>&nbsp;</h4>
+                <div class="popover">
+                    <ul>
+                        {% for state in states.values()|sort(attribute='name') %}
+                        <li>
+                            <h2>{{ state.name }}:</h2>
+                            <ul>
+                                {% for city in state.cities|sort(attribute='name') %}
+                                <li>{{ city.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="amenities">
+                <h3>Amenities</h3>
+                <h4>&nbsp;</h4>
+                <div class="popover">
+                    <ul>
+                        {% for amenity in amenities.values()|sort(attribute='name') %}
+                        <li>{{ amenity.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <button class="search_button">
+                Search
+            </button>
+        </section>
+    </div>
+    <footer>
+        <div class="centered_footer">Holberton School</div>
+    </footer>
+</body>
+
+</html>
