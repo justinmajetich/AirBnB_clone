@@ -64,4 +64,4 @@ class FileStorage:
         if key in self.__objects:
             self.__objects.pop(key)
         else:
-            print("delete wrong")
+            pass
