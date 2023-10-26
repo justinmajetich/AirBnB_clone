@@ -115,39 +115,34 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args or len(args) == 1:
+        off_equal_sign = args.replace("=", " ")
+        """ Replace = with space"""
+        list_args = off_equal_sign.split()
+        if not list_args[0]:
             print("** class name missing **")
             return
-        class_name = args[0]
-        if class_name not in HBNBCommand.classes:
+        elif list_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        """ Parse the parameters:"""
-        params = {}
-        for arg in args[1:]:
-            key, value = arg.split("=")
-            value = valie.replace("\\\"", "\"")
-            """Escape double quotes inside the value"""
-            value = value.replace("_", " ")
-            """Replace underscores with spaces in the value"""
-            
-            """Convert the value to the appropriate type:"""
-            try:
-                value = float(value)
-            except ValueError:
-                try:
-                    value = int(value)
-                except ValueError:
-                    value = str(value)
-
-            params[key] = value
-        new_instance = HBNBCommand.classes[class_name](**params)
-        """Create a new instance of the class with the given parameters"""
-        storage.save()
+        new_instance = HBNBCommand.classes[list_args[0]]()
+        key_name_str = []
+        value_str = []
+        dict_attr = {}
+        for i in range(1, len(list_args)):
+            if i % 2 > 0:
+                key_name_str.append(list_args[i])
+            elif type(list_args[i]) is str:
+                newlist = list_args[i].replace("_", " ")
+                new_list = newlist.replace("\"", "")
+                """" Replace _ with space, delete all backslashs"""
+                value_str.append(new_list)
+        for j in range(len(key_name_str)):
+            dict_attr[key_name_str[j]] = value_str[j]
+            setattr(new_instance, key_name_str[j], value_str[j])
+            """ Set to new_instance with new key and value pairs"""
         print(new_instance.id)
-        storage.save()
-        
+        new_instance.save()
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
