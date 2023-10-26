@@ -9,7 +9,7 @@
         <H1>State: {{state.name}}</H1>
         <H3>Cities:</H3>
         <UL>
-            {% for city in state.cities %}
+            {% for city in state.cities|sort(attribute='name') %}
                 <LI>{{city.id}} <B>{{city.name}}</B></LI>
             {% endfor %}
         </UL>
@@ -18,7 +18,7 @@
         {% if states is defined %}
         <H1>States</H1>
         <UL>
-            {% for state in states %}
+            {% for state in states|sort(attribute='name') %}
                 <LI>{{state.id}} <B>{{state.name}}</B></LI>
             {% endfor %}
         </UL>
