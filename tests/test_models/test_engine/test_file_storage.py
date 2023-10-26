@@ -109,30 +109,25 @@ class test_fileStorage(unittest.TestCase):
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
-    def test_create_with_string_param(self):
-        console = HBNBCommand()
-        args = "Base name=\"My House\""
-        console.onecmd("create " + args)
-        output = console.stdout.getvalue().strip()
-        self.assertTrue(output.isnumeric())
+    def test_create_string_param(self, mock_stdout):
+        self.console.onecmd("create Base name=\"My_House\"")
+        output = mock_stdout.getvalue()
+        self.assertTrue(output.strip().isnumeric())
 
-    def test_create_with_integer_param(self):
-        console = HBNBCommand()
-        args = "Base my_int=42"
-        console.onecmd("create " + args)
-        output = console.stdout.getvalue().strip()
-        self.assertTrue(output.isnumeric())
+    def test_create_float_param(self, mock_stdout):
+        self.console.onecmd("create Base my_float=3.14")
+        output = mock_stdout.getvalue()
+        self.assertTrue(output.strip().isnumeric())
 
-    def test_create_with_float_param(self):
-        console = HBNBCommand()
-        args = "Base my_float=3.14"
-        console.onecmd("create " + args)
-        output = console.stdout.getvalue().strip()
-        self.assertTrue(output.isnumeric())
+    def test_create_integer_param(self, mock_stdout):
+        self.console.onecmd("create Base my_int=42")
+        output = mock_stdout.getvalue()
+        self.assertTrue(output.strip().isnumeric())
 
-    def test_create_with_multiple_params(self):
-        console = HBNBCommand()
-        args = "Base name=\"My House\" my_int=42 my_float=3.14"
-        console.onecmd("create " + args)
-        output = console.stdout.getvalue().strip()
-        self.assertTrue(output.isnumeric())
+    def test_create_multiple_params(self, mock_stdout):
+        self.console.onecmd("create Base name=\"My_House\" my_int=42 my_float=3.14")
+        output = mock_stdout.getvalue()
+        self.assertTrue(output.strip().isnumeric())
+
+if __name__ == "__main__":
+    unittest.main()
