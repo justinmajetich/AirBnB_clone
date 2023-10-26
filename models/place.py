@@ -9,11 +9,13 @@ from models import storage
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60), ForeignKey('places.id'),
+                          Column('place_id', String(60), ForeignKey('places.id',
+                                onupdate='CASCADE', ondelete='CASCADE'),
                                  primary_key=True, nullable=False),
                           Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'),
-                                 primary_key=True, nullable=False))
+                                 ForeignKey('amenities.id',
+                                 primary_key=True,onupdate='CASCADE',
+                                        ondelete='CASCADE'),nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -21,9 +23,9 @@ class Place(BaseModel, Base):
 
     __tablename__ = 'places'
 
-    city_id = Column(String(60), ForeignKey('cities.id', ondelete='CASCADE'),
+    city_id = Column(String(60), ForeignKey('cities.id'),
                      nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id', ondelete='CASCADE'),
+    user_id = Column(String(60), ForeignKey('users.id'),
                      nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
