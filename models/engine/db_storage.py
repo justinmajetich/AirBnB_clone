@@ -13,7 +13,13 @@ from sqlalchemy import create_engine
 
 
 class DBStorage:
-    """Describes a new class for Database storage"""
+    """Describes a new class for Database storage
+    
+    Attributes:
+        __engine (sqlalchemy.Engine): The current engine.
+        __session (sqlalchemy.Session): The current session.
+    """
+    
     __engine = None
     __session = None
 
@@ -35,20 +41,19 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a list of specified Class or All classes"""
 
-        cls_dict = {}
+        cls_d = {}
         if cls is not None:
             if type(cls) is str:
                 cls = eval(cls)
-            cls_dict = self.__session.query(cls).all()
-            return cls_dict
+            cls_d = self.__session.query(cls).all()
         else:
-            cls_dict = self.__session.query(State).all()
-            cls_dict.extend(self.__session.query(City).all())
-            cls_dict.extend(self.__session.query(User).all())
-            cls_dict.extend(self.__session.query(Amenity).all())
-            cls_dict.extend(self.__session.query(Place).all())
-            cls_dict.extend(self.__session.query(Review).all())
-            return cls_dict
+            cls_d = self.__session.query(State).all()
+            cls_d.extend(self.__session.query(City).all())
+            cls_d.extend(self.__session.query(User).all())
+            cls_d.extend(self.__session.query(Amenity).all())
+            cls_d.extend(self.__session.query(Place).all())
+            cls_d.extend(self.__session.query(Review).all())
+        return {"{}.{}".format(type(ob).__name__, ob.id): ob for ob in cls_d}
 
     def new(self, obj):
         """Creates a new object in current database session"""
@@ -73,3 +78,8 @@ class DBStorage:
         Session = sessionmaker()
         Session.configure(bind=self.__engine)
         self.__session = Session()
+
+    def close(self):
+        """ Close the current session. """
+        self.__session.close()
+        

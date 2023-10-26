@@ -11,7 +11,13 @@ from models.review import Review
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """This class manages storage of hbnb models in JSON format
+
+    Attributes:
+        __file_path (str): The file to save to.
+        __objects (dict): A dictionary of object instances.
+    """
+
     __file_path = 'file.json'
     __objects = {}
 
@@ -41,17 +47,12 @@ class FileStorage:
     def reload(self):
         """Loads storage dictionary from file"""
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
         try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+            with open(self.__file_path, 'r') as file:
+                for obj in json.load(file).values():
+                    cname = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(cname)(**obj))
         except FileNotFoundError:
             pass
 
@@ -61,3 +62,7 @@ class FileStorage:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except (AttributeError, KeyError):
             pass
+
+    def close(self):
+        """ Call the reload method."""
+        self.reload()
