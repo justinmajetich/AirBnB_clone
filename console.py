@@ -115,27 +115,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        off_equal_sign = args.replace("=", " ")
+        arg_list = off_equal_sign.split()
+        if not arg_list[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         """ Replace '=' with space:"""
-        off_equal_sign = args.replace("=", " ")
-        arg_list = off_equal_sign.split()
         new_instance = HBNBCommand.classes[arg_list[0]]()
         key_str = []
         value_str = []
         dict_attr = {}
         """" Replace _ with space, delete all backslashs:"""
-        for i in range(1, len(arg_list)):
+        n_list = [ar.replace("_", " ").replace("\"", "") for ar in arg_list[1:]]
+        for i in range(1, len(n_list)):
             if i % 2 > 0:
-                key_str.append(arg_list[i])
-            elif type(arg_list[i]) is str:
-                newlist = arg_list[i].replace("_", " ")
-                new_list = newlist.replace("\"", "")
-                value_str.append(new_list)
+                key_str.append(n_list[i])
+            elif type(n_list[i]) is str:
+                value_str.append(n_list[i])
         """ Set new_instance with new key and value pairs"""
         for j in range(len(key_str)):
             dict_attr[key_str[j]] = value_str[j]
