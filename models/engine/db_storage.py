@@ -21,7 +21,7 @@ class DBStorage:
         """Initializes new instance of DBStorage"""
 
         user = os.environ.get('HBNB_MYSQL_USER')
-        passwd = os.environ.get('HBNB_MYSQL_PWD') 
+        passwd = os.environ.get('HBNB_MYSQL_PWD')
         host = os.environ.get('HBNB_MYSQL_HOST')
         db = os.environ.get('HBNB_MYSQL_DB')
         env_check = os.environ.get('HBNB_ENV')
@@ -32,5 +32,25 @@ class DBStorage:
         if env_check == 'test':
             Base.metadata.drop_all(self.__engine)
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a list of specified Class or All classes"""
+
+        Base.metadata.create_all(self.__engine)
+        Session = sessionmaker()
+        Session.configure(bind=self.__engine)
+        self.__session = Session()
+
+        cls_dict = {}
+        if cls is not None:
+            if type(cls) is str:
+                cls = eval(cls)
+            cls_dict = self.__session.query(cls).all()
+            return cls_dict
+        else:
+            cls_dict = self.__session.query(State).all()
+            cls_dict.extend(self.__session.query(City).all())
+            cls_dict.extend(self.__session.query(User).all())
+            cls_dict.extend(self.__session.query(Amenity).all())
+            cls_dict.extend(self.__session.query(Place).all())
+            cls_dict.extend(self.__session.query(Review).all())
+            return cls_dict
