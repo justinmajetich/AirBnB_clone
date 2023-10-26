@@ -56,7 +56,7 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-    def delete(self, obj):
+    def delete(self, obj=None):
         """ removes a key value pair stored in __objects """
         key = obj.to_dict()['__class__'] + '.' + obj.id
         if key in self.__objects:
