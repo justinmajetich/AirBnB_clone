@@ -115,31 +115,32 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        off_equal_sign = args.replace("=", " ")
-        """ Replace = with space"""
-        list_args = off_equal_sign.split()
-        if not list_args[0]:
+        if not args or len(args) == 1:
             print("** class name missing **")
             return
-        elif list_args[0] not in HBNBCommand.classes:
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[list_args[0]]()
-        key_name_str = []
+
+        """ Replace '=' with space:"""
+        off_equal_sign = args.replace("=", " ")
+        arg_list = off_equal_sign.split()
+        new_instance = HBNBCommand.classes[arg_list[0]]()
+        key_str = []
         value_str = []
         dict_attr = {}
-        for i in range(1, len(list_args)):
+        """" Replace _ with space, delete all backslashs:"""
+        for i in range(1, len(arg_list)):
             if i % 2 > 0:
-                key_name_str.append(list_args[i])
-            elif type(list_args[i]) is str:
-                newlist = list_args[i].replace("_", " ")
+                key_str.append(arg_list[i])
+            elif type(arg_list[i]) is str:
+                newlist = arg_list[i].replace("_", " ")
                 new_list = newlist.replace("\"", "")
-                """" Replace _ with space, delete all backslashs"""
                 value_str.append(new_list)
-        for j in range(len(key_name_str)):
-            dict_attr[key_name_str[j]] = value_str[j]
-            setattr(new_instance, key_name_str[j], value_str[j])
-            """ Set to new_instance with new key and value pairs"""
+        """ Set new_instance with new key and value pairs"""
+        for j in range(len(key_str)):
+            dict_attr[key_str[j]] = value_str[j]
+            setattr(new_instance, key_str[j], value_str[j])
         print(new_instance.id)
         new_instance.save()
 
