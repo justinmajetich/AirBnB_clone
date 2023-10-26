@@ -114,44 +114,44 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-    """Create an object of any class with specified parameters."""
-    if not args:
-        print("** class name missing **")
-        return
+        """Create an object of any class with specified parameters."""
+        if not args:
+            print("** class name missing **")
+            return
 
-    parts = args.split()
+        parts = args.split()
 
-    class_name = parts[0]
-    if class_name not in HBNBCommand.classes:
-        print("** class doesn't exist **")
-        return
+        class_name = parts[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
 
-    params = parts[1:]
+        params = parts[1:]
 
-    object_attributes = {}
+        object_attributes = {}
 
-    for param in params:
-        key, value = param.split('=')
+        for param in params:
+            key, value = param.split('=')
 
-        if value.startswith('"') and value.endswith('"'):
-            value = value[1:-1]
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
 
-            value = value.replace('\\"', '"')
+                value = value.replace('\\"', '"')
 
-        key = key.replace('_', ' ')
+            key = key.replace('_', ' ')
 
-        if '.' in value:
-            try:
-                value = float(value)
-            except ValueError:
-                continue
-        else:
-            try:
-                value = int(value)
-            except ValueError:
-                continue
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
 
-        object_attributes[key] = value
+            object_attributes[key] = value
 
     new_instance = HBNBCommand.classes[class_name](**object_attributes)
     storage.save()
@@ -172,19 +172,15 @@ class HBNBCommand(cmd.Cmd):
 
         if c_id and ' ' in c_id:
             c_id = c_id.partition(' ')[0]
-
         if not c_name:
             print("** class name missing **")
             return
-
         if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
         if not c_id:
             print("** instance id missing **")
             return
-
         key = c_name + "." + c_id
         try:
             print(storage._FileStorage__objects[key])
@@ -203,21 +199,16 @@ class HBNBCommand(cmd.Cmd):
         c_id = new[2]
         if c_id and ' ' in c_id:
             c_id = c_id.partition(' ')[0]
-
         if not c_name:
             print("** class name missing **")
             return
-
         if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
         if not c_id:
             print("** instance id missing **")
             return
-
         key = c_name + "." + c_id
-
         try:
             del(storage.all()[key])
             storage.save()
