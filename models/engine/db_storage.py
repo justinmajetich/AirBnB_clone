@@ -36,7 +36,7 @@ class DBStorage():
         query = []
         dectinary = {}
         if cls:
-            query = self.__session.query(eval(cls))
+            query = self.__session.query(cls)
             for column in query:
                 key = f"{cls}.{column.id}"
                 value = column
@@ -70,3 +70,7 @@ class DBStorage():
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        '''close'''
+        self.__session.close()
