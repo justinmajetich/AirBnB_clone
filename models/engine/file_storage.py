@@ -9,6 +9,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -17,11 +18,11 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage of class"""
         if cls is not None:
-            if type(cls) == str:
+            if type(cls) is str:
                 cls = eval(cls)
-            cls.dict = {}
+            cls_dict = {}
             for key, value in self.__objects.items():
-                if type(value) == cls:
+                if type(value) is cls:
                     cls_dict[key] = value
             return cls_dict
         return self.__objects
@@ -32,13 +33,13 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        temp_dict = {obj: self.__objects[obj].to_dict() for obj in self.__objects.keys()}
+        temp_dict = {obj: self.__objects[obj].to_dict()
+                     for obj in self.__objects.keys()}
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(temp_dict, file)
 
     def reload(self):
         """Loads storage dictionary from file"""
-
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
