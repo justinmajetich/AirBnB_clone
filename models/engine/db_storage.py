@@ -35,11 +35,6 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a list of specified Class or All classes"""
 
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker()
-        Session.configure(bind=self.__engine)
-        self.__session = Session()
-
         cls_dict = {}
         if cls is not None:
             if type(cls) is str:
@@ -70,3 +65,11 @@ class DBStorage:
         """Saves changes to the session"""
 
         self.__session.commit()
+
+    def reload(self):
+        """Creates a session in the database"""
+
+        Base.metadata.create_all(self.__engine)
+        Session = sessionmaker()
+        Session.configure(bind=self.__engine)
+        self.__session = Session()
