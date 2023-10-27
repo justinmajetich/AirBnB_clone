@@ -37,12 +37,11 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    def precmd(self, line):
-        """Reformat command line for advanced command syntax.
+    """def precmd(self, line):
+        Reformat command line for advanced command syntax.
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
-        """
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
         # scan for general formating - i.e '.', '(', ')'
@@ -86,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             pass
         finally:
-            return line
+            return line"""
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
