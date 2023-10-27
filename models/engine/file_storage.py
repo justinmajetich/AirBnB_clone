@@ -8,19 +8,13 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self, cls=None):
-        """Returns list of objects of specified class from Filestorage.__objects
-        dictionary. If cls is not given then return will be list all of objects in dictionary"""
-        if cls is not None:
-            return [obj for obj in FileStorage.__objects.values() if isinstance(obj, cls)]
-        else:
-            return list(FileStorage.__objects.values())
+    def all(self):
+        """Returns a dictionary of models currently in storage"""
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
-
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -45,18 +39,12 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                   }
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    def delete(self, obj=None):
-        if obj is not None:
-            objkey = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if objkey in self.__objects:
-                del self.__objects[objkey]
