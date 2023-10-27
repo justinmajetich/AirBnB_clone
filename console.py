@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine import file_storage
+from models.engine import db_storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -117,13 +119,13 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         try:
             if not args:
-                raise SyntaxError()
+                raise SyntaxError("** class name missing **")
             my_args = args.split(" ")
 
             kwargs = {}
             for i in range(1, len(my_args)):
                 key, value = tuple(my_args[i].split("="))
-                if value[0] == '=':
+                if value == '=':
                     value = value.strip('=').replace("_", " ")
                 else:
                     try:
@@ -223,11 +225,15 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            if isinstance(storage, file_storage.FileStorage):
+                ob_dict = storage._FileStorage__objects
+            elif isinstance(storage, db_storage.DBStorage):
+                ob_dict = storage.all(eval(args))
+            for k, v in ob_dict.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
