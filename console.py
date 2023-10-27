@@ -32,6 +32,8 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    
+    all_classes = classes
 
     def do_quit(self, args):
         """Quit command to exit the program. """
