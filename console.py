@@ -128,14 +128,20 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[arg[0]]()
+        if os.getenv('HBNB_TYPE_STORAGE') != "db":
+            new_instance.save()
         for i in range(len(arg) - 1):
             try:
                 key = arg[i + 1].split('=')[0]
                 val = arg[i + 1].split('=')[1].replace('_', ' ')
-                self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val))
+                if os.getenv('HBNB_TYPE_STORAGE') == "db":
+                    self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val), new_instance)
+                else:
+                    self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val))
             except IndexError:
                 pass
-        storage.save()
+        if os.getenv('HBNB_TYPE_STORAGE') == "db":
+            new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -243,10 +249,11 @@ class HBNBCommand(cmd.Cmd):
         """ """
         print("Usage: count <class_name>")
 
-    def do_update(self, args):
+    def do_update(self, args, instance=None):
+        import shlex
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
-
+        saved = args
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
         if args[0]:
@@ -258,8 +265,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
+
         # isolate id from args
         args = args[2].partition(" ")
+        if os.getenv('HBNB_TYPE_STORAGE') == "db" and instance:
+            saved = shlex.split(saved)
+            setattr(instance, saved[2], saved[3])
+            return
         if args[0]:
             c_id = args[0]
         else:  # id not present
