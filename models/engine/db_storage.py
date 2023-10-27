@@ -72,8 +72,8 @@ class DBStorage:
         """Creates a session in the database"""
 
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker()
-        Session.configure(bind=self.__engine)
+        Session = sessionmaker(bind=self.__engine,
+                               expire_on_commit=False)
         self.__session = Session()
 
     def close(self):
