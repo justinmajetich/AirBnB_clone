@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the file storage class for AirBnB"""
+"""file storage class for AirBnBV2"""
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -11,22 +11,12 @@ from models.review import Review
 
 
 class FileStorage:
-    """This class serializes instances to a JSON file and
-    deserializes JSON file to instances
-    Attributes:
-        __file_path: path to the JSON file
-        __objects: objects will be stored
-    """
+    """Serializes instances"""
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Returns all the objects
-
-        If a class is specified, the method only
-        returns the objects of same type.
-
-        """
+        """Returns all the valid objects"""
 
         if cls:
             same_type = dict()
@@ -40,17 +30,13 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """sets __object to given obj
-        Args:
-            obj: given object
-        """
+        """sets obj to the objects"""
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
 
     def save(self):
-        """serialize the file path to JSON file path
-        """
+        """Saveto JSON file path"""
         my_dict = {}
         for key, value in self.__objects.items():
             my_dict[key] = value.to_dict()
@@ -58,8 +44,7 @@ class FileStorage:
             json.dump(my_dict, f)
 
     def reload(self):
-        """serialize the file path to JSON file path
-        """
+        """Serial the paths to json"""
         try:
             with open(self.__file_path, 'r', encoding="UTF-8") as f:
                 for key, value in (json.load(f)).items():
@@ -69,8 +54,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete obj from __objects if it's inside
-        """
+        """Delete objest inside if there"""
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
 
@@ -79,6 +63,5 @@ class FileStorage:
                 self.save()
 
     def close(self):
-        """Deserialize the JSON file to objects
-        """
+        """Deserialize into obj in json"""
         self.reload()

@@ -15,21 +15,13 @@ all_classes = {"State", "City", "Amenity", "User", "Place", "Review"}
 
 
 class DBStorage:
-    """...
-
-    Attributes:
-        __engine: The SQLAlchemy engine
-        __session: The SQLAlchemy session
-
-    """
+    """DB storage class"""
 
     __engine = None
     __session = None
 
     def __init__(self):
-        """Initialize a connection with MySQL
-        and create tables
-        """
+        """connects MYSQL DB"""
 
         db_uri = "{0}+{1}://{2}:{3}@{4}:3306/{5}".format(
             'mysql', 'mysqldb', getenv('HBNB_MYSQL_USER'),
@@ -43,8 +35,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """...
-        """
+        """defilnes all"""
         entities = dict()
 
         if cls:
@@ -56,27 +47,23 @@ class DBStorage:
         return entities
 
     def new(self, obj):
-        """Add obj to the current database session.
-        """
+        """Add obj to the current DB."""
         if obj:
             self.__session.add(obj)
 
     def save(self):
-        """Commit all changes to the current database session.
-        """
+        """save and commit"""
 
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete obj from the current database session.
-        """
+        """Deletes Objects"""
 
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create all tables into database and initialize a new session.
-        """
+        """initializes created tables in DB."""
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
@@ -85,8 +72,7 @@ class DBStorage:
         self.__session = Session()
 
     def get_data_from_table(self, cls, structure):
-        """Get the data from a MySQL Table
-        """
+        """Gather data from MySQL Table"""
 
         if type(structure) is dict:
             query = self.__session.query(cls)
@@ -98,6 +84,6 @@ class DBStorage:
             return structure
 
     def close(self):
-        """Close the Session
-        """
+        """Close the Sessions"""
         self.__session.close()
+        
