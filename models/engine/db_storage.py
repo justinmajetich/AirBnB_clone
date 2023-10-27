@@ -13,6 +13,7 @@ from models.user import User
 from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
 
+
 class DBStorage(FileStorage):
     """ DBStorage class """
     __engine = None
@@ -24,10 +25,10 @@ class DBStorage(FileStorage):
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.
             format(getenv("HBNB_MYSQL_USER"),
-                    getenv("HBNB_MYSQL_PWD"),
-                    getenv("HBNB_MYSQL_HOST"),
-                    getenv("HBNB_MYSQL_DB")),
-                    pool_pre_ping=True)
+                   getenv("HBNB_MYSQL_PWD"),
+                   getenv("HBNB_MYSQL_HOST"),
+                   getenv("HBNB_MYSQL_DB")),
+                  pool_pre_ping=True)
         """ Drop all tables if HBNB_ENV is "test" """
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
