@@ -1,0 +1,6 @@
+*~
+__pycache__/
+*.json
+TEST.py
+pusher
+output.py
