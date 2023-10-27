@@ -3,7 +3,19 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	margin: 45px auto;
-	text-align: center;
+}
+.places h2 {
+    text-align: left;
+    width: 70%;
+    display: block;
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    font-size: 30px;
+}
+
+.places .information {
+    text-align: center;
 }
 
 article {
@@ -26,11 +38,15 @@ article {
 
 .headline {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	position: relative;
-
-	height: 80px;	
+    min-height: 370px !important;
 	width: 100%;
+}
+
+.headline h2 {
+    margin-top: 5px;
+    min-height: 70px;
 }
 
 .price_by_night {
@@ -74,7 +90,7 @@ article {
 
 .user {
 	margin-top: 5px;
-	margin-bottom: 5px;	
+	margin-bottom: 12px;
 }
 
 .description {
@@ -123,4 +139,20 @@ article h2 {
 	background-position: center;
     width: 50px;
     height: 50px;
+}
+
+.reviews h2,
+.amenities h2 {
+    font-size: 20px;
+}
+
+.amenities ul,
+.reviews ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.amenities h3 {
+    font-size: 15px;
 }
