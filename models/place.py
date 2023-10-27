@@ -22,9 +22,9 @@ association_table = Table("place_amenity", Base.metadata,
 
 class Place(BaseModel, Base):
     """ The Place for the database
-    
+
     Inherits from SQLAlchemy Base and links to places table.
-    
+
     Attributes:
         __tablename__ (str): The name of the table to use.
         city_id (sqlalchemy String): The place's city id.
@@ -55,14 +55,17 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
     amenity_ids = []
+
 
 hbnb_storage = os.environ.get("HBNB_TYPE_STORAGE")
 
+
 if hbnb_storage != "db":
     @property
-    def reviews(self)
+    def reviews(self):
         """ Get a list of the linked Reviews."""
         c_list = list(models.storage.all(Review).values())
         r_list = []

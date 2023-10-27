@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models
-    
+
     Attributes:
         id (sqalchemy String): The BaseModel id.
         created_at (sqlalchemy DateTime): The datetime at creation.
@@ -30,7 +30,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model
-        
+
         Args:
             *args (any): Unused
             **kwargs (dict): Key value pairs for attributes.
@@ -50,7 +50,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
-        modelsstorage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""

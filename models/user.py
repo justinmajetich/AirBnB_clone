@@ -8,9 +8,9 @@ from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """This class defines a user for Database
-    
+
     Inherits from SQLAlchemy Base and links to users table
-    
+
     Attributes:
         __tablename__ (str): The name of the table to use.
         email (sqlalchemy String): The user's email address.
