@@ -15,7 +15,8 @@ class State(BaseModel):
     def __init__(self, *args, **kwargs):
         """ Initializes a new instance of State """
         super().__init__(*args, **kwargs)
-        self.name = ""
+        self.name = kwargs.get('name', "")
+
 
     def to_dict(self):
         """Convert instance into dict format, including the name attribute"""
