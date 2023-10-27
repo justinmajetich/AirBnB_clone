@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -314,6 +315,26 @@ class HBNBCommand(cmd.Cmd):
                 new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
+
+    def update(self, args):
+	""" Updates an object with new information.
+
+	Args: args: A list of arguments, including class name, object ID, attribute name, and attribute value.
+
+	Returns:
+	None. """
+
+	# Check if the object exists.
+	if not storage.exists(args[0], args[1]):
+	print("** object does not exist **")
+	return
+
+	# Update the object's attributes.
+	new_dict = storage.all()[args[0]][args[1]]
+	new_dict.__dict__.update({args[2]: args[3]})
+
+	# Save the changes to the object.
+	new_dict.save()
 
     def help_update(self):
         """ Help information for the update class """
