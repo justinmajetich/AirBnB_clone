@@ -151,7 +151,6 @@ class HBNBCommand(cmd.Cmd):
             except AttributeError:
                 print(f"Invalid attribute: {key}")
                 continue
-
         new_instance.save()
         print(new_instance.id)
 
@@ -216,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
