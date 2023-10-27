@@ -1,76 +1,103 @@
 #!/usr/bin/python3
-"""This module defines a class to manage database storage for hbnb clone"""
-from models.base_model import Base
+"""This is the DB storage class for AirBnB"""
+from models.base_model import BaseModel, Base
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+all_classes = {"State", "City", "Amenity", "User", "Place", "Review"}
+
 
 class DBStorage:
-    """Creates a database with SQLAchemy"""
+    """...
+
+    Attributes:
+        __engine: The SQLAlchemy engine
+        __session: The SQLAlchemy session
+
+    """
+
     __engine = None
     __session = None
 
     def __init__(self):
-        """Initializies the engine"""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}:3306/{}"
-                                      .format(getenv("HBNB_MYSQL_USER"),
-                                              getenv("HBNB_MYSQL_PWD"),
-                                              getenv("HBNB_MYSQL_HOST"),
-                                              getenv("HBNB_MYSQL_DB"),
-                                              pool_pre_ping=True))
-        if getenv("HBNB_ENV") == "test":
+        """Initialize a connection with MySQL
+        and create tables
+        """
+
+        db_uri = "{0}+{1}://{2}:{3}@{4}:3306/{5}".format(
+            'mysql', 'mysqldb', getenv('HBNB_MYSQL_USER'),
+            getenv('HBNB_MYSQL_PWD'), getenv('HBNB_MYSQL_HOST'),
+            getenv('HBNB_MYSQL_DB'))
+
+        self.__engine = create_engine(db_uri, pool_pre_ping=True)
+        self.reload()
+
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = [BaseModel, User, State, City, Amenity, Place, Review]
-        r_dict = {}
+        """...
+        """
+        entities = dict()
 
         if cls:
-            result = self.__session.query(cls).all()
-            for ob in result:
-                key = "{}.{}".format(type(ob).__name__, ob.id)
-                r_dict[key] = ob
-        else:
-            for m_class in classes:
-                result = self.__session.query(m_class).all()
-                for ob in result:
-                    key = "{}.{}".format(type(ob).__name__, ob.id)
-                    r_dict[key] = ob
-        return (r_dict)
+            return self.get_data_from_table(cls, entities)
+
+        for entity in all_classes:
+            entities = self.get_data_from_table(eval(entity), entities)
+
+        return entities
 
     def new(self, obj):
-        """add the object to the current database session"""
-        self.__session.add(obj)
-        self.__session.commit()
-        self.__session.close()
+        """Add obj to the current database session.
+        """
+        if obj:
+            self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
+        """Commit all changes to the current database session.
+        """
+
         self.__session.commit()
-        self.__session.close()
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
-        if obj:
+        """Delete obj from the current database session.
+        """
+
+        if obj is not None:
             self.__session.delete(obj)
-            self.__session.commit()
-            self.__session.close()
 
     def reload(self):
-        """create all tables in the database,
-        create the current database session"""
-        from models.base_model import Base
+        """Create all tables into database and initialize a new session.
+        """
 
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(Session)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()
+
+    def get_data_from_table(self, cls, structure):
+        """Get the data from a MySQL Table
+        """
+
+        if type(structure) is dict:
+            query = self.__session.query(cls)
+
+            for _row in query.all():
+                key = "{}.{}".format(cls.__name__, _row.id)
+                structure[key] = _row
+
+            return structure
+
+    def close(self):
+        """Close the Session
+        """
+        self.__session.close()
