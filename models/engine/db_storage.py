@@ -39,17 +39,17 @@ class DBStorage:
         """Returns a list of specified Class or All classes"""
 
         cls_d = {}
-        if cls is not None:
-            if type(cls) is str:
-                cls = eval(cls)
-            cls_d = self.__session.query(cls).all()
-        else:
+        if cls is None:
             cls_d = self.__session.query(State,
                                          City,
                                          Place,
                                          Review,
                                          User,
                                          Amenity).all()
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            cls_d = self.__session.query(cls)
         return {"{}.{}".format(type(ob).__name__, ob.id): ob for ob in cls_d}
 
     def new(self, obj):
@@ -62,7 +62,6 @@ class DBStorage:
 
         if obj is not None:
             self.__session.delete(obj)
-            self.__session.commit()
 
     def save(self):
         """Saves changes to the session"""
@@ -73,10 +72,11 @@ class DBStorage:
         """Creates a session in the database"""
 
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine,
-                               expire_on_commit=False)
-        self.__session = scoped_session(Session)
-
+        my_session = sessionmaker(bind=self.__engine,
+                                  expire_on_commit=False)
+        Session = scoped_session(my_session)
+        self.session = Session()
+        
     def close(self):
         """ Close the current session. """
         self.__session.close()
