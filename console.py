@@ -115,30 +115,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        arg_list = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif arg_list[0] not in HBNBCommand.classes:
+        params = args.split(" ")
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[arg_list[0]]()
-
-        for i in range(1, len(arg_list)):
-            key_value = arg_list[i].partition("=")
-            key = key_value[0]
-            value = key_value[2]
-            if value[0] == '"':
-                value = value[1:-1]
-                value = value.replace("_", " ")
-            elif '.' in value:
-                value = float(value)
-            else:
-                value = int(value)
-            setattr(new_instance, key, value)
-
-        storage.save()
+        else:
+            new_instance = HBNBCommand.classes[params[0]]()
+            self.update_instance(params, new_instance)
+        storage.new(new_instance)
         print(new_instance.id)
+        storage.save()
+
+    def update_instance(self, args, instance):
+        """Transform a string in dictionary"""
+        for idx in range(1, len(args)):
+            key, value = args[idx].split('=')
+            if value[0] is value[-1] in ['"', "'"]:
+                value = value.strip("\"'").replace('_', ' ')
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+            setattr(instance, key, value)
 
 
     def help_create(self):
