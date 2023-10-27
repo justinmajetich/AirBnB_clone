@@ -20,7 +20,7 @@ class DBStorage(FileStorage):
     _FileStorage_objects = {}
 
     def __init__(self):
-        # Set up the connection to the database
+        """ Set up the connection to the database """
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.
             format(getenv("HBNB_MYSQL_USER"),
@@ -34,6 +34,16 @@ class DBStorage(FileStorage):
 
     def all(self, cls=None):
         """ Query objects from database session """
+        objects = {}
+        if cls is not None:
+            query_result = self.__session.query(cls)
+        else:
+            query_result = self.__session.query(User, State, City, Amenity, Place, Review)
+
+        for obj in query_result:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+
+        return objects
 
     def new(self, obj):
         """ Add object to current database session """
