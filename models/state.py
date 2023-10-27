@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     """ Creates the class: State
-    
+
     Inherits from SQLAlchemy Base and links to states table
 
     Attributes:

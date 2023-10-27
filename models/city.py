@@ -6,8 +6,8 @@ from sqlalchemy.orm import relationship
 
 
 class City(BaseModel, Base):
-    """ The city class: 
-    
+    """ The city class:
+
     Inherits from SQLAlchemy Base and links to the cities table.
 
     Attributes:

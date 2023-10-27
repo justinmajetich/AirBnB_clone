@@ -14,12 +14,12 @@ from sqlalchemy import create_engine
 
 class DBStorage:
     """Describes a new class for Database storage
-    
+
     Attributes:
         __engine (sqlalchemy.Engine): The current engine.
         __session (sqlalchemy.Session): The current session.
     """
-    
+
     __engine = None
     __session = None
 
@@ -82,4 +82,3 @@ class DBStorage:
     def close(self):
         """ Close the current session. """
         self.__session.close()
-        
