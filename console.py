@@ -12,14 +12,26 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models import classes
+import sys
+"""from models import classes OLD"""
 
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter."""
 
-    prompt = ("(hbnb) ")
-    all_classes = classes
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
+    classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
+    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    types = {
+             'number_rooms': int, 'number_bathrooms': int,
+             'max_guest': int, 'price_by_night': int,
+             'latitude': float, 'longitude': float
+            }
 
     def do_quit(self, args):
         """Quit command to exit the program. """
