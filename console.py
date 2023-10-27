@@ -13,8 +13,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import sys
-"""from models import classes OLD"""
-
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter."""
@@ -22,17 +20,22 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        "BaseModel": BaseModel, 
+        "User": User, 
+        "State": State, 
+        "City": City, 
+        "Amenity": Amenity, 
+        "Place": Place, 
+        "Review": Review
+    }
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
-    
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
+
     all_classes = classes
 
     def do_quit(self, args):
@@ -42,6 +45,10 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, args):
         """Exits when getting EOF signal."""
         return True
+
+    def emptyline(self):
+        """Ignores empty spaces"""
+        pass
 
     def do_create(self, line):
         """Creates valid class, saves it (to the JSON file),
@@ -190,7 +197,6 @@ class HBNBCommand(cmd.Cmd):
             func(cmd_arg)
         except:
             print("*** Unknown syntax:", args[0])
-
 
 if __name__ == "__main__":
     """Start loop."""
