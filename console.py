@@ -152,6 +152,9 @@ class HBNBCommand(cmd.Cmd):
                 print(f"Invalid attribute: {key}")
                 continue
 
+    new_instance.save()
+    print(new_instance.id)
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
