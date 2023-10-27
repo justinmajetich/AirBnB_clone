@@ -60,31 +60,31 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
 
-hbnb_storage = os.environ.get("HBNB_TYPE_STORAGE")
+    hbnb_storage = os.environ.get("HBNB_TYPE_STORAGE")
 
 
-if hbnb_storage != "db":
-    @property
-    def reviews(self):
-        """ Get a list of the linked Reviews."""
-        c_list = list(models.storage.all(Review).values())
-        r_list = []
-        for review in c_list:
-            if review.place_id == self.id:
-                r_list.append(review)
-        return r_list
+    if hbnb_storage != "db":
+        @property
+        def reviews(self):
+            """ Get a list of the linked Reviews."""
+            c_list = list(models.storage.all(Review).values())
+            r_list = []
+            for review in c_list:
+                if review.place_id == self.id:
+                    r_list.append(review)
+            return r_list
 
-    @property
-    def amenities(self):
-        """ get or set linked Amenities."""
-        c_list = list(models.storage.all(Amenity).values())
-        a_list = []
-        for amenity in c_list:
-            if amenity.id in self.amenity_ids:
-                a_list.append(amenity)
-        return a_list
+        @property
+        def amenities(self):
+            """ get or set linked Amenities."""
+            c_list = list(models.storage.all(Amenity).values())
+            a_list = []
+            for amenity in c_list:
+                if amenity.id in self.amenity_ids:
+                    a_list.append(amenity)
+            return a_list
 
-    @amenities.setter
-    def amenities(self, value):
-        if type(value) == Amenity:
-            self.amenity_ids.append(value.id)
+        @amenities.setter
+        def amenities(self, value):
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
