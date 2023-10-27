@@ -4,6 +4,7 @@ import cmd
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
+from datetime import datetime
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -73,12 +74,12 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
-                        _args = _args.replace('\"', '')
+                        # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -118,10 +119,47 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist")
+
+        args_list = args.split()
+        class_name = args_list[0]
+
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        attr_dict = {}
+
+        for arg in args_list[1:]:
+            arg_parts = arg.split('=')
+
+            if len(arg_parts) == 2:
+                key = arg_parts[0]
+                value = arg_parts[1]
+
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ')
+
+                if '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        pass
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        pass
+
+                attr_dict[key] = value
+
+        if 'created_at' not in attr_dict:
+            attr_dict['created_at'] = datetime.utcnow(
+                                      ).strftime('%Y-%m-%dT%H:%M:%S.%f')
+        if 'updated_at' not in attr_dict:
+            attr_dict['updated_at'] = datetime.utcnow(
+                                      ).strftime('%Y-%m-%dT%H:%M:%S.%f')
+
+        new_instance = HBNBCommand.classes[class_name](**attr_dict)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -136,6 +174,11 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -164,6 +207,9 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
         if not c_name:
             print("** class name missing **")
             return
@@ -177,8 +223,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
+
         try:
-            del(storage._FileStorage__objects[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -219,13 +266,17 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
+    def help_count(self):
+        """ """
+        print("Usage: count <class_name>")
+
     def do_update(self, args):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_name = args[0]
         else:  # class name not present
             print("** class name missing **")
@@ -236,7 +287,7 @@ class HBNBCommand(cmd.Cmd):
 
         # isolate id from args
         args = args[2].partition(" ")
-        if args[0] is not ' ':
+        if args[0]:
             c_id = args[0]
         else:  # id not present
             print("** instance id missing **")
@@ -258,12 +309,25 @@ class HBNBCommand(cmd.Cmd):
                 args.append(k)
                 args.append(v)
         else:  # isolate args
-            args = args[2].replace('\"', '').split(' ')
-            try:  # assign
+            args = args[2]
+            if args and args[0] == '\"':  # check for quoted arg
+                second_quote = args.find('\"', 1)
+                att_name = args[1:second_quote]
+                args = args[second_quote + 1:]
+
+            args = args.partition(' ')
+
+            # if att_name was not quoted arg
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
-                att_val = args[1]
-            except IndexError:  # do nothing on KeyError
-                pass
+            # check for quoted val arg
+            if args[2] and args[2][0] == '\"':
+                att_val = args[2][1:args[2].find('\"', 1)]
+
+            # if att_val was not quoted arg
+            if not att_val and args[2]:
+                att_val = args[2].partition(' ')[0]
+
             args = [att_name, att_val]
 
         # retrieve dictionary of current objects
@@ -293,6 +357,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
