@@ -115,7 +115,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
         off_equal_sign = args.replace("=", " ")
+        """ Replace '=' with space"""
         arg_list = off_equal_sign.split()
         if not arg_list[0]:
             print("** class name missing **")
@@ -123,7 +125,6 @@ class HBNBCommand(cmd.Cmd):
         elif arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        """ Replace '=' with space:"""
         new_instance = HBNBCommand.classes[arg_list[0]]()
         key_str = []
         value_str = []
