@@ -12,6 +12,8 @@ app = Flask(__name__)
 def states():
     """Display a HTML page with a list of all states"""
     states = storage.all(State).values()
+    if states is None:
+        return render_template('9-states.html', states=None)
     return render_template('9-states.html', states=states)
 
 
