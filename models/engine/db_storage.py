@@ -11,12 +11,14 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from models.amenity import Amenity
+from models.engine.file_storage import FileStorage
 
 
-class DBStorage:
+class DBStorage(FileStorage):
     """ DBStorage class doc"""
     __engine = None
     __session = None
+    _FileStorage__objects = {}
 
     def __init__(self):
         """The constructor method"""
