@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -133,17 +134,20 @@ class HBNBCommand(cmd.Cmd):
         """Transform a string in dictionary"""
         for idx in range(1, len(args)):
             key, value = args[idx].split('=')
-            if value[0] is value[-1] in ['"', "'"]:
-                value = value.strip("\"'").replace('_', ' ')
+        
+            # Check for string value with escaped double quotes
+            if value.startswith('"') and value.endswith('"') and '\\' not in value:
+                value = value.strip('"').replace('_', ' ')
+            # Check for float value
+            elif re.match(r'^[0-9]+\.[0-9]+$', value):
+             value = float(value)
+            # Check for integer value
+            elif re.match(r'^[0-9]+$', value):
+                value = int(value)
             else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        continue
-            setattr(instance, key, value)
+                continue
+        
+        setattr(instance, key, value)
 
 
     def help_create(self):
