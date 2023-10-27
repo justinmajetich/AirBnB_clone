@@ -24,11 +24,11 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage of class"""
         if cls is not None:
-            if type(cls) is str:
+            if type(cls) == str:
                 cls = eval(cls)
             cls_dict = {}
             for key, value in self.__objects.items():
-                if type(value) is cls:
+                if type(value) == cls:
                     cls_dict[key] = value
             return cls_dict
         return self.__objects
@@ -39,10 +39,9 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        temp_dict = {obj: self.__objects[obj].to_dict()
-                     for obj in self.__objects.keys()}
+        td = {o: self.__objects[o].to_dict() for o in self.__objects.keys()}
         with open(self.__file_path, 'w') as file:
-            json.dump(temp_dict, file)
+            json.dump(td, file)
 
     def reload(self):
         """Loads storage dictionary from file"""
