@@ -45,7 +45,7 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                  }
+                   }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
