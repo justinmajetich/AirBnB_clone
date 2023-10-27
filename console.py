@@ -134,6 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = arg.split("=")
                 key = key.strip()
                 value = value.strip()
+                
                 if value.startswith('"') and value.endswith('"'):
                     """ Handle string value """
                     value = value.strip('"')
