@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,16 +116,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        try:
+	# Parse the parameters.
+	for param in params.split(' '):
+	    key, value = param.split('=')
+	if value.startswith('"'):
+            value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+	elif '.' in value:
+            value = float(value)
+	else:
+            value = int(value)
+	    params[key] = value
+
+	# Create the new object.
+	cls = getattr(models, arg)
+	new_object = cls(**params)
+	new_object.save()
+
+	except Exception as e:
+	    print(e)
+	    return
 
     def help_create(self):
         """ Help information for the create method """
@@ -314,6 +325,26 @@ class HBNBCommand(cmd.Cmd):
                 new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
+
+    def update(self, args):
+	""" Updates an object with new information.
+
+	Args: args: A list of arguments, including class name, object ID, attribute name, and attribute value.
+
+	Returns:
+	None. """
+
+	# Check if the object exists.
+	if not storage.exists(args[0], args[1]):
+	print("** object does not exist **")
+	return
+
+	# Update the object's attributes.
+	new_dict = storage.all()[args[0]][args[1]]
+	new_dict.__dict__.update({args[2]: args[3]})
+
+	# Save the changes to the object.
+	new_dict.save()
 
     def help_update(self):
         """ Help information for the update class """
