@@ -113,48 +113,6 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        if not args:
-            print("** class name missing **")
-            return
-
-        parts = args.split(" ")
-
-        class_name = parts[0]
-        params = parts[1:]
-
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        new_instance = HBNBCommand.classes[class_name]()
-
-        obj_params = {}
-
-        for param in params:
-            key, value = param.split("=")
-
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    pass
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    pass
-
-            obj_params[key] = value
-
-        for key, value in obj_params.items():
-            setattr(new_instance, key, value)
-
-        new_instance.save()
-        print(new_instance.id)
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -187,6 +145,48 @@ class HBNBCommand(cmd.Cmd):
             print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
+    
+    def do_create(self, args):
+        """Allows for object creation with given parameters"""
+        if not args:
+            print("** class name missing **")
+            return
+
+        parts = args.split(" ")
+
+        if len(parts) < 2:
+            print("** param missing **")
+            return
+
+        class_name = parts[0]
+        params = parts[1:]
+
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        new_instance = HBNBCommand.classes[class_name]()
+
+        for param in params:
+            key, value = param.split("=")
+
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+                value = value.replace('\\"', '"').replace('_', ' ')
+            else:
+                try:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except ValueError:
+                    pass
+
+            setattr(new_instance, key, value)
+
+        new_instance.save()
+        print(new_instance.id)
+
 
     def help_show(self):
         """ Help information for the show command """
