@@ -1,6 +1,6 @@
 #!usr/bin/python3
 """Defines a new class DBStorage"""
-import os
+from os import getenv
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -26,16 +26,13 @@ class DBStorage:
     def __init__(self):
         """Initializes new instance of DBStorage"""
 
-        user = os.environ.get('HBNB_MYSQL_USER')
-        passwd = os.environ.get('HBNB_MYSQL_PWD')
-        host = os.environ.get('HBNB_MYSQL_HOST')
-        db = os.environ.get('HBNB_MYSQL_DB')
-        env_check = os.environ.get('HBNB_ENV')
-
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{passwd}\
-                                      @{host}:3306/{db}', pool_pre_ping=True)
-
-        if env_check == 'test':
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
+        if getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):

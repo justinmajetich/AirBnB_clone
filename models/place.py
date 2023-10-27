@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 import models
-import os
+from os import getenv
 from models.base_model import Base
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -60,16 +60,11 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
 
-    hbnb_storage = os.environ.get("HBNB_TYPE_STORAGE")
-
-
-    if hbnb_storage != "db":
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def reviews(self):
-            """ Get a list of the linked Reviews."""
-            c_list = list(models.storage.all(Review).values())
-            r_list = []
-            for review in c_list:
+            """ Get a list of the linked Reviews."""            r_list = []
+            for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
                     r_list.append(review)
             return r_list
@@ -77,9 +72,8 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """ get or set linked Amenities."""
-            c_list = list(models.storage.all(Amenity).values())
             a_list = []
-            for amenity in c_list:
+            for amenity in list(models.storage.all(Review).values()):
                 if amenity.id in self.amenity_ids:
                     a_list.append(amenity)
             return a_list

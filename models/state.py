@@ -23,14 +23,12 @@ class State(BaseModel, Base):
                   nullable=False)
     cities = relationship("City", backref="state", cascade="delete")
 
-    hbnb_storage = os.environ.get("HBNB_TYPE_STORAGE")
-    if hbnb_storage != "db":
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
             """ Get a list of the related City objects."""
-            c_list = list(models.storage.all(City).values())
             c_list2 = []
-            for city in c_list:
+            for city in list(models.storage.all(Review).values()):
                 if city.state_id == self.id:
                     c_list2.append(city)
             return c_list2
