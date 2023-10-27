@@ -45,7 +45,7 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = self.__dict__.copy()
+        dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
