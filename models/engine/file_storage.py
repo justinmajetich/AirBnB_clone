@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+""" This module defines a class to manage file storage for hbnb clone"""
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -11,7 +11,13 @@ from models.review import Review
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """This class manages storage of hbnb models in JSON format
+
+    Attributes:
+        __file_path (str): The file to save to.
+        __objects (dict): A dictionary of object instances.
+    """
+
     __file_path = 'file.json'
     __objects = {}
 
@@ -35,23 +41,18 @@ class FileStorage:
         """Saves storage dictionary to file"""
         temp_dict = {obj: self.__objects[obj].to_dict()
                      for obj in self.__objects.keys()}
-        with open(FileStorage.__file_path, 'w') as file:
+        with open(self.__file_path, 'w') as file:
             json.dump(temp_dict, file)
 
     def reload(self):
         """Loads storage dictionary from file"""
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
         try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+            with open(self.__file_path, 'r') as file:
+                for obj in json.load(file).values():
+                    cname = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(cname)(**obj))
         except FileNotFoundError:
             pass
 
@@ -61,3 +62,7 @@ class FileStorage:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except (AttributeError, KeyError):
             pass
+
+    def close(self):
+        """ Call the reload method."""
+        self.reload()
