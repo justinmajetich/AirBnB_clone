@@ -9,12 +9,17 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns list of objects of specified class from Filestorage.__objects
-        dictionary. If cls is not given then return will be list all of objects in dictionary"""
-        if cls is not None:
-            return [obj for obj in FileStorage.__objects.values() if isinstance(obj, cls)]
+        """Returns list of objects of specified class from
+        Filestorage.__objects dictionary. If cls is not given then
+        return will be list all of objects in"""
+        if cls is None:
+            return self.__objects
         else:
-            return list(FileStorage.__objects.values())
+            obj_class = {}
+            for key, obj in self.__objects.items():
+                if type(obj) is cls:
+                    obj_class[key] = obj
+                return obj_class
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -43,18 +48,20 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                  }
+                }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
+        """returns the list of objects of one type of class"""
         if obj is not None:
-            objkey = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if objkey in self.__objects:
-                del self.__objects[objkey]
+            key = f"{type(obj).__name__}.{obj.id}"
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
