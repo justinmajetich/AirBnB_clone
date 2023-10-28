@@ -3,7 +3,9 @@
 import cmd
 import json
 import shlex
-import models
+from datetime import datetime
+from models.engine.file_storage import FileStorage
+from models import base_model, user, place, state, city, amenity, review
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -12,37 +14,21 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import sys
-from models.engine.file_storage import FileStorage
-from models.engine import db_storage
 
-storage = FileStorage()  # Instantiate the FileStorage class
-storage.reload()  # Load data from the storage file if needed
-
+storage = FileStorage()
+storage.reload()
 
 class HBNBCommand(cmd.Cmd):
-    """
-    Contains the functionality for the HBNB console
-    Determines prompt for interactive/non-interactive modes
-    """
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    """
-    Dictionary mapping class names to their corresponding classes
-    """
     classes = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
     }
 
-    """
-    List of supported command names
-    """
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
 
-    """
-    Dictionary mapping attribute names to their corresponding types
-    """
     types = {
         'number_rooms': int, 'number_bathrooms': int,
         'max_guest': int, 'price_by_night': int,
@@ -50,96 +36,86 @@ class HBNBCommand(cmd.Cmd):
     }
 
     def preloop(self):
-        """
-        Prints if isatty is false
-        """
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
     def precmd(self, line):
-        """
-        Reformat command line for advanced command syntax.
+        if '(' not in line or ')' not in line:
+            return line
 
-        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-        (Brackets denote optional fields in usage example.)
-        """
-        _cmd = _cls = _id = _args = ''
+        cmd_class = line.split('(')
+        if len(cmd_class) != 2:
+            return line
 
-        if not ('.' in line and '(' in line and ')' in line):
+        command = cmd_class[0]
+        args = cmd_class[1].replace(')', '')
+
+        if '.' not in command:
             return line
 
         try:
-            pline = line[:]
+            class_name, command = command.split('.')
+            if class_name not in HBNBCommand.classes:
+                return line
 
-            _cls = pline[:pline.find('.')]
+            if command not in HBNBCommand.dot_cmds:
+                return line
 
-            _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
-                raise Exception
+            if args.startswith('{') and args.endswith('}'):
+                try:
+                    args_dict = json.loads(args)
+                except ValueError:
+                    return line
+            else:
+                args_list = shlex.split(args)
+                args_dict = dict(item.split('=') for item in args_list)
 
-            pline = pline[pline.find('(') + 1:pline.find(')')]
-            if pline:
-                pline = pline.partition(', ')
+            obj = storage.all().get(class_name + '.' + args_dict.get('id'))
+            if obj is None:
+                return line
 
-                _id = pline[0].replace('\"', '')
+            setattr(obj, 'created_at', datetime.strptime(
+                obj.created_at, '%Y-%m-%dT%H:%M:%S.%f'))
+            setattr(obj, 'updated_at', datetime.strptime(
+                obj.updated_at, '%Y-%m-%dT%H:%M:%S.%f'))
 
-                pline = pline[2].strip()
-                if pline:
-                    if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
-            line = ' '.join([_cmd, _cls, _id, _args])
+            if command == 'update':
+                setattr(obj, **args_dict)
+                obj.save()
 
-        except Exception as mess:
-            pass
-        finally:
+            elif command == 'show':
+                print(obj)
+
+            elif command == 'destroy':
+                storage.delete(obj.id)
+                storage.save()
+
+            elif command == 'all':
+                obj_list = []
+                for key, value in storage.all().items():
+                    if class_name in key:
+                        obj_list.append(value.__str__())
+                print(obj_list)
+
+            elif command == 'count':
+                count = 0
+                for key in storage.all():
+                    if class_name in key:
+                        count += 1
+                print(count)
+
+        except Exception:
             return line
 
     def postcmd(self, stop, line):
-        """
-        Prints if isatty is false
-        """
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
 
-    def do_quit(self, command):
-        """
-        Method to exit the HBNB console
-        """
-        exit()
-
-    def help_quit(self):
-        """
-        Prints the help documentation for quit
-        """
-        print("Exits the program with formatting\n")
-
-    def do_EOF(self, arg):
-        """
-        Handles EOF to exit program
-        """
-        print()
-        exit()
-
-    def help_EOF(self):
-        """
-        Prints the help documentation for EOF
-        """
-        print("Exits the program without formatting\n")
-
     def emptyline(self):
-        """
-        Overrides the emptyline method of CMD
-        """
         pass
 
     def do_create(self, args):
-        """
-        Create an object of any class
-        """
         try:
             if not args:
                 raise SyntaxError("** class name missing **")
@@ -169,16 +145,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def help_create(self):
-        """
-        Help information for the create method
-        """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
 
     def do_show(self, args):
-        """
-        Method to show an individual object
-        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -200,21 +170,15 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
     def help_show(self):
-        """
-        Help information for the show command
-        """
         print("Shows an individual instance of a class")
         print("[Usage]: show <className> <objectId>\n")
 
     def do_destroy(self, args):
-        """
-        Destroys a specified object
-        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -242,16 +206,10 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def help_destroy(self):
-        """
-        Help information for the destroy command
-        """
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, args):
-        """
-        Shows all objects, or all objects of a class
-        """
         print_list = []
 
         if args:
@@ -261,40 +219,26 @@ class HBNBCommand(cmd.Cmd):
                 return
             if isinstance(storage, FileStorage):
                 ob_dict = storage.all()
-            elif isinstance(storage, db_storage.DBStorage):
-                ob_dict = storage.all(eval(args))
             for k, v in ob_dict.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         print(print_list)
 
     def help_all(self):
-        """
-        Help information for the all command
-        """
         print("Shows all objects, or all of a class")
         print("[Usage]: all <className>\n")
 
     def do_count(self, args):
-        """
-        Count current number of class instances
-        """
         count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
+        for k, v in storage.all().items():
+            if args in k:
                 count += 1
         print(count)
 
     def help_count(self):
-        """
-        Usage: count <class_name>
-        """
         print("Counts the number of instances for a class")
 
     def do_update(self, args):
-        """
-        Updates a certain object with new info
-        """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         args = args.partition(" ")
@@ -359,15 +303,16 @@ class HBNBCommand(cmd.Cmd):
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
                 new_dict.__dict__.update({att_name: att_val})
-                new_dict.save()   
+                new_dict.save()
 
     def help_update(self):
-        """
-        Help information for the update class
-        """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
+        
+    def do_EOF(self, line):
+        """Handle the EOF (Ctrl+D) command to exit the CLI."""
+        print()  # Print a newline for a cleaner exit
+        return True  # Return True to exit the CLI
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
