@@ -8,14 +8,18 @@ if __name__ == "__main__":
         kvp = string_list[i].partition("=")
         key = kvp[0]
         value = kvp[2]
-        if value[0] == '"':
+        if value[0] == value[-1] and value[0] == '"':
             value = value[1:-1]
             print(f"New Value: {value}")
-        elif '.' in value:
-            value = float(value)
         else:
-            value = int(value)
+            try:
+                value = int(value)
+            except:
+                try:
+                    value = float(value)
+                except:
+                    continue
+        print(type(value))
         kvp_dict[key] = value
 
     print(kvp_dict)
-hello
