@@ -25,5 +25,5 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Reviews", back_populates="place", cascade="all, delete-orphan")
+    reviews = relationship("Reviews", backref="place", cascade="all, delete-orphan")
     amenity_ids = [] # update in Task 10
