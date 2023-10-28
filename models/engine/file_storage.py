@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# KASPER edited at 9:17 am 10/28/2023
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
@@ -10,14 +11,18 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:
-            all_class = {}
-            for objects in FileStorage.__objects:
-                if type(FileStorage.__objects[objects]) == cls:
-                    all_class.update({objects: FileStorage.__objects[objects]})
-            return all_class
-        else:
-            return FileStorage.__objects
+        if cls is not None:   # if cls was passed
+            all_class = {}    # make empty dictionary
+            for objs in FileStorage.__objects:  # for each item in __objects
+                # if the type of the object stored in __objects is
+                # the same as cls
+                if type(FileStorage.__objects[objs]) == cls:
+                    # update the new dictionary  with the objects that match
+                    # the class
+                    all_class.update({objs: FileStorage.__objects[objs]})
+            return all_class   #return the new dictionary
+        else:   # if cls was not passed
+            return FileStorage.__objects  # return __objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -58,9 +63,9 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ removes a key value pair stored in __objects """
-        if obj is not None:
-            key = obj.to_dict()['__class__'] + '.' + obj.id
-            if key in self.__objects:
+        if obj is not None:    # check if obj was passed, if yes
+            key = obj.to_dict()['__class__'] + '.' + obj.id    # make key
+            if key in self.__objects:   #if the key is in __objects, delete they key value pair
                 self.__objects.pop(key)
-        else:
+        else:     #if not, do nothing
             pass
