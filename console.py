@@ -131,6 +131,7 @@ class HBNBCommand(cmd.Cmd):
             value = kvp[2]
             if value[0] == value[-1] and value[0] == '"':
                 value = value[1:-1]
+                value = value.replace("_", " ")
             else:
                 try:
                     value = int(value)
