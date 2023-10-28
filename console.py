@@ -2,7 +2,7 @@
 """Console for HBnB project."""
 import cmd
 import json
-import shlex
+from shlex import split
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models import base_model, user, place, state, city, amenity, review
@@ -114,6 +114,10 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         pass
+    
+    def do_quit(self, line):
+        """Quit command to exit the program"""
+        return True
 
     def do_create(self, args):
         try:
@@ -212,17 +216,24 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         print_list = []
 
-        if args:
-            args = args.split(' ')[0]
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            if isinstance(storage, FileStorage):
-                ob_dict = storage.all()
-            for k, v in ob_dict.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        print(print_list)
+        objects = storage.all()
+        print_list = []
+        if not args:
+            for key in objects:
+                print_list.append(objects[key])
+            print(print_list)
+            return
+        try:
+            args = args.split(" ")
+            if args[0] not in self.classes:
+                raise NameError()
+            for key in objects:
+                name = key.split('.')
+                if name[0] == args[0]:
+                    print_list.append(objects[key])
+            print(print_list)
+        except NameError:
+            print("** class doesn't exist **")
 
     def help_all(self):
         print("Shows all objects, or all of a class")
@@ -313,6 +324,24 @@ class HBNBCommand(cmd.Cmd):
         """Handle the EOF (Ctrl+D) command to exit the CLI."""
         print()  # Print a newline for a cleaner exit
         return True  # Return True to exit the CLI
+
+    def strip_clean(self, args):
+        """strips the arg and returns a string of cmds """
+        new_list = []
+        new_list.append(args[0])
+        try:
+            my_dict = eval(
+                args[1][args[1].find('{'):args[1].find('}')+1])
+        except Exception:
+            my_dict = None
+        if isinstance(my_dict, dict):
+            new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+            new_list.append(((new_str.split(", "))[0]).strip('"'))
+            new_list.append(my_dict)
+            return new_list
+        new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+        new_list.append(" ".join(new_str.split(", ")))
+        return " ".join(i for i in new_list)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
