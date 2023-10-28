@@ -14,10 +14,10 @@ if __name__ == "__main__":
         else:
             try:
                 value = int(value)
-            except:
+            except ValueError:
                 try:
                     value = float(value)
-                except:
+                except ValueError:
                     continue
         print(type(value))
         kvp_dict[key] = value
