@@ -71,6 +71,7 @@ class DBStorage:
 
     def reload(self):
         """create all tables in the database and current database session"""
+        from models import base_model, amenity, city, place, state, review, user
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(
             bind=self.__engine,
