@@ -34,8 +34,8 @@ class DBStorage:
         database = getenv('HBNB_MYSQL_DB')
 
         # start engine
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}\
-                                      @{host}/{database}', pool_pre_ping=True)
+        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}'
+                                      f'@{host}/{database}', pool_pre_ping=True)
 
         # check if test
         if getenv('HBNB_ENV') == "test":
@@ -63,7 +63,7 @@ class DBStorage:
 
     def save(self):
         """Commits all changes to current database session"""
-        self._session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """Deletes an object from current database session"""
