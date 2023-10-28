@@ -7,6 +7,7 @@ import pep8
 from io import StringIO
 from unittest.mock import create_autospec
 
+
 class test_console(unittest.TestCase):
     ''' Testing the console'''
 
@@ -19,7 +20,7 @@ class test_console(unittest.TestCase):
         file = (["console.py"])
         errors += style.check_files(file).total_errors
         self.assertEqual(errors, 0, 'Need to fix Pep8')
-        
+
     def setUp(self):
         """ setup """
         self.backup = sys.stdout

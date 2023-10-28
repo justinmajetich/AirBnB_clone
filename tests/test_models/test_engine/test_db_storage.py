@@ -15,9 +15,7 @@ from models.city import City
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
-                 "only testing db storage")
-
-
+                 "only for testing db storage")
 class test_DBStorage(unittest.TestCase):
 
     def testCity(self):
@@ -35,22 +33,22 @@ class test_DBStorage(unittest.TestCase):
         review = Review(text="hello")
         if review.id in models.storage.all():
             self.assertTrue(review.text, "Whaddup")
-            
+    
     def testState(self):
-            state = State(name="Gregory")
-            if state.id in models.storage.all():
-                self.assertTrue(state.name, "Gregory")
+        state = State(name="Gregory")
+        if state.id in models.storage.all():
+            self.assertTrue(state.name, "Gregory")
 
     def testAmenity(self):
         amenity = Amenity(name="Toilet")
         if amenity.id in models.storage.all():
             self.assertTrue(amenity.name, "Bathtub")
-            
+     
     def testUser(self):
         user = User(name="Hail the lord")
         if user.id in models.storage.all():
             self.assertTrue(user.name, "Hail the lord")
 
     def teardown(self):
-            self.session.close()
-            self.session.rollback()
+        self.session.close()
+        self.session.rollback()
