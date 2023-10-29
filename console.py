@@ -116,44 +116,38 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
-           print("** class name missing **\n")
-        return
-       
-        # split arguments into class name and parameters
-        parts = args.split (' ')
-        class_name = parts[0]
-        
-        if class_name not in HBNBCommand.classes:
-            print("** class does not exist **\n")
+            print("** class name missing **")
             return
         
-        # Create an empty dict for storing key value pairs
-        parameters = {}
+        class_name, *parameters = args.split()
+        param_dict = {}
         
-        # Process the parameters and add them to the dict
-        for param in parts[1:]:
-            if '=' in param:
-                key, value = param.split('=')
-                parameters[key] = value
-                
-            # handeling escapee double quotes within sting values
-            if '"' in value:
-                value = value.replace('\\"', '"')
-                
-            # Check for float values and convert if necessary
-            if '.' in value:
-                try:
+        for param in parameters:
+            param_split = param.split('=')
+            if len(param_split) == 2:
+                key, value = param_split[0], param_split[1]
+                # check if value is a number
+                if value.isdigit():
                     value = int(value)
-                except ValueError:
-                    pass
-                else:
-                    parameters[key] = value
-                    
-            # Creates an instance of the class with the given parameters
-            new_instance = HBNBCommand.classes[class_name](**parameters)
-            storage.save()
+                # check if value is a float
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        pass
+                # Remove double quotes from strings
+                elif value[0] == value[-1] == '"' and len(value) > 2:
+                    value = value[1:-1]
+                    # Replace underscores with spaces in stings
+                    value = value.replace('_', ' ')
+                param_dict[key] = value
+                
+        if class_name not in HBNBCommand.classes:
+            print("** class does not exist **")
+        else:
+            new_instance = HBNBCommand.classes[class_name](**param_dict)
+            new_instance.save()
             print(new_instance.id)
-       
 
     def help_create(self):
         """ Help information for the create method """
