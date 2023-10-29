@@ -113,56 +113,52 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
-        """ Create an object of any class"""
-        if not arg:
+    def do_create(self, args):
+        """ Create an object of any class """
+        if not args:
             print("** class name missing **")
             return
-        
-        args = arg.split()
-        class_name = args[0]
-        if class_name not in self.classes:
-            print("** class doesnt exist **")
-            return
-        
-        parameters = args[1:]
-        
+
+        class_name, *parameters = args.split()
         param_dict = {}
-        
+    
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
         for param in parameters:
-            key_value = param.split('=')
-            if len(key_value) != 2:
-                print(f"Ignoring invalid parameter: (param)")
-                continue
-            
-            key, value = key_value
-                                
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1]
-                value = value.replace('_', ' ')
-                value - value.replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    vaule = float(value)
-                except ValueError:
-                    print(f"invalid float format: (value) skipping...")
-                    continue
-                
-            else:
-                try:
+            param_split = param.split('=')
+            if len(param_split) == 2:
+                key, value = param_split[0], param_split[1]
+
+                if key not in HBNBCommand.classes[class_name].__dict__:
+                    print("** attribute doesn't exist **")
+                    return
+
+                # Check if value is an integer
+                if value.isdigit():
                     value = int(value)
-                except ValueError:
-                    print(f"invalid int format: (value) skipping...")
-                    continue
-                
-            param_dict[key] = value
-        
-        if class_name not in self.classes:
-            print("** class does not exist **")
-        else:       
-            new_instance = HBNBCommand.classes[class_name](**param_dict)
-            new_instance.save()
-            print(new_instance.id)
+                # Check if value is a float
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        print("** invalid float value **")
+                        return
+                # Check and process string value
+                elif value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ')
+                    value = value.replace('\\"', '"')
+                else:
+                    print("** invalid parameter format **")
+                    return
+            
+                param_dict[key] = value
+
+        new_instance = HBNBCommand.classes[class_name](**param_dict)
+        new_instance.save()
+        print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
