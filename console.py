@@ -226,12 +226,14 @@ class HBNBCommand(cmd.Cmd):
             obDict = models.storage.all()
         elif args_list[0] not in self.classes.keys():
             print(" ** class doesn't exist")
+            return
         else:
             obDict = models.storage.all(args_list[0])
         for key in obDict:
             print_list.append(str(obDict[key]))
-
-        print(print_list)
+        print("[", end="")
+        print(", ".join(print_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
