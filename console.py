@@ -2,10 +2,9 @@
 """Console for HBnB project."""
 import cmd
 import json
-from shlex import split
+import shlex
 from datetime import datetime
 from models.engine.file_storage import FileStorage
-from models import base_model, user, place, state, city, amenity, review
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
