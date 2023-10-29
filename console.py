@@ -122,10 +122,18 @@ class HBNBCommand(cmd.Cmd):
         class_name, *parameters = args.split()
         param_dict = {}
         
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        
         for param in parameters:
             param_split = param.split('=')
             if len(param_split) == 2:
                 key, value = param_split[0], param_split[1]
+                
+                if key not in HBNBCommand.classes[class_name].__dict__:
+                    print("** attribute doesn't exist **")
+                
                 # check if value is a number
                 if value.isdigit():
                     value = int(value)
@@ -135,19 +143,19 @@ class HBNBCommand(cmd.Cmd):
                         value = float(value)
                     except ValueError:
                         pass
-                # Remove double quotes from strings
-                elif value[0] == value[-1] == '"' and len(value) > 2:
-                    value = value[1:-1]
-                    # Replace underscores with spaces in stings
-                    value = value.replace('_', ' ')
+                # Check and process string value
+                elif value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ')
+                    value = value.replace('\\"', '"')
+                else:
+                    print("** Invalid parameter format **")
+                    return
+                
                 param_dict[key] = value
                 
-        if class_name not in HBNBCommand.classes:
-            print("** class does not exist **")
-        else:
-            new_instance = HBNBCommand.classes[class_name](**param_dict)
-            new_instance.save()
-            print(new_instance.id)
+        new_instance = HBNBCommand.classes[class_name](**param_dict)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """

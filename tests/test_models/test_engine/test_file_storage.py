@@ -155,7 +155,7 @@ class test_fileStorage(unittest.TestCase):
         self.new.delete(non_existing_object)
         self.assertEqual(len(self.new.__objects), 2)
 
-     def test_delete_with_none_object(self):
+    def test_delete_with_none_object(self):
          self.assertEqual(len(self.new.__objects), 2)
          self.new.delete(None)
          self.assertEqual(len(self.new.__objects), 2)
