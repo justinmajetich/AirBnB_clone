@@ -10,10 +10,13 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deleting obj from __objects if inside"""
-        if obj is not None:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
+        if obj:
+            for key in self.__objects:
+                id = key.split('.')
+                if obj.id == id[1]:
+                    del self.__objects[key]
+                    break
+            self.save()
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in __objects"""
@@ -21,8 +24,9 @@ class FileStorage:
             return self.__objects
         new_dict = {}
         for key, value in self.__objects.items():
-            if cls == value.__class__ or cls == value.__class__.__name__:
-                new_dict[key] = value
+            name = key.split('.')
+            if name[0] ==cls.__name__:
+                new_dict.update({key:value})
         return new_dict
 
     def new(self, obj):
