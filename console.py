@@ -18,18 +18,21 @@ class HBNBCommand(cmd.Cmd):
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel,
+        'User': User,
+        'Place': Place,
+        'State': State,
+        'City': City,
+        'Amenity': Amenity,
+        'Review': Review
+        }
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
+
+    types = {'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+             'latitude': float, 'longitude': float}
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -131,12 +134,23 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         elif len(args_list) > 1:
-            for item in args_list[1:]:  # Skip class_name
-                args_pair = item.split("=")
-                # Replace spaces with underlines
+            for param in args_list[1:]:  # Skip class_name
+                args_pair = param.split("=", 1)
+
+                # define key/value
                 key = args_pair[0]
-                value = args_pair[1].replace("_", " ")
-                
+                value = args_pair[1]
+
+                # If value is a string, replace _ with a space
+                if isinstance(value, str):
+                    value == shlex.split(value)[0].replace("_", " ")
+                elif "." in value:
+                    value == float(value)
+                elif value[0] == "-" and value[1].isdigit():
+                    value == int(value)
+                else:
+                    continue  # It's not a str, int, or float
+
                 args_dictionary[key] = value
 
         new_instance = HBNBCommand.classes[class_name](**args_dictionary)
