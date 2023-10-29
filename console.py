@@ -159,6 +159,8 @@ class HBNBCommand(cmd.Cmd):
             attribs[key] = value
         # create instance with attributes
         new_instance = HBNBCommand.classes[class_name](**attribs)
+        # adds new instance to storage
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()
