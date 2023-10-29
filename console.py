@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
+import uuid
 
 
 class HBNBCommand(cmd.Cmd):
@@ -112,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-
+    
     def do_create(self, args):
         """ Create an object of any class """
         if not args:
@@ -155,10 +157,13 @@ class HBNBCommand(cmd.Cmd):
             
                 param_dict[key] = value
 
+        # Provide a default value for 'updated_at' if not provided
+        if 'updated_at' not in param_dict:
+            param_dict['updated_at'] = datetime.now()
+
         new_instance = HBNBCommand.classes[class_name](**param_dict)
         new_instance.save()
         print(new_instance.id)
-
 
     def help_create(self):
         """ Help information for the create method """
