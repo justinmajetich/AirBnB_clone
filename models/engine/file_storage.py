@@ -26,8 +26,8 @@ class FileStorage:
                 cls = eval(cls)
             for key, value in self.__objects.items():
                 if type(value) == cls:
-                    cls_dict[key] = value
-                return cls_dict
+                    obj_dict[key] = value
+            return obj_dict
         return self.__objects
 
     def new(self, obj):
