@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Michael Editted 2:29 PM
+# Michael Editted 6:21 PM
 """ Console Module """
 import cmd
 import sys
@@ -143,11 +143,11 @@ class HBNBCommand(cmd.Cmd):
 
                 # If value is a string, replace _ with a space
                 if isinstance(value, str):
-                    value == shlex.split(value)[0].replace("_", " ")
+                    value = shlex.split(value)[0].replace("_", " ")
                 elif "." in value:
-                    value == float(value)
+                    value = float(value)
                 elif value[0] == "-" and value[1].isdigit():
-                    value == int(value)
+                    value = int(value)
                 else:
                     continue  # It's not a str, int, or float
 
