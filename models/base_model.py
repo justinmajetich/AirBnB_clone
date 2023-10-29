@@ -2,10 +2,9 @@
 """This module defines a base class for all models in our hbnb clone"""
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-import models
-import uuid
-from datetime import datetime
 from models import storage
+from datetime import datetime
+import uuid
 
 Base = declarative_base()
 
@@ -17,19 +16,13 @@ class BaseModel:
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
-        if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            models.storage.new(self)
-        else:
+        if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
-            self.updated_at = datetime.utcnow()
-            self.created_at = datetime.utcnow()
-            models.storage.new(self)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -39,17 +32,15 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.utcnow()
-        models.storage.save()
+        storage.new(self)
+        storage.save()
 
     def delete(self):
         """Deletes the current instance from storage"""
-        models.storage.delete(self)
+        storage.delete(self)
 
     def to_dict(self):
         """Returns a dict containing all key/values of instance"""
         new_dict = self.__dict__.copy()
         new_dict.pop("_sa_instance_state", None)
-        new_dict['__class__'] = self.__class__.__name__
-        new_dict['created_at'] = self.created_at.isoformat()
-        new_dict['updated_at'] = self.updated_at.isoformat()
         return new_dict
