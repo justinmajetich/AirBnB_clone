@@ -50,6 +50,16 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenities(self):
+            amenity_list = []
+            all_amenities = models.storage.all("Amenity")
+            for amenity in all_amenities.values():
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
         @amenities.setter
         def amenities(self, amenity):
             """Setter for amenities attribute"""
