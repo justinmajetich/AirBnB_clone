@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
+import uuid
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,10 +120,45 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        # split args into class name and parameters
+        split_args = args.split(' ')
+        class_name = split_args[0]
+        params = split_args[1:]
+        # check if class exists
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        # dictionary for attribute key / value pairs
+        # with created and updated times, and class name
+        # and with id
+        attribs = {'created_at': datetime.now().isoformat(),
+                   'updated_at': datetime.now().isoformat(),
+                   '__class__': class_name,
+                   'id': str(uuid.uuid4())}
+        for param in params:
+            # split param into key & value
+            key, value = param.split('=')
+            # check syntax for value
+            if value.startswith('"') and value.endswith('"'):
+                # it is a string
+                # remove qoutes and replace underscores
+                value = value[1:-1].replace('_', ' ')
+            elif '.' in value:
+                # it is a float
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                # it is an int
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            # add key value pair to dictionary
+            attribs[key] = value
+        # create instance with attributes
+        new_instance = HBNBCommand.classes[class_name](**attribs)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +356,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
