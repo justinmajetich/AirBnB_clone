@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Michael Editted 2:29 PM
 """ Console Module """
 import cmd
 import sys
@@ -73,8 +74,9 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
+                    # Fixed SyntaxWarnings 10/26/23
+                    if pline[0] == '{' and pline[-1] =='}'\
+                            and type(eval(pline)) == dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -113,15 +115,31 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        if not arg:
+            # User didn't specify class name
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        args_list = arg.split()
+        class_name = args_list[0]
+        args_dictionary = {}
+
+        if class_name not in HBNBCommand.classes:
+            # User entered an invalid class name
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        elif len(args_list) > 1:
+            for item in args_list[1:]:  # Skip class_name
+                args_pair = item.split("=")
+                # Replace spaces with underlines
+                key = args_pair[0]
+                value = args_pair[1].replace("_", " ")
+                
+                args_dictionary[key] = value
+
+        new_instance = HBNBCommand.classes[class_name](**args_dictionary)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -129,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -272,7 +290,8 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            # Fixed SyntaxWarning 10/26/23
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +299,12 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            # Fixed SyntaxWarning 10/26/23
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            # Fixed SyntaxWarning 10/26/23
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
