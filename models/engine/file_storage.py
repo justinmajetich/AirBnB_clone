@@ -11,14 +11,17 @@ from models.review import Review
 
 
 class FileStorage:
-    """Serializes instances to a JSON file and deserializes JSON file to instances"""
+    """Serializes instances to a JSON file
+    and deserializes JSON file to instances"""
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of objects or specific objects based on class name."""
+        """Returns a dictionary of objects or
+        specific objects based on class name."""
         if cls:
-            return {k: v for k, v in self.__objects.items() if v.__class__ == cls}
+            return {k: v for k, v in self.__objects.items()
+                    if v.__class__ == cls}
         return self.__objects
 
     def new(self, obj):
