@@ -42,6 +42,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
+        if '_sa_instance_state' in self.__dict__:
+            del self.__dict__['_sa_instance_state']
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
@@ -56,12 +58,12 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
-        if '_sa_instance_state' in dictionary:
-            dictionary.pop('_sa_instance_state')
+        print("Hello World")
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.pop("_sa_instance_state", )
         return dictionary
 
     def delete(self):
