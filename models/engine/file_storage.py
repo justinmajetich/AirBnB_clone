@@ -27,7 +27,7 @@ class FileStorage:
             name = key.split('.')
             if name[0] == cls.__name__:
                 new_dict.update({key: value})
-        return new_dict
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -56,7 +56,7 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                }
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
