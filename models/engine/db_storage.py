@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
             }
@@ -39,22 +39,20 @@ class DBStorage:
 
         # check if test
         if getenv('HBNB_ENV') == "test":
-            Base.metadata.dropall(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Query current DB for all objects of class (cls)"""
         obDict = {}
-        if cls is None:
-            for typeClass in classes.values():
-                objs = self.__session.query(typeClass)
+        for typeClass in classes.keys():
+            if cls == typeClass or cls == classes[typeClass] or cls is None:
+                objs = self.__session.query(classes[typeClass]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + "." + obj.id
                     obDict[key] = obj
-        else:
-            for obj in self.__session.query(cls).all():
-                key = obj.__class__.__name__ + "." + obj.id
-                obDict[key] = obj
-
+                    if '_sa_instance_state' in obDict:
+                        print("Going here")
+                        obDict.pop('_sa_instance_state')
         return obDict
 
     def new(self, obj):
