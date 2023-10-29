@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import models
 
 
 class HBNBCommand(cmd.Cmd):
@@ -142,6 +143,7 @@ class HBNBCommand(cmd.Cmd):
                         continue
             setattr(new_instance, key, value)
 
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
@@ -219,19 +221,14 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-        objs = storage.all()
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in objs.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        if len(args) == 0:
+            obDict = models.storage.all()
+        elif args not in self.classes.keys():
+            print(" ** class doesn't exist")
         else:
-            for k, v in objs.items():
-                print_list.append(str(v))
+            obDict = models.storage.all(args[0])
+        for key in obDict:
+            print_list.append(str(obDict[key]))
 
         print(print_list)
 
