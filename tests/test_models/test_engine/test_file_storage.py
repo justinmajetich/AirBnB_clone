@@ -35,6 +35,42 @@ class test_fileStorage(unittest.TestCase):
             temp = obj
         self.assertTrue(temp is obj)
 
+    def test_show_all_objects(self):
+        """ shows all objects in __objects """
+        new = BaseModel()
+        all_objects = new.all()
+        self.assertEqual(all_objects, new._BaeModel_objects)
+
+    def test_show_by_int_type(self):
+        """ shows all integer type in __objects"""
+        new = BaseModel()
+        class int:
+            pass
+        int_objects = {1: int(), -1: int()}
+        new._BaseMdel__objects = int_objects
+        int_type_object = new.all(int)
+        self.assertEqual(int_type_object, int_objects)
+
+    def test_show_by_float_type(self):
+        """ shows all float type in __objects """
+        new = BaseModel()
+        class float:
+            pass
+        float_objects = {105.3: float(), -105.3: float()}
+        new._BaseModel__objects = float_objects
+        float_type_object = new.all(float)
+        self.assertEqual(float_type_object, float_objects)
+
+    def test_show_by_int_type(self):
+        """ shows all string type in __objects"""
+        new = BaseModel()
+        class str:
+            pass
+        str_objects = {"monwalker": str(), "Holbie": str()}
+        new._BaseModel__objects = str_objects
+        str_type_object = new.all(str)
+        self.assertEqual(str_type_object, str_objects)
+
     def test_all(self):
         """ __objects is properly returned """
         new = BaseModel()
@@ -107,3 +143,19 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_existing_object(self):
+        self.assertEqual(len(self.new.__objects), 2)
+        self.new.delete(self.obj1)
+        self.assertEqual(len(self.new.__objects), 1)
+        self.assertNotIn("{}.{}".format(type(self.obj1).__name__, self.obj1.id), self.new.__objects)
+
+    def test_delete_non_existing_object(self):
+        non_existing_object = object()
+        self.new.delete(non_existing_object)
+        self.assertEqual(len(self.new.__objects), 2)
+
+     def test_delete_with_none_object(self):
+         self.assertEqual(len(self.new.__objects), 2)
+         self.new.delete(None)
+         self.assertEqual(len(self.new.__objects), 2)
