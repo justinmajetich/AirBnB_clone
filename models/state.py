@@ -18,8 +18,10 @@ class State(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     db_type == "DBStorage"
-    cities = relationship("City", backref="state",
-                            cascade="all, delete-orphan")
+    cities = relationship(
+        "City", backref="state",
+        cascade="all, delete-orphan"
+        )
 
     @property
     def cities(self):
