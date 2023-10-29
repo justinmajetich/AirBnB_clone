@@ -18,6 +18,7 @@ import sys
 storage = FileStorage()
 storage.reload()
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -114,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         pass
-    
+
     def do_quit(self, line):
         """Quit command to exit the program"""
         return True
@@ -319,11 +320,12 @@ class HBNBCommand(cmd.Cmd):
     def help_update(self):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-        
+
     def do_EOF(self, line):
         """Handle the EOF (Ctrl+D) command to exit the CLI."""
         print()  # Print a newline for a cleaner exit
         return True  # Return True to exit the CLI
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
