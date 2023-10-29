@@ -50,9 +50,6 @@ class DBStorage:
                 for obj in objs:
                     key = obj.__class__.__name__ + "." + obj.id
                     obDict[key] = obj
-                    if '_sa_instance_state' in obDict:
-                        print("Going here")
-                        obDict.pop('_sa_instance_state')
         return obDict
 
     def new(self, obj):
