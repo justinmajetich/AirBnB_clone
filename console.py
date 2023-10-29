@@ -17,7 +17,7 @@ from models.review import Review
 import sys
 
 #storage = FileStorage()
-#storage.reload()
+storage.reload()
 
 
 class HBNBCommand(cmd.Cmd):
