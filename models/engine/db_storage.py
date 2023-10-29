@@ -44,15 +44,15 @@ class DBStorage:
     def all(self, cls=None):
         """Query current DB for all objects of class (cls)"""
         obDict = {}
-        print(f"Class searching for is {cls}")
         for typeClass in classes.keys():
-            if cls is typeClass or cls is classes[typeClass] or cls is None:
-                print(classes[cls])
+            if cls == typeClass or cls == classes[typeClass] or cls is None:
                 objs = self.__session.query(classes[typeClass]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + "." + obj.id
                     obDict[key] = obj
-
+                    if '_sa_instance_state' in obDict:
+                        print("Going here")
+                        obDict.pop('_sa_instance_state')
         return obDict
 
     def new(self, obj):

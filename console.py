@@ -221,12 +221,13 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+        args_list = args.split()
         if len(args) == 0:
             obDict = models.storage.all()
-        elif args not in self.classes.keys():
+        elif args_list[0] not in self.classes.keys():
             print(" ** class doesn't exist")
         else:
-            obDict = models.storage.all(args[0])
+            obDict = models.storage.all(args_list[0])
         for key in obDict:
             print_list.append(str(obDict[key]))
 
