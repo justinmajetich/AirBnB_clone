@@ -1,48 +1,43 @@
 #!/usr/bin/python3
-""" Test delete feature
+""" Test link Many-To-Many Place <> Amenity
 """
-from models.engine.file_storage import FileStorage
-from models.state import State
+from models import *
 
-fs = FileStorage()
+# creation of a State
+state = State(name="California")
+state.save()
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+# creation of a City
+city = City(state_id=state.id, name="San Francisco")
+city.save()
 
-# Create a new State
-new_state = State()
-new_state.name = "California"
-fs.new(new_state)
-fs.save()
-print("New State: {}".format(new_state))
+# creation of a User
+user = User(email="john@snow.com", password="johnpwd")
+user.save()
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+# creation of 2 Places
+place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+place_1.save()
+place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+place_2.save()
 
-# Create another State
-another_state = State()
-another_state.name = "Nevada"
-fs.new(another_state)
-fs.save()
-print("Another State: {}".format(another_state))
+# creation of 3 various Amenity
+amenity_1 = Amenity(name="Wifi")
+amenity_1.save()
+amenity_2 = Amenity(name="Cable")
+amenity_2.save()
+amenity_3 = Amenity(name="Oven")
+amenity_3.save()
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+# link place_1 with 2 amenities
+place_1.amenities.append(amenity_1)
+place_1.amenities.append(amenity_2)
 
-# Delete the new State
-fs.delete(new_state)
+# link place_2 with 3 amenities
+place_2.amenities.append(amenity_1)
+place_2.amenities.append(amenity_2)
+place_2.amenities.append(amenity_3)
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])
+storage.save()
+
+print("OK")
