@@ -8,6 +8,11 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import uuid  # Import the uuid module
 
+<<<<<<< HEAD
+class State(BaseModel):
+    """ State class """
+    name = ""
+=======
 
 class State(BaseModel, Base):
     """ State class
@@ -37,3 +42,4 @@ class State(BaseModel, Base):
                 if city.state_id = self.id:
                     related_city.append(city)
             return related_city
+>>>>>>> a6d7bd68dbe206547cb3f0b3931e52d67897ecfa

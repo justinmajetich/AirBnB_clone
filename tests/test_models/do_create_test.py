@@ -4,43 +4,48 @@ Unittests for create command in HBNB console
 """
 
 import unittest
-from unittest.mock import patch
-from io import StringIO
 from console import HBNBCommand
+from io import StringIO
+import sys
 
-class TestCreateCommand(unittest.TestCase):
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_valid_string(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel name="My House"')
-        output = mock_stdout.getvalue().strip()
-        self.assertTrue(len(output) == 36)  # The output should be a UUID
+class TestConsoleCreateParams(unittest.TestCase):
+    """Test create command with parameters."""
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_valid_float(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel price=123.45')
-        output = mock_stdout.getvalue().strip()
-        self.assertTrue(len(output) == 36)  # The output should be a UUID
+    def setUp(self):
+        self.console = HBNBCommand()
+        self.orig_stdout = sys.stdout
+        self.orig_stderr = sys.stderr
+        sys.stdout = StringIO()
+        sys.stderr = StringIO()
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_valid_integer(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel age=25')
-        output = mock_stdout.getvalue().strip()
-        self.assertTrue(len(output) == 36)  # The output should be a UUID
+    def tearDown(self):
+        sys.stdout = self.orig_stdout
+        sys.stderr = self.orig_stderr
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_invalid_attribute(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel invalid_attr=123')
-        output = mock_stdout.getvalue().strip()
-        self.assertEqual(output, "** attribute doesn't exist **")
+    def test_create_state_with_name(self):
+        self.console.onecmd('create State name="California"')
+        output = sys.stdout.getvalue()
+        self.assertTrue(len(output) == 36)
+        
+    def test_create_state_with_invalid_params(self):
+        self.console.onecmd('create State invalid_param="test"')
+        output = sys.stdout.getvalue()
+        self.assertEqual(output, "** class doesn't exist **\n")
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_invalid_float_value(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel price=invalid_float')
-        output = mock_stdout.getvalue().strip()
-        self.assertEqual(output, "** invalid float value **")
+    def test_create_place_with_params(self):
+        self.console.onecmd('create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10 price_by_night=300 latitude=37.773972 longitude=-122.431297')
+        output = sys.stdout.getvalue()
+        self.assertTrue(len(output) == 36)
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_invalid_parameter_format(self, mock_stdout):
-        HBNBCommand().onecmd('create BaseModel name=InvalidName"')
-        output = mock_stdout.getvalue().strip()
-        self.assertEqual(output, "** invalid parameter format **")
+    def test_create_place_with_invalid_params(self):
+        self.console.onecmd('create Place invalid_param="test"')
+        output = sys.stdout.getvalue()
+        self.assertEqual(output, "** class doesn't exist **\n")
+
+    def test_create_no_class_name(self):
+        self.console.onecmd('create')
+        output = sys.stdout.getvalue()
+        self.assertEqual(output, "** class name missing **\n")
+
+if __name__ == '__main__':
+    unittest.main()
