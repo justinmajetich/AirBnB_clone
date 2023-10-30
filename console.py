@@ -3,14 +3,14 @@
 import cmd
 import sys
 import signal
-from models.base_model import BaseModel
 from models import storage
+from models.city import City
 from models.user import User
 from models.place import Place
 from models.state import State
-from models.city import City
-from models.amenity import Amenity
 from models.review import Review
+from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -101,16 +101,15 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
-        print(Bye-bye)
+        """Quit command to exit the program"""
         exit()
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
-    def do_EOF(self, arg):
-        """ Handles EOF to exit program """
+    def do_EOF(self, *line):
+        """Quits upon receiving EOF as input"""
         print()
         exit()
 
@@ -119,11 +118,11 @@ class HBNBCommand(cmd.Cmd):
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """If line is empty, do nothing"""
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
+    def do_create(self, line):
+        """Create an object of any class"""
         import re
 
         args = line.split()
@@ -139,6 +138,8 @@ class HBNBCommand(cmd.Cmd):
                 kwargs = {}
                 for arg in args[1:]:
                     separate = arg.partition('=')
+                    # print(f"These are args: {args}")
+                    # print(f"This is the sep: {separate}")
                     attr_name = separate[0]
                     attr_value = separate[2]
                     if re.search(r"^(\-?\d*\.?\d*|\"\S+\")$", str(attr_value)):
@@ -155,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -232,14 +233,15 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-
-            objects = storage.all(HBNBCommand.classes[args])
-            for k, v in objects.items():
-                print_list.append(str(v))
+            for k, v in storage.all(eval(args)).items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            objects = storage.all()
-            for k, v in objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
+
+        for item in print_list:
+            print(item)
 
         print(print_list)
 
@@ -251,8 +253,8 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
+        for key, value in storage._FileStorage__objects.items():
+            if args == key.split('.')[0]:
                 count += 1
         print(count)
 
@@ -348,6 +350,16 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+    def do_clear(self, *line):
+        """Clears console display"""
+        print("\033[3J\033[H\033[2J")
+
+
+def signal_thing(sig, frame):
+    print('\nWHERE ARE YOU GOING? ;_;\n(hbnb) ', end='')
+    return
+
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal_thing)
     HBNBCommand().cmdloop()
