@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Michael Editted 6:21 PM
+# Michael Editted 12:27 PM
 """ Console Module """
 import cmd
 import sys
@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -118,42 +119,34 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
-        """ Create an object of any class"""
-        if not arg:
+    def do_create(self, args):
+        """ Create an object of any class """
+        if not args:
             # User didn't specify class name
             print("** class name missing **")
             return
 
-        args_list = arg.split()
+        args_list = args.split(" ")
         class_name = args_list[0]
-        args_dictionary = {}
-
+        
         if class_name not in HBNBCommand.classes:
-            # User entered an invalid class name
             print("** class doesn't exist **")
             return
-        elif len(args_list) > 1:
-            for param in args_list[1:]:  # Skip class_name
-                args_pair = param.split("=", 1)
 
-                # define key/value
-                key = args_pair[0]
-                value = args_pair[1]
+        new_instance = HBNBCommand.classes[class_name]()
+        key_values = args_list[1:]  # skip class_name
 
-                # If value is a string, replace _ with a space
-                if isinstance(value, str):
-                    value = shlex.split(value)[0].replace("_", " ")
-                elif "." in value:
-                    value = float(value)
-                elif value[0] == "-" and value[1].isdigit():
-                    value = int(value)
-                else:
-                    continue  # It's not a str, int, or float
-
-                args_dictionary[key] = value
-
-        new_instance = HBNBCommand.classes[class_name](**args_dictionary)
+        for item in key_values:
+            param = item.split("=")
+            if (param[1][0] == '"'):
+                key = param[0]
+                value = param[1][1:-1]  # strip quotes off
+                new_instance.__dict__[key] = value.replace("_", " ")
+            else:
+                key = param[0]
+                value = param[1]
+                new_instance.__dict__[key] = value.replace("_", " ")
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()
