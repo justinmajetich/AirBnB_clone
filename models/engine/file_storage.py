@@ -12,11 +12,10 @@ class FileStorage:
         """Deletes an object from __objects"""
         if obj is None:
             pass
-        class_name = obj.__class__.__name__
-        id = obj.id
-
-        key = "{}.{}".format(class_name, id)
-        if key in FileStorage.__objects:
+        if obj in FileStorage.__objects.values():
+            class_name = obj.__class__.__name__
+            id = obj.id
+            key = "{}.{}".format(class_name, id)
             del FileStorage.__objects[key]
 
     def all(self, cls=None):
