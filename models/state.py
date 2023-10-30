@@ -10,18 +10,15 @@ from os import getenv
 
 class State(BaseModel, Base):
     """State class repr states"""
-    if models.storage_t == "db":
-        __tablename__ = 'states'
+    __tablename__ = 'states'
+
+    if getenv("HBNB_TYPE_STORAGE") == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state")
+        cities = relationship("City", backref="state",
+                            cascade = "all, delete-orphan")
     else:
         name = ""
 
-    def __init__(self, *args, **kwargs):
-        """Init city"""
-        super().__init__(*args, **kwargs)
-
-    if models.storage_t == "db":
         @property
         def cities(self):
             from models import storage
