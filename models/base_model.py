@@ -3,7 +3,6 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
-import uuid
 from datetime import datetime
 from models import storage
 
@@ -12,33 +11,37 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
         storage.save()
 
     def delete(self):
         """Deletes the current instance from storage"""
+        from models import storage
         storage.delete(self)
-        models.storage.delete(self)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        for key, value in kwargs.items():
-            if key != "__class__":
-                setattr(self, key, value)
-        self.updated_at = datetime.utcnow()
-        self.created_at = datetime.utcnow()
-        storage.new(self)
+        import uuid
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    setattr(self, key, value)
+
+        if not self.id:
+            self.id = str(uuid.uuid4())
+        if not self.created_at:
+            self.created_at = self.updated_at = datetime.utcnow()
         models.storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        cls = type(self).__name__
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def to_dict(self):
