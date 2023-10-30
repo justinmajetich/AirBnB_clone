@@ -47,45 +47,12 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         self.assertFalse(os.path.exists('file.json'))
 
-    """def test_empty(self):
-        
-        new = BaseModel()
-        thing = new.to_dict()
-        new.save()
-        new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize('file.json'), 0)"""
-
-    """def test_save(self):
-        
-        new = BaseModel()
-        storage.save()
-        self.assertTrue(os.path.exists('file.json'))
-
-    def test_reload(self):
-        
-        new = BaseModel()
-        storage.save()
-        storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])"""
-
     def test_reload_empty(self):
         """ Load from an empty file """
         with open('file.json', 'w') as f:
             pass
         with self.assertRaises(ValueError):
             storage.reload()
-
-    """def test_reload_from_nonexistent(self):
-        
-        self.assertEqual(storage.reload(), None)"""
-
-    """def test_base_model_save(self):
-       
-        new = BaseModel()
-        new.save()
-        self.assertTrue(os.path.exists('file.json'))"""
 
     def test_type_path(self):
         """ Confirm __file_path is string """
@@ -94,14 +61,6 @@ class test_fileStorage(unittest.TestCase):
     def test_type_objects(self):
         """ Confirm __objects is a dict """
         self.assertEqual(type(storage.all()), dict)
-
-    """def test_key_format(self):
-        
-        new = BaseModel()
-        _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)"""
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
@@ -127,39 +86,6 @@ class test_fileStorage(unittest.TestCase):
         storage.new(user)
         key = user.__class__.__name__ + "." + str(user.id)
         self.assertIsNotNone(obj[key])
-
-    """def test_reload_filestorage(self):
-
-        self.storage.save()
-        Root = os.path.dirname(os.path.abspath("console.py"))
-        path = os.path.join(Root, "file.json")
-        with open(path, 'r') as f:
-            lines = f.readlines()
-        try:
-            os.remove(path)
-        except Exception:
-            pass
-
-        self.storage.save()
-
-        with open(path, 'r') as f:
-            lines2 = f.readlines()
-
-        self.assertEqual(lines, lines2)
-
-        try:
-            os.remove(path)
-        except Exception:
-            pass
-
-        with open(path, "w") as f:
-            f.write("{}")
-
-        with open(path, "r") as r:
-            for line in r:
-                self.assertEqual(line, "{}")
-
-        self.assertIs(self.storage.reload(), None)"""
 
 
 if __name__ == "__main__":

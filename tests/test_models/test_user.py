@@ -31,26 +31,6 @@ class test_User(test_basemodel):
         self.name = "User"
         self.value = User
 
-    """def test_first_name(self):
-        
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)"""
-
-    """def test_last_name(self):
-        
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)"""
-
-    """def test_email(self):
-        
-        new = self.value()
-        self.assertEqual(type(new.email), str)"""
-
-    """def test_password(self):
-       
-        new = self.value()
-        self.assertEqual(type(new.password), str)"""
-
     def tearDown(self):
         """teardown"""
         try:
@@ -78,10 +58,6 @@ class test_User(test_basemodel):
     def test_to_dict_User(self):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.user), True)
-
-    """def test_save_User(self):
-        self.user.save()
-        self.assertNotEqual(self.user.created_at, self.user.updated_at)"""
 
     def test_checking_for_docstring_User(self):
         """checking for docstrings"""

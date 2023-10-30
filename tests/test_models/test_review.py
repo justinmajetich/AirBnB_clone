@@ -51,13 +51,13 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(self.rev.place_id), str)
         self.assertEqual(type(self.rev.user_id), str)
 
-    """@unittest.skipIf(
+    @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') == 'db',
         "This test only work in Filestorage")
     def test_save_Review(self):
         
         self.rev.save()
-        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)"""
+        self.assertNotEqual(self.rev.created_at, self.rev.updated_at)
 
     def test_to_dict_Review(self):
         """test if dictionary works"""

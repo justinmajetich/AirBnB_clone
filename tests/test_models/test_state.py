@@ -47,13 +47,13 @@ class TestState(unittest.TestCase):
         """test attribute type for State"""
         self.assertEqual(type(self.state.name), str)
 
-    """@unittest.skipIf(
+    @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') == 'db',
         "This test only work in Filestorage")
     def test_save_State(self):
         
         self.state.save()
-        self.assertNotEqual(self.state.created_at, self.state.updated_at)"""
+        self.assertNotEqual(self.state.created_at, self.state.updated_at)
 
     def test_to_dict_State(self):
         """test if dictionary works"""
