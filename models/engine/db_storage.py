@@ -1,16 +1,18 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
-import json
+""" module for DBStorage class """
+from os import getenv
 from models.city import City
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.review import Review
 from models.amenity import Amenity
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 
 classes = {
-    'BaseModel': BaseModel,
     'User': User,
     'Place': Place,
     'State': State,
@@ -19,52 +21,62 @@ classes = {
     'Review': Review
 }
 
+class_list = [
+    BaseModel,
+    User,
+    Place,
+    State,
+    City,
+    Amenity,
+    Review
+]
 
-class FileStorage:
-    """ Storage of hbnb models in JSON format """
-    __file_path = 'file.json'
-    __objects = {}
+
+class DBStorage:
+    """This class manages storage of hbnb models into database"""
+    __engine = None
+    __session = None
+
+    def __init__(self):
+        """instantiation of DBStorage engine"""
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".format(
+                getenv("HBNB_MYSQL_USER"),
+                getenv("HBNB_MYSQL_PWD"),
+                getenv("HBNB_MYSQL_HOST"),
+                getenv("HBNB_MYSQL_DB")
+            ),
+            pool_pre_ping=True
+        )
+        if getenv("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ Returns dictionary of models currently in storage """
-        if cls is not None:
-            if type(cls) is str:
-                cls = classes.get(cls)
-            obj_dict = {}
-            for val in FileStorage.__objects.values():
-                if type(val) is cls:
-                    obj_dict[f"{val.to_dict()['__class__']}.{val.id}"] = val
-            return obj_dict
-        else:
-            return FileStorage.__objects
+        """query all objects - specific to cls var, if supplied"""
+        obj_dict = {}
+        for key in classes.keys():
+            if cls == key or cls == classes[key] or cls is None:
+                obj_list = self.__session.query(classes[key]).all()
+                for obj in obj_list:
+                    obj_dict[f'{obj.__class__.__name__}.{obj.id}'] = obj
+        return obj_dict
 
     def new(self, obj):
-        """ Adds new object to storage dictionary """
-        self.all().update({f"{obj.to_dict()['__class__']}.{obj.id}": obj})
+        """adds object to current database session"""
+        self.__session.add(obj)
 
     def save(self):
-        """ Serialization of __objects to JSON file """
-        with open(FileStorage.__file_path, "w") as outfile:
-            obj_dict = {}
-            obj_dict.update(FileStorage.__objects)
-            for key, value in FileStorage.__objects.items():
-                obj_dict[key] = value.to_dict()
-            json.dump(obj_dict, outfile)
-
-    def reload(self):
-        """ Deserialization to __objects from saved JSON file """
-        try:
-            obj_dict = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    self.all()[key] = classes[value['__class__']](**value)
-        except FileNotFoundError:
-            pass
+        """commit changes to current database session"""
+        self.__session.commit()
 
     def delete(self, obj=None):
-        """ Deletes specified object from dictionary """
+        """deletes obj from current database session, obj argument supplied"""
         if obj is not None:
-            key = f"{type(obj).__name__}.{obj.id}"
-            if key in self.__objects:
-                del self.__objects[key]
+            self.__session.delete(obj)
+
+    def reload(self):
+        """create tables and database session"""
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(
+            sessionmaker(bind=self.__engine, expire_on_commit=False)
+        )
