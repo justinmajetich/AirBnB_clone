@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+"""testing for the user"""
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
 import unittest
@@ -10,7 +10,7 @@ import pep8
 
 
 class test_User(test_basemodel):
-    """ """
+    """testing for the user"""
     
     @classmethod
     def setUpClass(cls):

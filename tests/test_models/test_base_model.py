@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+"""testing for the base_model"""
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -9,7 +9,7 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """testing for the base_model class"""
 
     def __init__(self, *args, **kwargs):
         """ """
