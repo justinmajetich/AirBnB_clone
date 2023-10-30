@@ -32,7 +32,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary=place_amenity,
+    amenities = relationship("Amenity", secondary=association_table,
                              viewonly=False)
     amenity_ids = []
 
@@ -56,6 +56,6 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, amenity):
-            if type(amenity, Amenity)
-            self.amenity_ids.append(amenity.id)
+            if type(amenity, Amenity):
+                self.amenity_ids.append(amenity.id)
 
