@@ -7,6 +7,11 @@ import pep8
 from io import StringIO
 from unittest.mock import create_autospec
 from unittest.mock import patch
+import os
+from models.engine.db_storage import DBStorage
+from console import HBNBCommand
+import models
+
 
 
 class test_console(unittest.TestCase):
@@ -21,7 +26,27 @@ class test_console(unittest.TestCase):
         file = (["console.py"])
         errors += style.check_files(file).total_errors
         self.assertEqual(errors, 0, 'Need to fix Pep8')
+   
+    @classmethod
+    def setUpClass(cls):
+        """setup testing"""
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        cls.HBNB = HBNBCommand()
 
+    @classmethod
+    def tearDownClass(cls):
+        """testing teardown"""
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+        del cls.HBNB
+        if type(models.storage) == DBStorage:
+            models.storage._DBStorage__session.close()
+    
     def setUp(self):
         """ setup """
         self.backup = sys.stdout
@@ -42,3 +67,23 @@ class test_console(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("\n")
             self.assertEqual("", f.getvalue())
+    
+    def test_quit(self):
+        """Test quit command input."""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.HBNB.onecmd("quit")
+            self.assertEqual("", f.getvalue())
+            
+    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage") 
+           
+    def test_create_errors(self):
+        """Test create command errors."""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.HBNB.onecmd("create")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+            
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.HBNB.onecmd("create asdfsfsd")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
