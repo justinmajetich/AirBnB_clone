@@ -23,7 +23,7 @@ class DBStorage:
     def __init__(self):
         """connects MYSQL DB"""
 
-        db_uri = "mysql+mysqldb://{2}:{3}@{4}:3306/{5}".format(
+        db_uri = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
             getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'),
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB'))
 
