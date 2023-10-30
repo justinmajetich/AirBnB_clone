@@ -5,7 +5,9 @@ import json
 from shlex import split
 from datetime import datetime
 from models.__init__ import storage
-#els.base_model import BaseModel
+#from models.engine.file_storage import FileStorage
+from models import base_model, user, place, state, city, amenity, review
+from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
