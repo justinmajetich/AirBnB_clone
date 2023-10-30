@@ -30,3 +30,6 @@ class test_console(unittest.TestCase):
     def tearDown(self):
         """ tearDown """
         sys.stdout = self.backup
+
+if __name__ == "__main__":
+    unittest.main()
