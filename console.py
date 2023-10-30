@@ -4,8 +4,8 @@ import cmd
 import json
 from shlex import split
 from datetime import datetime
-#from models.__init__ import storage
-from models.engine.file_storage import FileStorage
+from models.__init__ import storage
+#from models.engine.file_storage import FileStorage
 from models import base_model, user, place, state, city, amenity, review
 from models.base_model import BaseModel
 from models.user import User
@@ -16,8 +16,8 @@ from models.amenity import Amenity
 from models.review import Review
 import sys
 
-storage = FileStorage()
-storage.reload()
+#storage = FileStorage()
+#storage.reload()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -69,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     return line
             else:
-                args_list = shlex.split(args)
+                args_list = split(args)
                 args_dict = dict(item.split('=') for item in args_list)
 
             obj = storage.all().get(class_name + '.' + args_dict.get('id'))
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             for i in range(1, len(my_args)):
                 key, value = tuple(my_args[i].split("="))
                 if value == '=':
-                    value = value.strip('=').replace("_", " ")
+                    value = value.strip("").replace("_", " ")
                 else:
                     try:
                         value = eval(value)
