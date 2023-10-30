@@ -12,7 +12,7 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 from models.city import City
-
+import models
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  "only for testing db storage")
