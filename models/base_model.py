@@ -34,12 +34,12 @@ class BaseModel:
                 setattr(self, key, value)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
+        """ Returns string representation of instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """ Updates updated_at with current time when instance is updated """
         from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
@@ -50,13 +50,13 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         dictionary.pop("_sa_instance_state", None)
         return dictionary
 
     def delete(self):
-        """delete the current instance from the storage"""
+        """ Deletes current instance from storage"""
         from models import storage
         storage.delete(self)

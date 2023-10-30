@@ -13,54 +13,63 @@ from models.user import User
 from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
 
+
 class DBStorage(FileStorage):
-    """ DBStorage class """
+    """ DBStorage class doc"""
     __engine = None
     __session = None
-    _FileStorage_objects = {}
+    _FileStorage__objects = {}
 
     def __init__(self):
-        """ Set up the connection to the database """
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.
-            format(getenv("HBNB_MYSQL_USER"),
-                    getenv("HBNB_MYSQL_PWD"),
-                    getenv("HBNB_MYSQL_HOST"),
-                    getenv("HBNB_MYSQL_DB")),
-                    pool_pre_ping=True)
-        """ Drop all tables if HBNB_ENV is "test" """
+        """The constructor method"""
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ Query objects from database session """
-        objects = {}
-        if cls is not None:
-            query_result = self.__session.query(cls)
+        """ Query on the current database session """
+        if cls:
+            if type(cls) == str:
+                cls = eval(cls)
+            objects = self.__session.query(cls)
         else:
-            query_result = self.__session.query(User, State, City, Amenity, Place, Review)
-
-        for obj in query_result:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-
-        return objects
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            objects.extend(self.__session.query(User).all())
+            objects.extend(self.__session.query(Place).all())
+            objects.extend(self.__session.query(Review).all())
+            objects.extend(self.__session.query(Amenity).all())
+        obj_dict = {}
+        for obj in objects:
+            obj_dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
+        return obj_dict
 
     def new(self, obj):
-        """ Add object to current database session """
+        """Adds the object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
-        """ Commit all changes of current database session """
+        """Commits all changes of the current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """ Delete object from current database session if not None """
+        """Deletes from the current database session"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """ Create tables in database and configure as scoped session """
+        """creates all tables in the database
+        and creates the current database session"""
+        Base.metadata.create_all(self.__engine)
+        session_exp = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_exp)
+        self.__session = Session()
 
     def close(self):
-            """Closing the session"""
-            self.__session.close()
+        """Closing the session"""
+        self.__session.close()

@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a list of objects of a specified class, or all objects"""
+        """Returns the list of objects of one type of class"""
         if cls is None:
             return FileStorage.__objects
         else:
@@ -46,18 +46,18 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                }
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Deletes obj from __objects if it's present"""
-        if obj:
+        """Deletes the object from objects"""
+        if obj is not None:
             key = f'{obj.__class__.__name__}.{obj.id}'
             FileStorage.__objects.pop(key, None)
