@@ -1,7 +1,26 @@
 #!/usr/bin/python3
 """Test Review Class"""
+import unittest
+import pycodestyle
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
+
+
+class TestReviewDoc(unittest.TestCase):
+    """check Review documentation"""
+    def test_class_documentation(self):
+        self.assertTrue(len(Review.__doc__) > 0)
+
+
+class TestReviewPycode(unittest.TestCase):
+    """check pycodestyle"""
+    def test_pycodestyle(self):
+        """tests pycodestyle"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        self.assertEqual(
+            style.check_files(['models/review.py']).total_errors,
+            0, "PEP 8 style issues found"
+        )
 
 
 class test_review(test_basemodel):
@@ -27,3 +46,7 @@ class test_review(test_basemodel):
         """test text in review"""
         new = self.value()
         self.assertEqual(type(new.text), str)
+
+
+if __name__ == "__main__":
+    unittest.main()

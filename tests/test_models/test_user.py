@@ -1,7 +1,26 @@
 #!/usr/bin/python3
 """Tests for User class"""
+import pycodestyle
+import unittest
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+
+
+class TestUserDoc(unittest.TestCase):
+    """check User documentation"""
+    def test_class_documentation(self):
+        self.assertTrue(len(User.__doc__) > 0)
+
+
+class TestUserPycode(unittest.TestCase):
+    """check pycodestyle"""
+    def test_pycodestyle(self):
+        """tests pycodestyle"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        self.assertEqual(
+            style.check_files(['models/user.py']).total_errors,
+            0, "PEP 8 style issues found"
+        )
 
 
 class test_User(test_basemodel):
@@ -32,3 +51,7 @@ class test_User(test_basemodel):
         """test password"""
         new = self.value()
         self.assertEqual(type(new.password), str)
+
+
+if __name__ == "__main__":
+    unittest.main()

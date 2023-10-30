@@ -1,7 +1,26 @@
 #!/usr/bin/python3
 """Test place class"""
+import pycodestyle
+import unittest
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
+
+
+class TestPlaceDoc(unittest.TestCase):
+    """check Place documentation"""
+    def test_class_documentation(self):
+        self.assertTrue(len(Place.__doc__) > 0)
+
+
+class TestPlacePycode(unittest.TestCase):
+    """check pycodestyle"""
+    def test_pycodestyle(self):
+        """tests pycodestyle"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        self.assertEqual(
+            style.check_files(['models/place.py']).total_errors,
+            0, "PEP 8 style issues found"
+        )
 
 
 class test_Place(test_basemodel):
@@ -67,3 +86,7 @@ class test_Place(test_basemodel):
         """test amenity id in place"""
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,28 +1,42 @@
 #!/usr/bin/python3
 """ Module for testing db storage"""
 import unittest
+import pycodestyle
 from models.base_model import BaseModel
 from models import storage
 import os
 
 
-class test_fileStorage(unittest.TestCase):
+class test_dbStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
-        """ Set up test environment """
-        del_list = []
-        for key in storage._FileStorage__objects.keys():
-            del_list.append(key)
-        for key in del_list:
-            del storage._FileStorage__objects[key]
+        """instance for testing"""
+        self.storage = DBStorage()
 
     def tearDown(self):
-        """ Remove storage file at end of tests """
-        try:
-            os.remove('file.json')
-        except:
-            pass
+        """clean up after testing"""
+        if os.path.exists(DBStorage.__file_path):
+            os.remove(DBStorage.__file_path)
+
+    def test_pycode(self):
+        style = pycodestyle.StyleGuide(quiet=True)
+        files = [
+            'models/engine/db_storage.py'
+            'tests/test_models/test_engine/test_db_storage.py'
+        ]
+        result = style.check_files(files)
+        self.assertEqual(
+            result.total_errors, 0, "PEP 8 style issues found"
+        )
+
+    def test_documentation(self):
+        check_class = [DBStorage]
+        for cls in check_class:
+            self.assertTrue(
+                cls.__doc__ is not None and len(cls.__doc__strip()) > 0,
+                f"Missing docstring in {cls.__name__}"
+            )
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
@@ -103,7 +117,11 @@ class test_fileStorage(unittest.TestCase):
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):
-        """ FileStorage object storage created """
-        from models.engine.file_storage import FileStorage
+        """ DBStorage object storage created """
+        from models.engine.file_storage import DBStorage
         print(type(storage))
-        self.assertEqual(type(storage), FileStorage)
+        self.assertEqual(type(storage), DBStorage)
+
+
+if __name__ == '__main__':
+    unittest.main()

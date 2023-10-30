@@ -6,6 +6,28 @@ import datetime
 from uuid import UUID
 import json
 import os
+import pycodestyle
+
+
+class TestBaseModelDoc(unittest.TestCase):
+    """check BaseModel documentation"""
+    def test_class_documentation(self):
+        self.assertTrue(len(BaseModel.__doc__) > 0)
+
+
+class TestBasePycode(unittest.TestCase):
+    """check pycodestyle"""
+    def test_pycodestyle(self):
+        """tests pycodestyle"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        files = [
+            'models/base_model.py',
+            'tests/test_models/test_base_model.py'
+        ]
+        result = style.check_files(files)
+        self.assertEqual(
+            result.total_errors, 0, "PEP 8 style issues found"
+        )
 
 
 class test_basemodel(unittest.TestCase):
@@ -98,3 +120,7 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+
+if __name__ == "__main__":
+    unittest.main()
