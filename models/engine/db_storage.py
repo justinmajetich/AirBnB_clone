@@ -3,9 +3,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-from mysqlclient import MySQLdb
 from os import getenv
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -13,6 +12,7 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
+
 
 class DBStorage(FileStorage):
     """ DBStorage class """
@@ -25,10 +25,10 @@ class DBStorage(FileStorage):
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.
             format(getenv("HBNB_MYSQL_USER"),
-                    getenv("HBNB_MYSQL_PWD"),
-                    getenv("HBNB_MYSQL_HOST"),
-                    getenv("HBNB_MYSQL_DB")),
-                    pool_pre_ping=True)
+                   getenv("HBNB_MYSQL_PWD"),
+                   getenv("HBNB_MYSQL_HOST"),
+                   getenv("HBNB_MYSQL_DB")),
+            pool_pre_ping=True)
         """ Drop all tables if HBNB_ENV is "test" """
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
@@ -36,7 +36,7 @@ class DBStorage(FileStorage):
     def all(self, cls=None):
         """ Query objects from database session """
         if cls:
-            if type(cls) == str:
+            if isinstance(cls, str):
                 cls = eval(cls)
             objects = self.__session.query(cls)
         else:
@@ -50,7 +50,6 @@ class DBStorage(FileStorage):
         for obj in objects:
             obj_dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
         return obj_dict
-
 
     def new(self, obj):
         """ Add object to current database session """
@@ -73,5 +72,5 @@ class DBStorage(FileStorage):
         self.__session = Session()
 
     def close(self):
-            """Closing the session"""
-            self.__session.close()
+        """Closing the session"""
+        self.__session.close()
