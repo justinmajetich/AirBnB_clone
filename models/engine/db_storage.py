@@ -41,12 +41,18 @@ def __init__(self):
     if os.getenv('HBNB_ENV') == "test":
         Base.metadata.drop_all(self.__engine)
 
+    session_factory = sessionmaker(
+        bind=self.__engine, expire_on_commit=False
+    )
+    Session = scoped_session(session_factory)
+    self.__session = Session
+
     def all(self, clas=None):
         """Query on current DB"""
         new_dict = {}
-        for cls in classes:
-            if cls is None or cls is classes[cls] or cls is cls:
-                objs = self.__session.query(classes[cls]).all()
+        for cls_name, cls in classes.items:
+            if cls is None or cls is classes[cls_name] or cls is cls_name:
+                objs = self.__session.query(cls).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
