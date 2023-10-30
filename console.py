@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import signal
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -19,15 +20,22 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-        'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'State': State, 'City': City, 'Amenity': Amenity,
+        'BaseModel': BaseModel,
+        'User': User,
+        'Place': Place,
+        'State': State,
+        'City': City,
+        'Amenity': Amenity,
         'Review': Review
     }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-        'number_rooms': int, 'number_bathrooms': int,
-        'max_guest': int, 'price_by_night': int,
-        'latitude': float, 'longitude': float
+        'number_rooms': int,
+        'number_bathrooms': int,
+        'max_guest': int,
+        'price_by_night': int,
+        'latitude': float,
+        'longitude': float
     }
 
     def preloop(self):
@@ -81,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
@@ -94,6 +102,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
+        print(Bye-bye)
         exit()
 
     def help_quit(self):
@@ -115,27 +124,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        arg_list = args.split()
+        import re
+
+        args = line.split()
         if not args:
             print("** class name missing **")
             return
-        elif arg_list[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[arg_list[0]]()
-        for i in range(1, len(arg_list)):
-            s = arg_list[i].split('=')
-            if len(s) > 1:
-                if s[1][0] == '"':
-                    s[1] = s[1].replace('_', ' ')
-                    setattr(new_instance, s[0], s[1][1:-1])
-                elif '.' in s[1]:
-                    setattr(new_instance, s[0], float(s[1]))
-                else:
-                    setattr(new_instance, s[0], int(s[1]))
-        print(new_instance.id)
-        new_instance.save()
-        storage.save()
+        else:
+            class_name = args[0]
+            if class_name not in self.classes.keys():
+                print('** class doesn\'t exist **')
+                return
+            else:
+                kwargs = {}
+                for arg in args[1:]:
+                    separate = arg.partition('=')
+                    attr_name = separate[0]
+                    attr_value = separate[2]
+                    if re.search(r"^(\-?\d*\.?\d*|\"\S+\")$", str(attr_value)):
+                        if re.search(r"^\"\S+\"$", attr_value):
+                            attr_value = str(attr_value.replace(
+                                '_',
+                                ' '
+                            )[1:-1])
+                        kwargs[attr_name] = attr_value
+                object = eval(class_name)(**kwargs)
+                object.save()
+                print(object.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -217,11 +232,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all().items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+
+            objects = storage.all(HBNBCommand.classes[args])
+            for k, v in objects.items():
+                print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            objects = storage.all()
+            for k, v in objects.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -234,7 +251,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage.all().items():
+        for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -271,7 +288,7 @@ class HBNBCommand(cmd.Cmd):
 
         # determine if key is present
         if key not in storage.all():
-            print("** no instance found  **")
+            print("** no instance found **")
             return
 
         # first determine if kwargs or args
@@ -334,4 +351,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
