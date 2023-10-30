@@ -69,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     return line
             else:
-                args_list = shlex.split(args)
+                args_list = split(args)
                 args_dict = dict(item.split('=') for item in args_list)
 
             obj = storage.all().get(class_name + '.' + args_dict.get('id'))
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             for i in range(1, len(my_args)):
                 key, value = tuple(my_args[i].split("="))
                 if value == '=':
-                    value = value.strip('=').replace("_", " ")
+                    value = value.strip("").replace("_", " ")
                 else:
                     try:
                         value = eval(value)
