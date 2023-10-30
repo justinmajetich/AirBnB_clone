@@ -8,7 +8,13 @@ from io import StringIO
 from unittest.mock import patch
 import os
 from console import HBNBCommand
+import uuid
+import models
+import console
+from models.engine.db_storage import DBStorage
 
+
+@unittest.skipIf(type(models.storage) is DBStorage, "Testing DBstorage")
 class TestConsole(unittest.TestCase):
     ''' Testing the console'''
 
