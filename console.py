@@ -135,9 +135,14 @@ class HBNBCommand(cmd.Cmd):
                 key = arg[i + 1].split('=')[0]
                 val = arg[i + 1].split('=')[1].replace('_', ' ')
                 if os.getenv('HBNB_TYPE_STORAGE') == "db":
-                    self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val), new_instance)
+                    self.do_update("{} {} {} {}".format(arg[0],
+                                                        new_instance.id,
+                                                        key,
+                                                        val), new_instance)
                 else:
-                    self.do_update("{} {} {} {}".format(arg[0], new_instance.id, key, val))
+                    self.do_update("{} {} {} {}".format(arg[0],
+                                                        new_instance.id,
+                                                        key, val))
             except IndexError:
                 pass
         if os.getenv('HBNB_TYPE_STORAGE') == "db":
@@ -264,7 +269,6 @@ class HBNBCommand(cmd.Cmd):
         if c_name not in HBNBCommand.classes:  # class name invalid
             print("** class doesn't exist **")
             return
-
 
         # isolate id from args
         args = args[2].partition(" ")
