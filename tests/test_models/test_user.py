@@ -1,34 +1,52 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+""" a module for user tests"""
+import unittest
+import pycodestyle
 from models.user import User
+import os
 
 
-class test_User(test_basemodel):
-    """ """
+class TestUser(unittest.TestCase):
+    """ a class for user tests"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.user = User()
+        cls.user.first_name = "Madame"
+        cls.user.last_name = "Tabitha"
+        cls.user.email = "gildedlily@gmail.com"
+        cls.user.password = "gildedlily123"
 
-    def test_first_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+    @classmethod
+    def teardown(cls):
+        """ Tear down the class """
+        del cls.user
 
-    def test_last_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+    def tearDown(self):
+        """ Tear down the file (file storage) """
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def test_email(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+    def test_pycodestyle_user(self):
+        """tests for pycodestyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(["models/user.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
-    def test_password(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+    def test_docs_user(self):
+        """ check for docstrings """
+        self.assertIsNotNone(User.__doc__)
+
+    def test_attribute_types_User(self):
+        """test attribute type for User"""
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
+
+
+if __name__ == "__main__":
+    unittest.main()
