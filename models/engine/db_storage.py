@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session
 from models.base_model import BaseModel, Base
+from models.engine.file_storage import FileStorage
 from models.user import User
 from models.city import City
 from models.place import Place
@@ -11,13 +13,16 @@ from models.amenity import Amenity
 from os import getenv
 
 
-class DBStorage(self):
-    self.__engine = None
-    self.__session = None
+class DBStorage(FileStorage):
+    __engine = None
+    __session = None
 
     def __init__(self):
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}'
-                                      f'@{host}/{database}',
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
@@ -29,12 +34,13 @@ class DBStorage(self):
         if cls is None:
             for class_name in classes:
                 objects.update({obj.__class__.__name__ + '.' + obj.id: obj
-                                for obj in self.__session.query(class_name).all()})
+                                for obj in self.__session.query(class_name)
+                                .all()})
 
         else:
             if cls in classes:
-                objects = {obj.__class__.__name__ + '.' + obj.id: obj
-                           for obj in self.__session.query(cls).all()}
+                for obj in self.__session.query(cls).all():
+                    objects[obj.__class__.__name__ + '.' + obj.id] = obj
 
         return objects
 
@@ -52,3 +58,4 @@ class DBStorage(self):
             Base.metadata.create_all(self.__engine)
             Session = scoped_session(sessionmaker(bind=self.__engine,
                                                   expire_on_commit=False))
+            self.__session = Session()
