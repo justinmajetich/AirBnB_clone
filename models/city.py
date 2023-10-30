@@ -5,7 +5,6 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship, sessionmaker
 
 
-
 class City(Base):
     __tablename__ = 'cities'
     id = Column(String(60), primary_key=True, nullable=False)
