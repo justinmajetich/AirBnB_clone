@@ -116,41 +116,39 @@ class HBNBCommand(cmd.Cmd):
         pass
     
     def do_create(self, line):
-        """Creates a new instance of a class with given parameters."""
+        """Creates a new instance of BaseModel and saves it to the JSON file."""
         try:
             if not line:
                 raise SyntaxError()
-        
-            my_list = line.split("  ")
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = my_list[i].split("=")
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        if key in ["created_at", "updated_at"]:
-                            value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                        else:
-                            # Try to evaluate the value as a literal
-                            value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
 
-            class_name = my_list[0]
-            if kwargs == {}:
-                obj = eval(class_name)()
-            else:
-                obj = eval(class_name)(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
+            class_name, *params = line.split()
+            class_name = class_name.strip()
+
+            if class_name not in HBNBCommand.classes:
+                raise NameError()
+
+            obj_dict = {}
+            for param in params:
+                param = param.strip()
+                if '=' in param:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace('_', ' ')
+                    else:
+                        try:
+                            value = eval(value)
+                        except (SyntaxError, NameError):
+                            continue
+                    obj_dict[key] = value
+
+            new_instance = HBNBCommand.classes[class_name](**obj_dict)
+            new_instance.save()
+            print(new_instance.id)
 
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class does not exist **")
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
