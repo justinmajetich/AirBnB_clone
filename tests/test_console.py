@@ -11,11 +11,32 @@ from models.__init__ import DBStorage
 from console import HBNBCommand
 import models
 from io import StringIO
-
+import models
+from models.engine.file_storage import FileStorage
 
 class test_console(unittest.TestCase):
     ''' Testing the console'''    
     """Check for Pep8 style conformance"""
+
+    @classmethod
+    def setUpClass(cls):
+        """setup testing"""
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        cls.HBNB = HBNBCommand()
+
+    @classmethod
+    def tearDownClass(cls):
+        """testing teardown"""
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+        del cls.HBNB
+        if type(models.storage) == DBStorage:
+            models.storage._DBStorage__session.close()
 
     def test_pep8_console(self):
         """Pep8 console.py"""
@@ -38,7 +59,7 @@ class test_console(unittest.TestCase):
     def test_EOF(self):
         """Test that EOF quits."""
         with patch("sys.stdout", new=StringIO()) as f:
-            self.assertTrue(self.HBNB.onecmd("EOF"))
+            self.assertTrue(self.onecmd("EOF"))
 
     def test_emptyline(self):
         """Test empty line input."""
