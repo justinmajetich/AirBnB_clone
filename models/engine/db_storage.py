@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from os import getenv
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -28,23 +28,28 @@ class DBStorage(FileStorage):
                    getenv("HBNB_MYSQL_PWD"),
                    getenv("HBNB_MYSQL_HOST"),
                    getenv("HBNB_MYSQL_DB")),
-                  pool_pre_ping=True)
+            pool_pre_ping=True)
         """ Drop all tables if HBNB_ENV is "test" """
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ Query objects from database session """
-        objects = {}
-        if cls is not None:
-            query_result = self.__session.query(cls)
+        if cls:
+            if isinstance(cls, str):
+                cls = eval(cls)
+            objects = self.__session.query(cls)
         else:
-            query_result = self.__session.query(User, State, City, Amenity, Place, Review)
-
-        for obj in query_result:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-
-        return objects
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            objects.extend(self.__session.query(User).all())
+            objects.extend(self.__session.query(Place).all())
+            objects.extend(self.__session.query(Review).all())
+            objects.extend(self.__session.query(Amenity).all())
+        obj_dict = {}
+        for obj in objects:
+            obj_dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
+        return obj_dict
 
     def new(self, obj):
         """ Add object to current database session """
@@ -61,7 +66,11 @@ class DBStorage(FileStorage):
 
     def reload(self):
         """ Create tables in database and configure as scoped session """
+        Base.metadata.create_all(self.__engine)
+        session_exp = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_exp)
+        self.__session = Session()
 
     def close(self):
-            """Closing the session"""
-            self.__session.close()
+        """Closing the session"""
+        self.__session.close()
