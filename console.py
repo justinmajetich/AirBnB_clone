@@ -137,25 +137,25 @@ class HBNBCommand(cmd.Cmd):
                     print("** attribute doesn't exist **")
                     return
 
-                # Check if value is an integer
-                if value.isdigit():
-                    value = int(value)
-                # Check if value is a float
-                elif '.' in value:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        print("** invalid float value **")
-                        return
-                # Check and process string value
-                elif value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace('_', ' ')
-                    value = value.replace('\\"', '"')
-                else:
-                    print("** invalid parameter format **")
+            # Check if value is an integer
+            if value.isdigit():
+                value = int(value)
+            # Check if value is a float
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    print("** invalid float value **")
                     return
+            # Check and process string value
+            elif value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('_', ' ')
+                value = value.replace('\\"', '"')
+            else:
+                print("** invalid parameter format **")
+                return
             
-                param_dict[key] = value
+        param_dict[key] = value
 
         # Provide a default value for 'updated_at' if not provided
         if 'updated_at' not in param_dict:
