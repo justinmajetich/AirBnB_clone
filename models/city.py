@@ -10,15 +10,12 @@ from sqlalchemy.orm import relationship
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    if models.storage_t == "db":
-        __tablename__ = 'cities'
+    __tablename__ = 'cities'
+
+    if getenv("HBNB_TYPE_STORAGE") == "db":
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         name = Column(String(128), nullable=False)
-        state = relationship("State", backref="cities")
+        places = relationship("Places", backref="cities", cascade = "delete")
     else:
         state_id = ""
         name = ""
-
-    def __init__(self, *args, **kwargs):
-        """Init city"""
-        super().__init__(*args, **kwargs)
