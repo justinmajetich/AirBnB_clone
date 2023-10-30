@@ -51,13 +51,11 @@ class DBStorage:
         if obj:
             self.__session.add(obj)
             self.__session.commit()
-            self.__session.close()
 
     def save(self):
         """save and commit"""
 
         self.__session.commit()
-        self.__session.close()
 
     def delete(self, obj=None):
         """Deletes Objects"""
@@ -65,7 +63,6 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
             self.__session.commit()
-            self.__session.close()
 
     def reload(self):
         """initializes created tables in DB."""
