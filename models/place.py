@@ -16,4 +16,5 @@ class Place(BaseModel):
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
     longitude = Column(Float)
+    reviews = relationship("Review", backref="place", cascade="delete")
     amenity_ids = []
