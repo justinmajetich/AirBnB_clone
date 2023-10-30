@@ -28,7 +28,7 @@ class DBStorage:
                                       getenv("HBNB_MYSQL_HOST"),
                                       getenv("HBNB_MYSQL_DB")),
                                       pool_pre_ping=True)
-        if env == "test":
+        if getenv == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
