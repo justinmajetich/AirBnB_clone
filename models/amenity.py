@@ -1,7 +1,26 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
-from models.base_model import BaseModel
+"""
+0x00. AirBnB clone - The console
+"""
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
+from models.place import place_amenity
+import os
+
+STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 
-class Amenity(BaseModel):
-    name = ""
+class Amenity(BaseModel, Base):
+    """Permit to add the amenities for places"""
+
+    __tablename__ = "amenities"
+    if STORAGE == "db":
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship(
+            "Place", secondary=place_amenity,
+            backref='amenities',
+            viewonly=False
+        )
+    else:
+        name = ""
