@@ -1,25 +1,43 @@
 #!/usr/bin/python3
+""" Test link Many-To-Many Place <> Amenity
+"""
+from models import *
 
-if __name__ == "__main__":
-    strings = input("Please type in inputs\n")
-    string_list = strings.split()
-    kvp_dict = {}
-    for i in range(len(string_list)):
-        kvp = string_list[i].partition("=")
-        key = kvp[0]
-        value = kvp[2]
-        if value[0] == value[-1] and value[0] == '"':
-            value = value[1:-1]
-            print(f"New Value: {value}")
-        else:
-            try:
-                value = int(value)
-            except ValueError:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-        print(type(value))
-        kvp_dict[key] = value
+# creation of a State
+state = State(name="California")
+state.save()
 
-    print(kvp_dict)
+# creation of a City
+city = City(state_id=state.id, name="San Francisco")
+city.save()
+
+# creation of a User
+user = User(email="john@snow.com", password="johnpwd")
+user.save()
+
+# creation of 2 Places
+place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+place_1.save()
+place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+place_2.save()
+
+# creation of 3 various Amenity
+amenity_1 = Amenity(name="Wifi")
+amenity_1.save()
+amenity_2 = Amenity(name="Cable")
+amenity_2.save()
+amenity_3 = Amenity(name="Oven")
+amenity_3.save()
+
+# link place_1 with 2 amenities
+place_1.amenities.append(amenity_1)
+place_1.amenities.append(amenity_2)
+
+# link place_2 with 3 amenities
+place_2.amenities.append(amenity_1)
+place_2.amenities.append(amenity_2)
+place_2.amenities.append(amenity_3)
+
+storage.save()
+
+print("OK")
