@@ -115,7 +115,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-
         off_equal_sign = args.replace("=", " ")
         """ Replace '=' with space"""
         arg_list = off_equal_sign.split()
