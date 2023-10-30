@@ -3,7 +3,7 @@
 import cmd
 import sys
 import uuid
-import datetime
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,36 +115,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
     
-    def do_create(self, args):
-        """Creates a new instance of BaseModel and saves it to the JSON file."""
-        if not args:
+    def do_create(self, line):
+        """Creates a new instance of a class with given parameters."""
+        try:
+            if not line:
+                raise SyntaxError()
+        
+            my_list = line.split("  ")
+            kwargs = {}
+            for i in range(1, len(my_list)):
+                key, value = my_list[i].split("=")
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        if key in ["created_at", "updated_at"]:
+                            value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                        else:
+                            # Try to evaluate the value as a literal
+                            value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+
+            class_name = my_list[0]
+            if kwargs == {}:
+                obj = eval(class_name)()
+            else:
+                obj = eval(class_name)(**kwargs)
+                storage.new(obj)
+            print(obj.id)
+            obj.save()
+
+        except SyntaxError:
             print("** class name missing **")
-            return
-        class_name = args.split()[0]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        args = args.split(" ")
-        kwargs = {}
-        for arg in args[1:]:
-            parts = arg.split("=")
-            if len(parts) != 2:
-                print("** invalid parameter format: {} **".format(arg))
-                return
-            key, value = parts[0], parts[1]
-            if key == 'updated_at':
-                # Handle 'updated_at' parameter
-                try:
-                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                except ValueError:
-                    print("** invalid datetime format: {} **".format(value))
-                    return
-            kwargs[key] = value
-
-        new_instance = HBNBCommand.classes[class_name](**kwargs)
-        new_instance.save()
-        print(new_instance.id)
+        except NameError:
+            print("** class does not exist **")
 
     def help_create(self):
         """ Help information for the create method """
