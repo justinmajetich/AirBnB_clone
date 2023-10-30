@@ -6,6 +6,7 @@ from os import getenv
 from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import uuid  # Import the uuid module
 
 
 class State(BaseModel, Base):
@@ -19,6 +20,14 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref='state',
                           cascade='all, delete, delete-orphan')
+    
+     def __init__(self, *args, **kwargs):
+        """ Initialize State class """
+        super().__init__(*args, **kwargs)
+
+        # Generate the 'id' attribute if it doesn't exist
+        if not hasattr(self, 'id'):
+            self.id = str(uuid.uuid4())
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property

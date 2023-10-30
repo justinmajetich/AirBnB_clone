@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel
+import uuid
 
 
 class Place(BaseModel):
@@ -16,3 +17,8 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not hasattr(self, 'id'):
+            self.id = str(uuid.uuid4())
