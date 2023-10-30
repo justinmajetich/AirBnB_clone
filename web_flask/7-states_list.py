@@ -13,9 +13,7 @@ app = Flask(__name__)
 def stateList():
     """A function that displays the list of states from
     the storage eather the fs or db."""
-    states = storage.all(State)
-    sortedStates = sorted(states.values(), key=lambda state: state.name)
-    return render_template("7-states_list.html", statesStorage=sortedStates)
+    return render_template("7-states_list.html", statesStorage=storage.all(State))
 
 
 @app.route("/states_list", strict_slashes=False)
