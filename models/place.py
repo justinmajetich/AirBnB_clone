@@ -2,6 +2,10 @@
 """ Place Module for HBNB project """
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from models.base_model import BaseModel
+from sqlalchemy.orm import relationship
+from models.review import Review
+import os
+
 
 class Place(BaseModel):
     __tablename__ = 'places'
@@ -17,3 +21,18 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
+    """For DBStorage: Define a relationship with the class Review, and specify the behavior
+    when a Place object is deleted (cascading deletion)."""
+    reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+    
+    """For FileStorage: Implement a getter attribute for reviews."""
+    if os.getenv('HBNB_TYPE_STORAGE') == 'file':
+        @property
+        def reviews(self):
+            """Getter attribute for reviews in FileStorage."""
+            from models import storage
+            review_list = []
+            for review in storage.all(Review).values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
