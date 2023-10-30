@@ -9,6 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), nullable=False, unique=True)
@@ -57,4 +58,5 @@ class BaseModel:
 
     def delete(self):
         """ Delete"""
-        models.storage.delete()
+        from models import storage
+        storage.delete()
