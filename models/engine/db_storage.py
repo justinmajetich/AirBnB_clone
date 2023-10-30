@@ -84,6 +84,5 @@ class DBStorage:
             for _row in query.all():
                 key = "{}.{}".format(cls.__name__, _row.id)
                 structure[key] = _row
-            return structure
 
-    
+            return structure

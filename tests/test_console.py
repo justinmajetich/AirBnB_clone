@@ -5,6 +5,7 @@ import sys
 import unittest
 import pep8
 from io import StringIO
+from unittest.mock import create_autospec
 
 
 class test_console(unittest.TestCase):
