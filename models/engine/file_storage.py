@@ -32,9 +32,9 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        obj_id = obj.id if obj.id is not None else generate_new_id()
+        obj_id = obj.id if obj.id is not None else self.generate_new_id()
         self.all().update({obj.to_dict()
-                           ['__class__'] + '.' + str(obj_id): obj})
+                            ['__class__'] + '.' + str(obj_id): obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -59,7 +59,7 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                  }
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
