@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, Integer, Float
 from sqlalchemy.sql.schema import ForeignKey
 from models import storage
 from sqlalchemy.orm import relationship
+from sqlalchemy import Table
 
 
 class Place(BaseModel, Base):
@@ -23,7 +24,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
 
-amenities = relationship("Place", secondary="Amenity", viewport=False)
+amenities = relationship("Place", secondary="Amenity", viewonly=False)
 
 
 place_amenity = Table(
