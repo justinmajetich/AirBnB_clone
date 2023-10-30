@@ -6,6 +6,7 @@ import unittest
 import pep8
 from io import StringIO
 from unittest.mock import create_autospec
+from unittest.mock import patch
 
 
 class test_console(unittest.TestCase):
@@ -30,3 +31,14 @@ class test_console(unittest.TestCase):
     def tearDown(self):
         """ tearDown """
         sys.stdout = self.backup
+    
+    def test_EOF(self):
+        """Test that EOF quits."""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertTrue(self.HBNB.onecmd("EOF"))
+
+    def test_emptyline(self):
+        """Test empty line input."""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.HBNB.onecmd("\n")
+            self.assertEqual("", f.getvalue())
