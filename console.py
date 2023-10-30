@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import uuid
+import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,8 +12,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from datetime import datetime
-import uuid
 
 
 class HBNBCommand(cmd.Cmd):
@@ -116,52 +116,33 @@ class HBNBCommand(cmd.Cmd):
         pass
     
     def do_create(self, args):
-        """ Create an object of any class """
+        """Creates a new instance of BaseModel and saves it to the JSON file."""
         if not args:
             print("** class name missing **")
             return
-
-        class_name, *parameters = args.split()
-        param_dict = {}
-    
+        class_name = args.split()[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        for param in parameters:
-            param_split = param.split('=')
-            if len(param_split) == 2:
-                key, value = param_split[0], param_split[1]
-
-                if key not in HBNBCommand.classes[class_name].__dict__:
-                    print("** attribute doesn't exist **")
-                    return
-
-            # Check if value is an integer
-            if value.isdigit():
-                value = int(value)
-            # Check if value is a float
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    print("** invalid float value **")
-                    return
-            # Check and process string value
-            elif value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ')
-                value = value.replace('\\"', '"')
-            else:
-                print("** invalid parameter format **")
+        args = args.split(" ")
+        kwargs = {}
+        for arg in args[1:]:
+            parts = arg.split("=")
+            if len(parts) != 2:
+                print("** invalid parameter format: {} **".format(arg))
                 return
-            
-        param_dict[key] = value
+            key, value = parts[0], parts[1]
+            if key == 'updated_at':
+                # Handle 'updated_at' parameter
+                try:
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                except ValueError:
+                    print("** invalid datetime format: {} **".format(value))
+                    return
+            kwargs[key] = value
 
-        # Provide a default value for 'updated_at' if not provided
-        if 'updated_at' not in param_dict:
-            param_dict['updated_at'] = datetime.now()
-
-        new_instance = HBNBCommand.classes[class_name](**param_dict)
+        new_instance = HBNBCommand.classes[class_name](**kwargs)
         new_instance.save()
         print(new_instance.id)
 
