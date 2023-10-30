@@ -18,33 +18,13 @@ class test_console(unittest.TestCase):
     """Check for Pep8 style conformance"""
 
     def test_pep8_console(self):
-        """Pep8 for the console"""
+        """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=False)
         errors = 0
         file = (["console.py"])
         errors += style.check_files(file).total_errors
         self.assertEqual(errors, 0, 'Need to fix Pep8')
    
-    @classmethod
-    def setUpClass(cls):
-        """setup testing"""
-        try:
-            os.rename("file.json", "tmp")
-        except IOError:
-            pass
-        cls.HBNB = HBNBCommand()
-
-    @classmethod
-    def tearDownClass(cls):
-        """testing teardown"""
-        try:
-            os.rename("tmp", "file.json")
-        except IOError:
-            pass
-        del cls.HBNB
-        if type(models.storage) == DBStorage:
-            models.storage.DBStorage__session.close()
-    
     def setUp(self):
         """ setup """
         self.backup = sys.stdout
