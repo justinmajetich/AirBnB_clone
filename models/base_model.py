@@ -9,10 +9,7 @@ import os
 STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 
-if STORAGE == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
