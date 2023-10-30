@@ -17,7 +17,7 @@ class BaseModel:
         updated_at(sqlalchemy datetime): time stamp at update
     """
 
-    id = Column(String(60), nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -40,8 +40,12 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(type(self).__name__,
+                                     self.id, self.__dict__)
+
+    def __repr__(self):
+        """return string representation"""
+        return self.__str__()
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
