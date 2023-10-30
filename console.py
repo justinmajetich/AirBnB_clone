@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-               }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-             }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict:
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -114,46 +114,28 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class with given parameters """
+        """ Create an object of any class"""
+        arg_list = args.split()
         if not args:
             print("** class name missing **")
             return
-
-        args = args.split()
-        class_name = args[0]
-        if class_name not in HBNBCommand.classes:
+        elif arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        args = " ".join(args[1:])
-
-        new_instance = HBNBCommand.classes[class_name]()
-        for arg in args.split(","):
-            arg = arg.strip()
-            try:
-                key, value = arg.split("=")
-                key = key.strip()
-                value = value.strip()
-
-                if value.startswith('"') and value.endswith('"'):
-                    """ Handle string value """
-                    value = value.strip('"')
-                    value = value.replace('_', ' ')
-                elif "." in value:
-                    """ Handle float value """
-                    value = float(value)
+        new_instance = HBNBCommand.classes[arg_list[0]]()
+        for i in range(1, len(arg_list)):
+            s = arg_list[i].split('=')
+            if len(s) > 1:
+                if s[1][0] == '"':
+                    s[1] = s[1].replace('_', ' ')
+                    setattr(new_instance, s[0], s[1][1:-1])
+                elif '.' in s[1]:
+                    setattr(new_instance, s[0], float(s[1]))
                 else:
-                    """ Handle integer value """
-                    value = int(value)
-                setattr(new_instance, key, value)
-            except ValueError:
-                print(f"Invalid parameter format: {arg}")
-                continue
-            except AttributeError:
-                print(f"Invalid attribute: {key}")
-                continue
-        new_instance.save()
+                    setattr(new_instance, s[0], int(s[1]))
         print(new_instance.id)
+        new_instance.save()
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -235,11 +217,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -252,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -289,11 +271,11 @@ class HBNBCommand(cmd.Cmd):
 
         # determine if key is present
         if key not in storage.all():
-            print("** no instance found **")
+            print("** no instance found  **")
             return
 
         # first determine if kwargs or args
-        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) == dict:
+        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
             for k, v in kwargs.items():
@@ -352,3 +334,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
