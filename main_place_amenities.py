@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Test link Many-To-Many Place <> Amenity
 """
-from models import *
+from models import State, City, User, Place, Amenity, storage
 
 # creation of a State
 state = State(name="California")
