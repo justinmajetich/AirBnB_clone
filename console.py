@@ -123,43 +123,36 @@ class HBNBCommand(cmd.Cmd):
         """If line is empty, do nothing"""
         pass
 
-    def do_create(self, line):
-        """Create an object of any class"""
-        import re
-
-        args = line.split()
+    def do_create(self, args):
+        arg_list = args.split()
         if not args:
             print("** class name missing **")
             return
+        elif arg_list[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[arg_list[0]]()
 
-            class_name = args[0]
-            if class_name not in self.classes.keys():
-                print('** class doesn\'t exist **')
-                return
-
-                kwargs = {}
-                for arg in args[1:]:
-                    separate = arg.partition('=')
-                    # print(f"These are args: {args}")
-                    # print(f"This is the sep: {separate}")
-                    attr_name = separate[0]
-                    attr_value = separate[2]
-                    if re.match(r'^\"(.*?)\"$', attr_value):
-                        attr_value = attr_value[1:-1].replace(
-                            '\\"',
-                            '"'
-                        ).replace('_', ' ')
-                    elif re.match(r'^(\d+\.\d+)$', attr_value):
-                        attr_value = float(attr_value)
-                    elif re.match(r'^(\d+)$', attr_value):
-                        attr_value = int(attr_value)
-                    kwargs[attr_name] = attr_value
+        for i in range(1, len(arg_list)):
+            s = arg_list[i].partition('=')
+            key = s[0]
+            value = s[2]
+            if value[0] == value[-1] and value[0] == '"':
+                value = value[1:-1]
+                value = value.replace("_", " ")
+            else:
                 try:
-                    obj = self.classes[class_name](**kwargs)
-                    obj.save()
-                    print(f"({class_name}) {obj.id}")
-                except Exception as e:
-                    print(f"Error creating object: {e}")
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+            setattr(new_instance, key, value)
+
+        storage.new(new_instance)
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -369,5 +362,4 @@ def signal_thing(sig, frame):
 
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGINT, signal_thing)
     HBNBCommand().cmdloop()
