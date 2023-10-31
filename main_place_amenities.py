@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 """ Test link Many-To-Many Place <> Amenity
 """
+import Amenity
+import City
+import State
+import User
+import Place
+from models import storage
+from models.base_model import BaseModel, Base
 from models import *
 
 # creation of a State
