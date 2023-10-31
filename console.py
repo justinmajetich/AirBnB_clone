@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import models
 import shlex
 
 
@@ -114,41 +115,71 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
+    def do_create(self, args):
         """Creates a new instance of a class"""
-        args = arg.split()
-        if len(args) == 0:
+        args_list = args.split()
+        if not args:
             print("** class name missing **")
-            return False
-        if args[0] in HBNBCommand.classes:
-            new_dict = self._key_value_parser(args[1:])
-            instance = HBNBCommand.classes[args[0]](**new_dict)
-        else:
+            return
+        elif args_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return False
-        print(instance.id)
-        instance.save()
+            return
+        new_instance = HBNBCommand.classes[args_list[0]]()
 
-    def _key_value_parser(self, args):
-        """creates a dictionary from a list of strings"""
-        new_dict = {}
-        for arg in args:
-            if "=" in arg:
-                kvp = arg.split('=', 1)
-                key = kvp[0]
-                value = kvp[1]
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-                else:
+        # Parse args
+        for i in range(1, len(args_list)):
+            kvp = args_list[i]. partition("=")
+            key = kvp[0]
+            value = kvp[2]
+            if value[0] == value[-1] and value[0] == '"':
+                value = value[1:-1]
+                value = value.replace("_", " ")
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
                     try:
-                        value = int(value)
+                        value = float(value)
                     except ValueError:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            continue
-                new_dict[key] = value
-        return new_dict
+                        continue
+            setattr(new_instance, key, value)
+
+        storage.new(new_instance)
+        storage.save()
+        print(new_instance.id)
+
+    def do_show(self, args):
+        """ Method to show an individual object """
+        new = args.partition(" ")
+        c_name = new[0]
+        c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+
+        if c_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        if not c_id:
+            print("** instance id missing **")
+            return
+
+        key = c_name + "." + c_id
+        try:
+            print(storage._FileStorage__objects[key])
+        except KeyError:
+            print("** no instance found **")
+
+    def help_create(self):
+        """ Info for create method """
+        print("Create a class of any type")
+        print("[Usage]: create <className>\n")
 
     def help_show(self):
         """ Help information for the show command """
@@ -191,22 +222,19 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
-        if args:
-            args = args.split()
-            class_name = args[0]  # Get the first element of the list
-            if class_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == class_name:
-                    print_list.append(str(v))
+        args_list = args.split()
+        if len(args) == 0:  # Get the first element of the list
+            dictt = models.storage.all()
+        elif args_list[0] not in self.classes.leys():
+            print("** class doesn't exist **")
+            return
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
-
+            dictt = models.storage.all(args_list[0])
+        for key in dictt:
+            print_list.append(str(dictt[key]))
+        print("[", end="")
+        print(", ".join(print_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
@@ -216,7 +244,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)

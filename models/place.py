@@ -5,15 +5,15 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.base_model import Base
 import models
-from os import getenv
+import os
 
 place_amenity = Table(
     'place_amenity',
     Base.metadata,
     Column('place_id', String(60), ForeignKey('places.id'), primary_key=True,
-           nullable=False),
+        nullable=False),
     Column('amenity_id', String(60), ForeignKey('amenities.id'),
-           primary_key=True, nullable=False)
+        primary_key=True, nullable=False)
 )
 
 class Place(BaseModel, Base):
@@ -34,18 +34,31 @@ class Place(BaseModel, Base):
 
     # Establish relationships
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+    storage_type = os.getenv("HBNB_TYPE_STORAGE")
+
+    if storage_type == "db":
         reviews = relationship("Review", backref="place",
-                               cascade="all, delete-orphan")
+                        cascade="all, delete-orphan"
+        )
         amenities = relationship("Amenity", secondary="place_amenity",
-                                 back_populates="places", viewonly=False)
+                viewonly=False, back_populates="places_amenities"
+        )
+    else:
+        @property
+        def reviews(self):
+            review_list = []
+            all_reviews = models.storage.all("Review")
+            for review in all_reviews.values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
 
-    @property
-    def amenities(self):
-        return [amenity for amenity in self.storage.all(self.amenity).values()
-                if amenity.id in self.amenity_id]
-
-    @amenities.setter
-    def amenities(self, amenity_obj):
-        if isinstance(amenity_obj, self.amenity):
-            self.amenity_ids.append(amenity_obj.id)
+        @property
+        def amenities(self):
+            from models.amenity import Amenity
+            amenity_list = []
+            all_amenities = models.storage.all("Amenity")
+            for amenity in all_amenities.values():
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
