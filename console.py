@@ -3,6 +3,8 @@
 import cmd
 import sys
 import signal
+import models
+from datetime import datetime
 from models import storage
 from models.city import City
 from models.user import User
@@ -129,12 +131,12 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        else:
+
             class_name = args[0]
             if class_name not in self.classes.keys():
                 print('** class doesn\'t exist **')
                 return
-            else:
+
                 kwargs = {}
                 for arg in args[1:]:
                     separate = arg.partition('=')
@@ -142,16 +144,22 @@ class HBNBCommand(cmd.Cmd):
                     # print(f"This is the sep: {separate}")
                     attr_name = separate[0]
                     attr_value = separate[2]
-                    if re.search(r"^(\-?\d*\.?\d*|\"\S+\")$", str(attr_value)):
-                        if re.search(r"^\"\S+\"$", attr_value):
-                            attr_value = str(attr_value.replace(
-                                '_',
-                                ' '
-                            )[1:-1])
-                        kwargs[attr_name] = attr_value
-                object = eval(class_name)(**kwargs)
-                object.save()
-                print(object.id)
+                    if re.match(r'^\"(.*?)\"$', attr_value):
+                        attr_value = attr_value[1:-1].replace(
+                            '\\"',
+                            '"'
+                        ).replace('_', ' ')
+                    elif re.match(r'^(\d+\.\d+)$', attr_value):
+                        attr_value = float(attr_value)
+                    elif re.match(r'^(\d+)$', attr_value):
+                        attr_value = int(attr_value)
+                    kwargs[attr_name] = attr_value
+                try:
+                    obj = self.classes[class_name](**kwargs)
+                    obj.save()
+                    print(f"({class_name}) {obj.id}")
+                except Exception as e:
+                    print(f"Error creating object: {e}")
 
     def help_create(self):
         """ Help information for the create method """
