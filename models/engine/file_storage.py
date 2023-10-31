@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# MICHAEL edited 10/30/ 10:37 PM
+# KASPER edited 10/31 11:17 aM
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
@@ -11,8 +11,8 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:   # if cls was passed
-            all_class = {}    # make empty dictionary
+        if cls is not None:  # if cls was passed
+            all_class = {}  # make empty dictionary
             for objs in FileStorage.__objects:  # for each item in __objects
                 # if the type of the object stored in __objects is
                 # the same as cls
@@ -21,7 +21,7 @@ class FileStorage:
                     # the class
                     all_class.update({objs: FileStorage.__objects[objs]})
             return all_class  # return the new dictionary
-        else:   # if cls was not passed
+        else:  # if cls was not passed
             return FileStorage.__objects  # return __objects
 
     def new(self, obj):
@@ -63,8 +63,8 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ removes a key value pair stored in __objects """
-        if obj is not None:    # check if obj was passed, if yes
-            key = obj.to_dict()['__class__'] + '.' + obj.id    # make key
+        if obj is not None:  # check if obj was passed, if yes
+            key = obj.to_dict()['__class__'] + '.' + obj.id  # make key
             # if the key is in __objects, delete they key value pair
             if key in self.__objects:
                 self.__objects.pop(key)
