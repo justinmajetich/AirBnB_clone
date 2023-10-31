@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-# KASPER edited @ 10/30 12:02am
+# KASPER edited @ 10/30 1:03am
 """ database storage engine using SQLAlchemy """
 from sqlalchemy import (create_engine, select)
 from sqlalchemy import MetaData
-from sqlalchemy.orm import (sessionmaker)
+from sqlalchemy.orm import (sessionmaker, scoped_session)
 import os
 
 
@@ -51,5 +51,6 @@ class DBStorage:
         from models.state import State
         from models.city import City
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(self.__engine)
+        session_factory = sessionmaker(self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
