@@ -47,6 +47,10 @@ class test_review(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.text), str)
 
+    def test_review_inheritance(self):
+        """test attributes of review class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
+
 
 if __name__ == "__main__":
     unittest.main()

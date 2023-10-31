@@ -47,6 +47,10 @@ class test_Amenity(test_basemodel):
         amenity = Amenity()
         self.assertTrue(issubclass(amenity.__class__, BaseModel))
 
+    def test_amenity_inheritance(self):
+        """test attributes of amenity class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
+
 
 if __name__ == "__main__":
     unittest.main()

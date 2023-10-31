@@ -52,6 +52,9 @@ class test_User(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.password), str)
 
+    def test_user_inheritance(self):
+        """test attributes of user class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
 
 if __name__ == "__main__":
     unittest.main()

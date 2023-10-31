@@ -88,5 +88,9 @@ class test_Place(test_basemodel):
         self.assertEqual(type(new.amenity_ids), list)
 
 
+    def test_place_inheritance(self):
+        """test attributes of place class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
+
 if __name__ == "__main__":
     unittest.main()

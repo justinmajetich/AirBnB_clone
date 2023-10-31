@@ -42,6 +42,10 @@ class test_City(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.name), str)
 
+    def test_city_inheritance(self):
+        """test attributes of city class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -37,6 +37,9 @@ class test_state(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.name), str)
 
+    def test_state_inheritance(self):
+        """test attributes of state class"""
+        self.assertTrue(issubclass(self.value, BaseModel)
 
 if __name__ == "__main__":
     unittest.main()
