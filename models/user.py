@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """This module defines a class User"""
 from models.base_model import BaseModel
-from models.base import Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """This class defines a user by various attributes"""
 
     __tablename__ = 'users'
@@ -18,7 +17,7 @@ class User(BaseModel, Base):
     """Define the relationship with the Review class"""
     reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
 
-class Review(BaseModel, Base):
+class Review(BaseModel):
     __tablename__ = 'reviews'
 
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
