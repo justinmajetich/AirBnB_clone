@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Michael Editted 12:27 PM
+# MICHAEL edited 10/30/ 10:37 PM
 """ Console Module """
 import cmd
 import sys
@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     # Fixed SyntaxWarnings 10/26/23
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) == dict:
                         _args = pline
                     else:
@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
 
         args_list = args.split(" ")
         class_name = args_list[0]
-        
+
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -154,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
+        print("[Usage]: create <Class name> <param 1> <param 2>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -347,6 +347,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
