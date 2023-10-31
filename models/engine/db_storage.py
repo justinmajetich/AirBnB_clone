@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ module for DBStorage class """
+import os
+import sys
 from os import getenv
 from models.city import City
 from models.user import User
@@ -11,6 +13,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship
 
 classes = {
     'User': User,
@@ -50,6 +53,10 @@ class DBStorage:
         )
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False)
+            )
 
     def all(self, cls=None):
         """query all objects - specific to cls var, if supplied"""

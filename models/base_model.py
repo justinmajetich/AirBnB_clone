@@ -34,7 +34,6 @@ class BaseModel:
                 elif key != '__class__':
                     self.__dict__[key] = value
 
-
     def __str__(self):
         """
         Returns a string representation of the instance
