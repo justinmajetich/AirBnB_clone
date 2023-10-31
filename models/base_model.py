@@ -6,7 +6,7 @@ import models
 import sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
-Base = declarative_base()
+Base = declarative_base():
 
 
 class BaseModel:
