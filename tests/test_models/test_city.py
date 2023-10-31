@@ -44,7 +44,7 @@ class test_City(test_basemodel):
 
     def test_city_inheritance(self):
         """test attributes of city class"""
-        self.assertTrue(issubclass(self.value, BaseModel)
+        self.assertTrue(issubclass(self.value, BaseModel))
 
 
 if __name__ == "__main__":

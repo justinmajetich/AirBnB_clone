@@ -49,7 +49,7 @@ class test_Amenity(test_basemodel):
 
     def test_amenity_inheritance(self):
         """test attributes of amenity class"""
-        self.assertTrue(issubclass(self.value, BaseModel)
+        self.assertTrue(issubclass(self.value, BaseModel))
 
 
 if __name__ == "__main__":

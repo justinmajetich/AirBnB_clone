@@ -49,7 +49,7 @@ class test_review(test_basemodel):
 
     def test_review_inheritance(self):
         """test attributes of review class"""
-        self.assertTrue(issubclass(self.value, BaseModel)
+        self.assertTrue(issubclass(self.value, BaseModel))
 
 
 if __name__ == "__main__":

@@ -90,7 +90,7 @@ class test_Place(test_basemodel):
 
     def test_place_inheritance(self):
         """test attributes of place class"""
-        self.assertTrue(issubclass(self.value, BaseModel)
+        self.assertTrue(issubclass(self.value, BaseModel))
 
 if __name__ == "__main__":
     unittest.main()
