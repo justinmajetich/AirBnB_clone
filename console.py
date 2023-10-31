@@ -127,6 +127,8 @@ class HBNBCommand(cmd.Cmd):
                 key, value = tuple(my_args[i].split("="))
                 if value == '=':
                     value = value.strip("").replace("_", " ")
+                elif value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace("_", " ")
                 else:
                     try:
                         value = eval(value)
