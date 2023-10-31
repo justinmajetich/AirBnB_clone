@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args = args.split(' ')
-        params = {args[1:]}
+        args[1:]
 
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
