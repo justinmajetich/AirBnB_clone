@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import uuid
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -112,19 +114,41 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    
+    def do_create(self, line):
+        """Creates a new instance of BaseModel and saves it to the JSON file."""
+        try:
+            if not line:
+                raise SyntaxError()
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+            class_name, *params = line.split()
+            class_name = class_name.strip()
+
+            if class_name not in HBNBCommand.classes:
+                raise NameError()
+
+            obj_dict = {}
+            for param in params:
+                param = param.strip()
+                if '=' in param:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace('_', ' ')
+                    else:
+                        try:
+                            value = eval(value)
+                        except (SyntaxError, NameError):
+                            continue
+                    obj_dict[key] = value
+
+            new_instance = HBNBCommand.classes[class_name](**obj_dict)
+            new_instance.save()
+            print(new_instance.id)
+
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
