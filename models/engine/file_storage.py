@@ -10,14 +10,11 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:
+        if cls is None:
             return self.__objects
         else:
-            new_dict = {}
-            for key, value in self.__objects.items():
-                if type(value) == cls:
-                    new_dict[key] = value
-            return new_dict
+            return {key: obj for key, obj in self.__objects.items()
+                    if isinstance(obj, cls)}
 
     def generate_new_id(self):
         """Generate a new ID for objects with string IDs"""
