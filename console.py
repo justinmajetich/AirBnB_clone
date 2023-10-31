@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-import sys
-import uuid
-from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -12,8 +9,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-
+import sys
+import models
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -133,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
                 if '=' in param:
                     key, value = param.split('=')
                     if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1].replace('_', ' ')
+                        value = value.strip("").replace('_', ' ')
                     else:
                         try:
                             value = eval(value)
