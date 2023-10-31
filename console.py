@@ -11,6 +11,7 @@ from models.state import State
 from models.review import Review
 from models.amenity import Amenity
 from models.base_model import BaseModel
+from uuid import uuid4
 
 
 class HBNBCommand(cmd.Cmd):
