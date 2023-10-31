@@ -1,10 +1,8 @@
 #!/usr/bin/python3
-# KASPER edited @ 10/30 11:40pm
+# KASPER edited @ 10/31 12:03
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models import storage
-from os import getenv
-from models.city import City
 from sqlalchemy.orm import relationship
 from sqlalchemy import (
     Column,
@@ -19,3 +17,11 @@ class State(BaseModel, Base):
     cities = relationship("City", backref="state",
                           cascade="all, delete-orphan",
                           primaryjoin='State.id == City.state_id')
+
+    @property
+    def cities(self):
+        new_list = []
+        a = storage.all()
+        for objects in a:
+            x = type(a[objects])
+        return x
