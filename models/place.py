@@ -13,9 +13,9 @@ metadata = Base.metadata
 
 association_table = Table('place_amenity', metadata,
         Column('place_id', String(60), ForeignKey('places.id'),
-        primary_key=True, nullable=False),
+                primary_key=True, nullable=False),
         Column('amenity_id', String(60), ForeignKey('amenities.id'),
-        primary_key=True, nullable=False)
+                primary_key=True, nullable=False)
         )
 
 
@@ -45,7 +45,8 @@ class Place(BaseModel, Base):
             for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
                     review_list.append(review)
-                return review_list
+            return review_list
+
         @property
         def amenities(self):
             amenity_list = []
@@ -58,4 +59,3 @@ class Place(BaseModel, Base):
         def amenities(self, value):
             if type(value) is Amenity:
                 self.amenity_ids.append(amenity.id)
-
