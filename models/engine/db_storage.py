@@ -3,7 +3,7 @@
 from os  import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -41,12 +41,6 @@ class DBStorage:
 
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
-
-        session_factory = sessionmaker(
-            bind=self.__engine, expire_on_commit=False
-        )
-        Session = scoped_session(session_factory)
-        self.__session = Session
 
     def all(self, cls=None):
         """Query on current DB"""
