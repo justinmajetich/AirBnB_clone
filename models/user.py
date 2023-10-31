@@ -2,10 +2,10 @@
 # KASPER edited 1:45pm 10/28/2023
 """This module defines a class User"""
 from models.base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
 from sqlalchemy import (
     Column,
-    String,
-    relationship
+    String
 )
 
 
