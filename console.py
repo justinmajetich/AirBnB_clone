@@ -44,6 +44,7 @@ class HBNBCommand(cmd.Cmd):
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
         # scan for general formating - i.e '.', '(', ')'
+        # TODO add check for '=' and '""'
         if not ('.' in line and '(' in line and ')' in line):
             return line
 
@@ -123,7 +124,6 @@ class HBNBCommand(cmd.Cmd):
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        name="My_little_house"
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
