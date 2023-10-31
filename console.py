@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
 
         # Parse args
         for i in range(1, len(args_list)):
-            kvp = args_list[i]. partition("=")
+            kvp = args_list[i].partition("=")
             key = kvp[0]
             value = kvp[2]
             if value[0] == value[-1] and value[0] == '"':
@@ -225,7 +225,7 @@ class HBNBCommand(cmd.Cmd):
         args_list = args.split()
         if len(args) == 0:  # Get the first element of the list
             dictt = models.storage.all()
-        elif args_list[0] not in self.classes.leys():
+        elif args_list[0] not in self.classes.keys():
             print("** class doesn't exist **")
             return
         else:
