@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 
 class Amenity(BaseModel, Base):
     """ Repr of Amenity """
-    __tablename__ = 'amenites'
+    __tablename__ = 'amenities'
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         name = Column(String(128), nullable=False)
