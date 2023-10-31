@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# KASPER edited @ 10/31 12:03pm
+# KASPER edited @ 10/31 12:28pm
 """ database storage engine using SQLAlchemy """
 from sqlalchemy import (create_engine, select)
 from sqlalchemy import MetaData
@@ -30,8 +30,9 @@ class DBStorage:
         """ TBC """
         from models.city import City
         from models.state import State
+        from models.user import User
         dictionary = {}
-        classes = {"State": State, "City": City}
+        classes = {"State": State, "City": City, "User": User}
         if cls is None:
             for clas in classes:
                 user_obj = self.__session.query(classes[clas]).all()
@@ -68,6 +69,7 @@ class DBStorage:
         from models.base_model import Base
         from models.city import City
         from models.state import State
+        from models.user import User
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
