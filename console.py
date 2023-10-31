@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# KASPER edited 10/31 12:02pm
+# KASPER edited 10/31 12:56pm
 """ Console Module """
 import cmd
 import sys
@@ -240,7 +240,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             for key in dictionary:
                 var = key.split(".")
-                print(line[0])
                 if var[0] == line[0]:
                     instance_list.append(str(dictionary[key]))
                 print(instance_list)
