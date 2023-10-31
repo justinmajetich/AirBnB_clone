@@ -9,7 +9,43 @@ import json
 import os
 
 
-class test_basemodel(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
+    def setUp(self):
+        # This method is called before each test method
+        self.model = BaseModel()
+
+    def tearDown(self):
+        # This method is called after each test method
+        del self.model
+
+    def test_init(self):
+        self.assertIsInstance(self.model.id, str)
+        self.assertIsInstance(self.model.created_at, datetime)
+        self.assertIsInstance(self.model.updated_at, datetime)
+
+    def test_str(self):
+        model_str = str(self.model)
+        self.assertTrue(self.model.id in model_str)
+        self.assertTrue("created_at" in model_str)
+        self.assertTrue("updated_at" in model_str)
+
+    def test_save(self):
+        original_updated_at = self.model.updated_at
+        self.model.save()
+        self.assertNotEqual(original_updated_at, self.model.updated_at)
+
+    def test_to_dict(self):
+        model_dict = self.model.to_dict()
+        self.assertIsInstance(model_dict, dict)
+        self.assertIn('id', model_dict)
+        self.assertIn('created_at', model_dict)
+        self.assertIn('updated_at', model_dict)
+        self.assertIn('__class__', model_dict)
+
+if __name__ == '__main__':
+    unittest.main()
+
+'''class test_basemodel(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -97,4 +133,4 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertFalse(new.created_at == new.updated_at)'''
