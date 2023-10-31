@@ -18,26 +18,28 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         import uuid
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.utcnow()
+        self.updated_at = self.created_at
+
         if kwargs:
             for key, value in kwargs.items():
-                if key != "__class__":
-                    setattr(self, key, value)
-
-        if not hasattr(self, 'id') or self.id is None:
-            self.id = str(uuid.uuid4())
-
-        if not hasattr(self, 'created_at') or not self.created_at:
-            self.created_at = self.updated_at = datetime.utcnow()
+                if key in ("created_at", "updated_at"):
+                    val = datetime.strptime(kwargs['updated_at'],
+                                            '%Y-%m-%dT%H:%M:%S.%f')
+                if "__class__" not in key:
+                    setattr(self, key, val)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.utcnow()
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = type(self).__name__
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def to_dict(self):
