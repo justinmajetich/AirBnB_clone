@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""testing for the db_storage"""
 import os
 import models
 import unittest
@@ -12,11 +12,12 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 from models.city import City
-
+import models
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  "only for testing db storage")
 class test_DBStorage(unittest.TestCase):
+    """testing for the db_storage class"""
 
     def testCity(self):
         city = City(name="Delhi")
