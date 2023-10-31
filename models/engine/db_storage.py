@@ -27,27 +27,27 @@ class DBStorage:
     __session = None
 
 
-def __init__(self):
-    self.__engine = create_engine(
-        "mysql+mysqldb://{user}:{pwd}@{host}/{db}".format(
-            user=os.getenv('HBNB_MYSQL_USER'),
-            pwd=os.getenv('HBNB_MYSQL_PWD'),
-            host=os.getenv('HBNB_MYSQL_HOST'),
-            db=os.getenv('HBNB_MYSQL_DB')
-        ),
-        pool_pre_ping=True
-    )
+    def __init__(self):
+        self.__engine = create_engine(
+            "mysql+mysqldb://{user}:{pwd}@{host}/{db}".format(
+                user=os.getenv('HBNB_MYSQL_USER'),
+                pwd=os.getenv('HBNB_MYSQL_PWD'),
+                host=os.getenv('HBNB_MYSQL_HOST'),
+                db=os.getenv('HBNB_MYSQL_DB')
+            ),
+            pool_pre_ping=True
+        )
 
-    if os.getenv('HBNB_ENV') == "test":
-        Base.metadata.drop_all(self.__engine)
+        if os.getenv('HBNB_ENV') == "test":
+            Base.metadata.drop_all(self.__engine)
 
-    session_factory = sessionmaker(
-        bind=self.__engine, expire_on_commit=False
-    )
-    Session = scoped_session(session_factory)
-    self.__session = Session
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False
+        )
+        Session = scoped_session(session_factory)
+        self.__session = Session
 
-    def all(self, clas=None):
+    def all(self, cls=None):
         """Query on current DB"""
         new_dict = {}
         for cls_name, cls in classes.items:
