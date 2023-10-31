@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import unittest
+import pycodestyle
 from models.base_model import BaseModel
 from models import storage
 import os
@@ -21,8 +22,27 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except OSError:
             pass
+
+    def test_pycode(self):
+        style = pycodestyle.StyleGuide(quiet=True)
+        files = [
+            'models/engine/file_storage.py'
+            'tests/test_models/test_engine/test_file_storage.py'
+        ]
+        result = style.check_files(files)
+        self.assertEqual(
+            result.total_errors, 0, "PEP 8 style issues found"
+        )
+
+    def test_documentation(self):
+        check_class = [FileStorage]
+        for cls in check_class:
+            self.assertTrue(
+                cls.__doc__ is not None and len(cls.__doc__strip()) > 0,
+                f"Missing docstring in {cls.__name__}"
+            )
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
@@ -107,3 +127,7 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+
+if __name__ == '__main__':
+    unittest.main()
