@@ -47,7 +47,7 @@ class test_basemodel(unittest.TestCase):
         """tear down tests"""
         try:
             os.remove('file.json')
-        except:
+        except OSError:
             pass
 
     def test_default(self):

@@ -1,127 +1,161 @@
 #!/usr/bin/python3
 """ Module for testing db storage"""
 import unittest
-import pycodestyle
+from models.db_storage import DBStorage
+from models.amenity import Amenity
 from models.base_model import BaseModel
-from models import storage
-import os
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
-class test_dbStorage(unittest.TestCase):
-    """ Class to test the file storage method """
+class TestDBStorage(unittest.TestCase):
+    """Class to test dbstorage method"""
+    @classmethod
+    def setUpClass(cls):
+        """set up class"""
+        cls.engine = create_engine('sqlite:///test_db.sqlite')
+        Session = sessionmaker(bind=cls.engine)
+        cls.session = Session()
+
+        # Create the database schema
+        Base.metadata.create_all(cls.engine)
 
     def setUp(self):
-        """instance for testing"""
-        self.storage = DBStorage()
+        """Initialize a fresh database session for each test"""
+        self.db_storage = DBStorage()
+        self.db_storage.reload()
 
-    def tearDown(self):
-        """clean up after testing"""
-        if os.path.exists(DBStorage.__file_path):
-            os.remove(DBStorage.__file_path)
+    def test_add_state(self):
+        """Get the number of current records in the states table"""
+        initial_count = self.get_state_count()
 
-    def test_pycode(self):
-        style = pycodestyle.StyleGuide(quiet=True)
-        files = [
-            'models/engine/db_storage.py'
-            'tests/test_models/test_engine/test_db_storage.py'
-        ]
-        result = style.check_files(files)
-        self.assertEqual(
-            result.total_errors, 0, "PEP 8 style issues found"
-        )
+        new_state = State(name="California")
+        self.db_storage.new(new_state)
+        self.db_storage.save()
 
-    def test_documentation(self):
-        check_class = [DBStorage]
-        for cls in check_class:
-            self.assertTrue(
-                cls.__doc__ is not None and len(cls.__doc__strip()) > 0,
-                f"Missing docstring in {cls.__name__}"
-            )
+        # Get the number of current records in the states table again
+        final_count = self.get_state_count()
 
-    def test_obj_list_empty(self):
-        """ __objects is initially empty """
-        self.assertEqual(len(storage.all()), 0)
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
 
-    def test_new(self):
-        """ New object is correctly added to __objects """
-        new = BaseModel()
-        for obj in storage.all().values():
-            temp = obj
-        self.assertTrue(temp is obj)
+    def get_state_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(State).count()
 
-    def test_all(self):
-        """ __objects is properly returned """
-        new = BaseModel()
-        temp = storage.all()
-        self.assertIsInstance(temp, dict)
+    def test_add_city(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_city_count()
 
-    def test_base_model_instantiation(self):
-        """ File is not created on BaseModel save """
-        new = BaseModel()
-        self.assertFalse(os.path.exists('file.json'))
+        new_city = City(name="San Jose")
+        self.db_storage.new(new_city)
+        self.db_storage.save()
 
-    def test_empty(self):
-        """ Data is saved to file """
-        new = BaseModel()
-        thing = new.to_dict()
-        new.save()
-        new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize('file.json'), 0)
+        # Get the number of current records in the states table again
+        final_count = self.get_city_count()
 
-    def test_save(self):
-        """ FileStorage save method """
-        new = BaseModel()
-        storage.save()
-        self.assertTrue(os.path.exists('file.json'))
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
 
-    def test_reload(self):
-        """ Storage file is successfully loaded to __objects """
-        new = BaseModel()
-        storage.save()
-        storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+    def get_city_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(City).count()
 
-    def test_reload_empty(self):
-        """ Load from an empty file """
-        with open('file.json', 'w') as f:
-            pass
-        with self.assertRaises(ValueError):
-            storage.reload()
+    def test_add_amenity(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_amenity_count()
 
-    def test_reload_from_nonexistent(self):
-        """ Nothing happens if file does not exist """
-        self.assertEqual(storage.reload(), None)
+        new_amenity = Amenity(name="Wifi")
+        self.db_storage.new(new_amenity)
+        self.db_storage.save()
 
-    def test_base_model_save(self):
-        """ BaseModel save method calls storage save """
-        new = BaseModel()
-        new.save()
-        self.assertTrue(os.path.exists('file.json'))
+        # Get the number of current records in the states table again
+        final_count = self.get_amenity_count()
 
-    def test_type_path(self):
-        """ Confirm __file_path is string """
-        self.assertEqual(type(storage._FileStorage__file_path), str)
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
 
-    def test_type_objects(self):
-        """ Confirm __objects is a dict """
-        self.assertEqual(type(storage.all()), dict)
+    def get_amenity_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(Amenity).count()
 
-    def test_key_format(self):
-        """ Key is properly formatted """
-        new = BaseModel()
-        _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+    def test_add_place(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_place_count()
 
-    def test_storage_var_created(self):
-        """ DBStorage object storage created """
-        from models.engine.file_storage import DBStorage
-        print(type(storage))
-        self.assertEqual(type(storage), DBStorage)
+        new_place = Place(name="Wifi")
+        self.db_storage.new(new_place)
+        self.db_storage.save()
+
+        # Get the number of current records in the states table again
+        final_count = self.get_place_count()
+
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
+
+    def get_place_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(Place).count()
+
+    def test_add_review(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_review_count()
+
+        new_review = Review(text="Never stay here")
+        self.db_storage.new(new_review)
+        self.db_storage.save()
+
+        # Get the number of current records in the review table again
+        final_count = self.get_review_count()
+
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
+
+    def get_review_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(Review).count()
+
+    def test_add_user(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_user_count()
+
+        new_user = User(text="Never stay here")
+        self.db_storage.new(new_user)
+        self.db_storage.save()
+
+        # Get the number of current records in the review table again
+        final_count = self.get_user_count()
+
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
+
+    def get_user_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(User).count()
+
+    def test_add_basemodel(self):
+        """Get the number of current records in the cities table"""
+        initial_count = self.get_base_model_count()
+
+        new_base_model = BaseModel(text="Never stay here")
+        self.db_storage.new(new_base_model)
+        self.db_storage.save()
+
+        # Get the number of current records in the review table again
+        final_count = self.get_base_model_count()
+
+        # Assert that the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
+
+    def get_base_model_count(self):
+        """Query the database to count the number of State records"""
+        return self.session.query(BaseModel).count()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

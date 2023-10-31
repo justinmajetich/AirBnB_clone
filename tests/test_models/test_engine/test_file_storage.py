@@ -22,7 +22,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except OSError:
             pass
 
     def test_pycode(self):
