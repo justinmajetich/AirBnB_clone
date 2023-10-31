@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """ module for DBStorage class """
-import os
-import sys
 from os import getenv
 from models.city import City
 from models.user import User
