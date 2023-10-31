@@ -56,5 +56,6 @@ class test_User(test_basemodel):
         """test attributes of user class"""
         self.assertTrue(issubclass(self.value, BaseModel))
 
+
 if __name__ == "__main__":
     unittest.main()

@@ -41,5 +41,6 @@ class test_state(test_basemodel):
         """test attributes of state class"""
         self.assertTrue(issubclass(self.value, BaseModel))
 
+
 if __name__ == "__main__":
     unittest.main()
