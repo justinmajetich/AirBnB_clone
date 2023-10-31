@@ -12,7 +12,6 @@ from models.city import City
 from models.amenity import Amenity
 
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -137,7 +136,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 value = int(value)
             setattr(new_instance, key, value)
-
+            
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 

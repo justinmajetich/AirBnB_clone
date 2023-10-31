@@ -14,10 +14,13 @@ from os import getenv
 
 
 class DBStorage(FileStorage):
+    """ Class for DBStorage """
     __engine = None
     __session = None
+    _FileStorage__objects = {}
 
     def __init__(self):
+        """"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
                                       format(getenv("HBNB_MYSQL_USER"),
                                              getenv("HBNB_MYSQL_PWD"),
@@ -29,6 +32,7 @@ class DBStorage(FileStorage):
         self.reload()
 
     def all(self, cls=None):
+        """Database sessions"""
         objects = {}
         classes = [State, City, User, Amenity, Place, Review]
 
@@ -46,16 +50,20 @@ class DBStorage(FileStorage):
         return objects
 
     def new(self, obj):
+        """ Adds object """
         return self.__session.add(obj)
 
     def save(self):
+        """ Saves to database """
         return self.__session.commit()
 
     def delete(self, obj=None):
+        """ Deletes object """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
+        """ Creates session """
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine,
                                               expire_on_commit=False))

@@ -8,8 +8,9 @@ from os import getenv
 
 HBNB_TYPE_STORAGE = getenv('HBNB_TYPE_STORAGE')
 
+
 class City(BaseModel, Base):
-    """ The city class, contains state ID and name """
+    """The city class, contains state ID and name"""
     __tablename__ = 'cities'
 
     if HBNB_TYPE_STORAGE == "db":
