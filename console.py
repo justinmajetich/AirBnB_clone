@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# MICHAEL edited 10/30/ 10:37 PM
+# KASPER edited 10/31 12:02pm
 """ Console Module """
 import cmd
 import sys
@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import os
 import shlex
 
 
@@ -28,6 +29,7 @@ class HBNBCommand(cmd.Cmd):
         'Amenity': Amenity,
         'Review': Review
         }
+    environment = os.getenv('HBNB_TYPE_STORAGE')
 
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
 
@@ -100,6 +102,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            storage.close()
         exit()
 
     def help_quit(self):
@@ -108,6 +112,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            storage.close()
         print()
         exit()
 
@@ -158,29 +164,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, args):
         """ Method to show an individual object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
+        if len(args) == 0:
             print("** class name missing **")
             return
-
-        if c_name not in HBNBCommand.classes:
+        line = args.split()
+        if line[0] not in self.classes:
             print("** class doesn't exist **")
             return
-
-        if not c_id:
+        elif len(line) < 2:
             print("** instance id missing **")
             return
-
-        key = c_name + "." + c_id
+        key = f"{line[0]}.{line[1]}"
+        all_of_them = storage.all()
         try:
-            print(storage._FileStorage__objects[key])
+            print(all_of_them[key])
         except KeyError:
             print("** no instance found **")
 
@@ -212,7 +209,11 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            dictionary = storage.all()
+            for x in dictionary:
+                if x == key:
+                    new_key = x
+            storage.delete(dictionary[new_key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -239,9 +240,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             for key in dictionary:
                 var = key.split(".")
-                if var[0] == args[0]:
+                print(line[0])
+                if var[0] == line[0]:
                     instance_list.append(str(dictionary[key]))
-            print(instance_list)
+                print(instance_list)
 
     def help_all(self):
         """ Help information for the all command """
