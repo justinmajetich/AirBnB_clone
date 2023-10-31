@@ -34,7 +34,7 @@ class FileStorage:
         """Adds new object to storage dictionary"""
         obj_id = obj.id if obj.id is not None else self.generate_new_id()
         self.all().update({obj.to_dict()
-                            ['__class__'] + '.' + str(obj_id): obj})
+                           ['__class__'] + '.' + str(obj_id): obj})
 
     def save(self):
         """Saves storage dictionary to file"""
