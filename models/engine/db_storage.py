@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-# KASPER edited @ 10/30 1:03am
+# KASPER edited @ 10/31 12:03pm
 """ database storage engine using SQLAlchemy """
 from sqlalchemy import (create_engine, select)
 from sqlalchemy import MetaData
 from sqlalchemy.orm import (sessionmaker, scoped_session)
+
 import os
 
 
@@ -27,10 +28,23 @@ class DBStorage:
 
     def all(self, cls=None):
         """ TBC """
-        exists = select(cls)
-        user_obj = self.__session.scalars(exists).all()
-        print(user_obj)
-        return user_obj
+        from models.city import City
+        from models.state import State
+        dictionary = {}
+        classes = {"State": State, "City": City}
+        if cls is None:
+            for clas in classes:
+                user_obj = self.__session.query(classes[clas]).all()
+                for value in user_obj:
+                    key = value.__class__.__name__ + '.' + value.id
+                    dictionary[key] = value
+        else:
+            user_obj = self.__session.query(cls).all()
+            print(user_obj)
+            for value in user_obj:
+                key = value.__class__.__name__ + '.' + value.id
+                dictionary[key] = value
+        return dictionary
 
     def save(self):
         """ TBC """
@@ -44,13 +58,18 @@ class DBStorage:
     def delete(self, obj=None):
         """ TBC """
         self.__session.delete(obj)
+        self.save()
+
+    def close(self):
+        self.__session.close()
 
     def reload(self):
         """ TBC """
-        from models.base_model import BaseModel, Base
-        from models.state import State
+        from models.base_model import Base
         from models.city import City
+        from models.state import State
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
