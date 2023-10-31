@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# KASPER edited 10/31 12:56 pm
+# KASPER edited 10/31 3:44 pm
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
@@ -11,6 +11,16 @@ from sqlalchemy import (
     ForeignKey,
     Table
 )
+
+
+place_amenity = Table("place_amenity",
+                      Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
