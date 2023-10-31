@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 value = int(value)
             setattr(new_instance, key, value)
-            
+
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
@@ -244,7 +244,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """ Help for count """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
