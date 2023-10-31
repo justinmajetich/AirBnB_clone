@@ -1,13 +1,22 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from models.base_model import BaseModel
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
+from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
 import os
 
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False)
+                      )
 
-class Place(BaseModel):
+
+class Place(BaseModel, Base):
     """The class Place and its attributes"""
     __tablename__ = 'places'
 
@@ -22,14 +31,14 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    """For DBStorage: Define a relationship with the class Review, and specify the behavior
-    when a Place object is deleted (cascading deletion)."""
-    reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
-    
-    """For FileStorage: Implement a getter attribute for reviews."""
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete-orphan")
+
+    amenity_ids = []
+
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property
-        def reviews(self):
+        def reviews_from_file(self):
             """Getter attribute for reviews in FileStorage."""
             from models import storage
             review_list = []
@@ -37,3 +46,19 @@ class Place(BaseModel):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenities_from_file(self):
+            """Getter attribute for amenities in FileStorage."""
+            from models import storage
+            amenity_list = []
+            for amenity in storage.all(Amenity).values():
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities_from_file.setter
+        def amenities_from_file(self, obj):
+            """Setter attribute for amenities in FileStorage."""
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)
