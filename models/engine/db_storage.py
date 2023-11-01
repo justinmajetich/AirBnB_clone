@@ -4,6 +4,7 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
+from engine.models.file_storage import FileStorage
 from models.user import User
 from models.state import State
 from models.city import City
@@ -22,11 +23,11 @@ classes = {
 }
 
 
-class DBStorage:
+class DBStorage(FileStorage):
     """MySQL database interaction"""
     __engine = None
     __session = None
-
+    __FileStorage__objects = {}
 
     def __init__(self):
         """Initialize instance of DBStorage"""
