@@ -33,7 +33,7 @@ class DBStorage(FileStorage):
 
     def all(self, cls=None):
         """ Query on the current database session """
-        if cls:
+        '''if cls:
             if type(cls) == str:
                 cls = eval(cls)
             objects = self.__session.query(cls)
@@ -47,7 +47,19 @@ class DBStorage(FileStorage):
         obj_dict = {}
         for obj in objects:
             obj_dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
-        return obj_dict
+        return obj_dict'''
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(object).__name__, object.id): object for object in objs}
 
     def new(self, obj):
         """Adds the object to the current database session"""
