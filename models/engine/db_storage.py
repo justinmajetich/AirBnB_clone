@@ -37,7 +37,7 @@ class DBStorage:
         database = getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}'f'\
-                                      @{host}/{database}', pool_pre_ping=True)
+                                    @{host}/{database}', pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
@@ -67,6 +67,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        """ Reloads all data from db """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                     expire_on_commit=False))
+                                                expire_on_commit=False))
