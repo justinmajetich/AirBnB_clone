@@ -44,6 +44,7 @@ class HBNBCommand(cmd.Cmd):
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
         # scan for general formating - i.e '.', '(', ')'
+        # TODO add check for '=' and '""'
         if not ('.' in line and '(' in line and ')' in line):
             return line
 
@@ -114,14 +115,39 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class
+        TODO: Give functionality for multiple params
+        """
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        args = args.split(' ')
+
+        cls_name = args[0]
+
+        if cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        _dict = {}
+        
+        if len(args) > 1:
+            print(args)
+
+            for param in args:
+                parts = param.split('=')
+                print(parts)
+                
+                if len(parts) == 2:
+                    key, value = parts
+
+                    value = value.strip('"')
+
+                    _dict[key] = value
+            new_instance = HBNBCommand.classes[cls_name](_dict)
+        else:
+            new_instance = HBNBCommand.classes[cls_name]()
         storage.save()
         print(new_instance.id)
         storage.save()

@@ -1,0 +1,6 @@
+#!/bin/bash
+printf "Commit Message:\t"
+read C
+git add .
+git commit -m "$C"
+git push

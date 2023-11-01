@@ -19,8 +19,11 @@ class BaseModel:
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
+            self.name = kwargs.get('name', None)
             del kwargs['__class__']
             self.__dict__.update(kwargs)
+            if "name" in kwargs:
+                self.name = setattr(self, 'name', kwargs["name"])
 
     def __str__(self):
         """Returns a string representation of the instance"""
