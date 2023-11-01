@@ -126,40 +126,39 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Create an object of any class"""
         import re
-
         args = line.split()
         if not args:
             print("** class name missing **")
             return
 
-            class_name = args[0]
-            if class_name not in self.classes.keys():
-                print('** class doesn\'t exist **')
-                return
+        class_name = args[0]
+        if class_name not in self.classes.keys():
+            print('** class doesn\'t exist **')
+            return
 
-                kwargs = {}
-                for arg in args[1:]:
-                    separate = arg.partition('=')
-                    # print(f"These are args: {args}")
-                    # print(f"This is the sep: {separate}")
-                    attr_name = separate[0]
-                    attr_value = separate[2]
-                    if re.match(r'^\"(.*?)\"$', attr_value):
-                        attr_value = attr_value[1:-1].replace(
-                            '\\"',
-                            '"'
-                        ).replace('_', ' ')
-                    elif re.match(r'^(\d+\.\d+)$', attr_value):
-                        attr_value = float(attr_value)
-                    elif re.match(r'^(\d+)$', attr_value):
-                        attr_value = int(attr_value)
-                    kwargs[attr_name] = attr_value
-                try:
-                    obj = self.classes[class_name](**kwargs)
-                    obj.save()
-                    print(f"({class_name}) {obj.id}")
-                except Exception as e:
-                    print(f"Error creating object: {e}")
+            kwargs = {}
+            for arg in args[1:]:
+                separate = arg.partition('=')
+                # print(f"These are args: {args}")
+                # print(f"This is the sep: {separate}")
+                attr_name = separate[0]
+                attr_value = separate[2]
+                if re.match(r'^\"(.*?)\"$', attr_value):
+                    attr_value = attr_value[1:-1].replace(
+                        '\\"',
+                        '"'
+                    ).replace('_', ' ')
+                elif re.match(r'^(\d+\.\d+)$', attr_value):
+                    attr_value = float(attr_value)
+                elif re.match(r'^(\d+)$', attr_value):
+                    attr_value = int(attr_value)
+                kwargs[attr_name] = attr_value
+            try:
+                obj = self.classes[class_name](**kwargs)
+                obj.save()
+                print(f"({class_name}) {obj.id}")
+            except Exception as e:
+                print(f"Error creating object: {str(e)}")
 
     def help_create(self):
         """ Help information for the create method """

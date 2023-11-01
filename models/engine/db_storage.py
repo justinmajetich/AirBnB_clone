@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """ module for DBStorage class """
-import os
-import sys
 from os import getenv
 from models.city import City
 from models.user import User
@@ -42,15 +40,14 @@ class DBStorage:
 
     def __init__(self):
         """instantiation of DBStorage engine"""
-        self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@{}/{}".format(
-                getenv("HBNB_MYSQL_USER"),
-                getenv("HBNB_MYSQL_PWD"),
-                getenv("HBNB_MYSQL_HOST"),
-                getenv("HBNB_MYSQL_DB")
-            ),
-            pool_pre_ping=True
-        )
+        user = getenv("HBNB_MYSQL_USER")
+        password = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST")
+        database = getenv("HBNB_MYSQL_DB")
+
+        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}'
+                                    f'@{host}/{database}', pool_pre_ping=True)
+
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
         self.__session = scoped_session(sessionmaker(
