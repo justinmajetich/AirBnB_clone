@@ -15,7 +15,6 @@ import sys
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
-
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -119,35 +118,23 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
+            obj_list = line.split(" ")
+            key = {}
 
-            class_name, *params = line.split()
-            class_name = class_name.strip()
-
-            if class_name not in HBNBCommand.classes:
-                raise NameError()
-
-            obj_dict = {}
-            for param in params:
-                param = param.strip()
-                if '=' in param:
-                    key, value = param.split('=')
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value.strip("").replace('_', ' ')
-                    else:
-                        try:
-                            value = eval(value)
-                        except (SyntaxError, NameError):
-                            continue
-                    obj_dict[key] = value
-
-            new_instance = HBNBCommand.classes[class_name](**obj_dict)
-            new_instance.save()
-            print(new_instance.id)
+            for arg in obj_list[1:]:
+                value = arg.split("=")
+                value[1] = eval(value[1])
+                if type(value[1]) is str:
+                    value[1] = value[1].replace("_", " ").replace('"', '\\"')
+                key[value[0]] = value[1]
 
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
+        objects = HBNBCOMMAND.classes[obj_list[0]](**key)
+        objects.save()
+        print(objects.id)
 
     def help_create(self):
         """ Help information for the create method """
