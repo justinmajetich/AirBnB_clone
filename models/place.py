@@ -12,7 +12,8 @@ place_amenity = Table('place_amenity', Base.metadata,
                              primary_key=True, nullable=False),
                       Column('amenity_id', String(60),
                              ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False)
+                             primary_key=True, nullable=False),
+                      extend_existing=True
                       )
 
 
@@ -32,7 +33,9 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
 
     reviews = relationship("Review", backref="place",
-                           cascade="all, delete-orphan")
+                           cascade="delete")
+    
+    amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
 
     amenity_ids = []
 
@@ -42,7 +45,7 @@ class Place(BaseModel, Base):
             """Getter attribute for reviews in FileStorage."""
             from models import storage
             review_list = []
-            for review in storage.all(Review).values():
+            for review in list(storage.all(Review).values()):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
@@ -52,7 +55,7 @@ class Place(BaseModel, Base):
             """Getter attribute for amenities in FileStorage."""
             from models import storage
             amenity_list = []
-            for amenity in storage.all(Amenity).values():
+            for amenity in list(storage.all(Amenity).values()):
                 if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list
@@ -60,5 +63,5 @@ class Place(BaseModel, Base):
         @amenities_from_file.setter
         def amenities_from_file(self, obj):
             """Setter attribute for amenities in FileStorage."""
-            if isinstance(obj, Amenity):
+            if type(obj) in Amenity:
                 self.amenity_ids.append(obj.id)

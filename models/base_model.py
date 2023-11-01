@@ -27,15 +27,17 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
+        dictionary = self.__dict__.copy()
+        dictionary.pop('_sa_instance_state', None)
         cls = type(self).__name__
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
 
     def save(self):
         """Updates updated_at with the current time and saves the instance"""
         from models import storage
         self.updated_at = datetime.utcnow()
-        storage.save()
         storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
