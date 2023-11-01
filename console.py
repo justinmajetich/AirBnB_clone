@@ -81,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
@@ -147,15 +147,12 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_create(self, args):
+        """Allows for object creation with given parameters"""
         if not args:
             print("** class name missing **")
             return
 
         parts = args.split(" ")
-
-        if len(parts) < 2:
-            print("** param missing **")
-            return
 
         class_name = parts[0]
         params = parts[1:]
@@ -168,19 +165,15 @@ class HBNBCommand(cmd.Cmd):
 
         for param in params:
             key, value = param.split("=")
+            if value[0] == '"':
+                value = value[1:-1].replace('_', ' ')
 
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
-            else:
-                try:
-                    value = float(value) if '.' in value else int(value)
-                except ValueError:
-                    pass
+        setattr(new_instance, key, value)
 
-            setattr(new_instance, key, value)
-
-        new_instance.save()
+        storage.new(new_instance)
+        storage.save()
         print(new_instance.id)
+        storage.save()
 
     def help_show(self):
         """ Help information for the show command """
@@ -210,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
