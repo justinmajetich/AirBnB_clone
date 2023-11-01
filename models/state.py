@@ -15,11 +15,10 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state",cascade="all, delete-orphan")
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
             list_cities = []
-            from models import storage
             for object in models.storage.all(City).values():
                 if object.state_id == self.id:
                     list_cities.append(object)
