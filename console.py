@@ -11,7 +11,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import models
-import shlex
 
 
 class HBNBCommand(cmd.Cmd):
