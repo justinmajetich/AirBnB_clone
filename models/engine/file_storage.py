@@ -37,22 +37,10 @@ class FileStorage:
                                         + obj.id: obj})
             return filter_dict
 
-    def generate_new_id(self):
-        """Generate a new ID for objects with string IDs"""
-        if not self.__objects:
-            # If there are no existing objects, start with ID '1'
-            new_id = '1'
-        else:
-            # Find the maximum string ID and increment it to generate a new ID
-            existing_ids = [key.split('.')[1] for key in self.__objects.keys()]
-            new_id = str(int(max(existing_ids)) + 1)
-        return new_id
-
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        obj_id = obj.id if obj.id is not None else self.generate_new_id()
         self.all().update({obj.to_dict()
-                           ['__class__'] + '.' + str(obj_id): obj})
+                           ['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -78,7 +66,6 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes object from __objects if it exists"""
         if obj is not None:
-            key = f"{type(obj).__class__.__name__}.{obj.id}"
+            key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
-                self.save()
