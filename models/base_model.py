@@ -22,11 +22,11 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """ Instantiation of BaseModel object """
         self.id = kwargs.get('id', str(uuid4()))
-        self.created = kwargs.get('created', datetime.now())
-        self.updated = kwargs.get('updated', self.created)
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
-                if key in ["created", "updated"]:
+                if key in ["created_at", "updated_at"]:
                     self.__dict__[key] = datetime.strptime(
                         value,
                         "%Y-%m-%dT%H:%M:%S.%f"
@@ -59,10 +59,10 @@ class BaseModel:
         d.update({
             '__class__': (str(type(self)).split('.')[-1]).split('\'')[0]
         })
-        d['created'] = self.created.isoformat()
-        d['updated'] = self.updated.isoformat()
-        if '_sa_instance_state' in d.keys():
-            d.pop('_sa_instance_state')
+        d['created_at'] = self.created_at.isoformat()
+        d['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in d:
+            d.pop('_sa_instance_state', None)
         return d
 
     def delete(self):
