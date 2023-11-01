@@ -127,12 +127,11 @@ class HBNBCommand(cmd.Cmd):
                 if type(value[1]) is str:
                     value[1] = value[1].replace("_", " ").replace('"', '\\"')
                 key[value[0]] = value[1]
-
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        objects = HBNBCOMMAND.classes[obj_list[0]](**key)
+        objects = HBNBCommand.classes[obj_list[0]](**key)
         objects.save()
         print(objects.id)
 
