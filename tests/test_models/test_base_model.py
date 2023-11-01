@@ -77,8 +77,13 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ This is a test """
         n = {'Name': 'test'}
+<<<<<<< HEAD
+        x = BaseModel(name='test')
+        self.assertEqual(x.name, 'test')
+=======
         with self.assertRaises(TypeError):
             new = self.value(**n)
+>>>>>>> 7eca165639154245e86e1ea8f353c35ec3af61f4
 
     def test_id(self):
         """ """
