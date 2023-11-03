@@ -123,29 +123,21 @@ class HBNBCommand(cmd.Cmd):
         elif args_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args_list[0]]()
+        new_ins = HBNBCommand.classes[args_list[0]]()
 
         # Parse args
-        for i in range(1, len(args_list)):
-            kvp = args_list[i].partition("=")
-            key = kvp[0]
-            value = kvp[2]
-            if value[0] == value[-1] and value[0] == '"':
-                value = value[1:-1]
-                value = value.replace("_", " ")
+        split_param = args_list[1:]
+        for value in split_param:
+            split = value.split("=")
+            if (split[1][0] == '"'):
+                new_ins.__dict__[
+                    split[0]] = split[1][1:-1].replace("_", " ")
             else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        continue
-            setattr(new_instance, key, value)
-
-        storage.new(new_instance)
+                new_ins.__dict__[split[0]] = split[1].replace("_", " ")
+        storage.new(new_ins)
         storage.save()
-        print(new_instance.id)
+        print(new_ins.id)
+        storage.save()
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -221,19 +213,18 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-        args_list = args.split()
-        if len(args) == 0:  # Get the first element of the list
-            dictt = models.storage.all()
-        elif args_list[0] not in self.classes.keys():
-            print("** class doesn't exist **")
-            return
+        if args:
+            args = args.split(' ')[0]
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            dict = storage.all(HBNBCommand.classes[args])
+            for key, value in dict.items():
+                print_list.append(str(value))
         else:
-            dictt = models.storage.all(args_list[0])
-        for key in dictt:
-            print_list.append(str(dictt[key]))
-        print("[", end="")
-        print(", ".join(print_list), end="")
-        print("]")
+            for key, value in storage.all().items():
+                print_list.append(str(value))
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
