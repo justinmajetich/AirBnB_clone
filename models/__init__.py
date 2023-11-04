@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """This module sets up the storage mechanism for the application."""
-import os
+from os import getenv
+
 
 # Check the value of the HBNB_TYPE_STORAGE environment variable
-storage_type = os.environ.get("HBNB_TYPE_STORAGE")
 
-if storage_type == "db":
+if getenv("HBNB_TYPE_STORAGE") == "db":
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:

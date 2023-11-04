@@ -9,9 +9,11 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
+from models.engine.file_storage import FileStorage
 
 
-class DBStorage:
+class DBStorage(FileStorage):
+    """ Defines the class DBStorage """
     __engine = None
     __session = None
     _FileStorage__objects = {}
@@ -30,23 +32,22 @@ class DBStorage:
     def all(self, cls=None):
         """Query objects from the current session."""
         from models import classes  # Import all classes here
-
-        objects = {}
-
-        if cls is not None:
+        if cls:
             if type(cls) is str:
-                cls = classes[cls]
+                cls = eval(cls)
             objects_list = self.__session.query(cls)
         else:
-            objects_list = []
-            for class_name, class_type in classes.items():
-                objects_list += self.__session.query(class_type).all()
-
+            objects_list = self.__session.query(State).all()
+            objects_list.extend(self.__session.query(City).all())
+            objects_list.extend(self.__session.query(User).all())
+            objects_list.extend(self.__session.query(Place).all())
+            objects_list.extend(self.__session.query(Review).all())
+            objects_list.extend(self.__session.query(Amenity).all())
+        obj_dict = {}    
         for obj in objects_list:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            objects[key] = obj
-
-        return objects
+            obj_dict[key] = obj
+        return obj_dict
 
     def new(self, obj):
         """Add an object to the current session."""
