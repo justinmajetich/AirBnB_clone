@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+""" This is the documentation on Console module """
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +115,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        off_equal_sign = args.replace("=", " ")
+        """ Replace '=' with space"""
+        arg_list = off_equal_sign.split()
+        if not arg_list[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[arg_list[0]]()
+        key_str = []
+        value_str = []
+        dict_attr = {}
+        """" Replace '_' with space, delete all backslashs:"""
+        for i in range(1, len(arg_list)):
+            if i % 2 > 0:
+                key_str.append(arg_list[i])
+            elif type(arg_list[i]) is str:
+                tmp_list = arg_list[i].replace("_", " ")
+                new_list = tmp_list.replace("\"", "")
+                value_str.append(new_list)
+        """ Set new_instance with new key and value pairs"""
+        for j in range(len(key_str)):
+            dict_attr[key_str[j]] = value_str[j]
+            setattr(new_instance, key_str[j], value_str[j])
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -199,7 +216,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        '''print_list = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -213,7 +230,14 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print(print_list)'''
+        cls = None
+        if args:
+            cls = args.split(' ')[0]  # remove possible trailing args
+            if cls not in HBNBCommand.classes:
+                return print("** class doesn't exist **")
+        objs = storage.all(cls)
+        print([str(v) for v in objs.values()])
 
     def help_all(self):
         """ Help information for the all command """
@@ -272,7 +296,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +304,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
