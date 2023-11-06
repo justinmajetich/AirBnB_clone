@@ -1,0 +1,15 @@
+*~
+__pycache__/
+*.json
+TEST.py
+pusher
+output.py
+.gitignore
+test_params_create
+main_delete.py
+console.py_lee
+console.py_matt
+models_bad
+models_matt
+models_lee
+__pycache__
