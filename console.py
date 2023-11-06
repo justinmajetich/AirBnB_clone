@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,8 +9,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-
+import sys
+import models
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -73,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,19 +111,41 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    
+    def do_create(self, line):
+        """Creates a new instance of BaseModel and saves it to the JSON file."""
+        try:
+            if not line:
+                raise SyntaxError()
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+            class_name, *params = line.split()
+            class_name = class_name.strip()
+
+            if class_name not in HBNBCommand.classes:
+                raise NameError()
+
+            obj_dict = {}
+            for param in params:
+                param = param.strip()
+                if '=' in param:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value.strip("").replace('_', ' ')
+                    else:
+                        try:
+                            value = eval(value)
+                        except (SyntaxError, NameError):
+                            continue
+                    obj_dict[key] = value
+
+            new_instance = HBNBCommand.classes[class_name](**obj_dict)
+            new_instance.save()
+            print(new_instance.id)
+
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +293,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +301,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
