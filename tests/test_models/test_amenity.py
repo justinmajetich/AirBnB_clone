@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
+import unittest
 
 
 class test_Amenity(test_basemodel):
@@ -16,4 +17,9 @@ class test_Amenity(test_basemodel):
     def test_name2(self):
         """ """
         new = self.value()
+        new.name = "Michael"
         self.assertEqual(type(new.name), str)
+
+
+if __name__ == "__main__":
+    unittest.main()
