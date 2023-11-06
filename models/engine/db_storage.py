@@ -27,32 +27,37 @@ class DBStorage(FileStorage):
     """MySQL database interaction"""
     __engine = None
     __session = None
-    __FileStorage__objects = {}
+    _FileStorage__objects = {}
 
     def __init__(self):
-        """Initialize instance of DBStorage"""
-
-        user = getenv('HBNB_MYSQL_USER')
-        password = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST')
-        database = getenv('HBNB_MYSQL_DB')
-
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}'f'\
-                                    @{host}/{database}', pool_pre_ping=True)
+        """ Initialize instance of DBStorage """
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                    format(getenv("HBNB_MYSQL_USER"),
+                                            getenv("HBNB_MYSQL_PWD"),
+                                            getenv("HBNB_MYSQL_HOST"),
+                                            getenv("HBNB_MYSQL_DB")),
+                                    pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query on current DB"""
-        dictt = {}
-        for typeClass in classes.keys():
-            if cls == typeClass or cls == classes[typeClass] or cls is None:
-                objs = self.__session.query(classes[typeClass]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + "." + obj.id
-                    dictt[key] = obj
-        return dictt
+        """ Re-Wrote function completely """
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            objects = self.__session.query(cls)
+        else:
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            objects.extend(self.__session.query(User).all())
+            objects.extend(self.__session.query(Place).all())
+            objects.extend(self.__session.query(Review).all())
+            objects.extend(self.__session.query(Amenity).all())
+        my_dict = {}
+        for obj in objects:
+            my_dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
+        return my_dict
 
     def new(self, obj):
         """adding obj to db sesh"""
@@ -68,7 +73,8 @@ class DBStorage(FileStorage):
             self.__session.delete(obj)
 
     def reload(self):
-        """ Reloads all data from db """
+        """ Restructures the session """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                expire_on_commit=False))
+        my_session = sessionmaker(bind=self.__engine, expire_on_comit=False)
+        Session = scoped_session(my_session)
+        self.__session = Session()
