@@ -18,6 +18,7 @@ class State(BaseModel, Base):
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
+            """ Lists related city objects """
             list_cities = []
             for object in list(models.storage.all(City).values()):
                 if object.state_id == self.id:
