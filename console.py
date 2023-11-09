@@ -113,6 +113,29 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def do_create(self, args):
+        """Allows for object creation with given parameters"""
+        parts = args.split(" ")
+        if not args:
+            print("** class name missing **")
+            return
+        elif parts[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[parts[0]]()
+        params = parts[1:]
+        for value in params:
+            split = value.split("=")
+            if (split[1][0] == '"'):
+                new_instance.__dict__[
+                    split[0]] = value[1][1:-1].replace('_', ' ')
+            else:
+                new_instance.__dict__[split[0]] = split[1].replace('_', " ")
+        storage.new(new_instance)
+        storage.save()
+        print(new_instance.id)
+        storage.save()
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -145,35 +168,6 @@ class HBNBCommand(cmd.Cmd):
             print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
-
-    def do_create(self, args):
-        """Allows for object creation with given parameters"""
-        if not args:
-            print("** class name missing **")
-            return
-
-        parts = args.split(" ")
-
-        class_name = parts[0]
-        params = parts[1:]
-
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        new_instance = HBNBCommand.classes[class_name]()
-
-        for param in params:
-            key, value = param.split("=")
-            if value[0] == '"':
-                value = value[1:-1].replace('_', ' ')
-
-        setattr(new_instance, key, value)
-
-        storage.new(new_instance)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
     def help_show(self):
         """ Help information for the show command """
@@ -222,12 +216,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            my_dict = storage.all(HBNBCommand.classes[args])
+            for key, value in my_dict.items():
+                print_list.append(str(value))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for key, value in storage.all().items():
+                print_list.append(str(value))
 
         print(print_list)
 
