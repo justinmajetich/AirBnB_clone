@@ -1,6 +1,5 @@
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
