@@ -16,5 +16,11 @@ def hbnb():
     return "HBNB"
 
 
+@app.route('/c/<text>', strict_slashes=False)
+def c_with_text(text):
+    formatted_text = text.replace('_', ' ')
+    return "c {}".format(formatted_text)
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
