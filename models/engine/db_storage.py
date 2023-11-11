@@ -78,3 +78,7 @@ class DBStorage(FileStorage):
         my_session = sessionmaker(bind=self.__engine, expire_on_comit=False)
         Session = scoped_session(my_session)
         self.__session = Session()
+
+    def close(self):
+        """ Calls removes() on private session attr (self.__session) """
+        self.__session.remove()

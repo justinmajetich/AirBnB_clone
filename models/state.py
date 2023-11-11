@@ -20,7 +20,7 @@ class State(BaseModel, Base):
         def cities(self):
             """ Lists related city objects """
             list_cities = []
-            for object in list(models.storage.all(City).values()):
+            for object in models.storage.all(City).values():
                 if object.state_id == self.id:
                     list_cities.append(object)
             return list_cities
