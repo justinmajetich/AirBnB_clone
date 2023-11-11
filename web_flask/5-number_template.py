@@ -3,7 +3,7 @@
 
 
 from flask import Flask
-from flask import render_template
+from flask import render_template, abort
 
 app = Flask(__name__)
 
@@ -44,8 +44,9 @@ def number(n):
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
     """ Displays HTML if n is an integer """
-    n = str(n)
-    return render_template('5-number.html', number=n)
+    if isinstance(n, int) and n > 0:
+        return render_template('5-number.html', number=n)
+    abort(404)
 
 
 """ Setting the localhost and port """
