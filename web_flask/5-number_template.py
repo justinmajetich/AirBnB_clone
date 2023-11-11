@@ -2,8 +2,7 @@
 """ Set up for Flask app """
 
 
-from flask import Flask
-from flask import render_template, abort
+from flask import Flask, render_template, abort
 
 app = Flask(__name__)
 
