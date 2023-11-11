@@ -45,7 +45,7 @@ def number(n):
 def number_template(n):
     """ Returns if n is an integer """
     n = str(n)
-    return render_template('5-number.html', n=n)
+    return render_template('5-number.html', number=n)
 
 
 """ Setting the localhost and port """
