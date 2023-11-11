@@ -43,7 +43,7 @@ def number(n):
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
-    """ Returns if n is an integer """
+    """ Displays HTML if n is an integer """
     n = str(n)
     return render_template('5-number.html', number=n)
 
