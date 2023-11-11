@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Starts a Flask web app"""
 
-from flask import Flask, request, render_template
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -33,7 +33,7 @@ def python_with_text(text):
 def number_odd_or_even(n):
     if isinstance(n, int):
         even_or_odd = "even" if n % 2 == 0 else "odd"
-        return render_template('6-number_odd_or_even.html', 
+        return render_template('6-number_odd_or_even.html',
                                n=n, even_or_odd=even_or_odd)
     else:
         return "Invalid input. Please provide an integer."
