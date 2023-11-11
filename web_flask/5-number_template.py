@@ -44,7 +44,7 @@ def number(n):
 def number_template(n):
     """ Displays HTML if n is an integer """
     if isinstance(n, int):
-        return render_template('5-number.html', number=n)
+        return render_template('5-number.html', n=n)
     abort(404)
 
 
