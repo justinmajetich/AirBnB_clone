@@ -9,6 +9,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class FileStorage:
@@ -62,3 +63,7 @@ class FileStorage:
     def close(self):
         """ Calls reload() for deserialization  of JSON file to obj"""
         self.reload()
+
+    def create_session(self):
+        """ Creating a new session """
+        self.__objects = {}

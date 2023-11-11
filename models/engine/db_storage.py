@@ -83,3 +83,9 @@ class DBStorage(FileStorage):
     def close(self):
         """ Calls removes() on private session attr (self.__session) """
         self.__session.close()
+
+    def create_session(self):
+        """ Creating a new session """
+        my_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(my_session)
+        self.__session = Session()
