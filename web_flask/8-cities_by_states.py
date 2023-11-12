@@ -24,7 +24,7 @@ def teardown(error=None):
     """ Closes current SQLAlchemy Sesh """
     current_storage = getattr(g, "storage", None)
     if current_storage is not None:
-        current_storage.close()
+        g.storage.close()
 
 
 if __name__ == "__main__":
