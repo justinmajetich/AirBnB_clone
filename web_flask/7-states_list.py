@@ -2,7 +2,7 @@
 """ Starts a Flask web app """
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from models import storage
 from models.state import State
 
@@ -17,10 +17,12 @@ def states_list():
 
 
 @app.teardown_appcontext
-def teardown(exception):
+def teardown(error=None):
     """ Closes current SQLAlchemy Sesh """
-    storage.close()
+    current_storage = getattr(g, "storage", None)
+    if current_storage is not None:
+        current_storage.close()
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)
