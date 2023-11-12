@@ -2,7 +2,6 @@
 """This module defines a base class for all models in our hbnb clone"""
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-import models
 import uuid
 from datetime import datetime
 
@@ -24,8 +23,10 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key == "updated_at" or key == "created_at":
-                    value = datetime.strptime(kwargs["updated_at"],
-                                            '%Y-%m-%dT%H:%M:%S.%f')
+                    value = datetime.strptime(
+                        kwargs["updated_at"],
+                        '%Y-%m-%dT%H:%M:%S.%f'
+                    )
                 if key != '__class__':
                     setattr(self, key, value)
 
