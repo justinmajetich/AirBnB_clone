@@ -76,7 +76,7 @@ class DBStorage(FileStorage):
     def reload(self):
         """ Restructures the session """
         Base.metadata.create_all(self.__engine)
-        my_session = sessionmaker(bind=self.__engine, expire_on_comit=False)
+        my_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(my_session)
         self.__session = Session()
 
