@@ -12,15 +12,10 @@ class State(BaseModel, Base):
     """State class repr states"""
     __tablename__ = 'states'
 
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", back_populates="state", cascade="delete")
+
     if getenv("HBNB_TYPE_STORAGE") != "db":
-        name = Column(String(128), nullable=False)
-        cities = relationship(
-            "City", back_populates="state", cascade="delete-orphan"
-        )
-
-    else:
-        name = ""
-
         @property
         def cities(self):
             """ Lists related city objects """
