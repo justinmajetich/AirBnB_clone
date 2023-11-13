@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>States and Cities</title>
     </head>
     <body>
         <h1>States</h1>
         <ul>
-            {% for state in states %}
+            {% for state in states | sort(attribute='name') %}
                 <li>{{ state.id }}: <b>{{ state.name }}</b>
                     <ul>
-                        {% for city in cities %}
+                        {% for city in cities | sort(attribute='name') %}
                             <li>{{ city.id }}: <strong>{{ city.name }}</strong></li>
                         {% endfor %}
                     </ul>
