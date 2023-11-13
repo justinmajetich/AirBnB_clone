@@ -7,7 +7,7 @@ from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-
+from models import storage
 
 class State(BaseModel, Base):
     """Representation of state """
@@ -22,8 +22,7 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         city_list = []
-        if models.storage_t != 'db':
-            for city_object in models.storage.all(City).values():
-                if city_object.state.id == self.id:
-                    city_list.append(city_object)
+        for city_object in models.storage.all(City).values():
+            if city_object.state.id == self.id:
+                city_list.append(city_object)
         return city_list
