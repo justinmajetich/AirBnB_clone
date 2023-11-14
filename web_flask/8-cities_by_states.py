@@ -15,10 +15,9 @@ def states_states():
 
 
 @app.teardown_appcontext
-def teardown(exception):
+def teardown(close):
     """ Closes current SQLAlchemy Sesh """
-    if hasattr(g, 'storage'):
-        g.storage.close()
+    storage.close()
 
 
 if __name__ == "__main__":
