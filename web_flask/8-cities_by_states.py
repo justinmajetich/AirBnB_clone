@@ -13,7 +13,7 @@ def cities_by_states():
 
     return render_template(
         '8-cities_by_states.html',
-        db=storage.all(State)
+        states=storage.all(State)
     )
 
 
