@@ -9,11 +9,18 @@ app = Flask(__name__)
 
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
+    from models.city import City
     """ Displays list of states and cities from DB """
+    storage.reload()
+    all_cities = storage.all(City)
+    list_cities = []
+
+    for x in all_cities:
+        all_cities.append(all_cities[x])
 
     return render_template(
         '8-cities_by_states.html',
-        states=storage.all(State)
+        storage.all == list_cities
     )
 
 
