@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """ Starts a Flask web app """
-from flask import Flask, render_template, g
+from flask import Flask, render_template
 from models import storage
-from models.state import State
 from models.city import City
 
 app = Flask(__name__)
@@ -14,12 +13,12 @@ def cities_by_states():
     all_cities = storage.all(City)
     list_cities = []
 
-    for x in all_cities:
-        all_cities.append(all_cities[x])
+    for x in all_cities.values():
+        list_cities.append(x)
 
     return render_template(
         '8-cities_by_states.html',
-        state.cities == list_cities
+        states=list_cities
     )
 
 
