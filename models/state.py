@@ -12,7 +12,7 @@ class State(BaseModel, Base):
     if models.storage_t == "db":
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state", cascade="delete")
+        _cities = relationship("City", backref="state", cascade="delete")
     else:
         name = ""
 

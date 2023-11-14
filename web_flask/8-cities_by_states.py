@@ -19,7 +19,10 @@ def cities_by_states():
     for city in cities:
         cities_by_state[city.state_id].append(city)
 
-    return render_template('8-cities_by_states.html', states=states)
+    return render_template(
+        '8-cities_by_states.html',
+        states=states, cities=cities
+    )
 
 
 @app.teardown_appcontext
