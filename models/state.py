@@ -17,10 +17,10 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         """ Lists related city objects """
-        current_list = []
-        list_cities = storage.all()
+        new_list = []
+        current_list = storage.all()
         for item in current_list:
             object = current_list[item].to_dict()
             if object["__class__"] == "City" and object["state_id"] == self.id:
-                list_cities.append(current_list[item])
-        return list_cities
+                new_list.append(current_list[item])
+        return new_list

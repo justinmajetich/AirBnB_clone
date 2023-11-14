@@ -11,17 +11,18 @@ app = Flask(__name__)
 def states_list():
     """ Displays list of states from DB """
     storage.reload()
-    all_cities = []
-    x = storage.all(State)
+    all_states = storage.all(State)
 
-    for item in x:
-        all_cities.append(x[item])
+    states_list = []
 
-    return render_template('8-cities_by_states.html', states=all_cities)
+    for state in all_states:
+        states_list.append(all_states[state])
+
+    return render_template('8-cities_by_states.html', states=states_list)
 
 
 @app.teardown_appcontext
-def teardown():
+def teardown(exception):
     """ Closes current SQLAlchemy Sesh """
     storage.close()
 
