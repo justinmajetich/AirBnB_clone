@@ -49,7 +49,7 @@ class FileStorage:
                     'Review': Review
                   }
         try:
-            with open(self.__file_path, 'r') as f:
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
                 for obj in json.load(f).values():
                     cls_name = obj["__class__"]
                     del obj["__class__"]

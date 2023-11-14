@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1>
+        <UL>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479545: <B>Alabama</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479546: <B>Arizona</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479547: <B>California</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479548: <B>Colorado</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479549: <B>Florida</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479550: <B>Georgia</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479551: <B>Hawaii</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479552: <B>Illinois</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479553: <B>Indiana</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479554: <B>Louisiana</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479555: <B>Minnesota</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479556: <B>Mississippi</B></LI>
+
+            <LI>421a55f4-7d82-47d9-b54c-a76916479557: <B>Oregon</B></LI>
+
+        </UL>
+    </BODY>
+</HTML>
