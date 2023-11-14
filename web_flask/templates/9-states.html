@@ -7,14 +7,15 @@
         {% if states %}
         <H1>States</H1>
         <UL>
-            {% for state in states.values()| sort(attribute='name') %}
+            {% for state_id, state in states.items()| sort(attribute='name') %}
                 <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
             {% endfor %}
         </UL>
-        {% if false %}
-        <H1>Not Found!</H1>
         {% else %}
-        <H1>State: {{ state.cities }}</H1>
+        <H1>Not Found!</H1>
+        {% endif %}
+        {% if state %}
+        <H1>State: {{ state.name }}</H1>
         <H3>Cities:</H3>
         <UL>
             {% for city in state.cities | sort(attribute='name') %}

@@ -16,9 +16,12 @@ def states_list():
 
 @app.route('/states/<id>', strict_slashes=False)
 def state_id_list(id):
-    for state in storage.all(State).values():
-        if state.id == id:
-            return render_template('9-states.html', states=storage.all(State))
+    states = storage.all(State)
+    state = states.get(id)
+    if state:
+        return render_template('9-states.html', states={id: state})
+    else:
+        return render_template('9-states.html', states=None)
 
 
 @app.teardown_appcontext
