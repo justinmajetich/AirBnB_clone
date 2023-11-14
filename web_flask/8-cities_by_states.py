@@ -12,7 +12,13 @@ app = Flask(__name__)
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
     """ Displays list of states and cities from DB """
-    states = sorted.storage.all(State).values()
+    states = sorted(list(storage.all(State).values()), key=lambda x: x.name)
+    cities = sorted(list(storage.all(City).values()), key=lambda x: x.name)
+
+    cities_by_state = {state.id: [] for state in states}
+    for city in cities:
+        cities_by_state[city.state_id].append(city)
+
     return render_template('8-cities_by_states.html', states=states)
 
 
