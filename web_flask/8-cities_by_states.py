@@ -1,30 +1,30 @@
 #!/usr/bin/python3
 """ Starts a Flask web app """
+
+
 from flask import Flask, render_template
 from models import storage
-from models.city import City
+from models.state import State
 
 app = Flask(__name__)
 
 
 @app.route('/cities_by_states', strict_slashes=False)
-def cities_by_states():
-    """ Displays list of states and cities from DB """
-    all_cities = storage.all(City)
-    list_cities = []
+def states_list():
+    """ Displays list of states from DB """
+    storage.reload()
+    all_cities = []
+    x = storage.all(State)
 
-    for x in all_cities.values():
-        list_cities.append(x)
+    for item in x:
+        all_cities.append(x[item])
 
-    return render_template(
-        '8-cities_by_states.html',
-        states=list_cities
-    )
+    return render_template('8-cities_by_states.html', states=all_cities)
 
 
 @app.teardown_appcontext
-def teardown(error=None):
-    """ Closes current storage """
+def teardown():
+    """ Closes current SQLAlchemy Sesh """
     storage.close()
 
 
