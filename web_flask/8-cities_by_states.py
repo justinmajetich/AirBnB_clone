@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Starts a Flask web app """
 from flask import Flask, render_template
-from models.city import City
 from models.state import State
 from models import storage
 
@@ -12,7 +11,6 @@ app = Flask(__name__)
 def states_by_states():
     """ Displays list of states from DB """
     list_states = storage.all(State).values()
-
     return render_template('8-cities_by_states.html', states=list_states)
 
 

@@ -83,4 +83,4 @@ class DBStorage(FileStorage):
 
     def close(self):
         """ Calls removes() on private session attr (self.__session) """
-        self.__session.close()
+        self.__session.remove()

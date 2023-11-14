@@ -5,6 +5,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 from models import storage
+from models import City
 
 
 class State(BaseModel, Base):
@@ -21,7 +22,7 @@ class State(BaseModel, Base):
         def cities(self):
             """ Lists related city objects """
             new_list = []
-            current_list = storage.all("City").values()
+            current_list = storage.all(City).values()
             for item in current_list:
                 if item.state_id == self.id:
                     new_list.append(item)
