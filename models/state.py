@@ -10,24 +10,16 @@ from os import getenv
 
 class State(BaseModel, Base):
     """State class repr states"""
-    if models.storage_t == "db":
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        _cities = relationship("City", backref="state", cascade="delete")
-    else:
-        name = ""
-
-    def __init__(self, *args, **kwargs):
-        """ init'ing state """
-        super().__init__(*args, **kwargs)
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="state", cascade="delete")
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
             """ Lists related city objects """
             list_cities = []
-            all_cities = models.storage.all(City)
-            for city in all_cities.values():
+            for city in list(models.storage.all(City).values()):
                 if city.state_id == self.id:
                     list_cities.append(city)
             return list_cities
