@@ -3,6 +3,7 @@
 from flask import Flask, render_template
 from models.city import City
 from models.state import State
+from models import storage
 
 app = Flask(__name__)
 
@@ -10,7 +11,6 @@ app = Flask(__name__)
 @app.route('/cities_by_states', strict_slashes=False)
 def states_by_states():
     """ Displays list of states from DB """
-    from models import storage
     list_states = storage.all(State).values()
 
     return render_template('8-cities_by_states.html', states=list_states)
@@ -19,7 +19,6 @@ def states_by_states():
 @app.teardown_appcontext
 def teardown(close):
     """ Closes current SQLAlchemy Sesh """
-    from models import storage
     storage.close()
 
 
