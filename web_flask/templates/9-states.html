@@ -7,7 +7,7 @@
         {% if id is none %}
         <H1>States</H1>
         <UL>
-            {% for item in db.value() | sort(attribute='name') %}
+            {% for item in db.values() | sort(attribute='name') %}
                 <LI>{{ item.id }}: <B>{{ item.name }}</B>
             {% endfor %}
         </UL>
