@@ -14,7 +14,7 @@ def states_list_page(id=None):
 
 
 @app.teardown_appcontext
-def terdown_db(close):
+def teardown_db(close):
     storage.close()
 
 
