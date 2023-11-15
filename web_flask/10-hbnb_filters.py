@@ -4,7 +4,7 @@ from flask import Flask
 from flask import render_template
 from models.state import State
 from models import storage
-from models import Amenity
+from models.amenity import Amenity
 
 app = Flask(__name__)
 
