@@ -10,8 +10,8 @@
                 {% for state in states.values()| sort(attribute='name') %}
                     <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
                 {% endfor %}
-                {% endif %}
             </UL>
+        {% endif %}
         {% if state is none %}
             <H1>Not Found!</H1>
         {% endif %}
