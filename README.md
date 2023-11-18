@@ -8,11 +8,11 @@ AirBnB clone built using the python language and Flask framework as part of the 
 
 | Tasks | Files | Description |
 | ----- | ----- | ------ |
-| 1: Unit Testing | [/tests](https://github.com/allisonOge/AirBnB_clone_v2/tree/dev/tests) | All class-defining modules are unittested |
-| 2. BaseModel | [/models/base_model.py](https://github.com/allisonOge/AirBnB_clone_v2/blob/dev/models/base_model.py) | Defines a parent class to be inherited by all model classes|
-| 3. Models (User, State, City, Amenity, Place, and Reviews) | [/models/*.py](https://github.com/allisonOge/AirBnB_clone_v2/blob/dev/models/) | Data models for the AirBnB clone project. See [AirBnB_clone#sec.data-model](https://github.com/AllisonOge/AirBnB_clone/tree/main#data-model) for more details |
-| 4. FileStorage | [/models/engine/file_storage.py](https://github.com/allisonOge/AirBnB_clone_v2/blob/dev/models/engine/file_storage.py) | Defines a class to manage persistent file storage system. It is instantiated in the `/models/__init__.py` file |
-| 5. Console | [console.py](https://github.com/allisonOge/AirBnB_clone_v2/blob/dev/console.py) | Handles console commands for CRUD operations |
+| 1: Unit Testing | [/tests](https://github.com/AllisonOge/AirBnB_clone_v2/tree/master/tests) | All class-defining modules are unittested |
+| 2. BaseModel | [/models/base_model.py](https://github.com/AllisonOge/AirBnB_clone_v2/blob/master/models/base_model.py) | Defines a parent class to be inherited by all model classes|
+| 3. Models (User, State, City, Amenity, Place, and Reviews) | [/models/*.py](https://github.com/AllisonOge/AirBnB_clone_v2/tree/master/models) | Data models for the AirBnB clone project. See [AirBnB_clone#sec.data-model](https://github.com/AllisonOge/AirBnB_clone/tree/main#data-model) for more details |
+| 4. FileStorage | [/models/engine/file_storage.py](https://github.com/AllisonOge/AirBnB_clone_v2/blob/master/models/engine/file_storage.py) | Defines a class to manage persistent file storage system. It is instantiated in the `/models/__init__.py` file |
+| 5. Console | [console.py](https://github.com/AllisonOge/AirBnB_clone_v2/blob/master/console.py) | Handles console commands for CRUD operations |
 
 ## Project design stages
 
