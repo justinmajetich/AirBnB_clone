@@ -22,6 +22,8 @@ AirBnB clone built using the python language and Flask framework as part of the 
 
 ## Console CRUD operations
 
+Below, there is a demonstration of some commands possible with the console program. Once the user initiates the command-line interface with the prompt "(hbnb)." They explore available commands using the `help` command, which lists options like `all`, `create`, and `update`. After checking all instances (resulting in an empty list), they create a new User instance with a unique ID using the `create` command. Subsequently, they view all instances, including the newly created User. Using the `update` command, the user modifies the User instance's name attribute. Another `all` command is then used to confirm the update. Finally, the user gracefully exits the command line with the `quit` command.
+
 ```bash
 (hbnb) help
 
