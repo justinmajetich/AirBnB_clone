@@ -340,46 +340,56 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create User")
             uid = f.getvalue().strip()
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("User.show()")
+            processed_line = self.console.precmd("User.show()")
+            self.console.onecmd(processed_line)
             self.assertEqual("** instance id missing **\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('User.show("{}")'.format(uid))
+            processed_line = self.console.precmd('User.show("{}")'.format(uid))
+            self.console.onecmd(processed_line)
             self.assertIn(uid, f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("User.count()")
+            processed_line = self.console.precmd("User.count()")
+            self.console.onecmd(processed_line)
             self.assertEqual("1\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("User.update()")
-            self.assertEqual("** instance id missing **\n", f.getvalue())
-
-        # with patch('sys.stdout', new=StringIO()) as f:
-        #     self.console.onecmd('User.update("{}", "name", "Betty")'
-        #                         .format(uid))
-        #     self.assertEqual("", f.getvalue())
-
-        # with patch('sys.stdout', new=StringIO()) as f:
-        #     self.console.onecmd('User.show("{}")'.format(uid))
-        #     self.assertIn("Betty", f.getvalue())
-
-        # with patch('sys.stdout', new=StringIO()) as f:
-        #     self.console.onecmd('User.update("' + uid +
-        #                         '", { "name": "Holberton",'
-        #                         + ' "email": "betty@holberton.com" })')
-        #     self.assertEqual("", f.getvalue())
-
-        # with patch('sys.stdout', new=StringIO()) as f:
-        #     console = f.getvalue()
-        #     self.console.onecmd('User.show("{}")'.format(uid))
-        #     self.assertIn("Holberton", console)
-        #     self.assertIn("betty@holberton", console)
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("User.destroy()")
+            processed_line = self.console.precmd("User.update()")
+            self.console.onecmd(processed_line)
             self.assertEqual("** instance id missing **\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('User.destroy("{}")'.format(uid))
+            processed_line = self.console.precmd('User.update("{}", "name", "Betty")'
+                                                 .format(uid))
+            self.console.onecmd(processed_line)
+            self.assertEqual("", f.getvalue())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            processed_line = self.console.precmd('User.show("{}")'.format(uid))
+            self.console.onecmd(processed_line)
+            self.assertIn("Betty", f.getvalue())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            processed_line = self.console.precmd('User.update("' + uid +
+                                                 '", { "name": "Holberton",'
+                                                 + ' "email": "betty@holberton.com" })')
+            self.console.onecmd(processed_line)
+            self.assertEqual("", f.getvalue())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            output = f.getvalue()
+            processed_line = self.console.precmd('User.show("{}")'.format(uid))
+            self.console.onecmd(processed_line)
+            self.assertIn("Holberton", output)
+            self.assertIn("betty@holberton", output)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            processed_line = self.console.precmd("User.destroy()")
+            self.console.onecmd(processed_line)
+            self.assertEqual("** instance id missing **\n", f.getvalue())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            processed_line = self.console.precmd('User.destroy("{}")'.format(uid))
+            self.console.onecmd(processed_line)
             self.assertEqual("", f.getvalue())
