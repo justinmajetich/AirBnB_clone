@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AirBnB clone</title>
+        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href=""../static/styles/3-header.css">
+        <link rel="stylesheet" href=""../static/styles/3-footer.css">
+        <link rel="stylesheet" href=""../static/styles/4-common.css">
+        <link rel="stylesheet" href=""../static/styles/6-filters.css">
+        <link rel="icon" type="image/x-icon" href="../static/images/icon.png">
+    </head>
+    <body>
+        <header>
+            <div id="header_logo"></div>
+        </header>
+        <div class="container">
+            <section class="filters">
+                <button>Search</button>
+                <div class ="locations">
+                    <h3>States</h3>
+                    <h4>$nbsp;</h4>
+                        <ul class="popover">
+                            {% for state in state_list.values() | sort(attribute='name') %}
+                                <li><h2>{{ state.name }}</h2>
+                                    <ul>
+                                    {% for city in state.cities | sort(attribute='name') %}
+                                        <li><h4>{{ city.name }}</h4></li>
+                                    {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+                <div class="amenities">
+                    <h3>Amenities</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+                    {% for amenity in amenities_list.values() | sort(attribute='name') %}
+                        <li><h4>{{ amenity.name }}</h4></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </div>
+    <footer>
+        <p>Holberton School</p>
+    </footer>
+    </body>
+</html>
