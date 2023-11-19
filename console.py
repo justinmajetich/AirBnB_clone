@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import re
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -73,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,18 +115,69 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    @staticmethod
+    def replace_spaces_within_quotes(input_string):
+        # Define a regular expression pattern to match spaces
+        # within double quotes
+        # pattern = re.compile(r'(?<=")([^"\\]|\\.)*?(?=")')
+        pattern = re.compile(r'="([^"]*)"')
+
+        # Replace spaces within double quotes with underscores
+        result = pattern.sub(lambda match: match.group(0).replace(' ', '_'),
+                             input_string)
+
+        return result
+
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class """
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        modified_args = self.replace_spaces_within_quotes(args)
+        content = shlex.split(modified_args, posix=False)
+
+        if content[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[content[0]]()
+
+        for parameter in content[1:]:
+            try:
+                p_value = ""
+                s_parameter = parameter.split('=', 1)
+                value = s_parameter[1]
+
+                if '.' in value:
+                    p_value = float(value)
+
+                elif value.isdigit():
+                    p_value = int(value)
+
+                elif not (value.startswith('"') and value.endswith('"')):
+                    print('** No Value set for attribute {}.\n'
+                          '** Syntax : attribute="value"'.format(parameter))
+                    continue
+
+                else:
+                    str_content = value[1:-1]
+                    if '"' in str_content:
+                        pat = re.compile(r'(?<!\\)\\\"')
+                        if not (pat.findall(str_content)):
+                            continue
+                    if "_" in str_content:
+                        p_value = str_content.replace("_", " ")
+                    else:
+                        p_value = str_content
+
+                setattr(new_instance, s_parameter[0], p_value)
+                # new_instance.save()
+
+            except Exception as mess:
+                print(mess)
+                continue
+        new_instance.save()
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -187,7 +240,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +372,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
