@@ -151,10 +151,10 @@ class HBNBCommand(cmd.Cmd):
         arg = arg.split()
         class_name = arg[0]
         args_list = arg[1:]
-        if class_name not in HBNBCommand.classes:
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[class_name]()
+        new_instance = self.classes[class_name]()
         if len(arg) == 1:
             storage.save()
             print(new_instance.id)

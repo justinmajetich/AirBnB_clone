@@ -1,21 +1,19 @@
 #!/usr/bin/python3
 import unittest
 from unittest.mock import patch
-from console import HBNBCommand  # Import your class here
+from console import HBNBCommand
 
 class TestDoCreateMethod(unittest.TestCase):
 
     def setUp(self):
-        # Set up any necessary resources or configurations
         self.instance = HBNBCommand()
         self.cmd = HBNBCommand()
 
     def tearDown(self):
-        # Clean up after the test
         pass
 
-    @patch('builtins.print')  # Mock the print function to capture output
-    @patch('models.engine.file_storage.FileStorage')  # Mock FileStorage
+    @patch('builtins.print')
+    @patch('models.engine.file_storage.FileStorage')
     def test_do_create_with_no_args(self, mock_storage, mock_print):
         self.cmd.onecmd("create")
         mock_print.assert_called_with("** class name missing **")
@@ -61,6 +59,3 @@ class TestDoCreateMethod(unittest.TestCase):
         result = self.cmd.parse_params(args_list)
         expected_result = {'attribute2': 'value2'}
         self.assertEqual(result, expected_result)
-
-if __name__ == '__main__':
-    unittest.main()
