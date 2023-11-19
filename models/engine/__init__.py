@@ -1,0 +1,10 @@
+from os import environ as env
+
+if 'HBNB_TYPE_STORAGE' in env and env['HBNB_TYPE_STORAGE'] == 'db':
+    from models.engine.db_storage import DBStorage
+    storage = DBStorage()
+else:
+    from models.engine.file_storage import FileStorage
+    storage = FileStorage()
+
+storage.reload()
