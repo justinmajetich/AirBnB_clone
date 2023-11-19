@@ -11,10 +11,14 @@ from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
-from models.amenity import Amenity
 from models.review import Review
+from models.amenity import Amenity
 
-class DBSTORAGE:
+classes = {"User": User, "State": State, "City": City,
+           "Amenity": Amenity, "Place": Place, "Review": Review}
+
+
+class DBStorage:
     """
     Represents a database storage engine
 
@@ -52,25 +56,20 @@ class DBSTORAGE:
         key = <class-name>.<object-id>
         value = object
         """
+        dct = {}
         if cls is None:
-            """ If cls is not specified, query for objects of all types """
-            objects = self.session.query(State).all()
-            objects.extend(self.__session.query(City).all())
-            objects.extend(self.__session.query(User).all())
-            objects.extend(self.__session.query(Place).all())
-            objects.extend(self.__session.query(Review).all())
-            objects.extend(self.__session.query(Amenity).all())
+            for c in classes.values():
+                objs = self.__session.query(c).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    dct[key] = obj
         else:
-            """If the class is specified, look for objects in that class"""
-            if type(cls) == str:
-                cls = eval(cls)
-            objects = self.__session.query(cls)
-            """
-             Create a dictionary where keys are in the format <class-name>.<object-id>
-             and values are the corresponding objects
-            """
-            return {"{}.{}".format(type(h).__name, h.id): h for h in objects}
-
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + '.' + obj.id
+                dct[key] = obj
+        return dct
+    
     def new(self, obj=None):
         """
         add the object to the current database session (self.__session)
@@ -79,7 +78,7 @@ class DBSTORAGE:
 
     def save(self):
         """Commits(saves) all changes made to the current database session"""
-        self.__session.commit
+        self.__session.commit()
 
     def delete(self, obj=None):
         """
@@ -94,8 +93,7 @@ class DBSTORAGE:
         """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)()
 
     def close(self):
         """Close the sqlalchemy session"""
