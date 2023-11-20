@@ -1,5 +1,5 @@
-from models.base_model import BaseModel
+from models.city import City
+from models.engine.db_storage import DBStorage
 
-ok = BaseModel()
-print(ok.id)
-ok.save()
+
+DBStorage.all(City)
