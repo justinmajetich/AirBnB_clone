@@ -23,8 +23,9 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         db = getenv("HBNB_MYSQL_DB")
 
-
-        self.__enigne = create_engine('mysql+mysqldb://{}:{}@lcoalhost:{}/{}'.format(user, pwd, host, db), pool_pre_ping=True)
+self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(user, passwd, host, db),
+                                      pool_pre_ping=True)
         if (getenv("HBNB_ENV") == 'test'):
             Base.metadata.dropall()
     def all(self, cls=None):
