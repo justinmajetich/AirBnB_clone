@@ -132,11 +132,10 @@ class HBNBCommand(cmd.Cmd):
                 if arg == arg_list[0]:
                     continue
                 words = arg.split('=')
-                print(words)
-                key = words[0]
-                new_instance.key = words[1].replace('"',"")
-            
+                if words[1][0] == '"':
+                    words[1] = words[1].replace('_',' ')
 
+                setattr(new_instance, words[0], words[1].replace('"',""))
 
         storage.save()
         print(new_instance.id)
