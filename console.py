@@ -122,32 +122,37 @@ class HBNBCommand(cmd.Cmd):
         args_list = args.split()
 
         class_name = args_list[0]
-        if clas_name not in HBNBCommand.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist")
             return
 
-        """Extract parameters from the command"""
-        params = args_list[1:]
-        params_dict = {}
-        for param in params:
-            key, value = param.split('=')
+        if len(args_list) == 1:
+          new = HBNBCommand.classes[args]()
+          storage.save()
+          print(new.id)
+        else:
+            """Extract parameters from the command"""
+            params = args_list[1:]
+            params_dict = {}
+            for param in params:
+                key, value = param.split('=')
 
-            """Replace underscores with spaces in string values"""
-            if '"' in value:
-                value = value.replace('_', ' ').replace('\\"', '"')
+                """Replace underscores with spaces in string values"""
+                if '"' in value:
+                    value = value.replace('_', ' ').replace('\\"', '"')
 
-            params_dict[key] = eval(value)
+                    params_dict[key] = eval(value)
 
-        try:
-            """Create an instance of the class with the given parameters"""
-            new_instance = HBNBCommand.classes[class_name](**params_dict)
+                try:
+                    """Create an instance of the class with the given parameters"""
+                    new_instance = HBNBCommand.classes[class_name](**params_dict)
 
-            """Save the new instance to the storage"""
+                    """Save the new instance to the storage"""
 
-            storage.save()
-
-        except Exception as e:
-            print(f"Error creating instance: {e}")
+                    storage.save()
+                    print(new_instance.id)
+                except Exception as e:
+                    print(f"Error creating instance: {e}")
 
     def help_create(self):
         """ Help information for the create method """
