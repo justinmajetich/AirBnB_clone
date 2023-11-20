@@ -9,6 +9,7 @@ from console import HBNBCommand
 from models.base_model import BaseModel
 import os
 
+
 class TestConsole(unittest.TestCase):
     """
     subclass of TestCase that test the console features
@@ -17,7 +18,7 @@ class TestConsole(unittest.TestCase):
     def setUpClass(cls):
         """ setUp the class environment
         """
-        #if os.getenv("HBNB_TYPE_STORAGE") == "File_Storage":
+        # if os.getenv("HBNB_TYPE_STORAGE") == "File_Storage":
         pass
 
     def setUp(self):
@@ -45,11 +46,72 @@ class TestConsole(unittest.TestCase):
         """Test do_create(self, args)
         """
         import re
+        from console import storage
+
         cls = "BaseModel"
         id = re.compile(r"\w{8}-(\w{4}-){3}\w{12}")
         HBNBCommand().onecmd("create {}".format(cls))
+
         result = TestConsole.wraper.getvalue().strip()
+        instance = storage.all()["{}.{}".format(cls, result)]
         self.assertRegex(result, id)
+        self.assertIsInstance(instance, BaseModel)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No test on DB")
+    def test_create_with_params(self):
+        """ Test do_create(self, args) with parameters
+        """
+        from models.place import Place
+        from console import storage
+
+        cls = "Place"
+        command = f"create {cls} latitude=7.50 longitude=5.25 max_guest=4"
+        command += ' name="My_Hidden_Garden"'
+        HBNBCommand().onecmd(command)
+        id = TestConsole.wraper.getvalue().strip()
+
+        self.assertRegex(id, r"\w{8}-(\w{4}-){3}\w{12}")
+        instance = storage.all()["{}.{}".format(cls, id)]
+
+        self.assertEqual(instance.latitude, 7.5)
+        self.assertEqual(instance.longitude, 5.25)
+        self.assertEqual(instance.max_guest, 4)
+        self.assertEqual(instance.name, "My Hidden Garden")
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No test on DB")
+    def test_create_with_RightWrong_params(self):
+        """ Test do_create(self, args), with one right syntax and
+         others wrong syntax parameters
+        """
+        cls = "Place"
+        command = f'create {cls} latitude= 7.50 longitude=5.25 max_guest = 4'
+        HBNBCommand().onecmd(command)
+        id = TestConsole.wraper.getvalue().strip()
+
+        self.assertRegex(id, r"\w{8}-(\w{4}-){3}\w{12}")
+        instance = storage.all()["{}.{}".format(cls, id)]
+
+        self.assertEqual(instance.latitude, 0.0)
+        self.assertEqual(instance.longitude, 5.25)
+        self.assertEqual(instance.max_guest, 0)
+        self.assertEqual(instance.name, "")
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No test on DB")
+    def test_create_with_wrong_params(self):
+        """ Test do_create(self, args), with wrong syntax parameters
+        """
+        cls = "Place"
+        command = f'create {cls} latitude= 7.50 longitude="5.25" max_guest = 4'
+        HBNBCommand().onecmd(command)
+        id = TestConsole.wraper.getvalue().strip()
+
+        self.assertRegex(id, r"\w{8}-(\w{4}-){3}\w{12}")
+        instance = storage.all()["{}.{}".format(cls, id)]
+
+        self.assertEqual(instance.latitude, 0.0)
+        self.assertEqual(instance.longitude, 0.0)
+        self.assertEqual(instance.max_guest, 0)
+        self.assertEqual(instance.name, "")
 
     def test_create_no_class(self):
         """ Test do_create(self, args), given no class
@@ -228,56 +290,56 @@ class TestConsole(unittest.TestCase):
         self.assertEqual(instance.latitude, 4.7)
 
     def test_update_no_class(self):
-           """ Test do_update(self, args), with no class name
-           """
-           HBNBCommand().onecmd('update')
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** class name missing **")
+        """ Test do_update(self, args), with no class name
+        """
+        HBNBCommand().onecmd('update')
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** class name missing **")
 
     def test_update_wrong_class(self):
-           """ Test do_update(self, args), with wrong class name
-           """
-           HBNBCommand().onecmd('update MEEEE')
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** class doesn't exist **")
+        """ Test do_update(self, args), with wrong class name
+        """
+        HBNBCommand().onecmd('update MEEEE')
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** class doesn't exist **")
 
     def test_update_no_id(self):
-           """ Test do_update(self, args), with no id
-           """
-           HBNBCommand().onecmd('update BaseModel')
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** instance id missing **")
+        """ Test do_update(self, args), with no id
+        """
+        HBNBCommand().onecmd('update BaseModel')
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** instance id missing **")
 
     def test_update_wrong_id(self):
-           """ Test do_update(self, args), with wrong id
-           """
-           HBNBCommand().onecmd('update BaseModel 1234-1234-2468')
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** no instance found **")
+        """ Test do_update(self, args), with wrong id
+        """
+        HBNBCommand().onecmd('update BaseModel 1234-1234-2468')
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** no instance found **")
 
     def test_update_no_attr(self):
-           """ Test do_update(self, args), with no attribute
-           """
-           instance = BaseModel()
-           cls = "BaseModel"
-           id = instance.id
-           instance.save()
+        """ Test do_update(self, args), with no attribute
+        """
+        instance = BaseModel()
+        cls = "BaseModel"
+        id = instance.id
+        instance.save()
 
-           HBNBCommand().onecmd('update {} {}'.format(cls, id))
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** attribute name missing **")
+        HBNBCommand().onecmd('update {} {}'.format(cls, id))
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** attribute name missing **")
 
     def test_update_no_value(self):
-           """ Test do_update(self, args), with no attribute value
-           """
-           instance = BaseModel()
-           cls = "BaseModel"
-           id = instance.id
-           instance.save()
+        """ Test do_update(self, args), with no attribute value
+        """
+        instance = BaseModel()
+        cls = "BaseModel"
+        id = instance.id
+        instance.save()
 
-           HBNBCommand().onecmd('update {} {} name'.format(cls, id))
-           result = TestConsole.wraper.getvalue().strip()
-           self.assertEqual(result, "** value missing **")
+        HBNBCommand().onecmd('update {} {} name'.format(cls, id))
+        result = TestConsole.wraper.getvalue().strip()
+        self.assertEqual(result, "** value missing **")
     '''
     def test_count(self):
         """ Test count(self, args)
