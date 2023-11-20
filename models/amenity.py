@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
 

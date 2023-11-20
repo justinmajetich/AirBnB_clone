@@ -8,5 +8,7 @@ export HBNB_MYSQL_DB="hbnb_${HBNB_ENV}_db"
 export HBNB_TYPE_STORAGE=db
 export HBNB_DB_PORT=47434
 
+export HBNB_MYSQL_USER=root
+export HBNB_MYSQL_PWD=root
 
 alias dc='docker-compose'

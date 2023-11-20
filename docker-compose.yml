@@ -9,8 +9,8 @@ services:
     ports:
       - "${HBNB_DB_PORT}:3306"
     environment:
-      MYSQL_USER: ${HBNB_MYSQL_USER}
-      MYSQL_PASSWORD: ${HBNB_MYSQL_PWD}
+      # MYSQL_USER: ${HBNB_MYSQL_USER}
+      # MYSQL_PASSWORD: ${HBNB_MYSQL_PWD}
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - "./setup_mysql_${HBNB_ENV}.sql:/docker-entrypoint-initdb.d/init.sql"

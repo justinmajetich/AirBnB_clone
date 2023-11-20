@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ Review module for the HBNB project """
 from models.base_model import BaseModel
 
