@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" """
+"""This module contains the various test for the BaseModel to ascertain
+the functionality of the model
+"""
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -9,7 +11,7 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """This Class contains the test suites for the BaseModel class"""
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -24,7 +26,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except Exception as e:
             pass
 
     def test_default(self):
