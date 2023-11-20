@@ -121,9 +121,7 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
 
             # Split the arguments into a list
-            print(args)
             arg_list = args.split(" ")
-            print(arg_list)
             kw = {}
 
             # Iterate over each argument (skipping the class name)
@@ -133,7 +131,6 @@ class HBNBCommand(cmd.Cmd):
 
                 # Evaluate the value to handle expressions
                 arg_splited[1] = eval(arg_splited[1])
-                print(arg_splited)
 
                 # If the value is a string, replace underscores and quotes
                 if type(arg_splited[1]) is str:
