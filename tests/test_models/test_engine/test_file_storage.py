@@ -68,15 +68,21 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
+        with open("file.json", "r", encoding="utf-8") as f:
+            self.assertTrue(f"BaseModel.{new.id}" in f.read())
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
+        import copy
+
         new = BaseModel()
         storage.save()
-        objects_before = storage.all()
+        self.setUp()  # clear the storage. __objects
+
         storage.reload()
         objects_after = storage.all()
-        self.assertDictEqual(objects_before, objects_after)
+        self.assertTrue(len(objects_after) > 0)
+        self.assertTrue(f"BaseModel.{new.id}" in objects_after)
 
     def test_reload_empty(self):
         """ Load from an empty file """
