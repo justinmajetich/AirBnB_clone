@@ -14,7 +14,7 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-     def all(self, cls=None):
+    def all(self, cls=None):
         """returns the dictionary __objects"""
         if not cls:
             return self.__objects
