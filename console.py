@@ -134,15 +134,23 @@ class HBNBCommand(cmd.Cmd):
             value = params[2]
             value = value.replace('"', '\"')
             value = value.replace('_', ' ')
-            value = eval(value)
-            setattr(new_instance, key_name, value)
+            try:
+                value = eval(value)
+                if type(value) is str or type(value) is int \
+                   or type(value) is float:
+                    setattr(new_instance, key_name, value)
+                else:
+                    continue
+            except Exception as e:
+                continue
         storage.save()
         print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
+        print("[Usage]: create <Class name> <param 1> \
+        <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """

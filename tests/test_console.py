@@ -104,6 +104,19 @@ class TestHBNBCommandConsole(unittest.TestCase):
             self.assertTrue(len(output) == 32)
         self.assertTrue(os.path.exists(FileStorage._FileStorage__file_path))
 
+    def test_create_with_invalid_params(self):
+        """
+        Checks that the  create returns the model id, checks length of id,
+        and checks if the file was created
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('create State name=California')
+            output = f.getvalue()
+            self.assertTrue(type(output) is str)
+            output = output.replace('-', '').replace('\n', '')
+            self.assertTrue(len(output) == 32)
+        self.assertTrue(os.path.exists(FileStorage._FileStorage__file_path))
+
     def test_create_non_existent_class(self):
         """
         Checks error management for create command:
