@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This module contains all unittests for all console.py features
 """
@@ -64,8 +65,7 @@ class TestHBNBCommandConsole(unittest.TestCase):
         """
         Checks if EOF command returns True
         """
-        #self.assertTrue(HBNBCommand().onecmd("EOF"))
-        print(HBNBCommand().onecmd("EOF"))
+        self.assertTrue(HBNBCommand().onecmd("EOF"))
 
     def test_empty_line(self):
         """
@@ -77,7 +77,21 @@ class TestHBNBCommandConsole(unittest.TestCase):
             expected_output = ""
             self.assertEqual(output, expected_output)
 
+    @unittest.skip("not supported in this version")
     def test_create(self):
+        """
+        Checks that the  create returns the model id, checks length of id,
+        and checks if the file was created
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('create State')
+            output = f.getvalue()
+            self.assertTrue(type(output) is str)
+            output = output.replace('-', '').replace('\n', '')
+            self.assertTrue(len(output) == 32)
+        self.assertTrue(os.path.exists(FileStorage._FileStorage__file_path))
+
+    def test_create_with_params(self):
         """
         Checks that the  create returns the model id, checks length of id,
         and checks if the file was created
