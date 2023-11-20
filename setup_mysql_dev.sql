@@ -1,3 +1,8 @@
+-- The script prepare MYSQL server forour project 
+-- Create the use if it doesn't exist
+-- Grant all privileges on the hbnb_dev_db to hbnb_dev
+
+
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
