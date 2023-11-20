@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' #if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) '   # if sys.__stdin__.isatty() else ''
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -32,16 +32,16 @@ class HBNBCommand(cmd.Cmd):
 
     def preloop(self):
         """Prints if isatty is false"""
-        #if not sys.__stdin__.isatty():
-         #   print('(hbnb)')
-    
+        # if not sys.__stdin__.isatty():
+        # print('(hbnb)')
+
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
-        
+
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
         # scan for general formating - i.e '.', '(', ')'
@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
                 param = param.split("=")
                 key = param[0]
                 value = param[1]
-                value = value.strip('"') # removes trailing double quotes
+                value = value.strip('"')  # removes trailing double quotes
                 if '"' in value and value.index('"') > 0:
                     value = value.replace('"', '\"')
                 if "_" in value:
@@ -149,7 +149,6 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except Exception as e:
             pass
-    
 
     def help_create(self):
         """ Help information for the create method """
@@ -212,7 +211,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -305,7 +304,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0]  != ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
@@ -344,6 +343,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
