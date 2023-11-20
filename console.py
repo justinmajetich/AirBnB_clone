@@ -114,14 +114,22 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def args_split(self, args):
-        """method that splite args in a list"""
+        """method that splite args in a list
+        Return ditc that contain key value of args startin from first param
+        """
         new_dict = {}
         params = args.split()
         for para in params:
             para = para.split('=')
-            new_dict[para[0]] = para[1].replace('"', '')
+            if '"' == para[1][0] and '"' == para[1][-1]:
+                para[1] = para[1][1:-1]
+                new_dict[para[0]] = para[1].replace('"', '\"')
+            else:
+                try:
+                    new_dict[para[0]] = int(para[1])
+                except Exception:
+                    new_dict[para[0]] = float(para[1])
         return new_dict
-
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -141,8 +149,8 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
             print(new_instance.id)
             storage.save()
-        else:
-            print("create <Class name> <param 1> <param 2> <param 3>...")
+        #else:
+        #    print("create <Class name> <param 1> <param 2> <param 3>...")
 
     def help_create(self):
         """ Help information for the create method """
@@ -337,6 +345,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
