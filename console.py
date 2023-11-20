@@ -123,12 +123,16 @@ class HBNBCommand(cmd.Cmd):
             para = para.split('=')
             if '"' == para[1][0] and '"' == para[1][-1]:
                 para[1] = para[1][1:-1]
-                new_dict[para[0]] = para[1].replace('"', '\"')
+                #new_dict[para[0]] = para[1].replace('"', '\"')
+                new_dict[para[0]] = para[1]
             else:
                 try:
                     new_dict[para[0]] = int(para[1])
                 except Exception:
-                    new_dict[para[0]] = float(para[1])
+                    try:
+                        new_dict[para[0]] = float(para[1])
+                    except Exception:
+                        pass
         return new_dict
 
     def do_create(self, args):
