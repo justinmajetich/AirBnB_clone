@@ -14,16 +14,17 @@ class test_basemodel(unittest.TestCase):
     """This Class contains the test suites for the BaseModel class"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """Initializes test suite"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ """
+        """Setup Test cases"""
         pass
 
     def tearDown(self):
+        """Tear Down Test cases"""
         try:
             os.remove('file.json')
         except Exception as e:
