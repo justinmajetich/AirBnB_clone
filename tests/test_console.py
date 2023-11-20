@@ -83,6 +83,8 @@ class TestConsole(unittest.TestCase):
         """ Test do_create(self, args), with one right syntax and
          others wrong syntax parameters
         """
+        from console import storage
+
         cls = "Place"
         command = f'create {cls} latitude= 7.50 longitude=5.25 max_guest = 4'
         HBNBCommand().onecmd(command)
@@ -100,6 +102,8 @@ class TestConsole(unittest.TestCase):
     def test_create_with_wrong_params(self):
         """ Test do_create(self, args), with wrong syntax parameters
         """
+        from console import storage
+
         cls = "Place"
         command = f'create {cls} latitude= 7.50 longitude="5.25" max_guest = 4'
         HBNBCommand().onecmd(command)
