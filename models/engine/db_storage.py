@@ -17,13 +17,14 @@ class DBStorage:
     __engine = None
     __session = None
 
-    user = getenv(HBNB_MYSQL_USER)
-    pwd = getenv(HBNB_MYSQL_PWD)
-    host = getenv(HBNB_MYSQL_HOST)
-    db = getenv(HBNB_MYSQL_DB)
-
-
     def __init__(self, *args, **kwargs):
+        user = getenv(HBNB_MYSQL_USER)
+        pwd = getenv(HBNB_MYSQL_PWD)
+        host = getenv(HBNB_MYSQL_HOST)
+        db = getenv(HBNB_MYSQL_DB)
+
+
+
         self.__enigne = create_engine('mysql+mysqldb://{}:{}@lcoalhost:{}/{}'.format(user, pwd, host, db), pool_pre_ping=True)
         if (getenv(HBNB_ENV) == 'test'):
             Base.metadata.dropall()
