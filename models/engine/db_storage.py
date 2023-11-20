@@ -18,11 +18,10 @@ class DBStorage:
     __session = None
 
     def __init__(self, *args, **kwargs):
-        user = getenv(HBNB_MYSQL_USER)
-        pwd = getenv(HBNB_MYSQL_PWD)
-        host = getenv(HBNB_MYSQL_HOST)
-        db = getenv(HBNB_MYSQL_DB)
-
+        user = getenv("HBNB_MYSQL_USER")
+        pwd = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST")
+        db = getenv("HBNB_MYSQL_DB")
 
 
         self.__enigne = create_engine('mysql+mysqldb://{}:{}@lcoalhost:{}/{}'.format(user, pwd, host, db), pool_pre_ping=True)
