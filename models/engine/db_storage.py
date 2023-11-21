@@ -30,7 +30,7 @@ class DBStorage:
 
     def all(self, cls=None):
         from models import storage
-        classes = [State, City]
+        classes = [State, City, User]
         if cls:
             classes = [cls]
         ret = {}
