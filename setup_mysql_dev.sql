@@ -1,0 +1,6 @@
+--creates a a database hbnb_dev_db
+--creates new user hbnb_dev in localhost
+--sets password for hbnb_dev to (hbnb_dev_pwd)
+--sets all privilages on the hbnb_dev_db for hbnb_dev (only in this db)
+--sets SELECT privilages on the db performance_schema
+--if db hbnb_dev_db || hbnb_dev exits, script should not fail
