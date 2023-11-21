@@ -143,6 +143,7 @@ class TestHBNBCommandConsole(unittest.TestCase):
         Checks that the show command works as expected
         """
         inst = User()
+        inst.save()
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd(f'show User {inst.id}')
             output = f.getvalue()
@@ -194,6 +195,7 @@ class TestHBNBCommandConsole(unittest.TestCase):
         Checks that the destroy command works as expected
         """
         inst = City()
+        inst.save()
         self.assertIn(f'City.{inst.id}', storage.all())
 
         HBNBCommand().onecmd(f'destroy City {inst.id}')
@@ -462,6 +464,7 @@ class TestHBNBCommandConsole(unittest.TestCase):
         Checks that the update command works as expected
         """
         inst = Place()
+        inst.save()
         HBNBCommand().onecmd(f'update Place {inst.id} name "Offal"')
         self.assertTrue(inst.name == 'Offal')
         update_dict = {"name": "Court"}
