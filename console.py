@@ -152,7 +152,15 @@ class HBNBCommand(cmd.Cmd):
         params = ' '.join(args_list[1:])
 
         param_dict = {}
-
+        for param in arg_list[1:]:
+            key_value = param.split('=')
+            if len(key_value) == 2:
+                key, value = key_value
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
         try:
             for param in params.split(','):
                 key, value = param.split('=')
