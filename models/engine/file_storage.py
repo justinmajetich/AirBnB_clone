@@ -2,6 +2,7 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 import os
+from collections.abc import Mapping
 
 
 class FileStorage:
@@ -44,8 +45,11 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        key = f"{obj['__class__']}.{obj['id']}"
-        self.__objects[key] = obj
+        new_obj = obj
+        if not self.is_subscriptable(obj):
+            new_obj = obj.to_dict()
+        key = f"{new_obj['__class__']}.{new_obj['id']}"
+        self.__objects[key] = new_obj
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -69,3 +73,7 @@ class FileStorage:
                     temp_obj[key] = value
             self.__objects = temp_obj
             self.save()
+
+    def is_subscriptable(self, obj):
+        """Checks whether a dict is subscriptable"""
+        return isinstance(obj, Mapping)

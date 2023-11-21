@@ -15,7 +15,7 @@ for state_key in all_states.keys():
 # Create a new State
 new_state = State()
 new_state.name = "California"
-fs.new(new_state.to_dict())
+fs.new(new_state)
 fs.save()
 print("New State: {}".format(new_state))
 
@@ -28,7 +28,7 @@ for state_key in all_states.keys():
 # Create another State
 another_state = State()
 another_state.name = "Nevada"
-fs.new(another_state.to_dict())
+fs.new(another_state)
 fs.save()
 print("Another State: {}".format(another_state))
 
