@@ -378,9 +378,9 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            output = f.getvalue()
             processed_line = self.console.precmd('User.show("{}")'.format(uid))
             self.console.onecmd(processed_line)
+            output = f.getvalue()
             self.assertIn("Holberton", output)
             self.assertIn("betty@holberton", output)
 
