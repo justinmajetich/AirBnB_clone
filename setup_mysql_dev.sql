@@ -6,7 +6,7 @@ IDENTIFIED BY 'hbnb_dev_pwd';
 
 GRANT SELECT
 ON performanc_scheme.*
-TO 'hbnb_dev'0'localhost'
+TO 'hbnb_dev'@'localhost'
 WITH GRANT OPTION;
 
 GRANT ALL PRIVILEGES
