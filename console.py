@@ -19,10 +19,49 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Review': Review
+    }
+
+    keys = {
+        "BaseModel": ["id", "created_at", "updated_at"],
+        "User": [
+            "id",
+            "created_at",
+            "updated_at",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+        ],
+        "City": ["id", "created_at", "updated_at", "state_id", "name"],
+        "State": ["id", "created_at", "updated_at", "name"],
+        "Place": [
+            "id",
+            "created_at",
+            "updated_at",
+            "city_id",
+            "user_id",
+            "name",
+            "description",
+            "number_rooms",
+            "number_bathrooms",
+            "max_guest",
+            "price_by_night",
+            "latitude",
+            "longitude",
+            "amenity_ids"
+        ],
+        "Amenity": ["id", "created_at", "updated_at", "name"],
+        "Review": ["id", "created_at", "updated_at",
+                   "place_id", "user_id", "text"],
+    }
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -113,18 +152,55 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def parse_value(self, value):
+        """cast string to float or int if possible"""
+        is_valid_value = True
+        # for the string to be valid it must be:
+        # of at least length 2 i.e. ""
+        # begin and end with double quoatation
+        # i.e. "foo_bar"
+        if len(value) >= 2 and value[0] == '"'\
+                and value[len(value) - 1] == '"':
+            value = value[1:-1]
+            value = value.replace("_", " ")
+        else:
+            try:
+                if "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                is_valid_value = False
+
+        if is_valid_value:
+            return value
+        else:
+            return None
+
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args_array = args.split()
+        class_name = args_array[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[class_name]()
+        for param_index in range(1, len(args_array)):
+            param_array = args_array[param_index].split("=")
+            if len(param_array) == 2:
+                key = param_array[0]
+                if key not in HBNBCommand.keys[class_name]:
+                    continue
+                value = self.parse_value(param_array[1])
+                if value is not None:
+                    setattr(new_instance, key, value)
+            else:
+                pass
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
