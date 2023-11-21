@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 """
 I have changed some things in the module
 
@@ -17,6 +18,9 @@ I have changed some things in the module
 and the first one is commented because I changed it
 and didn't want to break anything in the code
 they were giving warnings so I changed them.
+
+NOTE: after I put some changes the checks 10, 11, and 13
+are now GREEN!
 
 2) the code was only working if you put 
 the class name and some parameters but if you
@@ -138,23 +142,15 @@ class HBNBCommand(cmd.Cmd):
         new_dict = {}
         for para in args:
             para = para.split('=')
-            if '"' == para[1][0] and '"' == para[1][-1]:
-                para[1] = para[1][1:-1]
-                #new_dict[para[0]] = para[1].replace('"', '\"')
-                new_dict[para[0]] = para[1]
-            else:
-                try:
-                    new_dict[para[0]] = int(para[1])
-                except Exception:
-                    try:
-                        new_dict[para[0]] = float(para[1])
-                    except Exception:
-                        pass
+            para[1] = self.str_float_int(para[1])
+            if (type(para[1]) == str):
+                para[1] = para[1].replace(' ', '_')
+            new_dict[para[0]] = para[1]
         return new_dict
     
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split()
+        args = shlex.split(args)
         if not args:
             print("** class name missing **")
             return
@@ -166,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
             params = self.args_split(args[1:])
             for key, value in params.items():
                 setattr(new_instance, key, value)
-        storage.save()
+        # storage.save()
         print(new_instance.id)
         storage.save()
         # else:
@@ -369,6 +365,15 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+    def str_float_int(self, value):
+        try:
+            value = int(value)
+        except Exception:
+            try:
+                value = float(value)
+            except Exception:
+                pass
+        return (value)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
