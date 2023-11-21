@@ -71,6 +71,6 @@ class FileStorage:
         """Delete obj from __objects
         if it exist """
         if obj is not None:
-            key = '{}.{}'.format(type(obj).__name__,obj.id)
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
             del FileStorage.__objects[key]
             self.save
