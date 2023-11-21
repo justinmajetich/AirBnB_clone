@@ -367,8 +367,8 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** instance id missing **\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            processed_line = self.console.precmd('User.update("{}", "name", "Betty")'
-                                                 .format(uid))
+            processed_line = self.console.precmd('User.update("{}"'.format(uid)
+                                                 + ', "name", "Betty")')
             self.console.onecmd(processed_line)
             self.assertEqual("", f.getvalue())
 
@@ -379,8 +379,8 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as f:
             processed_line = self.console.precmd('User.update("' + uid +
-                                                 '", { "name": "Holberton",'
-                                                 + ' "email": "betty@holberton.com" })')
+                                                 '", { "name": "Holberton", '
+                                                 + '"email": "b@hbtn.com" })')
             self.console.onecmd(processed_line)
             self.assertEqual("", f.getvalue())
 
@@ -389,7 +389,7 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd(processed_line)
             output = f.getvalue()
             self.assertIn("Holberton", output)
-            self.assertIn("betty@holberton", output)
+            self.assertIn("b@hbtn.com", output)
 
         with patch('sys.stdout', new=StringIO()) as f:
             processed_line = self.console.precmd("User.destroy()")
@@ -397,6 +397,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** instance id missing **\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
-            processed_line = self.console.precmd('User.destroy("{}")'.format(uid))
+            processed_line = self.console.precmd('User.destroy("{}")'
+                                                 .format(uid))
             self.console.onecmd(processed_line)
             self.assertEqual("", f.getvalue())

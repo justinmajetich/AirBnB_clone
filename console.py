@@ -76,7 +76,8 @@ class HBNBCommand(cmd.Cmd):
                     idxs = [i for i, ltr in enumerate(pline[1]) if ltr == "\""]
                     if len(idxs) % 2 == 0:
                         return " ".join([_cmd, _cls, _id, pline[1]])
-                    new_idxs = [[idxs[i], idxs[i+1]] for i in range(0, len(idxs), 2)]
+                    new_idxs = [[idxs[i], idxs[i+1]]
+                                for i in range(0, len(idxs), 2)]
                     tokens = []
                     for s, e in new_idxs:
                         tokens.append(pline[1][s:e+1])
