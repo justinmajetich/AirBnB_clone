@@ -13,7 +13,7 @@ class FileStorage:
         if (cls):
             new_obj = {}
             for key, value in self.__objects.items():
-                if value.get('__class__') == cls:
+                if value.get('__class__') == cls.__name__:
                     new_obj[key] = value
             return new_obj
         return FileStorage.__objects
