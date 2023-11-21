@@ -142,5 +142,16 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 
-```
-<br>
+How to test with MySQL?
+------------------------
+
+First, you create a specific database for it (next tasks). After, you have to remember what the purpose of an unittest?<br>
+
+**“Assert a current state (objects/data/database), do an action, and validate this action changed (or not) the state of your objects/data/database”**<br>
+
+For example, “you want to validate that the create State name="California" command in the console will add a new record in your table states in your database”, here steps for your unittest:
+
+- get the number of current records in the table states (my using a MySQLdb for example - but not SQLAlchemy (remember, you want to test if it works, so it’s better to isolate from the system))
+- execute the console command
+- get (again) the number of current records in the table states (same method, with MySQLdb)
+- if the difference is +1 => test passed
