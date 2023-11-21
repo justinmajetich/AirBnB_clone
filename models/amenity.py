@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
-from models.base_model import BaseModel, Base
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
+"""module creates a Amenity class"""
+
+from models.base_model import BaseModel
 
 
-class Amenity(BaseModel, Base):
-    """class definition for amenity"""
+class Amenity(BaseModel):
+    """ managing amenity objects"""
 
-    name = " "
+    name = ""

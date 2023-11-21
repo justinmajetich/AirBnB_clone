@@ -28,21 +28,22 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
                                backref="place")
 
-    @property
-    def reviews(self):
-        """
-        getter attribute reviews that returns the list of Review instances
-        with place_id equals to the current Place.id
-        """
-        var = models.storage.all()
-        all_reviews = []
-        result = []
-        for key in var:
-            review = key.replace('.', ' ')
-            review = shlex.split(review)
-            if review[0] == 'Review':
-                all_reviews.append(var[key])
-        for elements in all_reviews:
-            if elements.place_id == self.id:
-                result.append(elements)
-        return result
+    else:
+        @property
+        def reviews(self):
+            """
+            getter attribute reviews that returns the list of Review instances
+            with place_id equals to the current Place.id
+            """
+            var = models.storage.all()
+            all_reviews = []
+            result = []
+            for key in var:
+                review = key.replace('.', ' ')
+                review = shlex.split(review)
+                if review[0] == 'Review':
+                    all_reviews.append(var[key])
+                for elements in all_reviews:
+                    if elements.place_id == self.id:
+                        result.append(elements)
+            return result
