@@ -138,9 +138,8 @@ class HBNBCommand(cmd.Cmd):
         for key, value in dic.items():
             if hasattr(new_instance, key):
                 setattr(new_instance, key, value)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
