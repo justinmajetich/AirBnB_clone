@@ -10,10 +10,15 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
+from models.amenity import Amenity
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import scoped_session
+
+
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.place import place_amenity
 
 
 class DBStorage:
@@ -43,12 +48,12 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query on the curret database session all objects of the given class.
+        """Query on the current database session of the class.
 
         If cls is None, queries all types of objects.
 
         Return:
-            Dict of queried classes in the format <class name>.<obj id> = obj.
+            dict classes in the format <class name>.<obj id> = obj.
         """
         if cls is None:
             objs = self.__session.query(State).all()
@@ -64,20 +69,20 @@ class DBStorage:
         return {"{}.{}".format(type(h).__name__, h.id): h for h in objs}
 
     def new(self, obj):
-        """Add obj to the current database session."""
+        """Adding objects to the current database session."""
         self.__session.add(obj)
 
     def save(self):
-        """Commit all changes to the current database session."""
+        """Commit/save all changes to the current db session."""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete obj from the current database session."""
+        """Deletes objects from the current db session."""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create all tables in the database and initialize a new session."""
+        """Create the tables in the db and initialize a new session."""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
@@ -85,5 +90,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """Close the working SQLAlchemy session."""
+        """Closes session."""
         self.__session.close()
