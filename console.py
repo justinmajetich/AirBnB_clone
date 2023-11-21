@@ -152,6 +152,7 @@ class HBNBCommand(cmd.Cmd):
         params = ' '.join(args_list[1:])
 
         param_dict = {}
+
         try:
             for param in params.split(','):
                 key, value = param.split('=')
@@ -166,6 +167,8 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
             print(new_instance.id)
         storage.save()
+        except Exception as e:
+            print("** Error creating instance: {} **".format(e))
         
         def help_create(self):
         """
