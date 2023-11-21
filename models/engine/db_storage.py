@@ -30,8 +30,7 @@ class DBStorage:
         self.__engine = create_engine(engine_string, pool_pre_ping=True)
 
         if (p_env == "test"):
-            # TODO: Drop all Tables
-            pass
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Returns object dictionary of the data in database """
