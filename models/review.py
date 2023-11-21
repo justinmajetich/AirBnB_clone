@@ -8,7 +8,7 @@ from uuid import uuid4
 
 
 s = "HBNB_TYPE_STORAGE"
-if s inenviron.keys() and environ["HBNB_TYPE_STORAGE"] == "db":
+if s in environ.keys() and environ["HBNB_TYPE_STORAGE"] == "db":
     class Review(BaseModel, Base):
         """
         This is a class for Review
