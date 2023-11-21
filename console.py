@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+from os import getenv
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -31,33 +32,33 @@ class HBNBCommand(cmd.Cmd):
             }
 
     def parse_params(self, args):
-            """Parse and validate parameters"""
-            kwargs = {}
-            for arg in args:
-                try:
-                    key, value = arg.split('=')
-                    key = key.strip()
-                    value = value.strip()
+        """Parse and validate parameters"""
+        kwargs = {}
+        for arg in args:
+            try:
+                key, value = arg.split('=')
+                key = key.strip()
+                value = value.strip()
 
-                    # Handle string values
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1].replace('_', ' ')
+                # Handle string values
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ')
 
-                    # Handle float values
-                    elif '.' in value:
-                        value = float(value)
+                # Handle float values
+                elif '.' in value:
+                    value = float(value)
 
-                    # Handle integer values
-                    else:
-                        value = int(value)
+                # Handle integer values
+                else:
+                    value = int(value)
 
-                    kwargs[key] = value
+                kwargs[key] = value
 
-                except ValueError:
-                    # Skip parameters that can't be recognized
-                    pass
+            except ValueError:
+                # Skip parameters that can't be recognized
+                pass
 
-            return kwargs
+        return kwargs
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -165,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_instance, key, value)
             storage.new(new_instance)
             storage.save()
-            print(new_instance.id)        
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -228,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -248,8 +249,20 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all().items():
+                name = k
+                if getenv('HBNB_TYPE_STORAGE') != 'db':
+                    v = v.__dict__
+                    v.pop('_sa_instance_state', None)
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    if getenv('HBNB_TYPE_STORAGE') == 'db':
+                        v.pop('_sa_instance_state', None)
+                        class_name = v['__class__']
+                        v.pop('__class__', None)
+                        print_list.append(f"[{class_name}] \
+                                          ({v['id']}) {v}")
+                    else:
+                        print_list.append(f"[{name.split('.')[0]}] \
+                                          ({v['id']}) {v}")
         else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
@@ -360,6 +373,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

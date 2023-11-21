@@ -14,6 +14,7 @@ class FileStorage:
             ret = {}
             for k, v in FileStorage.__objects.items():
                 if type(v) == cls:
+                    print(v)
                     ret[k] = v
             return ret
         else:
