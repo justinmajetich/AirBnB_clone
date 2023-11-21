@@ -1,9 +1,8 @@
 -- A script that prepares a MySQL server for the project
-
--- Create database if it doesn't exists
+-- Create database hbnb_dev_db
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
--- Create User if it doesn't exist
+-- Create User hbnb_dev
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 
 -- Grant User hbnb_dev, the privilege to query `performance_scheme`
