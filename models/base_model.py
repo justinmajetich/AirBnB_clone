@@ -13,8 +13,8 @@ class BaseModel:
     """A base class for all hbnb models"""
     if getenv("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), nullable=False, primary_key=True)
-        created_at = Column(DateTime, nullable=False, default=datetime.utc)
-        updated_at = Column(DateTime, nullable=False, default=datetime.utc)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -25,22 +25,22 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
-                if key != '__class__':
+                if '__class__' not in key:
                     setattr(self, key, value)
             if kwargs.get('updated_at'):
-                kwargs['updated_at'] = datetime.strptime(
+                if type(kwargs['updated_at']) == str:
+                    self.updated_at = datetime.strptime(
                         kwargs['updated_at'],
                         '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 self.updated_at = datetime.now()
             if kwargs.get('created_at'):
-                kwargs['created_at'] = datetime.strptime(
+                if type(kwargs['created_at']) == str:
+                    self.created_at = datetime.strptime(
                         kwargs['created_at'],
                         '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 self.updated_at = datetime.now()
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
