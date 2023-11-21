@@ -37,7 +37,7 @@ class DBStorage:
         for _class in classes:
             data = self.__session.query(_class).all()
             for item in data:
-                dic = item.__dict__
+                dic = item.to_dict()
                 dic.pop('_sa_instance_state', None)
                 ret[f"{item.__class__.__name__}.{dic['id']}"] = dic
         return ret
