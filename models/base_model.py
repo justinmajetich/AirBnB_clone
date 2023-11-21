@@ -23,11 +23,11 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if key == 'created_at' or key == 'updated_at':
-                        setattr(BaseModel, key, datetime.fromisoformat(value))
+                        setattr(self, key, datetime.fromisoformat(value))
                     else:
                         setattr(self, key, value)
-            self.id = str(uuid.uuid4())
-            storage.new(self.to_dict())
+            # self.id = str(uuid.uuid4())
+            # storage.new(self.to_dict())
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]

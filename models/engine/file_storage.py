@@ -11,14 +11,36 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
+        class_objs = {}
         if cls:
-            class_objs = {}
             for key, value in self.__objects.items():
                 class_name = key.split('.')[0]
                 if class_name == cls.__name__:
-                    class_objs[key] = value
+                    new_instance = classes[class_name](**value)
+                    class_objs[key] = str(new_instance)
             return class_objs
-        return FileStorage.__objects
+        else:
+            for key, value in self.__objects.items():
+                class_name = key.split('.')[0]
+                new_instance = classes[class_name](**value)
+                class_objs[key] = str(new_instance)
+            return class_objs
+    def objects(self):
+        """Getter method for __objects"""
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -42,7 +64,8 @@ class FileStorage:
         if obj:
             obj_key = f"{obj.to_dict()['__class__']}.{obj.to_dict()['id']}"
             temp_obj = {}
-            for key, value in self.all().items():
+            for key, value in self.__objects.items():
                 if key != obj_key:
                     temp_obj[key] = value
             self.__objects = temp_obj
+            self.save()
