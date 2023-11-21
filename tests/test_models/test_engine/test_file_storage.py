@@ -4,6 +4,8 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+import subprocess
+
 
 
 class test_fileStorage(unittest.TestCase):
@@ -107,3 +109,35 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+
+    def test_do_create(self):
+        """ Test do_create method in console """
+        # Construct the command
+        commands = [
+            'create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10 price_by_night=300 latitude=37.773972 longitude=-122.431297',
+            'all'
+        ]
+        command = ' | '.join(commands)
+
+        # Run the command using subprocess
+        subprocess_run_result = subprocess.run(
+            f'echo "{command}" | ./console.py', shell=True, stdout=subprocess.PIPE, text=True
+        )
+
+        # Print result for debugging
+        print("Subprocess Run Output:", subprocess_run_result.stdout)
+
+        # Check if Place is created
+        self.assertIn('Place', subprocess_run_result.stdout)
+        self.assertIn('My little house', subprocess_run_result.stdout)
+        self.assertIn('number_rooms', subprocess_run_result.stdout)
+        self.assertIn('number_bathrooms', subprocess_run_result.stdout)
+        self.assertIn('max_guest', subprocess_run_result.stdout)
+        self.assertIn('price_by_night', subprocess_run_result.stdout)
+        self.assertIn('latitude', subprocess_run_result.stdout)
+        self.assertIn('longitude', subprocess_run_result.stdout)
+
+        # Clean up created objects
+        del storage._FileStorage__objects['BaseModel.' + BaseModel().id]
+        del storage._FileStorage__objects['Place.' + Place().id]
