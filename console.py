@@ -142,7 +142,8 @@ class HBNBCommand(cmd.Cmd):
         new_dict = {}
         for para in args:
             para = para.split('=')
-            para[1] = self.str_float_int(para[1])
+            if (para[1][0] != '0'):
+                para[1] = self.str_float_int(para[1])
             if (type(para[1]) == str):
                 para[1] = para[1].replace(' ', '_')
             new_dict[para[0]] = para[1]
