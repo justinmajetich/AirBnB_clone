@@ -13,7 +13,7 @@ from os import getenv
 """
 assign value HBNB_TYPE_STORAGE to type_storage
 """
-type_storage = getenv(HBNB_TYPE_STORAGE)
+type_storage = getenv("HBNB_TYPE_STORAGE")
 """
 assign storage based on HBNB_TYPE_STORAGE
 """
