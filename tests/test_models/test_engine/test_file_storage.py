@@ -97,10 +97,10 @@ class test_fileStorage(unittest.TestCase):
         """Delete obj from __objects if obj is not None """
         new = BaseModel()
         new.save()
-        new_1 =  State()
+        new_1 = State()
         new_1.name = "California"
         new_1.save()
-        new_2 =  State()
+        new_2 = State()
         new_2.name = "Nevada"
         new_2.save()
         storage.save()
