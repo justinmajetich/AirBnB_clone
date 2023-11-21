@@ -116,17 +116,30 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
+        """try:
+            tokens = shlex.split(args)
+            if tokens[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            obj = eval("{}()".format(tokens[0]))
+            print(oal(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1] is not tuple):
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except:
+            pass
+        """
         if not args:
             print("** class name missing **")
             return
-
-        tokens = shlex.split(args)
-        com = tokens[0]
-
-        if com not in HBNBCommand.classes:
+        elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[com]()
+        new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()
