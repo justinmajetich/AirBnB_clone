@@ -27,7 +27,8 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+             'latitude': float, 'longitude': float, 'name': str,
+             'city_id': str, 'user_id': str
             }
 
     def preloop(self):
@@ -124,11 +125,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         
-        if len(prams) > 1:
-            name = prams[1].split('=')
         new_instance = HBNBCommand.classes[prams[0]]()
-        if len(name) > 1:
-            new_instance.name = name[1]
+        prams = prams[1:]
+        if prams:
+            for i in prams:
+                key, val = i.split('=')
+                if key and val:
+                    setattr(new_instance, key, HBNBCommand.types[key](val))
         # ------ End of Edited part ----------
         storage.save()
         print(new_instance.id)
