@@ -133,6 +133,7 @@ class HBNBCommand(cmd.Cmd):
         except:
             pass
         """
+        """ Create an object of given parameters"""
         if not args:
             print("** class name missing **")
             return
