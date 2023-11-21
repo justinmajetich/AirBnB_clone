@@ -8,6 +8,11 @@ import json
 import os
 
 
+@unittest.skipIf(
+    os.getenv("HBNB_TYPE_STORAGE") == "db",
+    "Test not of relevance"
+)
+
 class test_basemodel(unittest.TestCase):
     """ """
 
