@@ -70,6 +70,7 @@ class BaseModel:
         if not save_to_disk:
             new_dict.pop('password', None)
         return new_dict
+
     def delete(self):
         """ Delete the current instance from storage by calling its delete method """
         models.storage.delete(self)
