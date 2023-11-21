@@ -81,6 +81,13 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create Review")
             self.assertEqual(36, len(f.getvalue().strip()))
 
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create State name='California' id='tester'")
+            self.assertEqual(6, len(f.getvalue().strip()))
+            self.assertEqual('tester\n', f.getvalue())
+            self.console.onecmd("show State tester")
+            self.assertEqual('tester', f.getvalue()[0:6])
+
     def test_show(self):
         """test the show command"""
         with patch('sys.stdout', new=StringIO()) as f:
