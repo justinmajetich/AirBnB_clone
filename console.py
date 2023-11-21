@@ -162,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
             print("** invalid format for parameters **")
             return
 
-        new_instance = HBNBCommand.classes[class_name](**param_dict)
+        new_instance = HBNBCommand.classes[class_name]()(**param_dict)
         storage.save()
             print(new_instance.id)
         storage.save()
