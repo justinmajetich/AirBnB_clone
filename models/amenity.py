@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from os import getenv
+"""from os import getenv"""
 from models.base_model import BaseModel, Base
 """from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship"""
