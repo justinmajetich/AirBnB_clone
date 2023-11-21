@@ -1,4 +1,4 @@
-A script that prepares a MySQL for the project.
+--A script that prepares a MySQL for the project.
 
 CREATE USER IF NOT EXISTS
 'hbnb_dev'@'localhost'
