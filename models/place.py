@@ -5,6 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
+import shlex
 import models
 
 
@@ -22,3 +23,26 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
+
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        reviews = relationship("Review", cascade='all, delete, delete-orphan',
+                               backref="place")
+
+    @property
+    def reviews(self):
+        """
+        getter attribute reviews that returns the list of Review instances
+        with place_id equals to the current Place.id
+        """
+        var = models.storage.all()
+        all_reviews = []
+        result = []
+        for key in var:
+            review = key.replace('.', ' ')
+            review = shlex.split(review)
+            if review[0] == 'Review':
+                all_reviews.append(var[key])
+        for elements in all_reviews:
+            if elements.place_id == self.id:
+                result.append(elements)
+        return result
