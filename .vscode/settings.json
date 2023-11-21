@@ -1,0 +1,14 @@
+{
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,  // Set to true if using pytest
+    "python.testing.nosetestsEnabled": false,  // Set to true if using nose
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.unittestArgs": [
+      "-v",
+      "-s",
+      "./tests",  // Replace with the path to your test directory
+      "-p",
+      "test_*.py"  // Replace with the pattern for your test files
+    ]
+  }
+  
