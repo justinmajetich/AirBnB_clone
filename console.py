@@ -130,6 +130,7 @@ class HBNBCommand(cmd.Cmd):
                 if type(value[1]) is str:
                     value[1] = value[1].replace('"', '\\"')
                     value[1] = value[1].replace("_", " ")
+                    value[1] = value[1].replace('\n', " ")
                 dic[value[0]] = value[1]
         except SyntaxError:
             print("** class name missing **")
