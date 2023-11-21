@@ -46,5 +46,7 @@ class FileStorage:
                 temp = json.load(f)
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
+        except Exception:
+            # Either FileNotFound or JSONDecodeError when
+            # the file exist, but nothing is inside
             pass
