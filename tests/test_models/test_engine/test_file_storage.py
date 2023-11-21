@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.state import State
 from models import storage
 import os
 
@@ -39,6 +40,12 @@ class test_fileStorage(unittest.TestCase):
         """ __objects is properly returned """
         new = BaseModel()
         temp = storage.all()
+        self.assertIsInstance(temp, dict)
+
+    def test_all_with_parameter(self):
+        """Class __objects matching the parameter is properly returned """
+        new = BaseModel()
+        temp = storage.all(BaseModel)
         self.assertIsInstance(temp, dict)
 
     def test_base_model_instantiation(self):
@@ -85,6 +92,21 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         new.save()
         self.assertTrue(os.path.exists('file.json'))
+
+    def test_delete_obj(self):
+        """Delete obj from __objects if obj is not None """
+        new = BaseModel()
+        new.save()
+        new_1 =  State()
+        new_1.name = "California"
+        new_1.save()
+        new_2 =  State()
+        new_2.name = "Nevada"
+        new_2.save()
+        storage.save()
+        self.assertEqual(len(storage.all()), 3)
+        storage.delete(new_1)
+        self.assertEqual(len(storage.all()), 2)
 
     def test_type_path(self):
         """ Confirm __file_path is string """
