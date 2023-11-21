@@ -114,8 +114,8 @@ class HBNBCommand(cmd.Cmd):
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
-        pass
+        """ Overrides the emptyline method of CMD"""
+
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -175,7 +175,6 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
