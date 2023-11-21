@@ -3,6 +3,7 @@
 import json
 from models.state import State
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -13,7 +14,8 @@ class FileStorage:
         if (cls):
             new_obj = {}
             for key, value in self.__objects.items():
-                if value.get('__class__') == cls.__name__:
+                k = key.split('.')[0]
+                if k == cls.__name__:
                     new_obj[key] = value
             return new_obj
         return FileStorage.__objects
@@ -51,14 +53,12 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
         """delete obj from __objects dict"""
         if (obj):
-            for key, value in self.__objects.items():
-                if obj.get('id') == value.get('id'):
-                    del self.__objects[key]
-                    break
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            del self.__objects[key]
