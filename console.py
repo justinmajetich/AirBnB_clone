@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -100,10 +101,26 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        params = args.split(' ').copy()
+        className = params[0]
+        if className not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        del params[0]
+        if (len(params) > 0):
+            params_dict = {
+                param[0]: param[1].replace('"', '').replace("'", '')
+                for param in (v.split('=') for v in params)
+            }
+            params_dict['__class__'] = className
+            if params_dict.get('created_at') is None:
+                params_dict['created_at'] = datetime.now().isoformat()
+            if params_dict.get('updated_at') is None:
+                params_dict['updated_at'] = datetime.now().isoformat()
+            new_instance = HBNBCommand.classes[className](**params_dict)
+            storage.new(new_instance)
+        else:
+            new_instance = HBNBCommand.classes[className]()
         storage.save()
         print(new_instance.id)
         storage.save()
