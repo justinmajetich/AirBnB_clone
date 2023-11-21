@@ -128,7 +128,8 @@ class HBNBCommand(cmd.Cmd):
                 value = newlist[i].split("=")
                 value[1] = eval(value[1])
                 if type(value[1]) is str:
-                    value[1] = value[1].strip('\"')
+                    value[1] = value[1].replace('"', '\\"')
+                    value[1] = value[1].replace("_", " ")
                 dic[value[0]] = value[1]
         except SyntaxError:
             print("** class name missing **")
