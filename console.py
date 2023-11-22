@@ -104,7 +104,9 @@ class HBNBCommand(cmd.Cmd):
         args_dict = {}
         if (len(args) > 1):
             args_dict = {
-                param[0]: param[1].replace('\"', '').replace("_", ' ')
+                param[0]: param[1][1:-1].replace("_", ' ') if param[1].startswith('"') 
+                and param[1].endswith('"') else float(param[1]) if '.' in param[1]
+                else int(param[1])
                 for param in (v.split('=') for v in args[1:])
             }
             args_dict['__class__'] = class_name
