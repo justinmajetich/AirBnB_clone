@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from console import HBNBCommand
 from models import storage
 import os
 
@@ -107,3 +108,27 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_do_create(self):
+        """ Test HBNBCommand's do_create method """
+        cmd = HBNBCommand()
+
+        # Test with valid parameters
+        cmd.onecmd("create BaseModel key1=value1 key2=value2")
+        obj_id = cmd.onecmd("create BaseModel key3=value3")
+
+        # Check if the object is created and stored in storage
+        obj = storage.all()["BaseModel.{}".format(obj_id.strip())]
+        self.assertIsInstance(obj, BaseModel)
+        self.assertEqual(obj.key1, "value1")
+        self.assertEqual(obj.key2, "value2")
+        self.assertEqual(obj.key3, "value3")
+
+        # Test with missing class name
+        result = cmd.onecmd("create")
+        self.assertEqual(result, "** class name missing **")
+
+        # Test with invalid class name
+        result = cmd.onecmd("create NonexistentClass key=value")
+        self.assertEqual(result, "** class 'NonexistentClass' doesn't exist **")
+

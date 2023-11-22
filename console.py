@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,18 +113,63 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """Create an object of any class with given parameters"""
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        arg_list = arg.split()
+        class_name = arg_list[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        # Check if there are parameters provided
+        if len(arg_list) < 2:
+            print("** attributes missing **")
+            return
+        # Extract parameters from the argument list
+        parameters = ' '.join(arg_list[1:])
+        # Convert parameters string to a dictionary
+        try:
+            params_dict = eval(parameters)
+        except:
+            print("** invalid syntax for parameters **")
+            return
+        #Replace underscores with spaces in keys
+        params_dict = {
+                key.replace('_', ' '): value
+                for key, value in params_dict.items()
+                }
+        # Validate and convert parameter values
+        for key, value in params_dict.items():
+            try:
+                if '.' in value:
+                    # Convert to float if the value contains a dot
+                    params_dict[key] = float(value)
+                elif value.startswith('"') and value.endswith('"'):
+                    # Process string values
+                    # Remove leading and trailing double quotes
+                    value = value[1:-1]
+                    # Replace escaped double quotes with a single double quote
+                    value = value.replace('\\"', '"')
+                    params_dict[key] = value
+                else:
+                    # Convert to int if the value is an integer
+                    params_dict[key] = int(value)
+            except ValueError:
+                # Skip parameters that can't be recognized as float or int
+                print(f"** invalid value for parameter '{key}' **")
+                del params_dict[key]
+
+        # Create an instance of the specified class with the given parameters
+        new_instance = HBNBCommand.classes[class_name](**params_dict)
+        # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
         storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +317,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +325,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
