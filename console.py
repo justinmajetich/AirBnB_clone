@@ -103,15 +103,26 @@ class HBNBCommand(cmd.Cmd):
 
         args_dict = {}
         if (len(args) > 1):
-            args_dict = {
-                param[0]: param[1][1:-1].replace("_", ' ') if param[1].startswith('"') 
-                and param[1].endswith('"') else float(param[1]) if '.' in param[1]
-                else int(param[1])
-                for param in (v.split('=') for v in args[1:])
-            }
-            args_dict['__class__'] = class_name
-            args_dict['created_at'] = datetime.now().isoformat()
-            args_dict['updated_at'] = datetime.now().isoformat()
+            cls = HBNBCommand.classes[class_name]
+            # parse command syntax to dict
+            try:
+                args_dict = {
+                    param[0]: param[1][1:-1].replace("_", ' ')
+                    if param[1].startswith('"') and param[1].endswith('"')
+                    else float(param[1]) if '.' in param[1]
+                    else int(param[1])
+                    for param in (v.split('=') for v in args[1:])
+                }
+            except ValueError: # error parsing
+                pass
+            # skip any keyword argument that can't be recognized
+            filtered_args = {k: v
+                             for k, v in args_dict.items()
+                             if k in set(cls.__dict__.keys()) or k == 'id'}
+            filtered_args['__class__'] = class_name
+            filtered_args['created_at'] = datetime.now().isoformat()
+            filtered_args['updated_at'] = datetime.now().isoformat()
+            args_dict = filtered_args
         new_instance = HBNBCommand.classes[class_name](**args_dict)
         print(new_instance.id)
         storage.save()
