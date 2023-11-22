@@ -120,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
         Handles EOF to exit program
         """
         print()
-        exit()
+        exit(0)
 
     def help_EOF(self):
         """
