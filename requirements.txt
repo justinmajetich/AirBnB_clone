@@ -1,0 +1,6 @@
+greenlet          3.0.1
+mysqlclient       2.2.0
+pip               22.0.2
+setuptools        59.6.0
+SQLAlchemy        2.0.23
+typing_extensions 4.8.0k
