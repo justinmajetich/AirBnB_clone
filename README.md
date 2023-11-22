@@ -38,34 +38,42 @@ This repository contains the initial stage of a student project to build a clone
 5. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
 
 ##### Commands
-    * create - Creates an instance based on given class
+    * create - Creates an instance based on a given class
 
     * destroy - Destroys an object based on class and UUID
 
     * show - Shows an object based on class and UUID
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+    * All - Shows all objects the program has access to, or all objects of a given class
 
-    * update - Updates existing attributes an object based on class name and UUID
+    * update - Updates existing attributes of an object based on the class name and UUID
 
     * quit - Exits the program (EOF will as well)
 
+##### Environment variables
+
+- `HBNB_ENV`: for the running environment. It can be “dev” or “test” for the moment (“production” soon!)
+- `HBNB_MYSQL_USER`: the username of your MySQL
+- `HBNB_MYSQL_PWD`: the password of your MySQL
+- `HBNB_MYSQL_HOST`: the hostname of your MySQL
+- `HBNB_MYSQL_DB`: the database name of your MySQL
+- `HBNB_TYPE_STORAGE`: the type of storage used. It can be “file” (using `FileStorage`) or `db` (using `DBStorage`)
 
 ##### Alternative Syntax
-Users are able to issue a number of console command using an alternative syntax:
+Users are able to issue a number of console commands using an alternative syntax:
 
 	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
 Advanced syntax is implemented for the following commands: 
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+    * All - Shows all objects the program has access to, or all objects of a given class
 
-	* count - Return number of object instances by class
+	* count - Return the number of object instances by class
 
     * show - Shows an object based on class and UUID
 
 	* destroy - Destroys an object based on class and UUID
 
-    * update - Updates existing attributes an object based on class name and UUID
+    * update - Updates existing attributes of an object based on the class name and UUID
 
 <br>
 <br>
