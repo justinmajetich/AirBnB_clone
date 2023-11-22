@@ -38,9 +38,7 @@ class DBStorage:
         if cls is not None:
             if type(cls) is str:
                 cls = eval(cls)
-            print(cls)
             all_items = self.__session.query(cls).all()
-            print(all_items)
             for items in all_items:
                 key_format = items.__class__.__name__ + "." + items.id
                 obj_dict[key_format] = items

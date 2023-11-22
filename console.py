@@ -143,6 +143,8 @@ class HBNBCommand(cmd.Cmd):
                     continue
             except Exception as e:
                 continue
+
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
@@ -227,10 +229,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-
-            print(storage.all(HBNBCommand.classes[args]).items())
             for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print("It reaches the for loop")
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
