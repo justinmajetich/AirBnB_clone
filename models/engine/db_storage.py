@@ -2,13 +2,6 @@
 """This module defines a class to manage DB storage for hbnb clone"""
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from models.base_model import BaseModel, Base
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 from os import getenv
 
 
@@ -39,6 +32,13 @@ class DBStorage:
 
     def all(self, cls=None):
         results = {}
+        from models.base_model import BaseModel
+        from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.state import State
+        from models.user import User
 
         if cls is None:
             classes = [BaseModel, Amenity, City, Place, Review, State, User]
@@ -62,6 +62,8 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        from models.base_model import Base
+
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
 
