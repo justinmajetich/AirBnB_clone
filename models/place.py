@@ -7,6 +7,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.sql.schema import Table
 from sqlalchemy.orm import relationship
+from os import getenv
 
 from models import hbnb_type_storage
 
@@ -37,8 +38,8 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        reviews = relationship('Review', backref='place',
-                               cascade='all, delete, delete-orphan')
+        reviews = relationship('Review', cascade='all, delete',
+                               backref='place', passive_deletes=True)
         amenities = relationship('Amenity', secondary=place_amenity,
                                  viewonly=False, backref='place_amenities')
     else:
@@ -54,6 +55,7 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def reviews(self):
             ''' returns list of review instances with place_id

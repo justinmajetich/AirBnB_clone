@@ -116,39 +116,74 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD"""
 
-    def do_create(self, line):
-        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
-        Create a new class instance with given keys/values and print its id.
-        """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
+    def _split_dict(self, args):
+        """Splits args in to className and kwargs"""
 
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0])()
+        def parse_value(value):
+            if value.startswith('"') and value.endswith('"'):
+                # String value
+                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+                return value
+            elif '.' in value:
+                # Float value
+                try:
+                    return float(value)
+                except ValueError:
+                    pass
             else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
+                # Integer value
+                try:
+                    return int(value)
+                except ValueError:
+                    pass
+            # If value doesn't match any recognized format, return None
+            return None
 
-        except SyntaxError:
+        # Split the input string into components
+        components = args.split()
+
+        if len(components) < 1:
+            # Invalid input format
+            return None
+
+        class_name = components[0]
+        params = {}
+
+        for param in components[1:]:
+            key_value = param.split('=')
+            if len(key_value) == 2:
+                k, v = key_value
+                parsed_value = parse_value(v)
+                if parsed_value is not None:
+                    params[k] = parsed_value
+
+        return class_name, params
+
+    def _split(self, arg):
+        """Split the line in to substrings based on double quotes and spaces"""
+        pattern = r'("[^"]+"|\{[^}]*\}|\S+)'
+        res = re.findall(pattern, arg)
+        for i in range(len(res)):
+            try:
+                v = eval(res[i])
+                if type(v) in (int, str, float, dict):
+                    res[i] = v
+            except (NameError, SyntaxError, TypeError):
+                continue
+        return res
+
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        klas, kwargs = self._split_dict(args)
+        if klas not in self.__classes:
             print("** class doesn't exist **")
+            return
+        new_instance = self.__classes[klas](**kwargs)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
