@@ -17,15 +17,12 @@ class DBStorage:
 
     def __init__(self):
         """Initialize a new DBStorage instance"""
-        # self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-        #                               format(getenv("HBNB_MYSQL_USER"),
-        #                                      getenv("HBNB_MYSQL_PWD"),
-        #                                      getenv("HBNB_MYSQL_HOST"),
-        #                                      getenv("HBNB_MYSQL_DB")),
-        #                               pool_pre_ping=True)
-        # Just for testing
-        self.__engine = create_engine('sqlite:///mydb.db',
-                                      pool_pre_ping=True, echo=True)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
 
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
