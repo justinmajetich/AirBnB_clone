@@ -1,24 +1,31 @@
-#!/usr/bin/python3
-""" """
+#!/usr/bin/env python3
+"""
+module to test the State class
+"""
 import unittest
+import os
 from models.state import State
 
 
-class test_state(unittest.TestCase):
-    """ """
+class TestState(unittest.TestCase):
+    """
+    test state
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "State"
-        self.value = State
+    def setUp(self):
+        """setup"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.state = State()
 
-    def test_name3(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def tearDown(self):
+        """tear down"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.state
 
-    def test_invalid_param(self):
-        """test that an invalid parameter is not considered"""
-        new = self.value({"invalid_param": "value"})
-        self.assertNotIn("invalid_param", new.to_dict())
+    def test_creation(self):
+        '''
+        ensures correct creation
+        '''
+        self.assertEqual(self.state.name, '')

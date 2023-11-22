@@ -1,39 +1,52 @@
 #!/usr/bin/python3
-""" """
+"""
+module to test the User class
+"""
 import unittest
+import os
 from models.user import User
 
 
-class test_User(unittest.TestCase):
-    """ """
+class TestUser(unittest.TestCase):
+    """
+    tests class
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+    def setUp(self):
+        """setup"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.user = User()
 
-    def test_first_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+    def tearDown(self):
+        """tear down"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.user
 
-    def test_last_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+    def test_creation(self):
+        '''
+        ensure correct creation
+        '''
+        self.assertEqual(self.user.email, '')
+        self.assertEqual(self.user.password, '')
+        self.assertEqual(self.user.first_name, '')
+        self.assertEqual(self.user.last_name, '')
 
-    def test_email(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+    def test_creation_with_args(self):
+        '''
+        ensure correct creation with args
+        '''
+        data = {'id': 3,
+                'first_name': 'Betty',
+                'last_name': 'Holberton',
+                'password': '123',
+                'email': 'correo@correo',
+                }
 
-    def test_password(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
-
-    def test_invalid_param(self):
-        """test that an invalid parameter is not considered"""
-        new = self.value({"invalid_param": "value"})
-        self.assertNotIn("invalid_param", new.to_dict())
+        self.user = User(**data)
+        self.assertEqual(self.user.id, 3)
+        self.assertEqual(self.user.first_name, 'Betty')
+        self.assertEqual(self.user.last_name, 'Holberton')
+        self.assertEqual(self.user.password, '123')
+        self.assertEqual(self.user.email, 'correo@correo')

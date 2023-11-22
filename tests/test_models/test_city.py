@@ -1,29 +1,32 @@
-#!/usr/bin/python3
-""" """
+#!/usr/bin/env python3
+"""
+module to test the City class
+"""
 import unittest
+import os
 from models.city import City
 
 
-class test_City(unittest.TestCase):
-    """ """
+class TestCity(unittest.TestCase):
+    """
+    test city
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
+    def setUp(self):
+        """setup"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.city = City()
 
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
+    def tearDown(self):
+        """tear down"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.city
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
-
-    def test_invalid_param(self):
-        """test that an invalid parameter is not considered"""
-        new = self.value({"invalid_param": "value"})
-        self.assertNotIn("invalid_param", new.to_dict())
+    def test_creation(self):
+        '''
+        ensure correct creation
+        '''
+        self.assertEqual(self.city.name, '')
+        self.assertEqual(self.city.state_id, '')

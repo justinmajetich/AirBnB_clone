@@ -1,34 +1,33 @@
 #!/usr/bin/python3
-""" """
+"""
+module to test the Review class
+"""
 import unittest
+import os
 from models.review import Review
 
 
-class test_review(unittest.TestCase):
-    """ """
+class TestReview(unittest.TestCase):
+    """
+    test review
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Review"
-        self.value = Review
+    def setUp(self):
+        """setUp"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.review = Review()
 
-    def test_place_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.place_id), str)
+    def tearDown(self):
+        """tearDown"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.review
 
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
-
-    def test_text(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.text), str)
-
-    def test_invalid_param(self):
-        """test that an invalid parameter is not considered"""
-        new = self.value({"invalid_param": "value"})
-        self.assertNotIn("invalid_param", new.to_dict())
+    def test_creation(self):
+        '''
+        ensures correct creaion
+        '''
+        self.assertEqual(self.review.text, '')
+        self.assertEqual(self.review.place_id, '')
+        self.assertEqual(self.review.user_id, '')

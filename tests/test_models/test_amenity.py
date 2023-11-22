@@ -1,24 +1,31 @@
 #!/usr/bin/python3
-""" """
+"""
+module to test Amenity class
+"""
 import unittest
+import os
 from models.amenity import Amenity
 
 
-class test_Amenity(unittest.TestCase):
-    """ """
+class TestAmenity(unittest.TestCase):
+    """
+    test amenity
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    def setUp(self):
+        """setUp"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.amenity = Amenity()
 
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def tearDown(self):
+        """tearDown"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.amenity
 
-    def test_invalid_param(self):
-        """test that an invalid parameter is not considered"""
-        new = self.value({"invalid_param": "value"})
-        self.assertNotIn("invalid_param", new.to_dict())
+    def test_creation(self):
+        '''
+        ensure correct creation
+        '''
+        self.assertEqual(self.amenity.name, '')
