@@ -149,23 +149,33 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        params = ' '.join(args_list[1:])
-
         param_dict = {}
         try:
-            for param in params.split(','):
-                key, value = param.split('=')
-                key = key.strip()
-                value = value.strip().replace('_', ' ').replace('"', '').replace('\\"', '"')
-        except ValueError:
-            print("** invalid format for parameters **")
+            for param in args_list[1:]:
+                if len(param.split('=')) == 2:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                    elif '.' in value:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            print(f"Error: Invalid float value for parameter {key}")
+                            return
+                    else:
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            print(f"Error: Invalid integer value for parameter {key}")
+                            return
+                    param_dict[key] = value
+        except Exception as e:
+            print(f"Error: {e}")
             return
-        param_dict[key] = value
 
         new_instance = HBNBCommand.classes[class_name]()
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """
