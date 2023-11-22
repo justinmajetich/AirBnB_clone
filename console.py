@@ -263,6 +263,8 @@ class HBNBCommand(cmd.Cmd):
         for obj in print_list:
             print(obj)
 
+        print(print_list)
+
     def help_all(self):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")
