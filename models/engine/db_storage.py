@@ -43,6 +43,9 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
+<<<<<<< HEAD
+        """deletes"""
+=======
         """deletes object in the current session"""
         self.__session.delete(obj)
         self.save()
@@ -53,3 +56,4 @@ class DBStorage():
         Session = sessionmaker(bind=engine, expire_on_commit=False)
         self.__session = Session()
         Base.metadata.create_all(engine)
+>>>>>>> fc2970c255f0411bdd89e6786f731f576da5ea42
