@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -89,23 +90,34 @@ class HBNBCommand(cmd.Cmd):
         line = ' '.join([_cmd, _cls, _id, _args])
         return line
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        if not args:
+        if not line:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args = line.split().copy()
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        args_dict = {}
+        if (len(args) > 1):
+            args_dict = {
+                param[0]: param[1].replace('\"', '').replace("_", ' ')
+                for param in (v.split('=') for v in args[1:])
+            }
+            args_dict['__class__'] = class_name
+            args_dict['created_at'] = datetime.now().isoformat()
+            args_dict['updated_at'] = datetime.now().isoformat()
+        new_instance = HBNBCommand.classes[class_name](**args_dict)
         print(new_instance.id)
         storage.save()
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <class_name>\n")
 
     def do_show(self, line):
         """ Method to show an individual object """
@@ -181,7 +193,7 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all():
                 print_list.append(str(v))
 
         print(print_list)
