@@ -28,8 +28,9 @@ association_table = Table("place_amenity", Base.metadata,
 
 
 class Place(BaseModel, Base):
-    """Represents a Place for a MySQL database.
-    Inherits from SQLAlchemy Base and links to the MySQL table places
+    """
+      Represents a Place for a MySQL database.
+      Inherits from SQLAlchemy Base and links to the MySQL table places
     """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -59,7 +60,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """Get/set linked Amenities."""
+            """set the linked Amenities."""
             amenity_list = []
             for amenity in list(models.storage.all(Amenity).values()):
                 if amenity.id in self.amenity_ids:
