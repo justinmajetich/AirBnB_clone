@@ -227,12 +227,15 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            query_class = HBNBCommand.classes[args]
+            query = storage.all(query_class)
+            for obj in query.values():
+                print_list.append(str(obj))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for class_name, class_ in HBNBCommand.classes.items():
+                query = storage.all(class_)
+                for obj in query.values():
+                    print_list.append(str(obj))
 
         print(print_list)
 

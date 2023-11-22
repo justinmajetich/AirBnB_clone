@@ -3,7 +3,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from models.base_model import Base
+from models.base_model import BaseModel, Base
+from models.state import State
 
 
 class DBStorage:
@@ -30,16 +31,20 @@ class DBStorage:
         """query on the current database session all objects of class name"""
         objs = {}
         classes = {
-                'BaseModel': BaseModel
+                'BaseModel': BaseModel,
+                'State': State,
                 }
         if cls:
-            query = self.__session.query(classes[cls])
-            for obj in query.all():
-                key = '{}.{}'.format(type(obj).__name__, obj.id)
-                objs[key] = obj
+            if cls in classes:
+                query = self.__session.query(classes[cls])
+                for obj in query.all():
+                    key = '{}.{}'.format(type(obj).__name__, obj.id)
+                    objs[key] = obj
+                else:
+                    print("** class doesn't exist **")
         else:
             for name, cls in classes.items():
-                query = self.__session.query(cls)
+                query = self.__session.query(classes[cls])
                 for obj in query.all():
                     key = '{}.{}'.format(type(obj).__name__, obj.id)
                     objs[key] = obj
