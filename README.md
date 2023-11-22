@@ -163,3 +163,9 @@ For example, “you want to validate that the create State name="California" com
 - execute the console command
 - get (again) the number of current records in the table states (same method, with MySQLdb)
 - if the difference is +1 => test passed
+
+DBStorage - States and Cities
+------------------------
+### <p align="center">![linking](https://github.com/the1Riddle/AirBnB_clone/assets/125451537/a04d5cd7-7b94-451f-b6b7-fdee096140c5)</p>
+
+The transition between FileStorage and DBStorage is the biggest challenge. However, you can manage multiple storage systems like logs service with the concept of abstraction. Add attributes for SQLAlchemy as class attributes with a "weird" value for description and mapping to the database. If you modify these values or add/remove an attribute of a model, you will have to delete and recreate the database in SQL.
