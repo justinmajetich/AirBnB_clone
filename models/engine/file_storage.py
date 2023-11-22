@@ -4,6 +4,11 @@
 import json
 import shlex
 
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
