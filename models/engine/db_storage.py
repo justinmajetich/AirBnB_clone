@@ -26,7 +26,7 @@ class DBStorage():
         self.__session = None
 
     def all(self, cls=None):
-        """querry on the current database session"""
+        """query on the current database session"""
         if cls:
             rows = self.__session.query(cls).all()
         else:
@@ -44,6 +44,7 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
+<<<<<<< HEAD
         """deletes object in the current session"""
         self.__session.delete(obj)
         self.save()
@@ -60,3 +61,6 @@ class DBStorage():
         self.__session = Session()
         Base.metadata.create_all(self.__engine)
 
+=======
+        """deletes"""
+>>>>>>> b6e275d5ab8287e73cef6e71bddbed1879d6d3c6
