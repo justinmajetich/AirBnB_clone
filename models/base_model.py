@@ -3,10 +3,19 @@
 import uuid
 from datetime import datetime
 from models import storage
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime
+
+Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
+
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         self.id = str(uuid.uuid4())
@@ -19,7 +28,6 @@ class BaseModel:
                                                        '%Y-%m-%dT%H:%M:%S.%f'))
                 elif k != '__class__':
                     setattr(self, k, v)
-        storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -29,13 +37,20 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = self.__dict__.copy()
+        if 'sa_instance_state' in dictionary:
+            del dictionary['sa_instance_state']
         dictionary.update({'__class__':
                           self.__class__.__name__})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+    def delete(self):
+        """Delete the current instance from the storage"""
+        storage.delete(self)
