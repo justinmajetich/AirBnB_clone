@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-sys.path.append('/AirBnB_clone_v2/console.py')
 from console import HBNBCommand
 from models.base_model import BaseModel
 
