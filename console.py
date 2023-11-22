@@ -10,6 +10,25 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
+"""
+I have changed some things in the module
+
+1) you will see some lines that are duplicated
+and the first one is commented because I changed it
+and didn't want to break anything in the code
+they were giving warnings so I changed them.
+
+NOTE: after I put some changes the checks 10, 11, and 13
+are now GREEN!
+
+2) the code was only working if you put 
+the class name and some parameters but if you
+put class name only the code won't work
+
+
+
+"""
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,8 +92,11 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
-                            and type(eval(pline)) is dict:
+                    # if pline[0] is '{' and pline[-1] is'}'\
+                    #         and type(eval(pline)) is dict:
+                    #     _args = pline
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) == dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -113,18 +135,38 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def args_split(self, args):
+        """method that splite args in a list
+        Return ditc that contain key value of args startin from first param
+        """
+        new_dict = {}
+        for para in args:
+            para = para.split('=')
+            if (para[1][0] != '0'):
+                para[1] = self.str_float_int(para[1])
+            if (type(para[1]) == str):
+                para[1] = para[1].replace(' ', '_')
+            new_dict[para[0]] = para[1]
+        return new_dict
+    
     def do_create(self, args):
         """ Create an object of any class"""
+        args = shlex.split(args)
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes.keys():
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[args[0]]()
+        if len(args) > 1:
+            params = self.args_split(args[1:])
+            for key, value in params.items():
+                setattr(new_instance, key, value)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
+        # storage.save()
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +314,8 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            # if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +323,12 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            # if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            # if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] != '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -319,6 +364,16 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    def str_float_int(self, value):
+        try:
+            value = int(value)
+        except Exception:
+            try:
+                value = float(value)
+            except Exception:
+                pass
+        return (value)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
