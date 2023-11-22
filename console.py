@@ -30,6 +30,39 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    class_keys = {
+        "BaseModel": ["id", "created_at", "updated_at"],
+        "User": [
+            "id",
+            "created_at",
+            "updated_at",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+        ],
+        "City": ["id", "created_at", "updated_at", "state_id", "name"],
+        "State": ["id", "created_at", "updated_at", "name"],
+        "Place": [
+            "id",
+            "created_at",
+            "updated_at",
+            "city_id",
+            "user_id",
+            "name",
+            "description",
+            "number_rooms",
+            "number_bathrooms",
+            "max_guest",
+            "price_by_night",
+            "latitude",
+            "longitude",
+            "amenity_ids"
+        ],
+        "Amenity": ["id", "created_at", "updated_at", "name"],
+        "Review": ["id", "created_at", "updated_at",
+                   "place_id", "user_id", "text"],
+    }
 
     def parse_params(self, args):
         """Parse and validate parameters"""
@@ -148,30 +181,41 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        try:
-            arg = args
-            arg = arg.split()
-            class_name = arg[0]
-            args_list = arg[1:]
-            if class_name not in self.classes:
-                print("** class doesn't exist **")
-                return
-            new_instance = self.classes[class_name]()
-            if len(arg) == 1:
-                storage.new(new_instance)
-                storage.save()
-                print(new_instance.id)
-            elif len(arg) > 1:
-                args_list = self.parse_params(args_list)
-                for key, value in args_list.items():
-                    setattr(new_instance, key, value)
-                storage.new(new_instance)
-                storage.save()
-                print(new_instance.id)
-        except Exception as e:
-            print(f"Error: {e.args} {e}")
-            self.default(args)
 
+        list_args = args.split()
+        class_name = list_args[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
+        attr_dict = {}
+        new_instance = HBNBCommand.classes[class_name]()
+
+        for param in list_args[1:]:
+            param_value = param.split('=')
+            if len(param_value) == 2:
+                key = param_value[0]
+                if key not in HBNBCommand.class_keys[class_name]:
+                    continue
+                value = param_value[1]
+
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                setattr(new_instance, key, value)
+
+        new_instance.save()
+        print(new_instance.id)
+ 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
