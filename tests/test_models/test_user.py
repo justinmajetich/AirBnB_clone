@@ -50,3 +50,20 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.user.last_name, 'Holberton')
         self.assertEqual(self.user.password, '123')
         self.assertEqual(self.user.email, 'correo@correo')
+
+    def test_types(self):
+        '''
+        Test types
+        '''
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.last_name), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.user = User({'name': 'Betty', 'my_number': 89})
+        self.assertEqual(hasattr(self.user, 'name'), False)
+        self.assertEqual(hasattr(self.user, 'my_number'), False)

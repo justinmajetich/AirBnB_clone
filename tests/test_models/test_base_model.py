@@ -59,3 +59,9 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(base.to_dict(), base2.to_dict())
         self.assertEqual(base.__str__(), base2.__str__())
         self.assertEqual(str(base), str(base2))
+
+    def test_types(self):
+        """Test the type of the base model"""
+        base = BaseModel()
+        self.assertEqual(type(base.id), str)
+        self.assertEqual(type(base.created_at), type(base.updated_at))

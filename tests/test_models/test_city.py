@@ -30,3 +30,18 @@ class TestCity(unittest.TestCase):
         '''
         self.assertEqual(self.city.name, '')
         self.assertEqual(self.city.state_id, '')
+
+    def test_types(self):
+        '''
+        ensure types
+        '''
+        self.assertEqual(type(self.city.name), str)
+        self.assertEqual(type(self.city.state_id), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.city = City({'title': 'San Francisco', 'stateId': 'CA'})
+        self.assertFalse(hasattr(self.city, 'stateId'))
+        self.assertFalse(hasattr(self.city, 'title'))

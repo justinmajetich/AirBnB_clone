@@ -31,3 +31,19 @@ class TestReview(unittest.TestCase):
         self.assertEqual(self.review.text, '')
         self.assertEqual(self.review.place_id, '')
         self.assertEqual(self.review.user_id, '')
+
+    def test_types(self):
+        '''
+        ensure types
+        '''
+        self.assertEqual(type(self.review.text), str)
+        self.assertEqual(type(self.review.place_id), str)
+        self.assertEqual(type(self.review.user_id), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.review = Review({'ratings': 20, 'username': 'betty'})
+        self.assertFalse(hasattr(self.review, 'rating'))
+        self.assertFalse(hasattr(self.review, 'username'))

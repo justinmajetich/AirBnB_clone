@@ -29,3 +29,17 @@ class TestAmenity(unittest.TestCase):
         ensure correct creation
         '''
         self.assertEqual(self.amenity.name, '')
+    
+    def test_types(self):
+        '''
+        ensure types
+        '''
+        self.assertEqual(type(self.amenity.name), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.amenity = Amenity({'first_name': 'Betty', 'last_name': 'Holberton'})
+        self.assertFalse(hasattr(self.amenity, 'first_name'))
+        self.assertFalse(hasattr(self.amenity, 'last_name'))
