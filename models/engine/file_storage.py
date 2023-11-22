@@ -37,10 +37,11 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ Delete obj from _objects if it's inside """
-        if obj:
+        if obj is not None:
             obj_name = f"{obj.__class__.__name__}.{obj.id}"
-            FileStorage.__objects.pop(obj_name, None)
-            self.save()
+            if obj_name in FileStorage.__objects:
+                del FileStorage.__objects[obj_name]
+                self.save()
 
     def reload(self):
         """Loads storage dictionary from file"""
