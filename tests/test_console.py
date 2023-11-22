@@ -109,7 +109,9 @@ class TestConsole(unittest.TestCase):
             uid = f.getvalue().strip()
             self.assertEqual(36, len(uid))
             self.console.onecmd("show Place {}".format(uid))
-            self.assertNotIn('number_rooms', f.getvalue())
+            output = f.getvalue()
+            self.assertNotIn('number_rooms', output)
+            self.assertIn('number_bathrooms', output)
 
     def test_show(self):
         """test the show command"""

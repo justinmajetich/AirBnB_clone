@@ -92,6 +92,23 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """ Create an object of any class"""
+        def parse(s):
+            if s.startswith('"') and s.endswith('"'):
+                return ( s[1:-1].replace("_", " ")
+                        if s[1:-1].find('"') < 0
+                        or s[s[1:-1].find('"') - 1] == "\\" else None )
+            if '.' in s:
+                try:
+                    s = float(s)
+                except ValueError:
+                    s = None
+            else:
+                try:
+                    s = int(s)
+                except ValueError:
+                    s = None
+            return s
+
         if not line:
             print("** class name missing **")
             return
@@ -105,20 +122,15 @@ class HBNBCommand(cmd.Cmd):
         if (len(args) > 1):
             cls = HBNBCommand.classes[class_name]
             # parse command syntax to dict
-            try:
-                args_dict = {
-                    param[0]: param[1][1:-1].replace("_", ' ')
-                    if param[1].startswith('"') and param[1].endswith('"')
-                    else float(param[1]) if '.' in param[1]
-                    else int(param[1])
-                    for param in (v.split('=') for v in args[1:])
-                }
-            except ValueError: # error parsing
-                pass
+            args_dict = {
+                param[0]: parse(param[1])
+                for param in (v.split('=') for v in args[1:])
+                if parse(param[1])
+            }
             # skip any keyword argument that can't be recognized
             filtered_args = {k: v
                              for k, v in args_dict.items()
-                             if k in set(cls.__dict__.keys()) or k == 'id'}
+                             if hasattr(cls, k) or k == 'id'}
             filtered_args['__class__'] = class_name
             filtered_args['created_at'] = datetime.now().isoformat()
             filtered_args['updated_at'] = datetime.now().isoformat()
