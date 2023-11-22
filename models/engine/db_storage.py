@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-"""This module defines a class to manage db storage for hbnb clone"""
+"""
+    This module introduces a class that is designed to handle the storage of the database for,
+    the hbnb cloning application.
+    It ensures efficient management of the database storage.
+"""
 from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -15,12 +19,15 @@ from models.user import User
 
 
 class DBStorage:
-    """SQL database storage"""
+    """Storing data in a SQL database."""
     __engine = None
     __session = None
 
     def __init__(self):
-        """Create engine and connect to database"""
+        """
+            To begin, you need to create an engine and establish a,
+            connection to the database.
+        """
         user = getenv("HBNB_MYSQL_USER")
         pwd = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
@@ -69,8 +76,10 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create current database session from the engine
-        using a sessionmaker"""
+        """
+            To create a current database session from the engine,
+            you need to use a sessionmaker.
+        """
         self.__session = Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(factory)
