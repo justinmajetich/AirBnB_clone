@@ -17,7 +17,7 @@ class State(BaseModel, Base):
     # if FileStorage is used, the relationship between State and City will be
     # defined as state.cities and city.state_id
     if models.storage_type == "db":
-        cities = relationship("City", back_populates="state", cascade="all, delete")
+        cities = relationship("City", cascade="all, delete")
     else:
         @property
         def cities(self):
@@ -28,3 +28,4 @@ class State(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         filtered_kwargs = {k: v for k, v in kwargs.items() if hasattr(self, k) or k == "id"}
         super().__init__(*args, **filtered_kwargs)
+        self.name = kwargs.get("name", "")
