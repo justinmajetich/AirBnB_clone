@@ -5,11 +5,11 @@ from models.Basemodel import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-user = os.environ['HBNB_MYSQL_USER'] if 'HBNB_MYSQL_USER' in os.environ else none
-password = os.environ['HBNB_MYSQL_PWD'] if 'HBNB_MYSQL_PWD' in os.environ else none
-host = os.environ['HBNB_MYSQL_HOST'] if 'HBNB_MYSQL_HOST' in os.environ else none
-db = os.environ['HBNB_MYSQL_DB'] if 'HBNB_MYSQL_DB' in os.environ else none
-test = os.environ['HBNB_ENV'] if 'HBNB_ENV' in os.environ else none
+user = os.environ['HBNB_MYSQL_USER'] if 'HBNB_MYSQL_USER' in os.environ else None
+password = os.environ['HBNB_MYSQL_PWD'] if 'HBNB_MYSQL_PWD' in os.environ else None
+host = os.environ['HBNB_MYSQL_HOST'] if 'HBNB_MYSQL_HOST' in os.environ else None
+database = os.environ['HBNB_MYSQL_DB'] if 'HBNB_MYSQL_DB' in os.environ else None
+test = os.environ['HBNB_ENV'] if 'HBNB_ENV' in os.environ else None
 
 class DBStorage():
     """database engine"""
@@ -18,12 +18,11 @@ class DBStorage():
 
     def __init__(self):
         """initialisation"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, db), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, database), pool_pre_ping=True)
         if test == 'test':
             Base.metadata.drop_all()
 
-        Session = sessionmaker(bind=engine)
-        self.__session = Session()
+        self.__session = None
 
     def all(self, cls=None):
         """querry on the current database session"""
@@ -44,4 +43,13 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletes
+        """deletes object in the current session"""
+        self.__session.delete(obj)
+        self.save()
+
+    def reload(self):
+        """creates all tables in the database"""
+        from models import city, state, user, place, review, amenity
+        Session = sessionmaker(bind=engine, expire_on_commit=False)
+        self.__session = Session()
+        Base.metadata.create_all(engine)
