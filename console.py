@@ -135,12 +135,12 @@ class HBNBCommand(cmd.Cmd):
                 value = eval(value_str)
                 if type(value) is str:
                     value = value.replace('\\"', '"').replace('_', ' ')
-                if key == ['updated_at', 'created_at'] and not isinstance(value, str):
+                if key == ['updated_at', 'created_at']\
+                        and not isinstance(value, str):
                     value = value.isoformat()
 
                 kwargs[key] = value
 
-            # Ensure 'updated_at'/'created_at' are present in kwargs as a string
             for time_key in ['updated_at', 'created_at']:
                 if time_key not in kwargs:
                     kwargs[time_key] = datetime.now().isoformat()
@@ -151,12 +151,12 @@ class HBNBCommand(cmd.Cmd):
             else:
                 kwargs['__class__'] = class_name
 
-            new_instance = HBNBCommand.classes[class_name](**kwargs)
+            new_instance = HBNBCommand.classes[class_name]()
             new_instance.save()
             print(new_instance.id)
 
         except (SyntaxError, NameError) as e:
-                print(f"Error: {e}")
+            print(f"Error: {e}")
 
     def help_create(self):
         """ Help information for the create method """
@@ -219,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -351,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
