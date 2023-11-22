@@ -36,8 +36,8 @@ class DBStorage:
         if cls is not None:
             dict_obj = {}
             result = self.__session.query(cls).all()
-            key = "{}.{}".format(cls.__name__, self.id)
             for obj in result:
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 dict_obj[key] = obj
             return dict_obj
         if cls is None:
@@ -46,12 +46,12 @@ class DBStorage:
             from models.place import Place
             from models.review import Review
             from models.user import User
-            classes = [State, City, Amenity, Place, Review, User]
+            classes = [State, City]
             dict_obj = {}
             for c in classes:
                 result = self.__session.query(c).all()
-                key = "{}.{}".format(c.__name__, self.id)
                 for obj in result:
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     dict_obj[key] = obj
             return dict_obj
 
@@ -59,6 +59,8 @@ class DBStorage:
     def new(self, obj):
         """Adding an object to the current database session."""
         if obj:
+            for key, value in obj.__dict__.items():
+                setattr(obj, key, value)
             self.__session.add(obj)
 
     def save(self):
@@ -73,6 +75,6 @@ class DBStorage:
     def reload(self):
         """Creates the database schema and session."""
         from models.base_model import Base
-        Base.metadata.create_all(engine)
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)

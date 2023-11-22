@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This module allows switching of storage types"""
-from models.engine.file_storage import FileStorage
 from os import getenv
 
 
@@ -10,5 +9,6 @@ if storage_type == "db":
     storage = DBStorage()
     storage.reload()
 else:
+    from models.engine.file_storage import FileStorage
     storage = FileStorage()
     storage.reload()
