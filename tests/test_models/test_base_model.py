@@ -79,7 +79,6 @@ class test_basemodel(unittest.TestCase):
 
         self.assertEqual(str(i), expected_output)
 
-
     def test_todict(self):
         """ testing the to_dict method"""
         i = self.value()

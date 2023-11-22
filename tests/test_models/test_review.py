@@ -18,19 +18,19 @@ class test_review(test_basemodel):
         """ testing review place_id attr"""
         new = self.value()
         self.assertNotEqual(type(new.place_id), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+                            os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                            type(None))
 
     def test_user_id(self):
         """ testing review user_id attr"""
         new = self.value()
         self.assertNotEqual(type(new.user_id), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+                            os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                            type(None))
 
     def test_text(self):
         """ testing review text attr"""
         new = self.value()
         self.assertNotEqual(type(new.text), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+                            os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                            type(None))
