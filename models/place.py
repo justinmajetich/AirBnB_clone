@@ -7,6 +7,7 @@ from sqlalchemy import FLoat
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
@@ -22,4 +23,5 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0) #nullable=False
     latitude = Column(Float) #nullable=True
     longitude = Column(Float) #nullable=True
+    reviews = relationship("Review", cascade="all, delete", backref="place")
     amenity_ids = []
