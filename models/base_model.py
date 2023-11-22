@@ -18,25 +18,25 @@ class BaseModel:
         updated_at: instance's last update date"""
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False,
+                default=datetime.utcnow(), onupdate=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Initiates a new model
 
         Arguments:
             **kwargs: <key>:<value> attributes"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key == "updated_at" or key == "created_at":
-                        kwargs[key] = datetime.strptime(kwargs[key],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                        kwargs[key] = datetime.strptime(kwargs[key],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                    setattr(self, key, value)
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
