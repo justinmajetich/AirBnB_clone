@@ -25,7 +25,7 @@ class DBStorage():
         self.__session = None
 
     def all(self, cls=None):
-        """querry on the current database session"""
+        """query on the current database session"""
         if cls:
             rows = self.__session.query(cls).all()
         else:
@@ -43,17 +43,4 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
-<<<<<<< HEAD
         """deletes"""
-=======
-        """deletes object in the current session"""
-        self.__session.delete(obj)
-        self.save()
-
-    def reload(self):
-        """creates all tables in the database"""
-        from models import city, state, user, place, review, amenity
-        Session = sessionmaker(bind=engine, expire_on_commit=False)
-        self.__session = Session()
-        Base.metadata.create_all(engine)
->>>>>>> fc2970c255f0411bdd89e6786f731f576da5ea42
