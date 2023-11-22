@@ -1,60 +1,8 @@
-{"BaseModel.16019d05-1eeb-4ebb-bf09-83336039d465": {"id": "16019d05-1eeb-4ebb-bf09-83336039d465", "created_at": "2023-11-20T16:35:16.125936", "updated_at": "2023-11-20T16:35:16.125964", "__class__": "BaseModel"}}
 {
-    "User.bafd716b-bee4-458a-a6ae-0cb1d7c3de3d": {
-        "id": "bafd716b-bee4-458a-a6ae-0cb1d7c3de3d",
-        "created_at": "2023-11-21T13:25:25.645023",
-        "updated_at": "2023-11-21T13:25:25.645023",
-        "email": "allan@gmail.com",
-        "__class__": "User"
-    },
-    "User.0ae4cf4b-4190-40a9-b666-f6dd565ce0cc": {
-        "id": "0ae4cf4b-4190-40a9-b666-f6dd565ce0cc",
-        "created_at": "2023-11-21T13:25:32.644179",
-        "updated_at": "2023-11-21T13:25:32.644179",
-        "email": "allan@gmail",
-        "__class__": "User"
-    },
-    "User.c3c98797-4f49-4c71-9a9e-030743595590": {
-        "id": "c3c98797-4f49-4c71-9a9e-030743595590",
-        "created_at": "2023-11-21T13:26:05.347234",
-        "updated_at": "2023-11-21T13:26:05.347234",
-        "email": "allan@gmail",
-        "__class__": "User"
-    },
-    "State.5c79d0c4-0062-4a29-aeea-b45fe348d415": {
-        "id": "5c79d0c4-0062-4a29-aeea-b45fe348d415",
-        "created_at": "2023-11-21T13:29:37.491166",
-        "updated_at": "2023-11-21T13:29:37.491166",
-        "name": "Nairobi",
-        "__class__": "State"
-    },
-    "State.fb1aef1e-2039-4eb7-ac25-5742370c3e68": {
-        "id": "fb1aef1e-2039-4eb7-ac25-5742370c3e68",
-        "created_at": "2023-11-21T13:29:57.366342",
-        "updated_at": "2023-11-21T13:29:57.366342",
-        "name": "Arizona",
-        "__class__": "State"
-    },
-    "Place.75b0bb01-eea4-4c35-bd18-fd6782d03e25": {
-        "id": "75b0bb01-eea4-4c35-bd18-fd6782d03e25",
-        "created_at": "2023-11-21T13:32:44.846248",
-        "updated_at": "2023-11-21T13:32:44.846248",
-        "city_id": "0001",
-        "user_id": "0001",
-        "name": "My little house",
-        "number_rooms": 4,
-        "number_bathrooms": 2,
-        "max_guest": 10,
-        "price_by_night": 300,
-        "latitude": 37.83738,
-        "longitude": -122.35374,
-        "__class__": "Place"
-    },
-    "User.d7aeb5f5-6b0d-4145-bc8b-1a8f44827f41": {
-        "id": "d7aeb5f5-6b0d-4145-bc8b-1a8f44827f41",
-        "created_at": "2023-11-21T13:33:06.559610",
-        "updated_at": "2023-11-21T13:33:06.559610",
+    "User.4ac0caa2-f083-4dee-a899-2047ade940fe": {
+        "id": "4ac0caa2-f083-4dee-a899-2047ade940fe",
+        "created_at": "2023-11-22T14:52:13.962793",
+        "updated_at": "2023-11-22T14:52:13.962793",
         "__class__": "User"
     }
 }
->>>>>>> 58151722f55d0809906f218721fcefed3b8756be

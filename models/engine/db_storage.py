@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """database storage engine"""
 import os
-from models.Basemodel import Base
+from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -44,4 +44,4 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletes
+        """deletes"""

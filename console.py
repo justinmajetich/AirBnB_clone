@@ -140,10 +140,8 @@ class HBNBCommand(cmd.Cmd):
             if not k in instance_attrs.keys():
                 continue
             setattr(new_instance, k, v)
-        storage.save()
         print(new_instance.id)
         storage.save()
-        
 
     def help_create(self):
         """ Help information for the create method """
