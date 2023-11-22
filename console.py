@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-from models import storage
+import models
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             }
         new_instance = HBNBCommand.classes[class_name](**args_dict)
         print(new_instance.id)
-        storage.save()
+        models.storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -155,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
         c_id = args[1]
         key = c_name + "." + c_id
         try:
-            print(storage.all()[key])
+            print(models.storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -187,8 +187,8 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
-            storage.save()
+            del (models.storage.all()[key])
+            models.storage.save()
         except KeyError:
             print("** no instance found **")
 
@@ -203,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             cls = HBNBCommand.classes[line.split()[0]] if line else None
-            print([str(v) for v in storage.all(cls).values()])
+            print([str(v) for v in models.storage.all(cls).values()])
 
     def help_all(self):
         """ Help information for the all command """
@@ -218,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             count = 0
-            for k in storage.all():
+            for k in models.storage.all():
                 if args == k.split('.')[0]:
                     count += 1
             print(count)
@@ -249,12 +249,12 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         # determine if key is present
-        if key not in storage.all():
+        if key not in models.storage.all():
             print("** no instance found **")
             return
 
         # retrieve remaining arguments
-        new_dict = storage.all()[key]
+        new_dict = models.storage.all()[key]
         args = args[2:]
         args = [[args[i], args[i+1]] for i in range(0, len(args), 2)]
 

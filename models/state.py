@@ -17,7 +17,7 @@ class State(BaseModel, Base):
     # if FileStorage is used, the relationship between State and City will be
     # defined as state.cities and city.state_id
     if models.storage_type == "db":
-        cities = relationship("City", back_propagates="state", cascade="all, delete")
+        cities = relationship("City", back_populates="state", cascade="all, delete")
     else:
         @property
         def cities(self):
