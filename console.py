@@ -90,39 +90,34 @@ class HBNBCommand(cmd.Cmd):
         line = ' '.join([_cmd, _cls, _id, _args])
         return line
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        if not args:
+        if not line:
             print("** class name missing **")
             return
-        params = args.split(' ').copy()
-        className = params[0]
-        if className not in HBNBCommand.classes:
+        args = line.split().copy()
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        del params[0]
-        if (len(params) > 0):
-            params_dict = {
-                param[0]: param[1].replace('"', '').replace("'", '')
-                for param in (v.split('=') for v in params)
+
+        args_dict = {}
+        if (len(args) > 1):
+            args_dict = {
+                param[0]: param[1].replace('\"', '').replace("_", ' ')
+                for param in (v.split('=') for v in args[1:])
             }
-            params_dict['__class__'] = className
-            if params_dict.get('created_at') is None:
-                params_dict['created_at'] = datetime.now().isoformat()
-            if params_dict.get('updated_at') is None:
-                params_dict['updated_at'] = datetime.now().isoformat()
-            new_instance = HBNBCommand.classes[className](**params_dict)
-            storage.new(new_instance)
-        else:
-            new_instance = HBNBCommand.classes[className]()
-        storage.save()
+            args_dict['__class__'] = class_name
+            args_dict['created_at'] = datetime.now().isoformat()
+            args_dict['updated_at'] = datetime.now().isoformat()
+        new_instance = HBNBCommand.classes[class_name](**args_dict)
         print(new_instance.id)
         storage.save()
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <class_name>\n")
 
     def do_show(self, line):
         """ Method to show an individual object """
@@ -198,7 +193,7 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all():
                 print_list.append(str(v))
 
         print(print_list)

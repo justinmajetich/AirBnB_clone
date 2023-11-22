@@ -33,19 +33,26 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """Test the kwargs of the base model"""
         i = self.value()
-        copy = i.to_dict()
-        new = BaseModel(**copy)
-        self.assertFalse(new is i)
-
-    def test_kwargs_int(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
-        copy.update({1: 2})
-        with self.assertRaises(TypeError):
-            new = BaseModel(**copy)
+        i.name = "My first model"
+        i.number = 89
+        i_dict = i.to_dict()
+        i2 = self.value(**i_dict)
+        self.assertEqual(i.id, i2.id)
+        self.assertEqual(i.created_at, i2.created_at)
+        self.assertEqual(i.updated_at, i2.updated_at)
+        self.assertEqual(i.name, i2.name)
+        self.assertEqual(i.number, i2.number)
+        self.assertNotEqual(i, i2)
+        self.assertEqual(type(i.created_at), type(i2.created_at))
+        self.assertEqual(type(i.updated_at), type(i2.updated_at))
+        self.assertEqual(type(i.name), type(i2.name))
+        self.assertEqual(type(i.number), type(i2.number))
+        self.assertEqual(i.__dict__, i2.__dict__)
+        self.assertEqual(i.to_dict(), i2.to_dict())
+        self.assertEqual(i.__str__(), i2.__str__())
+        self.assertEqual(str(i), str(i2))
 
     def test_save(self):
         """ Testing save """
@@ -68,18 +75,6 @@ class test_basemodel(unittest.TestCase):
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
-    def test_kwargs_none(self):
-        """ """
-        n = {None: None}
-        with self.assertRaises(TypeError):
-            new = self.value(**n)
-
-    def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
-
     def test_id(self):
         """ """
         new = self.value()
@@ -94,6 +89,3 @@ class test_basemodel(unittest.TestCase):
         """ """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)

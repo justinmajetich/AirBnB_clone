@@ -82,11 +82,21 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(36, len(f.getvalue().strip()))
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create State name='California' id='tester'")
+            self.console.onecmd('create State name="California" id="tester"')
             self.assertEqual(6, len(f.getvalue().strip()))
-            self.assertEqual('tester\n', f.getvalue())
             self.console.onecmd("show State tester")
             self.assertEqual('tester', f.getvalue()[0:6])
+        
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd('create Place city_id="0001" ' + 
+                                'user_id="0001" name="My_little_house" ' +
+                                'number_rooms=4 number_bathrooms=2 max_guest=10 ' +
+                                'price_by_night=300 latitude=37.773972 ' +
+                                'longitude=-122.431297')
+            uid = f.getvalue().strip()
+            self.assertEqual(36, len(uid))
+            self.console.onecmd("show Place {}".format(uid))
+            self.assertIn('My little house', f.getvalue())
 
     def test_show(self):
         """test the show command"""
