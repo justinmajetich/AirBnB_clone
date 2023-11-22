@@ -135,8 +135,8 @@ class HBNBCommand(cmd.Cmd):
                 value = eval(value_str)
                 if type(value) is str:
                     value = value.replace('\\"', '"').replace('_', ' ')
-                if key == ['updated_at', 'created_at'] and \
-                        not isinstance(value, str):
+                if key == ['updated_at', 'created_at']\
+                        and not isinstance(value, str):
                     value = value.isoformat()
 
                 kwargs[key] = value
@@ -152,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 kwargs['__class__'] = class_name
 
-            new_instance = HBNBCommand.classes[class_name](**kwargs)
+            new_instance = HBNBCommand.classes[class_name]()
             new_instance.save()
             print(new_instance.id)
 
