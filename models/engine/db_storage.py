@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """database storage engine"""
 import os
-from models.Basemodel import Base
+from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -30,8 +30,8 @@ class DBStorage():
             rows = self.__session.query(cls).all()
         else:
             all_mapped_cls = [model.class_ for model in get_mapper(Base).iterate_to_root()]
-            rows = [obj for cls in all_mapped_cls for obj in session.query(cls).all()]
-            dictionary = {row.id, row for row in rows}
+            rows = [obj for cls in all_mapped_cls for obj in self.__session.query(cls).all()]
+            dictionary = {row.id: row for row in rows}
             return dictionary
 
     def new(self, obj):
