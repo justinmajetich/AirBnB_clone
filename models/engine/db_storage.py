@@ -9,6 +9,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from os import getenv
 
 
 class DBStorage:
@@ -37,7 +38,6 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        session = DBStorage.__session()
         results = {}
 
         if cls is None:
@@ -46,8 +46,22 @@ class DBStorage:
             classes = [cls]
 
         for class_obj in classes:
-            objects = session.query(class_obj).all()
+            objects = self.__session.query(class_obj).all()
             for obj in objects:
                 results['{}.{}'.format(obj.__name__, obj.id)] = obj
+        return results
 
-        return result     
+    def new(self, obj):
+        self.__session.add(obj)
+
+    def save(self):
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+
