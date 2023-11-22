@@ -1,4 +1,4 @@
--- A script that prepares a MySQL for the project.
+-- A script that prepares MySQL server for the project
 
 CREATE USER IF NOT EXISTS
 'hbnb_dev'@'localhost'
@@ -10,9 +10,8 @@ TO 'hbnb_dev'@'localhost'
 WITH GRANT OPTION;
 
 GRANT SELECT
-ON performanc_scheme.*
+ON performance_schema.*
 TO 'hbnb_dev'@'localhost'
 WITH GRANT OPTION;
-
 
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
