@@ -3,7 +3,8 @@
 import os
 from models.base_model import Base
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, mapper
+
 
 user = os.environ['HBNB_MYSQL_USER'] if 'HBNB_MYSQL_USER' in os.environ else None
 password = os.environ['HBNB_MYSQL_PWD'] if 'HBNB_MYSQL_PWD' in os.environ else None
@@ -29,7 +30,7 @@ class DBStorage():
         if cls:
             rows = self.__session.query(cls).all()
         else:
-            all_mapped_cls = [model.class_ for model in get_mapper(Base).iterate_to_root()]
+            all_mapped_cls = [model.class_ for model in mapper(Base).iterate_to_root()]
             rows = [obj for cls in all_mapped_cls for obj in self.__session.query(cls).all()]
             dictionary = {row.id: row for row in rows}
             return dictionary
@@ -43,17 +44,19 @@ class DBStorage():
         self.__session.commit()
 
     def delete(self, obj=None):
-<<<<<<< HEAD
-        """deletes"""
-=======
         """deletes object in the current session"""
         self.__session.delete(obj)
         self.save()
 
     def reload(self):
         """creates all tables in the database"""
-        from models import city, state, user, place, review, amenity
-        Session = sessionmaker(bind=engine, expire_on_commit=False)
+        from models.city import City
+        from models.state import State
+        from models.review import Review
+        from models.place import Place
+        from models.user import User
+        from models.amenity import Amenity
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
-        Base.metadata.create_all(engine)
->>>>>>> fc2970c255f0411bdd89e6786f731f576da5ea42
+        Base.metadata.create_all(self.__engine)
+
