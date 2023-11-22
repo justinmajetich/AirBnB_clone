@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel
+import unittest
 from models.city import City
 
 
-class test_City(test_basemodel):
+class test_City(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -22,3 +22,8 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+    def test_invalid_param(self):
+        """test that an invalid parameter is not considered"""
+        new = self.value({"invalid_param": "value"})
+        self.assertNotIn("invalid_param", new.to_dict())

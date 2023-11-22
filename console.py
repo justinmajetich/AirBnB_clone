@@ -95,8 +95,9 @@ class HBNBCommand(cmd.Cmd):
         def parse(s):
             if s.startswith('"') and s.endswith('"'):
                 return ( s[1:-1].replace("_", " ")
-                        if s[1:-1].find('"') < 0
-                        or s[s[1:-1].find('"') - 1] == "\\" else None )
+                        if s[1:-1].find(' ') < 0 and
+                        ( s[1:-1].find('"') < 0
+                         or s[s[1:-1].find('"') - 1] == "\\" ) else None )
             if '.' in s:
                 try:
                     s = float(s)
@@ -120,21 +121,12 @@ class HBNBCommand(cmd.Cmd):
 
         args_dict = {}
         if (len(args) > 1):
-            cls = HBNBCommand.classes[class_name]
             # parse command syntax to dict
             args_dict = {
                 param[0]: parse(param[1])
                 for param in (v.split('=') for v in args[1:])
                 if parse(param[1])
             }
-            # skip any keyword argument that can't be recognized
-            filtered_args = {k: v
-                             for k, v in args_dict.items()
-                             if hasattr(cls, k) or k == 'id'}
-            filtered_args['__class__'] = class_name
-            filtered_args['created_at'] = datetime.now().isoformat()
-            filtered_args['updated_at'] = datetime.now().isoformat()
-            args_dict = filtered_args
         new_instance = HBNBCommand.classes[class_name](**args_dict)
         print(new_instance.id)
         storage.save()
@@ -210,7 +202,7 @@ class HBNBCommand(cmd.Cmd):
         if line and line.split()[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
-            cls = HBNBCommand.classes[line.split()[0]]
+            cls = HBNBCommand.classes[line.split()[0]] if line else None
             print([str(v) for v in storage.all(cls).values()])
 
     def help_all(self):
