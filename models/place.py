@@ -34,12 +34,11 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
-    reviews = relationship("Review", backref="place", cascade="all, delete")
+    reviews = relationship("Review", backref="place", cascade="delete")
     amenities = relationship("Amenity", secondary="place_amenity",
-            back_populates="place_amenities", viewonly=False)
+                             back_populates="place_amenities", viewonly=False)
 
     amenity_ids = []
-
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         from models import storage
@@ -72,4 +71,3 @@ class Place(BaseModel, Base):
             """setter that adds the Amenity id to the list amenity_ids"""
             if type(value) is Amenity:
                 self.amenity_ids.append(value.id)
-
