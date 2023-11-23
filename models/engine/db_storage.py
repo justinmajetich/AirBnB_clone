@@ -6,7 +6,17 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.review import Review
+from models.user import User
+from models.amenity import Amenity
 
+classes = {
+        "State": State,
+        "City": City
+        }
 
 class DBStorage:
     """
@@ -41,11 +51,15 @@ class DBStorage:
         Query all objects depending on the class name
         """
         result = {}
-        classes = [cls] if cls else [User, State, City, Amenity, Place, Review]
-
-        for class_obj in classes:
-            objects = self.__session.query(class_obj).all()
-            for obj in objects:
+        if cls is None:
+            for class_name in classes.values():
+                objs = self.__session.query(class_name).all()
+                for obj in objs:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    result[key] = obj
+        else:
+            objs = self.__session.query(cls).all()
+            for obj in objs:
                 key = f"{obj.__class__.__name__}.{obj.id}"
                 result[key] = obj
         return result

@@ -11,13 +11,6 @@ class State(BaseModel, Base):
     if storage_type == 'db':
         name = Column(String(128), nullable=False)
         cities = relationship('City', backref='state', cascade='all, delete-orphan');
-        base_id = Column(String, ForeignKey('base.id'), nullable=False)
-
-        __mapper_args__ = {
-                'polymorphic_identity': 'states',
-                'primaryjoin': base_id == BaseModel.id,
-                'inherit_condition': base_id == BaseModel.id
-                }
     else:
         name = ''
 

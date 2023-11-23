@@ -2,8 +2,10 @@
 """ Console Module """
 import cmd
 import sys
+import uuid
+from datetime import datetime
 from models.base_model import BaseModel
-from models import storage
+from models import storage, storage_type
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -148,9 +150,23 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         # Create an instance of the class with the parsed parameters
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
-        print(new_instance.id)
+        if storage_type == 'db':
+            if not hasattr(kw, 'id'):
+                kw['id'] = str(uuid.uuid4())
+            if not hasattr(kw, 'created_at'):
+                kw['created_at'] = str(datetime.now())
+            if not hasattr(kw, 'updated_at'):
+                kw['updated_at'] = str(datetime.now())
+            new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            new_instance = HBNBCommand.classes[arg_list[0]]()
+            for key, value in kw.items():
+                if key not in ('id', 'created_at', 'update_at', '__class__'):
+                    setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
 
 
     def help_create(self):
@@ -233,15 +249,26 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.objects().items():
-                if k.split('.')[0] == args:
-                    new_instance = HBNBCommand.classes[args](**v)
-                    print_list.append(str(new_instance))
+            objs =  {}
+            if storage_type == 'db':
+                objs = storage.all()
+            else:
+                objs = storage.objects()
+            for k, v in objs.items():
+                if storage_type != 'db':
+                    if k.split('.')[0] == args:
+                        new_instance = HBNBCommand.classes[args](**v)
+                        print_list.append(str(new_instance))
+                    else:
+                        print_list.append(str(v))
         else:
             for k, v in storage.objects().items():
-                name = k.split('.')[0]
-                new_instance = HBNBCommand.classes[name](**v)
-                print_list.append(str(new_instance))
+                if storage_type != 'db':
+                    name = k.split('.')[0]
+                    new_instance = HBNBCommand.classes[name](**v)
+                    print_list.append(str(new_instance))
+                else:
+                    print_list.append(str(v))
 
         print(print_list)
 

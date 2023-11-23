@@ -9,11 +9,15 @@ from models import storage_type
 Base = declarative_base()
 
 class BaseModel:
-    __tablename__ = 'base'
     """A base class for all hbnb models"""
-    id = Column(String(68), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    if storage_type == 'db':
+        id = Column(String(68), primary_key=True, nullable=False)
+        created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+        updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    else:
+        id = uuid.uuid4()
+        created_at = datetime.now()
+        updated_at = datetime.now()
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -51,11 +55,9 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
-        for key, value in self.__dict__.items():
-            if key != "_sa_instance_state":
-                dictionary[key] = value
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__': self.__class__.__name__})
+        dictionary.pop("_sa_instance_state", None)
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary

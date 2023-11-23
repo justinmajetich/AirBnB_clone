@@ -47,7 +47,7 @@ class FileStorage:
         """Adds new object to storage dictionary"""
         new_obj = obj
         if not self.is_subscriptable(obj):
-            new_obj = obj.to_dict()
+           new_obj = obj.to_dict()
         key = f"{new_obj['__class__']}.{new_obj['id']}"
         self.__objects[key] = new_obj
 
