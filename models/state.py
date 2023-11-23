@@ -5,7 +5,6 @@ from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
-from models import storage
 
 
 class State(BaseModel, Base):
@@ -20,6 +19,8 @@ class State(BaseModel, Base):
     cities = relationship("City", backref="state", cascade="all, delete")
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
+        from models import storage
+
         @property
         def cities(self):
             """getter attributes cities return a list of
