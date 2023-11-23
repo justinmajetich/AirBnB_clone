@@ -15,7 +15,7 @@ class BaseModel:
     id = Column(String(60), primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    
+
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         self.id = str(uuid.uuid4())
@@ -43,7 +43,7 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = self.__dict__.copy()
-        if '_sa_instance_state' in dictionary: # not serializable
+        if '_sa_instance_state' in dictionary:  # not serializable
             del dictionary['_sa_instance_state']
         dictionary.update({'__class__':
                           self.__class__.__name__})
