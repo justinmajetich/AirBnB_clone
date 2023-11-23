@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """Place Module for HBNB project."""
+from sqlalchemy.orm import relationship
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from os import environ
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -19,6 +22,13 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    if environ.get("HBNB_ENV") == "db":
+        reviews = relationship("Review", backref="place", cascade="delete")
+    else:
+        @property
+        def reviews(self):
+            """Review getter."""
+            return [o for o in storage.all(Review) if o.place_id == self.id]
 
     def __init__(self, *args, **kwargs):
         """Init method."""
