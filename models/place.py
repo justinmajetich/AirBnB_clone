@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from models.review import Review
@@ -10,13 +10,13 @@ from models import storage
 association_table = Table("place_amenity", Base.metadata,
                           Column("place_id",
                                  String(60),
-                                 primary_key=True,
                                  ForeignKey("places.id"),
+                                 primary_key=True,
                                  nullable=False),
                           Column("amenity_id",
                                  String(60),
-                                 primary_key=True,
                                  ForeignKey("amenities.id"),
+                                 primary_key=True,
                                  nullable=False))
 
 

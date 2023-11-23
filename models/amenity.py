@@ -14,7 +14,7 @@ class Amenity(BaseModel, Base):
         place_amenities: many-to-many relationship between
                          places and amenities"""
     __tablename__ = "amenities"
-    name = Column(String(128), nullable=false)
+    name = Column(String(128), nullable=False)
     place_amenities = relationship("Place",
-                                   secondary="place_amenities",
+                                   secondary="place_amenity",
                                    viewonly=False)
