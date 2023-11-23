@@ -7,6 +7,15 @@ from unittest.mock import patch
 from io import StringIO
 import os
 import models
+
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
+from models.base_model import Base
 from console import HBNBCommand
 
 
@@ -17,7 +26,10 @@ class TestConsole(unittest.TestCase):
         if not os.path.exists("file.json"):
             os.mknod("file.json")
         self.console = HBNBCommand()
-        models.storage._FileStorage__objects.clear()
+        if os.environ.get("HBNB_STORAGE_TYPE") == "db":
+            Base.metadata.drop_all(models.storage._DBStorage__engine)
+        else:
+            models.storage._FileStorage__objects.clear()
 
     def tearDown(self):
         """teardown"""

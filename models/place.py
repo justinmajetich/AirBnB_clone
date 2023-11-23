@@ -22,6 +22,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+
     if environ.get("HBNB_ENV") == "db":
         reviews = relationship("Review", backref="place", cascade="delete")
     else:
@@ -35,3 +36,13 @@ class Place(BaseModel, Base):
         filtered_kwargs = {k: v for k, v in kwargs.items()
                            if hasattr(self, k) or k == "id"}
         super().__init__(*args, **filtered_kwargs)
+        self.name = kwargs.get("name", "")
+        self.description = kwargs.get("description", "")
+        self.number_rooms = kwargs.get("number_rooms", 0)
+        self.number_bathrooms = kwargs.get("number_bathrooms", 0)
+        self.max_guest = kwargs.get("max_guest", 0)
+        self.price_by_night = kwargs.get("price_by_night", 0)
+        self.latitude = kwargs.get("latitude", 0.0)
+        self.longitude = kwargs.get("longitude", 0.0)
+        self.city_id = kwargs.get("city_id", "")
+        self.user_id = kwargs.get("user_id", "")
