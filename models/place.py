@@ -7,7 +7,6 @@ from models.review import Review
 from os import getenv
 from models import storage
 
-
 association_table = Table("place_amenity", Base.metadata,
                           Column("place_id",
                                  String(60),
@@ -41,10 +40,12 @@ class Place(BaseModel, Base):
 
     amenity_ids = []
 
+
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def reviews(self):
             """getter attribute reviews return a list of
+
             reviews within the current place"""
             review_list = []
             for review in list(storage.all(Review).values()):
@@ -69,3 +70,4 @@ class Place(BaseModel, Base):
             """setter that adds the Amenity id to the list amenity_ids"""
             if type(value) is Amenity:
                 self.amenity_ids.append(value.id)
+
