@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    test from basemodel
+module to test Place class
 """
 import unittest
 import os
@@ -39,3 +39,27 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.latitude, 0.0)
         self.assertEqual(self.place.longitude, 0.0)
         self.assertEqual(self.place.amenity_ids, [])
+
+    def test_types(self):
+        '''
+        Test types
+        '''
+        self.assertEqual(type(self.place.name), str)
+        self.assertEqual(type(self.place.city_id), str)
+        self.assertEqual(type(self.place.user_id), str)
+        self.assertEqual(type(self.place.description), str)
+        self.assertEqual(type(self.place.number_rooms), int)
+        self.assertEqual(type(self.place.number_bathrooms), int)
+        self.assertEqual(type(self.place.max_guest), int)
+        self.assertEqual(type(self.place.price_by_night), int)
+        self.assertEqual(type(self.place.latitude), float)
+        self.assertEqual(type(self.place.longitude), float)
+        self.assertEqual(type(self.place.amenity_ids), list)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.place = Place({'location': 'San Francisco', 'owner': 'Betty'})
+        self.assertFalse(hasattr(self.place, 'location'))
+        self.assertFalse(hasattr(self.place, 'owner'))

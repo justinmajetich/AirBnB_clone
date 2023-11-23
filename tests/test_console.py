@@ -98,7 +98,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(36, len(uid))
             self.console.onecmd("show Place {}".format(uid))
             self.assertIn('My little house', f.getvalue())
-        
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd('create Place city_id="0001" ' +
                                 'user_id="0001" name="My_little_house" ' +

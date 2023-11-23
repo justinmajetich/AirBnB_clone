@@ -46,7 +46,8 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format."""
         dictionary = self.__dict__.copy()
-        if '_sa_instance_state' in dictionary:
+
+        if '_sa_instance_state' in dictionary:  # not serializable
             del dictionary['_sa_instance_state']
         dictionary.update({'__class__':
                           self.__class__.__name__})

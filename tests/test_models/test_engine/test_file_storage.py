@@ -29,6 +29,13 @@ class TestFileStorage(unittest.TestCase):
             os.remove("file.json")
         del self.storage
 
+    def test_key_format(self):
+        """Test the key format"""
+        base = BaseModel()
+        base_key = base.__class__.__name__ + "." + base.id
+        self.assertEqual(base_key, 'BaseModel' + '.' +
+                         base.to_dict()['id'])
+
     def test_file_storage(self):
         """Test the file storage class"""
         self.assertIsInstance(self.storage, FileStorage)
@@ -109,3 +116,9 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         for k, _ in storage_objects.items():
             self.assertTrue(k in self.storage.all())
+
+    def test_empty_file(self):
+        """Test the reload method of the file storage class for empty file"""
+        self.assertEqual(os.path.getsize("file.json"), 0)
+        with self.assertRaises(ValueError):
+            self.storage.reload()

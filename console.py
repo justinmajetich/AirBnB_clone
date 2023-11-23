@@ -15,8 +15,7 @@ from datetime import datetime
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-    use_rawinput = sys.stdin.isatty()
-    prompt = '(hbnb) ' if sys.stdin.isatty() else ''
+    prompt = '(hbnb) '
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
