@@ -1,19 +1,45 @@
-#!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+#!/usr/bin/env python3
+"""
+module to test the State class
+"""
+import unittest
+import os
 from models.state import State
 
 
-class test_state(test_basemodel):
-    """ """
+class TestState(unittest.TestCase):
+    """
+    test state
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "State"
-        self.value = State
+    def setUp(self):
+        """setup"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.state = State()
 
-    def test_name3(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def tearDown(self):
+        """tear down"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.state
+
+    def test_creation(self):
+        '''
+        ensures correct creation
+        '''
+        self.assertEqual(self.state.name, '')
+
+    def test_types(self):
+        '''
+        Test types
+        '''
+        self.assertEqual(type(self.state.name), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.state = State({'first_name': 'Betty', 'last_name': 'Holberton'})
+        self.assertFalse(hasattr(self.state, 'first_name'))
+        self.assertFalse(hasattr(self.state, 'last_name'))

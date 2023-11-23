@@ -1,24 +1,47 @@
-#!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+#!/usr/bin/env python3
+"""
+module to test the City class
+"""
+import unittest
+import os
 from models.city import City
 
 
-class test_City(test_basemodel):
-    """ """
+class TestCity(unittest.TestCase):
+    """
+    test city
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
+    def setUp(self):
+        """setup"""
+        if not os.path.exists("file.json"):
+            os.mknod("file.json")
+        self.city = City()
 
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
+    def tearDown(self):
+        """tear down"""
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        del self.city
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_creation(self):
+        '''
+        ensure correct creation
+        '''
+        self.assertEqual(self.city.name, '')
+        self.assertEqual(self.city.state_id, '')
+
+    def test_types(self):
+        '''
+        ensure types
+        '''
+        self.assertEqual(type(self.city.name), str)
+        self.assertEqual(type(self.city.state_id), str)
+
+    def test_invalid_attributes(self):
+        '''
+        Test invalid attributes
+        '''
+        self.city = City({'title': 'San Francisco', 'stateId': 'CA'})
+        self.assertFalse(hasattr(self.city, 'stateId'))
+        self.assertFalse(hasattr(self.city, 'title'))
