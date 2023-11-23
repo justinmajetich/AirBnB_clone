@@ -116,3 +116,9 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         for k, _ in storage_objects.items():
             self.assertTrue(k in self.storage.all())
+
+    def test_empty_file(self):
+        """Test the reload method of the file storage class for empty file"""
+        self.assertEqual(os.path.getsize("file.json"), 0)
+        with self.assertRaises(ValueError):
+            self.storage.reload()

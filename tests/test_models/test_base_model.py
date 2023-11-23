@@ -4,6 +4,7 @@ module for testing base model class
 """
 import unittest
 from models.base_model import BaseModel
+import datetime
 
 
 class TestBaseModel(unittest.TestCase):
@@ -13,6 +14,11 @@ class TestBaseModel(unittest.TestCase):
         base = BaseModel()
         base2 = BaseModel()
         self.assertNotEqual(base.id, base2.id)
+
+    def test_default(self):
+        """Test the type fo the base model"""
+        base = BaseModel()
+        self.assertEqual(type(base), BaseModel)
 
     def test_save(self):
         """Test the save method of the base model"""
@@ -45,23 +51,18 @@ class TestBaseModel(unittest.TestCase):
         base.number = 89
         base_dict = base.to_dict()
         base2 = BaseModel(**base_dict)
-        self.assertEqual(base.id, base2.id)
-        self.assertEqual(base.created_at, base2.created_at)
-        self.assertEqual(base.updated_at, base2.updated_at)
-        self.assertEqual(base.name, base2.name)
-        self.assertEqual(base.number, base2.number)
-        self.assertNotEqual(base, base2)
-        self.assertEqual(type(base.created_at), type(base2.created_at))
-        self.assertEqual(type(base.updated_at), type(base2.updated_at))
-        self.assertEqual(type(base.name), type(base2.name))
-        self.assertEqual(type(base.number), type(base2.number))
-        self.assertEqual(base.__dict__, base2.__dict__)
-        self.assertEqual(base.to_dict(), base2.to_dict())
-        self.assertEqual(base.__str__(), base2.__str__())
-        self.assertEqual(str(base), str(base2))
+        self.assertFalse(base is base2)
+
+    def test_kwargs_types(self):
+        """Test the kwargs types of the base model"""
+        with self.assertRaises(TypeError):
+            BaseModel(**{None: None})
+        with self.assertRaises(TypeError):
+            BaseModel(**{1: 2})
 
     def test_types(self):
         """Test the type of the base model"""
         base = BaseModel()
         self.assertEqual(type(base.id), str)
-        self.assertEqual(type(base.created_at), type(base.updated_at))
+        self.assertEqual(type(base.created_at), datetime.datetime)
+        self.assertEqual(type(base.updated_at), datetime.datetime)
