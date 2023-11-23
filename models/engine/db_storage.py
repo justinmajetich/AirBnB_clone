@@ -36,7 +36,6 @@ class DBStorage:
 
     def all(self, cls=None):
         results = {}
-        from models.base_model import BaseModel
         from models.amenity import Amenity
         from models.city import City
         from models.place import Place
@@ -45,14 +44,14 @@ class DBStorage:
         from models.user import User
 
         if cls is None:
-            classes = [BaseModel, Amenity, City, Place, Review, State, User]
+            classes = [Amenity, City, Place, Review, State, User]
         else:
             classes = [cls]
 
         for class_obj in classes:
             objects = self.__session.query(class_obj).all()
             for obj in objects:
-                results['{}.{}'.format(obj.__name__, obj.id)] = obj
+                results['{}.{}'.format(obj.to_dict()['__class__'] , obj.id)] = obj
         return results
 
     def new(self, obj):
