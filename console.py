@@ -118,10 +118,31 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        cls_name, *params = args.split()
+        if cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        all_parameters = {}
+        for param in params:
+            try:
+                key, value = param.split('=')
+            except ValueError:
+                return
+
+        if value.startswith('"') and value.endswith('"'):
+            value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+        elif '.' in value:
+            try:
+                value = float(value)
+            except ValueError:
+                return
+        else:
+            try:
+                value = int(value)
+            except ValueError:
+                return
+        all_parameters[key] = value
+        new_instance = HBNBCommand.classes[cls_name]()
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -206,12 +227,15 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            query_class = HBNBCommand.classes[args]
+            query = storage.all(query_class)
+            for obj in query.values():
+                print_list.append(str(obj))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for class_name, class_ in HBNBCommand.classes.items():
+                query = storage.all(class_)
+                for obj in query.values():
+                    print_list.append(str(obj))
 
         print(print_list)
 
@@ -319,6 +343,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
