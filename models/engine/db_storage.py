@@ -14,8 +14,8 @@ class DBStorage:
     """
     DBStorage class
     """
-    ___engine = None
-    ___session = None
+    __engine = None
+    __session = None
 
     def __init__(self):
         """
@@ -62,7 +62,7 @@ class DBStorage:
             """Reload all objects from the database"""
             Base.metadata.create_all(self.__engine)
             session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-            session = scoped_session(session_factory)
+            Session = scoped_session(session_factory)
             self.__session = Session()
 
         def close(self):
