@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+import shlex
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -112,9 +112,9 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-
+    """
     def do_create(self, args):
-        """ Create an object of any class"""
+        
         try:
             if not args:
                 raise SyntaxError("** class name missing **")
@@ -139,6 +139,43 @@ class HBNBCommand(cmd.Cmd):
             print(e)
         except NameError as e:
             print(e)
+    """
+    
+    def do_create(self, args):
+        """ create an object of a class with arguments provided """
+        args = shlex.split(args) # split args by spaces, but preserve quoted strings
+        # check if there are any args
+        if len(args) < 1: 
+            print("** class name missing **")
+            return
+        
+        first_arg = args[0]
+
+        # check if first arg is a valid class name by checking if it's in the classes dict
+        if first_arg not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        
+        # create a new instance of the class
+        new_instance = HBNBCommand.classes[first_arg](first_arg)
+        # loop through the rest of the arguments
+        for param in args[1:]:
+            try:
+                key, value = param.split("=") # split  each parameter into a key and value pairs
+                # check the type of the value and convert to relevant type
+                if value[0] == '"' and value[-1] == '"': # if its enclosed in quotes, its a string
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"') # replace the underscores with spaces
+                elif '.' in value: # if it has a decimal point, its a float
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, key, value) # set the attribute of the new instance
+            except:
+                pass
+
+        # save the new instance
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
