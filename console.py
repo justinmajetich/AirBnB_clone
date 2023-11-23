@@ -91,13 +91,13 @@ class HBNBCommand(cmd.Cmd):
         return line
 
     def do_create(self, line):
-        """ Create an object of any class"""
+        """Create an object of any class."""
         def parse(s):
             if s.startswith('"') and s.endswith('"'):
-                return ( s[1:-1].replace("_", " ")
+                return (s[1:-1].replace("_", " ")
                         if s[1:-1].find(' ') < 0 and
-                        ( s[1:-1].find('"') < 0
-                         or s[s[1:-1].find('"') - 1] == "\\" ) else None )
+                        (s[1:-1].find('"') < 0
+                         or s[s[1:-1].find('"') - 1] == "\\") else None)
             if '.' in s:
                 try:
                     s = float(s)
