@@ -16,7 +16,6 @@ from models.review import Review
 from models.__init__ import storage
 
 
-
 class HBNBCommand(cmd.Cmd):
     """
     Contains the functionality for the HBNB console
@@ -121,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
         Handles EOF to exit program
         """
         print()
-        exit(0)
+        exit()
 
     def help_EOF(self):
         """
@@ -139,43 +138,24 @@ class HBNBCommand(cmd.Cmd):
         """
         Create an object of any class
         """
-        if not args:
-            print("** class name missing **")
-            return
-
-        args_list = args.split()
-
-        class_name = args_list[0]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        param_dict = {}
         try:
-            for param in args_list[1:]:
-                if len(param.split('=')) == 2:
-                    key, value = param.split('=')
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-                    elif '.' in value:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            print(f"Error: Invalid float value for parameter {key}")
-                            return
-                    else:
-                        try:
-                            value = int(value)
-                        except ValueError:
-                            print(f"Error: Invalid integer value for parameter {key}")
-                            return
-                    param_dict[key] = value
-        except Exception as e:
-            print(f"Error: {e}")
-            return
-
-        new_instance = HBNBCommand.classes[class_name]()
-        storage.save()
+            if not args:
+                raise SyntaxError()
+            arg_list = args.split(" ")
+            kw = {}
+            for arg in arg_list[1:]:
+                arg_splited = arg.split("=")
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1].replace(
+                        "_", " ").replace('"', '\\"')
+                kw[arg_splited[0]] = arg_splited[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -247,7 +227,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -344,7 +324,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] ==  '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -393,6 +373,7 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
