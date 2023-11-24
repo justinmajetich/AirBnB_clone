@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from models.city import City
 from models import storage
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
@@ -13,7 +14,8 @@ class State(BaseModel, Base):
 
     # For DBStorage
     if storage.storage_type == 'db':
-        cities = relationship("City", backref="state", cascade="all, delete-orphan")
+        cities = relationship("City", backref="state",
+                              cascade="all, delete-orphan")
 
     # For FileStorage
     if storage.storage_type == 'file':
