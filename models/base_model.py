@@ -15,7 +15,7 @@ class BaseModel:
         id: BaseModel id
         created_at: instance's creation date
         updated_at: instance's last update date"""
-    id = Column(String(60), primary_key=True, nullable=False)
+    id = Column(String(60), primary_key=True, default=str(uuid.uuid4()), nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False,
                 default=datetime.utcnow(), onupdate=datetime.utcnow())
@@ -30,11 +30,22 @@ class BaseModel:
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            if 'id' not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
+
+            if 'updated_at' in kwargs:
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
+            else:
+                kwargs['updated_at'] = datetime.utcnow()
+
+            if 'created_at' in kwargs:
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
+            else:
+                kwargs['created_at'] = datetime.utcnow()
+
+            kwargs.pop('__class__', None)
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -62,5 +73,6 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.pop("__class__", None)
         dictionary.pop("_sa_instance_state", None)
         return dictionary

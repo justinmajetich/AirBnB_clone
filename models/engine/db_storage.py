@@ -24,7 +24,7 @@ class DBStorage:
         from models.state import State
         from models.user import User
 
-        DBStorage.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+        DBStorage.__engine = create_engine("mariadb+mariadbconnector://{}:{}@{}/{}".
                                         format(getenv("HBNB_MYSQL_USER"),
                                                 getenv("HBNB_MYSQL_PWD"),
                                                 getenv("HBNB_MYSQL_HOST"),
