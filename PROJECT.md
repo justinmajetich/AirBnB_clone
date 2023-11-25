@@ -518,6 +518,11 @@ guillaume@ubuntu:~/AirBnB_v2$
 File: [models/base_model.py](), [models/city.py](), [models/state.py](), [models/engine/db_storage.py](), [models/__init__.py]()
 </summary>
 
+SQLAlchemy will be your best friend!
+
+It’s time to change your storage engine and use `SQLAlchemy`
+
+<img src="https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2020/9/daaef631636b40e0a279a8f240703e065f9d3481.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231125%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231125T085632Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=12c78d159f651b1526c39835e07f0af82b01ac3e354a0f826ba1c5fb4b50a2bc">
 
 </details>
 
