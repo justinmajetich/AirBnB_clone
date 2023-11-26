@@ -1,0 +1,9 @@
+# create a .env file and put all the following in it. 
+# add the .env file in your .gitignore
+# You should not push your personal info to the repo
+
+HBNB_MYSQL_USER
+HBNB_MYSQL_PWD
+HBNB_MYSQL_HOST
+HBNB_MYSQL_DB
+HBNB_TYPE_STORAGE
