@@ -1,12 +1,16 @@
-#!/usr/bin/env bash
-# sets up the web servers for the deployment of web_static
+#!/usr/bin/python3
+"""
+script that prepares a MySQL server for the project
+"""
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install nginx
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
-echo "This is a test" | sudo tee /data/web_static/releases/test/index.html
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -hR ubuntu:ubuntu /data/
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
-sudo service nginx start
+# Create the database hbnb_dev_db
+echo "CREATE DATABASE hbnb_dev_db;" | mysql -u root -p
+
+# Create the user hbnb_dev
+echo "CREATE USER 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';" | mysql -u root -p
+
+# Grant all privileges on the database hbnb_dev_db to the user hbnb_dev
+echo "GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';" | mysql -u root -p
+
+# Grant SELECT privilege on the database performance_schema to the user hbnb_dev
+echo "GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';" | mysql -u root -p
