@@ -119,16 +119,15 @@ class HBNBCommand(cmd.Cmd):
         if not args: #check if class name is present
             print("** class name missing **")
             return
-        class_name = args[0]
-        if class_name not in HBNBCommand.classes: # check if class exists
+        elif arg[0] not in HBNBCommand.classes: # check if class exists
             print("** class doesn't exist **")
             return
-        params = {} # initialize dictionary for kwargs
+        new_instance = HBNBCommand.classes[arg[0]]() # initialize dictionary for kwargs
         for arg in args[1:]: # iterate through args
-            if '=' in args:  # check for kwargs
-                args = args.split('=')  # split on '='
-                params[args[0]] =args[1] # add to dictionary
-            else:
+            key, value = arg.split('=') #split into key, value
+            if value[0] == '\"' and value [-1] == '"': # checks for quotes
+                    value = value[1:-1] #removes quotes
+            elif '.' in value:
                 print("** invalid syntax **")
                 return
     def help_create(self):
