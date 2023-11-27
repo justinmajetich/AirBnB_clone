@@ -130,6 +130,10 @@ class HBNBCommand(cmd.Cmd):
             elif '.' in value:
                 print("** invalid syntax **")
                 return
+            elif value.isdigit(): # checks for int value
+                value = int(value)
+            elif value.isfloat(): #checks
+                value = float(value)
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
