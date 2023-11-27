@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,15 +115,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split()  # remove possible trailing args
-        if not args: #check if class name is present
+        arg = args.split()  # remove possible trailing args
+        if not arg: #check if class name is present
             print("** class name missing **")
             return
         elif arg[0] not in HBNBCommand.classes: # check if class exists
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[arg[0]]() # initialize dictionary for kwargs
-        for arg in args[1:]: # iterate through args
+        for arg in arg[1:]: # iterate through args
             key, value = arg.split('=') #split into key, value
             if not hasattr(new_instance, key): # check if key exists
                 return
@@ -289,7 +289,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -297,10 +297,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
