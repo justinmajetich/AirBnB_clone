@@ -1,4 +1,4 @@
-# test_params_create.py
+# test_params_create
 
 def create_state_commands():
     # Define commands to create State objects
