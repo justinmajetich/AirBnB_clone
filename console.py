@@ -19,15 +19,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+            'number_rooms': int, 'number_bathrooms': int,
+            'max_guest': int, 'price_by_night': int,
+            'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -115,17 +115,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split(' ')[0]  # remove possible trailing args
+        if not args: #check if class name is present
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg[0] not in HBNBCommand.classes: # check if class exists
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
-
+        new_instance = HBNBCommand.classes[arg[0]]() # initialize dictionary for kwargs
+        for arg in args[1:]: # iterate through args
+            key, value = arg.split('=') #split into key, value
+            if value[0] == '\"' and value [-1] == '"': # checks for quotes
+                    value = value[1:-1] #removes quotes
+            elif '.' in value:
+                print("** invalid syntax **")
+                return
+            elif value.isdigit(): # checks for int value
+                value = int(value)
+            elif value.isfloat(): #checks
+                value = float(value)
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
