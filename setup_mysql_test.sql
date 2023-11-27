@@ -1,10 +1,10 @@
---Prepare a MySQL database for testing
-CREATE DATABASE IF NOT EXISTS hbnb_dev_test_db;
+-- Prepares a MySQL Test server for the project.
+CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 
-CREATE user IF NOT EXISTS 'hbnb_dev_test' @'localhost' IDENTIFIED BY 'hbnb_dev_tets_pwd';
+CREATE USER IF NOT EXISTS 'hbnb_test' @'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 
-GRANT ALL PRIVILEGES ON hbnb_dev_test_db.* TO 'hbnb_dev_test' @'localhost';
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test' @'localhost';
 
 GRANT
 SELECT
-    ON performance_schema.* TO 'hbnb_dev_test' @'localhost';
+    ON performance_schema.* TO 'hbnb_test' @'localhost';
