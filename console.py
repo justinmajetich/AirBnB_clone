@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split(' ')[0]  # remove possible trailing args
+        args = args.split()  # remove possible trailing args
         if not args: #check if class name is present
             print("** class name missing **")
             return
@@ -125,15 +125,24 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[arg[0]]() # initialize dictionary for kwargs
         for arg in args[1:]: # iterate through args
             key, value = arg.split('=') #split into key, value
-            if value[0] == '\"' and value [-1] == '"': # checks for quotes
+            if not hasattr(new_instance, key): # check if key exists
+                return
+            value = value.replace('_', ' ') # replace underscores with spaces
+            if value[0] == '"' and value [-1] == '"': # checks for quotes
                     value = value[1:-1] #removes quotes
             elif '.' in value:
-                print("** invalid syntax **")
-                return
-            elif value.isdigit(): # checks for int value
-                value = int(value)
-            elif value.isfloat(): #checks
-                value = float(value)
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            setattr(new_instance, key, value) # set attribute
+        storage.save() # save to file
+        print(new_instance.id) # print id
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
