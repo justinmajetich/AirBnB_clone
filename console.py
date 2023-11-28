@@ -19,16 +19,17 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-            }
+
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-            'number_rooms': int, 'number_bathrooms': int,
-            'max_guest': int, 'price_by_night': int,
-            'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -114,35 +115,49 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split()  # remove possible trailing args
-        if not args: #check if class name is present
+
+        arg = args.split()
+        if not arg:
             print("** class name missing **")
             return
+<<<<<<< HEAD
 
         elif arg[0] not in HBNBCommand.classes: # check if class exists
+=======
+        elif arg[0] not in HBNBCommand.classes:
+>>>>>>> 17e4d4a86da205b41001c05e84cd7c99e60d8f5c
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[arg[0]]() # initialize dictionary for kwargs
-        for arg in args[1:]: # iterate through args
-            key, value = arg.split('=') #split into key, value
-            if not hasattr(new_instance, key): # check if key exists
-                return
-            value = value.replace('_', ' ') # replace underscores with spaces
-            if value[0] == '"' and value [-1] == '"': # checks for quotes
-                    value = value[1:-1] #removes quotes
+        new_instance = HBNBCommand.classes[arg[0]]()
+        for param in arg[1:]:
+            key, value = param.split('=')
+            # check if he key is a valid attribute
+            if not hasattr(new_instance, key):
+                continue
+            # Replace underscores with spaces
+            value = value.replace('_', ' ')
+            # Check if value is a string
+            if value[0] == '"' and value[-1] == '"':
+                # Remove quotes
+                value = value[1:-1]
+            # Check if value is a float
             elif '.' in value:
                 try:
                     value = float(value)
+                    # Check if value is an float
                 except ValueError:
                     continue
+            # Treat it like an integer
             else:
                 try:
                     value = int(value)
+                    # Check if value is an integer
                 except ValueError:
                     continue
-            setattr(new_instance, key, value) # set attribute
-        storage.save() # save to file
-        print(new_instance.id) # print id
+            setattr(new_instance, key, value)
+        storage.save()
+
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -204,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -289,7 +304,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -336,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
