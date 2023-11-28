@@ -12,14 +12,14 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 
-classes = {"State": State, "City": City, "User": User,
-           "Place": Place, "Review": Review, "Amenity": Amenity}
-
 
 class DBStorage:
     """DBStorage class"""
     __engine = None
     __session = None
+
+    classes = {"State": State, "City": City, "User": User,
+               "Place": Place, "Review": Review, "Amenity": Amenity}
 
     def __init__(self):
         """DBStorage engine constructor"""
@@ -36,15 +36,14 @@ class DBStorage:
     def all(self, cls=None):
         """all method"""
         new_dict = {}
-        if cls is None:
-            for key, value in classes.items():
-                for obj in self.__session.query(value).all():
-                    key = obj.__class__.__name__ + "." + obj.id
-                    new_dict[key] = obj
+        objects = []
+        if cls:
+            objects = self.__session.query(cls)
         else:
-            for obj in self.__session.query(cls).all():
-                key = obj.__class__.__name__ + "." + obj.id
-                new_dict[key] = obj
+            for cls in self.classes.values():
+                objects += self.__session.query(cls).all()
+        for obj in objects:
+            new_dict[type(obj).__name__ + '.' + obj.id] = obj
         return new_dict
 
     def new(self, obj):
@@ -65,9 +64,9 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)
 
     def close(self):
         """close method"""
-        self.__session.close()
+        if self.__session is not None:
+            self.__session.remove()
