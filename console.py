@@ -19,7 +19,6 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
@@ -42,7 +41,6 @@ class HBNBCommand(cmd.Cmd):
         (Brackets denote optional fields in usage example.)
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
-
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
@@ -120,7 +118,9 @@ class HBNBCommand(cmd.Cmd):
         if not arg: # if no args print error
             print("** class name missing **")
             return
+
         elif arg[0] not in HBNBCommand.classes: # if class doesn't exist print error
+
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[arg[0]]() #
