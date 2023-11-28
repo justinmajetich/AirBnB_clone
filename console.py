@@ -19,7 +19,6 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
@@ -42,7 +41,6 @@ class HBNBCommand(cmd.Cmd):
         (Brackets denote optional fields in usage example.)
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
-
         # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
