@@ -19,6 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
+
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
         'State': State, 'City': City, 'Amenity': Amenity,
         'Review': Review
@@ -37,7 +38,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -115,6 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
         arg = args.split()
         if not arg: # if no args print error
             print("** class name missing **")
@@ -150,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
                     continue
             setattr(new_instance, key, value)
         storage.save()
-        print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -232,11 +233,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
