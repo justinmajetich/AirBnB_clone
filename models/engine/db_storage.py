@@ -18,21 +18,21 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
 
         self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}@{host}/{database}', pool_pre_ping=True)
-
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        from models import classes
+        session = self.__session
         objects = {}
         if cls:
-            query = self.__session.query(classes[cls]).all()
+            query = session.query(cls).all()
             for obj in query:
                 key = f"{obj.__class__.__name__}.{obj.id}"
                 objects[key] = obj
         else:
-            for cls in classes.values():
-                query = self.__session.query(cls).all()
+            classes = [User, State, City, Amenity, Place, Review]
+            for cls in classes:
+                query = session.query(cls).all()
                 for obj in query:
                     key = f"{obj.__class__.__name__}.{obj.id}"
                     objects[key] = obj
@@ -53,3 +53,12 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.engine.db_storage import DBStorage
+    storage = DBStorage()
+else:
+    from models.engine.file_storage import FileStorage
+    storage = FileStorage()
+
+storage.reload()
