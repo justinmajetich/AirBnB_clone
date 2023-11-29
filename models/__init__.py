@@ -6,13 +6,13 @@ Instantiates a storage object.
    instantiates a database storage engine (DBStorage).
 -> Otherwise, instantiates a file storage engine (FileStorage).
 """
-from os import getenv
+import os
+from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 
-
-if getenv("HBNB_TYPE_STORAGE") == "db":
-    from models.engine.db_storage import DBStorage
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = DBStorage()
+    storage.reload()
 else:
-    from models.engine.file_storage import FileStorage
     storage = FileStorage()
-storage.reload()
+    storage.reload()
