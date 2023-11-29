@@ -3,10 +3,11 @@
 import json
 from models.base_model import BaseModel
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
+from models.review import Review
 from models.amenity import Amenity
+from models.place import Place
 
 
 class FileStorage:
@@ -26,6 +27,7 @@ class FileStorage:
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+
 
     def save(self):
         """Saves storage dictionary to file"""
