@@ -213,6 +213,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
 
+
         try:
             del(storage.all()[key])
             storage.save()
