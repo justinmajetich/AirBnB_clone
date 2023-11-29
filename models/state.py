@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
 from models.base_model import BaseModel
+<<<<<<< HEAD
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 from os import getenv
@@ -26,3 +26,17 @@ class State(BaseModel):
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
+=======
+"""
+Module class: State
+"""
+
+
+class State(BaseModel):
+    """definition for class State"""
+    name = ""
+
+    def __init__(self, *args, **kwargs):
+        """ constructor method """
+        super().__init__(self, *args, **kwargs)
+>>>>>>> master
