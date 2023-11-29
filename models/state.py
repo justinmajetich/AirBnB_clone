@@ -5,7 +5,7 @@ from models.base_model import BaseModel, Base
 class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    
+
     if models.storage_type == 'db':
         cities = relationship("City", cascade="all, delete", backref="state")
     elif models.storage_type == 'file':
