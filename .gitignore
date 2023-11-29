@@ -1,2 +1,5 @@
 # Pyc
 *__pycache__
+
+# Json
+*.json
