@@ -135,15 +135,15 @@ class HBNBCommand(cmd.Cmd):
             key = key_value[0]
             value = key_value[1]
 
-            if '.' in value:
+            if value[0] == '\"' and value[-1] == '\"':
+                value = value[1:-1]
+                value = value.replace('_', ' ')
+            elif '.' in value:
                 value = float(value)
             elif value.isdigit():
                 value = int(value)
             else:
                 value = str(value)
-                if value[0] == '\"' and value[-1] == '\"':
-                    value = value[1:-1]
-                    value = value.replace('_', ' ')
 
             setattr(new_instance, key, value)
         new_instance.save()  # Save to storage
