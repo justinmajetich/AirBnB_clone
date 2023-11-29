@@ -1,6 +1,9 @@
-from sqlalchemy import Column, String
+#!/usr/bin/python3
+"""Module State hbnb"""
+from sqlalchemy import Column, String,. Integer, Foreignkey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+import models
 
 class State(BaseModel, Base):
     __tablename__ = 'states'
