@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-from models.base_model import BaseModel
-"""
-Module class: State
-"""
+""" State Module for HBNB project """
+from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
 
 
-class State(BaseModel):
-    """definition for class State"""
-    name = ""
-
-    def __init__(self, *args, **kwargs):
-        """ constructor method """
-        super().__init__(self, *args, **kwargs)
+class State(BaseModel, Base):
+    """ State class """
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
+    cities = relationship('City', backref='state',
+                          cascade='all, delete-orphan')
