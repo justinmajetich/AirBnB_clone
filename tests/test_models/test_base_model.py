@@ -35,7 +35,7 @@ class test_basemodel(unittest.TestCase):
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
+        self.assertNotEqual(new, i, "Instances should not be equal")
 
     def test_kwargs_int(self):
         """ """
