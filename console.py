@@ -53,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 try:
                     v = eval(v)
-                except:
+                except NameError:
                     continue
             kwargs[k] = v
         new_instance = cls(**kwargs)
