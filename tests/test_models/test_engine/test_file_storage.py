@@ -107,3 +107,14 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_preloop(self):
+        """Test preloop method"""
+        self.file_storage.preloop()
+        self.assertTrue(self.file_storage.prelooped)
+
+    def test_precmd(self):
+        """Test precmd method"""
+        line = "create BaseModel"
+        new_line = self.file_storage.precmd(line)
+        self.assertEqual(new_line, line)
