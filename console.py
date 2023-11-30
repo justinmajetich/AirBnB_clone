@@ -5,7 +5,7 @@ import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
-# from models.place import Place
+from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
@@ -19,15 +19,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel,
-               'State': State, 'City': City, 'Amenity': Amenity, 'User' : User,
-              }
+        'BaseModel': BaseModel,
+        'State': State, 'City': City, 'Amenity': Amenity, 'User': User, 'Place': Place
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""

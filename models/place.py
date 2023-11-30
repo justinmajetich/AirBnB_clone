@@ -23,7 +23,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float)
         longitude = Column(Float)
-        # Add relationships if needed, similar to what's in your User class
+        cities = relationship('City', back_populates='places')
     else:
         city_id = ""
         user_id = ""
