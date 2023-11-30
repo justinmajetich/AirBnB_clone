@@ -24,12 +24,17 @@ class TestConsole(unittest.TestCase):
 
     def test_precmd(self):
         """Test precmd method"""
-        console = console.HBNBCommand()
+        console = HBNBCommand()
         line = "create BaseModel"
         new_line = console.precmd(line)
-        self.assertEqual(new_line, "create BaseModel")
+        self.assertEqual(new_line, line)
 
-# other test methods...
+    def test_preloop(self):
+        """Test preloop method"""
+        console = HBNBCommand()
+        console.preloop()
+        output = self.stdout.getvalue()
+        self.assertEqual(output, '(hbnb)\n')
 
 
 if __name__ == "__main__":
