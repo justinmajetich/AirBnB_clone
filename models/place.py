@@ -36,11 +36,13 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place",
                                cascade="all, delete, delete-orphan")
         amenities = relationship("Amenity", secondary=place_amenity,
-                                 viewonly=False, back_populates="place_amenities")
+                                 viewonly=False,
+                                 back_populates="place_amenities")
     else:
         @property
         def reviews(self):
-            """Getter attribute reviews that returns the list of Review instances"""
+            """Getter attribute reviews that returns the
+            list of Review instances"""
             review_list = []
             all_reviews = models.storage.all(Review)
             for revs in all_reviews.values():
@@ -50,12 +52,14 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """Getter attribute amenities that returns the list of Amenity instances"""
+            """Getter attribute amenities
+            that returns the list of Amenity instances"""
             return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj):
-            """Setter attribute amenities that handles append method for adding an Amenity.id
+            """Setter attribute amenities that
+            handles append method for adding an Amenity.id
             to the attribute amenity_ids"""
             if type(obj).__name__ == "Amenity":
                 self.amenity_ids.append(obj.id)
