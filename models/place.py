@@ -12,7 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-association_table = Table("place_amenity", Base.metadata,
+association_table = Table("place_amenity", metadata,
                           Column("place_id", String(60),
                                  ForeignKey("places.id"),
                                  primary_key=True, nullable=False),
