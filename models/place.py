@@ -1,23 +1,19 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel, Base
 import models
-import sqlalchemy
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy import Table
-from os import getenv
-from models.amenity import Amenity
 from models.review import Review
+from models.base_model import BaseModel, Base
+from sqlalchemy import Table, Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
+from os import getenv
 
-
-association_table = Table("place_amenity", metadata,
-                          Column("place_id", String(60),
-                                 ForeignKey("places.id"),
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
                                  primary_key=True, nullable=False),
-                          Column("amenity_id", String(60),
-                                 ForeignKey("amenities.id"),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
                                  primary_key=True, nullable=False))
 
 
@@ -34,35 +30,32 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=True)
     amenity_ids = []
 
-    def __init__(self, *args, **kwargs):
-        """initializes Place"""
-        super().__init__(*args, **kwargs)
-
-    if models.storage_type != "db":
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False, back_populates="place_amenities")
+    else:
         @property
         def reviews(self):
-            """Get a list of all Reviews"""
-            reviewlist = []
-            for review in list(models.storage.all(Review).values()):
-                if review.place_id == self.id:
-                    reviewlist.append(review)
-            return reviewlist
+            """Getter attribute reviews that returns the list of Review instances"""
+            review_list = []
+            all_reviews = models.storage.all(Review)
+            for revs in all_reviews.values():
+                if revs.place_id == self.id:
+                    review_list.append(revs)
+            return review_list
 
         @property
         def amenities(self):
-            """ Get Linked Amenities"""
-            amenitylist = []
-            for amenity in list(models.storage.all(Amenity).values()):
-                if amenity.id in self.amenity_ids:
-                    amenitylist.append(amenity)
-            return amenitylist
+            """Getter attribute amenities that returns the list of Amenity instances"""
+            return self.amenity_ids
 
         @amenities.setter
-        def amenities(self, value):
-            if type(value) == Amenity:
-                self.amenity_ids.append(value.id)
+        def amenities(self, obj):
+            """Setter attribute amenities that handles append method for adding an Amenity.id
+            to the attribute amenity_ids"""
+            if type(obj).__name__ == "Amenity":
+                self.amenity_ids.append(obj.id)
