@@ -15,7 +15,7 @@ class FileStorage:
         else:
             temp = {}
             for key, val in FileStorage.__objects.items():
-                if cls == val.__class__:
+                if isinstance(val, cls):
                     temp[key] = val
             return temp
 
