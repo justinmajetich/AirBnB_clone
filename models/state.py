@@ -3,7 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-import os ## double check circular import
+import os  # double check circular import
+
 
 class State(BaseModel, Base):
 
