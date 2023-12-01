@@ -42,6 +42,7 @@ class Place(BaseModel, Base):
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
+
         @property
         def reviews(self):
             """return list of Review instances where place_id = Place.id"""
@@ -71,14 +72,13 @@ class Place(BaseModel, Base):
             """
                 setter attribute amenities
             """
-            from models import storage
             from models.amenity import Amenity
-            if type(obj) == Amenity:
+            if type(obj) is Amenity:
                 self.amenity_ids.append(obj.id)
 
     else:
         reviews = relationship('Review', backref='place',
-                                cascade="delete, delete-orphan")
+                               cascade="delete, delete-orphan")
         cities = relationship('City', back_populates='places')
         amenities = relationship('Amenity', secondary='place_amenity',
-                                    viewonly=False)
+                                 viewonly=False)
