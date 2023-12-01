@@ -62,10 +62,9 @@ class BaseModel:
         return self.__str__()
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        self.updated_at = datetime.now()
-        models.storage.new(self)
-        models.storage.save()
+        from models import storage
+        storage.new(self)
+        storage.save()
 
     def delete(self):
         """Delete the current instance from the models.storage"""
