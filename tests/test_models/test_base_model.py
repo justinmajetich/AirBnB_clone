@@ -113,7 +113,10 @@ class test_basemodel(unittest.TestCase):
         b2 = BaseModel(**b1_dict)
         self.assertEqual(b1.name, b2.name)
 
-    def test_first_name(self):
-        """Test that the first_name attribute is correctly set and retrieved"""
-        user = User(first_name="Test")
-        self.assertEqual(user.first_name, "Test")
+    def test_kwargs_two(self):
+        """Test that a BaseModel can be created with keyword arguments"""
+        b1 = BaseModel(name="My BaseModel", number=89)
+        b1_dict = b1.to_dict()
+        b2 = BaseModel(**b1_dict)
+        self.assertEqual(b1.name, b2.name)
+        self.assertEqual(b1.number, b2.number)
