@@ -16,8 +16,6 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship('City', backref='state', cascade='all, delete')
-    else:
         @property
         def cities(self):
             """return list of City instances where state_id = State.id"""
@@ -28,3 +26,20 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     cities_list.append(city)
             return cities_list
+
+        cities = relationship('City', backref='state', cascade='all, delete')
+
+    else:
+        name = ""
+
+    # else:
+    #     @property
+    #     def cities(self):
+    #         """return list of City instances where state_id = State.id"""
+    #         from models import storage
+    #         from models.city import City
+    #         cities_list = []
+    #         for city in storage.all(City).values():
+    #             if city.state_id == self.id:
+    #                 cities_list.append(city)
+    #         return cities_list
