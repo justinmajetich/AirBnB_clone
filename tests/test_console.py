@@ -21,6 +21,7 @@ from models.review import Review
 class TestConsole(unittest.TestCase):
     """Unittest for console.py"""
 
+
     @classmethod
     def setUp(cls):
         """Set up method"""
