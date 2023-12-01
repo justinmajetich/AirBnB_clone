@@ -15,7 +15,8 @@ class test_User(test_basemodel):
 
     def test_first_name(self):
         """ """
-        new = self.value()
+        new = User(email="test@example.com", first_name="John",
+                   last_name="Doe", password="secret")
         self.assertEqual(type(new.first_name), str)
 
     def test_last_name(self):
