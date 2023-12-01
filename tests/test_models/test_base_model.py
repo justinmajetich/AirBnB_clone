@@ -37,6 +37,12 @@ class test_basemodel(unittest.TestCase):
         new = BaseModel(**copy)
         self.assertNotEqual(new, i, "Instances should not be equal")
 
+    def test_kwargs_one(self):
+        """"""
+        invalid_kwargs = {'key_not_present': 'value'}
+        with self.assertRaises(KeyError):
+            new = self.value(**invalid_kwargs)
+
     def test_kwargs_int(self):
         """ """
         i = self.value()
