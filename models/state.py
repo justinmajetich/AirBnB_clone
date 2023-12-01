@@ -10,8 +10,6 @@ class State(BaseModel, Base):
     """
         State class
     """
-
-
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
@@ -31,15 +29,3 @@ class State(BaseModel, Base):
 
     else:
         name = ""
-
-    # else:
-    #     @property
-    #     def cities(self):
-    #         """return list of City instances where state_id = State.id"""
-    #         from models import storage
-    #         from models.city import City
-    #         cities_list = []
-    #         for city in storage.all(City).values():
-    #             if city.state_id == self.id:
-    #                 cities_list.append(city)
-    #         return cities_list
