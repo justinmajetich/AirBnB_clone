@@ -33,3 +33,9 @@ class test_User(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.password), str)
+
+    def test_email_type(self):
+        # Test that the 'email' attribute is of type str
+        user = User(email="test@example.com",
+                    first_name="John", last_name="Doe", password="secret")
+        self.assertEqual(type(user.email, str))

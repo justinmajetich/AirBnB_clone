@@ -128,3 +128,55 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+
+class TestDBStorage(unittest.TestCase):
+    # ...
+
+    def test_initialization(self):
+        """Test initialization of DBStorage"""
+        storage = DBStorage()
+        # Check if storage is an instance of DBStorage
+        self.assertIsInstance(storage, DBStorage)
+
+        # Check if necessary attributes are present
+        # replace 'attribute_name' with actual attribute
+        self.assertTrue(hasattr(storage, 'attribute_name'))
+
+    def test_create(self):
+        """Test create method of DBStorage"""
+        storage = DBStorage()
+        # Assuming User is a model class
+        user = User(name="Test User")
+        storage.new(user)
+        storage.save()
+        self.assertIn(user, storage.all(User))
+
+    def test_retrieve(self):
+        """Test retrieve method of DBStorage"""
+        storage = DBStorage()
+        user = User(name="Test User")
+        storage.new(user)
+        storage.save()
+        retrieved_user = storage.get(User, user.id)
+        self.assertEqual(user, retrieved_user)
+
+    def test_update(self):
+        """Test update method of DBStorage"""
+        storage = DBStorage()
+        user = User(name="Test User")
+        storage.new(user)
+        storage.save()
+        user.name = "Updated User"
+        storage.save()
+        retrieved_user = storage.get(User, user.id)
+        self.assertEqual(user.name, retrieved_user.name)
+
+    def test_delete(self):
+        """Test delete method of DBStorage"""
+        storage = DBStorage()
+        user = User(name="Test User")
+        storage.new(user)
+        storage.save()
+        storage.delete(user)
+        self.assertNotIn(user, storage.all(User))
