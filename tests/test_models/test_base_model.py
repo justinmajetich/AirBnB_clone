@@ -105,3 +105,10 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_kwargs_one(self):
+        """Test that a BaseModel can be created with keyword arguments"""
+        b1 = BaseModel(name="My BaseModel")
+        b1_dict = b1.to_dict()
+        b2 = BaseModel(**b1_dict)
+        self.assertEqual(b1.name, b2.name)
