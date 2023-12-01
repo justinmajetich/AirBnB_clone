@@ -13,7 +13,7 @@ import os
 class Amenity(BaseModel, Base):
     __tablename__ = 'amenities'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        place_amenities = Table(
+        place_amenity = Table(
             'place_amenity', Base.metadata,
             Column('place_id', String(60), ForeignKey('places.id'),
                    primary_key=True, nullable=False),
