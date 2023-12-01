@@ -26,7 +26,8 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float)
         longitude = Column(Float)
-        # Is there meant to be a User relationship here?
+
+        user = relationship('User', back_populates='places')
         cities = relationship('City', back_populates='places')
         reviews = relationship('Review', backref='place',
                                cascade="delete")
