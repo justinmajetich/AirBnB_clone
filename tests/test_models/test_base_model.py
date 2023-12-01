@@ -120,3 +120,7 @@ class test_basemodel(unittest.TestCase):
         b2 = BaseModel(**b1_dict)
         self.assertEqual(b1.name, b2.name)
         self.assertEqual(b1.number, b2.number)
+
+
+if __name__ == '__main__':
+    unittest.main()

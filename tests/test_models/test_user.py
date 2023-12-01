@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+import unittest
 
 
 class test_User(test_basemodel):
@@ -32,3 +33,7 @@ class test_User(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.password), str)
+
+
+if __name__ == '__main__':
+    unittest.main()
