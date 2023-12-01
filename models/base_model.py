@@ -27,12 +27,13 @@ class BaseModel:
             for k, v in kwargs.items():
                 if k != '__class__':
                     setattr(self, k, v)
-            self.created_at = datetime.strptime(self.created_at,
-                                                '%Y-%m-%dT%H:%M:%S.%f')
-            self.updated_at = datetime.strptime(self.updated_at,
-                                                '%Y-%m-%dT%H:%M:%S.%f')
-            if not hasattr(self, 'id'):
-                self.id = str(uuid.uuid4())
+            if 'updated_at' not in kwargs:
+                setattr(self, 'updated_at', datetime.now())
+            if 'created_at' not in kwargs:
+                setattr(self, 'created_at', datetime.now())
+            if 'id' not in kwargs:
+                setattr(self, 'id', str(uuid.uuid4()))
+
 
     def __str__(self):
         """Returns a string representation of the instance"""
