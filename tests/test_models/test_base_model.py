@@ -6,6 +6,7 @@ import datetime
 from uuid import UUID
 import json
 import os
+from models import User
 
 
 class test_basemodel(unittest.TestCase):
@@ -112,3 +113,8 @@ class test_basemodel(unittest.TestCase):
         b1_dict = b1.to_dict()
         b2 = BaseModel(**b1_dict)
         self.assertEqual(b1.name, b2.name)
+
+    def test_first_name(self):
+        """Test that the first_name attribute is correctly set and retrieved"""
+        user = User(first_name="Test")
+        self.assertEqual(user.first_name, "Test")
