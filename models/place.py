@@ -30,7 +30,7 @@ class Place(BaseModel, Base):
         user = relationship('User', back_populates='places')
         cities = relationship('City', back_populates='places')
         reviews = relationship('Review', backref='place',
-                               cascade="delete")
+                               cascade="delete, delete-orphan")
         amenities = relationship('Amenity', secondary='place_amenity',
                                  viewonly=False)
         amenity_ids = []
