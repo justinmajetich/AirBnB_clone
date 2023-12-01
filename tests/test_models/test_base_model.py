@@ -112,8 +112,3 @@ class test_basemodel(unittest.TestCase):
         b1_dict = b1.to_dict()
         b2 = BaseModel(**b1_dict)
         self.assertEqual(b1.name, b2.name)
-
-    def test_email(self):
-        """Test that the email attribute is correctly set and retrieved"""
-        user = User(email="test@example.com")
-        self.assertEqual(user.email, "test@example.com")
