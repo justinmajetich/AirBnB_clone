@@ -38,7 +38,7 @@ class test_User(test_basemodel):
 
     def test_password(self):
         """ """
-        new = self.value()
+        new = User(password="password")
         self.assertEqual(type(new.password), str)
 
     def test_first_name(self):
