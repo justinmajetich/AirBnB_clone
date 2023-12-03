@@ -30,17 +30,14 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file."""
-        try:
-            with open(FileStorage.__file_path, "r") as f:
-                temp = json.load(f)
+        """Loads storage dictionary from file"""
+        classes = self.model_classes
+        if os.path.isfile(self.__file_path):
+            temp = {}
+            with open(self.__file_path, "r") as file:
+                temp = json.load(file)
                 for key, val in temp.items():
-                    cls_name, obj_id = key.split(".")
-                    cls = eval(cls_name)
-                    obj = cls(**val)
-                    FileStorage.__objects[key] = obj
-        except FileNotFoundError:
-            pass
+                    self.all()[key] = classes[val["__class__"]](**val)
 
     def delete(self, obj=None):
         """Deletes obj from __objects if it's inside."""
