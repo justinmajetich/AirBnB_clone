@@ -1,11 +1,27 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from ..amenity import Amenity
+from ..city import City
+from ..place import Place
+from ..review import Review
+from ..state import State
+from ..user import User
 
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+
+    # Create a dictionary mapping class names to their corresponding classes
+    class_mapping = {
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "User": User,
+    }
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage."""
@@ -30,14 +46,23 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-        classes = self.model_classes
-        if os.path.isfile(self.__file_path):
-            temp = {}
-            with open(self.__file_path, "r") as file:
-                temp = json.load(file)
+        """Loads storage dictionary from file."""
+        try:
+            with open(FileStorage.__file_path, "r") as f:
+                temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val["__class__"]](**val)
+                    cls_name, obj_id = key.split(".")
+                    cls = FileStorage.class_mapping.get(cls_name)
+                    if cls:
+                        obj = cls(**val)
+                        FileStorage.__objects[key] = obj
+                    else:
+                        print(
+                            f"Warning: Class {cls_name}"
+                            + "not found during reload."
+                        )
+        except FileNotFoundError:
+            pass
 
     def delete(self, obj=None):
         """Deletes obj from __objects if it's inside."""
