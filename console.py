@@ -82,8 +82,8 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if (
-                        pline[0] is "{"
-                        and pline[-1] is "}"
+                        pline[0] == "{"
+                        and pline[-1] == "}"
                         and type(eval(pline)) is dict
                     ):
                         _args = pline
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Split the input into tokens
-        tokens = shlex.split(args)
+        tokens = args.split()
 
         # Extract the class name and remove it from the tokens list
         class_name = tokens[0]
@@ -149,11 +149,13 @@ class HBNBCommand(cmd.Cmd):
 
         # Parse parameters and create a dictionary of key-value pairs
         parameters = {}
+        current_key = None
         for token in tokens:
-            try:
+            if "=" in token:
                 key, value = token.split("=")
-                # Replace underscores with spaces in key
-                key = key.replace("_", " ").strip()
+                current_key = key
+                # Replace underscores with spaces in value, not key
+                value = value.replace("_", " ").strip()
                 # Handle string values with escaped double quotes
                 if value.startswith('"') and value.endswith('"'):
                     value = value[1:-1].replace('\\"', '"')
@@ -163,22 +165,24 @@ class HBNBCommand(cmd.Cmd):
                 # Try to convert to integer if it's a number
                 else:
                     value = int(value)
-                parameters[key] = value
-            except ValueError:
-                # Skip parameters that can't be recognized correctly
-                pass
+                parameters[current_key] = value
+            elif current_key is not None:
+                # Handle values without keys (continuation from the previous key)
+                parameters[current_key] += f" {token}"
+
+        print("Creating instance with parameters:", parameters)
 
         # Create an instance of the class with the provided parameters
         new_instance = HBNBCommand.classes[class_name](**parameters)
 
         # Save the new instance
-        storage.save()
+        new_instance.save()
 
         # Print the ID of the new instance
         print(new_instance.id)
 
         # Save storage again
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """Help information for the create method"""
@@ -326,7 +330,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '"':  # check for quoted arg
+            if args and args[0] == '"':  # check for quoted arg
                 second_quote = args.find('"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1 :]
@@ -334,10 +338,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(" ")
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not " ":
+            if not att_name and args[0] != " ":
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '"':
+            if args[2] and args[2][0] == '"':
                 att_val = args[2][1 : args[2].find('"', 1)]
 
             # if att_val was not quoted arg
