@@ -722,4 +722,3 @@ File: [models/amenity.py](), [models/place.py]()
 
 
 </details>
-
