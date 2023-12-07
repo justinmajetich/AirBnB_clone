@@ -1,12 +1,11 @@
 #!/usr/bin/python3
+# fabdile to generate
+
+import os.path
 from fabric.api import env, local, put
 from datetime import datetime
-import os.path
 
 
-
-env.user = 'ubuntu'
-env.hosts = ['54.146.13.194']
 
 def do_pack():
         dt = datetime.utcnow()
