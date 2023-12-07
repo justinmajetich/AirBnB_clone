@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
             return
         
         # create a new instance of the class
-        new_instance = HBNBCommand.classes[first_arg](first_arg)
+        new_instance = HBNBCommand.classes[first_arg]()
         # loop through the rest of the arguments
         for param in args[1:]:
             try:
