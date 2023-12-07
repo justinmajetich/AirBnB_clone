@@ -15,3 +15,4 @@ def do_pack():
         archive = "/root/AirBnB_clone_v2/web_static/versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
         local(f"tar czf {archive} -C {folder} .")
+        return folder
