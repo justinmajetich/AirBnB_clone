@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+ssh-add ~/.ssh/id_rsa
+ssh ubuntu@54.160.102.195
