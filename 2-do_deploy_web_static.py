@@ -10,7 +10,7 @@ import os
 env.hosts = ["18.210.15.7", "54.160.102.195"]
 env.user = "ubuntu"
 
-
+@task
 def do_deploy(archive_path):
     """
     Distribute archive.
