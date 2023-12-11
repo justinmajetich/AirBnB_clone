@@ -11,6 +11,7 @@ import os
 env.hosts = ["18.210.15.7", "54.160.102.195"]
 env.user = "ubuntu"
 
+
 def do_pack():
     """
     Create a compressed archive of web_static content.
@@ -24,6 +25,7 @@ def do_pack():
     except Exception as e:
         return None
 
+
 def do_deploy(archive_path):
     """
     Distribute archive.
@@ -35,6 +37,7 @@ def do_deploy(archive_path):
         return True
 
     return False
+
 
 def deploy():
     """
