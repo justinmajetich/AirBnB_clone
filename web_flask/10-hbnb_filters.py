@@ -5,7 +5,6 @@ from flask import Flask, render_template
 from models import storage
 from models.state import State
 from models.amenity import Amenity
-from models.city import City
 
 
 app = Flask(__name__)
@@ -15,9 +14,8 @@ app = Flask(__name__)
 def hbnb_filters():
     """Display filters in HTML page"""
     state = storage.all(State).values()
-    cities = storage.all(City).values()
     amenity = storage.all(Amenity).values()
-    return render_template('10-hbnb_filters.html', state=state, cities=cities, amenity=amenity)
+    return render_template('10-hbnb_filters.html', state=state, amenity=amenity)
 
 
 @app.teardown_appcontext

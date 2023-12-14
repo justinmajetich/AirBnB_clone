@@ -33,7 +33,7 @@
 	display: none;
 	background-color: #FAFAFA;
 	width: 100%;
-
+	max-height: 300px;
 	margin-left: -1px;
 	margin-top: 8px;
 	padding: 25px 0px;
@@ -57,7 +57,8 @@ ul {
 }
 
 li {
-}	
+
+}
 
 h2 {
 	font-size: 16px;
@@ -68,7 +69,7 @@ h2 {
 h3 {
 	font-weight: 600;
 	margin-top: 12px;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 	padding-left: 45px;
 }
 
@@ -83,7 +84,7 @@ h4 {
 button {
 	color: #FFFFFF;
 	font-size: 18px;
-	
+
 	height: 48px;
 	width: 20%;
 	background-color: #FF5A5F;
