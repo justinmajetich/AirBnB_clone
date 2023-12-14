@@ -1,51 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>AirBnB clone</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HBnB</title>
+    <link rel="stylesheet" href="../static/styles/4-common.css" />
+    <link rel="stylesheet" href="../static/styles/6-filters.css" />
+    <link rel="stylesheet" href="../static/styles/3-footer.css" />
+    <link rel="stylesheet" href="../static/styles/3-header.css" />
+    <link rel="icon" type="img/png" href="../static/images/icon.png" />
+  </head>
+  <body>
+    <header>
+      <a href="#">
+        <img src="../static/images/logo.png" alt="HBnB logo" class="logo"></img>
+      </a>
+    </header>
 
-		<link rel="shortcut icon" href="images/icon.ico" >
+    <div class="container">
+        <section class="filters">
 
-		<link rel="stylesheet" href="styles/4-common.css"/>
-		<link rel="stylesheet" href="styles/3-header.css"/>
-		<link rel="stylesheet" href="styles/3-footer.css"/>
-		<link rel="stylesheet" href="styles/6-filters.css"/>
-	</head>
-    <body>
-		<header>
-			<div id="header_logo"></div>
-		</header>
-		<div class="container">
-			<section class="filters">
-				<button>Search</button>
-				<div class="locations">
-					<h3>States</h3>
-					<h4>&nbsp</h4>
-					<ul class="popover">
-                    {% for state in states | sort(attribute="name") %}
-                        <LI><h2><B>{{ state.name }}</B></h2>
-                            <UL>
-                                {% for city in state.cities | sort(attribute="name") %}
-                                    <LI><h4>{{ city.name }}</h4></LI>
-                                {% endfor %}
-                            </UL>
-                        </LI>
-                    {% endfor %}
-                    </ul>
-				</div>
-				<div class="amenities">
-					<h3>Amenities</h3>
-					<h4>&nbsp</h4>
-					<ul class="popover">
-                        {% for amenity in amenities | sort(attribute="name") %}
-                        <LI><h4>{{ amenity.name }}</h4></LI>
-                        {% endfor %}
-                    </ul>
-				</div>
 
-			</section>
-		</div>
-		<footer>
-			<p>Holberton School</p>
-		</footer>
-	</body>
+            <div class="locations">
+              <h3>States</h3>
+              <h4>&nbsp</h4>
+              <ul class="popover dropdown">
+
+            <button class="dropbtn"><h3>States</h3></button>
+                <div class="dropdown-content">
+                    <a href="#"><h3>California</h3></a>
+                      <ul>
+                        <li>San Francisco</li>
+                        <li>San Diego</li>
+                      </ul>
+                    <a href="#"><h3>Puerto Rico</h3></a>
+                      <ul>
+                        <li>San Juan</li>
+                        <li>Cayey</li>
+                      </ul>
+                    <a href="#"><h3>Florida</h3></a>
+                      <ul>
+                        <li>Miami</li>
+                      </ul>
+
+                </div>
+            </div>
+
+            <div class="amenities dropdown">
+
+              <h3>Amenities</h3>
+              <h4>&nbsp</h4>
+                <button class="dropbtn"></button>
+                <div class="dropdown-content">
+                  <ul>
+                    <li>Wifi</li>
+                    <li>TV</li>
+                    <li>Kitchen</li>
+                  </ul>
+            </div>
+
+            <button class="search">Search</button>
+        </section>
+    </div>
+
+    <footer>
+      <p>Best School</p>
+    </footer>
+  </body>
 </html>
