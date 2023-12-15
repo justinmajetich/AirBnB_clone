@@ -1,24 +1,17 @@
 #!/usr/bin/python3
-
-
-"""
-Starts a Flask web app
-"""
+""" This module starts a Flask web application """""
 from flask import Flask
-
-# Create an instance of the Flask class
+"""Flask class and render_template method"""
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
-# Define the route for the root URL and set strict_slashes to False
+""" App route section"""
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def hello():
-    # Function to be executed when the root URL is accessed
     return 'Hello HBNB!'
 
 
-# Check if the script is run directly (not imported)
-if __name__ == "__main__":
-    # Start the Flask web server on host 0.0.0.0 and port 5000
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
