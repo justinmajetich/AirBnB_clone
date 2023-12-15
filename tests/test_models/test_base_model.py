@@ -70,6 +70,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_none(self):
         """ """
+        print(self)
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
@@ -77,8 +78,22 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        new = self.value(**n)
+        self.assertEqual(type(new), self.value)
+        self.assertTrue(hasattr(new, 'Name'))
+        self.assertTrue(hasattr(new, '__class__'))
+        self.assertTrue(hasattr(new, 'id'))
+        self.assertTrue(hasattr(new, 'created_at'))
+        self.assertTrue(hasattr(new, 'updated_at'))
+        self.assertEqual(new.Name, 'test')
+        self.assertEqual(new.Name, n['Name'])
+        self.assertEqual(new.__class__.__name__, self.name)
+        self.assertEqual(type(new.id), str)
+        self.assertEqual(type(new.created_at), datetime.datetime)
+        self.assertEqual(type(new.updated_at), datetime.datetime)
+        # n = {'Name': 'test'}
+        # with self.assertRaises(KeyError):
+        #     new = self.value(**n)
 
     def test_id(self):
         """ """
@@ -92,8 +107,13 @@ class test_basemodel(unittest.TestCase):
 
     def test_updated_at(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        i = self.value()
+        initial_updated_at = i.updated_at
+        i.save()
+        updated_updated_at = i.updated_at
+        self.assertNotEqual(initial_updated_at, updated_updated_at)
+        # new = self.value()
+        # self.assertEqual(type(new.updated_at), datetime.datetime)
+        # n = new.to_dict()
+        # new = BaseModel(**n)
+        # self.assertFalse(new.created_at == new.updated_at)
