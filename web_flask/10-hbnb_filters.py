@@ -1,7 +1,4 @@
-#!/usr/bin/python3
-"""
-Starts a Flask web application
-"""
+# Your Flask application script
 
 from flask import Flask, render_template
 from models import storage
@@ -15,22 +12,23 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def teardown_appcontext(self):
-    """
-    Teardown method for app context
-    """
     storage.close()
 
 
 @app.route('/hbnb_filters', strict_slashes=False)
 def hbnb_filters():
-    """
-    Display HTML page with filters
-    """
     states = storage.all(State).values()
-    cities = storage.all(City).values()
     amenities = storage.all(Amenity).values()
 
-    return render_template('10-hbnb_filters.html', states=states, cities=cities, amenities=amenities)
+    if environ.get('HBNB_TYPE_STORAGE') == 'db':
+        cities = storage.all(City).values()
+    else:
+        cities = {}
+
+    dropdown_data = [{'value': state.id, 'label': state.name}
+                     for state in states]
+
+    return render_template('10-hbnb_filters.html', states=states, cities=cities, amenities=amenities, dropdown_data=dropdown_data)
 
 
 if __name__ == '__main__':
