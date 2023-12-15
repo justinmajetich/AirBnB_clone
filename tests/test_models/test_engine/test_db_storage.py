@@ -6,7 +6,7 @@ import MySQLdb
 import os
 
 
-class test_mysqlStorage(unittest.TestCase):
+class test_dbStorage(unittest.TestCase):
     """ Class to test the mysql storage method """
 
     def setUp(self):
