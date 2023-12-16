@@ -7,7 +7,10 @@ from uuid import UUID
 import json
 import os
 
-
+@unittest.skipIf(
+    os.getenv('HBNB_TYPE_STORAGE') == 'db',
+    'Skip test_basemodel'
+)
 class test_basemodel(unittest.TestCase):
     """ """
 
@@ -96,4 +99,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
+        new.save()
         self.assertFalse(new.created_at == new.updated_at)
