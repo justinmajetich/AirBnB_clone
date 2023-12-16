@@ -18,7 +18,7 @@ class TestDoCreateWithMySQL(unittest.TestCase):
 
     def setUp(self):
         # Set up an instance of your command interpreter
-        self.command_interpreter = YourCommandInterpreter()
+        self.console = HBNBCommand()
 
     def _get_record_count(self):
         # Helper method to get the number of records in the 'states' table
@@ -34,14 +34,14 @@ class TestDoCreateWithMySQL(unittest.TestCase):
 
     def test_create_state_command_changes_database(self):
         # Get the initial number of records in the 'states' table
-        initial_count = self._get_record_count()
+        initial_count = self.do_count()
 
         # Execute the console command
         with patch('builtins.print') as mock_print:
-            self.command_interpreter.do_create("State name=\"California\"")
+            self.console.do_create("State name=\"California\"")
 
         # Get the number of records after executing the command
-        final_count = self._get_record_count()
+        final_count = self.do_count()
 
         # Check if the difference is +1
         self.assertEqual(final_count, initial_count + 1)
