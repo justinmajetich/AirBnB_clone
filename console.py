@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -111,20 +112,54 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
-        pass
+        
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        args = arg.split()
+        if not args or args[0] == '':
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        
+        class_name = args[0]
+        valid_params = self.parse_params(args[1:])
+        new_instance = HBNBCommand.classes[class_name](valid_params)
+        new_instance.save()
         print(new_instance.id)
         storage.save()
+
+    # do_create helper functions parse_params & convert_value
+    def parse_params(self, params):
+        """Parse parameters and return a dictionary"""
+        valid_params = {}
+        for param in params:
+            match = re.match(r'^([^=]+)=(.+)$', param)
+            if match:
+                key, value = match.groups()
+                value = self.convert_value(value)
+                if key and value is not None:
+                    valid_params[key] = value
+            else:
+                return None  # Invalid parameter syntax
+        return valid_params
+    
+    def convert_value(self, value):
+        """Convert string representation to appropriate data type"""
+        if value.startswith('"') and value.endswith('"'):
+            return value[1:-1].replace('_', ' ')
+        elif '.' in value:
+            try:
+                return float(value)
+            except ValueError:
+                return None  # Invalid float syntax
+        else:
+            try:
+                return int(value)
+            except ValueError:
+                return None  # Invalid integer syntax
 
     def help_create(self):
         """ Help information for the create method """
