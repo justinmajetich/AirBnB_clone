@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+This module defines test cases for the console class
+"""
 import unittest
 from unittest.mock import patch
 import MySQLdb
@@ -5,8 +9,9 @@ import os
 from console import HBNBCommand
 
 # Check if MySQL is available for testing
-MYSQL_AVAILABLE = all(os.getenv(var) is not None for var in
-                      ['HBNB_MYSQL_HOST', 'HBNB_MYSQL_USER', 'HBNB_MYSQL_PWD', 'HBNB_MYSQL_DB'])
+MYSQL_AVAILABLE = all(os.getenv(var) is not None for var in ['HBNB_MYSQL_HOST',
+                      'HBNB_MYSQL_USER', 'HBNB_MYSQL_PWD', 'HBNB_MYSQL_DB'])
+
 
 @unittest.skipIf(not MYSQL_AVAILABLE, "MySQL not available for testing")
 class TestDoCreateWithMySQL(unittest.TestCase):
@@ -41,6 +46,6 @@ class TestDoCreateWithMySQL(unittest.TestCase):
         # Check if the difference is +1
         self.assertEqual(final_count, initial_count + 1)
 
+
 if __name__ == '__main__':
     unittest.main()
-
