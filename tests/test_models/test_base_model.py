@@ -22,10 +22,8 @@ class test_basemodel(unittest.TestCase):
         pass
 
     def tearDown(self):
-        try:
+        if os.path.exists('file.json'):
             os.remove('file.json')
-        except:
-            pass
 
     def test_default(self):
         """ """
@@ -37,7 +35,17 @@ class test_basemodel(unittest.TestCase):
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
+        self.assertNotEqual(new, i, "Instances should not be equal")
+
+    def test_kwargs_one(self):
+        invalid_kwargs = {'key_not_present': 'value'}
+
+        try:
+            new = self.value(**invalid_kwargs)
+        except KeyError:
+            pass
+        else:
+            self.fail("KeyError not raised")
 
     def test_kwargs_int(self):
         """ """
@@ -54,6 +62,17 @@ class test_basemodel(unittest.TestCase):
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
+            self.assertEqual(j[key], i.to_dict())
+
+    def test_save(self):
+        """ Testing save """
+        i = self.value()
+        i.save()
+        key = self.name + "." + i.id
+        with open('file.json', 'r') as f:
+            j = json.load(f)
+            print("i.to_dict():", i.to_dict())
+            print("j[key]:", j[key])
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
@@ -97,3 +116,22 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_kwargs_one(self):
+        """Test that a BaseModel can be created with keyword arguments"""
+        b1 = BaseModel(name="My BaseModel")
+        b1_dict = b1.to_dict()
+        b2 = BaseModel(**b1_dict)
+        self.assertEqual(b1.name, b2.name)
+
+    def test_kwargs_two(self):
+        """Test that a BaseModel can be created with keyword arguments"""
+        b1 = BaseModel(name="My BaseModel", number=89)
+        b1_dict = b1.to_dict()
+        b2 = BaseModel(**b1_dict)
+        self.assertEqual(b1.name, b2.name)
+        self.assertEqual(b1.number, b2.number)
+
+
+if __name__ == '__main__':
+    unittest.main()

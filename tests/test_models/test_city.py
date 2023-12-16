@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ """
+import unittest
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
 
@@ -22,3 +23,14 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+    def test_save(self):
+        """Test that save correctly updates the updated_at attribute"""
+        city = City()
+        old_updated_at = city.updated_at
+        city.save()
+        self.assertNotEqual(city.updated_at, old_updated_at)
+
+
+if __name__ == '__main__':
+    unittest.main()
