@@ -18,7 +18,7 @@ class TestDoCreateWithMySQL(unittest.TestCase):
 
     def setUp(self):
         # Set up an instance of your command interpreter
-        self.command_interpreter = YourCommandInterpreter()
+        self.command_interpreter = HBNBCommand()
 
     def _get_record_count(self):
         # Helper method to get the number of records in the 'states' table
