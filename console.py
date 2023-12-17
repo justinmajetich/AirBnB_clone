@@ -165,6 +165,9 @@ class HBNBCommand(cmd.Cmd):
         if flag == 1:
             storage.save()
             print(new_instance.id)
+        else:
+            key = arg[0] + "." + new_instance.id
+            del(storage.all()[key])
 
     def help_create(self):
         """ Help information for the create method """
