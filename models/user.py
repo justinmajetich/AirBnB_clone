@@ -6,18 +6,13 @@ from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
-    """
-    This class defines a user by various attributes
-    which will be mapped to columns on a users table
-    in the database
-    """
+    """This class defines a user by various attributes"""
+    __tablename__ = 'users'
 
-    __tablename__ = "users"
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
 
-    # establishing relationship with place and city models
-    places = relationship("Place", backref="user", cascade="all, delete")
-    reviews = relationship("Review", backref="user", cascade="all, delete")
+    places = relationship('Place', cascade='all, delete', backref='user')
+    reviews = relationship('Review', cascade='all, delete', backref='user')
