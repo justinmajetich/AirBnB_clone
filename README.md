@@ -149,3 +149,4 @@ about adding the sql to the codebase
 ## who worked on this project
 @Layla Abkari
 @Ayoub Zakaria
+![Alt Text](./image.png)
