@@ -124,6 +124,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         arg = args.split(" ", 1)
+        flag = 0
         if not arg[0]:
             print("** class name missing **")
             return
@@ -134,28 +135,36 @@ class HBNBCommand(cmd.Cmd):
         if (len(arg) == 2):
             strings = arg[1].split()
             for string in strings:
+                f = 0
                 if string.count("=") == 1 and (string[0] == '='
-                   or string[len(string) - 1] == '='):
-                    return
+                   or string[-1] == '='):
+                    continue
                 if string.count('=') == 1:
                     a = string.split("=")
-                    a[1] = a[1].strip('"').replace("_", " ")
-                    if hasattr(new_instance, a[0]):
+                    value = a[1]
+                    if ((value[0] == '"' and value[-1] != '"') or
+                       (value[0] != '"' and value[-1] == '"')):
+                        continue
+                    if a[1][0] == '"' and a[1][-1] == '"':
+                        a[1] = a[1].strip('"').replace("_", " ")
                         value = str(a[1])
-                        if value.isdigit():
+                        f = 1
+                    if hasattr(new_instance, a[0]):
+                        flag = 1
+                        if f == 0 and value.isdigit():
                             value = int(value)
-                        elif self.is_float(value):
+                        elif f == 0 and self.is_float(value):
                             value = float(value)
                         setattr(new_instance, a[0], value)
                 else:
-                    return
+                    continue
         '''
         if len(arg) == 1:
             new_instance = HBNBCommand.classes[arg[0]]()
         '''
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        if flag == 1:
+            storage.save()
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
