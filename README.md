@@ -7,13 +7,13 @@ about adding the sql to the codebase
 ---
 ## Who Worked on This Project
 
-<a href="https://github.com/aybzakaria5" title="Click to view Ayoub's GitHub profile">
+<a href="https://github.com/aybzakaria5" title="Click to view Ayoub's GitHub profile" target="_black">
     <img src="./image1.jpeg" alt="Ayoub" width="100" height="100" style="border-radius:50%">
 </a>
 
 * [AYOUB ZAKARIA](https://github.com/aybzakaria5)
 
-<a href="https://github.com/Lelaabk" title="Click to view Layla's GitHub profile">
+<a href="https://github.com/Lelaabk" title="Click to view Layla's GitHub profile" target="_blank">
     <img src="./image2.jpeg" alt="Layla" width="100" height="100" style="border-radius:50%">
 </a>
 
