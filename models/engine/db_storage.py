@@ -43,8 +43,9 @@ class DBStorage:
         # If cls is not provided, iterate through all classes
         for class_name, class_object in classes.items():
             query = self.__session.query(class_object)
-            temp = {"{}.{}".format(class_name, elem.id): elem for elem in query}
-            result_dict.update(temp)
+            for elem in query:
+                key = "{}.{}".format(class_name, elem.id)
+                result_dict[key] = elem
 
         return result_dict
 
