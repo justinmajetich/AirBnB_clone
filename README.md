@@ -5,9 +5,26 @@ This repository contains the initial stage of a student project to build a clone
 ## PART THREE OF THE PROJECT :(last update)
 about adding the sql to the codebase
 ---
-## who worked on this project
+
+## Who Worked on This Project
+
+<div align="center">
+    <a href="https://github.com/aybzakaria5" title="Click to view Ayoub's GitHub profile">
+        <img src="./image1.jpeg" alt="Ayoub" width="100" height="100" style="border-radius:50%">
+    </a>
+</div>
+
 * [AYOUB ZAKARIA](https://github.com/aybzakaria5)
+
+<div align="center">
+    <a href="https://github.com/Lelaabk" title="Click to view Layla's GitHub profile">
+        <img src="./image2.jpeg" alt="Layla" width="100" height="100" style="border-radius:50%">
+    </a>
+</div>
+
 * [LAYLA ABKARI](https://github.com/Lelaabk)
+
+
 ![Alt Text](./image.png)
 
 <center><h3>Repository Contents by Project Task</h3> </center>
