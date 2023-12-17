@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-import re
+import ast
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,52 +114,37 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         
 
-    def do_create(self, arg):
+    def do_create(self, args):
         """ Create an object of any class"""
-        args = arg.split()
-        if not args or args[0] == '':
+        parts = args.split(" ", 1)
+        cls = parts[0].strip()
+        params_str = parts[1].strip() if len(parts) > 1 else ""
+
+        if not args or cls == '':
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+        
+        if cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         
-        class_name = args[0]
-        valid_params = self.parse_params(args[1:])
-        new_instance = HBNBCommand.classes[class_name](valid_params)
+        valid_params = {}
+        for param in params_str.split():
+            key, value = param.split("=")
+
+            try:
+                value = ast.literal_eval(value)
+            except (SyntaxError, ValueError):
+                pass
+
+            if isinstance(value, str):
+                value = value.replace("_", " ").replace('"', '\\"')
+            valid_params[key] = value
+            
+        new_instance = HBNBCommand.classes[cls](**valid_params)
         new_instance.save()
         print(new_instance.id)
         storage.save()
-
-    # do_create helper functions parse_params & convert_value
-    def parse_params(self, params):
-        """Parse parameters and return a dictionary"""
-        valid_params = {}
-        for param in params:
-            match = re.match(r'^([^=]+)=(.+)$', param)
-            if match:
-                key, value = match.groups()
-                value = self.convert_value(value)
-                if key and value is not None:
-                    valid_params[key] = value
-            else:
-                return None  # Invalid parameter syntax
-        return valid_params
-    
-    def convert_value(self, value):
-        """Convert string representation to appropriate data type"""
-        if value.startswith('"') and value.endswith('"'):
-            return value[1:-1].replace('_', ' ')
-        elif '.' in value:
-            try:
-                return float(value)
-            except ValueError:
-                return None  # Invalid float syntax
-        else:
-            try:
-                return int(value)
-            except ValueError:
-                return None  # Invalid integer syntax
 
     def help_create(self):
         """ Help information for the create method """
