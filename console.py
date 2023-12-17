@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             # escaping the double quote and replacing '_' with space
             try:
                 if val[0] == '"' and val[-1] == '"':
-                    parms[key] = val[1:-1].replace('\\"', '"').replace('_', ' ')
+                    parms[key] = val[1:-1].replace('_', ' ')
                     # handling the type of given numbers
                 elif '.' in val:
                     parms[key] = float(val)
