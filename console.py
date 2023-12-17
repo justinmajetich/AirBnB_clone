@@ -144,8 +144,8 @@ class HBNBCommand(cmd.Cmd):
                 if value[0] == '"' and value[-1] == '"':
                     value = value.replace("_", " ")
                     # not sure about removing quotes here
-                    # value = value[1:-1].replace('"', "")
-                    value = value[1:-1].replace('"', '\\"')
+                    value = value[1:-1].replace('"', "")
+                    # value = value[1:-1].replace('"', '\\"')
                 elif "." in value:
                     value = float(value)
                 else:
