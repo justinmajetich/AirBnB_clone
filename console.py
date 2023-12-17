@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,15 +113,46 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    @staticmethod
+    def is_float(s):
+        try:
+            float_value = float(s)
+            return float_value != int(float_value)
+        except ValueError:
+            return False
+
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        arg = args.split(" ", 1)
+        if not arg[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[arg[0]]()
+        if (len(arg) == 2):
+            strings = arg[1].split()
+            for string in strings:
+                if string.count("=") == 1 and (string[0] == '='
+                   or string[len(string) - 1] == '='):
+                    return
+                if string.count('=') == 1:
+                    a = string.split("=")
+                    a[1] = a[1].strip('"').replace("_", " ")
+                    if hasattr(new_instance, a[0]):
+                        value = str(a[1])
+                        if value.isdigit():
+                            value = int(value)
+                        elif self.is_float(value):
+                            value = float(value)
+                        setattr(new_instance, a[0], value)
+                else:
+                    return
+        '''
+        if len(arg) == 1:
+            new_instance = HBNBCommand.classes[arg[0]]()
+        '''
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
