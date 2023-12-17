@@ -26,12 +26,27 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ query on the current db all objects depending of the class name """
+        """Query on the current db all objects depending on the class name."""
+        from models import classes
+
+        result_dict = {}
+
         if cls:
-            return self.__session.query(cls).all()
-        else:
-            # I AM NOT SURE I UNDERSTAND THE REQUIREMENT HERE
-            self.__session.query(BaseModel).all()
+            if isinstance(cls, str) and (class_obj := classes.get(cls)):
+                query = self.__session.query(class_obj).all()
+                # Return a dictionary: (like FileStorage)
+                return {"{}.{}".format(cls, elem.id): elem for elem in query}
+            else:
+                # provided cls not found in classes
+                return result_dict
+
+        # If cls is not provided, iterate through all classes
+        for class_name, class_object in classes.items():
+            query = self.__session.query(class_object)
+            temp = {"{}.{}".format(class_name, elem.id): elem for elem in query}
+            result_dict.update(temp)
+
+        return result_dict
 
     def new(self, obj):
         self.__session.add(obj)
