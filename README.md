@@ -6,8 +6,8 @@ This repository contains the initial stage of a student project to build a clone
 about adding the sql to the codebase
 ---
 ## who worked on this project
-@Layla Abkari
-@Ayoub Zakaria
+* [AYOUB ZAKARIA](https://github.com/aybzakaria5)
+* [LAYLA ABKARI](https://github.com/Lelaabk)
 ![Alt Text](./image.png)
 
 <center><h3>Repository Contents by Project Task</h3> </center>
