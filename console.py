@@ -135,21 +135,16 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[class_name]()
-        print(f"before: {new_instance}")
         for param in arglist[1:]:
-            print(f"param: {param}")
             if "=" not in param:
                 print("Param syntax: <key name>=<value>")
                 return
             else:
                 key, value = param.split("=")
-                print(f"key: {key}, value: {value}")
                 if value[0] == '"' and value[-1] == '"':
                     value = value.replace("_", " ")
-                    print(f" replaced _ value: {value}")
                     # not sure about removing quotes here
                     value = value[1:-1].replace('"', "")
-                    print(f' replaced " value: {value}')
                 elif "." in value:
                     value = float(value)
                 else:
@@ -157,11 +152,8 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     except ValueError:
                         continue
-            print(f"key: {key}, value: {value}")
             # setattr(new_instance, key, value)
             new_instance.__dict__.update({key: value})
-
-        print(f"after: {new_instance}")
 
         storage.save()
         print(new_instance.id)
