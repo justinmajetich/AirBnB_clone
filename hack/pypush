@@ -1,5 +1,6 @@
 #!/bin/env bash
 
+autopep8 --in-place --aggressive --aggressive *.py
 pycodestyle --show-source --show-pep8 models/*.py
 
 if [ "$?" == "0" ]; then
