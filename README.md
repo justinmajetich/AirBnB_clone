@@ -2,7 +2,13 @@
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
+## PART THREE OF THE PROJECT :(last update)
+about adding the sql to the codebase
 ---
+## who worked on this project
+@Layla Abkari
+@Ayoub Zakaria
+![Alt Text](./image.png)
 
 <center><h3>Repository Contents by Project Task</h3> </center>
 
@@ -142,11 +148,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 
 
-## PART THREE OF THE PROJECT :
-about adding the sql to the codebase
 
 
-## who worked on this project
-@Layla Abkari
-@Ayoub Zakaria
-![Alt Text](./image.png)
