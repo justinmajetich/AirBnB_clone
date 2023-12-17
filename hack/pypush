@@ -2,6 +2,8 @@
 
 autopep8 --in-place --aggressive --aggressive *.py
 pycodestyle --show-source --show-pep8 models/*.py
+pycodestyle --show-source --show-pep8 *.py
+pycodestyle --show-source --show-pep8 tests/*.py
 
 if [ "$?" == "0" ]; then
     push "$1"
