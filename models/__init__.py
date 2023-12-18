@@ -9,13 +9,13 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-"""classes = {
+classes = {
             'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
-            }"""
+            }
 # temporarily for testing, only these two inheret from Base
-classes = { 'State': State, 'City': City }
+# classes = { 'State': State, 'City': City }
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
@@ -23,5 +23,5 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
-    
+
 storage.reload()
