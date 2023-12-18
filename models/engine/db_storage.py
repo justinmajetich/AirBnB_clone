@@ -26,7 +26,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on current DB session (self.__session)"""
-        from models import base_model, user, place, state,
+        from models import base_model, user, place, state
         city, amenity, review
 
         classes = [base_model.BaseModel, user.User, place.Place,
