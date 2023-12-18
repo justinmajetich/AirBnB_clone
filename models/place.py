@@ -33,7 +33,7 @@ class Place(BaseModel, Base):
             """
             from models import storage, classes
             reviews_list = (
-                storage.all(classes[self.__class__.__name__])
+                storage.all(classes['Review'])
                 .values()
                 )
             return [review for review in reviews_list if
