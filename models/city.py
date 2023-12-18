@@ -1,9 +1,7 @@
 #!/usr/bin/python3
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.state import State
-from models.engine.db_storage import Base
 
 
 
@@ -14,3 +12,8 @@ class City(BaseModel, Base):
     state = relationship('State', back_populates='cities')
     places = relationship('Place', back_populates='cities')
 
+
+    def to_dict(self):
+         """Converts instance into dict format"""
+        dictionary = super().to_dict()
+        return dictionary
