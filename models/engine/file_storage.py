@@ -63,8 +63,5 @@ class FileStorage:
             return
         model = obj.__class__.__name__
         key = "{}.{}".format(model, obj.id)
-        try:
-            del FileStorage.__objects[key]
-            FileStorage.save(self)
-        except KeyError:
-            raise custom_exceptions.GetInstanceException(id, model)
+        del FileStorage.__objects[key]
+        FileStorage.save(self)
