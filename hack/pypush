@@ -1,6 +1,7 @@
 #!/bin/env bash
 
-autopep8 --in-place --aggressive --aggressive *.py
+
+autopep8 . --recursive --aggressive --in-place --pep8-passes 2000 --verbose
 pycodestyle --show-source --show-pep8 models/*.py
 pycodestyle --show-source --show-pep8 *.py
 pycodestyle --show-source --show-pep8 tests/*.py
