@@ -52,7 +52,8 @@ class Place(BaseModel, Base):
 
             amenities_list = []
             for amenity_id in self.amenity_ids:
-                amenity = storage.get(Amenity, amenity_id)
+                amenityObj = models.storage.all().get("Amenity.{}"
+                                                      .format(amenity_id))
                 if amenity:
                     amenities_list.append(amenity)
             return amenities_list
