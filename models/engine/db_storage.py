@@ -24,10 +24,10 @@ class DBStorage:
         if getenv("HBNB_ENV") == 'test':
             Base.metadata.drop.all(self.__engine)
 
+
     def all(self, cls=None):
         """Query on current DB session (self.__session)"""
-        from models import base_model, user, place, state
-        city, amenity, review
+        from models import base_model, user, place, state, city, amenity, review
 
         classes = [base_model.BaseModel, user.User, place.Place,
                    state.State, city.City, amenity.Amenity, review.Review]
@@ -36,16 +36,25 @@ class DBStorage:
             if isinstance(cls, type) and issubclass(cls, BaseModel):
                 cls = cls.__name__
             if cls in classes:
-                query_res = self.__session.query(eval(cls)).all()
-                for obj in query_res:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    objects[key] = obj
+                objects = query_and_build_dictio(self.__session, eval(cls))
+                # for obj in query_res:
+                #     key = "{}.{}".format(type(obj).__name__, obj.id)
+                #     objects[key] = obj
         else:
             for c in classes:
-                query_res = self.__session.query(c).all()
-                for obj in query_res:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    objects[key] = obj
+                objects.update(query_and_build_dictio(self.__session, c))
+                # for obj in query_res:
+                #     key = "{}.{}".format(type(obj).__name__, obj.id)
+                #     objects[key] = obj
+        return objects
+
+    def query_and_build_dictio(session, obj_class):
+        """Query the database for objects of a specific class and build a dictionary"""
+        query_res = session.query(obj_class).all()
+        objects = {}
+        for obj in query_res:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            objects[key] = obj
         return objects
 
     def new(self, obj):
