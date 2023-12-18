@@ -36,18 +36,16 @@ class DBStorage:
             if isinstance(cls, type) and issubclass(cls, BaseModel):
                 cls = cls.__name__
             if cls in classes:
-                # objects = query_and_build_dictio(self.__session, eval(cls))
-                query_res = self.__session.query(eval(cls)).all()
-                for obj in query_res:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    objects[key] = obj
+                objects = query_and_build_dictio(self.__session, eval(cls))
+                # for obj in query_res:
+                #     key = "{}.{}".format(type(obj).__name__, obj.id)
+                #     objects[key] = obj
         else:
             for c in classes:
-                # objects.update(query_and_build_dictio(self.__session, c))
-                query_res = self.__session.query(c).all()
-                for obj in query_res:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    objects[key] = obj
+                objects.update(query_and_build_dictio(self.__session, c))
+                # for obj in query_res:
+                #     key = "{}.{}".format(type(obj).__name__, obj.id)
+                #     objects[key] = obj
         return objects
 
     def query_and_build_dictio(session, obj_class):
