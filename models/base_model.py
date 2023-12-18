@@ -11,11 +11,11 @@ Base = declarative_base()
 
 
 class BaseModel:
-    id = Column(String(50), unique=True, nullable=False, primary_key=True)
+    """A base class for all hbnb models"""
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
-    """A base class for all hbnb models"""
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
@@ -51,8 +51,10 @@ class BaseModel:
         dictionary["__class__"] = type(self).__name__
         dictionary["created_at"] = self.created_at.isoformat()
         dictionary["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
         return dictionary
 
     def delete(self):
         """Deletes an object"""
-        models.storage.delete
+        models.storage.delete(self)
