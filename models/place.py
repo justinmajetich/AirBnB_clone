@@ -20,14 +20,17 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    #amenity_ids = [] not sure what it does
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship(
             "Review", backref="place", cascade="all, delete-orphan")
-    """
-    has no effect
     else:
         @property
         def reviews(self):
-            pass"""
+            """
+            getter attribute reviews that returns the list of Review
+            instances with place_id equals to the current Place.id
+            """
+            from models import storage, classes
+            reviews_list = storage.all(classes[self.__class__.__name__]).values()
+            return [review for review in reviews_list if review.place_id == self.id]
