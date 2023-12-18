@@ -32,5 +32,9 @@ class Place(BaseModel, Base):
             instances with place_id equals to the current Place.id
             """
             from models import storage, classes
-            reviews_list = storage.all(classes[self.__class__.__name__]).values()
-            return [review for review in reviews_list if review.place_id == self.id]
+            reviews_list = (
+                storage.all(classes[self.__class__.__name__])
+                .values()
+                )
+            return [review for review in reviews_list if
+                    review.place_id == self.id]
