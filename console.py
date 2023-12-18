@@ -145,6 +145,8 @@ class HBNBCommand(cmd.Cmd):
                     if ((value[0] == '"' and value[-1] != '"') or
                        (value[0] != '"' and value[-1] == '"')):
                         continue
+                    if a[1][0] != '"' and a[1][-1] != '"':
+                        continue
                     if a[1][0] == '"' and a[1][-1] == '"':
                         a[1] = a[1].strip('"').replace("_", " ")
                         value = str(a[1])
