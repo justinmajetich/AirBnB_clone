@@ -19,8 +19,9 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
 
-    # if getenv('HBNB_TYPE_STORAGE') == 'db':
-    #   establishing relationship with place and city models
-    #   places = relationship("Place", backref="user", cascade="all, delete")
-    #   reviews = relationship(
-    #       "Review", backref="user", cascade="all, delete")
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        # establishing relationship with place and city models
+        places = relationship(
+            "Place", backref="user", cascade="all, delete-orphan")
+        reviews = relationship(
+            "Review", backref="user", cascade="all, delete-orphan")
