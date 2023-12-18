@@ -5,7 +5,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 from os import getenv
 
+
 storage_type = getenv("HBNB_TYPE_STORAGE")
+
 
 class Amenity(BaseModel, Base):
     """ Amenity class """
@@ -18,4 +20,3 @@ class Amenity(BaseModel, Base):
                                        back_populates="amenities")
     else:
         name = ""
-

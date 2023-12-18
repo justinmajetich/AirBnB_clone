@@ -69,7 +69,6 @@ class Place(BaseModel, Base):
             if type(obj).__name__ == "Amenity":
                 self.amenity_ids.append(obj.id)
 
-
         @property
         def reviews(self):
             """reviews getter"""
