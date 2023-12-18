@@ -31,15 +31,27 @@ class DBStorage:
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
-    def all(self, cls=None):
+    def all(self, cls=None, id=None):
         """all method"""
-        if cls:
-            objs = self.__session.query(cls).all()
+        classes = [User, State, City, Amenity, Place, Review]
+        new_dict = {}
+
+        if cls is not None:
+            if id is not None:
+                key = cls.__name__ + '.' + id
+                obj = self.__session.query(cls).get(id)
+                new_dict[key] = obj
+            else:
+                for obj in self.__session.query(cls):
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
         else:
-            objs = []
-            for cls in [User, Place, State, City, Review, Amenity]:
-                objs += self.__session.query(cls).all()
-        return {'{}.{}'.format(type(obj).__name__, obj.id): obj for obj in objs}
+            for c in classes:
+                for obj in self.__session.query(c):
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return new_dict
+
 
     def new(self, obj):
         """new method"""
@@ -65,4 +77,4 @@ class DBStorage:
 
     def close(self):
         """close method"""
-        self.__session.remove()
+        self.__session.close()
