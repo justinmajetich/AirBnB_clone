@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models.engine import custom_exceptions
 
 
 class FileStorage:
@@ -8,8 +9,27 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    models = [
+        "BaseModel",
+        "User",
+        "State",
+        "City",
+        "Amenity",
+        "Place",
+        "Review",
+    ]
+
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        items = {}
+        if cls is not None:
+            model = cls.__name__
+            if model not in FileStorage.models:
+                raise custom_exceptions.GetClassException(model)
+            for key, value in FileStorage.__objects.items():
+                if key.split(".")[0] == model:
+                    items[key] = value
+            return items
         return FileStorage.__objects
 
     def new(self, obj):
@@ -39,7 +59,7 @@ class FileStorage:
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
-                  }
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -48,3 +68,18 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """ Deletes an object """
+        if obj is None:
+            return
+        model = obj.__class__.__name__
+        if model not in FileStorage.models:
+            raise custom_exceptions.GetClassException(model)
+
+        key = "{}.{}".format(model, obj.id)
+        try:
+            del FileStorage.__objects[key]
+            FileStorage.save(self)
+        except KeyError:
+            raise custom_exceptions.GetInstanceException(id, model)
