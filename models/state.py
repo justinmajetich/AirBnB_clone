@@ -7,8 +7,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 from os import getenv
 from models.city import City
-from models import storageType
-from models import storage
+
+storageType = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
