@@ -9,23 +9,11 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    models = [
-        "BaseModel",
-        "User",
-        "State",
-        "City",
-        "Amenity",
-        "Place",
-        "Review",
-    ]
-
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         items = {}
         if cls is not None:
             model = cls.__name__
-            if model not in FileStorage.models:
-                raise custom_exceptions.GetClassException(model)
             for key, value in FileStorage.__objects.items():
                 if key.split(".")[0] == model:
                     items[key] = value
@@ -74,9 +62,6 @@ class FileStorage:
         if obj is None:
             return
         model = obj.__class__.__name__
-        if model not in FileStorage.models:
-            raise custom_exceptions.GetClassException(model)
-
         key = "{}.{}".format(model, obj.id)
         try:
             del FileStorage.__objects[key]
