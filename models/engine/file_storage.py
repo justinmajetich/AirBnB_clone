@@ -18,7 +18,6 @@ class FileStorage:
             return dict(
                 filter(lambda x: x[0].split(".")[0] == model, items)
             )
-            print(items)
         return FileStorage.__objects
 
     def new(self, obj):
