@@ -11,13 +11,10 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        items = {}
         if cls is not None:
             model = cls.__name__
-            for key, value in FileStorage.__objects.items():
-                if key.split(".")[0] == model:
-                    items[key] = value
-            return items
+            return dict(filter(lambda x: x[0] == model, FileStorage.__objects.items()))
+            print(items)
         return FileStorage.__objects
 
     def new(self, obj):
