@@ -17,15 +17,15 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        cle = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[cle] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
-            for cle, val in FileStorage.__objects.items():
-                temp[cle] = val.to_dict()
+            for key, val in FileStorage.__objects.items():
+                temp[key] = val.to_dict()
             json.dump(temp, f)
 
     def reload(self):
@@ -56,5 +56,5 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from __objects if it's inside"""
         if obj is not None:
-            cle = "{}.{}".format(obj.__class__.__name__, obj.id)
-            FileStorage.__objects.pop(cle, None)
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            FileStorage.__objects.pop(key, None)
