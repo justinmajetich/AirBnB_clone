@@ -13,7 +13,7 @@ class DBStorage:
 
     def __init__(self):
         """ Initialise new DBSTorage instance """
-        user = getenv("HBNB8MYSQL8USER")
+        user = getenv("HBNB_MYSQL_USER")
         password = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
         database = getenv("HBNB_MYSQL_DB")
