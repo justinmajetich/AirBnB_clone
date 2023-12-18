@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+#import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -68,19 +69,20 @@ class HBNBCommand(cmd.Cmd):
 
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
+                if _id == "''":
+                    _id = ""
                 # possible bug here:
-                # empty quotes register as empty _id when replaced
+                # empty quotes register as empty _id when replaced [SOLVED]
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
-                if pline:
+                if _id and pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -115,15 +117,53 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def cast_attr(self, value, data_type=None):
+        """Cast value to exisiting data type or
+        cast to appropriate data type"""
+        try:
+            if data_type is not None:
+                return data_type(value)
+            elif "." in value:
+                return float(value)
+            else:
+                return int(value)
+        except (ValueError, TypeError) as e:
+            if data_type and data_type == int:
+                try:
+                    return data_type(float(value))
+                except Exception:
+                    pass
+            elif not data_type:
+                return value
+            else:
+                pass
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        #_args = shlex.split(args)
+        _args = args.split(" ")
+        _cls = _args[0]
+        #print(_args)
+        if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[_cls]()
+
+        for param in _args[1:len(_args)]:
+            if "=" in param:
+                key, value = param.split("=")
+                if " " in value:
+                    continue # move to next param if spaces in the value
+                value = value.replace("_", " ")
+                if not (value.startswith('\"') and value.endswith('\"')):
+                    setattr(new_instance, key, self.cast_attr(value))
+                else:
+                    value = value.replace('\"', '')
+                    setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
