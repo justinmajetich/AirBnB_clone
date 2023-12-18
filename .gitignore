@@ -1,3 +1,4 @@
+.vscode
 *pycache*
 test_params_create
-.vscode
+main_delete.py

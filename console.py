@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-#import shlex
+# import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -61,10 +61,10 @@ class HBNBCommand(cmd.Cmd):
 
             # if parantheses contain arguments, parse them
             pline = pline[pline.find('(') + 1:pline.find(')')]
-            #User.create(first_name="Arizona", last_name="Donut")
+            # User.create(first_name="Arizona", last_name="Donut")
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
-                #pline = ('first_name="Arizona"', 'last_name="Donut"')
+                # pline = ('first_name="Arizona"', 'last_name="Donut"')
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
@@ -143,10 +143,10 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        #_args = shlex.split(args)
+        # _args = shlex.split(args)
         _args = args.split(" ")
         _cls = _args[0]
-        #print(_args)
+        # print(_args)
         if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -156,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
             if "=" in param:
                 key, value = param.split("=")
                 if " " in value:
-                    continue # move to next param if spaces in the value
+                    continue  # move to next param if spaces in the value
                 value = value.replace("_", " ")
                 if not (value.startswith('\"') and value.endswith('\"')):
                     setattr(new_instance, key, self.cast_attr(value))
@@ -229,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -363,6 +363,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
