@@ -18,11 +18,10 @@ class State(BaseModel, Base):
     if storageType == "db":
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state",
-                              cascade="all, delete-orphan")
+                              cascade="all, delete")
     else:
         name = ""
 
-    if storageType != "db":
         @property
         def cities(self):
             """getter for cities"""
