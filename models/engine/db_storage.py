@@ -29,7 +29,7 @@ class DBStorage:
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
-    def all(self. cls=None):
+    def all(self, cls=None):
         """Query on the current database"""
         result = {}
         classes = [cls] if cls else [User, State, City, Amenity, Place, Review]
