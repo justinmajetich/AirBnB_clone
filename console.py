@@ -255,7 +255,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """help count"""
         print("Usage: count <class_name>")
 
     def do_update(self, args):
