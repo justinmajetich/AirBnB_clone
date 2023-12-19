@@ -115,6 +115,7 @@ class TestConsole(unittest.TestCase):
             regex = known_id.strip()
             actual = f.getvalue()
             self.assertRegex(actual, regex)
+            self.assertRegex(actual, "BaseModel")
             f.seek(0)
             f.truncate(0)
             test_cmd_line = "show BaseModel"
@@ -148,5 +149,154 @@ class TestConsole(unittest.TestCase):
             f.truncate(0)
 
     def test_show_alt_syntax(self):
-        with patch("sys.stdout", new=StringIO()):
-            pass
+        with patch("sys.stdout", new=StringIO()) as f:
+            """Unknown Class David"""
+            test_cmd_line = "David.show()"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            expected = "** class doesn't exist **\n"
+            actual = f.getvalue()
+            self.assertEqual(actual, expected)
+            f.seek(0)
+            f.truncate(0)
+            """instance id missing"""
+            test_cmd_line = "User.show()"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            expected = "** instance id missing **\n"
+            actual = f.getvalue()
+            self.assertEqual(actual, expected)
+            f.seek(0)
+            f.truncate(0)
+            """Non-exisitng user id"""
+            test_cmd_line = "User.show(non-exis-ting-user-id)"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            expected = "** no instance found **\n"
+            actual = f.getvalue()
+            self.assertEqual(actual, expected)
+            f.seek(0)
+            f.truncate(0)
+            """existing id with and without quotes"""
+            test_cmd_line = "create User"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            known_id = f.getvalue()
+            f.seek(0)
+            f.truncate(0)
+            test_cmd_line = "User.show({})".format(known_id)
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            expected = r"^[User]\s+({}).+$".format(known_id.strip())
+            actual = f.getvalue()
+            self.assertRegex(actual, known_id.strip())
+            self.assertRegex(actual, "User")
+            f.seek(0)
+            f.truncate(0)
+            test_cmd_line = "User.show(\"{}\")".format(known_id)
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            expected = "[User] ({})".format(known_id)
+            actual = f.getvalue()
+            self.assertRegex(actual, known_id.strip())
+            self.assertRegex(actual, "User")
+            f.seek(0)
+            f.truncate(0)
+
+    def test_all_norms(self):
+        """Method to test for all """
+        with patch("sys.stdout", new=StringIO()) as f:
+            """Create User, Place and BaseModel for testing"""
+            test_cmd_line = "create User"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            test_cmd_line = "create BaseModel"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            test_cmd_line = "create Place"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            f.seek(0)
+            f.truncate(0)
+            """Check for behaviour of all"""
+            test_cmd_line = "all"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertRegex(result_string, "BaseModel")
+            self.assertRegex(result_string, "User")
+            self.assertRegex(result_string, "Place")
+            f.seek(0)
+            f.truncate(0)
+            """Check beaviour of all when a given class is used"""
+            test_cmd_line = "all User"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertNotRegex(result_string, "BaseModel")
+            self.assertRegex(result_string, "User")
+            self.assertNotRegex(result_string, "Place")
+            f.seek(0)
+            f.truncate(0)
+            test_cmd_line = "all Place"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertNotRegex(result_string, "BaseModel")
+            self.assertNotRegex(result_string, "User")
+            self.assertRegex(result_string, "Place")
+            f.seek(0)
+            f.truncate(0)
+            test_cmd_line = "all Place"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertNotRegex(result_string, "BaseModel")
+            self.assertNotRegex(result_string, "User")
+            self.assertRegex(result_string, "Place")
+            f.seek(0)
+            f.truncate(0)
+            """When an invalid class is passed"""
+            test_cmd_line = "all David"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertNotRegex(result_string, "BaseModel")
+            self.assertNotRegex(result_string, "User")
+            self.assertNotRegex(result_string, "Place")
+            self.assertEqual(result_string, "** class doesn't exist **\n")
+            f.seek(0)
+            f.truncate(0)
+            """What will be the behaviour when
+            multiple valid classes are passed"""
+            test_cmd_line = "all Place User"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            result_string = f.getvalue()
+            self.assertNotRegex(result_string, "BaseModel")
+            self.assertNotRegex(result_string, "User")
+            self.assertRegex(result_string, "Place")
+            f.seek(0)
+            f.truncate(0)
+
+    def test_all_norms(self):
+        """Method to test for all """
+        with patch("sys.stdout", new=StringIO()) as f:
+            test_cmd_line = "create User"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            test_cmd_line = "create BaseModel"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            test_cmd_line = "create Place"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            f.seek(0)
+            f.truncate(0)
+            """Debatable behaviour of User.all(Place)"""
+            test_cmd_line = "User.all(Place)"
+            test_cmd_line = HBNBCommand().precmd(test_cmd_line)
+            HBNBCommand().onecmd(test_cmd_line)
+            self.assertRegex(f.getvalue().strip(), "User")
+            f.seek(0)
+            f.truncate(0)
