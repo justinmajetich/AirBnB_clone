@@ -4,6 +4,9 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+from models.state import State
+
+from models.user import User
 
 
 class test_fileStorage(unittest.TestCase):
@@ -41,6 +44,28 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
+    def test_all_with_class(self):
+        """__objects is properly returned with a class filter"""
+        new = BaseModel()
+        new = BaseModel()
+        new = User()
+        new = BaseModel()
+        new = State()
+        temp = storage.all("BaseModel")
+        self.assertIsInstance(temp, dict)
+        self.assertTrue(len(temp) == 3)
+
+    def test_all_invalid_class(self):
+        """__objects is properly returned with am invalid class filter"""
+        BaseModel()
+        BaseModel()
+        User()
+        BaseModel()
+        State()
+        temp = storage.all("Invalid")
+        self.assertIsInstance(temp, dict)
+        self.assertTrue(len(temp) == 0)
+
     def test_base_model_instantiation(self):
         """File is not created on BaseModel save"""
         new = BaseModel()
@@ -59,6 +84,47 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         storage.save()
         self.assertTrue(os.path.exists("file.json"))
+
+    def test_delete(self):
+        """FileStorage delete method"""
+        new = BaseModel()
+        storage.delete(new)
+        key = "".format(new.__class__, new.id)
+        self.assertTrue(key not in storage.all().keys())
+
+    def test_delete_invalid_cls_no_id(self):
+        """FileStorage delete method with a dummy class with no id"""
+
+        class Dummy:
+            pass
+
+        new = Dummy()
+        self.assertRaises(
+            AttributeError, lambda: storage.delete(new)  # anonymous func :)
+        )
+
+    def test_delete_invalid_cls(self):
+        """FileStorage delete method"""
+
+        class Dummy:
+            id = "thisisanid"
+            pass
+
+        new = Dummy()
+        prev = storage.all()
+        storage.delete(new)
+        next = storage.all()
+
+        self.assertTrue(len(prev) == len(next))
+
+    def test_delete_none(self):
+        """FileStorage delete method"""
+        new = BaseModel()
+        new2 = BaseModel()
+        new3 = BaseModel()
+        all = storage.all()
+        storage.delete(None)
+        self.assertTrue(all == storage.all())
 
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
@@ -106,5 +172,4 @@ class test_fileStorage(unittest.TestCase):
         """FileStorage object storage created"""
         from models.engine.file_storage import FileStorage
 
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)

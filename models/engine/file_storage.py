@@ -18,10 +18,11 @@ class FileStorage:
         """
         if cls is None:
             return FileStorage.__objects
-        return {
+        tmp = {
             k: v for k, v in FileStorage.__objects.items()
-            if v.__class__ == cls
+            if v.__class__.__name__ == cls
         }
+        return tmp
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -40,7 +41,7 @@ class FileStorage:
         """Deletes an object from the __objects dict"""
         if obj is None:
             return
-        key = "{}.{}".format(obj.__class__, obj.id)
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
         try:
             del self.__objects[key]
         except KeyError:
