@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+# import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -60,25 +61,28 @@ class HBNBCommand(cmd.Cmd):
 
             # if parantheses contain arguments, parse them
             pline = pline[pline.find('(') + 1:pline.find(')')]
+            # User.create(first_name="Arizona", last_name="Donut")
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
+                # pline = ('first_name="Arizona"', 'last_name="Donut"')
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
+                if _id == "''":
+                    _id = ""
                 # possible bug here:
-                # empty quotes register as empty _id when replaced
+                # empty quotes register as empty _id when replaced [SOLVED]
 
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
-                if pline:
+                if _id and pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -113,16 +117,54 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def cast_attr(self, value, data_type=None):
+        """Cast value to exisiting data type or
+        cast to appropriate data type"""
+        try:
+            if data_type is not None:
+                return data_type(value)
+            elif "." in value:
+                return float(value)
+            else:
+                return int(value)
+        except (ValueError, TypeError) as e:
+            if data_type and data_type == int:
+                try:
+                    return data_type(float(value))
+                except Exception:
+                    pass
+            elif not data_type:
+                return value
+            else:
+                pass
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        # _args = shlex.split(args)
+        _args = args.split(" ")
+        _cls = _args[0]
+        # print(_args)
+        if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[_cls]()
+
+        for param in _args[1:len(_args)]:
+            if "=" in param:
+                key, value = param.split("=")
+                if " " in value:
+                    continue  # move to next param if spaces in the value
+                value = value.replace("_", " ")
+                if not (value.startswith('\"') and value.endswith('\"')):
+                    setattr(new_instance, key, self.cast_attr(value))
+                else:
+                    value = value.replace('\"', '')
+                    setattr(new_instance, key, value)
+
+        # storage.save()
         print(new_instance.id)
         storage.save()
 
@@ -187,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -272,18 +314,19 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
 
             args = args.partition(' ')
+            # print(f"[Debug]>>>Arg_tupple {args}")
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -291,6 +334,7 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
+            print(f"[Debug]>>>Arg_list {args}")
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
@@ -319,6 +363,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
