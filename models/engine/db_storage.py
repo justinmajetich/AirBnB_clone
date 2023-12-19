@@ -7,7 +7,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-import os
+from os import getenv
+
 
 class DBStorage:
     def __init__(self):
@@ -15,17 +16,17 @@ class DBStorage:
         self.__engine = None
         self.__session = None
 
-        user = os.getenv("HBNB_MYSQL_USER")
-        pwd = os.getenv("HBNB_MYSQL_PWD")
-        host = os.getenv("HBNB_MYSQL_HOST", default="localhost")
-        db = os.getenv("HBNB_MYSQL_DB")
+        user = getenv("HBNB_MYSQL_USER")
+        pwd = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST", default="localhost")
+        db = getenv("HBNB_MYSQL_DB")
 
 
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{pwd}@{host}/{db}",
             pool_pre_ping=True)
 
-        if os.getenv("HBNB_ENV") == "test":
+        if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self. cls=None):
