@@ -2,6 +2,7 @@
 
 """module"""
 
+from sqlalchemy import text
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -43,12 +44,16 @@ class DBStorage:
                 obj = self.__session.query(cls).get(id)
                 new_dict[key] = obj
             else:
-                for obj in self.__session.query(cls):
+                # Use text('class_name') to explicitly declare the class name
+                class_name_expr = text(cls.__name__)
+                for obj in self.__session.query(cls).filter(class_name_expr == class_name_expr):
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         else:
             for c in classes:
-                for obj in self.__session.query(c):
+                # Use text('class_name') to explicitly declare the class name
+                class_name_expr = text(c.__name__)
+                for obj in self.__session.query(c).filter(class_name_expr == class_name_expr):
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return new_dict
