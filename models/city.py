@@ -3,12 +3,17 @@
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from os import getenv
 
-Base = declarative_base()
+strg = getenv("HBNB_TYPE_STORAGE")
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     __tablename__ = 'cities'
 
-    state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
-    name = Column(String(128), nullable=False)
+    if strg == "db":
+        state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
+        name = Column(String(128), nullable=False)
+    else:
+        name = ""
+        state_id = ""
