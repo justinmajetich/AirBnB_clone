@@ -164,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
                     value = value.replace('\"', '')
                     setattr(new_instance, key, value)
 
-        storage.save()
+        # storage.save()
         print(new_instance.id)
         storage.save()
 
@@ -320,7 +320,7 @@ class HBNBCommand(cmd.Cmd):
                 args = args[second_quote + 1:]
 
             args = args.partition(' ')
-            print(f"[Debug]>>>Arg_tupple {args}")
+            # print(f"[Debug]>>>Arg_tupple {args}")
 
             # if att_name was not quoted arg
             if not att_name and args[0] != ' ':
