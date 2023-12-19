@@ -8,7 +8,7 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = column(String(128), nullable=False)
     cities = relationship("City", cascade="all, delete", back_populates="state")
-    @property
+    @cities
     def cities(self):
         dictionary = storage.all("City")
         list_of_city = []
