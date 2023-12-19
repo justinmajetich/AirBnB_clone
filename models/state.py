@@ -21,14 +21,10 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship('City', backref=backref('state'))
 
-    @staticmethod
-    def cities_g(self):
+    def cities(self):
         """getter for cities relationship for FileStorage"""
         City_Class = BaseModel.all_classes(BaseModel, 'City')
         result = models.storage.all(City_Class)
-        # print(type(result))
-        # print(result)
         selected_city = {k: v for k, v in result.items()
                          if v.state_id == self.id}
-        #print(list(selected_city.values())[0], "//////////////////////")
         return selected_city
