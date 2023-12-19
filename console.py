@@ -255,8 +255,7 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     # print(f"\t[Debug dict]>>>{inspect(v)}")
                     print_list.append(str(v))
-        else:
-            print(f"[Debug]>>{storage.all()}")
+        else:            
             for k, v in storage.all().items():
                 print_list.append(str(v))
 
