@@ -50,7 +50,7 @@ class DBStorage:
             all_rows = self.__session.query(cls).all()
             for r in all_rows:
                 cls_name = r.__class__.__name__
-                dict_s.update({f"{cls_name}.{r.id}": inspect(r)})
+                dict_s.update({f"{cls_name}.{r.id}": r})
         return dict_s
 
     def new(self, obj):
