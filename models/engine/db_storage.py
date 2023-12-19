@@ -9,22 +9,22 @@ from models.place import Place
 from models.review import Review
 from os import getenv
 
+user = getenv("HBNB_MYSQL_USER")
+pwd = getenv("HBNB_MYSQL_PWD")
+host = getenv("HBNB_MYSQL_HOST", default="localhost")
+db = getenv("HBNB_MYSQL_DB")
 
 class DBStorage:
+    __engine = None
+    __session = None
+
     def __init__(self):
         """Initialize the DBStorage instance."""
-        self.__engine = None
-        self.__session = None
-
-        user = getenv("HBNB_MYSQL_USER")
-        pwd = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST", default="localhost")
-        db = getenv("HBNB_MYSQL_DB")
-
 
         self.__engine = create_engine(
-            f"mysql+mysqldb://{user}:{pwd}@{host}/{db}",
-            pool_pre_ping=True)
+            "mysql+mysqldb://{}:{}@{}/{}".format(usr, pwd, host, db),
+            pool_pre_ping=True
+        )
 
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
@@ -47,15 +47,18 @@ class DBStorage:
         """Add a new object to the current database session"""
         if obj:
             self.__session.add(obj)
+
     def save(self):
         """commits changes of the current database session"""
         self.__session.commit()
+
     def delete(self, obj=None):
         """Delete from the current database session"""
         if obj:
             self.__session.delete(obj)
+
     def reload(self):
         """Create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(Session)
+        self.__session = scoped_session(Session())
