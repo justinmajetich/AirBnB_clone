@@ -12,7 +12,6 @@ class User(BaseModel, Base):
     which will be mapped to columns on a users table
     in the database
     """
-
     __tablename__ = "users"
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
@@ -21,5 +20,7 @@ class User(BaseModel, Base):
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         # establishing relationship with place and city models
-        places = relationship("Place", backref="user", cascade="all, delete")
-        reviews = relationship("Review", backref="user", cascade="all, delete")
+        places = relationship(
+            "Place", backref="user", cascade="all, delete-orphan")
+        reviews = relationship(
+            "Review", backref="user", cascade="all, delete-orphan")
