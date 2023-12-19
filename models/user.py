@@ -8,6 +8,7 @@ import os
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
+
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
@@ -18,7 +19,6 @@ class User(BaseModel, Base):
                               backref='user')
         reviews = relationship('Review', cascade='all, delete-orphan',
                                backref='user')
-
     else:
         email = ''
         password = ''

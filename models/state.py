@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -21,7 +22,7 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """returns City instances of the current State"""
-            all_cities = model.storage.all('City').values()
+            all_cities = models.storage.all('City').values()
             list_of_cities = []
 
             for city in all_cities:
