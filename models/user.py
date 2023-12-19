@@ -24,3 +24,13 @@ class User(BaseModel, Base):
             "Place", backref="user", cascade="all, delete-orphan")
         reviews = relationship(
             "Review", backref="user", cascade="all, delete-orphan")
+
+    def __init__(self, *args, **kwargs):
+        """ constructor for user """
+        valid_user_param = {key: value for key, value in kwargs.items()
+                            if hasattr(self, key) or key == 'id'}
+        super().__init__(*args, **valid_user_param)
+        self.email = kwargs.get('email', '')
+        self.password = kwargs.get('password', '')
+        self.first_name = kwargs.get('first_name', '')
+        self.last_name = kwargs.get('last_name', '')
