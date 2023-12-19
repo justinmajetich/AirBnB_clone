@@ -2,8 +2,6 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
-from models.user import User
-
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -13,13 +11,14 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage
-            Param:
-                cls: Class name. Filter for the return objects
+        Param:
+            cls: Class name. Filter for the return objects
         """
         if cls is None:
             return FileStorage.__objects
         tmp = {
-            k: v for k, v in FileStorage.__objects.items()
+            k: v
+            for k, v in FileStorage.__objects.items()
             if v.__class__.__name__ == cls
         }
         return tmp
