@@ -32,10 +32,19 @@ class BaseModel:
                 elif key != '__class__':
                     setattr(self, key, value)
 
+    # def __str__(self):
+    #     """Returns a string representation of the instance"""
+    #     cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+    #     return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        cls = type(self).__name__
+        attr_str = ', '.join(
+            f'{key}: {val}' if not isinstance(val, str) else f'{key}: "{val}"'
+            for key, val in self.__dict__.items()
+        )
+        return '[{}] ({}) {}'.format(cls, self.id, attr_str)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
