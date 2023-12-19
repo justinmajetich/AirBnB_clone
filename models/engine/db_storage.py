@@ -9,18 +9,17 @@ from models.place import Place
 from models.review import Review
 from os import getenv
 
+user = getenv("HBNB_MYSQL_USER")
+pwd = getenv("HBNB_MYSQL_PWD")
+host = getenv("HBNB_MYSQL_HOST", default="localhost")
+db = getenv("HBNB_MYSQL_DB")
 
 class DBStorage:
+    __engine = None
+    __session = None
+
     def __init__(self):
         """Initialize the DBStorage instance."""
-        self.__engine = None
-        self.__session = None
-
-        user = getenv("HBNB_MYSQL_USER")
-        pwd = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST", default="localhost")
-        db = getenv("HBNB_MYSQL_DB")
-
 
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{pwd}@{host}/{db}",
@@ -29,7 +28,7 @@ class DBStorage:
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
-    def all(self. cls=None):
+    def all(self, cls=None):
         """Query on the current database"""
         result = {}
         classes = [cls] if cls else [User, State, City, Amenity, Place, Review]
@@ -61,4 +60,4 @@ class DBStorage:
         """Create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(Session)
+        self.__session = scoped_session(Session())
