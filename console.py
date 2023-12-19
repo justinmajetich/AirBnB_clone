@@ -129,12 +129,12 @@ class HBNBCommand(cmd.Cmd):
             if "=" in attr:
                 attr_name = attr[:attr.find('=')]
                 attr_value = attr[attr.find('=') + 1:]
-                attr_value = attr_value.replace("\"", "").replace("_", "")
+                attr_value = attr_value.replace("\"", "").replace("_", " ")
                 if attr_name in type(self).types:
                     attr_value = type(self).types[attr_name](attr_value)
                 setattr(new_instance, attr_name, attr_value)
 
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
         storage.save()
 
