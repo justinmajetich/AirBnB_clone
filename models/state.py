@@ -13,4 +13,4 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        ...
+        return filter(lambda c: c.state_id == State.id, State.cities)
