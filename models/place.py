@@ -22,7 +22,6 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    amenity_ids = []
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship(
@@ -30,7 +29,10 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """ Getter for reviews if Filestorage is in use"""
+            """
+            getter attribute reviews that returns the list of Review
+            instances with place_id equals to the current Place.id
+            """
             place_review = storage.all(Review).values()
             return [review for review in place_review
                     if review.place_id == self.id]
