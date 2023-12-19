@@ -149,14 +149,18 @@ class HBNBCommand(cmd.Cmd):
             value = key_value[1]
             if (key and value):
                 try:
+                    if value[0] == '"' and value[-1] == '"':
+                        raise Exception
                     parsed_value = eval(value)
                     if not (isinstance(parsed_value, int) or
                             isinstance(parsed_value, float)):
                         raise Exception
                     setattr(new_instance, key, parsed_value)
-                except Exception:
+                except (Exception):
                     if value[0] == '"' and value[-1] == '"':
-                        parsed_value = parsed_value.replace("_", " ")
+                        parsed_value = value.replace("_", " ")
+                        parsed_value = parsed_value.replace('\\"', '"')
+                        parsed_value = parsed_value[1:-1]
                         setattr(new_instance, key, parsed_value)
         storage.save()
         print(new_instance.id)
