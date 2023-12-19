@@ -13,7 +13,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 
-
 class DBStorage:
     """DBStorage class"""
 
@@ -52,6 +51,7 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return new_dict
+
 
     def new(self, obj):
         """new method"""

@@ -3,7 +3,6 @@
 
 import cmd
 import sys
-import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -67,7 +66,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(', ')  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
+                _id = pline[0].replace('"', '')
                 # possible bug here:
                 # empty quotes register as empty _id when replaced
 
@@ -75,8 +74,9 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) is dict:
+                    if (pline[0] == '{' and
+                        pline[-1] == '}'
+                        and type(eval(pline)) is dict):
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -121,25 +121,33 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        parts = shlex.split(args)
-        class_name = parts[0]
+        # arg = # Remove possible trailing args
+        class_name, *params = args.split(' ')
 
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        param_str = " ".join(parts[1:])
-        try:
-            # Convert the parameter string to a dictionary
-            param_dict = dict(item.split('=') for item in param_str.split())
-        except ValueError:
-            return
+        new_inst = HBNBCommand.classes[class_name]()
 
-        # Create an instance of the specified class
-        new_instance = HBNBCommand.classes[class_name](**param_dict)
+        for param in params:
+            try:
+                key, value = param.split('=')[0:2]
+                if value.startswith('"'):
+                    value = value[1:-1].replace("\\\"", "\"")
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_inst, key.replace('_', ' '), value)
+            except Exception as e:
+                return
+
         storage.save()
-        print(new_instance.id)
+        print(new_inst.id)
         storage.save()
+
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -217,15 +225,14 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]  # Remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(args).items():
+                print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
