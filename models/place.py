@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from os import getenv
 from sqlalchemy.orm import relationship
+from models.review import Review
+from models import storage
 
 
 class Place(BaseModel, Base):
@@ -28,4 +30,6 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            pass
+            """ Getter for reviews if Filestorage is in use"""
+            place_review = storage.all(Review).values()
+            return [review for review in place_review  if review.place_id == self.id]
