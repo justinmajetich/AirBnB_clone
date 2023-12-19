@@ -8,23 +8,20 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self, cls=None):
+    def all(self):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
-        return {k: v for k, v in FileStorage.__objects.items()
-                if isinstance(v, cls)}
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
-            for key, val in FileStorage.__objects.items():
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
@@ -39,22 +36,15 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    cls_name = val['__class__']
-                    self.new(classes[cls_name](**val))
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    def delete(self, obj=None):
-        """Deletes obj from __objects if it's inside"""
-        if obj is not None:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            FileStorage.__objects.pop(key, None)
