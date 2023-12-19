@@ -3,3 +3,6 @@
 test_params_create
 main_delete.py
 test.py
+env_vars
+setup_mysql_dev1.sql
+setup_mysql_test1.sql

@@ -2,9 +2,9 @@
 """This module defines a class to manage DB storage for hbnb clone"""
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import MetaData
-# from base_model import BaseModel
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import MetaData, inspect
+from models.base_model import BaseModel, Base
 import os
 
 class DBStorage:
@@ -26,27 +26,52 @@ class DBStorage:
             metadata = MetaData()
             metadata.drop_all(bind=self.__engine)
 
-        Session = sessionmaker(bind=self.__engine)
+        # Session = sessionmaker(bind=self.__engine)
+        # self.__session = Session()
+
+    def all(self, cls=None):
+        """Selection objects, with optional filtering
+        by classnames"""
+        classes = []
+        if cls:
+            classes.append(cls)
+        else:
+            for table_name in Base.metadata.tables:
+                mapped_class = None
+                for mapper in Base.registry.mappers:
+                    if mapper.tables[0].name == table_name:
+                        mapped_class = mapper.class_
+                        classes.append(mapped_class)
+                        break
+
+        dict_s = {}
+        for cls in classes:
+            all_rows = self.__session.query(cls).all()
+            for r in all_rows:
+                cls_name = r.__class__.__name__
+                dict_s.update({f"{cls_name}.{r.id}": inspect(r)})
+        return dict_s
+
+    def new(self, obj):
+        """Adds obj to the session"""
+        # if obj:
+        self.__session.add(obj)
+
+    def save(self):
+        """Saves all changes to the session"""
+        # self.__session.add_all()
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """delete from the current database session obj if not None"""
+        if obj:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """create all tables in the database &
+        create the current database session"""
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
-
-        def all(self, cls=None):
-            """Selection objects, with optional filtering
-            by classnames"""
-            if cls:
-                all_rows = self.__session.query(cls).all()
-
-                #all_cities = session.query(State).order_by(State.id).all()
-                fr = all_rows[0]
-                cls_name = fr.__dict__['_sa_instance_state'].class_.__name__
-
-                dict_s = {}
-                for r in all_rows:
-                    del r.__dict__["_sa_instance_state"]
-                    dict_s.update({f"{cls}.{r.id}": r.__dict__})
-
-                return dict_s
-
-            else:
-                all_rows = self.__session.query(metadata.tables.keys()).all()
-
-            return (all_rows)
