@@ -17,8 +17,6 @@ class State(BaseModel, Base):
         cities = relationship('City', cascade='all, delete-orphan')
 
     else:
-        name = ""
-
         @property
         def cities(self):
             """Getter attribute for cities in FileStorage"""
