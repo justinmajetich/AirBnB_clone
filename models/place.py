@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from os import getenv
 from sqlalchemy.orm import relationship
+from models.review import Review
+from models import storage
 
 
 class Place(BaseModel, Base):
@@ -31,10 +33,6 @@ class Place(BaseModel, Base):
             getter attribute reviews that returns the list of Review
             instances with place_id equals to the current Place.id
             """
-            from models import storage, classes
-            reviews_list = (
-                storage.all(classes['Review'])
-                .values()
-                )
-            return [review for review in reviews_list if
-                    review.place_id == self.id]
+            place_review = storage.all(Review).values()
+            return [review for review in place_review
+                    if review.place_id == self.id]
