@@ -255,11 +255,12 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     # print(f"\t[Debug dict]>>>{inspect(v)}")
                     print_list.append(str(v))
-        else:            
+            print("[" + ", ".join(print_list) + "]")
+        else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
 
-        print(print_list)
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
