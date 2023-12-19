@@ -31,5 +31,20 @@ class Place(BaseModel, Base):
                             if v.place_id == self.id]
         return selected_reviews
 
+    @property
+    def amenities(self):
+        """getter for amenity relationship for FileStorage"""
+        Amenity_Class = BaseModel.all_classes(BaseModel, 'Review')
+        result = models.storage.all(Amenity_Class)
+        selected_amenities = [v for k, v in result.items()
+                              if v.place_id == self.id]
+        return selected_amenities
+
+    @amenities.setter
+    def amenities(self, cls):
+        """Setter for handling appending ammenity id to ammenity_ids"""
+        if isinstance(cls, models.amenity.Amenity):
+            self.amenity_ids.append(cls.id)
+
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', backref=backref('place'))
