@@ -256,8 +256,7 @@ class HBNBCommand(cmd.Cmd):
                     # print(f"\t[Debug dict]>>>{inspect(v)}")
                     print_list.append(str(v))
             print("[" + ", ".join(print_list) + "]")
-            
-        else:            
+        else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
 
