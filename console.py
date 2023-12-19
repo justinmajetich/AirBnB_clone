@@ -127,13 +127,13 @@ class HBNBCommand(cmd.Cmd):
                 if type(value) is str:
                     value = value.replace('_', ' ').replace('"', '\\"')
                 kwargs[key] = value
-            new_instance = HBNBCommand.classes[cls_name](**kwargs)
-            new_instance.save()
-            print(new_instance.id)
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[cls_name](**kwargs)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
