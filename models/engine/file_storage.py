@@ -13,7 +13,7 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            return {k: v for k, v in FileStorage.__objects.items() if isinstance(v, cls)}
+            return {i: j for i, j in FileStorage.__objects.items() if isinstance(j, cls)}
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside - if obj is equal to None"""
