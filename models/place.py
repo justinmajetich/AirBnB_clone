@@ -32,4 +32,5 @@ class Place(BaseModel, Base):
         def reviews(self):
             """ Getter for reviews if Filestorage is in use"""
             place_review = storage.all(Review).values()
-            return [review for review in place_review  if review.place_id == self.id]
+            return [review for review in place_review
+                    if review.place_id == self.id]
