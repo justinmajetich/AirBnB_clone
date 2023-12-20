@@ -3,4 +3,5 @@ models/__pycache__
 tests/test_models/test_engine/__pycache__
 tests/test_models/__pycache__
 tests/__pycache__
-main_delete.py
+tests/__pycache__/__init__
+tests/test_models/__pycache__/__init__
