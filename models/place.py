@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Float
+from sqlalchemy import Column, String, Float, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
 
@@ -22,6 +22,6 @@ class Place(BaseModel):
     reviews = relationship("Review", cascade="all, delete", backref="place")
     amenity_ids = []
 
-   """ @property
+    """ @property
     def reviews(self):
         storage.all()"""
