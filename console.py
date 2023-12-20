@@ -141,10 +141,15 @@ class HBNBCommand(cmd.Cmd):
                             try:
                                 value = float(value)
                             except:
-                                pass
+                                return
                     setattr(new_instance, key, value)
-                    new_instance.save()
-            print(new_instance.id)
+                else:
+                    return
+        else:
+            return
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
