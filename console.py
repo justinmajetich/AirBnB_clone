@@ -124,6 +124,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         args.remove(args[0])
+        args = [arg for arg in args if '=' in arg and arg.count('=') == 1]
         kwargs = {}
         for arg in args:
             try:
