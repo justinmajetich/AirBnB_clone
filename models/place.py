@@ -59,4 +59,5 @@ class Place(BaseModel, Base):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', backref=backref('place'))
         amenities = relationship('Amenity', secondary=place_amenity,
+                                 back_populates='place_amenities',
                                  viewonly=False)
