@@ -63,10 +63,10 @@ class Place(BaseModel, Base):
             return Amenity
 
         @amenities.setter
-        def amenities(self, obj):
+        def amenities(self, amenity):
             """amenities setter"""
-            if type(obj).__name__ == "Amenity":
-                self.amenity_ids.append(obj.id)
+            if isinstance(amenity, Amenity):
+                self.amenity_ids.append(amenity.id)
 
         @property
         def reviews(self):
