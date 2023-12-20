@@ -3,6 +3,7 @@
 import unittest
 from models.base_model import BaseModel
 from models.user import User
+from models import storage
 import MySQLdb
 import os
 
@@ -43,16 +44,61 @@ class test_dbStorage(unittest.TestCase):
         table_count = self.cursor.execute("show tables")
         self.assertEqual(table_count, 7)
 
-    # Testing  users
+    # Testing  existence of right tables
     def test_for_existence_of_users_table(self):
         """Test if the users table exist"""
         self.cursor.execute("SHOW TABLES")
         self.assertIn(('users',), self.cursor.fetchall())
-    # def test_save_user(self):
-    #     """Test if save function actually saves user in db"""
 
-    #     user_count_before = self.cursor.execute("SELECT * FROM users")
-    #     user1  = User(email="hbnb_email",password="hbnb_pwd")
-    #     user1.save()
-    #     user_count_after = self.cursor.execute("SELECT * FROM users")
-    #     self.assertEqual(user_count_before + 1, user_count_after)
+    def test_for_existence_of_amenities_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('amenities',), self.cursor.fetchall())
+
+    def test_for_existence_of_cities_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('cities',), self.cursor.fetchall())
+
+    def test_for_existence_of_place_amenity_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('place_amenity',), self.cursor.fetchall())
+
+    def test_for_existence_of_places_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('places',), self.cursor.fetchall())
+
+    def test_for_existence_of_reviews_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('reviews',), self.cursor.fetchall())
+
+    def test_for_existence_of_states_table(self):
+        """Test if the users table exist"""
+        self.cursor.execute("SHOW TABLES")
+        self.assertIn(('states',), self.cursor.fetchall())
+
+    # Testing various funcitonalities of db_storage class
+    def test_save(self):
+        """Test if save function actually saves in db"""
+        pass
+
+    def test_delete(self):
+        """Test if delete function actually deletes from db"""
+        pass
+
+    def test_reload(self):
+        """Test if reload function actually reloads most recent
+        data in db"""
+        pass
+
+    def test_new(self):
+        """Test if new function actually creates new record in db"""
+        pass
+
+    def test_all(self):
+        """Test if all function actually returns all records of a
+        table in db"""
+        pass
