@@ -83,7 +83,6 @@ class test_basemodel(unittest.TestCase):
             # causes some checks to fail.
             new = self.value(**n)
 
-            
             if next(iter(n)) in dir(new):
                 raise KeyError()
 
@@ -103,5 +102,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        new.save() # save new model
+        new.save()  # save new model
         self.assertFalse(new.created_at == new.updated_at)
