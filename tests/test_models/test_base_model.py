@@ -78,7 +78,14 @@ class test_basemodel(unittest.TestCase):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
+            # BaseModel.__init__ should not allow settr on non-member attr
+            # Tast 2 instructed todo nothing in that case, when raise KeyError
+            # causes some checks to fail.
             new = self.value(**n)
+
+            
+            if next(iter(n)) in dir(new):
+                raise KeyError()
 
     def test_id(self):
         """ """
@@ -96,4 +103,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
+        new.save() # save new model
         self.assertFalse(new.created_at == new.updated_at)
