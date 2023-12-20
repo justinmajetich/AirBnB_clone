@@ -25,6 +25,8 @@ class test_fileStorage(unittest.TestCase):
         except:
             pass
 
+    # @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == "db",
+    #                  "only available in the filestorage")
     def test_obj_list_empty(self):
         """ __objects is initially empty """
         self.assertEqual(len(storage.all()), 0)
@@ -42,7 +44,8 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == "db")
+    # @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == "db",
+    #                  "only available in the filestorage")
     def test_all_filtering(self):
         """ returned __objects only contains the specified class """
         new_base = BaseModel()
