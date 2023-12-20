@@ -56,6 +56,3 @@ class test_dbStorage(unittest.TestCase):
     #     user1.save()
     #     user_count_after = self.cursor.execute("SELECT * FROM users")
     #     self.assertEqual(user_count_before + 1, user_count_after)
-
-
-
