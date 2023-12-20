@@ -7,12 +7,12 @@ from sqlalchemy.orm import backref, relationship
 import os
 
 place_amenity = Table(
-    name = "place_amenity",
-    metadata = Base.metadata,
-    place_id = Column(String(60), ForeignKey("places.id"),
-                   primary_key=True, nullable=False),
-    amenity_id = Column(String(60), ForeignKey("amenities.id"),
-                      primary_key=True, nullable=False)
+    "place_amenity",
+    Base.metadata,
+    Column("place_id", String(60), ForeignKey("places.id"),
+           primary_key=True, nullable=False),
+    Column("amenity_id", String(60), ForeignKey("amenities.id"),
+           primary_key=True, nullable=False)
 )
 
 
@@ -57,5 +57,5 @@ class Place(BaseModel, Base):
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', backref=backref('place'))
-        amenities = relationship('Amenity', secondary=place_amenity, viewonly=False)
-
+        amenities = relationship('Amenity', secondary=place_amenity,
+                                 viewonly=False)
