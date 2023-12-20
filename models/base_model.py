@@ -19,18 +19,12 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        allowed_keys = self._get_allowed_keys()
-
         if kwargs:
             for key, value in kwargs.items():
-
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
-                    if key not in allowed_keys:
-                        raise KeyError()
                     setattr(self, key, value)
-
             if "id" not in kwargs:
                 self.id = str(uuid.uuid4())
             if "created_at" not in kwargs:
@@ -40,12 +34,6 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-
-    def _get_allowed_keys(self):
-        """Returns a list of allowed attribute names for the current class."""
-        return [attr for attr in dir(self) if
-                not callable(getattr(self, attr)) and not attr.startswith("__")
-                and not attr.startswith("_")]
 
     def __str__(self):
         """Returns a string representation of the instance"""
