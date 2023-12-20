@@ -1,0 +1,10 @@
+gitignore
+.gitignore
+*.*~
+models/__pycache__/*
+models/engine/__pycache__/*
+tests/test_models/__pycache__/*
+tests/test_models/test_engine/__pycache__/*
+.env
+sql_tests
+file.json
