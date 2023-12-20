@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
-        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
+        Usage: <class name>.<command>([<id> [<*args> or <**new_attrs>]])
         (Brackets denote optional fields in usage example.)
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
@@ -72,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
                 # if arguments exist beyond _id
                 pline = pline[2].strip()  # pline is now str
                 if pline:
-                    # check for *args or **kwargs
+                    # check for *args or **new_attrs
                     if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
@@ -125,13 +125,13 @@ class HBNBCommand(cmd.Cmd):
                 attr_split[1] = eval(attr_split[1])
                 attr_split[1] = attr_split[1].replace("_", " ").replace(
                     '"', '\\"') if isinstance(attr_split[1], str) else attr_split[1]
-                kwargs = {attr_split[0]: attr_split[1]}
+                new_attrs[attr_split[0]] = attr_split[1]
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[args[0]](**kwargs)
-        storage.save()
+        new_instance = HBNBCommand.classes[args[0]](**new_attrs)
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -163,7 +163,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -214,11 +214,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -231,7 +230,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -242,7 +241,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, args):
         """ Updates a certain object with new info """
-        c_name = c_id = att_name = att_val = kwargs = ''
+        c_name = c_id = att_name = att_val = new_attrs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
@@ -271,11 +270,11 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
-        # first determine if kwargs or args
+        # first determine if new_attrs or args
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
-            kwargs = eval(args[2])
-            args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
-            for k, v in kwargs.items():
+            new_attrs = eval(args[2])
+            args = []  # reformat new_attrs into list, ex: [<name>, <value>, ...]
+            for k, v in new_attrs.items():
                 args.append(k)
                 args.append(v)
         else:  # isolate args

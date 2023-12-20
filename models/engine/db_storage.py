@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class to manage database storage for hbnb clone"""
+"""This module instantiates an object of class DBStorage"""""
 from os import getenv
 from models.base_model import Base
 from models.state import State
@@ -14,12 +14,18 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 
 
 class DBStorage:
-    """This class manages storage of hbnb models in SQL format"""
-    __engine = None
-    __session = None
+    """
+    This class manages storage of hbnb models in SQL format.
+    
+    Attributes:
+        __engine (sqlalchemy.engine.Engine): The database engine.
+        __session (sqlalchemy.orm.Session): The database session.
+    """
 
     def __init__(self):
-        """Defines the class's instance attributes"""
+        """
+        Initializes a new instance of the DBStorage class.
+        """
         usr = getenv('HBNB_MYSQL_USER')
         passwd = getenv('HBNB_MYSQL_PWD')
         database = getenv('HBNB_MYSQL_DB')
@@ -32,7 +38,15 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """
+        Returns a dictionary of models currently in storage.
+
+        Args:
+            cls (class, optional): The class of the models to retrieve. If not provided, retrieves all models.
+
+        Returns:
+            dict: A dictionary of models in the format {<model_name>.<model_id>: <model_instance>}.
+        """
         if cls is None:
             classes = [State, City, User, Place, Review, Amenity]
             objs = []
@@ -43,20 +57,35 @@ class DBStorage:
         return {type(obj).__name__ + '.' + obj.id: obj for obj in objs}
 
     def new(self, obj):
-        """Creates a new instance and add it to the database"""
+        """
+        Creates a new instance and adds it to the database.
+
+        Args:
+            obj (BaseModel): The model instance to add to the database.
+        """
         self.__session.add(obj)
 
     def save(self):
-        """Commit all changes to the database"""
+        """
+        Commits all changes to the database.
+        """
         self.__session.commit()
 
     def reload(self):
-        """Loads storage tables from the database"""
+        """
+        Loads storage tables from the database.
+        """
         Base.metadata.create_all(self.__engine)
         db_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(db_session)
         self.__session = Session()
         
     def delete(self, obj=None):
+        """
+        Deletes an object from the database.
+
+        Args:
+            obj (BaseModel, optional): The model instance to delete from the database.
+        """
         if obj:
             self.__session.delete(obj)
