@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 import os
 from models.city import City
 
+
 Base = declarative_base()
 
 strg = os.getenv("HBNB_TYPE_STORAGE")
