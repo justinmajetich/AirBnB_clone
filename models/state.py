@@ -15,7 +15,7 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         """getter for cities relationship for FileStorage"""
-        City_Class = BaseModel.all_classes(BaseModel, 'City')
+        City_Class = BaseModel.all_classes('City')
         result = models.storage.all(City_Class)
         selected_city = [v for k, v in result.items()
                          if v.state_id == self.id]

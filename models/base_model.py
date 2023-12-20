@@ -68,7 +68,7 @@ class BaseModel:
         """Deletes the current instance from the storage"""
         models.storage.delete(self)
 
-    @staticmethod
+    @classmethod
     def all_classes(cls, sub_cls=None):
         """Return a dictionary of parent class and all dirrect subclasses
         If sub_cls (class name as string), returns the class"""
