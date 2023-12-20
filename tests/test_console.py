@@ -67,7 +67,7 @@ class TestHBNBCommand(unittest.TestCase):
         self.execute_console_command(command)
         command = 'count State'
         output = self.execute_console_command(command)
-	self.assertEqual(int(output), "1", "Incorrect count for 'count' command")
+        self.assertEqual(int(output), "1", "Incorrect count for 'count' command")
 
     def test_create_with_mysql(self):
         # Count the number of records before creating a new one
