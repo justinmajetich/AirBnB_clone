@@ -12,6 +12,7 @@ import inspect
 import unittest
 storage_t = getenv("HBNB_TYPE_STORAGE")
 
+
 class test_Amenity(test_basemodel):
     """ """
 
@@ -29,6 +30,7 @@ class test_Amenity(test_basemodel):
 
 class Test_PEP8(unittest.TestCase):
     """test User"""
+
     def test_pep8_user(self):
         """test pep8 style"""
         pep8style = pycodestyle.StyleGuide(quiet=True)
@@ -39,6 +41,7 @@ class Test_PEP8(unittest.TestCase):
 
 class test_inherit_basemodel(unittest.TestCase):
     """Test if user inherit from BaseModel"""
+
     def test_instance(self):
         """check if user is an instance of BaseModel"""
         user = Amenity()
@@ -49,25 +52,26 @@ class test_inherit_basemodel(unittest.TestCase):
 
 class test_Amenity_BaseModel(unittest.TestCase):
     """Testing user class"""
+
     def test_instances(self):
         with patch('models.amenity'):
             instance = Amenity()
             self.assertEqual(type(instance), Amenity)
             instance.name = "Barbie"
             expectec_attrs_types = {
-                    "id": str,
-                    "created_at": datetime,
-                    "updated_at": datetime,
-                    "name": str,
-                    }
+                "id": str,
+                "created_at": datetime,
+                "updated_at": datetime,
+                "name": str,
+            }
             inst_dict = instance.to_dict()
             expected_dict_attrs = [
-                    "id",
-                    "created_at",
-                    "updated_at",
-                    "name",
-                    "__class__"
-                    ]
+                "id",
+                "created_at",
+                "updated_at",
+                "name",
+                "__class__"
+            ]
             self.assertCountEqual(inst_dict.keys(), expected_dict_attrs)
             self.assertEqual(inst_dict['name'], 'Barbie')
             self.assertEqual(inst_dict['__class__'], 'Amenity')
@@ -152,7 +156,7 @@ class TestAmenity(unittest.TestCase):
         self.assertEqual(type(new_d), dict)
         self.assertFalse("_sa_instance_state" in new_d)
         for attr in am.__dict__:
-            if attr != "_sa_instance_state":
+            if attr is not "_sa_instance_state":
                 self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
 
