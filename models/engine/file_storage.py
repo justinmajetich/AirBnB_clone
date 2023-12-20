@@ -19,6 +19,8 @@ class FileStorage:
                 if n[0] == cls.__name__:
                     dic[k] = v
             return dic
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -61,8 +63,9 @@ class FileStorage:
         """
         to delete obj from __objects if it's inside
         """
-        for k, v in self.__objects.items():
-            if obj.id == k.split('.')[1]:
-                key = k
-                break
-        del self.__objects[key]
+        if obj is not None:
+            for k, v in self.__objects.items():
+                if obj.id == k.split('.')[1]:
+                    key = k
+                    break
+            del self.__objects[key]
