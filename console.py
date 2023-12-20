@@ -61,12 +61,12 @@ class HBNBCommand(cmd.Cmd):
             _cls = pline[: pline.find(".")]
 
             # isolate and validate <command>
-            _cmd = pline[pline.find(".") + 1: pline.find("(")]
+            _cmd = pline[pline.find(".") + 1 : pline.find("(")]
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
             # if parantheses contain arguments, parse them
-            pline = pline[pline.find("(") + 1: pline.find(")")]
+            pline = pline[pline.find("(") + 1 : pline.find(")")]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(", ")  # pline convert to tuple
@@ -134,10 +134,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[_class]()
-        if (len(p_args) <= 1):
+        if len(p_args) <= 1:
             storage.save()
             print(new_instance.id)
-            storage.save()
+            # storage.save()
+            new_instance.save()
             return
         for param in p_args[1:]:
             if not param:
@@ -147,24 +148,26 @@ class HBNBCommand(cmd.Cmd):
                 continue
             key = key_value[0]
             value = key_value[1]
-            if (key and value):
+            if key and value:
                 try:
                     if value[0] == '"' and value[-1] == '"':
                         raise Exception
                     parsed_value = eval(value)
-                    if not (isinstance(parsed_value, int) or
-                            isinstance(parsed_value, float)):
+                    if not (
+                        isinstance(parsed_value, int) or isinstance(parsed_value, float)
+                    ):
                         raise Exception
                     setattr(new_instance, key, parsed_value)
-                except (Exception):
+                except Exception:
                     if value[0] == '"' and value[-1] == '"':
                         parsed_value = value.replace("_", " ")
                         parsed_value = parsed_value.replace('\\"', '"')
                         parsed_value = parsed_value[1:-1]
                         setattr(new_instance, key, parsed_value)
-        storage.save()
+        # storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save()
 
     def help_create(self):
         """Help information for the create method"""
@@ -246,14 +249,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all().items():
-                if k.split(".")[0] == args:
-                    print_list.append(str(v))
+            for v in storage.all(args).values():
+                print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for v in storage.all().values():
                 print_list.append(str(v))
 
-        print('[', ', '.join(print_list), ']', sep='')
+        print("[", ", ".join(print_list), "]", sep="")
 
     def help_all(self):
         """Help information for the all command"""
@@ -315,7 +317,7 @@ class HBNBCommand(cmd.Cmd):
             if args and args[0] == '"':  # check for quoted arg
                 second_quote = args.find('"', 1)
                 att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
+                args = args[second_quote + 1 :]
 
             args = args.partition(" ")
 
@@ -324,7 +326,7 @@ class HBNBCommand(cmd.Cmd):
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '"':
-                att_val = args[2][1: args[2].find('"', 1)]
+                att_val = args[2][1 : args[2].find('"', 1)]
 
             # if att_val was not quoted arg
             if not att_val and args[2]:
