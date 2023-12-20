@@ -73,8 +73,8 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if (pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict):
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -114,24 +114,44 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+        """ Create an object of any class
+        Usag :create <Class name> <param 1> <param 2> <param 3>..."""
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        # spliting the args given
+        class_parameters = args.split(' ')
+        # extracting the class name from the args
+        class_name = class_parameters[0]
+        # checks if the class_name is in the dictionary(.classes)
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
+            return
+        # now we have to create a dictionary by using the dict()
+        # to give it after to the class (kwargs)
+        parms = dict(
+            param.split('=')
+            for param in class_parameters[1:]
+            if '=' in param
+            )
+        # handling the params that contains '"' and '_'
+        for key, val in parms.items():
+            # escaping the double quote and replacing '_' with space
+            try:
+                if val[0] == '"' and val[-1] == '"':
+                    parms[key] = val[1:-1].replace('_', ' ')
+                    # handling the type of given numbers
+                elif '.' in val:
+                    parms[key] = float(val)
+                else:
+                    parms[key] = int(val)
+            except Exception:
+                continue
+        new_instance = HBNBCommand.classes[class_name]()
+        for attrkey, attrvalue in parms.items():
+            setattr(new_instance, attrkey, attrvalue)
+
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -280,7 +300,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if (args and args[0] == '\"'):  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -288,10 +308,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if (not att_name and args[0] != ' '):
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if (args[2] and args[2][0] != '\"'):
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -328,5 +348,7 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+    
