@@ -10,11 +10,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy import create_engine
-from os import environ
-from dotenv import load_dotenv
+from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-
-load_dotenv()
 
 classes = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -33,10 +30,10 @@ class DBStorage:
             }
     __engine = None
     __session = None
-    username = environ['HBNB_MYSQL_USER']
-    password = environ['HBNB_MYSQL_PWD']
-    db_name = environ['HBNB_MYSQL_DB']
-    host = environ['HBNB_MYSQL_HOST']
+    username = getenv('HBNB_MYSQL_USER')
+    password = getenv('HBNB_MYSQL_PWD')
+    db_name = getenv('HBNB_MYSQL_DB')
+    host = getenv('HBNB_MYSQL_HOST')
 
     def __init__(self):
         """ Initializes the instance"""
@@ -45,7 +42,7 @@ class DBStorage:
             DBStorage.username, DBStorage.password, DBStorage.host,
             DBStorage.db_name
                 ), pool_pre_ping=True)
-        if environ['HBNB_ENV'] == "test":
+        if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
