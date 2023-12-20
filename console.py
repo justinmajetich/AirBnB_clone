@@ -132,8 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 value = float(value)
             else:
                 value = int(value)
-            if key in self.types:
-                setattr(new_instance, key, value)
+            setattr(new_instance, key, value)
         new_instance.save()
         print(new_instance.id)
 
