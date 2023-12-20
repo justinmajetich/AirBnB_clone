@@ -42,6 +42,7 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == "db")
     def test_all_filtering(self):
         """ returned __objects only contains the specified class """
         new_base = BaseModel()
