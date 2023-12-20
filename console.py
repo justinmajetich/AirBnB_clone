@@ -119,32 +119,32 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        comline_args = args.partition(" ")
-        class_name = comline_args[0]
-        kwargs = comline_args[2]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[class_name]()
-        for kwarg in kwargs.split(" "):
-            key_value = kwarg.split("=")
-            key = key_value[0]
-            value = key_value[1]
-            if value[0] == value[-1] == '"':
-                value = shlex.split(value)[0].replace("_", " ")
-            else:
-                try:
-                    value = int(value)
-                except:
-                    try:
-                        value = float(value)
-                    except:
-                        pass
-            setattr(new_instance, key, value)
-            new_instance.save()
-
-        print(new_instance.id)
-        storage.save()
+        comline_args = args.split(" ")
+        if len(comline_args) > 1:
+            class_name = comline_args[0]
+            params = comline_args[1:]
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[class_name]()
+            for kwargs in params:
+                kwarg = kwargs.split("=")
+                if len(kwarg) == 2:
+                    key = kwarg[0]
+                    value = kwarg[1]
+                    if value[0] == value[-1] == '"':
+                        value = shlex.split(value)[0].replace("_", " ")
+                    else:
+                        try:
+                            value = int(value)
+                        except:
+                            try:
+                                value = float(value)
+                            except:
+                                pass
+                    setattr(new_instance, key, value)
+                    new_instance.save()
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
