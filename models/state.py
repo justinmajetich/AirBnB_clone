@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 import os
 from models.city import City
 
-strg = getenv("HBNB_TYPE_STORAGE")
+Base = declarative_base()
 
 strg = os.getenv("HBNB_TYPE_STORAGE")
 
@@ -25,10 +25,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Getter attribute for cities in FileStorage"""
-            from models import storage
 
-            city_list = []
-            for city in storage.all(City).values():
+            city_list =  []
+            for city in models.storage.all(City).values():
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
