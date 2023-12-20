@@ -15,6 +15,8 @@ place_amenity = Table(
            nullable=False)
     )
 
+from models.base_model import BaseModel, Base
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
