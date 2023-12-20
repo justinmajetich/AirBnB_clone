@@ -7,3 +7,4 @@ class City(BaseModel):
     """ The city class, contains state ID and name """
     state_id = ""
     name = ""
+# create the realtionships between this and its states
