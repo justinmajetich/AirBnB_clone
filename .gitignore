@@ -1,9 +1,6 @@
-*__pycache__
+__pycache__/*
 file.json
 test_params_create
 __pycache__
 __pycache__
-tests/test_models/__pycache__
-tests/test_consoles/__pycache__
-tests/test_models/test_engine/__pycache__/test_file_storage.cpython-311.pyc
-models/engine/__pycache__
+venv

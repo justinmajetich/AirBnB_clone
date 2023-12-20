@@ -23,7 +23,7 @@ class DBStorage:
             HBNB_MYSQL_HOST,
             HBNB_MYSQL_DB,
         )
-        self.__engine = create_engine(db_url, pool_pre_ping=True, echo=True)
+        self.__engine = create_engine(db_url, pool_pre_ping=True, echo=False)
 
         meta = MetaData()
         if HBNB_ENV == "test":
@@ -41,7 +41,6 @@ class DBStorage:
             }
             return q_result
 
-        print(self.__accepted_models[cls],)
         return {
             "{}.{}".format(model.__class__.__name__, model.id): model
             for model in self.__session.query(

@@ -21,7 +21,7 @@ class State(BaseModel, Base):
     def cities(self):
         dictionary = storage.all("City")
         list_of_city = []
-        for k, v in dictionary.items():
+        for v in dictionary.values():
             if self.id == v.state_id:
                 list_of_city.append(v)
         return list_of_city
