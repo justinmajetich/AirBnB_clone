@@ -11,13 +11,14 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from sqlalchemy import inspect
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) '  # if sys.__stdin__.isatty() else ''
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -34,7 +35,8 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            # print('(hbnb)')
+            pass
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -90,11 +92,11 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
-    def postcmd(self, stop, line):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
-        return stop
+    # def postcmd(self, stop, line):
+        # """Prints if isatty is false"""
+        # if not sys.__stdin__.isatty():
+        #    print('(hbnb) ', end='')
+        # return stop
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
@@ -249,14 +251,17 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            # print(f"[Debug in if]>>{storage.all()}")
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
+                    # print(f"\t[Debug dict]>>>{inspect(v)}")
                     print_list.append(str(v))
+            print("[" + ", ".join(print_list) + "]")
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
-        print(print_list)
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
