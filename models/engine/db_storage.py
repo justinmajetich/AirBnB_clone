@@ -22,7 +22,7 @@ class DBStorage:
         """Initialize the DBStorage instance."""
 
         self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@{}/{}".format(usr, pwd, host, db),
+            "mysql+mysqldb://{}:{}@{}/{}".format(user, pwd, host, db),
             pool_pre_ping=True
         )
 
