@@ -16,7 +16,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 class DBStorage:
     """
     This class manages storage of hbnb models in SQL format.
-    
+
     Attributes:
         __engine (sqlalchemy.engine.Engine): The database engine.
         __session (sqlalchemy.orm.Session): The database session.
@@ -42,10 +42,12 @@ class DBStorage:
         Returns a dictionary of models currently in storage.
 
         Args:
-            cls (class, optional): The class of the models to retrieve. If not provided, retrieves all models.
+            cls (class, optional): The class of the models to retrieve.
+            If not provided, retrieves all models.
 
         Returns:
-            dict: A dictionary of models in the format {<model_name>.<model_id>: <model_instance>}.
+            dict: A dictionary of models in the format:
+            {<model_name>.<model_id>: <model_instance>}.
         """
         if cls is None:
             classes = [State, City, User, Place, Review, Amenity]
@@ -68,6 +70,9 @@ class DBStorage:
     def save(self):
         """
         Commits all changes to the database.
+
+        Returns:
+            None
         """
         self.__session.commit()
 
@@ -79,13 +84,14 @@ class DBStorage:
         db_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(db_session)
         self.__session = Session()
-        
+
     def delete(self, obj=None):
         """
         Deletes an object from the database.
 
         Args:
-            obj (BaseModel, optional): The model instance to delete from the database.
+            obj (BaseModel, optional):
+                The model instance to delete from the database.
         """
         if obj:
             self.__session.delete(obj)
