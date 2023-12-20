@@ -60,6 +60,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """
+        to delete obj from __objects if it's inside
+        """
         for k, v in self.__objects.items():
             if obj.id == k.split('.')[1]:
                 key = k
