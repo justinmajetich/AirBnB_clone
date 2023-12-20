@@ -20,7 +20,7 @@ class DBStorage:
                                   getenv('HBNB_MYSQL_DB')
                                   ), pool_pre_ping=True)
                             )
-        
+
         # drop all tables if the environment variable HBNB_ENV is equal to test
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)

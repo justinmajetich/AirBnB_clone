@@ -15,8 +15,6 @@ place_amenity = Table(
            nullable=False)
     )
 
-from models.base_model import BaseModel, Base
-
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -66,7 +64,7 @@ class Place(BaseModel, Base):
             from models import storage, classes
             amenity_list = storage.all(classes['Amenity']).values()
             return [amenity for amenity in amenity_list
-                    if amenity.place_id == self.id]
+                    if self.id in amenity_list]
 
         @amenities.setter
         def amenities(self, amenity_obj):
