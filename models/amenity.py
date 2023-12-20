@@ -23,9 +23,3 @@ class Amenity(BaseModel, Base):
         )
     else:
         name = ""
-
-    def __init__(self, *args, **kwargs):
-        """
-        initializes Amenity
-        """
-        super().__init__(*args, **kwargs)
