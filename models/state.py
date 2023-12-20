@@ -8,20 +8,21 @@ from models import storage
 
 
 class State(BaseModel, Base):
-    """ State class """
-    __tablename__ = 'states'
+    """State class"""
+
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
     cities = relationship(
         "City",
         cascade="all, delete",
-        back_populates="state"
+        back_populates="state",
     )
 
-    @property
-    def cities(self):
-        dictionary = storage.all("City")
-        list_of_city = []
-        for v in dictionary.values():
-            if self.id == v.state_id:
-                list_of_city.append(v)
-        return list_of_city
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     dictionary = storage.all("City")
+    #     list_of_city = []
+    #     for v in dictionary.values():
+    #         if self.id == v.state_id:
+    #             list_of_city.append(v)
+    #     self.cities = list_of_city

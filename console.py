@@ -254,7 +254,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for v in storage.all(args).values():
-                print(v.cities)
                 print_list.append(str(v))
         else:
             for v in storage.all().values():

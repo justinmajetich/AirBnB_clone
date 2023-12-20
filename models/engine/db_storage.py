@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import Query, session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
 
 
