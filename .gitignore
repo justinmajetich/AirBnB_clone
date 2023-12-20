@@ -8,3 +8,4 @@ setup_mysql_dev1.sql
 setup_mysql_test1.sql
 file.json
 venv
+main_place_amenities.py
