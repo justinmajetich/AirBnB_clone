@@ -34,7 +34,7 @@ class Place(BaseModel, Base):
     @property
     def reviews(self):
         """getter for reviews relationship for FileStorage"""
-        Review_Class = BaseModel.all_classes(BaseModel, 'Review')
+        Review_Class = BaseModel.all_classes('Review')
         result = models.storage.all(Review_Class)
         selected_reviews = [v for k, v in result.items()
                             if v.place_id == self.id]
@@ -43,7 +43,7 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """getter for amenity relationship for FileStorage"""
-        # Amenity_Class = BaseModel.all_classes(BaseModel, 'Amenity')
+        # Amenity_Class = BaseModel.all_classes('Amenity')
         # result = models.storage.all(Amenity_Class)
         # selected_amenities = [v for k, v in result.items()
         #                       if v.place_id == self.id]
