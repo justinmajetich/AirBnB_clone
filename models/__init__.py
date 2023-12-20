@@ -12,4 +12,5 @@ if storageType == "db":
     storage = DBStorage()
 else:
     storage = FileStorage()
+
 storage.reload()
