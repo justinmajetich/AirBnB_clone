@@ -43,12 +43,12 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """getter for amenity relationship for FileStorage"""
-        # Amenity_Class = BaseModel.all_classes('Amenity')
-        # result = models.storage.all(Amenity_Class)
-        # selected_amenities = [v for k, v in result.items()
-        #                       if v.place_id == self.id]
-        # return selected_amenities
-        return self.amenity_ids
+        Amenity_Class = BaseModel.all_classes('Amenity')
+        result = models.storage.all(Amenity_Class)
+        selected_amenities = [v for k, v in result.items()
+                              if v.id in self.amenity_ids]
+        return selected_amenities
+        # return self.amenity_ids
 
     @amenities.setter
     def amenities(self, obj):
