@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.state import State
 from models import storage
 import os
 
@@ -40,6 +41,21 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         temp = storage.all()
         self.assertIsInstance(temp, dict)
+
+    def test_all_filtering(self):
+        """ returned __objects only contains the specified class """
+        new_base = BaseModel()
+        new_base.save()
+        new_state = State()
+        new_state.save()
+        temp1 = storage.all()
+        self.assertEqual(len(temp1), 2)
+        temp2 = storage.all(State)
+        self.assertEqual(len(temp2), 1)
+
+        for obj in temp2.values():
+            self.assertEqual(obj.to_dict()['id'], new_state.to_dict()['id'])
+
 
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
@@ -107,3 +123,22 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_exists(self):
+        """ Testing the delete method """
+        new = BaseModel()
+        new.save()
+        self.assertTrue(os.path.exists('file.json'))
+        for obj in storage.all().values():
+            loaded = obj
+            self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+        storage.delete(new)
+        for obj in storage.all().values():
+            self.assertIsNone(obj.to_dict()['id'])
+
+    def test_delete_notexist(self):
+        """ Testing the delete method """
+        new = BaseModel()
+        new.save()
+        storage.delete(new)
+        storage.delete(new) # Do nothing when it doesn't exist
