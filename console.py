@@ -115,39 +115,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(args):
         """ Create an object of any class"""
-        try:
-            arg_list = args.split()
-            cls_name = arg_list[0]
-            if len(cls_name) == 0:
-                print("** class name missing **")
-                return
-            if cls_name and cls_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-
-            kwargs = {}
-            params = arg_list[1:]
-            for param in params:
-                key, value = param.split('=', 1)
-                if value.startswith('"'):
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if len(kwargs) == 0:
-                new_instance = eval(cls_name)()
-            else:
-                new_instance = eval(cls_name)(**kwargs)
-            storage.new(new_instance)
-            print(new_instance.id)
-            storage.save()
-        except ValueError:
-            print(ValueError)
+        if not args:
+            print("** class name missing **")
             return
+        arg_list = args.split()
+        cls_name = arg_list[0]
+        if cls_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[cls_name]()
+        for param in arg_list[1:]:
+            key, value = param.split('=', 1)
+            if value.startswith('"'):
+                value = value.strip('"').replace("_", " ")
+            elif '.' in value:
+                value = float(value)
+            else:
+                value = int(value)
+            setattr(new_instance, key, value)
+        new_instance.save
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
