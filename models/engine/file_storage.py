@@ -73,3 +73,9 @@ class FileStorage:
                 FileStorage.__objects.pop(my_key)
         else:
             pass
+
+    @property
+    def cities(self):
+        """getter function for City instances"""
+        obj = session.query(City).join(State, City.state_id == State.id)
+        return (obj)
