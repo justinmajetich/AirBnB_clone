@@ -32,19 +32,19 @@ class BaseModel:
                 elif key != '__class__':
                     setattr(self, key, value)
 
-    # def __str__(self):
-    #     """Returns a string representation of the instance"""
-    #     cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-    #     return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
-
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = type(self).__name__
-        attr_str = ', '.join(
-            f'{key}: {val}' if not isinstance(val, str) else f'{key}: "{val}"'
-            for key, val in self.__dict__.items()
-        )
-        return '[{}] ({}) {}'.format(cls, self.id, attr_str)
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+
+    # def __str__(self):
+    #     """Returns a string representation of the instance"""
+    #     cls = type(self).__name__
+    #     attr_str = ', '.join(
+    #         f'{key}: {val}' if not isinstance(val, str) else f'{key}: "{val}"'
+    #         for key, val in self.__dict__.items()
+    #     )
+    #     return '[{}] ({}) {}'.format(cls, self.id, attr_str)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -60,9 +60,33 @@ class BaseModel:
                         (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dictionary:
-            del(dictionary['_sa_instance_state'])
+
+        # Remove '_sa_instance_state' key if it exists
+        if '_sa_instance_state' in dictionary.keys():
+            del dictionary['_sa_instance_state']
+
         return dictionary
+
+    # def to_dict(self):
+    #     """Convert instance into dictionary format"""
+    #     dictionary = {}
+
+    #     # for key, value in self.__dict__.items():
+    #     #     if key == '_sa_instance_state':
+    #     #         dictionary[key] = value
+    #     #         dictionary.pop('_sa_instance_state', None)
+
+    #     for key, value in self.__dict__.items():
+    #         dictionary[key] = value
+
+    #     dictionary.pop('_sa_instance_state', None)
+
+    #     dictionary['__class__'] = type(self).__name__
+    #     dictionary['created_at'] = self.created_at.isoformat()
+    #     dictionary['updated_at'] = self.updated_at.isoformat()
+
+    #     return dictionary
+
 
     def delete(self):
         """delete the current instance from the storage"""
