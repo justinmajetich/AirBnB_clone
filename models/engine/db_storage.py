@@ -46,14 +46,16 @@ class DBStorage:
             else:
                 # Use text('class_name') to explicitly declare the class name
                 class_name_expr = text(cls.__name__)
-                for obj in self.__session.query(cls).filter(class_name_expr == class_name_expr):
+                for obj in (self.__session.query(cls).filter
+                            (class_name_expr == class_name_expr)):
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         else:
             for c in classes:
                 # Use text('class_name') to explicitly declare the class name
                 class_name_expr = text(c.__name__)
-                for obj in self.__session.query(c).filter(class_name_expr == class_name_expr):
+                for obj in (self.__session.query(c).filter
+                            (class_name_expr == class_name_expr)):
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return new_dict
