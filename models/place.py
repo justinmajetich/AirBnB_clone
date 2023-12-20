@@ -2,6 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Float
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel):
@@ -18,4 +19,9 @@ class Place(BaseModel):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    reviews = relationship("Review", cascade="all, delete", backref="place")
     amenity_ids = []
+
+   """ @property
+    def reviews(self):
+        storage.all()"""
