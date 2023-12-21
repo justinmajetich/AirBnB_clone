@@ -41,7 +41,7 @@ class BaseModel:
     #     """Returns a string representation of the instance"""
     #     cls = type(self).__name__
     #     attr_str = ', '.join(
-    #         f'{key}: {val}' if not isinstance(val, str) else f'{key}: "{val}"'
+    #         f'{key}: {val}' if not isinstance(val, str) else f'{key}:"{val}"'
     #         for key, val in self.__dict__.items()
     #     )
     #     return '[{}] ({}) {}'.format(cls, self.id, attr_str)
@@ -56,8 +56,8 @@ class BaseModel:
         """Convert instance into dictionary format"""
         dictionary = {}
         dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                        (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary.update({'__class__': (str(type(self)).split('.')[-1])
+                          .split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
 
