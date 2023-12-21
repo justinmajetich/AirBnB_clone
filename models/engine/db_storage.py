@@ -41,13 +41,14 @@ class DBStorage:
             cls: Class name. Filter for the return objects
         """
         if cls is None:
-            q_result = {
-                "{}.{}".format(model.__class__.__name__, model.id): model
-                for model in self.__session.query(
-                    *list(self.__accepted_models.values()).all()
-                )
-            }
-            return q_result
+            all_res = {}
+            for accepted_m in self.__accepted_models.values():
+                q_result = {
+                    "{}.{}".format(model.__class__.__name__, model.id): model
+                    for model in self.__session.query(accepted_m).all()
+                }
+                all_res.update(q_result)
+            return all_res
 
         return {
             "{}.{}".format(model.__class__.__name__, model.id): model
