@@ -113,7 +113,6 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
-
     @unittest.skipIf(
         os.getenv("HBNB_TYPE_STORAGE") == "db",
         "Storage Type is not File",
@@ -122,7 +121,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         n = {"Name": "test"}
         with self.assertRaises(KeyError):
-            new = self.value(**n)
+            new = self.value(**n)"""
 
     @unittest.skipIf(
         os.getenv("HBNB_TYPE_STORAGE") == "db",

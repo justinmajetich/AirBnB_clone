@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from models import storage
+import os
 
 
 Base = declarative_base()
@@ -21,17 +21,39 @@ class BaseModel:
         """Instatntiates a new model"""
         if not kwargs:
             #  from models import storage
+            """The behaviour of __init__: The method __init__ here is what
+            is called first by default in all of our child class that
+            inherits from BaseModel,
+            before inheriting from the sqlalchemy `Base` Class.
+
+            However, when the dot-notation below is then called, it will call
+            the setattr in return. The setattr of the children class has
+            however been overwritten by the `Base` that each children class
+            inherits from. The sqlalchemy `Base` setattr behaviour actually
+            sets attributes to become Column values like we normally know/do
+            for typical sqlalchemy objects, according to their
+            respective columns defined as class attributes
+
+            Thus, for instance, the `self.id` notation below will be
+            used by the `Base` to set the `id` column defined above as
+            class attributes.
+            """
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs["updated_at"] = datetime.strptime(
-                kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
-            kwargs["created_at"] = datetime.strptime(
-                kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
-            del kwargs["__class__"]
+            if (kwargs.get("updated_at", None)):
+                kwargs["updated_at"] = datetime.strptime(
+                    kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
+                )
+            if (kwargs.get("created_at", None)):
+                kwargs["created_at"] = datetime.strptime(
+                    kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f"
+                )
+            if (kwargs.get("__class__", None)):
+                del kwargs["__class__"]
+            if os.getenv("HBNB_TYPE_STORAGE") == "db":
+                self.id = str(uuid.uuid4())
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -46,7 +68,7 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        #  from models import storage
+        from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()

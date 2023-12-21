@@ -49,7 +49,6 @@ class DBStorage:
                 }
                 all_res.update(q_result)
             return all_res
-
         return {
             "{}.{}".format(model.__class__.__name__, model.id): model
             for model in self.__session.query(
