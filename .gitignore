@@ -3,4 +3,5 @@ file.json
 test_params_create
 __pycache__
 __pycache__
-venv
+*venv
+main_delete.py
