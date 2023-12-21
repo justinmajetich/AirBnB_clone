@@ -16,11 +16,11 @@ class State(BaseModel, Base):
         back_populates="state",
     )"""
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     dictionary = storage.all("City")
-    #     list_of_city = []
-    #     for v in dictionary.values():
-    #         if self.id == v.state_id:
-    #             list_of_city.append(v)
-    #     self.cities = list_of_city
+    @property
+    def cities(self):
+        dictionary = storage.all("City")
+        list_of_city = []
+        for v in dictionary.values():
+            if self.id == v.state_id:
+                list_of_city.append(v)
+        return list_of_city
