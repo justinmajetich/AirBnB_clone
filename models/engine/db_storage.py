@@ -44,8 +44,8 @@ class DBStorage:
             q_result = {
                 "{}.{}".format(model.__class__.__name__, model.id): model
                 for model in self.__session.query(
-                    *list(self.__accepted_models.values())
-                ).all()
+                    *list(self.__accepted_models.values()).all()
+                )
             }
             return q_result
 
@@ -84,9 +84,9 @@ class DBStorage:
         self.__accepted_models = {
             "State": state.State,
             "City": city.City,
-            # "User": user.User,
-            # "Place": place.Place,
-            # "Amenity": amenity.Amenity,
-            # "Review": review.Review,
+            "User": user.User,
+            "Place": place.Place,
+            "Amenity": amenity.Amenity,
+            "Review": review.Review,
         }
         self.__session = scoped_session(session_factory)()
