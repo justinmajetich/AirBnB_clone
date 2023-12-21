@@ -1,0 +1,9 @@
+__pycache__/*
+file.json
+test_params_create
+__pycache__
+__pycache__
+*venv
+main_delete.py
+drop_dev.sql
+main_place_amenities.py

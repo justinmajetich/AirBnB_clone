@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+""" State Module for HBNB project """
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Integer, String, ForeignKey
+
+class State(BaseModel, Base):
+    """ State class """
+    __tablename__ = 'states'
+    name = column(String(128), nullable=False)
+    cities = relationship("City", cascade="all, delete", back_populates="state")
+    @cities
+    def cities(self):
+        dictionary = storage.all("City")
+        list_of_city = []
+        for k, v in dictionary.items():
+            if self.id = v.state_id:
+                list_of_city.append(v)
