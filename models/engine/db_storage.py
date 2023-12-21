@@ -36,8 +36,8 @@ class DBStorage:
             q_result = {
                 "{}.{}".format(model.__class__.__name__, model.id): model
                 for model in self.__session.query(
-                    *list(self.__accepted_models.values()).all()
-                )
+                    *list(self.__accepted_models.values())
+                ).all()
             }
             return q_result
 
