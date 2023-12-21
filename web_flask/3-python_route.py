@@ -13,6 +13,7 @@ def HBNB():
 
 @app.route('/c/<text>', strict_slashes=False)
 def routeC(text):
+    text = text.replace("_", " ")
     return f'C {escape(text)}'
 
 @app.route('/python', strict_slashes=False)
@@ -21,6 +22,7 @@ def routePython1():
 
 @app.route('/python/<text>', strict_slashes=False)
 def routePython2(text):
+    text = text.replace("_", " ")
     if not text:
         text = "is cool"
     return f'Python {escape(text)}'
