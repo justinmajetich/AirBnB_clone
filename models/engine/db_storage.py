@@ -69,9 +69,9 @@ class DBStorage:
         self.__accepted_models = {
             "State": state.State,
             "City": city.City,
-            # "User": user.User,
-            # "Place": place.Place,
-            # "Amenity": amenity.Amenity,
-            # "Review": review.Review,
+            "User": user.User,
+            "Place": place.Place,
+            "Amenity": amenity.Amenity,
+            "Review": review.Review,
         }
         self.__session = scoped_session(session_factory)()
