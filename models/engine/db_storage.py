@@ -30,7 +30,7 @@ class DBStorage:
                                       pool_pre_ping=True)
 
         if env == 'test':
-            Base.metadate.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """returns all objects of cls (if not none),
