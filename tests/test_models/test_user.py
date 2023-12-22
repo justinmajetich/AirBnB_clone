@@ -45,10 +45,10 @@ class test_User(test_basemodel):
 
     def test_email_not_null(self):
         """ """
-        new = User(email="hbnb@gmail.com", password ="hbnbpwd")
+        new = User(email="hbnb@gmail.com", password="hbnbpwd")
         self.assertIsNotNone(new.email)
 
     def test_password_not_null(self):
         """ """
-        new = User(email="hbnb@gmail.com", password ="hbnbpwd")
+        new = User(email="hbnb@gmail.com", password="hbnbpwd")
         self.assertIsNotNone(new.password)
