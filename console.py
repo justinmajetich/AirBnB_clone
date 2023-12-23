@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 pass
         if not kwargs:
             new = HBNBCommand.classes[cls]()
-            storage.save()
+            new.save()
             print(new.id)
         else:
             new = HBNBCommand.classes[cls]()
@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     pass
                 setattr(new, k, v)
-            storage.save()
+            new.save()
             print(new.id)
 
     def help_create(self):
