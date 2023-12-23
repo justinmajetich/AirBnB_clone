@@ -2,6 +2,8 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 
+from models.city import City
+
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -25,6 +27,7 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+
     def reload(self):
         """Loads storage dictionary from file"""
         from models.base_model import BaseModel
@@ -34,6 +37,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+        from models.city import City
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -48,3 +52,13 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+    @property
+    def cities(self):
+        """Getter attribute that returns a list of City instances with state_id equals to the current State.id"""
+        city_instances = []
+        for obj in self.__objects.values():
+            if isinstance(obj, City) and obj.state_id == self.id:
+                city_instances.append(obj)
+        return city_instances
+
+
