@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from flask import Flask
 from markupsafe import escape
 from flask import render_template
