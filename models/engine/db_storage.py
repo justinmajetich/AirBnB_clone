@@ -2,7 +2,6 @@
 """
 This module defines a class to manage file storage for hbnb clone
 """
-from models.base_model import Base
 from os import getenv
 
 
@@ -28,6 +27,7 @@ class DBStorage:
                                       format(user, password, host, database),
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
+            from models.base_model import Base
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -75,6 +75,7 @@ class DBStorage:
         current database session
         """
         from sqlalchemy.orm import sessionmaker, scoped_session
+        from models.base_model import Base
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
