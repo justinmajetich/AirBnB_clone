@@ -1,4 +1,5 @@
-te flask app"""
+#!/usr/bin/python3
+"""Create flask app"""
 from flask import Flask, render_template
 
 
