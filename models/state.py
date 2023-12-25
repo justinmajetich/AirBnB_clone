@@ -3,7 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from models.city import City
-from sqlalchemy.orm import sessionmaker, Session, relationship
+from models import storage
+from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
@@ -19,5 +20,8 @@ class State(BaseModel, Base):
         equals to the current State.id =>
         It will be the FileStorage relationship between State and City
         """
-        session = Session()
-        return (session.query(City).all())
+        instances = []
+        for obj in storage.all(City).values():
+            if self.id == obj.state_id:
+                instances.append(obj)
+        return instances
