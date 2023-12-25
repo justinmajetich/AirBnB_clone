@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models.review import Review
-from models import storage
+from models.amenity import Amenity
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, ForeignKey
 
@@ -22,6 +22,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float(), nullable=False)
     reviews = relationship(Review, cascade="all, delete", backref='place')
     amenity_ids = []
+    amenities = relationship(Amenity, secondary=place_amenity, viewonly=False)
 
     @property
     def reviews(self):
@@ -30,8 +31,43 @@ class Place(BaseModel, Base):
         with place_id equals to the current Place.id =>
         It will be the FileStorage relationship between Place and Review
         """
+        from models import storage
         instances = []
         for obj in storage.all(Review).values():
             if obj.place_id == self.id:
                 instances.append(obj)
         return instances
+
+    @property
+    def amenities(self):
+        """
+        returns the list of Amenity instances based on the
+        attribute amenity_ids that contains all Amenity.id
+        linked to the Place
+        """
+        from models import storage
+        instances = []
+        for obj in storage.all(Amenity).values():
+            if obj.id in self.amenity_ids:
+                instances.append(obj)
+        return instances
+
+    @amenities.setter
+    def amenities(self, obj):
+        """
+        that handles append method for adding an Amenity.id to
+        the attribute amenity_ids.
+        This method should accept only Amenity object,
+        otherwise, do nothing.
+        """
+        if isinstance(obj, Amenity):
+            self.amenity_ids.append(obj.id)
+
+
+metadata = Base.metadata
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), nullable=False)
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), nullable=False)
+                      )
