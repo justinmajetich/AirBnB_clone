@@ -3,7 +3,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from models.city import City
-from models import storage
 from sqlalchemy.orm import relationship
 
 
@@ -20,6 +19,7 @@ class State(BaseModel, Base):
         equals to the current State.id =>
         It will be the FileStorage relationship between State and City
         """
+        from models import storage
         instances = []
         for obj in storage.all(City).values():
             if self.id == obj.state_id:

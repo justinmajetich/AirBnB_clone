@@ -21,11 +21,11 @@ class DBStorage:
     def __init__(self):
         """create the engine (self.__engine)"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                os.environ['HBNB_MYSQL_USER'],
-                os.environ['HBNB_MYSQL_PWD'],
-                os.environ['HBNB_MYSQL_HOST'],
-                os.environ['HBNB_MYSQL_DB']), pool_pre_ping=True)
-        if (os.environ['HBNB_ENV'] == 'test'):
+                os.getenv('HBNB_MYSQL_USER'),
+                os.getenv('HBNB_MYSQL_PWD'),
+                os.getenv('HBNB_MYSQL_HOST'),
+                os.getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
+        if (os.getenv('HBNB_ENV') == 'test'):
             for table in self.__engine.table_names():
                 self.__engine.execute("DROP TABLE IF EXISTS {}".format(table))
 

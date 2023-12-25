@@ -4,7 +4,16 @@ from models.base_model import BaseModel, Base
 from models.review import Review
 from models.amenity import Amenity
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
+
+
+metadata = Base.metadata
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), nullable=False)
+                      )
 
 
 class Place(BaseModel, Base):
@@ -62,12 +71,3 @@ class Place(BaseModel, Base):
         """
         if isinstance(obj, Amenity):
             self.amenity_ids.append(obj.id)
-
-
-metadata = Base.metadata
-place_amenity = Table('place_amenity', metadata,
-                      Column('place_id', String(60),
-                             ForeignKey('places.id'), nullable=False)
-                      Column('amenity_id', String(60),
-                             ForeignKey('amenities.id'), nullable=False)
-                      )
