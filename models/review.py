@@ -3,9 +3,17 @@
 from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy import Column, String, ForeignKey
-from os import getenv
 
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """ Review classto store review information """
-    name = ""
+    __tablename__ = "reviews"
+    place_id = Column(String(60),
+                      ForeignKey('places.id',
+                                 ondelete='CASCADE'),
+                      nullable=False)
+    user_id = Column(String(60),
+                     ForeignKey('users.id',
+                                ondelete='CASCADE'),
+                     nullable=False)
+    text = Column(String(1024), nullable=False)
