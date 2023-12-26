@@ -32,39 +32,8 @@ class Place(BaseModel, Base):
                                  ForeignKey("amenities.id"),
                                  primary_key=True,
                                  nullable=False))
-    amenity_ids = []
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place",
-                               cascade="all, delete-orphan",
-                               passive_deletes=True)
-        amenities = relationship("Amenity", secondary="place_amenity",
-                                 viewonly=False)
-    else:
-        @property
-        def reviews(self):
-            """Getter for reviews"""
-            from models import storage
-            from models.review import Review
-            review_list = []
-            for review in storage.all(Review).values():
-                if review.place_id == self.id:
-                    review_list.append(review)
-            return review_list
-
-        @property
-        def amenities(self):
-            """Getter for amenities"""
-            from models import storage
-            from models.amenity import Amenity
-            amenity_list = []
-            for amenity in storage.all(Amenity).values():
-                if amenity.place_id == self.id:
-                    amenity_list.append(amenity)
-            return amenity_list
-
-        @amenities.setter
-        def amenities(self, obj):
-            """Setter for amenities"""
-            from models.amenity import Amenity
-            if type(obj) is Amenity:
-                self.amenity_ids.append(obj.id)
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete-orphan",
+                           passive_deletes=True)
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
