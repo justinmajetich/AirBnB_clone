@@ -48,11 +48,13 @@ class DBStorage:
 
         objs = {}
         if cls:
-            objs = self.__session.query(eval(cls)).all()
+            objs.update({f"{type(o).__name__}.{o.id}":
+                         o for o in self.__session.query(eval(cls)).all()})
         else:
             for c in cls_dict.values():
-                objs.extend(self.__session.query(c).all())
-        return {f"{type(o).__name__}.{o.id}": o for o in objs}
+                objs.update({f"{type(o).__name__}.{o.id}":
+                             o for o in self.__session.query(c).all()})
+        return objs
 
     def new(self, obj):
         """
