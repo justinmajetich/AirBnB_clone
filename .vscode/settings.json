@@ -1,0 +1,32 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "hbnb_dev_db",
+      "database": "hbnb_dev_db",
+      "username": "hbnb_dev",
+      "password": "hbnb_dev_pwd"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "hbnb_dev_test",
+      "database": "hbnb_test_db",
+      "username": "hbnb_test",
+      "password": "hbnb_test_pwd"
+    }
+  ]
+}

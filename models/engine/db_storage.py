@@ -43,17 +43,16 @@ class DBStorage:
         """
         Queries all objects depending of the class name
         """
-        results = []
-        if cls is None:
-            for c in self.classes:
-                for result in self.__session.query(c):
-                    results.append(result)
-        else:
-            result = self.__session.query(eval(cls))
-            results = result.all()
+        cls_dict = {"State": State, "City": City, "User": User,
+                    "Place": Place, "Review": Review, "Amenity": Amenity}
 
-        return {"{}.{}".format(result.__class__.__name__, result.id): result
-                for result in results}
+        objs = {}
+        if cls:
+            objs = self.__session.query(eval(cls)).all()
+        else:
+            for c in cls_dict.values():
+                objs.extend(self.__session.query(c).all())
+        return {f"{type(o).__name__}.{o.id}": o for o in objs}
 
     def new(self, obj):
         """
