@@ -10,4 +10,4 @@ from sqlalchemy.orm import relationship
 
 class Place(BaseModel):
     """ A place to stay """
-    name=""
+    name = ""
