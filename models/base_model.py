@@ -3,14 +3,10 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime, Integer
-from os import getenv
+from sqlalchemy import Column, String, DateTime
 
 
-if getenv('HBNB_TYPE_STORAGE') == 'db':
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
@@ -39,12 +35,10 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        if '_sa_instance_state' in dictionary:
-            del dictionary['_sa_instance_state']
-        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
+        dict_ = self.to_dict().copy()
+        del dict_["__class__"]
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, dict_)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
