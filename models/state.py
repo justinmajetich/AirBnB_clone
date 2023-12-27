@@ -4,7 +4,7 @@ import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
 from sqlalchemy import Column, String
-from alchemy.orm import relationship
+from sqlalchemy.orm import relationship
 from os import getenv
 
 
