@@ -18,7 +18,7 @@ def do_deploy(archive_path):
         - archive_path(str): Path to the archive path.
 
     Return:
-        - None.
+        - True if successful, else False.
     """
     if os.path.isfile(archive_path) is False:
         return False
