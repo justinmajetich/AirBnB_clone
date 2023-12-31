@@ -14,7 +14,7 @@ def do_pack():
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
         local("mkdir -p ./versions")
-        local("tar --create --verbose -z --file={} ./web_static".format(file_name))
+        local("tar -czvf {} ./web_static".format(file_name))
     except Exception as e:
         print(e)
         return None
