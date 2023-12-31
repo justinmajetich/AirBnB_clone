@@ -8,7 +8,7 @@ This repository contains the initial stage of a student project to build a clone
 
 | Tasks | Files | Description |
 | ----- | ----- | ------ |
-| 0: Authors/README File | [AUTHORS](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/AUTHORS/tree/master) | Project authors |
+| 0: Authors/README File | [AUTHORS](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/AUTHORS/) | Project authors |
 | 1: Pep8 | N/A | All code is pep8 compliant|
 | 2: Unit Testing | [/tests](https://github.com/wxllxngton/AirBnB_clone_v2/tree/dev/tests) | All class-defining modules are unittested |
 | 3. Make BaseModel | [/models/base_model.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/base_model.py) | Defines a parent class to be inherited by all model classes|
@@ -19,7 +19,7 @@ This repository contains the initial stage of a student project to build a clone
 | 8. Create User class | [console.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/engine/file_storage.py) [/models/user.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/user.py) | Dynamically implements a user class |
 | 9. More Classes | [/models/user.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/user.py) [/models/place.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/place.py) [/models/city.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/city.py) [/models/amenity.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/amenity.py) [/models/state.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/state.py) [/models/review.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/review.py) | Dynamically implements more classes |
 | 10. Console 1.0 | [console.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/wxllxngton/AirBnB_clone_v2/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
-| 11. NGINx Configuration | [0-setup_web_static.sh](https://github.com/wxllxngton/AirBnB_clone_v2/0-setup_web_static.sh) | Bash script that sets up your web servers for the deployment of web_static. |
+| 11. NGINx Configuration | [0-setup_web_static.sh](https://github.com/wxllxngton/AirBnB_clone_v2/master/0-setup_web_static.sh) | Bash script that sets up your web servers for the deployment of web_static. |
 <br>
 <br>
 <center> <h2>General Use</h2> </center>
