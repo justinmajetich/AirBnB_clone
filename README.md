@@ -49,6 +49,11 @@ This repository contains the initial stage of a student project to build a clone
 
     * quit - Exits the program (EOF will as well)
 
+6. Set up web servers for the deployment of `web_static`
+```bash
+ssh ubuntu@54.146.95.43 'bash -s' < ./0-setup_web_static.sh
+```
+
 
 ##### Alternative Syntax
 Users are able to issue a number of console command using an alternative syntax:
