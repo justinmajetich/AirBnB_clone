@@ -51,7 +51,7 @@ This repository contains the initial stage of a student project to build a clone
 
 6. Set up web servers for the deployment of `web_static`
 ```bash
-ssh ubuntu@54.146.95.43 'bash -s' < ./0-setup_web_static.sh
+ssh username@IP 'bash -s' < ./0-setup_web_static.sh
 ```
 
 
