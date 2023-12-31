@@ -7,6 +7,8 @@ from fabric.api import *
 from fabric.operations import run, put, sudo
 import os
 
+ssh.util.log_to_file("paramiko.log", 10)
+
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
 
 def do_deploy(archive_path):
