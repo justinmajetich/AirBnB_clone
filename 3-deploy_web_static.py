@@ -79,7 +79,7 @@ def deploy():
     Creates/distributes an archive
 
     Return:
-        - None
+        - True if deployed, else False.
     """
     created_archive_path = do_path()
     if created_archive_path is None:
