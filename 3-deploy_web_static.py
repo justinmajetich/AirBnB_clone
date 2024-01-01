@@ -1,21 +1,18 @@
 #!/usr/bin/python3
 """
-    Fabric script that creates and distributes an archive
-    on my web servers, using deploy function
+Fabric script that distributes an archive to my web servers
 """
 from fabric.api import *
 from fabric.operations import run, put, sudo, local
 from datetime import datetime
 import os
 
-env.hosts = ['66.70.184.249', '54.210.138.75']
+env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
 created_path = None
 
 
 def do_pack():
-    """
-        generates a .tgz archine from contents of web_static
-    """
+    """Generates a .tgz archive from contents of web_static."""
     time = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
@@ -29,7 +26,13 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
-        using fabric to distribute archive
+    Distributes an archive to your web servers.
+
+    Parameters:
+        - archive_path (str): Path to the archive file.
+
+    Returns:
+        - True if deployment is successful, else False.
     """
     if os.path.isfile(archive_path) is False:
         return False
@@ -56,7 +59,10 @@ def do_deploy(archive_path):
 
 def deploy():
     """
-        deploy function that creates/distributes an archive
+    Creates/distributes an archive
+
+ 	Return:
+  		- None
     """
     global created_path
     if created_path is None:
