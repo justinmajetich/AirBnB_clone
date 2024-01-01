@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
-
+created_path = None
 
 def do_pack():
     """Generates a .tgz archive from contents of web_static."""
@@ -56,7 +56,8 @@ def do_deploy(archive_path):
         run("rm /tmp/{}".format(archive))
 
         # Move the contents of web_static to the release directory
-        run("mv {}/{}/web_static/* {}/{}/".format(path, folder[0], path, folder[0]))
+        run("mv {}/{}/web_static/* {}/{}/"
+            .format(path, folder[0], path, folder[0]))
 
         # Remove the web_static directory in the release directory
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
@@ -81,7 +82,9 @@ def deploy():
     Return:
         - True if deployed, else False.
     """
-    created_archive_path = do_path()
-    if created_archive_path is None:
+    global created_path
+    if created_path is None:
+        created_path = do_pack()
+    if created_path is None:
         return False
-    return do_deploy(created_archive_path)
+    return do_deploy(created_path)
