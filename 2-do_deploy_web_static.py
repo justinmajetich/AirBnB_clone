@@ -26,7 +26,7 @@ def do_deploy(archive_path):
         archive = archive_path.split("/")[-1]
         path = "/data/web_static/releases"
         folder = archive.split(".")
-        new_archive = ".".join(folder[0])
+        new_archive = ".".join(folder)
 
         # Upload the archive to /tmp/ on the server
         put("{}".format(archive_path), "/tmp/{}".format(archive))
