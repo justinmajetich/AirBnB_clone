@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/python3
 """
 Fabric script locally deploys the AirBnB clone static page.
 """
