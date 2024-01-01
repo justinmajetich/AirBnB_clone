@@ -9,7 +9,6 @@ import os
 
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
 
-
 def do_pack():
     """Generates a .tgz archive from contents of web_static."""
     time = datetime.utcnow().strftime("%Y%m%d%H%M%S")
@@ -17,12 +16,10 @@ def do_pack():
     try:
         local("mkdir -p ./versions")
         local("tar -czvf {} ./web_static".format(file_name))
+        return file_name
     except Exception as e:
         print(e)
         return None
-    else:
-        return file_name
-
 
 def do_deploy():
     """
@@ -31,11 +28,11 @@ def do_deploy():
     Returns:
         - True if deployment is successful, else False.
     """
-    try:
-        archive_path = do_pack()
-        if os.path.isfile(archive_path) is False:
-            return False
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
 
+    try:
         archive = archive_path.split("/")[-1]
         path = "/data/web_static/releases"
         folder = archive.split(".")
@@ -65,8 +62,8 @@ def do_deploy():
         # Create a new symbolic link pointing to the new release directory
         run("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
 
+        return True
+
     except Exception as e:
         print(e)
         return False
-    finally:
-        return True
