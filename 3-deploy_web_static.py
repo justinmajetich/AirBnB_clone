@@ -13,7 +13,7 @@ created_path = None
 
 def do_pack():
     """Generates a .tgz archive from contents of web_static."""
-    time = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+    time = datetime.utcnow().strftime("%Y%m%d%H%M%S")
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
         local("mkdir -p ./versions")
@@ -41,12 +41,11 @@ def do_deploy(archive_path):
         path = "/data/web_static/releases"
         put("{}".format(archive_path), "/tmp/{}".format(archive))
         folder = archive.split(".")
-        new_archive = '.'.join(folder)
+        new_archive = ".".join(folder)
         run("mkdir -p {}/{}/".format(path, folder[0]))
         run("tar -xzf /tmp/{} -C {}/{}/".format(new_archive, path, folder[0]))
         run("rm /tmp/{}".format(archive))
-        run("mv {}/{}/web_static/* {}/{}/"
-			.format(path, folder[0], path, folder[0]))
+        run("mv {}/{}/web_static/* {}/{}/".format(path, folder[0], path, folder[0]))
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
         run("rm -rf /data/web_static/current")
         run("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
