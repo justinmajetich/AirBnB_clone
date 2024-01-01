@@ -92,8 +92,9 @@ def deploy():
     return do_deploy(created_path)
 
 def do_clean(number=0):
-	output = local("ls")
-	print(type(output))
+	output = local("ls ./versions")
+	print(output.split(" "))
+	#print(type(output))
 	#if number == 0 or number == 1:
 		
 	
