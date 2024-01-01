@@ -17,7 +17,8 @@ def do_pack():
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
         local("mkdir -p ./versions")
-        local("tar --create --verbose -z --file={} ./web_static".format(file_name))
+        local("tar --create --verbose -z --file={} ./web_static"
+              .format(file_name))
         return file_name
     except Exception as e:
         print(e)
@@ -43,7 +44,8 @@ def do_deploy(archive_path):
         folder = archive.split(".")
         new_archive = ".".join(folder)
         run("mkdir -p {}/{}/".format(path, folder[0]))
-        run("tar -xzf /tmp/{} -C {}/{}/".format(new_archive, path, folder[0]))
+        run("tar -xzf /tmp/{} -C {}/{}/"
+            .format(new_archive, path, folder[0]))
         run("rm /tmp/{}".format(archive))
         run("mv {}/{}/web_static/* {}/{}/".format(path, folder[0], path, folder[0]))
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
