@@ -35,9 +35,9 @@ def do_deploy(archive_path):
         - True if deployment is successful, else False.
     """
     try:
-				archive_path = do_pack()
-		    if os.path.isfile(archive_path) is False:
-		        return False
+	archive_path = do_pack()
+	if os.path.isfile(archive_path) is False:
+		return False
 					
         archive = archive_path.split("/")[-1]
         path = "/data/web_static/releases"
