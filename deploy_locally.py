@@ -3,9 +3,10 @@
 Fabric script locally deploys the AirBnB clone static page.
 """
 
-from fabric.api import *
-from fabric.operations import local, put, sudo
+from fabric.api import local, env
 import os
+
+env.hosts = ['localhost']
 
 def do_deploy(archive_path):
     """
@@ -44,8 +45,8 @@ def do_deploy(archive_path):
         # Create a new symbolic link pointing to the new release directory
         local("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
 
-	# Refreshes the nginx
-	local("service nginx restart")
+        # Refreshes the nginx
+        local("service nginx restart")
 
     except Exception as e:
         print(e)
