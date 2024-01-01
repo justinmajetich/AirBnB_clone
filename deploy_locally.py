@@ -9,7 +9,7 @@ import os
 
 def do_deploy(archive_path):
     """
-    Distributes an archive to your web servers.
+    Deploys the static page locally on the server.
 
     Parameters:
         - archive_path (str): Path to the archive file.
