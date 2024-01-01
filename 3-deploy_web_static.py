@@ -9,6 +9,7 @@ import os
 
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
 
+
 def do_pack():
     """Generates a .tgz archive from contents of web_static."""
     time = datetime.utcnow().strftime("%Y%m%d%H%M%S")
@@ -21,6 +22,7 @@ def do_pack():
         return None
     else:
         return file_name
+
 
 def do_deploy(archive_path):
     """
@@ -55,8 +57,7 @@ def do_deploy(archive_path):
         run("rm /tmp/{}".format(archive))
 
         # Move the contents of web_static to the release directory
-        run("mv {}/{}/web_static/* {}/{}/"
-            .format(path, folder[0], path, folder[0]))
+        run("mv {}/{}/web_static/* {}/{}/".format(path, folder[0], path, folder[0]))
 
         # Remove the web_static directory in the release directory
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
