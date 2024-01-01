@@ -17,10 +17,10 @@ def do_pack():
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
         local("mkdir -p ./versions")
-        local("tar --create --verbose -z --file={} ./web_static"
-              .format(file_name))
+        local("tar --create --verbose -z --file={} ./web_static".format(file_name))
         return file_name
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 
@@ -41,19 +41,18 @@ def do_deploy(archive_path):
         path = "/data/web_static/releases"
         put("{}".format(archive_path), "/tmp/{}".format(archive))
         folder = archive.split(".")
-        run("mkdir -p {}/{}/".format(path, folder[0]))
         new_archive = '.'.join(folder)
-        run("tar -xzf /tmp/{} -C {}/{}/"
-            .format(new_archive, path, folder[0]))
+        run("mkdir -p {}/{}/".format(path, folder[0]))
+        run("tar -xzf /tmp/{} -C {}/{}/".format(new_archive, path, folder[0]))
         run("rm /tmp/{}".format(archive))
         run("mv {}/{}/web_static/* {}/{}/"
-            .format(path, folder[0], path, folder[0]))
+			.format(path, folder[0], path, folder[0]))
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
         run("rm -rf /data/web_static/current")
-        run("ln -sf {}/{} /data/web_static/current"
-            .format(path, folder[0]))
+        run("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
 
 
@@ -61,8 +60,8 @@ def deploy():
     """
     Creates/distributes an archive
 
- 	Return:
-  		- None
+    Return:
+        - None
     """
     global created_path
     if created_path is None:
