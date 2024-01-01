@@ -24,12 +24,9 @@ def do_pack():
         return file_name
 
 
-def do_deploy(archive_path):
+def do_deploy():
     """
     Distributes an archive to your web servers.
-
-    Parameters:
-        - archive_path (str): Path to the archive file.
 
     Returns:
         - True if deployment is successful, else False.
