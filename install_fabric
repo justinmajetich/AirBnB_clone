@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 # Script that installs Fabric for Python 3
 
 pip3 uninstall Fabric
