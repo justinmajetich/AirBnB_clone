@@ -44,6 +44,9 @@ def do_deploy(archive_path):
         # Create a new symbolic link pointing to the new release directory
         local("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
 
+		# Refreshes the nginx
+		local("service nginx restart")
+
     except Exception as e:
         print(e)
         return False
