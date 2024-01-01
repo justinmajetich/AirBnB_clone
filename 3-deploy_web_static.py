@@ -1,69 +1,66 @@
 #!/usr/bin/python3
 """
-Fabric script that distributes an archive to my web servers
+    Fabric script that creates and distributes an archive
+    on my web servers, using deploy function
 """
-
-from fabric.api import env, local, put, run
+from fabric.api import *
+from fabric.operations import run, put, sudo, local
 from datetime import datetime
 import os
 
-env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
+env.hosts = ['66.70.184.249', '54.210.138.75']
+created_path = None
+
 
 def do_pack():
-    """Generates a .tgz archive from contents of web_static."""
-    time = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    """
+        generates a .tgz archine from contents of web_static
+    """
+    time = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     file_name = "versions/web_static_{}.tgz".format(time)
     try:
         local("mkdir -p ./versions")
-        local("tar -czvf {} ./web_static".format(file_name))
+        local("tar --create --verbose -z --file={} ./web_static"
+              .format(file_name))
         return file_name
-    except Exception as e:
-        print(e)
+    except:
         return None
 
-def do_deploy():
-    """
-    Distributes an archive to your web servers.
 
-    Returns:
-        - True if deployment is successful, else False.
+def do_deploy(archive_path):
     """
-    archive_path = do_pack()
-    if archive_path is None:
+        using fabric to distribute archive
+    """
+    if os.path.isfile(archive_path) is False:
         return False
-
     try:
         archive = archive_path.split("/")[-1]
         path = "/data/web_static/releases"
-        folder = archive.split(".")
-        new_archive = ".".join(folder)
-
-        # Upload the archive to /tmp/ on the server
         put("{}".format(archive_path), "/tmp/{}".format(archive))
-
-        # Create the release directory
+        folder = archive.split(".")
         run("mkdir -p {}/{}/".format(path, folder[0]))
-
-        # Extract the archive into the release directory
-        run("tar -xzf /tmp/{} -C {}/{}/".format(new_archive, path, folder[0]))
-
-        # Remove the uploaded archive
+        new_archive = '.'.join(folder)
+        run("tar -xzf /tmp/{} -C {}/{}/"
+            .format(new_archive, path, folder[0]))
         run("rm /tmp/{}".format(archive))
-
-        # Move the contents of web_static to the release directory
-        run("mv {}/{}/web_static/* {}/{}/".format(path, folder[0], path, folder[0]))
-
-        # Remove the web_static directory in the release directory
+        run("mv {}/{}/web_static/* {}/{}/"
+            .format(path, folder[0], path, folder[0]))
         run("rm -rf {}/{}/web_static".format(path, folder[0]))
-
-        # Remove the existing /data/web_static/current symbolic link
         run("rm -rf /data/web_static/current")
-
-        # Create a new symbolic link pointing to the new release directory
-        run("ln -sf {}/{} /data/web_static/current".format(path, folder[0]))
-
+        run("ln -sf {}/{} /data/web_static/current"
+            .format(path, folder[0]))
         return True
-
-    except Exception as e:
-        print(e)
+    except:
         return False
+
+
+def deploy():
+    """
+        deploy function that creates/distributes an archive
+    """
+    global created_path
+    if created_path is None:
+        created_path = do_pack()
+    if created_path is None:
+        return False
+    return do_deploy(created_path)
