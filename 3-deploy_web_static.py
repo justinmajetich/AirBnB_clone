@@ -3,10 +3,8 @@
 Fabric script that distributes an archive to my web servers
 """
 
-from fabric.api import *
-from fabric.operations import run, put, sudo
+from fabric.api import env, local, put, run
 from datetime import datetime
-
 import os
 
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
@@ -35,10 +33,10 @@ def do_deploy(archive_path):
         - True if deployment is successful, else False.
     """
     try:
-	archive_path = do_pack()
-	if os.path.isfile(archive_path) is False:
-		return False
-					
+        archive_path = do_pack()
+        if os.path.isfile(archive_path) is False:
+            return False
+
         archive = archive_path.split("/")[-1]
         path = "/data/web_static/releases"
         folder = archive.split(".")
