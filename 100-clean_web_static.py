@@ -1,16 +1,14 @@
 #!/usr/bin/python3
 """
-Fabric script (based on the file 3-deploy_web_static.py) 
-that deletes out-of-date archives, using the function do_clean.
+Fabric script that distributes an archive to my web servers
 """
-
 from fabric.api import *
-from fabric.operations import run, put, sudo, local
 from datetime import datetime
 import os
 
 env.hosts = ["ubuntu@54.146.95.43", "ubuntu@34.229.67.181"]
-created_path = None
+env.user = "ubuntu"
+env.key_filename = "~/.ssh/school"
 
 def do_pack():
     """Generates a .tgz archive from contents of web_static."""
@@ -24,7 +22,6 @@ def do_pack():
         return None
     else:
         return file_name
-
 
 def do_deploy(archive_path):
     """
@@ -76,27 +73,24 @@ def do_deploy(archive_path):
     finally:
         return True
 
-
-def deploy():
-    """
-    Creates/distributes an archive
-
-    Return:
-        - True if deployed, else False.
-    """
-    global created_path
-    if created_path is None:
-        created_path = do_pack()
-    if created_path is None:
-        return False
-    return do_deploy(created_path)
-
 def do_clean(number=0):
-	output = local("ls ./versions")
-	print(output.split(" "))
-	#print(type(output))
-	#if number == 0 or number == 1:
-		
-	
-	
+    """
+    Deletes out-of-date archives.
 
+    Parameters:
+        - number (int): Number of archives to keep.
+
+    Returns:
+        - None
+    """
+    number = int(number)
+
+    if number == 0 or number == 1:
+        local("ls -t versions/ | tail -n +2 | xargs -I {} rm versions/{}")
+        run("ls -t /data/web_static/releases | tail -n +2 | xargs -I {} rm -rf /data/web_static/releases/{}")
+
+    elif number > 1:
+        local("ls -t versions/ | tail -n +{} | xargs -I {} rm versions/{}"
+              .format(number + 1))
+        run("ls -t /data/web_static/releases | tail -n +{} | xargs -I {} rm -rf /data/web_static/releases/{}"
+            .format(number + 1))
