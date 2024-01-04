@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	padding: 0;
+	color: #484848;
+	font-size: 14px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	background-image: url('../images/icon.png');
+	background-repeat: no-repeat;
+	min-height: 100vh;
+}
+.container {
+        max-width: 1000px;
+        margin: 30px auto 0;
+        text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}

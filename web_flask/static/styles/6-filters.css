@@ -1,0 +1,104 @@
+.filters {
+    background-color: #FFFFFF;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+button {
+    font-size: 18px;
+    background-color: #FF5A5F;
+    color: #FFFFFF;
+    height: 48px;
+    width: 20%;
+    border-radius: 4px;
+    margin-right: 30px;
+    text-align: center;
+    opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+button:hover {
+    opacity: 0.9;
+    filter: alpha(opacity=100);
+}
+
+.locations {
+    height: 100%;
+    width: 25%;
+    border-right: 1px solid #DDDDDD;
+    margin-right: 0;
+    
+}
+
+.amenities {
+    height: 100%;
+    width: 25%;
+    margin-right: auto;
+}
+
+.title {
+    margin-bottom: 0;
+    margin-left: 15%;
+    text-align: left;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin-top: 0;
+    margin-left: 15%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.popover {
+    display: none;
+    background-color: #FAFAFA;
+    width: 90%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    list-style-type: none;
+    padding-left: 10%;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.locations li {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.sublist {
+    list-style-type: none;
+    margin-bottom: 10%
+}
+
+.amenities ul {
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+.amenities li {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.locations:hover .popover {
+    display: block;
+    position: relative;
+    z-index: 100;
+}
+
+.amenities:hover .popover {
+    display: block;
+    position: relative;
+    z-index: 100;
+}
+
+.popover h2 {
+    font-size: 16px;
+}

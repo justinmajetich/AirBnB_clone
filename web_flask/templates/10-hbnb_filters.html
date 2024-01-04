@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<HTML lang="en">
+<HEAD>
+    <META charset="UTF-8">
+    <TITLE>HBNB</TITLE>
+    <LINK rel="stylesheet" HREF="https://unpkg.com/@mdi/font/css/materialdesignicons.min.css" integrity="sha384-oio1N5PU5CSpFzGQ0h+lsUJJqOANquzlfKlpeWqVwFZW8jkR+V2FvQQ9aGt0fsbf" crossorigin="anonymous">
+    <LINK rel="stylesheet" HREF="https://unpkg.com/@mdi/font/css/materialdesignicons.min.css" integrity="sha384-oio1N5PU5CSpFzGQ0h+lsUJJqOANquzlfKlpeWqVwFZW8jkR+V2FvQQ9aGt0fsbf" crossorigin="anonymous">
+    <LINK rel="stylesheet" HREF="/static/styles/3-header.css">
+    <LINK rel="stylesheet" HREF="/static/styles/3-footer.css">
+    <LINK rel="stylesheet" HREF="/static/styles/4-common.css">
+    <LINK rel="stylesheet" HREF="/static/styles/6-filters.css">
+</HEAD>
+<BODY>
+    <HEADER class="header">
+        <DIV class="logo_container">
+            <A HREF="http://0.0.0.0:5000/" class="header_logo">
+                <IMG src="/static/images/logo.png" ALT="Logo">
+            </A>
+        </DIV>
+    </HEADER>
+    <DIV class="filters">
+        <H1 class="filters_title">Places</H1>
+        <DIV class="locations">
+            <H2 class="locations_title">States</H2>
+            <UL class="locations_list">
+                {% for state in states %}
+                    <LI class="popover"><input type="checkbox" class="location" name="{{ state.id }}">{{ state.name }}</LI>
+                {% endfor %}
+            </UL>
+        </DIV>
+        <DIV class="locations">
+            <H2 class="locations_title">Amenities</H2>
+            <UL class="locations_list">
+                {% for amenity in amenities %}
+                    <LI class="popover"><input type="checkbox" class="amenity" name="{{ amenity.id }}">{{ amenity.name }}</LI>
+                {% endfor %}
+            </UL>
+        </DIV>
+    </DIV>
+    <DIV class="places">
+        <H1 class="places_title">Places</H1>
+        <DIV class="places_grid">
+            <!-- Places will be dynamically loaded here -->
+        </DIV>
+    </DIV>
+    <DIV class="clearfix"></DIV>
+    <FOOTER class="footer">
+        <DIV class="footer_content">
+            <P>© 2023 Airbnb, Inc.</P>
+            <NAV class="footer_nav">
+                <UL class="footer_nav_list">
+                    <LI class="footer_nav_item"><A HREF="#">Privacy</A></LI>
+                    <LI class="footer_nav_item"><A HREF="#">Terms</A></LI>
+                    <LI class="footer_nav_item"><A HREF="#">Sitemap</A></LI>
+                </UL>
+            </NAV>
+        </DIV>
+    </FOOTER>
+</BODY>
+</HTML>
