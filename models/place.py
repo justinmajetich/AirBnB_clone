@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project """
+""" Place Module for BnB v2 project """
 import os
-from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 
 from models.base_model import BaseModel, Base
 from models.review import Review
@@ -27,7 +27,7 @@ place_amenity = Table(
         primary_key=True
     )
 )
-"""Represents the many to many relationship
+"""Represents many to many relationship
 between Place and Amenity records.
 """
 
@@ -74,8 +74,8 @@ class Place(BaseModel, Base):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         amenities = relationship(
             'Amenity',
-            secondary=place_amenity,
             viewonly=False,
+            secondary=place_amenity,
             backref='place_amenities'
         )
     else:
