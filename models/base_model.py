@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""This module defines a base class for all models in Bnb v2"""
 import os
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, DATETIME
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DATETIME
 
 
 Base = declarative_base()
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """A base class for all BnB models"""
     id = Column(String(60), nullable=False, primary_key=True, unique=True)
     created_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
     updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
@@ -20,8 +20,8 @@ class BaseModel:
         """Instantiates a new model"""
         if not kwargs:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            self.created_at = datetime.now()
         else:
             for key, value in kwargs.items():
                 if key != '__class__':
@@ -55,7 +55,7 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """Convert instance to dict format"""
         res = {}
         for key, value in self.__dict__.items():
             if key != '_sa_instance_state':
