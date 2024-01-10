@@ -47,7 +47,6 @@ sudo chown -hR ubuntu:ubuntu /data/
 cprint "$cyan" "[ ! ] Configuring Nginx..."
 sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
-
 cprint "$green" "[ * ] Nginx configured"
 # restarting nginx web server
 sudo service nginx restart
