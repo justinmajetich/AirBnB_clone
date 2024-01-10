@@ -1,31 +1,32 @@
 #!/usr/bin/env bash
-# sets up your web servers for the deployment of web_static
-if ! command -v nginx &> /dev/null; then
-    sudo apt update
-    sudo apt install nginx -y
+#Script that sets up your web servers for the deployment of web_static
+
+if ! dpkg -s nginx &> /dev/null; then
+    sudo apt-get -y update
+    sudo apt-get -y install nginx
 fi
 
+sudo mkdir -p /data/web_static/releases/test
+sudo mkdir -p /data/web_static/shared
 
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
-echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+html="<html>
+<head></head>
+<body>
+  Holberton School
+</body>
+</html>"
+
+echo "$html" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+
+sudo rm -rf /data/web_static/current
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
+
 sudo chown -R ubuntu:ubuntu /data/
-echo "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-    server_name _;
-    location /hbnb_static {
-        alias /data/web_static/current/;
-        index index.html index.htm;
-    }
-    error_page 404 /custom_404.html;
-    location = /custom_404.html {
-        root /var/www/html;
-        internal;
-    }
-    add_header X-Served-By $hostname;
-}" | sudo tee /etc/nginx/sites-available/default
+
+nginx_config="/etc/nginx/sites-available/default"
+
+if ! grep -q "location /hbnb_static {" "$nginx_config"; then
+    sudo sed -i '/server_name _;/a \\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n' "$nginx_config"
+fi
+
 sudo service nginx restart
