@@ -10,6 +10,29 @@ import os
 env.hosts = ['54.236.30.207', '3.85.168.24']
 env.user = 'ubuntu'
 
+
+@task
+def do_pack():
+    """
+    Generates a .tgz archive from the contents of the web_static folder.
+
+    Returns:
+        str: The path to the generated archive
+        file, or None if an error occurs.
+    """
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    path = "versions/web_static_{}.tgz".format(date)
+    cmd = "tar -cvzf {} web_static".format(path)
+    try:
+        if not os.path.exists("versions"):
+            local("mkdir versions")
+        local(cmd)
+        return path
+    except Exception:
+        return None
+
+
+@task
 def do_deploy(archive_path):
     """
     Deploy package to remote server.
