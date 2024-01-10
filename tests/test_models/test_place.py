@@ -8,37 +8,31 @@ class test_Place(test_basemodel):
     """ """
 
     def __init__(self, *args, **kwargs):
-        """ """
         super().__init__(*args, **kwargs)
         self.name = "Place"
         self.value = Place
 
     def test_city_id(self):
-        """ """
         new = self.value()
         new.city_id = "foobar"
         self.assertEqual(type(new.city_id), str)
 
     def test_user_id(self):
-        """ """
         new = self.value()
         new.user_id = "random value"
         self.assertEqual(type(new.user_id), str)
 
     def test_name(self):
-        """ """
         new = self.value()
         new.name = "random"
         self.assertEqual(type(new.name), str)
 
     def test_description(self):
-        """ """
         new = self.value()
         new.description = "foobar"
         self.assertEqual(type(new.description), str)
 
     def test_number_rooms(self):
-        """ """
         new = self.value()
         new.number_rooms = 10
         self.assertEqual(type(new.number_rooms), int)

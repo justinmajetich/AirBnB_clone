@@ -2,7 +2,6 @@
 """ """
 from models.base_model import BaseModel
 import unittest
-import datetime
 import json
 import os
 
@@ -11,14 +10,9 @@ class test_basemodel(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
-        """ """
         super().__init__(*args, **kwargs)
         self.name = "BaseModel"
         self.value = BaseModel
-
-    def setUp(self):
-        """ """
-        pass
 
     @unittest.skipIf(
         os.getenv("HBNB_TYPE_STORAGE") == "db",
@@ -35,7 +29,6 @@ class test_basemodel(unittest.TestCase):
         "Storage Type is not File",
     )
     def test_default(self):
-        """ """
         i = self.value()
         self.assertEqual(type(i), self.value)
 
@@ -44,7 +37,6 @@ class test_basemodel(unittest.TestCase):
         "Storage Type is not File",
     )
     def test_kwargs(self):
-        """ """
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
@@ -55,7 +47,6 @@ class test_basemodel(unittest.TestCase):
         "Storage Type is not File",
     )
     def test_kwargs_int(self):
-        """ """
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -80,7 +71,6 @@ class test_basemodel(unittest.TestCase):
         "Storage Type is not File",
     )
     def test_str(self):
-        """ """
         i = self.value()
         self.assertEqual(
             str(i),
