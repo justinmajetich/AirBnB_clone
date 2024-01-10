@@ -1,44 +1,33 @@
 #!/usr/bin/python3
+""" Fabric script based on the file 1-pack_web_static.py that distributes an
+    archive to the web servers
 """
-Fabric script based on the file 1-pack_web_static.py that distributes an
-archive to the web servers
-"""
+from fabric.api import task, local, env, put, run
 from datetime import datetime
-from fabric.api import run, env, put, local, task
 import os
 
-env.hosts = ['54.236.30.207', '3.85.168.24']
-env.user = 'ubuntu'
+env.hosts = ['18.207.1.87', '52.206.189.175']
 
 
 @task
 def do_pack():
+    """ Generates a .tgz archive from the contents of the web_static folder.
     """
-    Generates a .tgz archive from the contents of the web_static folder.
-
-    Returns:
-        str: The path to the generated archive
-        file, or None if an error occurs.
-    """
-    date = datetime.now().strftime("%Y%m%d%H%M%S")
-    path = "versions/web_static_{}.tgz".format(date)
-    cmd = "tar -cvzf {} web_static".format(path)
-    try:
-        if not os.path.exists("versions"):
-            local("mkdir versions")
-        local(cmd)
+    formatted_dt = datetime.now().strftime('%Y%m%d%H%M%S')
+    mkdir = "mkdir -p versions"
+    path = "versions/web_static_{}.tgz".format(formatted_dt)
+    print("Packing web_static to {}".format(path))
+    if local("{} && tar -cvzf {} web_static".format(mkdir, path)).succeeded:
         return path
-    except Exception:
-        return None
+    return None
 
 
 @task
 def do_deploy(archive_path):
-    """
-    Deploy package to remote server.
+    """ Deploy package to remote server.
 
-    Arguments:
-        archive_path: Path to archive to deploy.
+        Arguments:
+            archive_path: Path to archive to deploy.
     """
     try:
         if not os.path.exists(archive_path):
