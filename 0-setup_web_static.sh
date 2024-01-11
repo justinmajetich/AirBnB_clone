@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Sets up an nginx web server
 sudo su
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-mkdir -p /data/web_static/releases/test/ 
-mkdir -p /data/web_static/shared/
-echo "Hello World" >> /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test/ /data/web_static/current 
-chown -hR ubuntu:ubuntu /data/
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo mkdir -p /data/web_static/releases/test/ 
+sudo mkdir -p /data/web_static/shared/
+echo "Hello World" | sudo tee -a  /data/web_static/releases/test/index.html
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current 
+sudo chown -hR ubuntu:ubuntu /data/
 
 content="
 server {
@@ -21,5 +21,5 @@ server {
 }
 events {}
 "
-echo "$content" > /etc/nginx/nginx.conf
-service nginx start
+echo "$content" | sudo tee /etc/nginx/nginx.conf
+sudo service nginx start
