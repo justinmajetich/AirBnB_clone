@@ -4,6 +4,7 @@
     using the function deploy:"""
 
 from os.path import exists, isdir
+from datetime import datetime
 from fabric.api import put, run, env, local
 env.hosts = ['54.237.84.15', '3.89.155.134']
 
@@ -11,7 +12,7 @@ env.hosts = ['54.237.84.15', '3.89.155.134']
 
 def do_pack():
     """Generate a .tgz archive from
-the contents of web_static folder"""
+        e contents of web_static folder"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         if isdir("versions") is False:
@@ -21,6 +22,7 @@ the contents of web_static folder"""
         return fileName
     except:
         return None
+
 
 def do_deploy(archive_path):
     """Ditributes an archive file to my web server"""
@@ -41,6 +43,7 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
 
 def deploy():
     """creates and distributes an archive to the web servers"""
