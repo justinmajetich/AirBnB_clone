@@ -25,9 +25,9 @@ def do_pack():
         now.second,
     )
     print("Packing web_static into versions/{}".format(file_name))
-    if not os.path.exists("./versions"):
-        os.mkdir("./versions")
-    status = local("tar -cvzf ./versions/{} /web_static".format(file_name))
+    if not os.path.exists("versions"):
+        os.mkdir("versions")
+    status = local("tar -cvzf versions/{} web_static".format(file_name))
 
     if status.failed:
         return None

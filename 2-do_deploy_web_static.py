@@ -17,24 +17,42 @@ def do_deploy(archive_path: str):
     """
     if not os.path.exists(archive_path):
         return False
-    archive_name = archive_path.strip(".tgz")
-    if not put("archive_path", "/tmp/", use_sudo=True):
-        return False
-    if not sudo(
-        "tar -xvf /tmp/{} /data/web_static/releases/{}".format(
-            archive_path, archive_name
-        ),
+    serv_archive_path = archive_path.split("/")[-1]
+    archive_name = serv_archive_path.strip(".tgz")
+    if not put(
+        archive_path,
+        "/tmp/{}".format(serv_archive_path),
+        use_sudo=True,
     ):
         return False
-    if not sudo("rm /tmp/{}".format(archive_path)):
+    if sudo(
+        "mkdir -p /data/web_static/releases/{}".format(archive_name),
+    ).failed:
         return False
-    if not sudo("rm /data/web_static/current"):
+    print(serv_archive_path)
+    if sudo(
+        "tar -xvf /tmp/{} -C /data/web_static/releases/{}".format(
+            serv_archive_path, archive_name
+        ),
+    ).failed:
         return False
-    if not sudo(
+    if sudo(
+        "mv /data/web_static/releases/{}/web_static/* \
+/data/web_static/releases/{}".format(
+            archive_name, archive_name
+        ),
+    ).failed:
+        return False
+    if sudo("rm -rf /tmp/{}".format(serv_archive_path)).failed:
+        return False
+    if sudo("rm -rf /data/web_static/current").failed:
+        return False
+    if sudo(
         "ln -sf /data/web_static/releases/{} /data/web_static/current".format(
             archive_name
         ),
-    ):
+    ).failed:
         return False
 
+    print("New version deployed!")
     return True
