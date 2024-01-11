@@ -10,13 +10,15 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/
 
 content="
-server {
-        listen 80;
+http {
+	server {
+					listen 80;
 
-        location /hbnb_static {
-					alias /data/web_static/current/
-					index index.html
-        }
+					location /hbnb_static {
+						alias /data/web_static/current/;
+						index index.html;
+					}
+	}
 }
 events {}
 "
