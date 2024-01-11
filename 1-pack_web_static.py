@@ -6,8 +6,9 @@ from datetime import datetime
 from fapric.api import local
 from os.path import isdir
 
+
 def do_pack():
-    """Generate a .tgz archive from 
+    """Generate a .tgz archive from
         the contents of web_static folder"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
