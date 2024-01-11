@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-# Fabric script (based on the file 1-pack_web_static.py) that distributes
-# an archive to your web servers, using the function do_deploy
+# Fabric script (based on the file 2-do_deploy_web_static.py) that creates and
+# distributes an archive to your web servers, using the function deploy
 
 from fabric.api import *
 from datetime import datetime
@@ -41,6 +41,20 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(folder))
         print("New version deployed!")
         return True
+    except Exception as e:
+        # print(f"Error during deployment: {e}")
+        return False
+
+
+def deploy():
+    """ creates and distributes an archive to your web servers """
+    try:
+        archive_path = do_pack()
+        if archive_path:
+            value = do_deploy(archive_path)
+            return value
+        else:
+            return False
     except Exception as e:
         # print(f"Error during deployment: {e}")
         return False
