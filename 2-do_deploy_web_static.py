@@ -17,17 +17,14 @@ def do_pack():
         file = "versions/web_static_{}.tgz".format(date)
         local("tar -cvzf {} web_static".format(file))
         return file
-    except Exception as e:
-        print(f"Error during packaging: {e}")
+    except Exception:
         return None
 
 
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if not path.exists(archive_path):
-        print(f"Error: Archive not found at {archive_path}")
         return False
-
     try:
         put(archive_path, "/tmp/")
         file = archive_path.split("/")[-1]
@@ -41,8 +38,7 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(folder))
         print("New version deployed!")
         return True
-    except Exception as e:
-        print(f"Error during deployment: {e}")
+    except Exception:
         return False
 
 
@@ -50,12 +46,7 @@ def deploy():
     """ creates and distributes an archive to your web servers """
     try:
         archive_path = do_pack()
-        if archive_path:
-            value = do_deploy(archive_path)
-            return value
-        else:
-            print("Error: Archive not created.")
-            return False
-    except Exception as e:
-        print(f"Error during deployment: {e}")
+        value = do_deploy(archive_path)
+        return value
+    except Exception:
         return False
