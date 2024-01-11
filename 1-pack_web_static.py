@@ -14,7 +14,7 @@ the contents of web_static folder"""
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         if isdir("versions") is False:
             local("mkdir versions")
-        fileName = "versions/web_static_{}".format(date)
+        fileName = "versions/web_static_{}.tgz".format(date)
         local("tar -cvzf {} web_static").format(fileName)
         return fileName
     except:
