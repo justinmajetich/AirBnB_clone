@@ -16,5 +16,5 @@ GRANT ALL PRIVILEGES ON hbnb_dev_db . * TO 'hbnb_dev'@'localhost';
 -- Otorga el privilegios SELECT a performance_schema de hbnb_dev
 GRANT SELECT ON performance_schema . * TO 'hbnb_dev'@'localhost';
 
--- Vaciar privilegios para aplicar cambios
+-- Vaciar privilegios para aplicar cambio
 FLUSH PRIVILEGES;
