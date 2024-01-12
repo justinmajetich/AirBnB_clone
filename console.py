@@ -2,11 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-<<<<<<< HEAD
-from shlex import split
-=======
-import models
->>>>>>> 3723cb901fd626ce8041c3c37f8d6f09336c73a5
+from models import storage
 from models.base_model import BaseModel
 from datetime import datetime
 from models.user import User
@@ -15,7 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import shlex
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -117,79 +113,30 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def dic_create(self, args):
-        """creates a dictionary from a list"""
-        dic = {}
-        for arg in args:
-            if "=" in arg:
-                vals_toa_add = arg.split('=', 1)
-                key = vals_toa_add[0]
-                value = vals_toa_add[1]
-                if value[0] == value[-1] == '"':
-                    value = value.replace('"', '').replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except:
-                        try:
-                            value = float(value)
-                        except:
-                            continue
-                dic[key] = value
-        return (dic)
-
     def do_create(self, args):
-<<<<<<< HEAD
-        """ Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+        """ 
+        Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
         Create a new class instances with given keys/values and print its id.
         """
         try:
-            if not line:
+            if not args:
                 raise SyntaxError()
-            my_list = line.split(" ")
+            arg_list = args.split(" ")
             
             kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kw[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0]) ()
-            else:
-                obj = eval(my_list[0]) (**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
+            for arg in arg_list[1:]:
+                arg_splited = arg.split("=")
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
+                kwargs[arg_splited[0]] = arg_splited[1]
         except SyntaxError:
-=======
-        """Creates a new instance of BaseModel """
-        args = args.split()
-        if len(args) == 0:
->>>>>>> 3723cb901fd626ce8041c3c37f8d6f09336c73a5
             print("** class name missing **")
-            return
-        if args[0] in HBNBCommand.classes:
-            dic = self.dic_creator(args[1:])
-            instance = HBNBCommand.classes[args[0]](**dic)
-        else:
+        except NameError:
             print("** class doesn't exist **")
-<<<<<<< HEAD
-        new_instance = HBNBCommand.classes[my_list[0]](**kwargs)
+        new_instance = HBNBCommand.classes[args_list[0]](**kwargs)
         new_instance.save()
         print(new_instance.id)
-=======
-            return
-        print(instance.id)
-        instance.save()
->>>>>>> 3723cb901fd626ce8041c3c37f8d6f09336c73a5
 
     def help_create(self):
         """ Help information for the create method """
