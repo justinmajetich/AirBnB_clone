@@ -35,5 +35,3 @@ sudo sed -i "/^server {/a \ \tadd_header X-Served-By $HOSTNAME;" $config
 sudo sed -i '/^server {/a \ \n\tlocation \/hbnb_static {alias /data/web_static/current/;index index.html;}' $config
 
 service nginx restart
-
-exit 0
