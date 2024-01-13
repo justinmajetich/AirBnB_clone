@@ -9,19 +9,6 @@ from os import path
 env.hosts = ['52.91.126.74', '34.224.15.231']
 
 
-def do_pack():
-    """ generates a .tgz archive from the contents of the web_static folder """
-    try:
-        local("mkdir -p versions")
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        file = "versions/web_static_{}.tgz".format(date)
-        local("tar -cvzf {} web_static".format(file))
-        return file
-    except Exception as e:
-        # print(f"Error during packaging: {e}")
-        return None
-
-
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if not path.exists(archive_path):
