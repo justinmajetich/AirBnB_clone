@@ -9,7 +9,6 @@ from os import path
 env.hosts = ['52.91.126.74', '34.224.15.231']
 
 
-@runs_once
 def do_pack():
     """ generates a .tgz archive from the contents of the web_static folder """
     try:
@@ -23,7 +22,6 @@ def do_pack():
         return None
 
 
-@task
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if not path.exists(archive_path):
@@ -49,7 +47,6 @@ def do_deploy(archive_path):
         return False
 
 
-@task
 def deploy():
     """ creates and distributes an archive to your web servers """
     try:

@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """ generates a .tgz archive from the contents of the web_static folder """
 
-from fabric.api import local, task
+from fabric.api import local
 from datetime import datetime
 
 
-@task
 def do_pack():
     """ generates a .tgz archive from the contents of the web_static folder """
     try:
