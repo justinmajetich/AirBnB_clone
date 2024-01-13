@@ -9,6 +9,7 @@ from os import path
 env.hosts = ['52.91.126.74', '34.224.15.231']
 
 
+@runs_once
 def do_pack():
     """ generates a .tgz archive from the contents of the web_static folder """
     try:
@@ -22,16 +23,18 @@ def do_pack():
         return None
 
 
+@task
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if not path.exists(archive_path):
-        # print(f"Error: Archive not found at {archive_path}")
+        print(f"Error: Archive not found at {archive_path}")
         return False
 
     try:
         put(archive_path, "/tmp/")
         file = archive_path.split("/")[-1]
         folder = "/data/web_static/releases/" + file.split(".")[0]
+        run("rm -rf {}".format(folder))
         run("mkdir -p {}".format(folder))
         run("tar -xzf /tmp/{} -C {}".format(file, folder))
         run("rm /tmp/{}".format(file))
@@ -46,6 +49,7 @@ def do_deploy(archive_path):
         return False
 
 
+@task
 def deploy():
     """ creates and distributes an archive to your web servers """
     try:
