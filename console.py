@@ -122,8 +122,16 @@ class HBNBCommand(cmd.Cmd):
         elif param[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        cls_attr = {}
+        for attr_list in param[1:]:
+            ins_attr = attr_list.split("=")
+            ins_attr[1] = eval(ins_attr[1])
+            if type(ins_attr[1]) is str:
+                ins_attr[1] = ins_attr[1].replace('_', ' ').replace('"', '\\"')
+            cls_attr[ins_attr[0]] = ins_attr[1]
+
+        new_instance = HBNBCommand.classes[param[0]](**cls_attr)
+        new_instance.save()
         print(new_instance.id)
         storage.save()
 
