@@ -141,7 +141,8 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 ```
-## 0x02. AirBnB clone - MySQL
+
+### 0x02. AirBnB clone - MySQL
 
 ### OVERVIEW
 This project is an SQL database implementation for an Airbnb clone, designed to replicate some of the essential functionalities of the popular accommodation platform. The database schema is crafted to support features like property listings, user accounts, reservations, reviews, and more.
@@ -163,3 +164,4 @@ Setup the MySQL server with setup_mysql_dev.sql using: cat setup_mysql_dev.sql |
 
 - Oluwatobiloba Ojo
 - Yassine Elhafyane
+```
