@@ -1,0 +1,7 @@
+*.pyc
+__pycache__
+models/__pycache__
+models/engine/__pycache__
+tests/__pycache__
+tests/tests_models/__pycache__
+tests/tests_models/tests_engine/__pycache__
