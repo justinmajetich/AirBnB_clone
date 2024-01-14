@@ -140,3 +140,26 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+```
+## 0x02. AirBnB clone - MySQL
+
+### OVERVIEW
+This project is an SQL database implementation for an Airbnb clone, designed to replicate some of the essential functionalities of the popular accommodation platform. The database schema is crafted to support features like property listings, user accounts, reservations, reviews, and more.
+
+### Resources
+1. [cmd module](https://docs.python.org/3/library/cmd.html)
+2. [unittest module](https://docs.python.org/3/library/unittest.html#module-unittest)
+3. [args/kwargs](https://yasoob.me/2013/08/04/args-and-kwargs-in-python-explained/)
+4. [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/13/orm/tutorial.html)
+5. [How To Create a New User and Grant Permissions in MySQL](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql)
+6. [Python3 and environment variables](https://docs.python.org/3/library/os.html?highlight=env#os.getenv)
+7. [SQLAlchemy](https://docs.sqlalchemy.org/en/13/)
+8. [MySQL 8.0 SQL Statement Syntax](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)
+
+### MySQL
+Setup the MySQL server with setup_mysql_dev.sql using: cat setup_mysql_dev.sql | mysql -uroot -p Setup environment for DataBase usage with ./export_setup Interact with the database through ./console.py
+
+### Contributors
+
+- Oluwatobiloba Ojo
+- Yassine Elhafyane
