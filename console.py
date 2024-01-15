@@ -93,21 +93,19 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
+        """
+        Method to exit the HBNB console
+        Exits the program with formatting
+        """
         exit()
-
-    def help_quit(self):
-        """ Prints the help documentation for quit  """
-        print("Exits the program with formatting\n")
 
     def do_EOF(self, arg):
-        """ Handles EOF to exit program """
+        """
+        Handles EOF to exit program 
+        Exits the program without formatting
+        """
         print()
         exit()
-
-    def help_EOF(self):
-        """ Prints the help documentation for EOF """
-        print("Exits the program without formatting\n")
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
@@ -116,6 +114,18 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """
         Create an object of any class, with or without given parameters
+        [Usage]: create <className>
+        or 
+        create <Class name> <param 1> <param 2> <param 3>...
+        Param syntax: <key name>=<value>
+        Value syntax:
+        String: "<value>" => starts with a double quote
+        any double quote inside the value must be escaped with a backslash \\
+        all underscores _ must be replace by spaces .
+        Example: You want to set the string My little house
+        to attr name, your command line must be name="My_little_house"
+        Float: <unit>.<decimal> => contains a dot .
+        Integer: <number> => default case
         """
         # Separate the class name from the parameters and validate
         class_name, _, parameters = args.partition(" ")
@@ -164,23 +174,11 @@ class HBNBCommand(cmd.Cmd):
         print(class_id)
 
 
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("""[Usage]: create <className>
-or 
-create <Class name> <param 1> <param 2> <param 3>...
-Param syntax: <key name>=<value>
-Value syntax:
-String: "<value>" => starts with a double quote
-any double quote inside the value must be escaped with a backslash \
-all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name="My_little_house"
-Float: <unit>.<decimal> => contains a dot .
-Integer: <number> => default case
-              """)
-
     def do_show(self, args):
-        """ Method to show an individual object """
+        """ 
+        Shows an individual instance of a class
+        [Usage]: show <className> <objectId>
+        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -207,13 +205,11 @@ Integer: <number> => default case
         except KeyError:
             print("** no instance found **")
 
-    def help_show(self):
-        """ Help information for the show command """
-        print("Shows an individual instance of a class")
-        print("[Usage]: show <className> <objectId>\n")
-
     def do_destroy(self, args):
-        """ Destroys a specified object """
+        """ 
+        Destroys an individual instance of a class")
+        [Usage]: destroy <className> <objectId>
+        """
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -240,13 +236,11 @@ Integer: <number> => default case
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self):
-        """ Help information for the destroy command """
-        print("Destroys an individual instance of a class")
-        print("[Usage]: destroy <className> <objectId>\n")
-
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
+        """
+        Shows all objects, or all of a class")
+        print("[Usage]: all <className>
+        """
         print_list = []
 
         if args:
@@ -263,25 +257,22 @@ Integer: <number> => default case
 
         print(print_list)
 
-    def help_all(self):
-        """ Help information for the all command """
-        print("Shows all objects, or all of a class")
-        print("[Usage]: all <className>\n")
-
     def do_count(self, args):
-        """Count current number of class instances"""
+        """
+        Count current number of class instances
+        Usage: count <class_name>
+        """
         count = 0
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
 
-    def help_count(self):
-        """ """
-        print("Usage: count <class_name>")
-
     def do_update(self, args):
-        """ Updates a certain object with new info """
+        """
+        Updates an object with new information")
+        Usage: update <className> <id> <attName> <attVal>
+        """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
@@ -363,10 +354,6 @@ Integer: <number> => default case
 
         new_dict.save()  # save updates to file
 
-    def help_update(self):
-        """ Help information for the update class """
-        print("Updates an object with new information")
-        print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
