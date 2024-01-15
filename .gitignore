@@ -14,3 +14,4 @@ a.out
 *.swp
 test.py
 tester.py
+.env
