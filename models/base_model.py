@@ -16,8 +16,12 @@ class BaseModel:
             storage.new(self)
         else:
             try:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime\
+                    .strptime(kwargs['updated_at'],
+                              '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.\
+                    strptime(kwargs['created_at'],
+                             '%Y-%m-%dT%H:%M:%S.%f')
             except Exception as e:
                 print("Error parsing dates: ", kwargs)
 
@@ -47,7 +51,10 @@ class BaseModel:
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
 
-        # Ensure that 'created_at' and 'updated_at' are datetime objects before calling isoformat
+        """
+        Ensure that 'created_at' and 'updated_at'
+        are datetime objects before calling isoformat
+        """
         if isinstance(dictionary['created_at'], datetime):
             dictionary['created_at'] = dictionary['created_at'].isoformat()
 

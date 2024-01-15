@@ -134,7 +134,8 @@ class HBNBCommand(cmd.Cmd):
         kwargs = {}
         for param in args:
             key, value = param.split('=')
-            value = value.replace('"', '').replace('\\"', '\"').replace('_', ' ')
+            value = value.replace('"', '')\
+                .replace('\\"', '\"').replace('_', ' ')
             try:
                 if '.' in value:
                     value = float(value)
@@ -153,10 +154,15 @@ class HBNBCommand(cmd.Cmd):
         kwargs.pop('__class__', None)
 
         # Set default values for 'created_at' and 'updated_at'
-        kwargs['created_at'] = kwargs.get('created_at', datetime.now().isoformat())
-        kwargs['updated_at'] = kwargs.get('updated_at', datetime.now().isoformat())
+        kwargs['created_at'] = kwargs.get('created_at',
+                                          datetime.now().isoformat())
+        kwargs['updated_at'] = kwargs.get('updated_at',
+                                          datetime.now().isoformat())
 
-        # Create a new instance of the specified class with the parsed parameters
+        """
+        Create a new instance of the specified
+        class with the parsed parameters
+        """
         new_obj = HBNBCommand.classes[class_name](**kwargs)
 
         print(new_obj.id)
@@ -223,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -355,6 +361,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
