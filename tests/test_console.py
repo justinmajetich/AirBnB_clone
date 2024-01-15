@@ -96,8 +96,6 @@ class Test_Console(unittest.TestCase):
         output2 = out.getvalue().strip()
         self.assertTrue(output in output2)
 
-        with captured_output() as (out, err):
-
     def test_destroy_correct(self):
         test_args = {'updated_at': datetime(2017, 2, 12, 00, 31, 53, 331997),
                      'id': 'f519fb40-1f5c-458b-945c-2ee8eaaf4900',
