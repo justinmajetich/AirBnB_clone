@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,62 +115,52 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """Create a new BaseModel with given parameters"""
+        args = args.split()
+        if len(args) == 0:
             print("** class name missing **")
             return
 
-        # Split the input into class name and parameters
-        args_list = args.split(' ')
-        class_name = args_list[0]
-        param_list = args_list[1:]
-        
+        class_name = args[0]
+
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        # Initialize a dictionary to store the parameters and values
-        params_dict = {}
+        # Remove the class name from args
+        args = args[1:]
 
-        try:
-            # Iterate through the parameters and values
-            for param in param_list:
-                # Split the parameter into key and value
-                key, value = param.split('=')
+        # Parse key-value pairs
+        kwargs = {}
+        for param in args:
+            key, value = param.split('=')
+            value = value.replace('"', '').replace('\\"', '\"').replace('_', ' ')
+            try:
+                if '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                pass
 
-                # Remove quotes from the value if it's a string
-                if value[0] == '\"' and value[-1] == '\"':
-                    value = value[1:-1]
+            kwargs[key] = value
 
-                    # Replace underscores with spaces in the string
-                    value = value.replace('_', ' ')
+        # Ensure the '__class__' key is removed
+        kwargs.pop('__class__', None)
 
-                    # Unescape double quotes
-                    value = value.replace('\\"', '\"')
+        # Set default values for 'created_at' and 'updated_at'
+        # Remove the '__class__' key if present
+        kwargs.pop('__class__', None)
 
-                # Check if the key is a valid attribute for the class
-                if key not in HBNBCommand.classes[class_name].__dict__:
-                    print(f"** '{key}' is not a valid attribute for \
-                            {class_name} **")
-                    return
+        # Set default values for 'created_at' and 'updated_at'
+        kwargs['created_at'] = kwargs.get('created_at', datetime.now().isoformat())
+        kwargs['updated_at'] = kwargs.get('updated_at', datetime.now().isoformat())
 
-                # Convert the value to the appropriate type if needed
-                if key in HBNBCommand.types:
-                    value = HBNBCommand.types[key](value)
+        # Create a new instance of the specified class with the parsed parameters
+        new_obj = HBNBCommand.classes[class_name](**kwargs)
 
-                # Update the parameters dictionary
-                params_dict[key] = value
-
-            # Create an instance of the specified class with the given parameters
-            new_instance = HBNBCommand.classes[class_name](**params_dict)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-
-        except ValueError:
-            print("** Invalid parameter syntax. Use key=value format. **")
-        except Exception as e:
-            print(f"** Error creating instance: {str(e)} **")
+        print(new_obj.id)
+        new_obj.save()
 
     def help_create(self):
         """ Help information for the create method """
