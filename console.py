@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -110,21 +111,42 @@ class HBNBCommand(cmd.Cmd):
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """Overrides the default behavior of emptyline in Cmd."""
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        '''Create a new instance of class BaseModel and saves it
+        to the JSON file.'''
+        if len(args) == 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        try:
+            number_dict = {}
+            check_args = args.split()
+            for checks in range(1, len(check_args)):
+                key, value = check_args[checks].split('=')
+                if '"' not in value and '\'' not in value:
+                    if "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    number_dict[key] = value
+            args = shlex.split(args)
+            new_instance = eval(args[0])()
+            for strings in range(1, len(args)):
+                if "=" in args[strings]:
+                    key, value = args[strings].split('=')
+                    value = value.replace('_', ' ')
+                    if key not in number_dict:
+                        setattr(new_instance, key, value)
+                    else:
+                        value = number_dict[key]
+                        setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
+
+        except NameError:
             print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
