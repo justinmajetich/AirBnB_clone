@@ -129,9 +129,7 @@ class HBNBCommand(cmd.Cmd):
             val = val[:idx] + val[idx:].replace('_', ' ')
             new_args.append(val)
 
-        if new_args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-        else:
+        if new_args[0] in HBNBCommand.classes:
             new_instance = HBNBCommand.classes[new_args[0]]()
             new_dict = {}
             for val in new_args:
@@ -158,8 +156,10 @@ class HBNBCommand(cmd.Cmd):
 
                     setattr(new_instance, key, value)
 
-        new_instance.save()
-        print(new_instance.id)
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
