@@ -30,7 +30,6 @@ class HBNBCommand(cmd.Cmd):
              'latitude': float, 'longitude': float
             }
 
-
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
@@ -121,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         else:
-            new_obj = BaseModel()
+            new_obj = HBNBCommand.classes[arg[0]]()
             new_obj.save()
             print(new_obj.id)
 
@@ -318,6 +317,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
