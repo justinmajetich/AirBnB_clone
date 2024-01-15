@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Console Module """
+
 import cmd
-import sys
-from models import storage
+import models
 from models.base_model import BaseModel
 from datetime import datetime
 from models.user import User
@@ -12,25 +12,21 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from shlex import split
+import shlex
+import sys
+
+classes = {
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+        }
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+    prompt = '(hbnb) '
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -111,30 +107,44 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
-        pass
+        return False
+    
+    def _key_value_parser(self, args):
+        """crea un diccionario a partir de una lista de cadenas"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+            new_dict[key] = value
+        return new_dict
 
     def do_create(self, args):
         """ 
         Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
         Create a new class instances with given keys/values and print its id.
         """
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            
-            kwargs = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kwargs[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+        arg = args.split(" ")
+        if len(args) == 0:
             print("** class name missing **")
-        except NameError:
+            return False
+        if args[0] in classes:
+            new_dict = self._key_value_parser(args[1:])
+            new_intance = classes[args[0]](**new_dict)
+        else:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[args_list[0]](**kwargs)
+            return False
         new_instance.save()
         print(new_instance.id)
 
@@ -209,24 +219,22 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, arg):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
-            # for k, v in storage._FileStorage__objects.items():
-                # if k.split('.')[0] == args:
-                print_list.append(str(v))
+        args = shlex.split(arg)  # remove possible trailing args
+        obj_list = []
+        if len(args) == 0:
+            obj_dict = models.storage.all()
+        elif args[0] in classes:
+            obj_dict = models.storage.all(classes[args[0]])
         else:
-            for k, v in storage.all().items():
-            # for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
