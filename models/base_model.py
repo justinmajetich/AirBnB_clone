@@ -3,9 +3,20 @@
 import uuid
 from datetime import datetime
 
+import sqlalchemy
+from sqlalchemy import Column, Integer, String, Table
+from sqlalchemy.ext.declarative impot declarative_base
+
+Base = declarative_base()
+
 
 class BaseModel:
     """A base class for all hbnb models"""
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_ad = Column(Datetime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(Datetime, default=datatime.utcnow(), nullable=False)
+
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -13,7 +24,8 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+           '''TODO: implementation of logic''' kwargs = {
+           """ storage.new(self)"""
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
@@ -31,6 +43,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        storage.new(self)"""new update"""
         storage.save()
 
     def to_dict(self):
