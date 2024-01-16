@@ -9,7 +9,7 @@ from models.base_model import BaseModel, Base
 
 
 
-class DBStoroge:
+class DBStorage:
     """
     class reprensenting the database storage engine
     """
