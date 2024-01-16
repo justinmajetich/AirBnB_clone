@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -118,10 +119,43 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        """posix = False helps preserve the double quotes from string"""
+        arg_list = shlex.split(args, posix=False)
+
+        class_name = arg_list[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[class_name]()
+
+        if len(arg_list) > 1:
+
+            """Extracting parameters"""
+            params = arg_list[1:]
+
+            for param in params:
+                key, value = param.split('=')
+                if value.startswith('"') and value.endswith('"'):
+                    """Replace underscore with spaces"""
+                    value = value.replace('_', ' ')
+                    value = value[1:-1].replace('\\"', '"')
+                    setattr(new_instance, key, value)
+                
+                elif '.' in value:
+                    """Sets a float value"""
+                    setattr(new_instance, key, float(value))
+
+                elif value.isdigit():
+                    """Passes an integer value"""
+                    setattr(new_instance, key, int(value))
+
+                else:
+                    """Do Nothing"""
+                    pass
+
+        print(new_instance.__dict__)
         storage.save()
         print(new_instance.id)
         storage.save()
