@@ -127,8 +127,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
+        new_instance = HBNBCommand.classes[class_name]()
         # Create an empty dictionary to store parameters
-        params = {} 
 
         # Parse the parameters and add them to the dictionary
         for param in args_list[1:]:
@@ -137,17 +137,18 @@ class HBNBCommand(cmd.Cmd):
                 if value.startswith('"') and value.endswith('"'):
                     value = value.replace('_', ' ')
                     value = value[1:-1].replace('\\"', '"')
+                    setattr(new_instance, key, value)
+
                 elif '.' in value:
                     value = float(value)
+                    setattr(new_instance, key, value)
                 else:
                     value = int(value)
-                params[key] = value
+                    setattr(new_instance, key, value)
             except ValueError:
                 # Skip invalid parameters
                 pass
         # Create an instance of the specified class with the provided parameters
-        print("all the params here {}".format(params))
-        new_instance = HBNBCommand.classes[class_name](**params)
         print(new_instance.__dict__)
 
         # Save the instance and print its ID
