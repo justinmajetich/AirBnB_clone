@@ -2,8 +2,11 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.place import Place
 from models import storage
 import os
+from console import HBNBCommand
+
 
 
 class test_fileStorage(unittest.TestCase):
@@ -107,3 +110,14 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete(self):
+        # Test removing an existing object
+
+        #create object
+        new_obj = HBNBCommand().onecmd('create Place city_id=123')
+        #get number of items before storage
+        old_objs = len(storage.all())
+        storage.delete(new_obj)
+        all_objs = len(storage.all())
+        self.assertEqual(all_objs, old_objs - 1)
