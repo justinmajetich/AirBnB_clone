@@ -10,8 +10,12 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls != None:
-            return {key: obj for key, obj in FileStorage.__objects.items() if isinstance(obj, cls)}
+        if cls:
+            return {
+                key: obj
+                for key, obj in FileStorage.__objects.items() if
+                isinstance(obj, cls)
+            }
         return FileStorage.__objects
 
     def new(self, obj):
@@ -38,10 +42,10 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -50,14 +54,16 @@ class FileStorage:
                     class_name = val['__class__']
                     if class_name in classes:
                         class_obj = classes[class_name]
+                        # Remove the __class__ key from the dictionary
+                        del val['__class__']
                         self.all()[key] = class_obj(**val)
         except FileNotFoundError:
             pass
+        except Exception as e:
+            print("Error reloading objects: {}".format(e))
 
     def delete(self, obj=None):
         """ Deletes obj from __objects if it is available"""
-        if obj != None:
-            key = obj.to_dict()['__class__'] + '.' + obj.id
-            #key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.all().pop(key, None)
-            #del self.__objects[key]
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            del self.__objects[key]
