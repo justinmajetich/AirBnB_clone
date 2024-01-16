@@ -144,7 +144,10 @@ class HBNBCommand(cmd.Cmd):
             #Check if the class has the specified key as an attribute
            if hasattr(new_instance,key):
                 setattr(new_instance,key,value)
-    
+       
+        storage.new(new_instance)
+        print(new_instance.id)
+        new_instance.save()
         
 
     def help_create(self):
