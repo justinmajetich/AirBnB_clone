@@ -131,8 +131,8 @@ class HBNBCommand(cmd.Cmd):
 
         # Parse the parameters and add them to the dictionary
         for param in args_list[1:]:
-            key, value = param.split('=')
             try:
+                key, value = param.split('=')
                 if value.startswith('"') and value.endswith('"'):
                     value = value.replace('_', ' ')
                     value = value[1:-1].replace('\\"', '"')
