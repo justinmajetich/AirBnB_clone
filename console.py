@@ -115,8 +115,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create a new instance of base model and sve it to the JSON file """
+        class_name = None  # Initialize class_name before the try block
         try:
-         class_name = args.split()[0]
+            class_name = args.split()[0]
         except IndexError:
             pass
         if not class_name:
@@ -156,8 +157,7 @@ class HBNBCommand(cmd.Cmd):
         #add new_instance to data storage
         storage.new(new_instance)
         print(new_instance.id)
-        storage.save()
-    
+        new_instance.save()
         
 
     def help_create(self):
