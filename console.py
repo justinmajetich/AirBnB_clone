@@ -148,9 +148,6 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 # Skip invalid parameters
                 pass
-        # Create an instance of the specified class with the provided parameters
-        print(new_instance.__dict__)
-
         # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
@@ -344,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
