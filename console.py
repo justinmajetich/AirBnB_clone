@@ -139,8 +139,12 @@ class HBNBCommand(cmd.Cmd):
                try:
                    value=eval(value)
                except Exception:
-                   print("**Could not evaluate",value)
+                   print(f"**Could not evaluate {value}")
                    pass
+            #Check if the class has the specified key as an attribute
+           if hasattr(new_instance,key):
+                setattr(new_instance,key,value)
+    
         
 
     def help_create(self):
