@@ -120,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args_list = args.split()
+        print("Args List over here: {}".format(args_list))
         class_name = args_list[0]
 
         if class_name not in HBNBCommand.classes:
@@ -133,9 +134,9 @@ class HBNBCommand(cmd.Cmd):
         for param in args_list[1:]:
             try:
                 key, value = param.split('=')
-                key = key.replace('_', ' ').replace('\"', '')
-                if value[0] == '\"' and value[-1] == '\"':
-                    value = value[1:-1].replace('\\\"', '\"')
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.replace('_', ' ')
+                    value = value[1:-1].replace('\\"', '"')
                 elif '.' in value:
                     value = float(value)
                 else:
@@ -145,7 +146,9 @@ class HBNBCommand(cmd.Cmd):
                 # Skip invalid parameters
                 pass
         # Create an instance of the specified class with the provided parameters
+        print("all the params here {}".format(params))
         new_instance = HBNBCommand.classes[class_name](**params)
+        print(new_instance.__dict__)
 
         # Save the instance and print its ID
         storage.save()
