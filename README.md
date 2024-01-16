@@ -4,6 +4,77 @@ This repository contains the initial stage of a student project to build a clone
 
 ---
 
+> # Background Context
+> Environment variables will be your best friend for this project!
+> - HBNB_ENV: running environment. It can be “dev” or “test” for the  - moment (“production” soon!)
+> - HBNB_MYSQL_USER: the username of your MySQL
+> - HBNB_MYSQL_PWD: the password of your MySQL
+> - HBNB_MYSQL_HOST: the hostname of your MySQL
+> - HBNB_MYSQL_DB: the database name of your MySQL
+> - HBNB_TYPE_STORAGE: the type of storage used. It can be “file” (using - FileStorage) or db (using DBStorage)
+
+
+# Requirements
+## Python Scripts
+- Allowed editors: vi, vim, emacs
+- All your files will be interpreted/compiled on Ubuntu 20.04 LTS using python3 (version 3.8.5)
+- All your files should end with a new line
+- The first line of all your files should be exactly ```bash #!/usr/bin/python3```
+- A README.md file, at the root of the folder of the project, is mandatory
+- Your code should use the pycodestyle __(version 2.8.*)__
+- All your files must be executable
+- The length of your files will be tested using *wc*
+- All your modules should have documentation ```bash (python3 -c 'print(__import__("my_module").__doc__)')```
+- All your classes should have documentation ```bash (python3 -c 'print(__import__("my_module").MyClass.__doc__)')```
+- All your functions (inside and outside a class) should have documentation ``` bash (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')```
+- A documentation is not a simple word, it’s a real sentence explaining what’s the purpose of the module, class or method _(the length of it will be verified)_
+
+## Python Unit Tests
+- Allowed editors: _vi_, _vim_, _emacs_
+- All your files should end with a new line
+- All your test files should be inside a folder tests
+- You have to use the unittest module
+- All your test files should be python files *(extension: .py)*
+- All your test files and folders should start by *test_*
+- Your file organization in the tests folder should be the same as your project: ex: __for models/base_model.py__, unit tests must be in: __tests/test_models/test_base_model.py__
+- All your tests should be executed by using this command: python3 -m unittest discover tests
+- You can also test file by file by using this command: ```bash python3 -m unittest tests/test_models/test_base_model.py```
+- All your modules should have documentation ```bash (python3 -c 'print(__import__("my_module").__doc__)')```
+- All your classes should have documentation ``` bash(python3 -c 'print (__import__("my_module").MyClass.__doc__)')```
+- All your functions (inside and outside a class) should have documentation ```bash (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')```
+- We strongly encourage you to work together on test cases, so that you don’t miss any edge cases
+
+
+> ## SQL Scripts
+> - Allowed editors: vi, vim, emacs
+> - All your files will be executed on Ubuntu 20.04 LTS using MySQL 8.0
+> - Your files will be executed with SQLAlchemy version 1.4.x
+> - All your files should end with a new line
+> - All your SQL queries should have a comment just before (i.e. syntax above)
+> - All your files should start by a comment describing the task
+> - All SQL keywords should be in uppercase (SELECT, WHERE…)
+> - A README.md file, at the root of the folder of the project, is mandatory
+> - The length of your files will be tested using wc
+
+
+### Comments for your SQL file:
+> ```bash $ cat my_script.sql
+> -- first 3 students in the Batch ID=3
+> -- because Batch 3 is the best!
+> SELECT id, name FROM students WHERE batch_id = 3 ORDER BY > created_at DESC LIMIT 3;
+> $ 
+> ```
+
+### unittest Bug free!
+> python3 -m unittest discover tests 2>&1 /dev/null | tail -n 1
+
+All your unittests must pass without any errors at anytime in this project, ***with each storage engine!***. Same for PEP8!
+> ``` bash
+> HBNB_ENV=test HBNB_MYSQL_USER=hbnb_test HBNB_MYSQL_PWD=hbnb_test_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_test_db HBNB_TYPE_STORAGE=db python3 -m unittest discover tests 2>&1 /dev/null | tail -n 1
+>
+> ```
+
+
 <center><h3>Repository Contents by Project Task</h3> </center>
 
 | Tasks | Files | Description |
