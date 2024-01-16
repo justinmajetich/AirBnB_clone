@@ -130,23 +130,21 @@ class HBNBCommand(cmd.Cmd):
         # Create an empty dictionary to store parameters
 
         # Parse the parameters and add them to the dictionary
-        for param in args_list[1:]:
-            try:
-                key, value = param.split('=')
-                if value.startswith('"') and value.endswith('"'):
-                    value = value.replace('_', ' ')
-                    value = value[1:-1].replace('\\"', '"')
-                    setattr(new_instance, key, value)
-
-                elif '.' in value:
-                    value = float(value)
-                    setattr(new_instance, key, value)
-                else:
-                    value = int(value)
-                    setattr(new_instance, key, value)
-            except ValueError:
-                # Skip invalid parameters
-                pass
+        if len(args_list) > 1:
+            for param in args_list[1:]:
+                try:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value.replace('_', ' ')
+                        value = value[1:-1].replace('\\"', '"')
+                        setattr(new_instance, key, value)
+                    elif '.' in value:
+                        setattr(new_instance, key, float(value))
+                    else:
+                        setattr(new_instance, key, int(value))
+                except ValueError:
+                    # Skip invalid parameters
+                    pass
         # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
