@@ -148,14 +148,14 @@ class HBNBCommand(cmd.Cmd):
         if "=" not in arg:
             return None
         args = arg.split("=")
-        param, value = args[0], args[1]
+        key, value = args[0], args[1]
         try:
             value = eval(args[1])
         except Exception:
             return None
         if type(value) is str:
             value = value.replace("_", " ")
-        return (param, value)
+        return (key, value)
 
     def help_create(self):
         """ Help information for the create method """
