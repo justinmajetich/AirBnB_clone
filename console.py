@@ -139,8 +139,13 @@ class HBNBCommand(cmd.Cmd):
            key = split_values[0]
            # Assign the second part of the split result to value, or None if not present
            value = split_values[1] if len(split_values) > 1 else None
+           
+           # Check if value is not None and starts with double quotes
+           if value and value.startswith('"'):
+                # Remove surrounding double quotes and replace underscores with spaces
+               value = value.strip('"').replace("_", " ")
 
-           if value.startswith('"'):
+           
                value=value.strip('"').replace("_"," ")
            else:
                try:
