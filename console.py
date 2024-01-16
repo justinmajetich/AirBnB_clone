@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance=eval(class_name)()
         
         for i in range(1,len(all_list)):
-           #key, value= tuple(all_list[i].split("-"))
+           
            # Split each element of all_list using the hyphen (-) as a separator
            split_values = all_list[i].split("-")
            # Assign the first part of the split result to key
@@ -141,13 +141,10 @@ class HBNBCommand(cmd.Cmd):
            value = split_values[1] if len(split_values) > 1 else None
            
            # Check if value is not None and starts with double quotes
-           if value and value.startswith('"'):
+           if value != None and value.startswith('"'):
                 # Remove surrounding double quotes and replace underscores with spaces
                value = value.strip('"').replace("_", " ")
-
-           
-               value=value.strip('"').replace("_"," ")
-           else:
+               
                try:
                    value=eval(value)
                except Exception:
