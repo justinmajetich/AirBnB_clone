@@ -127,9 +127,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[class_name]()
-        # Create an empty dictionary to store parameters
 
-        # Parse the parameters and add them to the dictionary
+        """ Parse the parameters and add them to the dictionary"""
         if len(args_list) > 1:
             for param in args_list[1:]:
                 try:
