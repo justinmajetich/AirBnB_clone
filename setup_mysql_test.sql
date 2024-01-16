@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS hbtn_test_db;
 
 -- create the MySQL server user hbnb_test and grant all privileges.
 CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY "hbnb_test_pwd";
+GRANT USAGE ON *.* TO 'hbnb_test'@'localhost'
 GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
 
 -- grant SELECT privilege on the performance schema table
