@@ -7,7 +7,7 @@ from models.state import State
 fs = FileStorage()
 
 # All States
-all_states = fs.all(State)
+all_states = fs.all(cls=State)
 print("All States: {}".format(len(all_states.keys())))
 for state_key in all_states.keys():
     print(all_states[state_key])
