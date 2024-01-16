@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
-from sqlalchemy import Colomn, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import os
 
 class State(BaseModel):
     """Defines attributes/method for the State class """

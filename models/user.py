@@ -3,6 +3,7 @@
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
+import os
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
@@ -13,8 +14,8 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         places = relationship("Place", backref="user", cascade="all, delete-orphan")
-else:
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    else:
+        email = ''
+        password = ''
+        first_name = ''
+        last_name = ''
