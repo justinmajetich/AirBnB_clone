@@ -91,7 +91,7 @@ class FileStorage:
             key = f"{obj.__class__.__name__}.{obj.id}"
             try:
                 del self.__objects[key]
-            except (KeyError, AttributeError):
+            except KeyError:
                 pass
 
     def close(self):
