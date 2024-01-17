@@ -20,8 +20,11 @@ class FileStorage:
             list: list of objects of one type of class or all classes
         """
         if cls:
-            key = cls.__name__
-            return FileStorage.__objects.get(key, [])
+            cls_dict = {}
+            for key, val in FileStorage.__objects.items():
+                if cls.__name__ in key:
+                    cls_dict[key] = val
+            return cls_dict
         return FileStorage.__objects
 
     def new(self, obj):
