@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 '''Database engine'''
 import mysqldb
-from sqlalchemy import sessionmaker, create_engine, scoped_session
+import models
+from os import getenv
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import create_engine
 from models.base_model import Base
 from models.base_model import BaseModel
 from models.user import User
@@ -21,24 +25,27 @@ class DBFileStorage:
     def __init__(self):
         """Initiator"""
         connect = 'mysql+mysqldb://{}:{}@{}/{}'
+        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
+        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
+        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
+        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine(connect.format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                         HBNB_MYSQL_HOST, HBNB_MYSQL_DB), pool_pre_ping=True)
-
+        if HBNB_ENV == "test":
+            Base.metadata.drop_all(self.engine)
 
     def all(self, cls=None):
         """Query all objects from a class (Table)"""
 
-        if cls is None:
-            classes = [User, State, City, Amenity, Place, Review]
+            classes = {"User":User, "State": State, "City": City, "Amenity": Amenity, Place, Review]
+            new_row_dict = {}
             for clss in classes:
-                query = self.__session.query(clss).all():
-            return query.to_dict()
-        else:
-            for table_name in Base.metadata.tables.keys():
-                if table_name == cls:
-                    query = self.__session.query(cls).all()
-                    table_todict = query.to_dict()
-            return (table_todict)
+                if cls is None or cls is clss or cls is in classes[clss]:
+                    query = self.__session.query(classes[cls]).all()
+                    for obj in query:
+                        key = obj.__class__.__name__ + '.' + obj.id
+                        new_row_dict[key] = obj
+            return (new_dict)
 
 
     def new(self, obj):
@@ -55,11 +62,19 @@ class DBFileStorage:
         """Delete an object from the db table"""
         if obj:
             self.__session.delete(obj)
-            self.save()
+            self.save()'''to be reconsidered'''
 
 
     def reload(self):
 
+        """Reload all data from db"""
         Base.metadata.create_all(self.__engine)
-        Session = scoped_seesion(sessionmaker(bind=engine, expire_on_commit=False, scoped_s))
+        session_factory = sessionmaker(bind=engine, expire_on_commit=False, scoped_s)
+        Session = scoped_session(session_factory)
         self.__session = Session()
+
+
+    def close(self):
+        """A remove() method to remove or terminate the session"""
+        self.__session.remove()
+
