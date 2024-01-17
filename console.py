@@ -128,14 +128,17 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        accepted_attrs = [item for item in dir(eval(args[0]))
+                          if not item.startswith('_')]
         new_instance = HBNBCommand.classes[args[0]]()
         for arg in args[1:]:
             key_val = arg.split("=")
             key_val[1] = eval(key_val[1])
             if (key_val[0], type(key_val[1])) in list(zip(attrs, types)):
-                if type(key_val[1]) is str:
-                    key_val[1] = key_val[1].replace("_", " ").replace('"', '\\"')
-                setattr(new_instance, key_val[0], key_val[1])
+                if key_val[0] in accepted_attrs:
+                    if type(key_val[1]) is str:
+                        key_val[1] = key_val[1].replace("_", " ").replace('"', '\\"')
+                    setattr(new_instance, key_val[0], key_val[1])
         new_instance.save()
         print(new_instance.id)
 
