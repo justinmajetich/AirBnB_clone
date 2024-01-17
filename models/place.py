@@ -50,7 +50,6 @@ class Place(BaseModel, Base):
         latitude = 0.0
         amenity_ids = []
 
-
     def __init__(self, *args, **kwargs):
         """Inicializa place"""
         super().__init__(*args, **kwargs)
