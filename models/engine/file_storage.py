@@ -38,21 +38,24 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    class_name = val['__class__']
+                    class_name = val['_class_']
                     if class_name in classes:
                         class_obj = classes[class_name]
+                        del val['_class']  # Remove the __class_ key from the dictionary
                         self.all()[key] = class_obj(**val)
         except FileNotFoundError:
             pass
+        except Exception as e:
+            print("Error reloading objects: {}".format(e))
 
     def delete(self, obj=None):
         """ Deletes obj from __objects if it is available"""
