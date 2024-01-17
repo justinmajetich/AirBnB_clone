@@ -15,13 +15,14 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = {"User":User, "State": State, "City": City, "Amenity": Amenity, "Place": Place, "Review": Review}
+classes = {"User": User, "State": State, "City": City,
+           "Amenity": Amenity, "Place": Place, "Review": Review}
+
 
 class DBStorage:
     '''Doc later'''
     __engine = None
     __session = None
-
 
     def __init__(self):
         """Initiator"""
@@ -31,8 +32,10 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine(connect.format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
-                        HBNB_MYSQL_HOST, HBNB_MYSQL_DB), pool_pre_ping=True)
+        self.__engine = create_engine(
+                                      connect.format(HBNB_MYSQL_USER,
+                                      HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
+                                      HBNB_MYSQL_DB), pool_pre_ping=True)
 
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
@@ -54,16 +57,13 @@ class DBStorage:
             new_row_dict[key] = obj
         return (new_row_dict)
 
-
     def new(self, obj):
         """Add new object to db"""
         self.__session.add(obj)
 
-
     def save(self):
         """Commit all changes"""
         self.__session.commit()
-
 
     def delete(self, obj=None):
         """Delete an object from the db table"""
@@ -75,12 +75,11 @@ class DBStorage:
 
         """Reload all data from db"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
-
 
     def close(self):
         """A remove() method to remove or terminate the session"""
         self.__session.close()
-

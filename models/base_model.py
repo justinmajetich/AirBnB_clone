@@ -17,7 +17,6 @@ class BaseModel:
     created_ad = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
-
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -55,7 +54,6 @@ class BaseModel:
         if "_sa_instances_state" in dictionary.keys():
             del dictionary["_sa_instances_state"]
         return dictionary
-
 
     def delete(self):
         """call delete from model storage instance"""
