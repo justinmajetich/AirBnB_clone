@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """returns the list of objects of one type of class"""
+        """returns the list of objects of one type of class."""
         if cls is not None:
             new_list = []
             for obj in FileStorage.__objects.values():
