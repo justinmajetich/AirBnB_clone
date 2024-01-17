@@ -8,9 +8,15 @@ import os
 from models.base_model import BaseModel, Base
 from models.city import City
 from models.state import State
+from models.user import User
+from models.amenity import Amenity
+from models.review import Review
+from models.place import Place
 
 
-class DBStoroge:
+
+
+class DBStorage:
     """
     class reprensenting the database storage engine
     """
@@ -31,10 +37,10 @@ class DBStoroge:
     def __init__(self):
         """Initialize DBStorage instance"""
         self.__engine = create_engine(
-                'mysql+mysqldb://{}:{}@{}:3306/{}'.
-                format(os.getenv('HBNB_MYSQL_USER'),
-                    os.getenv('HBNB_MYSQL_PWD'),
-                    os.getenv('HBNB_MYSQL_HOST'),
+                "mysql+mysqldb://{}:{}@{}:3306/{}".
+                format(os.getenv("HBNB_MYSQL_USER"),
+                    os.getenv("HBNB_MYSQL_PWD"),
+                    os.getenv("HBNB_MYSQL_HOST"),
                     os.getenv('HBNB_MYSQL_DB')),
                 pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
@@ -48,7 +54,7 @@ class DBStoroge:
         if cls:
             obj = self.__session.query(cls).all()
             for element in obj:
-                key = f"{element.__class__.__name__}.{elment.id}"
+                key = f"{element.__class__.__name__}.{element.id}"
                 dictionary[key] = element
         else:
             for value in self.classes.values():
@@ -61,7 +67,7 @@ class DBStoroge:
 
     def new(self, obj):
         """
-         add the object to the current database session
+        add the object to the current database session
         """
         if obj:
             self.__session.add(obj)

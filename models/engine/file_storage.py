@@ -21,7 +21,7 @@ class FileStorage:
                 #cls = eval(cls) security vulnerability
                 cls = globals().get(cls)
                 cls_dict = {}
-                for key, val in self.__objects.items():
+                for key, value in self.__objects.items():
                     if type(value) == cls:
                         cls_dict[key] = value
                 return cls_dict
@@ -46,9 +46,11 @@ class FileStorage:
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'State': State, 
+                    'City': City, 
+                    'Amenity': Amenity,
                     'Review': Review
-                  }
+                }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
