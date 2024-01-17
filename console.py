@@ -234,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             for key in objects:
                 my_list.append(str(objects[key]))
-            print(my_list)
+            print('[{}]'.format(', '.join(my_list)))
             return
         try:
             args = args.split(" ")
@@ -244,7 +244,7 @@ class HBNBCommand(cmd.Cmd):
                 name = key.split('.')
                 if name[0] == args[0]:
                     my_list.append(str(objects[key]))
-            print(my_list)
+            print('[{}]'.format(', '.join(my_list)))
         except NameError:
             print("** class doesn't exist **")
 
