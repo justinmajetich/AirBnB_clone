@@ -1,7 +1,7 @@
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
@@ -35,11 +35,17 @@ class DBStorage:
         """This method returns a dictionary of models currently in storage"""
         from models import classes
         objects = {}
-        if cls is None:
-            for cls in classes:
-                objects.update({obj.id: obj for obj in self.__session.query(cls)})
+        if cls:
+            if type(cls) == str:
+                cls = classes[cls]
+            for obj in self.__session.query(cls):
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                objects[key] = obj
         else:
-            objects = {obj.id: obj for obj in self.__session.query(cls)}
+            for cls in classes.values():
+                for obj in self.__session.query(cls):
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    objects[key] = obj
         return objects
 
     def new(self, obj):
@@ -52,12 +58,13 @@ class DBStorage:
 
     def delete(self, obj=None):
         """This method deletes an object from storage"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
         """This method reloads storage from database"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
