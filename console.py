@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,6 +114,61 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
+        """Create an object of any class with given parameters."""
+        if not args:
+            print("** Class name missing. Usage: create <class name> <param1>=<value1> <param2>=<value2> ... **")
+            return
+
+        parts = args.split(' ')
+        class_name = parts[0]
+
+        if class_name not in HBNBCommand.classes:
+            print("** Class doesn't exist. Available classes: {} **".format(list(HBNBCommand.classes.keys())))
+            return
+
+        parameters = {}
+        for part in parts[1:]:
+            try:
+                key, value = part.split('=')
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace('_', ' ')
+                parameters[key] = value
+            except ValueError:
+                print("** Invalid parameter format: {} **".format(part))
+                return
+
+        try:
+            new_instance = HBNBCommand.classes[class_name](**parameters)
+            new_instance.save()
+            print("{} instance created with ID: {}".format(class_name, new_instance.id))
+            print(new_instance)
+        except Exception as e:
+            print("** Error creating instance: {} **".format(str(e)))
+
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
+
+    def do_show(self, args):
+        """ Method to show an individual object """
+        new = args.partition(" ")
+        c_name = new[0]
+        c_id = new[2]
+
+        # guard against trailing args
+        if c_id and ' ' in c_id:
+            c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+    def emptyline(self):
+        """ Overrides the emptyline method of CMD """
+        pass
+
+    def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
@@ -140,11 +195,6 @@ class HBNBCommand(cmd.Cmd):
         # guard against trailing args
         if c_id and ' ' in c_id:
             c_id = c_id.partition(' ')[0]
-
-        if not c_name:
-            print("** class name missing **")
-            return
-
         if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -272,7 +322,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +330,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
