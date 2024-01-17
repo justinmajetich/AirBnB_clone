@@ -2,9 +2,9 @@
 """This module create an object of class file storage"""
 from os import getenv
 
-storage_type = getenv("HBNB_TYPE_STORAGE")
+storage_t = getenv("HBNB_TYPE_STORAGE")
 
-if storage_type != "db":
+if storage_t != "db":
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
 else:
