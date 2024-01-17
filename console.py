@@ -118,18 +118,36 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        args_list = args.split()
+        class_name = args_list[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[class_name]()
+
+        """ Parse the parameters and add them to the dictionary"""
+        if len(args_list) > 1:
+            for param in args_list[1:]:
+                try:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value.replace('_', ' ')
+                        value = value[1:-1].replace('\\"', '"')
+                        setattr(new_instance, key, value)
+                    elif '.' in value:
+                        setattr(new_instance, key, float(value))
+                    else:
+                        setattr(new_instance, key, int(value))
+                except ValueError:
+                    # Skip invalid parameters
+                    pass
+        # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
         storage.save()
-
-    def help_create(self):
-        """ Help information for the create method """
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -319,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
