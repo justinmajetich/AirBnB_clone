@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseModel
-import sqlalchemy
-from sqlalchemy import Column
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
+from models.engine.db_storage import DBStorage
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    if models.storage_t == "db":
+    if DBStorage == "db":
         __tablename = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
