@@ -120,7 +120,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args_list = args.split()
-        print("Args List over here: {}".format(args_list))
         class_name = args_list[0]
 
         if class_name not in HBNBCommand.classes:
@@ -128,29 +127,23 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[class_name]()
-        # Create an empty dictionary to store parameters
 
-        # Parse the parameters and add them to the dictionary
-        for param in args_list[1:]:
-            try:
-                key, value = param.split('=')
-                if value.startswith('"') and value.endswith('"'):
-                    value = value.replace('_', ' ')
-                    value = value[1:-1].replace('\\"', '"')
-                    setattr(new_instance, key, value)
-
-                elif '.' in value:
-                    value = float(value)
-                    setattr(new_instance, key, value)
-                else:
-                    value = int(value)
-                    setattr(new_instance, key, value)
-            except ValueError:
-                # Skip invalid parameters
-                pass
-        # Create an instance of the specified class with the provided parameters
-        print(new_instance.__dict__)
-
+        """ Parse the parameters and add them to the dictionary"""
+        if len(args_list) > 1:
+            for param in args_list[1:]:
+                try:
+                    key, value = param.split('=')
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value.replace('_', ' ')
+                        value = value[1:-1].replace('\\"', '"')
+                        setattr(new_instance, key, value)
+                    elif '.' in value:
+                        setattr(new_instance, key, float(value))
+                    else:
+                        setattr(new_instance, key, int(value))
+                except ValueError:
+                    # Skip invalid parameters
+                    pass
         # Save the instance and print its ID
         storage.save()
         print(new_instance.id)
@@ -344,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
