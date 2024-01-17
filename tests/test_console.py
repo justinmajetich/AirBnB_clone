@@ -17,10 +17,9 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class TestCommand(unittest.TestCase):
     """Class that tests the console"""
-    
+
     def setUp(self):
         """Function empties file.json"""
         FileStorage._FileStorage__objects = {}
