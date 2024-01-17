@@ -20,9 +20,9 @@ class FileStorage:
             list: list of objects of one type of class or all classes
         """
         if cls:
-            return self.__class__.__objects
-        else:
-            return FileStorage.__objects
+            key = cls.__name__
+            return FileStorage.__objects.get(key, [])
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
