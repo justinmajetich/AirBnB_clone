@@ -15,4 +15,20 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete-delete")
+    cities = relationship("City", backref="state",
+            cascade="all, delete, delete-delete")
+
+    @property
+    def cities(self):
+        var = models.storage.all()
+        lista = []
+        result = []
+        for key in var:
+            city = key.replace('.', '')
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                lista.append(var[key])
+        for element in lista:
+            if (element.state_id == self.id):
+                result.append(element)
+        return (result)

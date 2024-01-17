@@ -2,9 +2,9 @@
 """ City class """
 from models.base_model import BaseModel, Base
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy.orm import relationship
-from models.state import state
+from models.placee import Place
 
 
 class City(BaseModel, Base):
@@ -17,4 +17,5 @@ class City(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), nullable=False, ForeignKey("states.id"))
-    state = relationship("State", back_populates="cities")
+    places = relationship("Placee", backref="cities",
+            cascade='all, delete, delete-orphan')
