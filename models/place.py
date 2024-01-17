@@ -9,13 +9,15 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 
 
 if models.storage_t == "db":
-    relationship_table = Table('place_amenity', Base.metadata,
-                               Column('place_id', String(60),
-                                      ForeignKey('places.id'),
-                                      nullable=False),
-                               Column('amenity_id', String(60),
-                                      ForeignKey('amenities.id'),
-                                      nullable=False))
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id', onupdate='CASCADE',
+                                            ondelete='CASCADE'),
+                                 primary_key=True),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id', onupdate='CASCADE',
+                                            ondelete='CASCADE'),
+                                 primary_key=True))
 
 
 class Place(BaseModel, Base):
@@ -32,43 +34,46 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float)
         longitude = Column(Float)
-        reviews = relationship('Review', backref='place', cascade='delete')
-        amenities = relationship('Amenity', secondary=relationship_table,
-                             viewonly=False)
-    amenity_ids = []
+        reviews = relationship('Review', backref='place')
+        amenities = relationship('Amenity', secondary="place_amenity",
+                                 backref="place_amenities",
+                                 viewonly=False)
+    else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        amenity_ids = []
+
+
+    def __init__(self, *args, **kwargs):
+        """Inicializa place"""
+        super().__init__(*args, **kwargs)
 
     if models.storage_t != 'db':
         @property
         def reviews(self):
             """ Place reviews """
-            rv = models.storage.all(Review).values()
-            return {re for re in rv if re.place_id == self.id}
+            from models.review import Review
+            review_list = []
+            all_reviews = models.storage.all(Review)
+            for review in all_reviews.values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
 
         @property
         def amenities(self):
             """ Place amenities """
-            ob = models.storage.all(Amenity).values()
-            return [obj for obj in ob if obj.id in self.amenity_ids]
-
-        @amenities.setter
-        def amenities(self, value):
-            """ Amenities setter """
-            if type(value) is Amenity:
-                self.amenity_ids.append(value.id)/usr/bin/python3
-""" Place Module for HBNB project """
-from models.base_model import BaseModel
-
-
-class Place(BaseModel):
-    """ A place to stay """
-    city_id = ""
-    user_id = ""
-    name = ""
-    description = ""
-    number_rooms = 0
-    number_bathrooms = 0
-    max_guest = 0
-    price_by_night = 0
-    latitude = 0.0
-    longitude = 0.0
-    amenity_ids = []
+            from models.amenity import Amenity
+            Amenity_list = []
+            all_amenities = models.storage.all(Amenity)
+            for amenity in all_Amenity.values():
+                if amenity.place_id == self.id:
+                    amenity_list.append(amenity)
+            return amenity_list
