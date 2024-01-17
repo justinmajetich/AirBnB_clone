@@ -30,7 +30,6 @@ class State(BaseModel, Base):
         def cities(self):
             Getter method that gets a
             list of cities with the same stateid
-
             allCities = models.storage.all(City)
             citiesList = [city for city in allCities.values()
                         if city.state_id == self.id]
