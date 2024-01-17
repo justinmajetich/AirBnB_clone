@@ -7,7 +7,12 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, String, Table
 from sqlalchemy.ext.declarative impot declarative_base
 
-Base = declarative_base()
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
+if models.starage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
@@ -22,8 +27,10 @@ class BaseModel:
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.utcnow()
+            self.updated_at = self.create_at
+        else:
+
            '''TODO: implementation of logic''' kwargs = {
            """ storage.new(self)"""
         else:
@@ -42,9 +49,9 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
-        self.updated_at = datetime.now()
-        storage.new(self)"""new update"""
-        storage.save()
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -55,3 +62,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+
+    def delete(self):
+    """call delete from model storage instance"""

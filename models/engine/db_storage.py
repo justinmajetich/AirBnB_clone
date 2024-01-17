@@ -15,7 +15,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-HBNB_MYSQL_USER
+classes = {"User":User, "State": State, "City": City,
+           "Amenity": Amenity,"Place": Place, "Review": Review}
+
+
 class DBFileStorage:
     '''Doc later'''
     __engine = None
@@ -29,8 +32,10 @@ class DBFileStorage:
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
+        HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine(connect.format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                         HBNB_MYSQL_HOST, HBNB_MYSQL_DB), pool_pre_ping=True)
+
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.engine)
 
@@ -76,5 +81,5 @@ class DBFileStorage:
 
     def close(self):
         """A remove() method to remove or terminate the session"""
-        self.__session.remove()
+        self.__session.close()
 
