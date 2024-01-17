@@ -24,6 +24,19 @@ def remove_quotes(string):
     return newstr
 
 
+def replace_underscores(string):
+    """
+    helper
+
+    """
+    newstr = ""
+    for char in string:
+        if char == '_':
+            newstr += ' '
+            continue
+        newstr += char
+    return newstr
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -145,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
                 attr_name, attr_value = arg.split('=')
                 if (not attr_value.isnumeric() or 'id' in attr_name) \
                    and '.' not in attr_value:
-                    setattr(new_instance, attr_name, attr_value)
+                    setattr(new_instance, attr_name, replace_underscores(attr_value))
                 elif attr_value.isdecimal():
                     setattr(new_instance, attr_name, int(attr_value))
                 else:
