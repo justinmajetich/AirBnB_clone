@@ -143,9 +143,10 @@ class HBNBCommand(cmd.Cmd):
                 pass
         try:
             new_instance = HBNBCommand.classes[class_name](**obj_params)
+            storage.new(new_instance)
             storage.save()
             print(new_instance.id)
-            storage.save()
+            # storage.save()
             # print(f"Created instance {class_name} with parameters:")
             # print(obj_params)
             # print(f"Instance ID: {new_instance.id}")
@@ -231,17 +232,17 @@ class HBNBCommand(cmd.Cmd):
         my_list = []
         if not args:
             for key in objects:
-                my_list.append(objects[key])
+                my_list.append(str(objects[key]))
             print(my_list)
             return
         try:
             args = args.split(" ")
-            if args[0] not in self.classes:
+            if args[0] not in HBNBCommand.classes:
                 raise NameError()
             for key in objects:
                 name = key.split('.')
                 if name[0] == args[0]:
-                    my_list.append(objects[key])
+                    my_list.append(str(objects[key]))
             print(my_list)
         except NameError:
             print("** class doesn't exist **")
