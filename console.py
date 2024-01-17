@@ -31,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         return True
-        
+
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
         return True
@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         return False
-    
+
     def _key_value_parser(self, args):
         """crea un diccionario a partir de una lista de cadenas"""
         new_dict = {}
@@ -53,16 +53,16 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     try:
                         value = int(value)
-                    except:
+                    except Exception:
                         try:
                             value = float(value)
-                        except:
+                        except Exception:
                             continue
             new_dict[key] = value
         return new_dict
 
     def do_create(self, args):
-        """ 
+        """
         Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
         Create a new class instances with given keys/values and print its id.
         """
@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
         """ Updates a certain object with new info """
         args = arg.split()
         integer = ["number_rooms", "number_bathrooms", "max_guest",
-                    "price_by_night"]
+                   "price_by_night"]
         floats = ["latitude", "longitude"]
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         if len(args) == 0:
@@ -151,12 +151,12 @@ class HBNBCommand(cmd.Cmd):
                                 if args[2] in integers:
                                     try:
                                         args[3] = int(args[3])
-                                    except:
+                                    except Exception:
                                         args[3] = 0
                                 elif args[2] in floats:
                                     try:
-                                         args[3] = float(args[3])
-                                    except:
+                                        args[3] = float(args[3])
+                                    except Exception:
                                         args[3] = 0.0
                             setattr(models.storage.all()[k], args[2], args[3])
                             models.storage.all()[k].save()
