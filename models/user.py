@@ -7,7 +7,6 @@ from os import getenv
 import models
 
 
-
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     if models.storageType == "db":
@@ -20,8 +19,8 @@ class User(BaseModel, Base):
         email = ""
         password = ""
         first_name = ""
-        last_name =""
-    
+        last_name = ""
+
     def __init__(self, *args, **kwargs):
         """Initialize the user instance with given arguments."""
         super().__init__(*args, **kwargs)

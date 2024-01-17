@@ -9,23 +9,27 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
     classes = {
-                        'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                        'State': State, 
-                        'City': City, 
+                        'BaseModel': BaseModel,
+                        'User': User,
+                        'Place': Place,
+                        'State': State,
+                        'City': City,
                         'Amenity': Amenity,
                         'Review': Review
                     }
+
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls:
-            if isinstance(cls,str):
-                #cls = eval(cls) security vulnerability
+            if isinstance(cls, str):
+                # cls = eval(cls) security vulnerability
                 cls = globals().get(cls)
                 cls_dict = {}
                 for key, value in self.__objects.items():
@@ -48,7 +52,8 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)"""
         with open(FileStorage.__file_path, 'w', encoding="utf-8") as file:
-            json.dump({key: value.to_dict() for key, value in FileStorage.__objects.items()}, file)
+            json.dump({key: value.to_dict() for key,
+                       value in FileStorage.__objects.items()}, file)
 
     def reload(self):
         """Loads storage dictionary from file
@@ -56,8 +61,8 @@ class FileStorage:
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 
-                    'City': City, 
+                    'State': State,
+                    'City': City,
                     'Amenity': Amenity,
                     'Review': Review
                 }
@@ -88,7 +93,7 @@ class FileStorage:
                 del self.__objects[key]
             except KeyError:
                 pass
-                
+
     def close(self):
         """Call the reload method."""
         self.reload()

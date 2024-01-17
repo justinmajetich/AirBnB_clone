@@ -7,6 +7,7 @@ from sqlalchemy import Column, String, ForeignKey
 from os import getenv
 import models
 
+
 class City(BaseModel, Base):
     """
     City class that inherit from BaseModel
@@ -18,6 +19,7 @@ class City(BaseModel, Base):
     else:
         state_id = ""
         name = ""
+
     def __init__(self, *args, **kwargs):
         """Initialize the user instance with given arguments."""
         super().__init__(*args, **kwargs)

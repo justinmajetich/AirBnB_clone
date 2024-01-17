@@ -12,7 +12,6 @@ else:
     Base = object
 
 
-
 class BaseModel:
     """A base class for all hbnb models"""
     if models.storageType == "db":
