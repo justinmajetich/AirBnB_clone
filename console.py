@@ -130,10 +130,7 @@ class HBNBCommand(cmd.Cmd):
             value = value.replace("\"", '')
             setattr(new_instance, key, value)
         storage.new(new_instance)
-<<<<<<< HEAD
-=======
         storage.save()
->>>>>>> master
         print(new_instance.id)
         storage.save()
 
