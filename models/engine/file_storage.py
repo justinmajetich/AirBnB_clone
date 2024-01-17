@@ -14,7 +14,8 @@ class FileStorage:
             new_list = []
             for obj in FileStorage.__objects.values():
                 if isinstance(obj, cls) and (isinstance(
-                    cls, str) and obj.__class__.__name__ == cls:
+                    cls, type) and obj.__class__.__name__ == cls or
+                    isinstance(cls, str) and obj.__class__.__name__ == cls):
                     new_list.append(obj)
             return new_list
         else:
