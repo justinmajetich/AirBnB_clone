@@ -132,7 +132,8 @@ class HBNBCommand(cmd.Cmd):
 
                 if value.startswith('"') and value.endswith('"'):
                     value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-                elif '.' in value and all(part.isdigit() for part in value.split('.')):
+                elif '.' in value and all(part.isdigit()
+                                          for part in value.split('.')):
                     value = float(value)
                 elif value.isdigit():
                     value = int(value)
@@ -351,6 +352,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
