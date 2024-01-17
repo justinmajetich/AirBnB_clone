@@ -65,8 +65,6 @@ class FileStorage:
         obj: The object to be deleted. no action is taken if obj is None
         """
         if obj is not None:
-            dictionary_key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if dictionary_key in __objects:
+            dictionary_key = obj.__class__.__name__ + '.' + obj.id
+            if dictionary_key in self.__objects:
                 del self.__objects[dictionary_key]
-            else:
-                pass
