@@ -3,6 +3,9 @@
 import uuid
 from datetime import datetime
 
+from click import DateTime
+from sqlalchemy import Column, String
+
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -15,11 +18,15 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            if '__class__' in kwargs:
+                del kwargs['__class__']
+            if 'updated_at' in kwargs:
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            if 'created_at' in kwargs:
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+
+            # Add custom attribute handling here if needed
+
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -35,10 +42,10 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        dct = dict(self.__dict__)
+        dct["__class__"] = self.__class__.__name__
+        dct["created_at"] = self.created_at.isoformat()
+        dct["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dct.keys():
+            del dct["_sa_instance_state"]
+        return dct
