@@ -143,7 +143,8 @@ class HBNBCommand(cmd.Cmd):
         if len(spcsplit) > 1:
             for arg in spcsplit[1:]:
                 attr_name, attr_value = arg.split('=')
-                if not attr_value.isnumeric() and '.' not in attr_value:
+                if (not attr_value.isnumeric() or 'id' in attr_name) \
+                   and '.' not in attr_value:
                     setattr(new_instance, attr_name, attr_value)
                 elif attr_value.isdecimal():
                     setattr(new_instance, attr_name, int(attr_value))
