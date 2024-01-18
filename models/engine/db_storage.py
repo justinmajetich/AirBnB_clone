@@ -1,12 +1,19 @@
 # models/engine/db_storage.py
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from models.base_model import Base
+from models.state import State
+from models.city import City
+from models.user import User
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 class DBStorage:
     __engine = None
     __session = None
+    storage = None
 
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
@@ -15,12 +22,15 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
+        from models.base_model import Base
+
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, passwd, host, db),
                                       pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
+        DBStorage.storage = self
 
     def all(self, cls=None):
         dic = {}
