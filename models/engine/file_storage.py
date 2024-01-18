@@ -87,10 +87,12 @@ class FileStorage:
 
     def delete(self, obj=None):
         """delete obj in __objects"""
-        try:
-            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
-        except (AttributeError, KeyError):
-            pass
+        if obj:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            try:
+                del self.__objects[key]
+            except KeyError:
+                pass
 
     def close(self):
         """Call the reload method."""
