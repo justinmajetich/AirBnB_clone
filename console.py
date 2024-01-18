@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from models.engine.db_storage import DBStorage
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -152,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
             # print(obj_params)
             # print(f"Instance ID: {new_instance.id}")
         except Exception as e:
-            pass
+            print(e)
             # import traceback
             # traceback.print_exc()
 
