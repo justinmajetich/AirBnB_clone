@@ -8,6 +8,7 @@ from models.city import City
 import models
 import shlex
 
+
 class State(BaseModel, Base):
     """ State class
     Attributes:
@@ -15,8 +16,8 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state",
-            cascade="all, delete, delete-delete")
+    cities = relationship(
+            "City", backref="state", cascade="all, delete, delete-delete")
 
     @property
     def cities(self):

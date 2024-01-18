@@ -8,12 +8,12 @@ from aqlalchemy import Column, Integer, String. DateTime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """Defines common attributes for other classes"""
     id = Column(string(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
-
 
     def __init__(self, *args, **kwargs):
         """

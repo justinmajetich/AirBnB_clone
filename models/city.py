@@ -8,7 +8,7 @@ from models.placee import Place
 
 
 class City(BaseModel, Base):
-    """ The city clas with 
+    """ The city clas with
     Attributes:
         state_id: the state id
         name: input name
@@ -17,5 +17,5 @@ class City(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), nullable=False, ForeignKey("states.id"))
-    places = relationship("Placee", backref="cities",
-            cascade='all, delete, delete-orphan')
+    places = relationship(
+            "Placee", backref="cities", cascade='all, delete, delete-orphan')
