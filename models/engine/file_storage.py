@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -50,12 +51,12 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deletes obj from __objects"""
-        clsnameid = obj.to_dict()['__class__'] + '.' + obj.id
-        if obj and clsnameid in self.all():  # Call self.all() to get the dictionary
-            all_objects = self.all()  # Store the dictionary for clarity
+        clsname = obj.to_dict()['__class__']
+        clsnameid = clsname + '.' + obj.id
+        if obj and clsnameid in self.all():
+            all_objects = self.all()
             all_objects.pop(clsnameid)
             self.save()
-
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
