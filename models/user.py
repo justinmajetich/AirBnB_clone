@@ -3,8 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from os import getenv
 import models
-
 
 
 class User(BaseModel, Base):
@@ -21,8 +21,8 @@ class User(BaseModel, Base):
         email = ""
         password = ""
         first_name = ""
-        last_name =""
-    
+        last_name = ""
+
     def __init__(self, *args, **kwargs):
         """Initialize the user instance with given arguments."""
         super().__init__(*args, **kwargs)
