@@ -12,8 +12,8 @@ class State(BaseModel, Base):
     # name = ""
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    # def __init__(self, *args, **kwargs):
-        # super().__init__(*args, **kwargs)
+    """def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)"""
     if models.storage_type == 'db':
         cities = relationship(
             'City',

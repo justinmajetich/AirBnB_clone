@@ -30,6 +30,11 @@ class DBStorage:
             ),
             pool_pre_ping=True
         )
+        try:
+            Base.metadata.create_all(self.__engine)
+        except OperationalError as e:
+            # pass
+            print(e)
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
