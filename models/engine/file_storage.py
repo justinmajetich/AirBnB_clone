@@ -67,3 +67,4 @@ class FileStorage:
         if obj is not None:
             dictionary_key = obj.__class__.__name__ + '.' + obj.id
             del self.__objects[dictionary_key]
+            self.save()
