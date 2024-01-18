@@ -65,15 +65,6 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Deletes obj from __objects"""
-        if obj and clsnameid in self.all():
-            clsname = obj.to_dict()['__class__']
-            clsnameid = clsname + '.' + obj.id
-            all_objects = self.all()
-            all_objects.pop(clsnameid)
-            self.save()
-
-    # def delete(self, obj=None):
-    #     ''' delete obj from __objects if it is inside '''
-    #     if obj:
-    #         key = '{}.{}'.format(type(obj).__name__, obj.id)
-    #         del FileStorage.__objects[key]
+        if obj:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            del FileStorage.__objects[key]
