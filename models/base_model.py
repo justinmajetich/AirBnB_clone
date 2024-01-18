@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 import models
-from aqlalchemy import Column, Integer, String. DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 
 
 Base = declarative_base()
