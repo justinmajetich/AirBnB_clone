@@ -19,10 +19,13 @@ class FileStorage:
         Returns:
             list: list of objects of one type of class or all classes
         """
-        if cls and cls is not None:
-            return self.__class__.__objects
-        else:
-            return FileStorage.__objects
+        if cls:
+            cls_dict = {}
+            for key, val in FileStorage.__objects.items():
+                if cls.__name__ in key:
+                    cls_dict[key] = val
+            return cls_dict
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -71,5 +74,11 @@ class FileStorage:
             obj_key = f"{obj.__class__.__name__}.{obj.id}"
             if obj_key in FileStorage.__objects:
                 del FileStorage.__objects[obj_key]
-        else:
-            pass
+
+    @property
+    def cities(self):
+        """ returns the list of City instances"""
+        state_id = self.__objects[id]
+        return [
+            city for k, v in FileStorage.__objects.items() if (
+                state_id == v.id) for city in k.cities]

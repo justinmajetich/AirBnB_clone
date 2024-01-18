@@ -8,13 +8,18 @@ from sqlalchemy.ext.declarative import declarative_base
 # create Base object, sqlalchemy declarative_base object
 Base = declarative_base()
 
+from sqlalchemy import Column, DateTime, String
+from sqlalchemy.ext.declarative import declarative_base
+
+import models
+
+Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    # class attributes
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
@@ -58,3 +63,8 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         dictionary.pop('_sa_instance_state', None)  # rm _sa_instance_state
         return dictionary
+
+    def delete(self):
+        """delete the current instance from the storage"""
+        key = f"{self.__class__.__name__}.{self.id}"
+        del models.storage[key]

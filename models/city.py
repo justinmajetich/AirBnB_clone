@@ -6,15 +6,12 @@ from sqlalchemy.orm import relationship
 from models.place import Place
 from os import getenv
 
+from models.base_model import Base, BaseModel
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     __tablename__ = 'cities'
-    if getenv('HBNB_TYPE_STORAGE') is not None:
-        name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-        places = relationship("State",
-                backref="cities", passive_deletes=True)
-    else:
-        name = ""
-        state_id = ""
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    state = relationship('State', back_populates='cities')
+    places = relationship('Place', back_populates='cities')
