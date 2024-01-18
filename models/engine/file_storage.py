@@ -19,7 +19,7 @@ class FileStorage:
         Returns:
             list: list of objects of one type of class or all classes
         """
-        if cls:
+        if cls and cls is not None:
             return self.__class__.__objects
         else:
             return FileStorage.__objects
@@ -67,7 +67,9 @@ class FileStorage:
         Args:
             obj (class, optional): object class. Defaults to None.
         """
-        if obj:
+        if obj and obj is not None:  # explicitly check for None
             obj_key = f"{obj.__class__.__name__}.{obj.id}"
             if obj_key in FileStorage.__objects:
                 del FileStorage.__objects[obj_key]
+        else:
+            pass
