@@ -70,7 +70,7 @@ class FileStorage:
         Args:
             obj (class, optional): object class. Defaults to None.
         """
-        if obj:
+        if obj and obj is not None:  # explicitly check for None
             obj_key = f"{obj.__class__.__name__}.{obj.id}"
             if obj_key in FileStorage.__objects:
                 del FileStorage.__objects[obj_key]
