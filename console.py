@@ -165,8 +165,11 @@ class HBNBCommand(cmd.Cmd):
                             replace_underscores(attr_value))
                 elif attr_value.isdecimal():
                     setattr(new_instance, attr_name, int(attr_value))
-                else:
+                elif attr_value.isnumeric():
                     setattr(new_instance, attr_name, float(attr_value))
+                else:
+                    setattr(new_instance, attr_name,
+                            attr_value)
         new_instance.save()
         print(new_instance.id)
 

@@ -63,7 +63,17 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in dictionary.keys():
+            dictionary.pop('_sa_instance_state')
         return dictionary
+
+    def __str__(self):
+        """
+        :return:Return the print/str
+        representation of the BaseModel instance.
+        """
+        name = self.__class__.__name__
+        return "[{}] ({}) {}".format(name, self.id, self.to_dict())
 
     def delete(self):
         """
