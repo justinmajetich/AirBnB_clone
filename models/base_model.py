@@ -36,6 +36,7 @@ class BaseModelSQL(Base):
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
+        from models import storage  # Import storage at the beginning of the module
         self.updated_at = datetime.utcnow()
         storage.new(self)
         storage.save()
