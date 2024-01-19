@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         try:
             if not args:
-                raise SyntaxReeoe()
+                raise SyntaxError()
             params = args.split(" ")
             param_dict = {}
             for arg in params[1:]:
