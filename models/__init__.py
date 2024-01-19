@@ -15,6 +15,5 @@ else:
     storage = FileStorage()
     file_storage = FileStorage()
     new_state_id = file_storage.create_state("New State")
-    print(f"Nueva ID del estado creado: {new_state_id}")
 
 storage.reload()

@@ -62,14 +62,13 @@ class FileStorage:
     def reload(self):
         """serialize the file path to JSON file path
         """
-        print(f"Trying to open the file: {self.__file_path}")
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
                 jo = json.load(f)
             for key in jo:
                 FileStorage.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except FileNotFoundError:
-            print(f"El archivo {self.__file_path} does not exist. Creating a new one...")
+            pass
 
     def delete(self, obj=None):
         """ delete an existing element
