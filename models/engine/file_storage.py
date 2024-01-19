@@ -30,7 +30,7 @@ class FileStorage:
         if cls:
             if isinstance(cls, str):
                 # cls = eval(cls) security vulnerability
-                cls = globals().get(cls)
+                cls = globals()[cls]
                 cls_dict = {}
                 for key, value in self.__objects.items():
                     if type(value) == cls:
