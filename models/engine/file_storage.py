@@ -46,17 +46,29 @@ class FileStorage:
         for key, value in self.__objects.items():
             my_dict[key] = value.to_dict()
         with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+            json.dump(my_dict, f, default=self.json_serial)
+
+    def json_serial(self, obj):
+        """JSON serializer for objects not serializable by default"""
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return TypeError("Type not serializable")
 
     def reload(self):
         """serialize the file path to JSON file path"""
         try:
-            with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                for key, value in (json.load(f)).items():
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
+                data = json.load(f)
+                for key, value in data.items():
                     value = eval(value["__class__"])(**value)
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
+            """for key, value in (json.load(f)).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value
+        except FileNotFoundError:
+            pass"""
 
     def delete(self, obj=None):
         """ deletes obj from __objects if it’s inside """

@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 import models
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
@@ -11,7 +12,7 @@ Base = declarative_base()
 
 class BaseModel:
     """Defines common attributes for other classes"""
-    id = Column(string(60), unique=True, nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
@@ -44,7 +45,7 @@ class BaseModel:
     def __str__(self):
         """Returns a string of class id, name, dictionary"""
         return "[{}] ({}) {}".format(
-                type(self).__name__, seld.id, self.__dict__)
+                type(self).__name__, self.id, self.__dict__)
 
         def __repr__(self):
             """returning a string representation"""
@@ -58,11 +59,12 @@ class BaseModel:
 
     def to_dict(self):
         """creates and returns dictionary class"""
-        dictionary = dict(self.__dic__)
-        dictionary["__class__"] = str(type(self).__name__)
+        dictionary = dict(self.__dict__)
+        dictionary["__class__"] = self.__class__.__name__
+        """dictionary["__class__"] = str(type(self).__name__)"""
         dictionary["created_at"] = self.created_at.isoformat()
         dictionary["updated_at"] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dicttionary.keys():
+        if '_sa_instance_state' in dictionary.keys():
             del dictionary['_sa_instance_state']
         return dictionary
 

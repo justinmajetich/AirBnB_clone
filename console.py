@@ -119,6 +119,26 @@ class HBNBCommand(cmd.Cmd):
             if not args:
                 raise SyntaxError()
             params = args.split(" ")
+            class_name = params[0]
+            if class_name not in HBNBCommand.classes:
+                raise NameError()
+            param_dict = {}
+            for param in params[1:]:
+                param_splited = param.split('=')
+                if len(param_splited) != 2:
+                    raise ValueError()
+                key, value = param_splited
+                value = eval(value)
+                if isinstance(value, str):
+                    vallue = value.replace("_", " ").replace('\\"', '"')
+                param_dict[key] = value
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        except ValueError:
+            print("** invalide parameter syntax **")
+            """ params = args.split(" ")
             param_dict = {}
             for arg in params[1:]:
                 param_splited[1] = eval(param_splited[1])
@@ -129,9 +149,8 @@ class HBNBCommand(cmd.Cmd):
         except SyntaxError:
             print("** class name missing **")
         except NameError:
-            print("** class doesn't exist **")
-
-        new_instance = HBNBCommand.classes[params[0]](**param_dict)
+            print("** class doesn't exist **")"""
+        new_instance = HBNBCommand.classes[class_name](**param_dict)
         new_instance.save()
         print(new_instance)
 
@@ -249,7 +268,7 @@ class HBNBCommand(cmd.Cmd):
         args = args.partition(" ")
         if args[0]:
             c_name = args[0]
-        else:  # class name not present
+        else:   # class name not present
             print("** class name missing **")
             return
         if c_name not in HBNBCommand.classes:  # class name invalid
