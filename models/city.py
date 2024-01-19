@@ -5,7 +5,8 @@ from sqlalchemy import Column, ForeignKey, String
 
 
 class City(BaseModel):
-    """ The city class, contains state ID and name """
+    """ The city class, contains state ID and namegit add .
+    """
 __tablename__ = "cities"
 # Represents a column containing a string (128 characters)
 name = Column(String(128), nullable=False)
