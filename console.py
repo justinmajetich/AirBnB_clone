@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+
 """ Console Module """
+
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -36,6 +38,7 @@ def replace_underscores(string):
             continue
         newstr += char
     return newstr
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -158,14 +161,14 @@ class HBNBCommand(cmd.Cmd):
                 attr_name, attr_value = arg.split('=')
                 if (not attr_value.isnumeric() or 'id' in attr_name) \
                    and '.' not in attr_value:
-                    setattr(new_instance, attr_name, replace_underscores(attr_value))
+                    setattr(new_instance, attr_name,
+                            replace_underscores(attr_value))
                 elif attr_value.isdecimal():
                     setattr(new_instance, attr_name, int(attr_value))
                 else:
                     setattr(new_instance, attr_name, float(attr_value))
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -241,17 +244,19 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
+                if '.' in k:
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+                else:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 print_list.append(str(v))
 
         print(print_list)

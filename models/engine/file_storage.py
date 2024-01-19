@@ -68,3 +68,9 @@ class FileStorage:
         if obj:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             del FileStorage.__objects[key]
+    # simulating the relationship in db
+
+    @property
+    def cities(self):
+        cities = self.all(City)
+        return [city for city in cities if city.state_id == self.id]
