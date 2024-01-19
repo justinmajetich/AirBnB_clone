@@ -50,6 +50,7 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
+        from models.base_model import BaseModel 
         
 
         classes = {
