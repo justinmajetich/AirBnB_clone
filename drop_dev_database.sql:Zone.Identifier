@@ -1,0 +1,3 @@
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://s3.amazonaws.com/alx-intranet.hbtn.io/files/correction_system/289/2650/drop_dev_database.sql?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20240119%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240119T105254Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=918fb2edacf202a3c89ea7380c3edd2420894c1ad22bda118ab8dd5870b5811b
