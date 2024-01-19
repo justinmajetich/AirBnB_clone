@@ -28,9 +28,9 @@ class FileStorage:
             for key in dictionary:
                 partition = key.replace('.', '')
                 partition = shlex.split(partition)
-                if (parttion[0] == cls.__name__):
-                    dic[key] = self.__objects[key]
-                return (dic)
+                if (partition[0] == cls.__name__):
+                    dictionary[key] = self.__objects[key]
+                return (dictionary)
             else:
                 return self.__objects
 
@@ -58,11 +58,15 @@ class FileStorage:
         """serialize the file path to JSON file path"""
         try:
             with open(self.__file_path, 'r', encoding="utf-8") as f:
-                data = json.load(f)
-                for key, value in data.items():
-                    value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
+                if f.readable():
+                    f.seek(0)
+                    data = json.load(f)
+                    for key, value in data.items():
+                        value = eval(value["__class__"])(**value)
+                        self.__objects[key] = value
         except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
             pass
             """for key, value in (json.load(f)).items():
                     value = eval(value["__class__"])(**value)

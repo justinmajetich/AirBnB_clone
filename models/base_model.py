@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class BaseModel:
     """Defines common attributes for other classes"""
-    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
@@ -33,9 +33,9 @@ class BaseModel:
                     setattr(self, key, value)
             if "id" not in kwargs:
                 self.id = str(uuid.uuid4())
-            if "create_at" not in kwargs:
-                self.create_at = datetime.now()
-            if "update_at" not in kwargs:
+            if "created_at" not in kwargs:
+                self.created_at = datetime.now()
+            if "updated_at" not in kwargs:
                 self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
