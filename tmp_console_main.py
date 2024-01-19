@@ -3,17 +3,13 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
+from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-# Create the storage object
-storage = FileStorage()
-storage.reload()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -118,47 +114,50 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create a new instance and save it to the JSON file"""
-        class_name = None
+        """ Create an object of any class"""
         try:
-            class_name = args.split()[0]
+         class_name = args.split()[0]
         except IndexError:
             pass
-
         if not class_name:
             print("** class name missing **")
             return
         elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        # Split args into key-value pairs
-        args_list = args.split(" ")
-
-        new_instance = eval(class_name)()
-
-        for arg in args_list[1:]:
-            # Split each argument into key and value
-            key, value = arg.split("=")
-
-            # Remove surrounding double quotes and replace underscores with spaces
-            value = value.strip('"').replace("_", " ")
-
-            try:
-                value = eval(value)
-            except Exception:
-                print(f"** Could not evaluate {value}")
-                pass
-
-            # Check if the class has the specified key as an attribute
-            if hasattr(new_instance, key):
-                setattr(new_instance, key, value)
-
-        # Add new_instance to data storage
+        #create Place city_id="0001" user_id="0001" name="My_little_house"
+        
+        all_list=args.split(" ")
+        
+        new_instance=eval(class_name)()
+        
+        for i in range(1,len(all_list)):
+           
+           # Split each element of all_list using the hyphen (-) as a separator
+           split_values = all_list[i].split("-")
+           # Assign the first part of the split result to key
+           key = split_values[0]
+           # Assign the second part of the split result to value, or None if not present
+           value = split_values[1] if len(split_values) > 1 else None
+           
+           # Check if value is not None and starts with double quotes
+           if value != None and value.startswith('"'):
+                # Remove surrounding double quotes and replace underscores with spaces
+               value = value.strip('"').replace("_", " ")
+               
+               try:
+                   value=eval(value)
+               except Exception:
+                   print(f"**Could not evaluate {value}")
+                   pass
+            #Check if the class has the specified key as an attribute
+           if hasattr(new_instance,key):
+                setattr(new_instance,key,value)
+        #add new_instance to data storage
         storage.new(new_instance)
         print(new_instance.id)
         new_instance.save()
-
+        
 
     def help_create(self):
         """ Help information for the create method """
