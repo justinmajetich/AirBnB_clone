@@ -72,8 +72,9 @@ class BaseModel:
         :return:Return the print/str
         representation of the BaseModel instance.
         """
-        name = self.__class__.__name__
-        return "[{}] ({}) {}".format(name, self.id, self.to_dict())
+        if '_sa_instance_state' in self.__dict__.keys():
+            self.__dict__.pop('_sa_instance_state')
+        return str(self.__dict__)
 
     def delete(self):
         """
