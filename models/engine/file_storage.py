@@ -66,7 +66,8 @@ class FileStorage:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
                 jo = json.load(f)
             for key in jo:
-                FileStorage.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+                FileStorage.__objects[key] = classes[jo[key]["__class__"]]
+                (**jo[key])
         except FileNotFoundError:
             pass
 
@@ -76,7 +77,7 @@ class FileStorage:
         if obj is not None:
             key = obj.__class__.__name__ + '.' + obj.id
             del FileStorage.__objects[key]
-    
+
     def create_state(self, state_name):
         """Crea un nuevo estado y devuelve su ID"""
         # Generar nueva ID
