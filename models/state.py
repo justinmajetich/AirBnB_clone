@@ -9,7 +9,6 @@ from models.city import City
 import shlex
 
 
-
 class State(BaseModel, Base):
     """
     State class
@@ -33,6 +32,7 @@ class State(BaseModel, Base):
             if (elem.state_id == self.id):
                 result.append(elem)
         return (result)
+
 
 """class State(BaseModel, Base):
     # State class
