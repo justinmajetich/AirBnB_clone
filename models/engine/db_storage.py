@@ -21,7 +21,20 @@ class DBStorage:
 
     def __init__(self):
         """Creates the engine and session"""
-        self.__engine = create_engine(
+        user = getenv("HBNB_MYSQL_USER")
+        passwd = getenv("HBNB_MYSQL_PWD")
+        db = getenv("HBNB_MYSQL_DB")
+        host = getenv("HBNB_MYSQL_HOST")
+        env = getenv("HBNB_ENV")
+
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(user, passwd, host, db),
+                                      pool_pre_ping=True)
+
+        if env == "test":
+            Base.metadata.drop_all(self.__engine)
+
+        """self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 getenv('HBNB_MYSQL_USER'),
                 getenv('HBNB_MYSQL_PWD'),
@@ -37,12 +50,29 @@ class DBStorage:
             print(e)
 
         if getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)"""
 
     def all(self, cls=None):
         """Queries all objects depending on the class name"""
         # from models.__classes__ import classes
-        from models import classes
+        dic = {}
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                dic[key] = elem
+        else:
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
+                query = self.__session.query(clase)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    dic[key] = elem
+        return (dic)
+
+        """from models import classes
         objects = {}
 
         if cls:
@@ -53,7 +83,7 @@ class DBStorage:
                 query_result = self.__session.query(class_name).all()
                 objects.update({obj.id: obj.to_dict() for obj in query_result})
 
-        return objects
+        return objects"""
 
     def new(self, obj):
         """Adds the object to the current database session"""
