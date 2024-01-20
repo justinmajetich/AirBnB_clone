@@ -29,10 +29,10 @@ class TestUser(unittest.TestCase):
         self.assertTrue(hasattr(user, 'password'))
         self.assertTrue(hasattr(user, 'first_name'))
         self.assertTrue(hasattr(user, 'last_name'))
-        self.assertEqual(user.email, "")
-        self.assertEqual(user.password, "")
-        self.assertEqual(user.first_name, "")
-        self.assertEqual(user.last_name, "")
+        self.assertEqual(user.email, None)
+        self.assertEqual(user.password, None)
+        self.assertEqual(user.first_name, None)
+        self.assertEqual(user.last_name, None)
 
 
 if __name__ == '__main__':

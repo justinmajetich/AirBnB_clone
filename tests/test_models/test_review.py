@@ -20,9 +20,9 @@ class TestReview(unittest.TestCase):
         self.assertTrue(hasattr(review, 'place_id'))
         self.assertTrue(hasattr(review, 'user_id'))
         self.assertTrue(hasattr(review, 'text'))
-        self.assertEqual(review.place_id, "")
-        self.assertEqual(review.user_id, "")
-        self.assertEqual(review.text, "")
+        self.assertEqual(review.place_id, None)
+        self.assertEqual(review.user_id, None)
+        self.assertEqual(review.text, None)
 
 
 if __name__ == '__main__':

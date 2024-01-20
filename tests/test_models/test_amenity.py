@@ -18,7 +18,7 @@ class TestAmenity(unittest.TestCase):
         """
         amenity = Amenity()
         self.assertTrue(hasattr(amenity, 'name'))
-        self.assertEqual(amenity.name, "")
+        self.assertEqual(amenity.name, None)
 
 
 if __name__ == '__main__':
