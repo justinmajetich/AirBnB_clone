@@ -1,0 +1,679 @@
+[33mcommit b9c5cf242efedfba753ba45ee4013d27596e9f9f[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: mburuxx <njihiamburu.3@gmail.com>
+Date:   Sat Jan 20 10:00:21 2024 +0300
+
+    Update tests for base model
+
+[33mcommit 7e2331b6dc551bca723d0f76356dbd30f157bea6[m
+Merge: ba1794b e0706bc
+Author: mburuxx <njihiamburu.3@gmail.com>
+Date:   Fri Jan 19 22:58:33 2024 +0300
+
+    Added files
+
+[33mcommit e0706bce93cd3d5268940ac9d4f1651dba7f76eb[m
+Author: John Mburu <111112361+mburuxx@users.noreply.github.com>
+Date:   Fri Jan 19 22:43:57 2024 +0300
+
+    Delete tests/test_models/__pycache__ directory
+
+[33mcommit fb38d34cb321a032eaa43e8a79cd1f70b027d230[m
+Author: John Mburu <111112361+mburuxx@users.noreply.github.com>
+Date:   Fri Jan 19 22:43:37 2024 +0300
+
+    Delete tests/test_models/test_engine/__pycache__ directory
+
+[33mcommit 825d69ae810a2aba3e6053add44b33970d60ca87[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Fri Jan 19 06:35:51 2024 -0800
+
+    files
+
+[33mcommit cfa6d98907596b26c0719db97afe689e9da66a1f[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Fri Jan 19 00:17:07 2024 -0800
+
+    updated console file
+
+[33mcommit ba1794b1cf3be4dd234fe366b31a668604c0baef[m
+Author: mburuxx <njihiamburu.3@gmail.com>
+Date:   Fri Jan 19 09:02:40 2024 +0300
+
+    Update amenity model
+
+[33mcommit 8fa589e1b2f0611e44f5d2a8a0b679d3ff88efb5[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Thu Jan 18 00:46:45 2024 -0800
+
+    update files
+
+[33mcommit 6817e3c04b97e29736a7aab56fd00df916d3bfa9[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Thu Jan 18 00:38:00 2024 -0800
+
+    update files
+
+[33mcommit f3f877637cb0d90ea45e2a2636b84a579a97c44f[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Wed Jan 17 14:56:09 2024 -0800
+
+    updates files
+
+[33mcommit a4075db67ac6cfd296e5f6f32a4805fedcf83b3e[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Wed Jan 17 05:44:05 2024 -0800
+
+    authors file
+
+[33mcommit ae74407d98ae4ea3cbec417924dde3b3a90bd525[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Wed Jan 17 05:37:53 2024 -0800
+
+    updates and new engine file
+
+[33mcommit aa8255f1acfe5bdeb20f803d783eb2b52892d07f[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Wed Jan 17 03:23:02 2024 -0800
+
+    updated console file
+
+[33mcommit ec3afdd3eec88fa3b055c4d5dc0d47ecd963d576[m[33m ([m[1;31morigin/dev[m[33m)[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Tue Jan 16 05:21:13 2024 -0800
+
+    read file
+
+[33mcommit 2e8881a61c5c2b0b98e16a87dfeafdbe07892b89[m
+Author: Demidorn <dornkaizen@gmail.com>
+Date:   Tue Jan 16 05:17:28 2024 -0800
+
+    mysql setup and update Filestorage
+
+[33mcommit cbaedfdd56b6e339a0af634cae7c81972e647043[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Mar 3 16:59:33 2020 +0000
+
+    Create code for advanced tasks
+
+[33mcommit 6b3270d3b13489c85b46c566e6a121f7c94bafe6[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Mon Mar 2 04:14:56 2020 +0000
+
+    Add to README
+
+[33mcommit 5d61e3e2781bcbff2acf85e84483ca344af362c8[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Mon Mar 2 04:13:15 2020 +0000
+
+    Implement flexboxes
+
+[33mcommit 5e14fce17e59fab91d47a3f224a3306b51ffb4b9[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Mon Mar 2 04:10:40 2020 +0000
+
+    Implement full details
+
+[33mcommit 0a7b5ac1e5db3312416eb21f393148559e02ed68[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sun Mar 1 20:58:19 2020 +0000
+
+    Implement places articles
+
+[33mcommit 87f2bf6fbfe0d8a8cd0fce5708afacfa825e7f2a[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 29 18:57:26 2020 +0000
+
+    Implement place articles
+
+[33mcommit 4380156adde37d10474aeca0b496cd2afcc4a080[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 29 16:32:51 2020 +0000
+
+    Implement dropdown lists
+
+[33mcommit 573c1d32e7d63576d5569bb20a506dcc79952648[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 18:16:12 2020 +0000
+
+    Implement fields in search bar
+
+[33mcommit ce29bdc044041a77af71e7243a6a463d7bbb9d7d[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 17:34:22 2020 +0000
+
+    Implement search bar
+
+[33mcommit 445abbd58fb0b22b8e7b082af843e99ebbf06207[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 16:25:27 2020 +0000
+
+    Add missing semi-colon
+
+[33mcommit c23ae720ca9fc28453017c200e198fad08597701[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 15:10:45 2020 +0000
+
+    Update to properly display logo
+
+[33mcommit c5f9598754c64170912ba0d1bd1b043fe08d067f[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 00:23:58 2020 +0000
+
+    Add logo/icon images
+
+[33mcommit 21703d7f7e4d5bb97d69a9c0bd2628297e8a08fa[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 28 00:22:54 2020 +0000
+
+    Implement logo and initial coloring
+
+[33mcommit b30ea9a16beff2989b726057a1163188ba2e3d5e[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 22:46:27 2020 +0000
+
+    Update vertical centering method in footer
+
+[33mcommit 850b8b6cc7306b9bb749f261b0677d8d7c0e9739[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 22:45:14 2020 +0000
+
+    Implement external stylesheets
+
+[33mcommit 0ce244acef935d8d5a98f547293b5880fd9249b2[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 20:13:39 2020 +0000
+
+    Create empty README
+
+[33mcommit 74aecefc2f78a0b2c9c378123fa56b1b0a6d79c5[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 20:13:25 2020 +0000
+
+    Reduce text padding to 6px
+
+[33mcommit ffccb81944c55c5f9e36f240a3705ed1a20a4e61[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 20:12:53 2020 +0000
+
+    Move styling into head
+
+[33mcommit 09f06e18b5ca5c70e49d2738871351d2d04b20c6[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 19:57:55 2020 +0000
+
+    Adjust footer text padding
+
+[33mcommit 962dbbcfaa53f9206cc07e8cbb42568988cafdd4[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 19:56:20 2020 +0000
+
+    Adjust footer text padding
+
+[33mcommit 24987836cefcd9019990015790506701d1cd7ae9[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 19:54:01 2020 +0000
+
+    Fix typos in in-line styling
+
+[33mcommit 465bc7f2c0d37c0272d11ccb2f5239817f126432[m
+Merge: 8366fcf 721ea94
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 18:48:22 2020 +0000
+
+    Merge branch 'master' of https://github.com/justinmajetich/AirBnB_clone
+
+[33mcommit 8366fcf18fcf7938e8e505b743a7fb14a828dddb[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 27 18:47:41 2020 +0000
+
+    Draft index for task 0
+
+[33mcommit 721ea94763af9f3b8f2f79d567e0e096936d5b89[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Wed Feb 19 18:34:01 2020 -0500
+
+    Added on break statement
+
+[33mcommit f6696dab6f262ae7cf006aacfa28ecd093a964e7[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Wed Feb 19 17:38:02 2020 -0500
+
+    Added another break to the README
+
+[33mcommit e1daf096d8dee0731966eed11654abe18a78ef3b[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 22:31:34 2020 +0000
+
+    Update README
+
+[33mcommit ebb59698f46bc5ab3f371514be623d1f17edf512[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 21:19:44 2020 +0000
+
+    Add tests for storage
+
+[33mcommit 028380be4a2ff52effa5598c2fc61e890a5214d5[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 20:20:57 2020 +0000
+
+    Add tests for save methods
+
+[33mcommit 9365777b2862d6b660623feb1f5a30d8791ae850[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 19:52:04 2020 +0000
+
+    Add unittests for file_storage module
+
+[33mcommit 7090a8bf412e1082f30027976113be3869893e61[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Wed Feb 19 13:15:08 2020 -0500
+
+    Changed test to be more dynamic
+
+[33mcommit db2d32c625cf76f7f9dec3407e08dd01f97412ff[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Wed Feb 19 13:06:52 2020 -0500
+
+    Removed console tests
+
+[33mcommit b448d74afcbff9d2310a3b6fdcde2a21770d755c[m
+Merge: 18e53c8 ff42f69
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 18:03:03 2020 +0000
+
+    Merge branch 'master' of https://github.com/justinmajetich/AirBnB_clone
+
+[33mcommit 18e53c85d01f62f772d32982e2ccf9b31cb08562[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 18:02:43 2020 +0000
+
+    Resolve error messaging issues
+
+[33mcommit ff42f69daad9adba4348bdac884a04eb85debc28[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Wed Feb 19 12:43:11 2020 -0500
+
+    Added three tests for console
+
+[33mcommit ecee69903ad47688cb7c5fbf52238d11d15a634b[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 22:44:28 2020 -0500
+
+    Added help for count
+
+[33mcommit 57f8dd77419b71b95942167d72f0eb7fbcd39a7c[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 01:22:59 2020 +0000
+
+    Remove tracer statements
+
+[33mcommit 56537c88089d71d9f0b1d2a55ed6c1a81b1d7a04[m
+Merge: 81906f7 e6f3ac1
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 01:19:16 2020 +0000
+
+    Merge branch 'master' of https://github.com/justinmajetich/AirBnB_clone
+
+[33mcommit 81906f76a6566e172e87e6f7e0eed6b225e44457[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 01:19:09 2020 +0000
+
+    Implement parsing of multiword, quoted arguments
+
+[33mcommit e6f3ac1a3f0d5d3a58d64a7dbcb26c8a3a49dc7b[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 20:14:51 2020 -0500
+
+    Added two tests for file storage to test checks
+
+[33mcommit c29ea542b2437f6a0e7405cad9d198afa30e0b71[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 19:57:10 2020 -0500
+
+    Pep8 compliancy for all test files, made a couple executable
+
+[33mcommit da9ddc41d7932a958c9b9b701e5c1c1c6f1aec22[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 00:22:43 2020 +0000
+
+    Add blank line after import
+
+[33mcommit 14ebec9a6ec336569d8eca36b65abd55edabb2f2[m
+Merge: 3a1259f c5356f8
+Author: Justin Majetich <53100688+justinmajetich@users.noreply.github.com>
+Date:   Tue Feb 18 19:14:17 2020 -0500
+
+    Merge pull request #4 from justinmajetich/dev
+    
+    Move import statements for more specific calls
+
+[33mcommit c5356f8f3fa92f2ed70f72c70be612161f3b2fa3[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Wed Feb 19 00:13:13 2020 +0000
+
+    Move import statements for more specific calls
+
+[33mcommit 3a1259f6f01f121b51a0675a20b3b5c75f0f2485[m
+Merge: 05fb614 5754694
+Author: Justin Majetich <53100688+justinmajetich@users.noreply.github.com>
+Date:   Tue Feb 18 18:59:58 2020 -0500
+
+    Merge pull request #3 from justinmajetich/dev
+    
+    Dev
+
+[33mcommit 5754694fa54a6729c6714c66da13536710555b20[m
+Merge: 2b24da9 05fb614
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 23:57:52 2020 +0000
+
+    Merge branch 'master' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit 2b24da9cdab94afce65e695476c8f7f5f8491ad2[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 23:57:07 2020 +0000
+
+    Remove save methods from BaseModel init
+
+[33mcommit 05fb6147f759d146934d9653e657309801e18f39[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 18:43:59 2020 -0500
+
+    Moved files to correct directory after three fails
+
+[33mcommit 1c7263a2b1dc818a8cdd16e54a36eb83e9be83e4[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 18:28:53 2020 -0500
+
+    Moved and created test engine
+
+[33mcommit 586b00c820803da60d6ebc2fd9d2de49a3e1831b[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 16:27:57 2020 -0500
+
+    Stripped out double quotes from input for update
+
+[33mcommit ca77a6b35305ca1f68fdd4dec42fa12ab2a48d45[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 16:08:34 2020 -0500
+
+    New test file for file_storage
+
+[33mcommit ff5657ea6d2ad30f58ad9d45e17be2b00e042e09[m
+Merge: 913dc8e 96dd83b
+Author: Justin Majetich <53100688+justinmajetich@users.noreply.github.com>
+Date:   Tue Feb 18 15:48:02 2020 -0500
+
+    Remove test file
+
+[33mcommit 913dc8efac08ee61d950c3de3729401f2ee00cc5[m
+Merge: 41360f1 4049b9f
+Author: Justin Majetich <53100688+justinmajetich@users.noreply.github.com>
+Date:   Tue Feb 18 15:43:28 2020 -0500
+
+    Merge dev to master
+
+[33mcommit 96dd83b86cbb7bb4bcac8a8ab1821f36802cc93f[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 20:42:32 2020 +0000
+
+    Remove test file
+
+[33mcommit 4049b9fbf2d63e7b0314ecc4966576647d624f6c[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 15:40:41 2020 -0500
+
+    Updated README, and changed update_at to actually update
+
+[33mcommit 888344d299cde94e2bf36645dc2ddf04d84ec9ff[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 20:34:10 2020 +0000
+
+    Remove tracer statements
+
+[33mcommit 7fa4bfefec1edde4e7470bdc14f457f4a8e1ca19[m
+Merge: 7841acc 8bd6962
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 20:30:11 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit 7841acc3697158849052289c3ebdb076cd7cd273[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 20:30:02 2020 +0000
+
+    Correct style errors
+
+[33mcommit 874e24f0928489d26312fa5855f701206fc07316[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 20:29:40 2020 +0000
+
+    Fully implement dot command syntax
+
+[33mcommit 8bd6962f8b012b11287635f06d6d4cec23e6ae28[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Tue Feb 18 13:37:08 2020 -0500
+
+    Add count functionality to the console
+
+[33mcommit 5ba0f7d80b9e1cce63bd2d0eaa5f4d2bab60ca84[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 01:58:31 2020 +0000
+
+    Fix bug where last created object not saving to file
+
+[33mcommit 1e23abaacabae052dd9cc293ef2695c249196fe0[m
+Merge: c4dd3cb 756359e
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 00:57:01 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit c4dd3cb688b0ec3c339e0c3b6d41eab1d3c416d2[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Tue Feb 18 00:56:52 2020 +0000
+
+    Rework precmd for advanced syntax
+
+[33mcommit 756359e59afd4209f4ed461e571fdf0e92ea2cc8[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Mon Feb 17 18:09:23 2020 -0500
+
+    Pushed init and moved all files to correct directory
+
+[33mcommit 3b6d85cc40ada3e3308ff121b60f41f86a462330[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Mon Feb 17 18:06:30 2020 -0500
+
+    Updated test files with more tests for attributes
+
+[33mcommit e95c97034253e65c843ec7a62a0bb1f2cdfb256f[m
+Merge: bfc30c7 79b8b09
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Mon Feb 17 17:00:07 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit bfc30c710d50770071674e9c01b6d6a66411164e[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Mon Feb 17 17:00:01 2020 +0000
+
+    Implement advanced command syntax
+
+[33mcommit 79b8b0948ee9171808f01f11f609447ad063ac41[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sun Feb 16 19:15:53 2020 -0500
+
+    Add basic unittests for all classes
+
+[33mcommit 9a4adfbf28eec9e6c48aacf57bd86e9ace6a5180[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sun Feb 16 16:33:32 2020 -0500
+
+    Updated README to include links to all mandatory tasks, and short descriptions for each
+
+[33mcommit e29a11897b362fe04bba72b0ab2abcb872f0b2a8[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sun Feb 16 15:41:54 2020 -0500
+
+    Initial commits files for the tests directory
+
+[33mcommit 2d584a8aeaff2ccc6d1ed0303f179bdcb1f67c56[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 21:19:09 2020 +0000
+
+    Update prompt behavior for non-interactive mode
+
+[33mcommit 3b0daf8a51c03d7661d193c7f8827bb32db70edd[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 19:57:28 2020 +0000
+
+    Update AUTHORS file for formatting
+
+[33mcommit 00a7fb6200f027b7a7b298edcc45b32d5c138b5d[m
+Merge: 3c927db 145a49f
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 19:45:46 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit 3c927db91396689608cd29ecf81e8a5fef3bcb64[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 19:45:39 2020 +0000
+
+    Fix syntax error
+
+[33mcommit 145a49fd4a6f8c296e76b6736dc008928b89045e[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sat Feb 15 14:44:38 2020 -0500
+
+    Updated console and storage to be dynamic
+
+[33mcommit f329bbc6e285b42bf365986a9ed777627e9680dd[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sat Feb 15 14:43:56 2020 -0500
+
+    Updated all classes to actually be classes
+
+[33mcommit aeeb00d5215722f428e6c3808fd9fb0a3f83bf37[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sat Feb 15 14:07:01 2020 -0500
+
+    Added help information methods for every command
+
+[33mcommit d4938b5cec8addf5f8ece10e2db53f3413d07986[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 18:54:45 2020 +0000
+
+    Fix improper line-break
+
+[33mcommit 8463477ffe21d6f34c83c8bf792ff74f74582100[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 18:52:49 2020 +0000
+
+    Resolve syntax errors
+
+[33mcommit e0ceece506c303fcd17008c84f2ad861b4992a59[m
+Merge: c915d20 35f76cd
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 18:28:03 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit c915d20615119bd9ca2aa53d66803b5766b511b0[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 18:27:34 2020 +0000
+
+    Make commands dynamic to handle multiple class mdoels
+
+[33mcommit 35f76cd3a175a7543c4fcfce80eeb322a3e54bb5[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Sat Feb 15 12:47:13 2020 -0500
+
+    Added new classes for certain types of data storage
+
+[33mcommit eeb5246e64bc7cbd9741c5d5c16662f2feae6e55[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 17:37:43 2020 +0000
+
+    Implement classes dictionary
+
+[33mcommit bd1a60d2b3c829d91cee5260b0da4a2b5ba54de2[m
+Merge: 5b1f9d8 11e96c7
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 17:06:08 2020 +0000
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit 5b1f9d81586aa87a61acb2f6718d2d396c08a3a8[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Sat Feb 15 17:05:47 2020 +0000
+
+    Implement User class
+
+[33mcommit 11e96c738da820784f7d597c7b9cf36dfe5cbe1a[m
+Merge: baa2397 0e34bbe
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Fri Feb 14 15:43:59 2020 -0500
+
+    Merge branch 'dev' of https://github.com/justinmajetich/AirBnB_clone into dev
+
+[33mcommit baa23970c5943ad4e461b2e16a67b40ac465136d[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Fri Feb 14 15:43:37 2020 -0500
+
+    Finished task, everything is working with a static class
+
+[33mcommit bdf872eededb6cb63bfb645a631fa3aacd1bd17e[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 14 20:39:12 2020 +0000
+
+    Dynamically assign class name in __str__
+
+[33mcommit 83c86c31a1ae0dccaeb3c7000df5a025e31e2e16[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Fri Feb 14 14:39:50 2020 -0500
+
+    Added more operations for the console
+
+[33mcommit 0e34bbe6cd9caa04de44dfc6088b1aa949c6e667[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 14 19:33:35 2020 +0000
+
+    Remove __class__ entry from kwargs when instantiating
+
+[33mcommit a15142b8c1701c639dc5689346ed3a97671191fc[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Fri Feb 14 17:39:33 2020 +0000
+
+    Resolve import loops/implement temp dict in JSON save/loads
+
+[33mcommit ccf9ae167bd80d60acbbef66c425c72c1a3f6bd4[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Thu Feb 13 18:07:02 2020 -0500
+
+    Added console program with basic functionality
+
+[33mcommit 4c8689d12f8d35292ad295e32080bd2e28eec387[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 13 22:30:00 2020 +0000
+
+    Implement file storage manager
+
+[33mcommit 19011cc8bfb479ccbc55facc32452261d79b4c12[m
+Author: eNobreg <ezra.nobrega@outlook.com>
+Date:   Thu Feb 13 14:52:15 2020 -0500
+
+    Update BaseModel class to receive Kwargs
+
+[33mcommit 2d9b168fe1783230c00a31bbdae636a7a1db52e7[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 13 19:19:04 2020 +0000
+
+    Create BaseModel class
+
+[33mcommit 41360f11ea8b4113af8592c73e1e19e66c59d821[m
+Author: justinmajetich <justinmajetich@gmail.com>
+Date:   Thu Feb 13 17:35:44 2020 +0000
+
+    first commit
