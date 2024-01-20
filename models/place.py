@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
+import models
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -18,7 +20,18 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    user = relationship('Place', back_populates='places', cascade="all, delete, save-update")
     amenity_ids = []
-    cities= relationship('City', back_populates='places')
-    user = relationship("User", back_populates="places", cascade="all, delete, save-update")  # Refer to User class
+    cities = relationship('City', back_populates='places')
+    user = relationship("User", back_populates="places",
+                        cascade="all, delete, save-update")
+    reviews = relationship('Review', backref='place',
+                           cascade="all, delete, save-update")
+
+    @property
+    def reviews(self):
+        """
+        for FileStorage: getter attribute reviews
+        that returns the list of Review instances
+        """
+        allReviews = models.storage.all(Review)
+        return [review for review in allReviews if review.place_id == self.id]
