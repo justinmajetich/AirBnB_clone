@@ -28,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) '
 
-    def do_quit(self, command):
+    def do_quit(self, arg):
         """ Method to exit the HBNB console"""
         return True
 
@@ -61,25 +61,26 @@ class HBNBCommand(cmd.Cmd):
             new_dict[key] = value
         return new_dict
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """
         Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
         Create a new class instances with given keys/values and print its id.
         """
-        arg = args.split(" ")
+        """ Create an object of any class"""
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
         if args[0] in classes:
             new_dict = self._key_value_parser(args[1:])
-            new_intance = classes[args[0]](**new_dict)
+            instance = classes[args[0]](**new_dict)
         else:
             print("** class doesn't exist **")
             return False
-        new_instance.save()
-        print(new_instance.id)
+        print(instance.id)
+        instance.save()
 
-    def do_show(self, args):
+    def do_show(self, arg):
         """ Method to show an individual object """
         args = arg.split()
         if len(args) == 0:
@@ -97,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    def do_destroy(self, args):
+    def do_destroy(self, arg):
         """ Destroys a specified object """
         args = arg.split()
         if len(args) == 0:
@@ -132,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
         print(", ".join(obj_list), end="")
         print("]")
 
-    def do_update(self, args):
+    def do_update(self, arg):
         """ Updates a certain object with new info """
         args = arg.split()
         integer = ["number_rooms", "number_bathrooms", "max_guest",
