@@ -1,0 +1,10 @@
+# Files we don't need:
+*~
+\#*\#
+__pycache__/
+versions/
+*main*.py
+*.pyo
+*.pyc
+*.sql
+file.json
