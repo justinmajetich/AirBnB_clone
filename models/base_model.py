@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
-import uuid
-from datetime import datetime
+import unittest
+from models.base_model import BaseModel
+from models import storage
 
 
 class BaseModel:
@@ -22,17 +23,27 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
-    def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+    def test_save_method(self):
+        """Test the save method"""
+        model = BaseModel()
+        initial_updated_at = model.updated_at
+        model.save()
+        self.assertNotEqual(initial_updated_at, model.updated_at)
 
-    def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.save()
+    def test_storage_engine(self):
+        """Test the storage engine type"""
+        model = BaseModel()
+        if storage.get_engine_type() == "db":
+            # Adjust this based on your actual method for retrieving records count
+            initial_records_count = storage.get_records_count()
+            model.save()
+            updated_records_count = storage.get_records_count()
+            self.assertEqual(updated_records_count, initial_records_count + 1)
+        else:
+            self.skipTest("Skipping DB-specific test for file storage")
 
+if __name__ == '__main__':
+    unittest.main()
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
