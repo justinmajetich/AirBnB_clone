@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-from models import BaseModel
+from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -113,16 +114,16 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class with given parameters."""
+        """ Create an object of any class"""
         try:
             if not args:
-                raise SyntaxError("Class name is missing. Usage: create <class name> <param1>=<value1> <param2>=<value2> ...")
+                raise SyntaxError("** class name missing **")
 
             parts = args.split(" ")
             class_name = parts[0]
 
             if class_name not in HBNBCommand.classes:
-                raise NameError("** Class doesn't exist. Available classes: {} **".format(list(HBNBCommand.classes.keys())))
+                raise NameError("** class doesn't exist **")
 
             parameters = {}
             for part in parts[1:]:
@@ -138,12 +139,9 @@ class HBNBCommand(cmd.Cmd):
 
             new_instance = HBNBCommand.classes[class_name](**parameters)
             new_instance.save()
-            print("{} instance created with ID: {}".format(class_name, new_instance.id))
-            print(new_instance)
+            print(new_instance.id)
 
         except SyntaxError as e:
-            print(str(e))
-        except NameError as e:
             print(str(e))
         except ValueError as e:
             print(str(e))
@@ -165,6 +163,11 @@ class HBNBCommand(cmd.Cmd):
         # guard against trailing args
         if c_id and ' ' in c_id:
             c_id = c_id.partition(' ')[0]
+
+        if not c_name:
+            print("** class name missing **")
+            return
+
         if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -340,7 +343,5 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-
 if __name__ == "__main__":
-
     HBNBCommand().cmdloop()
