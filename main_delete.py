@@ -32,11 +32,8 @@ fs.new(another_state)
 fs.save()
 print("Another State: {}".format(another_state))
 
-# All States
-all_states = fs.all(State)
-print("All States: {}".format(len(all_states.keys())))
-for state_key in all_states.keys():
-    print(all_states[state_key])        
+# Print representation of the new State before deletion
+print("Representation of New State (before deletion): {}".format(new_state))
 
 # Delete the new State
 fs.delete(new_state)
