@@ -24,6 +24,12 @@ class DBStorage:
     __engine = None
     __session = None
 
+    classes = {
+                'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                'State': State, 'City': City, 'Amenity': Amenity,
+                'Review': Review
+              }
+
     def __init__(self):
         """
         __init__ method
@@ -42,8 +48,10 @@ class DBStorage:
         """
         result = {}
         theQuery = None
-        if cls:
+        if cls and not isinstance(cls, str):
             theQuery = self.__session.query(cls).all()
+        elif cls and isinstance(cls, str):
+            theQuery = self.__session.query(self.classes[cls]).all()
         else:
             theQuery = self.__session.query().all()
         for instance in theQuery:

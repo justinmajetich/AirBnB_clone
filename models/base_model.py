@@ -20,6 +20,8 @@ class BaseModel:
         init method for baseModel instances
         """
         if kwargs:
+            if id not in kwargs.keys():
+                self.id = str(uuid4())
             for key in kwargs.keys():
                 if key == '__class__':
                     continue

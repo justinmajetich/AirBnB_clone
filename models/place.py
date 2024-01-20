@@ -10,8 +10,10 @@ from models.review import Review
 place_amenity = Table(
     "place_amenity",
     Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), nullable=False, primary_key=True),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False, primary_key=True),
+    Column('place_id', String(60), ForeignKey('places.id'),
+           nullable=False, primary_key=True),
+    Column('amenity_id', String(60), ForeignKey('amenities.id'),
+           nullable=False, primary_key=True),
 )
 
 
@@ -34,7 +36,8 @@ class Place(BaseModel, Base):
                         cascade="all, delete, save-update")
     reviews = relationship('Review', backref='place',
                            cascade="all, delete, save-update")
-    amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
+    amenities = relationship('Amenity', secondary=place_amenity)
+
     @property
     def reviews(self):
         """
@@ -52,14 +55,15 @@ class Place(BaseModel, Base):
         that contains all Amenity.id linked to the Place
         """
         listDesiredObjs = []
-        listAllobjs = [models.storage.all('Amenity').values()]
-        for obj in listAllobjs:
+        dictAllobjs = models.storage.all('Amenity').values()
+        for obj in dictAllobjs:
             if obj.id in self.amenity_ids:
                 listDesiredObjs.append(obj)
         return listDesiredObjs
 
     @amenities.setter
     def amenities(self, obj):
+        from models import Amenity
         """
         Setter attribute amenities
         """
