@@ -163,5 +163,4 @@ Setup the MySQL server with setup_mysql_dev.sql using: cat setup_mysql_dev.sql |
 ### Contributors
 
 - Oluwatobiloba Ojo
-- Yassine Elhafyane
 ```

@@ -34,42 +34,23 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
-        """self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
-                getenv('HBNB_MYSQL_USER'),
-                getenv('HBNB_MYSQL_PWD'),
-                getenv('HBNB_MYSQL_HOST', 'localhost'),
-                getenv('HBNB_MYSQL_DB')
-            ),
-            pool_pre_ping=True
-        )
-        try:
-            Base.metadata.create_all(self.__engine)
-        except OperationalError as e:
-            # pass
-            print(e)
-
-        if getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)"""
-
     def all(self, cls=None):
         """Queries all objects depending on the class name"""
-        # from models.__classes__ import classes
         dic = {}
         if cls:
             if type(cls) is str:
                 cls = eval(cls)
             query = self.__session.query(cls)
-            for elem in query:
-                key = "{}.{}".format(type(elem).__name__, elem.id)
-                dic[key] = elem
+            for elements in query:
+                key = "{}.{}".format(type(elements).__name__, elements.id)
+                dic[key] = elements
         else:
-            lista = [State, City, User, Place, Review, Amenity]
-            for clase in lista:
-                query = self.__session.query(clase)
-                for elem in query:
-                    key = "{}.{}".format(type(elem).__name__, elem.id)
-                    dic[key] = elem
+            array_list = [State, City, User, Place, Review, Amenity]
+            for classes in array_list:
+                query = self.__session.query(classes)
+                for elements in query:
+                    key = "{}.{}".format(type(elements).__name__, elements.id)
+                    dic[key] = elements
         return (dic)
 
         """from models import classes
@@ -100,13 +81,10 @@ class DBStorage:
 
     def reload(self):
         """Creates all tables in the database and sets up the session"""
-        # from models.base_model import Base
-        # from models.__init__ import classes
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sec)
         self.__session = Session()
-        # self.__session = scoped_session(session_factory)()
 
     def close(self):
         """Closes the current session"""

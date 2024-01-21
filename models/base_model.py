@@ -20,10 +20,8 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            # from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            # storage.new(self)
         else:
             self.id = kwargs.get('id', str(uuid.uuid4()))
             self.created_at = kwargs.get('created_at', datetime.now())
@@ -37,20 +35,15 @@ class BaseModel:
             kwargs.pop('__class__', None)
             for key, value in kwargs.items():
                 setattr(self, key, value)
-            # self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        # cls = type(self).__name__
-        # return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        # from models import storage
         self.updated_at = datetime.now()
-        # storage.save()
         models.storage.new(self)
         models.storage.save()
 
@@ -62,13 +55,6 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
-        """dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary"""
 
     def delete(self):
         """Deletes the current instance from storage"""
