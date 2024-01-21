@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -114,39 +114,40 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError("** class name missing **")
+        """Creates a new instance of a class and saves it to the JSON file"""
+        if not args:
+            print("** class name missing **")
+            return
 
-            parts = args.split(" ")
-            class_name = parts[0]
+        args_list = args.split()
+        class_name = args_list[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
 
-            if class_name not in HBNBCommand.classes:
-                raise NameError("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[class_name]()
 
-            parameters = {}
-            for part in parts[1:]:
-                try:
-                    key, value = part.split('=')
-                    if value[0] == '"' and value[-1] == '"':
-                        value = value[1:-1].replace('_', ' ')
-                    parameters[key] = value
-                except ValueError:
-                    raise ValueError("** Invalid parameter format: {} **".format(part))
+    # Extract parameters from the command arguments
+        args_list = args_list[1:]
+        for arg in args_list:
+            param, value = arg.split("=")
+            param = param.replace("_", " ")
 
-            parameters = {k: v for k, v in parameters.items() if k != 'updated_at'}
+            # Handle different value types
+            if value[0] == '"' and value[-1] == '"':
+                # String value
+                value = value[1:-1].replace('\\"', '"')
+            elif '.' in value:
+                # Float value
+                value = float(value)
+            else:
+                # Integer value
+                value = int(value)
 
-            new_instance = HBNBCommand.classes[class_name](**parameters)
-            new_instance.save()
-            print(new_instance.id)
+            setattr(new_instance, param, value)
 
-        except SyntaxError as e:
-            print(str(e))
-        except ValueError as e:
-            print(str(e))
-        except Exception as e:
-            print("** Error creating instance: {} **".format(str(e)))
+        new_instance.save()
+        print(new_instance.id)
 
 
     def help_create(self):

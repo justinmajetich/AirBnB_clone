@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ """
-from models.base_model import BaseModel
+from ..models.base_model import BaseModel
+from ..models import storage
 import unittest
 import datetime
 from uuid import UUID
