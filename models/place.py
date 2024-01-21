@@ -61,16 +61,16 @@ class Place(BaseModel, Base):
         def reviews(self):
             """ Returns list of reviews.id """
             var = models.storage.all()
-            lista = []
+            array_list = []
             result = []
             for key in var:
                 review = key.replace('.', ' ')
                 review = shlex.split(review)
                 if (review[0] == 'Review'):
-                    lista.append(var[key])
-            for elem in lista:
-                if (elem.place_id == self.id):
-                    result.append(elem)
+                    array_list.append(var[key])
+            for elements in array_list:
+                if (elements.place_id == self.id):
+                    result.append(elements)
             return (result)
 
         @property

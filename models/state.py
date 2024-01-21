@@ -21,36 +21,14 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         var = models.storage.all()
-        lista = []
+        array_list = []
         result = []
         for key in var:
             city = key.replace('.', ' ')
             city = shlex.split(city)
             if (city[0] == 'City'):
-                lista.append(var[key])
-        for elem in lista:
-            if (elem.state_id == self.id):
-                result.append(elem)
+                array_list.append(var[key])
+        for elements in array_list:
+            if (elements.state_id == self.id):
+                result.append(elements)
         return (result)
-
-
-"""class State(BaseModel, Base):
-    # State class
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    if models.storage_type == 'db':
-        cities = relationship(
-            'City',
-            backref='state',
-            cascade='all, delete-orphan'
-        )
-    elif models.storage_type == 'fs':
-        @property
-        def cities(self):
-            # Getter attribute that returns the list of City instances with
-            # state_id equals to the current State.id
-            cities_list = []
-            for city_id, city in models.storage.all('City').items():
-                if city.state_id == self.id:
-                    cities_list.append(city)
-            return cities_list"""

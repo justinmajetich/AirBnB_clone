@@ -148,7 +148,6 @@ class HBNBCommand(cmd.Cmd):
             storage.new(new_instance)
             storage.save()
             print(new_instance.id)
-            # storage.save()
             # print(f"Created instance {class_name} with parameters:")
             # print(obj_params)
             # print(f"Instance ID: {new_instance.id}")
