@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
-from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String,Integer, ForeignKey
+from sqlalchemy.orm import relationship
+from models.state import State
+from models.place import Place
 
 
 class City(BaseModel, Base):
@@ -12,4 +14,4 @@ class City(BaseModel, Base):
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
 
-    state = relationship('Place', back_populates='cities')
+    places = relationship('Place', back_populates='cities')
