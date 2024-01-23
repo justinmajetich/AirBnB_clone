@@ -117,12 +117,12 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         hbnb_object = HBNBCommand()
         all_args = args.split()
-        class_name = all_args[0]
-        del all_args[0]
-        if not class_name:
+        if not all_args:
             print("** class name missing **")
             return
-        elif class_name not in HBNBCommand.classes:
+        class_name = all_args[0]
+        del all_args[0]        
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[class_name]()
@@ -130,12 +130,20 @@ class HBNBCommand(cmd.Cmd):
         model_id = new_instance.id
         for kv in range(len(all_args)):
             kv_pairs = all_args[kv].split("=")
-            if '"' not in kv_pairs[1]:
-                kv_pairs[1] = f'"{kv_pairs[1]}"'
-            kv_pairs.insert(0, model_id)
-            kv_pairs.insert(0, class_name)
-            update_args = ' '.join(kv_pairs)
-            hbnb_object.do_update(update_args)           
+            try:
+                if kv_pairs[1][0] != '"' or kv_pairs[1][-1] != '"':
+                    convert = kv_pairs[1]
+                    if kv_pairs[1].startswith('"'):
+                        convert = kv_pairs[1][1:]
+                    if kv_pairs[1].endswith('"'):
+                        convert = kv_pairs[1][0:-1]
+                    kv_pairs[1] = f'"{convert}"'
+                kv_pairs.insert(0, model_id)
+                kv_pairs.insert(0, class_name)
+                update_args = ' '.join(kv_pairs)
+                hbnb_object.do_update(update_args)
+            except IndexError:
+                continue           
         print(new_instance.id)
         storage.save()
 
