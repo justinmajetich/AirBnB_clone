@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
                 hbnb_object.do_update(update_args)
             except IndexError:
                 continue           
-        print(new_instance.id)
+        # print(new_instance.id)
         storage.save()
 
     def help_create(self):
