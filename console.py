@@ -132,12 +132,12 @@ class HBNBCommand(cmd.Cmd):
             kv_pairs = all_args[kv].split("=")
             try:
                 if kv_pairs[1][0] != '"' or kv_pairs[1][-1] != '"':
-                    convert = kv_pairs[1]
                     if kv_pairs[1].startswith('"'):
-                        convert = kv_pairs[1][1:]
-                    if kv_pairs[1].endswith('"'):
-                        convert = kv_pairs[1][0:-1]
-                    kv_pairs[1] = f'"{convert}"'
+                        continue
+                    elif kv_pairs[1].endswith('"'):
+                        continue
+                    else:
+                        kv_pairs[1] = f'"{kv_pairs[1]}"'
                 kv_pairs.insert(0, model_id)
                 kv_pairs.insert(0, class_name)
                 update_args = ' '.join(kv_pairs)
