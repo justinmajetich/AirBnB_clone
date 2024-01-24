@@ -1,1 +1,1 @@
-export HBNB_ENV="0-hello_route"
+export FLASK_APP="0-hello_route"
