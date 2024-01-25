@@ -1,3 +1,25 @@
+Create a virtual environment
+python -m venv <foldername> venv
+
+Run virtual environment
+./venv/Scripts/activate 
+
+
+
+upgrade pip
+python -m pip install --upgrade pip
+
+
+install flask
+python -m pip install flask
+
+To run my app 
+ python -m flask --app ./app.py run
+
+
+ 
+
+
 <center> <h1>HBNB - The Console</h1> </center>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
