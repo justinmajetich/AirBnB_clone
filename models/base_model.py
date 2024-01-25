@@ -3,22 +3,21 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, String, text, create_engine
-from models import storage
+from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
+    id = Column('id', String(60), nullable=False, primary_key=True)
+    created_at = Column('created_at', DateTime, nullable=False,
+                        default=datetime.utcnow())
+    updated_at = Column('updated_at', DateTime, nullable=False,
+                        default=datetime.utcnow())
+    
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
-        id = Column('id', String(60), nullable=False, primary_key=True)
-        created_at = Column('created_at', datetime, nullable=False,
-                            default=datetime.utcnow())
-        updated_at = Column('updated_at', datetime, nullable=False,
-                            default=datetime.utcnow())
-
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
