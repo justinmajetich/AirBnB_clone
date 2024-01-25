@@ -1,0 +1,9 @@
+*.exe
+.*
+*.out
+*.o
+*.dev
+*.layout
+*.win
+!.gitignore
+__pycache__/

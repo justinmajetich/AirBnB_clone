@@ -29,7 +29,10 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Distributes an archive to a web server.
+<<<<<<< HEAD
+=======
 
+>>>>>>> cd3399e2fa3683c20f68ada5fafc10504e9d9acd
     Args:
         archive_path (str): The path of the archive to distribute.
     Returns:
