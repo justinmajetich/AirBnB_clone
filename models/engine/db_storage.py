@@ -2,7 +2,7 @@
 """ This module represents the Database engine """
 from lib2to3.fixes import fix_itertools_imports
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from os import environ
 
@@ -14,11 +14,6 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 
-user = environ.get("HBNB_MYSQL_USER")
-pwd = environ.get("HBNB_MYSQL_PWD")
-host = environ.get("HBNB_MYSQL_HOST")
-env = environ.get("HBNB_ENV")
-db = environ.get("HBNB_MYSQL_DB")
 
 Base = declarative_base()
 
@@ -30,6 +25,12 @@ class DBStorage:
 
     def __init__(self):
         """ Instantiates new object """
+        user = environ.get("HBNB_MYSQL_USER")
+        pwd = environ.get("HBNB_MYSQL_PWD")
+        host = environ.get("HBNB_MYSQL_HOST")
+        env = environ.get("HBNB_ENV")
+        db = environ.get("HBNB_MYSQL_DB")
+        
         self.__engine = create_engine(f"mysql+mysqldb://{user}"
                                       f":{pwd}@{host}/{db}", pool_pre_ping=True)
         if environ.get("HBNB_ENV") == "test":
@@ -39,6 +40,8 @@ class DBStorage:
         """ Makes a query on the current database session """
         new_dict = {}
         if cls:
+            if type(cls) is str:
+                cls = eval(cls)
             result = self.__session.query(cls).all()
             for instance in result:
                 key = f"{type(instance).__name__}.{instance.id}"
@@ -58,8 +61,7 @@ class DBStorage:
     
     def save(self):
         """ Commit all changes to the current database session """
-        if self.__session:
-            self.__session.commit()
+        self.__session.commit()
     
     def delete(self, obj=None):
         """ Delete from the current database session 'obj' if not None """
@@ -70,6 +72,6 @@ class DBStorage:
         """ Create all tables in the database """
 
         Base.metadata.create_all(self.__engine)
-
-        Session = sessionmaker(expire_on_commit=False)
-        self.__session = Session(bind=self.__engine)
+        sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sec)
+        self.__session = Session()
