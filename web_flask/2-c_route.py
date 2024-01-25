@@ -11,6 +11,11 @@ def hello():
     return '¡Hola HBNB!'
 
 
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    return 'HBNB'
+
+
 @app.route('/c/<text>', strict_slashes=False)
 def mostrar_c(texto):
     # Reemplaza los símbolos de subrayado (_) con un espacio
