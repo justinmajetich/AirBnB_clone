@@ -11,6 +11,7 @@ env.hosts = ['54.237.91.183', '54.173.37.227']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
 
+
 def do_deploy(archive_path):
     """
     Distributes an archive to your web servers
@@ -25,9 +26,6 @@ def do_deploy(archive_path):
         run("sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
             .format(name, name2))
         run("sudo rm /tmp/{}".format(name))
-        run("sudo mv -n /data/web_static/releases/{}/web_static/* \
-            /data/web_static/releases/{}/".format(name2, name2))
-        run("sudo rm -rf /data/web_static/releases/{}/web_static".format(name2))
         run("sudo rm -rf /data/web_static/current")
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(name2))
