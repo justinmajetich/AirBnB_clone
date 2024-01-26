@@ -12,12 +12,14 @@ def say_hello():
     """
     return "Hello HBNB!"
 
+
 @app.route('/hbnb', strict_slashes=False)
 def say_HBHB():
     """
         Does nothing but says HBNB.
     """
     return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
@@ -29,9 +31,11 @@ def c_text(text):
 def python_is_cool_or_text(text='is cool'):
     return 'Python {}'.format(' '.join(text.split('_')))
 
+
 @app.route('/number/<int:n>', strict_slashes=False)
 def n_is_a_number(n):
     return '{} is a number'.format(n)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
