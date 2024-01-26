@@ -90,3 +90,9 @@ class DBStorage:
             "Review": review.Review,
         }
         self.__session = scoped_session(session_factory)()
+
+    def close(self):
+        """
+        Closes the storage engine.
+        """
+        self.__session.remove()
