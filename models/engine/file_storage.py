@@ -19,7 +19,7 @@ class FileStorage:
         tmp = {
             k: v
             for k, v in FileStorage.__objects.items()
-            if v.__class__.__name__ == cls
+            if v.__class__.__name__ == cls.__name__
         }
         return tmp
 

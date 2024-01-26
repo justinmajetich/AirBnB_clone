@@ -18,7 +18,9 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        dictionary = storage.all("City")
+        from models import storage
+        from models.city import City
+        dictionary = storage.all(City)
         list_of_city = []
         for v in dictionary.values():
             if self.id == v.state_id:
