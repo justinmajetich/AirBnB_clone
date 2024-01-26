@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship
 from os import getenv
 storage_type = getenv("HBNB_TYPE_STORAGE")
 
+
 class City(BaseModel, Base):
     """Represent a city."""
 
