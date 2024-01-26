@@ -11,7 +11,7 @@ Base = declarative_base()
 class BaseModel:
     """ the base model which all other models inherit from """
 
-    id = Column(String(60), primary_key=True, nullable=False, unique=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
