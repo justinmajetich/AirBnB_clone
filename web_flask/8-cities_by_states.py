@@ -20,7 +20,7 @@ def cities_by_states():
 
 
 @app.teardown_appcontext
-def tear_db(exception):
+def tear(e):
     """Teardown function to close the database connection."""
     storage.close()
 
