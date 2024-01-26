@@ -52,7 +52,7 @@ class DBStorage:
         return {
             "{}.{}".format(model.__class__.__name__, model.id): model
             for model in self.__session.query(
-                self.__accepted_models[cls],
+                self.__accepted_models[cls.__name__],
             ).all()
         }
 
@@ -95,4 +95,4 @@ class DBStorage:
         """
         Closes the storage engine.
         """
-        self.__session.remove()
+        self.__session.close()
