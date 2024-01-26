@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""state model."""
-
+"""Defines the State class."""
 import models
 from models import city
 from models.base_model import BaseModel, Base
@@ -12,7 +11,7 @@ storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
-    """state model"""
+    """Represent a state."""
     __tablename__ = 'states'
 
     if storage_type == "db":
