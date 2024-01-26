@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
             args.append(current_arg)
 
         return args
-        
+
     def default(self, argu):
         """
         default commands
@@ -173,7 +173,8 @@ class HBNBCommand(cmd.Cmd):
                     dictionary = dict(eval(str_dict))
                     string = f"{class_name} {id}"
                     for attr in dictionary:
-                        self.do_update(f'{string} {attr}"{str(dictionary[attr])}"')
+                        self.do_update(f'{string} \
+                            {attr}"{str(dictionary[attr])}"')
                 else:
                     string = class_name
                     for elm in args.split(", "):
@@ -194,7 +195,6 @@ class HBNBCommand(cmd.Cmd):
     def emptyargu(self):
         """empty argu + ENTER shouldn’t execute anything"""
         pass
-
 
     def do_show(self, arg):
         """show the string representation of an instance"""
