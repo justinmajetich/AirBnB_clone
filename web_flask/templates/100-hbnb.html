@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>AirBnB clone</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/styles/4-common.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-header.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-footer.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/6-filters.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/8-places.css">
+    <link rel="icon" href="static/images/icon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo"></div>
+    </header>
+    <div class="container">
+        <section class="filters">
+            <div class="locations">
+                <h3>States</h3>
+                <h4>&nbsp;</h4>
+
+                <ul class="popover">
+                    {% for state_id, state in states.items()|sort(attribute='1.name') %}
+                    <li><h2>{{ state.name }}:</h2></li>
+                        {% for city in state.cities|sort(attribute='name') %}
+                        <li>{{ city.name }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+
+
+            </div>
+            <div class="amenities">
+                <h3>Amenities</h3>
+                <h4>&nbsp;</h4>
+                <ul class="popover">
+                    {% for amenity_id, amenity in amenities.items()|sort(attribute='1.name') %}
+                    <li>{{ amenity.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <button>Search</button>
+        </section>
+
+        <section class="places">
+
+            <h1>Places</h1>
+
+            <article>
+                <h2>My home</h2>
+                <div class="price_by_night">
+                    <span>80$</span>
+                </div>
+                <div class="information">
+                    <div class="max_guest">
+                        <span>2 Guests</span>
+                    </div>
+                    <div class="number_rooms">
+                        <span>1 Bedroom</span>
+                    </div>
+                    <div class="number_bathrooms">
+                        <span>1 Bathroom</span>
+                    </div>
+                </div>
+                <div class="user">
+                    <p><span>Owner: </span>John Lennon</p>
+                </div>
+                <div class="description">
+                    This is a lovely 1 bedroom and 1 bathroom apartment that can accomodate 2 people. It locates at the
+                    center of Shanghai and next to subway like 1. 1 stop to People Square, 2 stops to Bund, 3 stops to
+                    Jingan Temple.
+                </div>
+            </article>
+
+
+
+            <article>
+                <h2>Tiny house</h2>
+                <div class="price_by_night">
+                    <span>65$</span>
+                </div>
+                <div class="information">
+                    <div class="max_guest">
+                        <span>4 Guests</span>
+                    </div>
+                    <div class="number_rooms">
+                        <span>2 Bedrooms</span>
+                    </div>
+                    <div class="number_bathrooms">
+                        <span>1 Bathroom</span>
+                    </div>
+                </div>
+                <div class="user">
+                    <p><span>Owner: </span>Adrienne</p>
+                </div>
+                <div class="description">
+                    Our place is a private, affordable stand-alone guests house centrally located just minutes to French Quarters, downtown, the Fair Grounds (Jazz Fest) and City Park. The guest house is a quaint, 400 square ft. with a full bath, mini kitchen, & living room. The extra high ceilings make the home feel more spacious. The sofa converts to a bed also. We have a hand made counter area that adds character to the room and a great porch/deck to relax on and have a glass of Merlot.
+                </div>
+            </article>
+
+
+
+
+
+
+            <article>
+                <h2>A suite</h2>
+                <div class="price_by_night">
+                    <span>190$</span>
+                </div>
+                <div class="information">
+                    <div class="max_guest">
+                        <span>2 Guests</span>
+                    </div>
+                    <div class="number_rooms">
+                        <span>1 Bedroom</span>
+                    </div>
+                    <div class="number_bathrooms">
+                        <span>1 Bathroom</span>
+                    </div>
+                </div>
+                <div class="user">
+                    <p><span>Owner: </span>John Lennon</p>
+                </div>
+                <div class="description">
+                    Step into a cozy retreat featuring a full bath, a compact yet efficient mini kitchen, and a snug living room that opens up with extra-high ceilings. The cleverly designed space makes it feel more expansive than its size suggests. A handmade counter adds a touch of character, while the convertible sofa ensures flexibility in sleeping arrangements.
+                </div>
+            </article>
+
+
+
+
+
+
+        </section>
+    </div>
+    <footer>
+        Best School
+    </footer>
+</body>
+
+</html>
