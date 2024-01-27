@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <HTML lang="en">
-    <HEAD>
-        <TITLE>HBNB</TITLE>
-    </HEAD>
-    <BODY>
-				{% if states is none %}
-					<H1>Not found!</H1>
-				{% elif states |length == 1 %}
-					{% set state = states |first %}
-					<H1>State: {{state.name}}</H1>
-					<H3>Cities</H3>
-					{% for city in state.cities|sort(attribute='name')%}
-						<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-					{% endfor %}
-				{% else %}
-					<H1>States</H1>
-					<UL>
-							{% for state in states|sort(attribute='name') %}
-									<LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
-							{% endfor %}
-					</UL>
-				{% endif %}
-    </BODY>
+	<HEAD>
+		<TITLE>HBNB</TITLE>
+	</HEAD>
+	<BODY>
+		{% if states is none %}
+		<H1>Not found!</H1>
+		{% elif states |length == 1 %} {% set state = states |first %}
+		<H1>State: {{state.name}}</H1>
+		<H3>Cities</H3>
+		<UL>
+		{% for city in state.cities|sort(attribute='name')%}
+			<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+		{% endfor %}
+		</UL>
+		{% else %}
+		<H1>States</H1>
+		<UL>
+			{% for state in states|sort(attribute='name') %}
+			<LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+			{% endfor %}
+		</UL>
+		{% endif %}
+	</BODY>
 </HTML>
-
