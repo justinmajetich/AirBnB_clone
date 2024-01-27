@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Lists cities and states."""
 from flask import Flask, render_template
 
 from models import storage
