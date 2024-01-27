@@ -1,0 +1,29 @@
+## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+
+# VS Code files for those working on multiple tools
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Python Tools for Visual Studio (PTVS)
+__pycache__/
+*.pyc
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+file.json
