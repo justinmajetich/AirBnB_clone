@@ -42,7 +42,7 @@ def number_root(n):
     return '{} is a number'.format(n)
 
 
-@app.route('/number_template/<n>')
+@app.route('/number_template/<int:n>')
 def n_html(n):
     """display html page only if n is an int"""
     n = str(n)
