@@ -17,10 +17,10 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def mostrar_c(texto):
+def mostrar_c(text):
     # Reemplaza los símbolos de subrayado (_) con un espacio
-    texto_con_espacios = texto.replace('_', ' ')
-    return f'C {texto_con-espacios}'
+    cleaned_text = text.replace('_', ' ')
+    return f'C {cleaned_text}'
 
 
 if __name__ == '__main__':
