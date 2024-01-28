@@ -6,13 +6,6 @@ from models import storage
 app = Flask(__name__)
 
 
-#!/usr/bin/python3
-"""Start a Flask web application"""
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-
 @app.route("/", strict_slashes=False)
 def home():
     """Display Hello HBNB!"""
@@ -63,6 +56,7 @@ def states_list():
     """Display HTML page with list of states"""
     states = storage.all("State")
     return render_template("7-states_list.html", states=states)
+
 
 @app.teardown_appcontext
 def teardown_db(exception):
