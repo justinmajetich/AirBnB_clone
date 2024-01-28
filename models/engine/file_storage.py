@@ -13,7 +13,7 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         my_dict = {}
-        for k, v in self.__objects:
+        for k, v in self.__objects.items():
             if k.startswith(cls.__name__):
                 my_dict[k] = v
         return my_dict
