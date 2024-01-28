@@ -2,6 +2,7 @@
 """Start a Flask web application"""
 from flask import Flask, render_template
 from models import storage
+from models.state import State
 
 app = Flask(__name__)
 
@@ -54,7 +55,7 @@ def number_odd_or_even(n):
 @app.route("/states_list", strict_slashes=False)
 def states_list():
     """Display HTML page with list of states"""
-    states = storage.all("State")
+    states = storage.all(State)
     return render_template("7-states_list.html", states=states)
 
 
