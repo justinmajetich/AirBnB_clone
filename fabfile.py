@@ -1,12 +1,14 @@
 #!/home/wala/AirBnB_clone_v2/venv/bin/python3
-from fabric.api import run, env, task
+from flask import Flask, render_template
 
-env.hosts = ['54.237.91.183', '54.173.37.227']
-env.user = 'ubuntu'
-env.key_filename = '~/.ssh/id_rsa'
+app = Flask(__name__)
+
+@app.route('/list')
+def item_list():
+    items = ['Item 1', 'Item 2', 'Item 3']
+    return render_template('index.html', items=items)
 
 
-def ls():
-    run("uname")
 
-# Run the task
+if __name__ == '__main__':
+    app.run(debug=True)
