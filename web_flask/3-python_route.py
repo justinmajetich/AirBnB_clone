@@ -27,12 +27,17 @@ def c_text(text):
     '''
     display “C ” followed by the value of the text variable
     '''
-    return ("C {:s}".format(text).replace('_', ' '))
+    text = text.replace("_", " ")
+    return f"C {text}"
+
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_text(text="is cool"):
-    return ("Python {:s}".format(text).replace('_', ' '))
+    """
+     display “Python ”, followed by the value of the text variable
+    """
+    return f'Python {text.replace("_", " ")}'
 
 
 if __name__ == '__main__':
