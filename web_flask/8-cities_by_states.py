@@ -68,8 +68,9 @@ def teardown_db(exception):
 @app.route("/cities_by_states", strict_slashes=False)
 def cities_by_states():
     """Display HTML page with list of states and cities"""
-    states = storage.all(State)
-    return render_template("8-cities_by_states.html", states=states)
+    states = storage.all(State).values()
+    statesSorted = sorted(states, key=lambda state: state.name)
+    return render_template("8-cities_by_states.html", states=statesSorted)
 
 
 if __name__ == "__main__":
