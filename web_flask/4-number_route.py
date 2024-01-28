@@ -46,7 +46,7 @@ def python_N(n):
      display “n is a number” only if n is an integer
     """
     if isinstance(n, int):
-        return f'{n}'
+        return f'{n} is a number'
 
 
 if __name__ == '__main__':
