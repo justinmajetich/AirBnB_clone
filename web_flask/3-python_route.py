@@ -1,36 +1,38 @@
 #!/usr/bin/python3
-"""Servivcio Web con Flask"""
+""" 3. Add  third view func that redirects and has default val for variable """
 
 from flask import Flask
 
+
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-# Define una funcion home y retorna la cadena Hello HBNB
-def hello_hbnb():
-    return "Hello HBNB!"
+@app.route('/')
+def hello_world():
+    """ Returns some text. """
+    return 'Hello HBNB!'
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    return 'HBNB!'
+@app.route('/hbnb')
+def hello():
+    """ Return other text. """
+    return 'HBNB'
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def mostrar_c(text):
-    # Reemplaza los símbolos de subrayado (_) con un espacio
-    cleaned_text = text.replace('_', ' ')
-    return f'C {cleaned_text}'
+@app.route('/c/<text>')
+def c_text(text):
+    """ replace text with variable. """
+    text = text.replace('_', ' ')
+    return 'C {}'.format(text)
 
 
-@app.route('/python', strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def mostrar_py(text='is cool'):
-    """Mensaje Python si es genial!!!"""
-    # Reemplaza los símbolos de subrayado (_) con un espacio
-    cleaned_text = text.replace('_', ' ')
-    return f'Python {cleaned_text}'
+@app.route('/python/')
+@app.route('/python/<text>')
+def python_text(text='is cool'):
+    """ replace more text with another variable. """
+    text = text.replace('_', ' ')
+    return 'Python {}'.format(text)
 
 
 if __name__ == '__main__':
