@@ -1,15 +1,28 @@
 #!/usr/bin/python3
 """
-Distributes archive to webservers
+Archive and deploy
 """
 import os.path
 from fabric.api import *
 from fabric.operations import run, put, sudo
+import time
 env.hosts = ['100.26.221.139', '54.237.207.123']
 
 
+def do_pack():
+    timestr = time.strftime("%Y%m%d%H%M%S")
+    try:
+        local("mkdir -p versions")
+        local("tar -cvzf versions/web_static_{}.tgz web_static/".
+              format(timestr))
+        return ("versions/web_static_{}.tgz".format(timestr))
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+
 def do_deploy(archive_path):
-    """ Deploy module """
+    """ deploy """
     if (os.path.isfile(archive_path) is False):
         return False
 
@@ -26,6 +39,16 @@ def do_deploy(archive_path):
         run('sudo rm -rf /data/web_static/current')
         run("sudo ln -s {} /data/web_static/current".format(new_folder))
         return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+
+def deploy():
+    try:
+        archive_address = do_pack()
+        val = do_deploy(archive_address)
+        return val
     except Exception as e:
         print(f"An error occurred: {e}")
         return False
