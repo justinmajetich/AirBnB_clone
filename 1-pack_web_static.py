@@ -10,6 +10,9 @@ import os
 from datetime import datetime
 
 
+env.hosts = ['localhost']
+
+
 def do_pack():
     """
     generates a .tgz archive
