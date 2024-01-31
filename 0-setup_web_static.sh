@@ -1,24 +1,12 @@
 #!/usr/bin/env bash
-# Bash script that sets up your web servers for the deployment of web_static
-if ! command -v nginx &> /dev/null; then
-    sudo apt-get -y update
-    sudo apt-get -y  install nginx
-fi
-sudo mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
-sudo touch /data/web_static/releases/test/index.html && echo "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>" > /data/web_static/releases/test/index.html
-current_link="/data/web_static/current"
-target_folder="/data/web_static/releases/test/"
-if [ -L "$current_link" ]; then
-    sudo rm "$current_link"
-fi
-sudo ln -s "$target_folder" "$current_link"
+# sets up your web servers for the deployment of web_static
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo mkdir -p /data/ /data/web_static/ /data/web_static/releases/ /data/web_static/shared/ /data/web_static/releases/test/
+echo "Holberton School for the win!" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+sudo rm -rf /data/web_static/current
+sudo ln -s /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-# sed -i '14i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-enabled/default
-sudo sed -i '/server {/a\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
-sudo service nginx start
+NEW_STRING="\\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n"
+sudo sed -i "38i $NEW_STRING" /etc/nginx/sites-available/default
+sudo service nginx restart
