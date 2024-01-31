@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Bash script that sets up your web servers for the deployment of web_static
 if ! command -v nginx &> /dev/null; then
-    apt-get -y update
-    apt-get -y  install nginx
+    sudo apt-get -y update
+    sudo apt-get -y  install nginx
 fi
-mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
-touch /data/web_static/releases/test/index.html && echo "<html>
+sudo mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
+sudo touch /data/web_static/releases/test/index.html && echo "<html>
   <head>
   </head>
   <body>
@@ -15,10 +15,10 @@ touch /data/web_static/releases/test/index.html && echo "<html>
 current_link="/data/web_static/current"
 target_folder="/data/web_static/releases/test/"
 if [ -L "$current_link" ]; then
-    rm "$current_link"
+    sudo rm "$current_link"
 fi
-ln -s "$target_folder" "$current_link"
-chown -R ubuntu:ubuntu /data/
+sudo ln -s "$target_folder" "$current_link"
+sudo chown -R ubuntu:ubuntu /data/
 # sed -i '14i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-enabled/default
-sed -i '/server {/a\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
-service nginx start
+sudo sed -i '/server {/a\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
+sudo service nginx start
