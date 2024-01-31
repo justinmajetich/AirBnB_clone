@@ -19,5 +19,6 @@ if [ -L "$current_link" ]; then
 fi
 ln -s "$target_folder" "$current_link"
 chown -R ubuntu:ubuntu /data/
-sed -i '14i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-enabled/default
+# sed -i '14i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-enabled/default
+sed -i '/server {/a\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
 service nginx start
