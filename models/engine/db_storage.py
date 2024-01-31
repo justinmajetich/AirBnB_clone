@@ -45,15 +45,11 @@ class DBStorage:
         if cls is None:
             objs = self.__session.query(State).all()
             objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
         else:
             objs = self.__session.query(cls).all()
-            for obj in objs:
-                obj_key = obj.__class__.__name__ + '.' + obj.id
-                obj_dict[obj_key] = obj
+        for obj in objs:
+            obj_key = obj.__class__.__name__ + '.' + obj.id
+            obj_dict[obj_key] = obj
         return obj_dict
 
     def new(self, obj):
