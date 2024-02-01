@@ -3,11 +3,29 @@
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
-sudo ufw allow 'HTTP Nginx'
+sudo ufw allow 'Nginx HTTP'
 
-touch -p /data/web_static/releases/test/index.html
-mkdir -p /data/web_static/shared
+sudo mkdir -p /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
+sudo mkdir -p /data/web_static/shared
+sudo mkdir -p /data/web_static/current
 
-ln -sf /data/web_static/current /data/web_static/releases/test/
+echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
+ubuntu@89-web-01:~/$ curl localhost/hbnb_static/index.html
+<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" > /data/web_static/current/index.html
 
-chown -R ubuntu:ubuntu /data/
+sudo ln -sf /data/web_static/current/ /data/web_static/releases/test/
+
+sudo chown -R ubuntu:ubuntu /data/
