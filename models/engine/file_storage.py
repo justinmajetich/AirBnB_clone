@@ -49,7 +49,7 @@ class FileStorage:
         from models.review import Review
         from models.state import State
         from models.user import User
-
+        
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -74,11 +74,3 @@ class FileStorage:
             obj_key = f"{obj.__class__.__name__}.{obj.id}"
             if obj_key in FileStorage.__objects:
                 del FileStorage.__objects[obj_key]
-
-    @property
-    def cities(self):
-        """ returns the list of City instances"""
-        state_id = self.__objects[id]
-        return [
-            city for k, v in FileStorage.__objects.items() if (
-                state_id == v.id) for city in k.cities]

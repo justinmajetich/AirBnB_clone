@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import os
 import sys
 
 from models.__init__ import storage
@@ -12,6 +13,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+HBNB_TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -59,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
-            # if parantheses contain arguments, parse them
+            # if parenthesis contain arguments, parse them
             pline = pline[pline.find('(') + 1:pline.find(')')]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
@@ -68,6 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
                 # possible bug here:
+                # check for len(_id) == 0
                 # empty quotes register as empty _id when replaced
 
                 # if arguments exist beyond _id
@@ -116,42 +119,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        try:
+            if not args:
+                raise SyntaxError
+            args = args.split()
+            arg_class = args[0]
+            arg_params = args[1:]
 
-        args = args.split()
-        arg_class = args[0]
-        arg_params = args[1:]
+            arg_class = eval(f"{arg_class}()")
 
-        if not arg_class:
+            for param in arg_params:
+                if '=' in param:
+                    param = param.split('=')
+                    arg_key = param[0]
+                    arg_value = eval(param[1])
+
+                    if isinstance(arg_value, str):
+                        arg_value = arg_value.replace('"', '\\"')
+                        arg_value = arg_value.replace('_', ' ')
+
+                    setattr(arg_class, arg_key, arg_value)
+                else:
+                    continue
+
+            arg_class.save()
+            print(arg_class.id)
+        except SyntaxError:
             print("** class name missing **")
-            return
-        if arg_class not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        my_dict = {}
-        for param in arg_params:
-            if '=' in param:
-                param = param.split('=')
-                arg_key = param[0]
-                arg_value = param[1]
-
-                if arg_value.startswith('"') and arg_value.endswith('"'):
-                    arg_value = arg_value[1:-1].replace('"', '\\"')
-                    arg_value = arg_value.replace('_', ' ')
-                elif '.' in arg_value and arg_value.replace('.', '').isdigit():
-                    arg_value = float(arg_value)
-                elif arg_value.isdigit():
-                    arg_value = int(arg_value)
-
-                my_dict[arg_key] = arg_value
-            else:
-                pass
-
-        new_instance = HBNBCommand.classes[arg_class]()
-        for key, val in my_dict.items():
-            setattr(new_instance, key, val)
-        new_instance.save()
-        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
