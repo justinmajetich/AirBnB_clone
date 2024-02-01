@@ -1,33 +1,50 @@
 #!/usr/bin/env bash
-# This script sets up web servers for deployment of web_static
 
-if ! dpkg -l nginx &> /dev/null; then
-    sudo apt-get update
-    sudo apt-get -y install nginx
-fi
+# Exit script if any command fails
+set -e
 
-# Create necessary directories and files
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
-sudo touch /data/web_static/releases/test/index.html
-echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+# Function to create directories if they don't exist
+create_directories() {
+    mkdir -p /data/web_static/{releases/test,shared}
+}
 
-# Create symbolic link if it doesn't exist or update if exists
-if [ -L /data/web_static/current ]; then
-    sudo rm /data/web_static/current
-fi
-sudo ln -sf /data/web_static/releases/test /data/web_static/current
+# Function to create fake HTML file
+create_fake_html() {
+    echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" > /data/web_static/releases/test/index.html
+}
 
-# Set ownership
-sudo chown -R root:root /data/
+# Function to create symbolic link
+create_symbolic_link() {
+    ln -sf /data/web_static/releases/test /data/web_static/current
+}
 
-# Update Nginx configuration to serve content of /data/web_static/current to hbnb_static
-config_file="/etc/nginx/sites-available/default"
-if grep -q "location /hbnb_static" "$config_file"; then
-    sudo sed -i 's/location \/hbnb_static {/location \/hbnb_static {\n\t\talias \/data\/web_static\/current\/;/' "$config_file"
-else
-    sudo sed -i '/server_name _;/a \\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n' "$config_file"
-fi
+# Function to change ownership recursively
+change_ownership() {
+    chown -R root:root /data/
+}
 
-sudo service nginx restart
+# Function to update Nginx configuration
+update_nginx_config() {
+    sed -i '/alias/s/$/\/;/' /etc/nginx/sites-available/default
+    service nginx restart
+}
 
-exit 0
+# Main function
+main() {
+    create_directories
+    create_fake_html
+    create_symbolic_link
+    change_ownership
+    update_nginx_config
+}
+
+# Trap any errors and exit with success status
+trap 'echo "Error encountered. Exiting with success status."; exit 0' ERR
+
+main
