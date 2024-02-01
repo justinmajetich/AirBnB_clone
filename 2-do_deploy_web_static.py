@@ -6,13 +6,11 @@ using the function do_deploy
 """
 
 from fabric.api import *
-from fabric.context_managers import cd
 import os
 from datetime import datetime
 
 
 env.hosts = ['107.23.93.54', '34.202.233.91']
-env.user = 'ubuntu'
 
 
 def do_pack():
