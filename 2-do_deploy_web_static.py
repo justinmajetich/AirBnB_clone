@@ -41,8 +41,7 @@ def do_deploy(archive_path):
         file_path = '/data/web_static/releases/'
         releases_path = file_path + file_name[:-4]
         try:
-            with cd("/tmp/"):
-                put(archive_path, '/tmp/')
+            put(archive_path, '/tmp/')
             run(f'mkdir -p {releases_path}')
             run(f'tar -xzf /tmp/{file_name} -C {releases_path}')
             run(f'rm -rf /tmp/{file_name}')
