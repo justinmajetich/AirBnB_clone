@@ -36,23 +36,22 @@ def do_deploy(archive_path):
     """
     deployes web static 1
     """
-    if archive_path:
-        if os.path.exists(archive_path):
-            archive_name = archive_path[9:-4]
-            try:
-                with cd("/tmp/"):
-                    put(archive_path, '/tmp/')
-                run(f'mkdir -p /data/web_static/releases/{archive_name}/')
-                part_1 = '/data/web_static/releases/' + archive_name + '/'
-                part_2 = '/data/web_static/current'
-                run(f'tar -xzf /tmp/{archive_name}.tgz -C {part_1}')
-                run(f'rm -rf /tmp/{archive_name}.tgz')
-                run('rm -rf /data/web_static/current')
-                run(f'ln -s {part_1} {part_2}')
-                print('New version deployed!')
-            except Exception:
-                return False
-        else:
+    if os.path.exists(archive_path):
+        file_name = archive_path.split('/')[1]
+        file_path = '/data/web_static/releases/'
+        releases_path = file_path + file_name[:-4]
+        try:
+            put(archive_path, '/tmp/')
+            run('mkdir -p {}'.format(releases_path))
+            run('tar -xzf /tmp/{} -C {}'.format(file_name, releases_path))
+            run('rm -rf /tmp/{}'.format(file_name))
+            run('mv {}/web_static/* {}/'.format(releases_path, releases_path))
+            run('rm -rf {}/web_static'.format(releases_path))
+            run('rm -rf /data/web_static/current')
+            run('ln -s {} /data/web_static/current'.format(releases_path))
+            print('New version deployed!')
+            return True
+        except:
             return False
     else:
         return False

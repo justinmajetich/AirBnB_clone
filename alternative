@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Function to generate a .tgz archive from the contents of the web_static folder
+do_pack() {
+    mkdir -p versions
+    date=$(date +"%Y%m%d%H%M%S")
+    archived_f_path="versions/web_static_$date.tgz"
+    
+    tar -cvzf $archived_f_path web_static
+
+    if [ $? -eq 0 ]; then
+        echo $archived_f_path
+    else
+        echo "Error: Failed to create the archive."
+        exit 1
+    fi
+}
+
+# Call the function
+do_pack
