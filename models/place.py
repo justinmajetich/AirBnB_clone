@@ -9,13 +9,13 @@ from models.amenity import Amenity
 
 
 if storage_t == "db":
-    place_amenity = Table('place_amenity', Base.metadat,
+    place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
-                                 ForeignKey('place_id', ondelete="CASCADE",
+                                 ForeignKey('places.id', ondelete="CASCADE",
                                             onupdate="CASCADE"),
                                  primary_key=True),
                           Column('amenity_id', String(60),
-                                 ForeignKey('amenity_id', ondelete="CASCADE",
+                                 ForeignKey('amenities.id', ondelete="CASCADE",
                                             onupdate="CASCADE"),
                                  primary_key=True))
 
@@ -24,8 +24,8 @@ class Place(BaseModel, Base):
     """ A place to stay """
     if storage_t == "db":
         __tablename__ = 'places'
-        city_id = Column(String(60), nullable=False)
-        user_id = Column(String(60), nullable=False)
+        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
         description = Column(String(1024), nullable=False)
         number_rooms = Column(Integer, default=0, nullable=False)
@@ -36,7 +36,7 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=False)
         reviews = relationship('Review', backref='place')
         amenities = relationship('Amenity', secondary='place_amenity',
-                                 backref='place_amenity',
+                                 backref='place_amenities',
                                  viewonly=False)
 
     else:

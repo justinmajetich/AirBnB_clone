@@ -5,7 +5,7 @@ from models import storage_t
 from sqlalchemy import Column, String, Integer
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, Base):
     """
     doc
     """

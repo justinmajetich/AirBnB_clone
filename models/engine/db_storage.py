@@ -31,14 +31,14 @@ class DBStorage:
         """
         query all objs or all objs of a certain class
         """
-        from models.base_model import BaseModel
         from models.city import City
         from models.place import Place
         from models.state import State
         from models.amenity import Amenity
         from models.user import User
         from models.review import Review
-        _classes = {"City": City, "State": State}
+        _classes = {"City": City, "State": State, "Amenity": Amenity,
+                    "User": User, "Review": Review}
 
         new_dict = {}
         for clss in _classes:
@@ -66,7 +66,6 @@ class DBStorage:
             self.__session.remove(obj)
 
     def reload(self):
-        from models.base_model import BaseModel
         from models.city import City
         from models.place import Place
         from models.state import State
