@@ -63,8 +63,12 @@ def do_deploy(archive_path):
         if not status.succeeded:
             return False
         status = run(
-            f"mv -n /data/web_static/releases/{archive_folder}/web_static/*"
+            f"cp -R /data/web_static/releases/{archive_folder}/web_static/*"
             f" /data/web_static/releases/{archive_folder}/")
+        if not status.succeeded:
+            return False
+        status = run(
+            f"rm -rf /data/web_static/releases/{archive_folder}/web_static/")
         if not status.succeeded:
             return False
         status = run("rm -rf /data/web_static/current")
