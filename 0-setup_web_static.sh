@@ -23,7 +23,7 @@ ln -sf /data/web_static/releases/test/ /data/web_static/current
 # Create a symbolic link /data/web_static/current linked to the...
 # .../data/web_static/releases/test/ folder. If the symbolic link already...
 # ...exists, it should be deleted and recreated every time the script is ran.
-chown -hR laveniaatarah:laveniaatarah /data/
+chown -hR ubuntu:ubuntu /data/
 # Give ownership of the /data/ folder to the ubuntu user AND group (you can
 # assume this user and group exist). This should be recursive; everything
 # inside should be created/owned by this user/group.
