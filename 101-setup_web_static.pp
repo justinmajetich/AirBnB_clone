@@ -51,13 +51,11 @@ file { '/data/web_static/current':
 
 exec { 'sudo chown -R ubuntu:ubuntu /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
-}
-
-
-$ara = "\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n"
+} ->
 
 exec { 'sed':
-  command => "sudo sed -i '38i ${ara}' /etc/nginx/sites-available/default",
+  command => "sed -i \
+  '/^\tlisten 80 default_server;$/i location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default",
   path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 } ->
 
