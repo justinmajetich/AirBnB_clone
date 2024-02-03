@@ -51,13 +51,13 @@ file { '/data/web_static/current':
 
 exec { 'sudo chown -R ubuntu:ubuntu /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
-} ->
+}
 
 
-$NEW_STRING = "\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n"
+$STRING = "\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n"
 
 exec { 'sed':
-  command => "sudo sed -i '38i ${NEW_STRING}' /etc/nginx/sites-available/default",
+  command => "sudo sed -i '38i ${STRING}' /etc/nginx/sites-available/default",
   path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 } ->
 
