@@ -1,27 +1,20 @@
-from fabric import Connection
-import datetime
-import os
+#!/usr/bin/python3
+""" This module contains the function do_pack that generates a .tgz archive
+  from the contents of the web_static folder (fabric script) """
+
+
+from fabric.api import *
+from datetime import datetime
+
 
 def do_pack():
-    """
-    Generates a .tgz archive from the contents of the web_static folder
-    of the AirBnB Clone repo.
-    """
-    # Create the versions folder if it doesn't exist
-    if not os.path.exists('versions'):
-        os.makedirs('versions')
-
-    # Get the current date and time
-    now = datetime.datetime.now()
-    timestamp = now.strftime('%Y%m%d%H%M%S')
-
-    # Create the archive name
-    archive_name = f'web_static_{timestamp}.tgz'
-    archive_path = os.path.join('versions', archive_name)
-
-    # Create the .tgz archive
-    with Connection('localhost') as c:
-        c.run(f'tar -czvf {archive_path} web_static')
-
-    # Return the archive path
-    return archive_path
+    """ Fabric script that generates a .tgz archive from the contents of the...
+    ...web_static folder """
+    local("sudo mkdir -p versions")
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = "versions/web_static_{}.tgz".format(date)
+    result = local("sudo tar -cvzf {} web_static".format(filename))
+    if result.succeeded:
+        return filename
+    else:
+        return None
