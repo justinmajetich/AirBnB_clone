@@ -1,7 +1,7 @@
 # everything in task 0 but in puppet
 
-exec { 'apt_update':
-  command     => 'apt-get -y update',
+exec { 'update':
+  command => '/usr/bin/apt-get update',
 } ->
 
 package { 'nginx':
