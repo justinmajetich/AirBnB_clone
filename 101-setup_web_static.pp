@@ -1,51 +1,40 @@
-# Prepare web server for deployment
+# everything in task 0 but in puppet
 
-exec {'update':
-  provider => shell,
-  command  => 'sudo apt-get -y update',
-  before   => Exec['install nginx'],
+exec { 'apt_update':
+  provider    => shell,
+  command     => 'apt-get -y update',
+  refreshonly => true,
 }
 
-exec {'install nginx':
-  provider => shell,
-  command  => 'sudo apt-get -y install nginx',
-  before   => Exec['start nginx'],
+exec { 'install_nginx':
+  command => 'sudo apt-get -y install nginx',
+  require => Exec['apt_update'],
 }
 
 exec {'start nginx':
   provider => shell,
   command  => 'sudo service nginx start',
-  before   => Exec['create test directory'],
+  before   => Exec['install_nginx'],
 }
 
-exec {'create shared directory':
-  provider => shell,
-  command  => 'sudo mkdir -p /data/web_static/shared/',
-  before   => Exec['create test directory'],
+exec { 'make_dirs':
+  command => 'sudo mkdir -p /data/ /data/web_static/ /data/web_static/releases/ /data/web_static/shared/ /data/web_static/releases/test/',
+  require => Exec['start nginx'],
 }
 
-exec {'create test directory':
-  provider => shell,
-  command  => 'sudo mkdir -p /data/web_static/releases/test/',
-  before   => Exec['add test content'],
+exec { 'echo_hol':
+  command => 'echo "Holberton School for the win!" | sudo tee /data/web_static/releases/test/index.html > /dev/null',
+  require => Exec['make_dirs'],
 }
 
-exec {'add test content':
-  provider => shell,
-  command  => 'echo "<html>
-    <head>
-    </head>
-    <body>
-      Holberton School
-    </body>
-  </html>" > /data/web_static/releases/test/index.html',
-  before   => Exec['create symbolic link to current'],
+exec { 'ln':
+  command => 'sudo ln -s /data/web_static/releases/test/ /data/web_static/current',
+  require => Exec['echo_hol'],
 }
 
-exec {'create symbolic link to current':
-  provider => shell,
-  command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
-  before   => File['/data/'],
+exec { 'chown':
+  command => 'sudo chown -R ubuntu:ubuntu /data/',
+  require => Exec['ln'],
 }
 
 file {'/data/':
@@ -53,16 +42,18 @@ file {'/data/':
   owner   => 'ubuntu',
   group   => 'ubuntu',
   recurse => true,
-  before  => Exec['serve current to hbnb_static'],
+  before  => Exec['echo_hol'],
 }
 
-exec {'serve current to hbnb_static':
+$NEW_STRING="\\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n"
+
+exec { 'sed':
   provider => shell,
-  command  => 'sed -i "61i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t\tautoindex off;\n\t}" /etc/nginx/sites-available/default',
-  before   => Exec['restart nginx'],
+  command => 'sudo sed -i "38i $NEW_STRING" /etc/nginx/sites-available/default',
+  require => Exec['chown'],
 }
 
-exec {'restart nginx':
-  provider => shell,
-  command  => 'sudo service nginx restart',
+exec { 'restart':
+  command => 'sudo service nginx restart',
+  require => Exec['sed'],
 }
