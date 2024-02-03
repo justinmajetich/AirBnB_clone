@@ -40,7 +40,7 @@ exec { 'sed':
   require => Exec['chown'],
 }
 
-exec { 'start'
+exec { 'start':
   command => 'sudo service nginx restart',
   require => Exec['sed'],
 }
