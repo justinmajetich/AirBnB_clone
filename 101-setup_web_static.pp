@@ -1,3 +1,4 @@
+# everything in task 0 but in puppet
 exec { 'apt_update':
   command     => 'apt-get -y update',
   refreshonly => true,
