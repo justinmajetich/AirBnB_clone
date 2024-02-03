@@ -5,7 +5,7 @@ exec { 'apt_update':
 } ->
 
 package { 'nginx':
- ensure => 'present',
+ ensure   => 'present',
  provider => 'apt',
 } ->
 
