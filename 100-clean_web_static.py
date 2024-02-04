@@ -2,9 +2,9 @@ from fabric.api import *
 from datetime import datetime
 from os.path import exists, join
 
-env.hosts = ['<54.146.59.198>', '<54.85.84.184>']
+env.hosts = ['54.146.59.198', '54.85.84.184']
 env.user = 'Lavyatarah'
-env.key_filename = 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDW0NEnqaWfJ4Uh6uUZf0GA+2zrMSGymZ0LxC37pptctbg15TJN8qOG+VzMI8UCNaGo64nteBPBq2i6v9AzFEQ8MdF+2EX7zF8csoPOwiUoOt1NZ4h361iz/WmOjyqbrdCf3d1aTpj11wpsUUR/nAXlZbUfrP8eQscfzYCeWir1f/aeNKgwd7eJrBYzjftDW2zPL5ioaaJLWpQMNbTBjFpJdFbVHbn7PVOv2QQNy98VyqFz352E0FbbbVU8BFbTqGfCHfjOgcG0XaqR2DvFvlKAXVdUZLwMlsQ5mc3vofb4HW8Ok3/Lt2d+b6RXG96DbtFNlNpectGP3v6uYAA9r92J'
+env.key_filename = '/usr/laven/Desktop/practice folder/node_module'
 
 def do_clean(number=0):
     """ Deletes out-of-date archives
