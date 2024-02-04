@@ -37,7 +37,7 @@ def do_deploy(archive_path):
         # ^ Delete the archive from the web server
         run("rm -rf /data/web_static/current")
         # Delete the symbolic link /data/web_static/current from the web server
-        run("ln -s {}/ /data/web_static/current".format(no_tgz.split("/")[-1]))
+        run("ln -s {}/ /data/web_static/current".format(no_tgz))
         # Create a new the symbolic link /data/web_static/current on the
         # web server, linked to the new version of your code
         # (/data/web_static/releases/<archive filename without extension>)
