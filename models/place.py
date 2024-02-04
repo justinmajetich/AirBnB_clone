@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the place class"""
 from sqlalchemy.ext.declarative import declarative_base
+from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
