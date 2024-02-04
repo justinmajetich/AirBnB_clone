@@ -14,7 +14,7 @@ from models.amenity import Amenity
 
 
 class DBStorage:
-    """ create tables"""
+    """ create tables in environmental"""
     __engine = None
     __session = None
 
@@ -39,7 +39,7 @@ class DBStorage:
         """
         dic = {}
         if cls:
-            if type(cls) is str:
+            if isinstance(cls, str):
                 cls = eval(cls)
             query = self.__session.query(cls)
             for elem in query:
