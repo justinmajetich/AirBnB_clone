@@ -1,30 +1,30 @@
+#!/usr/bin/python3
+# Fabfile to delete out-of-date archives.
+import os
 from fabric.api import *
-from datetime import datetime
-from os.path import exists, join
 
-env.hosts = ['54.146.59.198', '54.85.84.184']
-env.user = 'Lavyatarah'
-env.key_filename = '/usr/laven/Desktop/practice folder/node_module'
+env.hosts = ["54.146.59.198", "54.85.84.184"]
+
 
 def do_clean(number=0):
-    """ Deletes out-of-date archives
+    """Delete out-of-date archives.
+
+    Args:
+        number (int): The number of archives to keep.
+
+    If number is 0 or 1, keeps only the most recent archive. If
+    number is 2, keeps the most and second-most recent archives,
+    etc.
     """
-    # Get the current timestamp
-    current_ts = int(datetime.now().timestamp())
+    number = 1 if int(number) == 0 else int(number)
 
-    # Get the list of archives in the versions folder
-    archives = local("ls /path/to/versions", capture=True).split()
+    archives = sorted(os.listdir("versions"))
+    [archives.pop() for i in range(number)]
+    with lcd("versions"):
+        [local("rm ./{}".format(a)) for a in archives]
 
-    # Keep only the most recent 'number' archives
-    keep_archives = sorted(archives, reverse=True)[:number]
-
-    # Delete the out-of-date archives
-    for archive in archives:
-        if archive not in keep_archives:
-            local("rm /path/to/versions/{}".format(archive))
-            run("rm /data/web_static/releases/{}".format(archive))
-
-    # Delete any remaining directories in /data/web_static/releases
-    run("find /data/web_static/releases -type d -empty -delete")
-
-    return True
+    with cd("/data/web_static/releases"):
+        archives = run("ls -tr").split()
+        archives = [a for a in archives if "web_static_" in a]
+        [archives.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in archives]
