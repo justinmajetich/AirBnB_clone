@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python4
 """ a Fabric script (based on the file 1-pack_web_static.py) that distributes..
     ..an archive to your web servers, using the function do_deploy: """
 
@@ -27,17 +27,17 @@ def do_deploy(archive_path):
     try:
         put(archive_path, "/tmp/")
         # ^ Upload the archive to the /tmp/ directory of the web server
-        run("mkdir -p {}".format(no_tgz))
+        run("mkdir -p {}/".format(no_tgz))
         # Uncompress the archive to the folder /data/web_static/releases/
         # <archive filename without extension> on the web server
-        run("tar -xzf {} -C {}".format(tmp, no_tgz))
+        run("tar -xzf {} -C {}/".format(tmp, no_tgz))
         run("rm {}".format(tmp))
-        run("mv {}/* {}/".format(no_tgzgz, no_tgz))
+        run("mv {}/web_static/* {}/".format(no_tgz, no_tgz))
         run("rm -rf {}/web_static".format(no_tgz))
         # ^ Delete the archive from the web server
-        run("rm /data/web_static/current")
+        run("rm -rf /data/web_static/current")
         # Delete the symbolic link /data/web_static/current from the web server
-        run("ln -s {} /data/web_static/current".format(no_tgz))
+        run("ln -s {}/ /data/web_static/current".format(no_tgz))
         # Create a new the symbolic link /data/web_static/current on the
         # web server, linked to the new version of your code
         # (/data/web_static/releases/<archive filename without extension>)
