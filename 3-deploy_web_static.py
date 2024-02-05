@@ -22,6 +22,7 @@ def do_pack():
     else:
         return None
 
+
 def do_deploy(archive_path):
     """ do_deploy fonction """
     if os.path.exists(archive_path) is False:
@@ -38,6 +39,6 @@ def do_deploy(archive_path):
         sudo('rm -rf /data/web_static/current')
         sudo('ln -s {}/ "/data/web_static/current"'.format(main))
         return True
-
-    except:
+    except Exception as e:
+        print(str(e))
         return False
