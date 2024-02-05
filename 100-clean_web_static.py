@@ -100,7 +100,7 @@ def do_clean(number=0):
                   f"xargs rm -rf")
         elif num > 1:
             local(f"ls -lt | grep -o 'web_static.*' | sed '1,{num}d' | "
-                f"xargs rm -rf")
+                  f"xargs rm -rf")
 
     with cd('/data/web_static/releases/'):
         if num == 0 or num == 1:
