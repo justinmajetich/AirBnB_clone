@@ -3,7 +3,6 @@
 Generate a .tgz archive from static web files
 """
 import os
-import fnmatch
 from datetime import datetime
 from fabric.api import local, put, run, cd, env, lcd
 
@@ -96,19 +95,12 @@ def do_clean(number=0):
     num = int(number)
 
     with lcd('versions/'):
-        files = sorted(fnmatch.filter(os.listdir('.'), '*.tgz'),
-                       key=os.path.getmtime, reverse=True)
-
         if num == 0 or num == 1:
-            for file in files[1:]:
-                if os.path.exists(file):
-                    print(f"Deleting {file} ...")
-                    os.remove(file)
+            local(f"ls -lt | grep -o 'web_static.*' | sed '1,1d' | "
+                  f"xargs rm -rf")
         elif num > 1:
-            for file in files[num:]:
-                if os.path.exists(file):
-                    print(f"Deleting {file} ...")
-                    os.remove(file)
+            local(f"ls -lt | grep -o 'web_static.*' | sed '1,{num}d' | "
+                f"xargs rm -rf")
 
     with cd('/data/web_static/releases/'):
         if num == 0 or num == 1:
