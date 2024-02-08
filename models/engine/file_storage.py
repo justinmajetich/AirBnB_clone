@@ -32,6 +32,10 @@ class FileStorage:
 
         return FileStorage.__objects
 
+    def close(self):
+        """call reload() method for deserializing the JSON file to objects"""
+        self.reload()
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
@@ -61,7 +65,7 @@ class FileStorage:
                     'Review': Review
                   }
         try:
-#            temp = {}
+            temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 data = f.read()
                 if data:
