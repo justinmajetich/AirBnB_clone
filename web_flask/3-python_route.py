@@ -22,12 +22,25 @@ def display():
 def display_text(text):
     """Display input values
 
-    :param text: value in URL
-    :type text: str
+    :param value: value in URL
+    :type value: str, int
     :return: a string
     :rtype: str
     """
     return "C {}".format(text.replace('_', ' '))
+
+
+@app.route('/python', strict_slashes=False, defaults={'text': 'is_cool'})
+@app.route('/python/<text>', strict_slashes=False)
+def display_text_1(text):
+    """ Display input text
+
+    :param text: text in URL
+    :type text: str
+    :return: a string
+    :rtype: str
+    """
+    return "Python {}".format(text.replace('_', ' '))
 
 
 if __name__ == "__main__":
