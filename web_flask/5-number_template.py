@@ -64,7 +64,7 @@ def display_html(n):
     :return: an HTML page
     :rtype: str
     """
-    return render_template('5-number.html')
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == "__main__":
