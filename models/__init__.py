@@ -1,4 +1,11 @@
 #!/usr/bin/python3
+
+"""
+Module initializer for models package.
+Instantiates an object of the appropriate storage type based on the value
+of the environment variable HBNB_TYPE_STORAGE.
+"""
+
 import os
 from models.base_model import BaseModel
 from models.base_model import Base

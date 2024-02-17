@@ -1,9 +1,18 @@
 #!/usr/bin/python3
+
+"""
+Module implementing the HBNBCommand class for the command-line interface.
+"""
+
 import cmd
 from models import *
 
 
 class HBNBCommand(cmd.Cmd):
+    """
+    Class representing the command-line interface for the application.
+    Inherits from the cmd.Cmd class.
+    """
     prompt = '(hbnb) '
     storage.reload()
 
@@ -11,6 +20,10 @@ class HBNBCommand(cmd.Cmd):
                      "City", "Amenity", "Place", "Review"]
 
     def emptyline(self):
+        """
+        Method called when an empty line is entered.
+        Does nothing to prevent default behavior.
+        """
         pass
 
     def do_quit(self, args):

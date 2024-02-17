@@ -1,10 +1,19 @@
 #!/usr/bin/python3
+
+"""
+Module for the Place and PlaceAmenity classes.
+"""
+
 from models import *
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 
 class Place(BaseModel, Base):
+    """
+    Class representing a place in the application.
+    Inherits from BaseModel and Base.
+    """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -21,10 +30,19 @@ class Place(BaseModel, Base):
                              viewonly=True)
 
     def __init__(self, *args, **kwargs):
+        """
+        Initializes a new Place instance.
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
         super().__init__(*args, **kwargs)
 
 
 class PlaceAmenity(Base):
+    """
+    Association table between Place and Amenity.
+    """
     __tablename__ = "place_amenity"
     place_id = Column(String(60), ForeignKey('places.id'), nullable=False,
                       primary_key=True)
