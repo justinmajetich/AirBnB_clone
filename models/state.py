@@ -14,11 +14,20 @@ class State(BaseModel, Base):
     cities = relationship("City", backref='state',
                           cascade="all, delete-orphan")
 
-    @property
-    def cities(self):
-        """
-        retrieve cities within a specific
-        state
-        """
-        allcit = models.storage.all(City)
-        return [city for city in allcit if city.state_id == self.id]
+    if models.env_stroage != 'db':
+        @property
+        def cities(self):
+            """
+            retrieve cities within a specific
+            state
+            """
+            allcit = models.storage.all(City)
+            return [city for city in allcit.values() if city.state_id == self.id]
+    # @property
+    # def cities(self):
+    #     """
+    #     retrieve cities within a specific
+    #     state
+    #     """
+    #     allcit = models.storage.all(City)
+    #     return [city for city in allcit if city.state_id == self.id]

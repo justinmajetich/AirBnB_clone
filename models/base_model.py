@@ -4,7 +4,6 @@ from uuid import uuid4
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base
-
 Base = declarative_base()
 
 
@@ -20,7 +19,7 @@ class BaseModel:
         init method for baseModel instances
         """
         if kwargs:
-            if id not in kwargs.keys():
+            if 'id' not in kwargs.keys():
                 self.id = str(uuid4())
             for key in kwargs.keys():
                 if key == '__class__':
