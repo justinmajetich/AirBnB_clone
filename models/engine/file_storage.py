@@ -13,7 +13,9 @@ class FileStorage:
         or a certain class objects"""
         if cls is not None:
             for key in self.__objects.keys():
-                if str(cls) in key:
+                class_name = key.split('.')
+                class_name = class_name[0]
+                if cls == class_name:
                     return {self.__objects[key]}
         return self.__objects
 
@@ -56,6 +58,10 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete object from __objects"""
+        cls_key = ""
         if obj is not None:
-            del self.__objects[obj.__class__.__name__ + '.' + obj.id]
+            for key, value in self.__objects.items():
+                if value.id == obj.id:
+                    cls_key = key
+            del self.__objects[cls_key]
             self.save()
