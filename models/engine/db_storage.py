@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 
+
 class DBStorage:
     __engine = None
     __session = None
@@ -69,6 +70,7 @@ class DBStorage:
 
     def close(self):
         self.__session.remove()
+
 
 # Instance of DBStorage
 storage = DBStorage()
