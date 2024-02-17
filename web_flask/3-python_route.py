@@ -23,5 +23,12 @@ def display_c(text):
     return 'C {}'.format(text.replace('_', ' '))
 
 
+@app.route('/python/', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def display_python(text='is_cool'):
+    """" Returns “Python”, followed by the value of the text variable. """
+    return 'Python {}'.format(text.replace('_', ' '))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
