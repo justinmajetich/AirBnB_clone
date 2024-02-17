@@ -7,7 +7,6 @@ import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from models.base_model import Base
-from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -44,17 +43,12 @@ class DBStorage:
         """Query all objects from a class (Table)"""
         new_row_dict = {}
 
-        if cls is not None and cls not in classes:
-            return (new_row_dict)
-        if cls is not None:
-            query = self.__session.query(classes[cls]).all()
-        else:
-            query = []
-            for clss in classes:
-                query.extend(self.__session.query(classes[clss]).all())
-        for obj in query:
-            key = f"{obj.__class__.__name__}.{obj.id}"
-            new_row_dict[key] = obj
+        for clase in classes:
+            if cls is None or cls is classes[clase] or cls is clase:
+                query = self.__session.query(classes[clase]).all()
+                for obj in query:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    new_row_dict[key] = obj
         return (new_row_dict)
 
     def new(self, obj):
@@ -69,7 +63,6 @@ class DBStorage:
         """Delete an object from the db table"""
         if obj:
             self.__session.delete(obj)
-            self.save()
 
     def reload(self):
 
