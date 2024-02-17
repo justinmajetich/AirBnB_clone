@@ -6,8 +6,8 @@ This repository contains the initial stage of a student project to build a clone
 
 <center><h3>Repository Contents by Project Task</h3> </center>
 
-| Tasks | Files | Description |
-| ----- | ----- | ------ |
+| Tasks | Files | Description                                                                                           |
+| ----- | ----- | ----------------------------------------------------------------------------------------------------- |
 | 0: Authors/README File | [AUTHORS](https://github.com/justinmajetich/AirBnB_clone/blob/dev/AUTHORS) | Project authors |
 | 1: Pep8 | N/A | All code is pep8 compliant|
 | 2: Unit Testing | [/tests](https://github.com/justinmajetich/AirBnB_clone/tree/dev/tests) | All class-defining modules are unittested |
