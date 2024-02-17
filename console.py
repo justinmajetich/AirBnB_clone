@@ -135,26 +135,27 @@ class HBNBCommand(cmd.Cmd):
                 print("Wrong parameter format. Format '<key name>=<value>'")
                 continue
             key, value = key_and_value
-            # print(key)
-            # print(value)
-            value = re.sub(r'\\(.)', r'\1', value)
-            # print(value)
-            value = value.replace('_', ' ')
 
+            # Handle string values
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
+                value = value.replace('\\', '')  # Remove escaped backslashes
+                value = value.replace('_', ' ')
             elif '.' in value:
                 value = float(value)
             else:
-                value = int(value)
+                try:
+                    value = int(value)
+                except ValueError:
+                    # If it's not a valid int or float, treat it as a string
+                    value = value.replace('\\', '')  # Remove escaped backslash
+                    value = value.replace('_', ' ')
 
             setattr(new_instance, key, value)
 
         storage.save()
         print(new_instance.id)
         storage.save()
-        # except Exception as e:
-        # print("Cannot create object")
 
     def help_create(self):
         """ Help information for the create method """
