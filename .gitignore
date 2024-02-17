@@ -1,2 +1,6 @@
 file.json
 main*
+.idea/
+models/__pycache__/
+models/engine/__pycache__/
+models/engine/__pycache__/
