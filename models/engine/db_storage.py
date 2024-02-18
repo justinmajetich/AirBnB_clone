@@ -11,6 +11,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class DBStorage:
     """
     A class to handle database storage operations.
@@ -29,13 +30,14 @@ class DBStorage:
         mode = os.getenv("HBNB_ENV")
         self.__engine = create_engine(f"mysql+mysqldb://{user}:{password}"
                                       f"@{host}:3306/{db_name}",
-                                       pool_pre_ping=True)
+                                      pool_pre_ping=True)
         if mode == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
-        Retrieves all objects of a given class from the database, or all objects if no class is specified.
+        Retrieves all objects of a given class from the database,
+        or all objects if no class is specified.
         """
         all_classes = ['State', 'City', 'Amenity', 'Place', 'User', 'Review']
         all_obj = []
@@ -58,7 +60,8 @@ class DBStorage:
 
     def save(self):
         """
-        Commits the current database session, saving all new and changed objects.
+        Commits the current database session,
+        saving all new and changed objects.
         """
         self.__session.commit()
 
@@ -75,7 +78,7 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine,
-                                               expire_on_commit=False))
+                                              expire_on_commit=False))
         self.__session = Session()
 
     # def close(self):
