@@ -69,9 +69,6 @@ class DBStorage():
         of objects.
         """
 
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
-
         objects = {}
 
         if cls is None:
@@ -87,3 +84,17 @@ class DBStorage():
                 objects[key] = obj
 
         return objects
+
+    def new(self, obj):
+        """
+        Adds an object to the current database session.
+        """
+
+        if obj is not None:
+            try:
+                self.__session.add(obj)
+                self.__session.flush()
+                self.__session.refresh(obj)
+            except Exception as e:
+                self.__session.rollback()
+                raise e
