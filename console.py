@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import json
+import re
 
 from models.__init__ import storage
 from models.amenity import Amenity
@@ -17,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = "(hbnb) " if sys.__stdin__.isatty() else ""
+    prompt = "(hbnb) " # There's a prompt either ways
 
     classes = {
         "BaseModel": BaseModel,
@@ -38,11 +40,6 @@ class HBNBCommand(cmd.Cmd):
         "longitude": float,
     }
 
-    def preloop(self):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print("(hbnb)")
-
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
@@ -50,7 +47,19 @@ class HBNBCommand(cmd.Cmd):
         (Brackets denote optional fields in usage example.)
         """
         _cmd = _cls = _id = _args = ""  # initialize line elements
-
+        _dict = re.search(r'{.+}', line)
+        group1 = r'(?<=\.)[^(]+|[aA-zZ]+(?=\.)'
+        group2 = r'(?<=\(\"|\(\')[a-z0-9\-]+'
+        if _dict:
+            try:
+                dct = json.loads(_dict.group().replace("'", '"'))
+                args = re.findall(group1 + '|' + group2, line)
+                for k, v in dct.items():
+                    self.do_update('{} {} {} "{}"'.
+                                   format(args[0], args[2], k, v))
+                    return ''
+            except Exception:
+                return line
         # scan for general formating - i.e '.', '(', ')'
         if not ("." in line and "(" in line and ")" in line):
             return line
@@ -73,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(", ")  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].replace('"', "")
+                _id = pline[0].replace('\"', "")
                 # possible bug here:
                 # empty quotes register as empty _id when replaced
 
@@ -82,8 +91,8 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if (
-                        pline[0] is "{"
-                        and pline[-1] is "}"
+                        pline[0] == "{"
+                        and pline[-1] == "}"
                         and type(eval(pline)) is dict
                     ):
                         _args = pline
@@ -97,15 +106,9 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
-    def postcmd(self, stop, line):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print("(hbnb) ", end="")
-        return stop
-
     def do_quit(self, command):
         """Method to exit the HBNB console"""
-        exit()
+        return True
 
     def help_quit(self):
         """Prints the help documentation for quit"""
@@ -113,8 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """Handles EOF to exit program"""
-        print()
-        exit()
+        return True
 
     def help_EOF(self):
         """Prints the help documentation for EOF"""
@@ -135,7 +137,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """Help information for the create method"""
@@ -262,6 +263,9 @@ class HBNBCommand(cmd.Cmd):
         args = args[2].partition(" ")
         if args[0]:
             c_id = args[0]
+            if c_id[0] == "'":
+                second_quote = c_id.find("'", 1)
+                c_id = c_id[1:second_quote]
         else:  # id not present
             print("** instance id missing **")
             return
@@ -273,7 +277,6 @@ class HBNBCommand(cmd.Cmd):
         if key not in storage.all():
             print("** no instance found **")
             return
-
         # first determine if kwargs or args
         if "{" in args[2] and "}" in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
@@ -283,19 +286,19 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '"':  # check for quoted arg
-                second_quote = args.find('"', 1)
+            if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
+                second_quote = args.replace("'", '"').find('"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1 :]
 
-            args = args.partition(" ")
+            args = args.partition(" ") #error, what if ("name", "john smith")
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not " ":
+            if not att_name and (args[0] != " "):
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '"':
-                att_val = args[2][1 : args[2].find('"', 1)]
+            if args[2] and ((args[2][0] == '"') or (args[2][0] == "'")):
+                att_val = args[2][1 : args[2].replace("'", '"').find('"', 1)] #valid but works in specific conditions
 
             # if att_val was not quoted arg
             if not att_val and args[2]:
@@ -322,7 +325,7 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
+                new_dict.__dict__.update({att_name: att_val}) #does this work?
 
         new_dict.save()  # save updates to file
 
