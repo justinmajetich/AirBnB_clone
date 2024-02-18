@@ -150,8 +150,12 @@ class HBNBCommand(cmd.Cmd):
         c_id = new[2]
 
         # guard against trailing args
-        if c_id and " " in c_id:
-            c_id = c_id.partition(" ")[0]
+        if c_id:
+            if " " in c_id:
+                c_id = c_id.partition(" ")[0]
+            if c_id[0] == "'":
+                second_quote = c_id.find("'", 1)
+                c_id = c_id[1:second_quote]
 
         if not c_name:
             print("** class name missing **")
@@ -181,8 +185,12 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
-        if c_id and " " in c_id:
-            c_id = c_id.partition(" ")[0]
+        if c_id:
+            if " " in c_id:
+                c_id = c_id.partition(" ")[0]
+            if c_id[0] == "'":
+                second_quote = c_id.find("'", 1)
+                c_id = c_id[1:second_quote]
 
         if not c_name:
             print("** class name missing **")
@@ -277,34 +285,27 @@ class HBNBCommand(cmd.Cmd):
         if key not in storage.all():
             print("** no instance found **")
             return
-        # first determine if kwargs or args
-        if "{" in args[2] and "}" in args[2] and type(eval(args[2])) is dict:
-            kwargs = eval(args[2])
-            args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
-            for k, v in kwargs.items():
-                args.append(k)
-                args.append(v)
-        else:  # isolate args
-            args = args[2]
-            if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
-                second_quote = args.replace("'", '"').find('"', 1)
-                att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
 
-            args = args.partition(" ") #error, what if ("name", "john smith")
+        args = args[2]
+        if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
+            second_quote = args.replace("'", '"').find('"', 1)
+            att_name = args[1:second_quote]
+            args = args[second_quote + 1:]
 
-            # if att_name was not quoted arg
-            if not att_name and (args[0] != " "):
-                att_name = args[0]
-            # check for quoted val arg
-            if args[2] and ((args[2][0] == '"') or (args[2][0] == "'")):
-                att_val = args[2][1 : args[2].replace("'", '"').find('"', 1)] #valid but works in specific conditions
+        args = args.partition(" ") #error, what if ("name", "john smith")
+
+        # if att_name was not quoted arg
+        if not att_name and (args[0] != " "):
+            att_name = args[0]
+        # check for quoted val arg
+        if args[2] and ((args[2][0] == '"') or (args[2][0] == "'")):
+            att_val = args[2][1 : args[2].replace("'", '"').find('"', 1)] #valid but works in specific conditions
 
             # if att_val was not quoted arg
-            if not att_val and args[2]:
-                att_val = args[2].partition(" ")[0]
+        if not att_val and args[2]:
+            att_val = args[2].partition(" ")[0]
 
-            args = [att_name, att_val]
+        args = [att_name, att_val]
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]

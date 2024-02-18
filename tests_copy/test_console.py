@@ -64,22 +64,22 @@ class TestConsole_help(unittest.TestCase):
 
     def test_help_EOF(self):
         """This function tests the <help EOF> message content"""
-        expected = "End-of-file"
+        expected = "Exits the program without formatting"
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help EOF"))
             self.assertEqual(expected, f.getvalue().strip())
 
     def test_help_all(self):
         """This function tests the <help all> message content"""
-        out = ["Prints all string representation of all instances based or\n",
-               "        not on the class name"]
+        out = ["Shows all objects, or all of a class\n",
+                "[Usage]: all <className>"]
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help all"))
-            self.assertEqual(''.join(out), f.getvalue().strip())
+            self.assertEqual("".join(out), f.getvalue().strip())
 
     def test_help_count(self):
         """This function tests the <help count> message content"""
-        out = "Retrives the number of instances of a class"
+        out = "Usage: count <class_name>"
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help count"))
             self.assertEqual(out, f.getvalue().strip())
@@ -94,10 +94,10 @@ class TestConsole_help(unittest.TestCase):
 
     def test_help_destroy(self):
         """This function tests the <help destroy> message content"""
-        out = "Deletes an instance based on class name and id"
+        out = ["Destroys an individual instance of a class\n", "[Usage]: destroy <className> <objectId>"]
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help destroy"))
-            self.assertEqual(out, f.getvalue().strip())
+            self.assertEqual("".join(out), f.getvalue().strip())
 
     def test_help_help(self):
         """This function tests the <help help> message content"""
@@ -109,26 +109,25 @@ class TestConsole_help(unittest.TestCase):
 
     def test_help_quit(self):
         """This function tests the <help quit> message content"""
-        out = "Quit command to exit the program"
+        out = "Exits the program with formatting"
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help quit"))
             self.assertEqual(out, f.getvalue().strip())
 
     def test_help_show(self):
         """This function tests the <help show> message content"""
-        out = ["Prints the string representation of an instance based on\n",
-               "        the class and id values"]
+        out = ["Shows an individual instance of a class\n", "[Usage]: show <className> <objectId>"]
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help show"))
             self.assertEqual(''.join(out), f.getvalue().strip())
 
     def test_help_create(self):
         """This function tests the <help update> message content"""
-        o = ["Updates an instance based on the class name and id by adding\n",
-             "        or updating attributes"]
+        o = ["Updates an object with new information\n",
+                "Usage: update <className> <id> <attName> <attVal>"]
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help update"))
-            self.assertEqual(''.join(o), f.getvalue().strip())
+            self.assertEqual("".join(o), f.getvalue().strip())
 
 
 class TestConsole_create(unittest.TestCase):
