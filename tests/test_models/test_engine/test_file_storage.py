@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
+import sys
 import unittest
+from console import HBNBCommand
+from io import StringIO
 from models.base_model import BaseModel
 from models import storage
 import os
@@ -17,12 +20,21 @@ class test_fileStorage(unittest.TestCase):
         for key in del_list:
             del storage._FileStorage__objects[key]
 
+        self.console = HBNBCommand()
+
+        # Redirect stdout to capture output during the test
+        self.saved_stdout = sys.stdout
+        sys.stdout = StringIO()
+
     def tearDown(self):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
         except:
             pass
+
+        # Restore stdout to its original state
+        sys.stdout = self.saved_stdout
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
