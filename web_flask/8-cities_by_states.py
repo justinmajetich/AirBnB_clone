@@ -2,6 +2,7 @@
 """ Starts a Flask web application """
 from flask import Flask, render_template
 from models import storage
+import models
 
 
 app = Flask(__name__)
@@ -9,7 +10,7 @@ app = Flask(__name__)
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
     """ Display a HTML page """
-    states = storage.all("State")
+    states = storage.all(models.State)
     return render_template('8-cities_by_states.html', states=states)
 
 
