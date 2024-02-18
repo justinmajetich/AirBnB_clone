@@ -125,8 +125,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        params = args_list[1:] if args_list else []
-
+        params = args_list[1:]
         parameters = {}
 
         for param in params:
@@ -142,8 +141,6 @@ class HBNBCommand(cmd.Cmd):
                 value = value = int(key_value[1])
             elif '.' in key_value[1] and all(part.isdigit() for part in key_value[1].split('.')):
                 value = float(key_value[1])
-            else:
-                continue
 
             parameters[key] = value
 
@@ -151,7 +148,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name](**parameters)
         new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
