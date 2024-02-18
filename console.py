@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = "(hbnb) " # There's a prompt either ways
+    prompt = "(hbnb) "  # There's a prompt either ways
 
     classes = {
         "BaseModel": BaseModel,
@@ -287,21 +287,21 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args = args[2]
-        if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
+        if args and ((args[0] == '"') or (args[0] == "'")):  # check quoted arg
             second_quote = args.replace("'", '"').find('"', 1)
             att_name = args[1:second_quote]
             args = args[second_quote + 1:]
 
-        args = args.partition(" ") #error, what if ("name", "john smith")
+        args = args.partition(" ")  # error, what if ("name", "john smith")
 
         # if att_name was not quoted arg
         if not att_name and (args[0] != " "):
             att_name = args[0]
         # check for quoted val arg
         if args[2] and ((args[2][0] == '"') or (args[2][0] == "'")):
-            att_val = args[2][1 : args[2].replace("'", '"').find('"', 1)] #valid but works in specific conditions
+            att_val = args[2][1: args[2].replace("'", '"').find('"', 1)]
 
-            # if att_val was not quoted arg
+        # if att_val was not quoted arg
         if not att_val and args[2]:
             att_val = args[2].partition(" ")[0]
 
@@ -326,7 +326,7 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val}) #does this work?
+                new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
 
