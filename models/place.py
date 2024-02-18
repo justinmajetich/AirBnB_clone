@@ -30,7 +30,7 @@ if models.env_stroage == 'db':
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         amenity_ids = []
-        cities = relationship('City', back_populates='places')
+        city = relationship('City', back_populates='places')
         user = relationship("User", back_populates="places",
                             cascade="all, delete, save-update")
         reviews = relationship('Review', backref='place',
