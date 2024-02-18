@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -18,21 +19,13 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+               'Review': Review}
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {'city_id': str, 'user_id': str, 'name': str,
-             'description': str, 'number_rooms': int,
-             'number_bathrooms': int, 'max_guest': int,
-             'price_by_night': int, 'latitude': float,
-             'longitude': float, 'amenity_ids': list,
-             'state_id': str, 'place_id': str, 'text': str,
-             'email': str, 'password': str, 'first_name': str,
-             'last_name': str
-             }
+    types = {'number_rooms': int, 'number_bathrooms': int,
+             'max_guest': int, 'price_by_night': int,
+             'latitude': float, 'longitude': float}
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -77,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -117,31 +110,36 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
-        args = arg.split(" ")
-        attrs = (HBNBCommand.types).keys()
-        types = (HBNBCommand.types).values()
+    def do_create(self, args):
         """ Create an object of any class"""
-        if len(args) < 1:
+        if not args:
             print("** class name missing **")
             return
-        if args[0] not in HBNBCommand.classes:
+        params = shlex.split(args)
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        accepted_attrs = [item for item in dir(eval(args[0]))
-                          if not item.startswith('_')]
-        new_instance = HBNBCommand.classes[args[0]]()
-        for arg in args[1:]:
-            key_val = arg.split("=")
-            key_val[1] = eval(key_val[1])
-            if (key_val[0], type(key_val[1])) in list(zip(attrs, types)):
-                if key_val[0] in accepted_attrs:
-                    if type(key_val[1]) is str:
-                        key_val[1] = key_val[1].replace("_", " ")\
-                                               .replace('"', '\\"')
-                    setattr(new_instance, key_val[0], key_val[1])
-        new_instance.save()
-        print(new_instance.id)
+        if len(params) == 1:
+            obj = HBNBCommand.classes[params[0]]()
+        else:
+            obj = HBNBCommand.classes[params[0]]()
+            kwargs = {}
+            for param in params[1:]:
+                if '=' in param and not param.endswith('='):
+                    k, v = param.split("=")
+                    if k not in HBNBCommand.types.keys():
+                        if type(v) is str:
+                            kwargs[k] = v.replace('_', ' ')
+                            setattr(obj, k, kwargs[k])
+                    else:
+                        try:
+                            if type(eval(v)) == HBNBCommand.types[k]:
+                                kwargs[k] = eval(v)
+                                setattr(obj, k, kwargs[k])
+                        except NameError:
+                            pass
+        obj.save()
+        print(obj.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -289,7 +287,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -297,10 +295,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
