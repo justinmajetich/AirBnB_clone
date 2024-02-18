@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-tests_copy/
-||||||| e3dc34a
-=======
-__pycache__/
+/tests_copy
+/__pycache__
 file.json
 .env
 .venv
@@ -12,4 +9,3 @@ venv_*/
 ENV/
 env.bak/
 venv.bak/
->>>>>>> 4a4692ccf09e4aa4f5b27ec2c922bbd8a791f9da
