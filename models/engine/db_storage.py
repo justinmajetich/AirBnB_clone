@@ -64,8 +64,8 @@ class DBStorage():
 
     def all(self, cls=None):
         """
-        Queries cls object or all objects if cls is None, and returns a dictionary
-        of objects.
+        Queries cls object or all objects if cls is None,
+        and returns a dictionary of objects.
         """
 
         objects = {}
@@ -123,7 +123,9 @@ class DBStorage():
 
         Base.metadata.create_all(self.__engine)
 
-        Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        Session = scoped_session(
+                sessionmaker(bind=self.__engine, expire_on_commit=False)
+            )
         self.__session = Session()
 
     def close(self):
