@@ -71,12 +71,12 @@ class HBNBCommand(cmd.Cmd):
             _cls = pline[: pline.find(".")]
 
             # isolate and validate <command>
-            _cmd = pline[pline.find(".") + 1 : pline.find("(")]
-            if _cmd not in HBNBCommand.dot_cmds:
+            _cmd = pline[pline.find(".") + 1: pline.find("(")]
+            if _cmd not in HBNBCommand.dot_cmds and _cmd != "create":
                 raise Exception
 
             # if parantheses contain arguments, parse them
-            pline = pline[pline.find("(") + 1 : pline.find(")")]
+            pline = pline[pline.find("(") + 1: pline.find(")")]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(", ")  # pline convert to tuple
@@ -289,7 +289,7 @@ class HBNBCommand(cmd.Cmd):
             if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
                 second_quote = args.replace("'", '"').find('"', 1)
                 att_name = args[1:second_quote]
-                args = args[second_quote + 1 :]
+                args = args[second_quote + 1:]
 
             args = args.partition(" ") #error, what if ("name", "john smith")
 
