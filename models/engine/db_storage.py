@@ -63,3 +63,27 @@ class DBStorage():
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
+    def all(self, cls=None):
+        """
+        Queries cls object or all objects if cls is None, and returns a dictionary
+        of objects.
+        """
+
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
+
+        objects = {}
+
+        if cls is None:
+            for klass in classes.values():
+                objs = self.__session.query(klass).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    objects[key] = obj
+        else:
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + '.' + obj.id
+                objects[key] = obj
+
+        return objects
