@@ -52,8 +52,8 @@ def number_tmp(n):
 @app.route("/number_odd_or_even/<n>")
 def even_odd(n):
     if (int(n) % 2) == 0:
-        return render_template("6-number_odd_or_even.html", number=n + " is
-                               even")
+        return render_template("6-number_odd_or_even.html", number=n + " is"
+                             "  even")
     return render_template("6-number_odd_or_even.html", number=n + " is odd")
 
 
