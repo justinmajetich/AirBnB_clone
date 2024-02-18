@@ -5,10 +5,11 @@
 from models import storage
 from models.state import State
 from models.city import City
-
+import os
 """
  Objects creations
 """
+print(os.getenv('HBNB_TYPE_STORAGE'))
 state_1 = State(name="California")
 print("New state: {}".format(state_1))
 state_1.save()
