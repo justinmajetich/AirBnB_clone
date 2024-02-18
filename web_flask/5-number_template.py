@@ -40,25 +40,13 @@ def is_number(n):
         abort(404)
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    html_content = """
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-    <title>404 Not Found</title>
-    <h1>Not Found</h1>
-    <p>The requested URL was not found on the server. If you entered the URL
-    manually please check your spelling and try again.</p>
-    """
-    return html_content
-
-
 @app.route("/number_template/<n>")
 def number_tmp(n):
     try:
         n = int(n)
         return render_template("5-number.html", number=n, page_title=hnb())
     except Exception:
-        return page_not_found(404)
+        abort(404)
 
 
 if __name__ == "__main__":
