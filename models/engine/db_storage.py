@@ -115,3 +115,14 @@ class DBStorage():
             cls = type(obj)
             obj = self.__session.query(cls).filter(obj.id == cls.id).first()
             self.__session.delete(obj)
+
+    def reload(self):
+        """
+        - Creates all tables in the database.
+        - Creates a database session.
+        """
+
+        Base.metadata.create_all(self.__engine)
+
+        Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        self.__session = Session()
