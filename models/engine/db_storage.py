@@ -98,3 +98,10 @@ class DBStorage():
             except Exception as e:
                 self.__session.rollback()
                 raise e
+
+    def save(self):
+        """
+        Commits all changes of the current database session.
+        """
+
+        self.__session.commit()
