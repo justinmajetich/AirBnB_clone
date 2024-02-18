@@ -53,12 +53,6 @@ class FileStorage:
         """
         To delete obj from __objects if it’s inside and
         if obj is equal to None, the method should not do anything
-
-        for objs in FileStorage.__objects:
-            if obj == None:
-                pass
-            else:
-                delete(obj)
         """
         if obj is not None:
             key = f"{obj.__class__.__name__}.{obj.id}"
