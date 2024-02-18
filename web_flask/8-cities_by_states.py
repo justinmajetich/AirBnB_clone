@@ -7,6 +7,7 @@ import models
 
 app = Flask(__name__)
 
+
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
     """ Display a HTML page """
