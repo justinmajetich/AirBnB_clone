@@ -38,6 +38,11 @@ class BaseModel:
             if '__class__' in kwargs:
                 del kwargs['__class__']
             self.__dict__.update(kwargs)
+
+            # Assign additional attributes from kwargs to instance
+            for key, value in kwargs.items():
+                if not hasattr(self, key):
+                    setattr(self, key, value)
     
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -58,4 +63,10 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in my_dict.keys():
+            del my_dict['_sa_instance_state']
         return dictionary
+
+    def delete(self):
+        ''' deletes the object '''
+        models.storage.delete(self)
