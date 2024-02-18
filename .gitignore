@@ -1,0 +1,10 @@
+__pycache__/
+file.json
+.env
+.venv
+env/
+venv/
+venv_*/
+ENV/
+env.bak/
+venv.bak/

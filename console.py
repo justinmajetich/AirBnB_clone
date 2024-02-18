@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline.partition(", ")  # pline convert to tuple
 
                 # isolate _id, stripping quotes
-                _id = pline[0].replace('"', "")
+                _id = pline[0].replace('\"', "")
                 # possible bug here:
                 # empty quotes register as empty _id when replaced
 
@@ -82,8 +82,8 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if (
-                        pline[0] is "{"
-                        and pline[-1] is "}"
+                        pline[0] == "{"
+                        and pline[-1] == "}"
                         and type(eval(pline)) is dict
                     ):
                         _args = pline
@@ -105,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """Method to exit the HBNB console"""
-        exit()
+        exit(0)
 
     def help_quit(self):
         """Prints the help documentation for quit"""
@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, arg):
         """Handles EOF to exit program"""
         print()
-        exit()
+        exit(0)
 
     def help_EOF(self):
         """Prints the help documentation for EOF"""
@@ -135,7 +135,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """Help information for the create method"""
