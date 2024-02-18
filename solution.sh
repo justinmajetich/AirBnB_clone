@@ -5,7 +5,7 @@ archive_path="tmp/web_static_20240202033225.tgz"
 
 # Define the two IP addresses
 ip_address1="107.23.93.54"
-ip_address2="34.202.233.91"
+ip_address2="34.202.233.91" 
 
 # Function to deploy web static content
 function do_deploy() {
