@@ -3,17 +3,22 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
+import os
 
 
 class State(BaseModel, Base):
     """ State class """
-    # name = ""
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship('City', backref='state', cascade='all, delete')
+
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = "states"
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', backref='state', cascade='all, delete')
+    else:
+        name = ''
 
     @property
     def cities(self):
+        """getter funtion to get cities of certain state"""
         from models import storage
         city_dict = storage.all("City")
         state_cities = []
