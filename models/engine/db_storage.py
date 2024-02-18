@@ -105,3 +105,13 @@ class DBStorage():
         """
 
         self.__session.commit()
+
+    def delete(self, obj=None):
+        """
+        Deletes an object from the current database session.
+        """
+
+        if obj is not None:
+            cls = type(obj)
+            obj = self.__session.query(cls).filter(obj.id == cls.id).first()
+            self.__session.delete(obj)
