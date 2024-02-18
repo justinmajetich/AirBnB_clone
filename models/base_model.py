@@ -31,10 +31,10 @@ class BaseModel:
                 self.updated_at = datetime.now()
             kwargs.setdefault('updated_at', datetime.now())  # Set default value
             kwargs.setdefault('created_at', datetime.now())  # Set default value
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'].isoformat(),
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'].isoformat(),
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            if isinstance(kwargs['updated_at'], str):
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            if isinstance(kwargs['created_at'], str):
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
             if '__class__' in kwargs:
                 del kwargs['__class__']
             self.__dict__.update(kwargs)
@@ -63,8 +63,8 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in my_dict.keys():
-            del my_dict['_sa_instance_state']
+        if '_sa_instance_state' in dictionary.keys():
+            del dictionary['_sa_instance_state']
         return dictionary
 
     def delete(self):
