@@ -63,6 +63,8 @@ class Test_user_attr(unittest.TestCase):
     def test_obj_storage(self):
         """This function tests that an object is automatically saved in
         the ___objects attr of storage instance"""
+        usr = User()
+        usr.save()
         self.assertIn(usr, models.storage.all().values())
 
     def test_type_class(self):

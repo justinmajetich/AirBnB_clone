@@ -4,6 +4,7 @@ import cmd
 import sys
 import json
 import re
+import os
 
 from models.__init__ import storage
 from models.amenity import Amenity
