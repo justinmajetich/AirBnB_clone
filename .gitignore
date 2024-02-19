@@ -2,7 +2,10 @@
 !/*.py
 !/.gitignore
 !/AUTHORS
+!/models/*
 !/*.sql
+!/tests/*
+!/web_static/*
 !/README.md
 !/*.txt
 !/*.sh
