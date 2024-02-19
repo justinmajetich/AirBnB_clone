@@ -837,6 +837,10 @@ class TestConsole_all(unittest.TestCase):
             self.assertIn("Place", f.getvalue().strip())
             self.assertIn("Review", f.getvalue().strip())
 
+    @unittest.skipIf(
+            os.getenv("HBNB_TYPE_STORAGE") == "db",
+            "Not running on FileStorage"
+            )
     def test_all_cls(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
