@@ -132,14 +132,14 @@ class HBNBCommand(cmd.Cmd):
                 continue
             arg = k_v.split('=', maxsplit=1)
 
-            if re.match('^".*"$', arg[1]):
+            if re.match(r'^".*"$', arg[1]):
                 arg[1] = arg[1].replace('_', ' ')
                 arg[1] = arg[1][1:-1].replace('"', '\"')
                 kwargs.update({arg[0]: arg[1]})
-            elif re.match('[0-9]+\.[0-9]+', arg[1]):
+            elif re.match(r'^[0-9]+\.[0-9]+$', arg[1]):
                 arg[1] = float(arg[1])
                 kwargs.update({arg[0]: arg[1]})
-            elif re.match('[0-9]+', arg[1]):
+            elif re.match(r'^[0-9]+$', arg[1]):
                 arg[1] = int(arg[1])
                 kwargs.update({arg[0]: arg[1]})
 
@@ -215,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -347,6 +347,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
