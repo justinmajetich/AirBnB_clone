@@ -1,12 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-</head>
-<body>
-	<h1>Number: {{ number }}</h1>
-</body>
-</html>
-
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+    {% if number is even %}
+        <H1>Number: {{ number }} is even</H1>
+    {% else %}
+        <H1>Number: {{ number }} is odd</H1>
+    {% endif %}
+    </BODY>
+</HTML>
