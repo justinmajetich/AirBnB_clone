@@ -5,7 +5,8 @@ from models.base_model import BaseModel
 
 class User(BaseModel):
     """This class defines a user by various attributes"""
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    __tablename__ = 'users'
+    email = Colum(String(128), nullable=True)
+    password = Colum(String(128), nullable=True)
+    first_name = Colum(String(128), nullable=True)
+    last_name = Colum(String(128), nullable=True) 
