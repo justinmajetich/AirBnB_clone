@@ -12,13 +12,14 @@ class City(BaseModel, Base):
 
     __tablename__ = "cities"
 
-    if type_of_storage == 'db':
-        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-        name = Column(String(128), nullable=False)
-        places = relationship(
+    places = relationship(
              'Place',
              cascade='all, delete-orphan',
              backref='cities')
+
+    if type_of_storage == 'db':
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        name = Column(String(128), nullable=False)
     else:
         state_id = ''
         name = ''
