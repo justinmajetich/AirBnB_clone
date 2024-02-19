@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 # models/place.py
 
-from sqlalchemy import Table, Column, String, ForeignKey
+from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
