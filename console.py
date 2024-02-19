@@ -144,7 +144,10 @@ class HBNBCommand(cmd.Cmd):
                     if line[2]:
                         value = line[2]
                         if value[0] == '"' and value[-1] == '"':
+                            value = value[1:-1]
+                            value = value.replace('"', '\\"')
                             value = value.replace('_', ' ')
+                            value = '"' + value + '"'
                             value = str(value)
                         elif value.find('.') >= 0 and (
                                 HBNBCommand.is_float(value)):
@@ -323,7 +326,8 @@ class HBNBCommand(cmd.Cmd):
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
+                # att_val = args[2][1:args[2].find('\"', 1)] task 2 can returned
+                att_val = args[2][1:-1]
 
             # if att_val was not quoted arg
             if not att_val and args[2]:
