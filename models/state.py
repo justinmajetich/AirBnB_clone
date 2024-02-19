@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 """
-State Module for HBNB project
-This module defines the State class, a subclass of BaseModel and Base.
-
-Attributes:
-    __tablename__ (str): The name of the MySQL table to store states.
-    name (sqlalchemy.Column): The name of the state, represented as a
-    string of up to 128 characters.
-    cities (sqlalchemy.orm.relationship or property): Represents a relationship
-    If a State object is deleted all linked City objects are automatically
-    deleted as well.
-    If the storage type is not 'db', this attribute is a property that returns
-    a list of City instances with state_id equal to the current State.id.
+ State Module for HBNB project
+ This module defines the State class, a subclass of BaseModel and Base.
+ Attributes:
+     __tablename__ (str): The name of the MySQL table to store states.
+     name (sqlalchemy.Column): The name of the state, represented as a
+     string of up to 128 characters.
+     cities (sqlalchemy.orm.relationship or property):
+     Represents a relationship
+     If a State object is deleted all linked City objects are automatically
+     deleted as well.
+     If the storage type is not 'db', this attribute is a property that returns
+     a list of City instances with state_id equal to the current State.id.
 """
 import os
 
@@ -39,16 +39,16 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-        @property
-        def cities(self):
-            """
-            Returns the list of City instances with
-            state_id equals to the current State.id
-            """
-            from models import storage
+    @property
+    def cities(self):
+        """
+        Returns the list of City instances with
+        state_id equals to the current State.id
+        """
+        from models import storage
 
-            all_cities = storage.all(City)
-            return [
-                    city for city in all_cities.values()
-                    if city.state_id == self.id
-                    ]
+        all_cities = storage.all(City)
+        return [
+                city for city in all_cities.values()
+                if city.state_id == self.id
+                ]
