@@ -155,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
                         setattr(new_instance, key, value)
                 except Exception:
                     pass
-
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
@@ -192,7 +192,17 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                for obj in self.__session.query(
+                        HBNBCommand.classes[c_name]
+                        ).all():
+                    if obj.id == c_id:
+                        print(obj)
+                        break
+                else:
+                    raise KeyError
+            else:
+                print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -247,12 +257,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split(".")[0] == args:
-                    print_list.append(str(v))
+            objects = storage.all(HBNBCommand.classes[args])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            objects = storage.all()
+
+        for obj in objects.values():
+            print_list.append(str(obj))
 
         print(print_list)
 
