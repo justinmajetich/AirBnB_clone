@@ -25,13 +25,12 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            if type_of_storage == 'db':
-                if "id" not in kwargs:
-                    self.id = str(uuid.uuid4())
-                if "created_at" not in kwargs:
-                    self.created_at = datetime.now()
-                if "updated_at" not in kwargs:
-                    self.updated_at = datetime.now()
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime.now()
+            if "updated_at" not in kwargs:
+                self.updated_at = datetime.now()
 
             # Set default value
             """ kwargs.setdefault('updated_at', datetime.now())
@@ -72,13 +71,14 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
 
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__': self.__class__.__name__})
-        dictionary['created_at'] = dictionary['created_at'].isoformat()
-        dictionary['updated_at'] = dictionary['updated_at'].isoformat()
+        dictionary = self.__dict__.copy()
+        dictionary['__class__'] = self.__class__.__name__
 
-        if '_sa_instance_state' in dictionary.keys():
+        for key in dictionary:
+            if isinstance(dictionary[key], datetime):
+                dictionary[key] = dictionary[key].isoformat()
+
+        if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
 
         return dictionary
