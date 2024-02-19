@@ -194,7 +194,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
         try:
             if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                for obj in self.__session.query(
+                for obj in storage._DBStorage__session.query(
                         HBNBCommand.classes[c_name]
                         ).all():
                     if obj.id == c_id:
