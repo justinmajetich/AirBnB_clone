@@ -10,6 +10,17 @@ from models.review import Review
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 
 
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True,
+                             nullable=False))
+
+
 class Place(BaseModel, Base):
     """A place to stay"""
     __tablename__ = "places"
@@ -19,6 +30,12 @@ class Place(BaseModel, Base):
             'Review',
             cascade='all, delete-orphan',
             backref='place'
+            )
+        amenities = relationship(
+                'Amenity',
+                secondary=place_amenity,
+                viewonly=False,
+                back_populates="place_amenities"
             )
     else:
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -50,3 +67,14 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     reviews.append(review)
             return reviews
+
+        @property
+        def amenities(self):
+            ''' returns a list of the amenities '''
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            '''Adds amenity ids to attr '''
+            if type(obj) is Amenity and obj.id not in self.amenity_ids:
+                self.amenity_ids.append(obj.id)
