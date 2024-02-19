@@ -2,7 +2,7 @@
 """Place Module for HBNB project"""
 from models.base_model import BaseModel
 from sqlalchemy.orm import relationship
-from models import type_of_storage, storage
+from models import type_of_storage
 from models.review import Review
 
 
@@ -36,6 +36,9 @@ class Place(BaseModel):
             relationship between Place and Review.
 
             """
+
+            from models import storage
+
             all_reviews = storage.all(Review)
             reviews = []
             for review in all_reviews.values():
