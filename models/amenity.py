@@ -3,11 +3,15 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
-from models.place import place_amenity
+from models import type_of_storage
 
 
-class Amenity(BaseModeli, Base):
-    '''Class for Amenities '''
-    __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary=place_amenity)
+class Amenity(BaseModel, Base):
+    '''Class for Amenities'''
+
+    __tablename__ = 'amenities'
+
+    if type_of_storage == 'db':
+        name = Column(String(128), nullable=False)
+    else:
+        name = ''
