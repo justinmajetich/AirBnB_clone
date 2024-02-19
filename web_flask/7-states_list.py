@@ -4,11 +4,11 @@ from models import storage
 from flask import Flask, render_template
 
 app = Flask(__name__)
-app.url_map.strict_slashes(False)
+app.url_map.strict_slashes = False
 
 
-@app.teardown_appcontext()
-def close_sessions():
+@app.teardown_appcontext
+def close_sessions(error=None):
     '''After each request you must remove the current SQLAlchemy Session'''
     storage.close()
 
