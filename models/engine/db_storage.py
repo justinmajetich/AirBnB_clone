@@ -1,18 +1,14 @@
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-import sys
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
 import os
 
-HBNB_MYSQL_USER = os.environ('HBNB_MYSQL_USER')
-HBNB_MYSQL_PWD = os.environ('HBNB_MYSQL_PWD')
-HBNB_MYSQL_DB = os.environ('HBNB_MYSQL_DB')
-HBNB_MYSQL_HOST = os.environ('HBNB_MYSQL_HOST')
-HBNB_ENV = os.environ('HBNB_ENV')
+HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
+HBNB_MYSQL_PWD = os.getenv('HBNB_MYSQL_PWD')
+HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
+HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
+HBNB_ENV = os.getenv('HBNB_ENV')
 
-
-Base = declarative_base()
-metadata = MetaData()
 
 class DBStorage:
     __engine = None
@@ -25,7 +21,7 @@ class DBStorage:
 
 
         if HBNB_ENV == 'test':
-            metadata.drop_all(self.__engine)
+            Base.meta.drop_all(self.__engine)
 
 
 
