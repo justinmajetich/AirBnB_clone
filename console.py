@@ -140,7 +140,8 @@ class HBNBCommand(cmd.Cmd):
                 value = key_value[1][1:-1].replace('_', ' ')
             elif key_value[1].isdigit():
                 value = value = int(key_value[1])
-            elif '.' in key_value[1] and all(part.isdigit() for part in key_value[1].split('.')):
+            elif '.' in key_value[1] and \
+                    all(part.isdigit() for part in key_value[1].split('.')):
                 value = float(key_value[1])
 
             parameters[key] = value
