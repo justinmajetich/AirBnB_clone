@@ -129,7 +129,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[_cls]()
-        print(new_instance.id)
         storage.save()
         if pline[2]:
             params = pline[2]
@@ -159,8 +158,8 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 else:
                     continue
+            print(new_instance.id)
         else:
-            new_instance = HBNBCommand.classes[args]()
             storage.save()
             print(new_instance.id)
             storage.save()
