@@ -10,8 +10,8 @@
 !/*.txt
 !/*.sh
 __pycache__/
-!tests_copy/
-!models/
-!tests/
-!web_static/
+!tests_copy/**
+!models/**
+!tests/**
+!web_static/**
 
