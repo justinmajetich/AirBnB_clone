@@ -1,11 +1,3 @@
-tests_copy/
-__pycache__/
+**/__pycache__/
 file.json
-.env
-.venv
-env/
-venv/
-venv_*/
-ENV/
-env.bak/
-venv.bak/
+tests_copy/

@@ -5,6 +5,7 @@ Unittest for the console including the class HBNBCommand
 
 import unittest
 import models
+from models.user import User
 import os
 import json
 from console import HBNBCommand
@@ -227,6 +228,63 @@ class TestConsole_create(unittest.TestCase):
             read_data = file.read()
             self.assertIn("Amenity." + obj_id, read_data)
         self.assertIn("Amenity." + obj_id, models.storage.all().keys())
+
+    def test_create_with_parameters(self):
+        """Test create command with parameters"""
+        classes = ["User", "City", "State", "Amenity", "Place", "Review"]
+        attributes = {
+            "User": "email",
+            "City": "name",
+            "State": "name",
+            "Amenity": "name",
+            "Place": "name",
+            "Review": "text"
+        }
+        for cls in classes:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(
+                        HBNBCommand().onecmd(
+                            f'create {cls} {attributes[cls]}="test"'
+                            )
+                        )
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()[f"{cls}." + obj_id]
+            self.assertEqual(getattr(obj, attributes[cls]), "test")
+
+    def test_create_with_invalid_parameters(self):
+        """Test create command with invalid parameters"""
+        classes = ["User", "City", "State", "Amenity", "Place", "Review"]
+        for cls in classes:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(
+                        HBNBCommand().onecmd(f'create {cls} invalid="invalid"')
+                        )
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()[f"{cls}." + obj_id]
+            self.assertFalse(hasattr(obj, "invalid"))
+
+    def test_create_with_no_parameters(self):
+        """Test create command with no parameters"""
+        from models.user import User
+        from models.city import City
+        from models.state import State
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
+        classes = ["User", "City", "State", "Amenity", "Place", "Review"]
+        for cls in classes:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd(f'create {cls}'))
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()[f"{cls}." + obj_id]
+            self.assertTrue(isinstance(obj, eval(cls)))
+
+    def test_create_with_nonexistent_class(self):
+        """Test create command with nonexistent class"""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('create NonexistentClass'))
+        self.assertEqual("** class doesn't exist **", f.getvalue().strip())
 
 
 class TestConsole_show(unittest.TestCase):

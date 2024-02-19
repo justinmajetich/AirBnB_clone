@@ -26,7 +26,6 @@ class test_fileStorage(unittest.TestCase):
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
-        storage._FileStorage__objects = {}
         self.assertEqual(len(storage.all()), 0)
 
     def test_new(self):

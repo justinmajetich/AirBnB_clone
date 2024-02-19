@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
-    prompt = "(hbnb) " # There's a prompt either ways
+    prompt = "(hbnb) "  # There's a prompt either ways
 
     classes = {
         "BaseModel": BaseModel,
@@ -116,6 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """Handles EOF to exit program"""
+        print()
         return True
 
     def help_EOF(self):
@@ -127,14 +128,34 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class"""
-        if not args:
+        """Create an object of any class with given parameters"""
+        args = args.split()
+        if len(args) == 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[args[0]]()
+
+        if len(args) > 1:
+            for arg in args[1:]:
+                try:
+                    key, value = arg.split("=")
+                    # Check if the attribute is valid for the class
+                    if hasattr(new_instance, key):
+                        # Convert into the right format (int, float, string)
+                        if value[0] == "\"":
+                            value = value.replace("_", " ").strip("\"")
+                        elif "." in value:
+                            value = float(value)
+                        else:
+                            value = int(value)
+                        setattr(new_instance, key, value)
+                except Exception:
+                    pass
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
@@ -171,7 +192,17 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                for obj in self.__session.query(
+                        HBNBCommand.classes[c_name]
+                        ).all():
+                    if obj.id == c_id:
+                        print(obj)
+                        break
+                else:
+                    raise KeyError
+            else:
+                print(storage._FileStorage__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -226,12 +257,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split(".")[0] == args:
-                    print_list.append(str(v))
+            objects = storage.all(HBNBCommand.classes[args])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            objects = storage.all()
+
+        for obj in objects.values():
+            print_list.append(str(obj))
 
         print(print_list)
 
@@ -287,21 +318,21 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args = args[2]
-        if args and ((args[0] == '"') or (args[0] == "'")):  # check for quoted arg
+        if args and ((args[0] == '"') or (args[0] == "'")):  # check quoted arg
             second_quote = args.replace("'", '"').find('"', 1)
             att_name = args[1:second_quote]
             args = args[second_quote + 1:]
 
-        args = args.partition(" ") #error, what if ("name", "john smith")
+        args = args.partition(" ")  # error, what if ("name", "john smith")
 
         # if att_name was not quoted arg
         if not att_name and (args[0] != " "):
             att_name = args[0]
         # check for quoted val arg
         if args[2] and ((args[2][0] == '"') or (args[2][0] == "'")):
-            att_val = args[2][1 : args[2].replace("'", '"').find('"', 1)] #valid but works in specific conditions
+            att_val = args[2][1: args[2].replace("'", '"').find('"', 1)]
 
-            # if att_val was not quoted arg
+        # if att_val was not quoted arg
         if not att_val and args[2]:
             att_val = args[2].partition(" ")[0]
 
@@ -326,7 +357,7 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val}) #does this work?
+                new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
 
