@@ -149,8 +149,8 @@ class HBNBCommand(cmd.Cmd):
             instance_attrs = new_instance.to_dict()
             instance_attrs.update(kwargs)
             new_instance = HBNBCommand.classes[_cls](**instance_attrs)
+            storage.new(new_instance)
 
-        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
