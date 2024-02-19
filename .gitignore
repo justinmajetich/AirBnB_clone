@@ -1,7 +1,5 @@
 *
-
 !/*.py
-
 !/.gitignore
 !/AUTHORS
 !/models/*
@@ -11,3 +9,5 @@
 !/README.md
 !/*.txt
 !/*.sh
+__pycache__/
+
