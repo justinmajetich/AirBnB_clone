@@ -116,6 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """Handles EOF to exit program"""
+        print()
         return True
 
     def help_EOF(self):
@@ -142,14 +143,16 @@ class HBNBCommand(cmd.Cmd):
             for arg in args[1:]:
                 try:
                     key, value = arg.split("=")
-                    # Convert value into the right format (int, float, string)
-                    if value[0] == "\"":
-                        value = value.replace("_", " ").strip("\"")
-                    elif "." in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                    setattr(new_instance, key, value)
+                    # Check if the attribute is valid for the class
+                    if hasattr(new_instance, key):
+                        # Convert into the right format (int, float, string)
+                        if value[0] == "\"":
+                            value = value.replace("_", " ").strip("\"")
+                        elif "." in value:
+                            value = float(value)
+                        else:
+                            value = int(value)
+                        setattr(new_instance, key, value)
                 except Exception:
                     pass
 
