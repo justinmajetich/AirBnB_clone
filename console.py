@@ -113,19 +113,43 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+    # Fati-Zid: task 2
+    def do_create(self, arg):
+    """Create an object of any class with given parameters."""
+    if not arg:
+        print("** class name missing **")
+        return
 
+    args = arg.split()
+    class_name = args[0]
+    if class_name not in self.classes:
+        print("** class doesn't exist **")
+        return
+
+    params = {}
+    for param in args[1:]:
+        try:
+            key, value = param.split('=')
+            # Handle string value
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+            # Handle float value
+            elif '.' in value:
+                value = float(value)
+            # Handle integer value
+            else:
+                value = int(value)
+            params[key] = value
+        except ValueError:
+            # Skip if parameter can't be recognized correctly
+            pass
+
+    new_instance = self.classes[class_name](**params)
+    storage.new(new_instance)
+    storage.save()
+    print(new_instance.id)
+    # Fati-Zid: end of task 2
+    
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
