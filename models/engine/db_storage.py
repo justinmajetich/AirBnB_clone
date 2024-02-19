@@ -14,6 +14,7 @@ HBNB_ENV = os.environ('HBNB_ENV')
 Base = declarative_base()
 metadata = MetaData()
 
+
 class DBStorage:
     __engine = None
     __session = None
@@ -21,14 +22,12 @@ class DBStorage:
     def __init__(self):
         self.__engine = create_engine(f'mysql+mysqldb://{HBNB_MYSQL_USER}:\
             {HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}',
-            pool_pre_ping=True)
-
+                                      pool_pre_ping=True)
 
         if HBNB_ENV == 'test':
             metadata.drop_all(self.__engine)
 
-
-
+        self.__session = sessionmaker(bind=self.__engine)
 
     def all(self, cls=None):
         all_objects = {}
@@ -36,7 +35,8 @@ class DBStorage:
         if cls is not None:
             instances = self.__session.query(cls).all()
             for instance in instances:
-                all_objects.update({instance.to_dict()['__class__'] + '.' + instance.id: instance})
+                all_objects.update({instance.to_dict()['__class__']
+                                    + '.' + instance.id: instance})
 
         else:
             from models.user import User
@@ -51,8 +51,8 @@ class DBStorage:
             for _cls in all_cls:
                 instances = self.__session.query(_cls).all()
                 for instance in instances:
-                    all_objects.update({instance.to_dict()['__class__'] + '.' + instance.id: instance})
-
+                    all_objects.update({instance.to_dict()['__class__']
+                                        + '.' + instance.id: instance})
 
         return all_objects
 
