@@ -5,7 +5,6 @@ from os import getenv
 from sqlalchemy import create_engine
 from models.base_model import Base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
@@ -36,6 +35,7 @@ class DBStorage():
     - delete: Deletes an object from the current database session.
     - reload: Creates all tables in the database and creates the
      current database session.
+     - close: Closes the current session.
     """
 
     __engine = None
