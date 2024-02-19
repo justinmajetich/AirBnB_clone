@@ -142,8 +142,9 @@ class HBNBCommand(cmd.Cmd):
                 value = float(value)
                 
             parsed_params[key] = value
-            
+
         new_instance = class_obj(**parsed_params)
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
