@@ -7,7 +7,6 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from models import type_of_storage
 from models.review import Review
-from models.amenity import Amenity
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 
 
@@ -76,5 +75,6 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, obj=None):
             '''Adds amenity ids to attr '''
+            from models.amenity import Amenity
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
