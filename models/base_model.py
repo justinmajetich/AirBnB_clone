@@ -57,9 +57,9 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         if dictionary.get('_sa_instance_state'):
             dictionary.pop('_sa_instance_state')
-        if 'amenity_ids' in dictionary:
+#        if 'amenity_ids' in dictionary:
             # Make a deep copy of the list
-            dictionary['amenity_ids'] = dictionary['amenity_ids'].copy()
+#            dictionary['amenity_ids'] = dictionary['amenity_ids'].copy()
 
         return dictionary
 
