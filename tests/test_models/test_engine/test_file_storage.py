@@ -11,7 +11,7 @@ import pep8
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                  'Database storage is being used.')
-class test_fileStorage(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
