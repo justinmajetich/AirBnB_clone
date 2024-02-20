@@ -114,40 +114,26 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     # Fati-Zid: task 2
-    def do_create(self, arg):
-    """Create an object of any class with given parameters."""
-    if not arg:
-        print("** class name missing **")
-        return
-
-    args = arg.split()
-    class_name = args[0]
-    if class_name not in self.classes:
-        print("** class doesn't exist **")
-        return
-
-    params = {}
-    for param in args[1:]:
+    def do_create(self, args):
+        """ Create an object of any class"""
         try:
-            key, value = param.split('=')
-            # Handle string value
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
-            # Handle float value
-            elif '.' in value:
-                value = float(value)
-            # Handle integer value
-            else:
-                value = int(value)
-            params[key] = value
-        except ValueError:
-            # Skip if parameter can't be recognized correctly
-            pass
-
-    new_instance = self.classes[class_name](**params)
-    storage.new(new_instance)
-    storage.save()
-    print(new_instance.id)
+            if not args:
+                raise SyntaxError()
+            arg_list = args.split(" ")
+            key_word = {}
+            for arg in arg_list[1:]:
+                arg_splited = arg.split("=")
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
+                key_word[arg_splited[0]] = arg_splited[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_object = HBNBCommand.classes[arg_list[0]](**key_word)
+        new_object.save()
+        print(new_object.id)
     # Fati-Zid: end of task 2
     
     def help_create(self):
