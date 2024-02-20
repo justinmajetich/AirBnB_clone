@@ -1,27 +1,25 @@
 #!/usr/bin/python3
-""" Script that runs an app with Flask framework """
+"""
+start Flask application
+"""
+
 from flask import Flask, render_template
+from models import *
 from models import storage
-from models.state import State
-
-
 app = Flask(__name__)
 
 
+@app.route('/states_list', strict_slashes=False)
+def states_list():
+    """display a HTML page with the states listed in alphabetical order"""
+    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)  
+    return render_template('7-states_list.html', states=states)
+
+
 @app.teardown_appcontext
-def teardown_session(exception):
-    """ Teardown """
+def teardown_db(exception):
+    """closes the storage on teardown"""
     storage.close()
 
-
-@app.route('/states_list', strict_slashes=False)
-def display_html():
-    """ Function called with /states_list route """
-    states = storage.all(State)
-    dict_to_html = {value.id: value.name for value in states.values()}
-    return render_template('7-states_list.html',
-                           Table="States",
-                           items=dict_to_html)
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
