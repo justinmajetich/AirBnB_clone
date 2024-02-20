@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     
 
