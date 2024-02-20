@@ -130,3 +130,6 @@ class test_fileStorage(unittest.TestCase):
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         self.assertEqual(type(storage), file_storage.FileStorage)
+
+if __name__ == "__main__":
+    unittest.main()
