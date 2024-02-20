@@ -28,7 +28,7 @@ class test_City(unittest.TestCase):
         self.assertIsInstance(self.city, City)
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """Instantiating the tests"""
         super().__init__(*args, **kwargs)
         self.name = "City"
         self.value = City

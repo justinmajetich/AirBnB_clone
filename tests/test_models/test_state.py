@@ -26,13 +26,13 @@ class test_state(test_basemodel):
             pass
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """Initilizing the tests"""
         super().__init__(*args, **kwargs)
         self.name = "State"
         self.value = State
 
     def test_name3(self):
-        """ """
+        """Test creation of a state"""
         new = self.value()
         self.assertEqual(type(new.name), str)
 
