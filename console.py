@@ -117,14 +117,13 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         new_obj = {}
         kwargs = {}
-        new_instance = ''
         class_arg = ''
         if args:
             split_args = args.split()
             class_arg = split_args[0]
             for arg in split_args[1:]:
                 key, value = arg.split('=')
-                kwargs[key] = value.replace('"','')
+                kwargs[key] = value.replace('"', '')
         if not args:
             print("** class name missing **")
             return
@@ -133,20 +132,21 @@ class HBNBCommand(cmd.Cmd):
             return
         if kwargs:
             for key, value in kwargs.items():
-                if not ' ' in value and '"' in value and value.replace("\"", '').count('"') % 2 == 0:
-                    if '_' in value:
-                        value.replace('_', ' ')
-                    new_obj[key] = value
-                elif '.' in value and value.replace('.', '').isdigit():
-                    new_obj[key] = float(value)
-                elif value.isdigit():
-                    new_obj[key] = int(value)
-            new_instance = HBNBCommand.classes[class_arg](**new_obj)
-        else:
-            new_instance = HBNBCommand.classes[class_arg]()
+                if ' ' not in value:
+                    if '"' in value and \
+                            value.replace("\"", '').count('"') % 2 == 0:
+                        if '_' in value:
+                            value = value.replace('_', ' ')
+                        new_obj[key] = value
+                    elif '"' not in value:
+                        if '_' in value:
+                            value = value.replace('_', ' ')
+                        new_obj[key] = value
+        new_instance = HBNBCommand.classes[class_arg]()
+        for key, value in new_obj.items():
+            setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -209,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -341,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
