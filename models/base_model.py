@@ -32,22 +32,24 @@ class BaseModel:
         else:
             if "updated_at" in kwargs:
                 kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 self.updated_at = datetime.now()
             if "created_at" in kwargs:
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                         '%Y-%m-%dT%H:%M:%S.%f')
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 self.created_at = datetime.now()
             if "id" not in kwargs:
                 self.id = str(uuid.uuid4())
+
 
             if "name" in kwargs:
                 self.name = kwargs["name"]
             for key in kwargs:
                 if key != "__class__":
                     setattr(self, key, kwargs[key])
+
 
     def __str__(self):
         """Returns a string representation of the instance"""
