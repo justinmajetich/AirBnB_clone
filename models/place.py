@@ -30,6 +30,31 @@ class Place(BaseModel, Base):
     """A Place model"""
     __tablename__ = "places"
 
+    def __init__(self, *args, **kwargs):
+        """ Setting up initialization for the Place class
+            *args: Is not been used
+        """
+        super().__init__(**kwargs)
+        class_attr = ["city_id", "user_id", "description", "name",
+                      "number_rooms", "number_bathrooms", "max_guest",
+                      "price_by_night", "latitude", "longitude",
+                      "amenity_ids"]
+        self.city_id = ""
+        self.user_id = ""
+        self.name = ""
+        self.description = ""
+        self.number_rooms = 0
+        self.number_bathrooms = 0
+        self.max_guest = 0
+        self.price_by_night = 0
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.amenity_ids = []
+        if kwargs:
+            sub_dict = {k: kwargs[k] for k in class_attr if kwargs.get(k)}
+            self.__dict__.update(sub_dict)
+
+
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
