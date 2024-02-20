@@ -139,7 +139,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[args[0]]()
-
         if len(args) > 1:
             for arg in args[1:]:
                 try:
