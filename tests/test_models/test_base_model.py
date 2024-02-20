@@ -64,12 +64,14 @@ class test_basemodel(unittest.TestCase):
         self.assertTrue(isinstance(self.base_model, BaseModel))
 
     @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
-                 'Database storage is being used.')
+                     'Database storage is being used.')
     def test_save(self):
         """Tests save method"""
 
         self.base_model.save()
-        self.assertNotEqual(self.base_model.created_at, self.base_model.updated_at)
+        self.assertNotEqual(
+            self.base_model.created_at,
+            self.base_model.updated_at)
 
     def test_to_dict(self):
         """Tests to_dict method"""
@@ -79,6 +81,7 @@ class test_basemodel(unittest.TestCase):
         self.assertIsInstance(dict['created_at'], str)
         self.assertIsInstance(dict['updated_at'], str)
         self.assertEqual(self.base_model.__class__.__name__, 'BaseModel')
+
 
 if __name__ == "__main__":
     unittest.main()
