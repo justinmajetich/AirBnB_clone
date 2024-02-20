@@ -5,6 +5,7 @@ City class: Represents a city with attributes name and state_id.
 import os
 
 from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy.orm import relationship
 
 from models.base_model import Base, BaseModel
 
@@ -19,6 +20,7 @@ class City(BaseModel, Base):
     if storage_type == "db":
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+        places = relationship("Place", backref="cities", cascade="all, delete")
     else:
         name = ""
         state_id = ""
