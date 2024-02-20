@@ -27,12 +27,12 @@ class TestDBStorage(unittest.TestCase):
 
         self.assertIsNotNone(db_storage.__doc__)
         self.assertIsNotNone(db_storage.DBStorage.__doc__)
-        self.assertIsNotNone(db_storage.DBStorage.__init__)
-        self.assertIsNotNone(db_storage.DBStorage.all)
-        self.assertIsNotNone(db_storage.DBStorage.new)
-        self.assertIsNotNone(db_storage.DBStorage.save)
-        self.assertIsNotNone(db_storage.DBStorage.delete)
-        self.assertIsNotNone(db_storage.DBStorage.reload)
+        self.assertIsNotNone(db_storage.DBStorage.__init__.__doc__)
+        self.assertIsNotNone(db_storage.DBStorage.all.__doc__)
+        self.assertIsNotNone(db_storage.DBStorage.new.__doc__)
+        self.assertIsNotNone(db_storage.DBStorage.save.__doc__)
+        self.assertIsNotNone(db_storage.DBStorage.delete.__doc__)
+        self.assertIsNotNone(db_storage.DBStorage.reload.__doc__)
 
     def test_following_pep8(self):
         """Tests if the code follows pep8 style guide"""

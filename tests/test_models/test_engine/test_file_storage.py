@@ -35,11 +35,11 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertIsNotNone(file_storage.__doc__)
         self.assertIsNotNone(file_storage.FileStorage.__doc__)
-        self.assertIsNotNone(file_storage.FileStorage.all)
-        self.assertIsNotNone(file_storage.FileStorage.new)
-        self.assertIsNotNone(file_storage.FileStorage.save)
-        self.assertIsNotNone(file_storage.FileStorage.reload)
-        self.assertIsNotNone(file_storage.FileStorage.delete)
+        self.assertIsNotNone(file_storage.FileStorage.all.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.new.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.save.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.reload.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.delete.__doc__)
 
     def test_following_pep8(self):
         """Tests if the code follows pep8 style guide"""
