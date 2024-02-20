@@ -75,3 +75,6 @@ class TestDBStorage(unittest.TestCase):
 
         self.cursor.close()
         self.db.close()
+
+if __name__ == "__main__":
+    unittest.main()
