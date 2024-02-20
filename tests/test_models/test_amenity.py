@@ -8,18 +8,18 @@ import pep8
 
 
 class TestAmenity(unittest.TestCase):
-    """Tests the Place class"""
+    """Tests the Amenity class"""
 
     @classmethod
     def setUpClass(cls):
-        """Creates a place instance"""
+        """Creates an amenity instance"""
 
         cls.amenity = Amenity()
         cls.amenity.name = 'Wifi'
 
     @classmethod
     def tearDownClass(cls):
-        """Delete the place instance"""
+        """Delete the amenity instance"""
 
         del cls.amenity
 
@@ -32,7 +32,7 @@ class TestAmenity(unittest.TestCase):
             pass
 
     def test_attribute_existence(self):
-        """Tests for attribute existence in Place class"""
+        """Tests for attribute existence in Amenity class"""
 
         self.assertTrue('id' in self.amenity.__dict__)
         self.assertTrue('created_at' in self.amenity.__dict__)
@@ -62,7 +62,7 @@ class TestAmenity(unittest.TestCase):
         self.assertEqual('to_dict' in dir(self.amenity), True)
 
     def test_issubclass(self):
-        """Tests if Place is subclass of Basemodel"""
+        """Tests if Amenity is subclass of Basemodel"""
 
         self.assertTrue(issubclass(self.amenity.__class__, BaseModel), True)
 
