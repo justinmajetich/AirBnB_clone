@@ -7,6 +7,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from models import type_of_storage
 from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 
 
