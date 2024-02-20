@@ -1,69 +1,114 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel
+from models.base_model import BaseModel
 from models.place import Place
+import unittest
+import os
+import pep8
 
 
-class test_Place(test_basemodel):
-    """ """
+class TestPlace(unittest.TestCase):
+    """Tests the Place class"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Place"
-        self.value = Place
+    @classmethod
+    def setUpClass(cls):
+        """Creates a place instance"""
 
-    def test_city_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.city_id), str)
+        cls.place = Place()
+        cls.place.city_id = '5df1xghfc'
+        cls.place.user_id = 'e65s4trgd'
+        cls.place.name = 'Cozy House in The Forest'
+        cls.place.description = 'A good place to relax'
+        cls.place.number_rooms = 4
+        cls.place.number_bathrooms = 5
+        cls.place.max_guest = 20
+        cls.place.price_by_night = 100
+        cls.place.latitude = 30.03
+        cls.place.longitude = 31.23
+        cls.place.amenity_ids = ['68453asfd']
 
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
+    @classmethod
+    def tearDownClass(cls):
+        """Delete the place instance"""
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+        del cls.place
 
-    def test_description(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.description), str)
+    def tearDown(self):
+        """Removes file.json"""
 
-    def test_number_rooms(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.number_rooms), int)
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
 
-    def test_number_bathrooms(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.number_bathrooms), int)
+    def test_attribute_existence(self):
+        """Tests for attribute existence in Place class"""
 
-    def test_max_guest(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.max_guest), int)
+        self.assertTrue('id' in self.place.__dict__)
+        self.assertTrue('created_at' in self.place.__dict__)
+        self.assertTrue('updated_at' in self.place.__dict__)
+        self.assertTrue('city_id' in self.place.__dict__)
+        self.assertTrue('user_id' in self.place.__dict__)
+        self.assertTrue('name' in self.place.__dict__)
+        self.assertTrue('description' in self.place.__dict__)
+        self.assertTrue('number_rooms' in self.place.__dict__)
+        self.assertTrue('number_bathrooms' in self.place.__dict__)
+        self.assertTrue('max_guest' in self.place.__dict__)
+        self.assertTrue('price_by_night' in self.place.__dict__)
+        self.assertTrue('latitude' in self.place.__dict__)
+        self.assertTrue('longitude' in self.place.__dict__)
+        self.assertTrue('amenity_ids' in self.place.__dict__)
 
-    def test_price_by_night(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.price_by_night), int)
+    def test_attribute_type(self):
+        """Tests type of attributes"""
 
-    def test_latitude(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
+        self.assertEqual(type(self.place.city_id), str)
+        self.assertEqual(type(self.place.user_id), str)
+        self.assertEqual(type(self.place.name), str)
+        self.assertEqual(type(self.place.description), str)
+        self.assertEqual(type(self.place.number_rooms), int)
+        self.assertEqual(type(self.place.number_bathrooms), int)
+        self.assertEqual(type(self.place.max_guest), int)
+        self.assertEqual(type(self.place.price_by_night), int)
+        self.assertEqual(type(self.place.latitude), float)
+        self.assertEqual(type(self.place.longitude), float)
+        self.assertEqual(type(self.place.amenity_ids), list)
 
-    def test_longitude(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == 'db',
+                     'Database storage is being used')
+    def test_save(self):
+        """Tests save method"""
 
-    def test_amenity_ids(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.amenity_ids), list)
+        self.place.save()
+        self.assertNotEqual(self.place.created_at, self.place.updated_at)
+
+    def test_to_dict(self):
+        """tests to_dict method"""
+
+        dict = self.place.to_dict()
+
+        self.assertIsInstance(dict['created_at'], str)
+        self.assertIsInstance(dict['updated_at'], str)
+        self.assertEqual('to_dict' in dir(self.place), True)
+
+    def test_issubclass(self):
+        """Tests if Place is subclass of Basemodel"""
+
+        self.assertTrue(issubclass(self.place.__class__, BaseModel), True)
+
+    def test_documentation(self):
+        """Tests if the class is documented"""
+
+        self.assertIsNotNone(Place.__doc__)
+
+    def test_following_pep8(self):
+        """Tests if the code follows pep8 style guide"""
+
+        pep8_style = pep8.StyleGuide(quiet=True)
+        result = pep8_style.check_files(['models/place.py'])
+
+        self.assertEqual(result.total_errors, 0, 'Found style errors.')
+
+
+if __name__ == "__main__":
+    unittest.main()
