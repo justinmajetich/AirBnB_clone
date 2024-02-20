@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,48 +115,39 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """"Creates a class of any type"""
+
+        try:
+            arg_list = args.split() 
+            class_name = arg_list[0]
+        except:
             print("** class name missing **")
             return
-
-        arg_list = args.split()
-        class_name = arg_list[0]
-
+        
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-            
-             
+        
         params = {}
-        for param in arg_list[1:]:
-                if '=' not in param:
-                    print(f"Invalid")
-                    continue
-                key, value = param.split('=', 1)
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]  
-                    value = value.replace('_', ' ')  
-                    value = value.replace('\\"', '"')  
-                elif '.' in value:
-                      try:
-                          value = float(value)
-                      except ValueError:
-                       print(f"not float value: {value}")
-                       continue
+        for arg in arg_list[1:]:
+            key, value_str = tuple(arg.split('='))
+            try:
+                if value_str.startswith('"') and value_str.endswith('"'):
+                    value = value_str[1:-1]
+                elif '.' in value_str:
+                    value = float(value_str)
                 else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        print(f"not integer value: {value}")
-                        continue
+                    value = int(value_str)
+                params[key] = value
+            except Exception:
+                pass
 
-        params[key] = value
-
-        new_instance = HBNBCommand.classes[args](**params)
+        new_instance = HBNBCommand.classes[class_name](**params)
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
-        storage.save()
+        
+
 
     def help_create(self):
         """ Help information for the create method """
