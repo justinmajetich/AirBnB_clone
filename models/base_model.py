@@ -21,6 +21,7 @@ class BaseModel:
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         time_form = "%Y-%m-%dT%H:%M:%S.%f"
@@ -56,6 +57,9 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         if dictionary.get('_sa_instance_state'):
             dictionary.pop('_sa_instance_state')
+        if 'amenity_ids' in dictionary:
+            # Make a deep copy of the list
+            dictionary['amenity_ids'] = dictionary['amenity_ids'].copy()
 
         return dictionary
 

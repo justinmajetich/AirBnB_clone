@@ -146,11 +146,17 @@ class HBNBCommand(cmd.Cmd):
                     key, value = arg.split("=")
                     # Check if the attribute is valid for the class
                     if hasattr(new_instance, key):
-                        # Convert into the right format (int, float, string)
+                        # Convert to the right format (int,float,string,list)
                         if value[0] == "\"":
-                            value = value.replace("_", " ").strip("\"")
+                            value = value[1:-1]  # Remove the quotation marks
                         elif "." in value:
                             value = float(value)
+                        elif value[0] == "[" and value[-1] == "]":
+                            # Conv string to list/remove the quot from items
+                            value = [
+                                    item.strip('\"')
+                                    for item in value[1:-1].split(",")
+                                    ]
                         else:
                             value = int(value)
                         setattr(new_instance, key, value)
