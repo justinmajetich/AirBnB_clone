@@ -140,3 +140,29 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+# Airbnb Clone - MySQL
+
+This is a clone of the Airbnb website, utilizing MySQL as the database management system.
+
+## About
+
+This project is an attempt to replicate the functionality and user experience of the Airbnb website.
+
+## Installation
+
+To install and run the project locally, follow these steps:
+
+1. Clone the repository:
+2. Install the required dependencies:
+3. Set up the MySQL database:
+- Create a MySQL database named `airbnb_clone`.
+- Update the database connection settings in `config.py` to match your MySQL configuration.
+4. Run the application:
+
+## Credits
+
+This project was initially created by https://github.com/justinmajetich
+
+### Additional Contributions
+
+https://github.com/Babuhatarii and https://github.com/mwanikigachanja
