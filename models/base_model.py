@@ -19,21 +19,27 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         from models import storage
-        print("BaseModel kwarks: ", kwargs)
+        self.id = str(uuid.uuid4())
         if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            # if os.getenv('HBNB_TYPE_STORAGE') != 'db':
-            #     storage.new(self)
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
 
         else:
-            print("Kwargs in baseModel: ",kwargs)
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+            try:
+                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+            except KeyError:
+                # kwargs['updated_at'] = datetime.now()
+                setattr(self, 'updated_at', datetime.utcnow())
+            try:
+                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            except KeyError:
+                setattr(self, 'created_at', datetime.utcnow())
+            try:
+                del kwargs['__class__']
+            except KeyError:
+                pass
             # for every key-value pair,
             # instance attribute is created from dictionary
             # Should be tested

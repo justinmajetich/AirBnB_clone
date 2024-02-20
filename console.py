@@ -158,11 +158,10 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 else:
                     continue
-        print("New instance dict: ", obj_dict)
         if len(obj_dict) == 0:
             new_instance = HBNBCommand.classes[_cls]()
         else:
-            new_instance = HBNBCommand.classes[_cls](obj_dict)
+            new_instance = HBNBCommand.classes[_cls](**obj_dict)
 
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             storage.new(new_instance)
@@ -231,11 +230,20 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
 
-        try:
-            del (storage.all()[key])
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            _cls = HBNBCommand.classes[c_name]
+            try:
+                to_delete = storage.all()[key]
+                storage.delete(to_delete)
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
+        else:
+            try:
+                del (storage.all()[key])
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
 
     def help_destroy(self):
         """ Help information for the destroy command """
@@ -251,14 +259,23 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in engine.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                _cls = HBNBCommand.classes[args]
+                print_list.append(storage.all(_cls))
+            else:
+                for k, v in engine.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
         else:
-            for k, v in engine.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                print_list.append(storage.all())
+            else:
+                for k, v in engine.items():
+                    print_list.append(str(v))
+        if len(print_list) == 1 and print_list[0] == {}:
+            print([])
+        else:
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """

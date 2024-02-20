@@ -2,6 +2,7 @@
 """DBStorage engine module"""
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.exc import ArgumentError
 from models.base_model import Base, BaseModel
 import os
 
@@ -36,15 +37,33 @@ class DBStorage:
         depending of the class name (argument cls)"""
 
         all_dict = {}
-        if cls is not None:
-            value = self.__session.query(cls)
-            key = cls.__name__ + '.' + value.id
-            all_dict[key] = value
+        if cls:
+            value = self.__session.query(cls).all()
+            for v in value:
+                key = cls.__name__ + '.' + v.id
+                all_dict[key] = v
+
         else:
-            DBStorage.metadata.reflect(bind=self.__engine)
-            # metadata.tables is a dictionary-like object where keys are table
-            # names and values are Table objects
-            all_dict = DBStorage.metadata.tables
+            from models.user import User
+            from models.place import Place
+            from models.state import State
+            from models.city import City
+            from models.amenity import Amenity
+            from models.review import Review
+            from models.base_model import BaseModel
+            classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
+            for cls in classes.values():
+                try:
+                    value = self.__session.query(cls).all()
+                    for v in value:
+                        key = cls.__name__ + '.' + v.id
+                        all_dict[key] = v
+                except ArgumentError:
+                    continue
 
         return all_dict
 
