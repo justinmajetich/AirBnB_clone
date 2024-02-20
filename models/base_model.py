@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 
+import os
 import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
+storage_type = os.getenv("HBNB_TYPE_STORAGE")
 
 
 class BaseModel:
@@ -18,9 +20,14 @@ class BaseModel:
       created_at (datetime)
       updated_at (datetime)
     """
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    id = Column(
+            String(50),
+            primary_key=True,
+            unique=True,
+            nullable=False
+            )
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
@@ -45,7 +52,10 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
-        self.updated_at = datetime.now()
+        if storage_type == "db":
+            self.updated_at = datetime.utcnow()
+        else:
+            self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
 
