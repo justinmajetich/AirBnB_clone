@@ -129,9 +129,7 @@ class HBNBCommand(cmd.Cmd):
         if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[_cls]()
-        storage.new(new_instance)
-        storage.save()
+        obj_dict = {}
         if pline[2]:
             params = pline[2]
             # print(f"parmas: {params}")
@@ -146,6 +144,7 @@ class HBNBCommand(cmd.Cmd):
                         value = line[2]
                         if value[0] == '"' and value[-1] == '"':
                             value = value.replace('_', ' ')
+                            value = value[1:-1]
                             value = str(value)
                         elif value.find('.') >= 0 and (
                                 HBNBCommand.is_float(value)):
@@ -154,21 +153,23 @@ class HBNBCommand(cmd.Cmd):
                             value = int(value)
                         else:
                             continue
-                        cmd_string = f'{_cls} {new_instance.id} {key} {value}'
-                        self.do_update(cmd_string)
+                        obj_dict[key] = value
                     else:
                         continue
                 else:
                     continue
-            print(new_instance.id)
+        print("New instance dict: ", obj_dict)
+        if len(obj_dict) == 0:
+            new_instance = HBNBCommand.classes[_cls]()
         else:
-            if os.getenv('HBNB_ENV') == 'db':
-                storage.new(new_instance)
-                storage.save()
-            else:
-                storage.save()
-            print(new_instance.id)
-            # storage.save()
+            new_instance = HBNBCommand.classes[_cls](obj_dict)
+
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            storage.new(new_instance)
+            storage.save()
+        else:
+            new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
