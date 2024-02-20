@@ -2,10 +2,15 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.user import User
+from models.engine import file_storage
 from models import storage
 import os
+import pep8
 
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                 'Database storage is being used.')
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
@@ -23,6 +28,26 @@ class test_fileStorage(unittest.TestCase):
             os.remove('file.json')
         except Exception:
             pass
+
+    def test_documentation(self):
+        """Tests if the module, the class,
+        and the methods are documented"""
+
+        self.assertIsNotNone(file_storage.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.__doc__)
+        self.assertIsNotNone(file_storage.FileStorage.all)
+        self.assertIsNotNone(file_storage.FileStorage.new)
+        self.assertIsNotNone(file_storage.FileStorage.save)
+        self.assertIsNotNone(file_storage.FileStorage.reload)
+        self.assertIsNotNone(file_storage.FileStorage.delete)
+
+    def test_following_pep8(self):
+        """Tests if the code follows pep8 style guide"""
+
+        pep8_style = pep8.StyleGuide(quiet=True)
+        result = pep8_style.check_files(['models/engine/file_storage.py'])
+
+        self.assertEqual(result.total_errors, 0, 'Found style errors.')
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
@@ -104,6 +129,4 @@ class test_fileStorage(unittest.TestCase):
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
-        from models.engine.file_storage import FileStorage
-        print(type(storage))
-        self.assertEqual(type(storage), FileStorage)
+        self.assertEqual(type(storage), file_storage.FileStorage)
