@@ -91,23 +91,24 @@ class Place(BaseModel, Base):
         return [review for review in all_reviews.values()
                 if review.place_id == self.id]
 
-    @property
-    def amenities(self):
-        """
-        This is a getter attribute that returns a list of
-        Amenity instances based on the amenity_ids that contains
-        all Amenity.id linked to this place.
-        """
-        from models import storage
-        all_amenities = storage.all(Amenity)
-        return [v for k, v in all_amenities.items()
-                if any(x in k for x in self.amenity_ids)]
+    if storage_type != "db":
+        @property
+        def amenities(self):
+            """
+            This is a getter attribute that returns a list of
+            Amenity instances based on the amenity_ids that contains
+            all Amenity.id linked to this place.
+            """
+            from models import storage
+            all_amenities = storage.all(Amenity)
+            return [v for k, v in all_amenities.items()
+                    if any(x in k for x in self.amenity_ids)]
 
-    @amenities.setter
-    def amenities(self, obj):
-        """
-        This is a setter attribute which handles append method for
-        adding an Amenity.id to the attribute amenity_id.
-        """
-        if isinstance(obj, Amenity):
-            self.amenity_ids = obj.id
+        @amenities.setter
+        def amenities(self, obj):
+            """
+            This is a setter attribute which handles append method for
+            adding an Amenity.id to the attribute amenity_id.
+            """
+            if isinstance(obj, Amenity):
+                self.amenity_ids = obj.id

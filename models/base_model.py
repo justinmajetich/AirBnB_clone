@@ -32,8 +32,8 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         time_form = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid.uuid4())
         if not kwargs:
-            self.id = str(uuid.uuid4())
             now = datetime.now()
             self.created_at = now
             self.updated_at = now
