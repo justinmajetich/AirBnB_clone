@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class with given parameters"""
+        """Creates an instance of a given class with provided parameters """
         args = args.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -148,11 +148,10 @@ class HBNBCommand(cmd.Cmd):
                     if hasattr(new_instance, key):
                         # Convert to the right format (int,float,string,list)
                         if value[0] == "\"":
-                            value = value[1:-1]  # Remove the quotation marks
+                            value = value[1:-1].replace("_", " ")
                         elif "." in value:
                             value = float(value)
                         elif value[0] == "[" and value[-1] == "]":
-                            # Conv string to list/remove the quot from items
                             value = [
                                     item.strip('\"')
                                     for item in value[1:-1].split(",")
@@ -160,8 +159,9 @@ class HBNBCommand(cmd.Cmd):
                         else:
                             value = int(value)
                         setattr(new_instance, key, value)
-                except Exception:
-                    pass
+                except ValueError:
+                    print(f"** value {value} for {key} is invalid **")
+                    continue
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
