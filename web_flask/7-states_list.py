@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Starts a new Flask web application. """
 
+from models import *
 from flask import Flask, render_template
 app = Flask(__name__)
 
@@ -47,6 +48,18 @@ def display_odd_or_even(n):
     """ Returns “Number: n is even|odd” inside the tag BODY. """
     return render_template('6-number_odd_or_even.html', number=n,
                            odd_even=('odd' if n % 2 != 0 else 'even'))
+
+
+@app.route('/states_list')
+def states_list():
+    """ Returns states. """
+    return render_template('7-states_list.html',
+                           states=storage.all("State"))
+
+
+@app.teardown_appcontext
+def teardown(err):
+    storage.close()
 
 
 if __name__ == '__main__':
