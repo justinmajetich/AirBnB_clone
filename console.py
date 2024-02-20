@@ -135,13 +135,12 @@ class HBNBCommand(cmd.Cmd):
                 if ' ' not in value:
                     if '"' in value and \
                             value.replace("\"", '').count('"') % 2 == 0:
-                        if '_' in value:
-                            value = value.replace('_', ' ')
-                        new_obj[key] = value
-                    elif '"' not in value:
-                        if '_' in value:
-                            value = value.replace('_', ' ')
-                        new_obj[key] = value
+                        value = value.replace('_', ' ')
+                    elif '.' in value:
+                        value = float(value)
+                    elif value.isdigit():
+                        value = int(value)
+                    new_obj[key] = value
         new_instance = HBNBCommand.classes[class_arg]()
         for key, value in new_obj.items():
             setattr(new_instance, key, value)
