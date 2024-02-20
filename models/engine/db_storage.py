@@ -1,5 +1,12 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
 from models.base_model import Base
 import os
 
@@ -10,7 +17,6 @@ HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
 HBNB_ENV = os.getenv('HBNB_ENV')
 
 
-
 class DBStorage:
     __engine = None
     __session = None
@@ -18,12 +24,12 @@ class DBStorage:
     def __init__(self):
         self.__engine = create_engine(f'mysql+mysqldb://{HBNB_MYSQL_USER}:\
             {HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}',
-                                      pool_pre_ping=True)
+            pool_pre_ping=True)
 
         if HBNB_ENV == 'test':
             Base.meta.drop_all(self.__engine)
 
-        self.__session = sessionmaker(bind=self.__engine)
+        self.reload()
 
     def all(self, cls=None):
         all_objects = {}
@@ -35,12 +41,6 @@ class DBStorage:
                                     + '.' + instance.id: instance})
 
         else:
-            from models.user import User
-            from models.place import Place
-            from models.state import State
-            from models.city import City
-            from models.amenity import Amenity
-            from models.review import Review
 
             all_cls = [User, Place, State, City, Amenity, Review]
 
@@ -63,10 +63,6 @@ class DBStorage:
             self.__session.query(obj).delete()
 
     def reload(self):
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-        # Base.metadata.create
+        Base.metadata.createall(self.__engine)
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(Session)()
