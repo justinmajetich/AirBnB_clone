@@ -4,6 +4,7 @@ Unittest for the Class Place
 """
 import io
 import unittest
+import time
 import datetime
 import uuid
 import models
@@ -79,6 +80,7 @@ class Test_Place(unittest.TestCase):
         '''Test saving object to file.json'''
         rev = Place()
         prev_date = rev.updated_at
+        time.sleep(0.001)
         rev.save()
         curr_date = rev.updated_at
         self.assertIn('Place'+'.'+rev.id,

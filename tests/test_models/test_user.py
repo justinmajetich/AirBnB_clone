@@ -121,6 +121,7 @@ class Test_save(unittest.TestCase):
         """This function tests updating the time"""
         usr = User()
         old_time = usr.updated_at
+        time.sleep(0.001)
         usr.save()
         self.assertNotEqual(usr.updated_at, old_time)
 
@@ -128,9 +129,11 @@ class Test_save(unittest.TestCase):
         """This function tests updates the time twice"""
         usr = User()
         first_time = usr.updated_at
+        time.sleep(0.001)
         usr.save()
         self.assertNotEqual(usr.updated_at, first_time)
         second_time = usr.updated_at
+        time.sleep(0.001)
         usr.save()
         self.assertNotEqual(usr.updated_at, second_time)
 
