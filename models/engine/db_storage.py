@@ -2,7 +2,16 @@
 """Describes a database instance"""
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
+from models.city import City
+from models.state import State
+from models.user import User
+from models.place import Place
+from models.review import Review
 import os
+
+models = {"State": State, "City": City,
+          "User": User, "Place": Place, "Review": Review}
 
 
 class DBStorage:
@@ -35,13 +44,14 @@ class DBStorage:
 
         try:
             if cls is not None:
-                objs = self.__Session.query(cls).all()
-            # else:
-            #     from models.base_model import BaseModel
-            #     objs = self.__Session.query(BaseModel).all()
+                cls = cls if type(cls) != str else models[cls]
+                for obj in self.__Session.query(cls):
+                    result[obj.__class__.__name__ + '.' + obj.id] = obj
+            else:
+                for mod in models:
+                    for obj in self.__Session.query(models[mod]):
+                        result[obj.__class__.__name__ + '.' + obj.id] = obj
 
-                for obj in objs:
-                    result[f'{obj.__class__.__name__}.{obj.id}'] = obj
         except Exception as e:
             print(f"Error querying the database: {e}")
 
@@ -72,16 +82,9 @@ class DBStorage:
             print(f"Error deleting object from database")
 
     def reload(self):
-        """Create tables if they don't exist 
+        """Create tables if they don't exist
           Also create session
         """
-        from models.city import City
-        from models.state import State
-        from models.user import User
-        from models.place import Place
-        from models.review import Review
-        from models.base_model import Base
-
         Base.metadata.create_all(self.__engine)
         Session_set = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
