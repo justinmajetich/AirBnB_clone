@@ -121,7 +121,41 @@ class HBNBCommand(cmd.Cmd):
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        arguments = args.split()
+        class_name = arguments[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        arguments = arguments[1:]
+
+        params = {}
+        for param in arguments:
+            parts = param.split('=')
+            if len(parts) != 2:
+                print(f"Invalid parameter: {param}")
+                continue
+            key, value = parts
+
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+                value = value.replace('\\"', '"')
+                value = value.replace('_', ' ')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    print(f"Invalid parameter value: {param}")
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    print(f"Invalid parameter value: {param}")
+                    continue
+
+            params[key] = value
+
+        new_instance = HBNBCommand.classes[args](**params)
         storage.save()
         print(new_instance.id)
         storage.save()
