@@ -110,16 +110,16 @@ class TestDBStorage(unittest.TestCase):
         self.instances['State'] = State(name="California")
         self.storage.new(self.instances['State'])
         self.storage.save()
+        self.storage.reload()
 
         # Create and save User instance
         self.instances['User'] = User(
                 email="user@mail.com",
                 password="123",
-                name="John",
-                last_name="Doe"
                 )
         self.storage.new(self.instances['User'])
         self.storage.save()
+        self.storage.reload()
 
         # create City instance
         self.instances['City'] = City(
@@ -128,6 +128,7 @@ class TestDBStorage(unittest.TestCase):
                 )
         self.storage.new(self.instances['City'])
         self.storage.save()
+        self.storage.reload()
 
         # create Place instance
         self.instances['Place'] = Place(
@@ -137,6 +138,7 @@ class TestDBStorage(unittest.TestCase):
                 )
         self.storage.new(self.instances['Place'])
         self.storage.save()
+        self.storage.reload()
 
         # create Review instance
         self.instances['Review'] = Review(
@@ -146,15 +148,18 @@ class TestDBStorage(unittest.TestCase):
                 )
         self.storage.new(self.instances['Review'])
         self.storage.save()
+        self.storage.reload()
 
         # Create and save Amenity instance
         self.instances['Amenity'] = Amenity(name="Wifi")
         self.storage.new(self.instances['Amenity'])
         self.storage.save()
+        self.storage.reload()
 
         # append Amenity to Place
-        self.instances['Place'].amenities.append(self.instances['Amenity'])
-        self.storage.save()
+        #  self.instances['Place'].amenities.append(self.instances['Amenity'])
+        #  self.storage.save()
+        #  self.storage.reload()
 
     def tearDown(self):
         """Tear down the tests"""

@@ -76,6 +76,7 @@ class Place(BaseModel, Base):
                                  backref="place_amenities")
 
     def __init__(self, *args, **kwargs):
+        """Intializing Amenitie IDs  list"""
         super().__init__(*args, **kwargs)
         self.amenity_ids = []
 
