@@ -32,14 +32,18 @@ class DBStorage:
     def all(self, cls=None):
         """Query the db for objs depending on cls name"""
         result = {}
-        if cls is not None:
-            objs = self.__Session.query(cls).all()
-            for obj in objs:
-                result[f'{cls}.{obj.id}'] = obj
-        else:
-            all_objs = self.__Session.query().all()
-            for obj in all_objs:
-                result[f'{cls}.{obj.id}'] = obj
+
+        try:
+            if cls is not None:
+                objs = self.__Session.query(cls).all()
+                for obj in objs:
+                    result[f'{cls}.{obj.id}'] = obj
+            else:
+                all_objs = self.__Session.query().all()
+                for obj in all_objs:
+                    result[f'{obj.__class__.__name__}.{obj.id}'] = obj
+        except Exception as e:
+            print(f"Error querying the database: {e}")
 
         return result
 
@@ -72,5 +76,6 @@ class DBStorage:
         from models.base_model import Base
 
         Base.metadata.create_all(self.__engine)
-        Session_set = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(Session_set)
+        Session_set = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        self.__Session = scoped_session(Session_set)
