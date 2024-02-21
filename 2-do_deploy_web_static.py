@@ -1,42 +1,40 @@
 #!/usr/bin/python3
-"""
-    This script distributes an archive to your web servers,
-    using the function do_deploy:
-"""
-from fabric.api import *
-import os
-import re
 
+"""
+Deploy the to a remote server
+Usage: ./2_do_deploy_web_static.py do_deploy
+"""
 
+from fabric.api import env, task, put, run, sudo
+from os import path
+
+env.hosts = ['54.146.84.110', '100.26.156.138']
 env.user = 'ubuntu'
-env.hosts = ['3.238.130.141', '	44.192.24.10']
 
 
-def do_deploy(archive_path):
+@task(alias="deploy")
+def do_deploy(archive_path) -> bool:
     """
-        Deploys archive path to remote hosts
+    Deploy the application to the web servers
+    Args:
+        None
+    Returns:
+        True ( if all goes well)
+        False (if something is not right)
     """
-    if not os.path.exists(archive_path):
+    if not path.exists(archive_path):
         return False
-
     try:
-        put(archive_path, "/tmp/")
-        regex = r'\/(\w+).tgz$'
-        pattern = re.findall(regex, archive_path)
-
-        web_path = "/data/web_static/releases/{}".format(pattern[0])
-
-        run("mkdir -p {}".format(web_path))
-        # unpacking
-        run("tar -xzf /tmp/{}.tgz -C {}".format(pattern[0], web_path))
-        run("mv {}/web_static/* {}".format(web_path, web_path))
-        run("rm -rf {}/web_static".format(web_path))
-        run("rm /tmp/{}.tgz".format(pattern[0]))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(web_path))
-
-        # success
-        print("New version deployed!")
+        arc = archive_path.split("/")
+        base_loc = arc[1].strip('.tgz')
+        put(archive_path, '/tmp/')
+        sudo('mkdir -p /data/web_static/releases/{}'.format(base_loc))
+        main_loc = "/data/web_static/releases/{}".format(base_loc)
+        sudo('tar -xzf /tmp/{} -C {}/'.format(arc[1], main_loc))
+        sudo('rm /tmp/{}'.format(arc[1]))
+        sudo('mv {}/web_static/* {}/'.format(main_loc, main_loc))
+        sudo('rm -rf /data/web_static/current')
+        sudo('ln -s {}/ "/data/web_static/current"'.format(main_loc))
         return True
     except Exception:
         return False
