@@ -1,27 +1,38 @@
 #!/usr/bin/env bash
-#set things up for deployment
+# Sets up a web server for deployment of web_static.
 
-if [ ! -x /usr/sbin/nginx ]; then
-	sudo apt-get update -y -qq && \
-	    sudo apt-get install -y nginx
-fi
+apt-get update
+apt-get install -y nginx
 
+mkdir -p /data/web_static/releases/test/
+mkdir -p /data/web_static/shared/
+echo "Hello World" > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# make dirs...
-sudo mkdir -p /data/web_static/releases/test  /data/web_static/shared/
+chown -R ubuntu /data/
+chgrp -R ubuntu /data/
 
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
 
-echo "<h1> I couldn't center a div </h1>" | sudo dd status=none of=/data/web_static/releases/test/index.html
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
 
-# create sym link
-sudo ln -sf /data/web_static/releases/test /data/web_static/current
+    location /redirect_me {
+        return 301 http://cuberule.com/;
+    }
 
-sudo chown -R ubuntu:ubuntu /data/
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
 
-
-sudo cp /etc/nginx/sites-enabled/default /etc/nginx/nginx-sites-enabled_default.bck
-
-
-sudo sed -i '37i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
-
-sudo service nginx restart
+service nginx restart
