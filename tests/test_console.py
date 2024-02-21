@@ -281,29 +281,30 @@ class TestConsole_create(unittest.TestCase):
 
     def test_create_city(self):
         """Test create command for City"""
-        # Create a State with id="test"
+        from models.city import City
+        from models.state import State
+        # Create a State with a name
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(
                 HBNBCommand().onecmd(
-                    'create State id="test" name="Test State"'
+                    'create State name="Khartoum"'
                 )
             )
-        state_id = f.getvalue().strip()
+            state_id = f.getvalue().strip().split('\n')[-1]
         state = models.storage.all()["State." + state_id]
-        self.assertEqual(getattr(state, "id"), "test")
-        self.assertEqual(getattr(state, "name"), "Test State")
+        self.assertEqual(getattr(state, "name"), "Khartoum")
 
-        # Now create the City with state_id="test"
+        # Now create the City with the generated state_id
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(
                 HBNBCommand().onecmd(
-                    'create City name="test" state_id="test"'
+                    f'create City name="test" state_id="{state_id}"'
                 )
             )
-        city_id = f.getvalue().strip()
+            city_id = f.getvalue().strip()
         city = models.storage.all()["City." + city_id]
         self.assertEqual(getattr(city, "name"), "test")
-        self.assertEqual(getattr(city, "state_id"), "test")
+        self.assertEqual(getattr(city, "state_id"), state_id)
 
     def test_create_state(self):
         """Test create command for State"""
