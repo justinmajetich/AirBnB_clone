@@ -24,4 +24,6 @@ class DBStorage:
     
     def all(self, cls=None):
         """Queries the database and reeturns all models"""
+        if cls is None:
+            objects = {}
         objects = self.__session().all(cls)
