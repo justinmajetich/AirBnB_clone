@@ -33,11 +33,13 @@ class BaseModel:
         """Instantiates a new model"""
         time_form = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid.uuid4())
-        if not kwargs:
-            now = datetime.now()
+        now = datetime.now()
+        if "created_at" not in kwargs:
             self.created_at = now
+        if "updated_at" not in kwargs:
             self.updated_at = now
-        else:
+
+        if kwargs:
             for key, value in kwargs.items():
                 if key in ("created_at", "updated_at"):
                     self.__dict__[key] = datetime.strptime(value, time_form)

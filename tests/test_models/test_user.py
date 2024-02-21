@@ -6,6 +6,7 @@ import unittest
 import time
 import datetime
 import models
+import os
 from models.user import User
 
 
@@ -44,22 +45,59 @@ class Test_user_attr(unittest.TestCase):
         """This function tests for the type of updated_at attr"""
         self.assertIs(type(User().updated_at), datetime.datetime)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_first_name(self):
         """This function tests the type first_name attr"""
         self.assertEqual(type(User().first_name), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_last_name(self):
         """This function tests the type last_name attr"""
         self.assertEqual(type(User().last_name), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_email(self):
         """This function tests the type of email attr"""
         self.assertEqual(type(User().email), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_password(self):
         """This function tests for the type of password attr"""
         self.assertEqual(type(User().password), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the DBStorage Mode only")
+    def test_attributes_db(self):
+        user = User(first_name="John", last_name="Doe",
+                    email="johndoe@gmail.com", password="123john")
+        user.save()
+        user_saved = models.storage._DBStorage__session.\
+            query(User).filter(User.id == user.id).first()
+        self.assertIs(type(user_saved.id), str)
+        self.assertIs(type(user_saved.created_at), datetime.datetime)
+        self.assertIs(type(user_saved.updated_at), datetime.datetime)
+        self.assertEqual(type(user_saved.first_name), str)
+        self.assertEqual(type(user_saved.last_name), str)
+        self.assertEqual(type(user_saved.password), str)
+        self.assertEqual(type(user_saved.email), str)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the DBStorage Mode only")
+    def test_save_db(self):
+        """This function tests saving into a JSOM file"""
+        usr = User(first_name="John", last_name="Doe",
+                   email="johndoe@gmail.com", password="123john")
+        usr.save()
+        saved_usr = models.storage._DBStorage__session.\
+            query(User).filter(User.id == usr.id).first()
+        self.assertEqual(usr, saved_usr)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_obj_storage(self):
         """This function tests that an object is automatically saved in
         the ___objects attr of storage instance"""
@@ -104,7 +142,7 @@ class Test_instantation(unittest.TestCase):
         self.assertEqual(usr.created_at, tdy)
         self.assertEqual(usr.updated_at, tdy)
 
-    def teat_init_class(self):
+    def test_init_class(self):
         """This function tests giving args a class key"""
         usr1 = User()
         dict_usr1 = usr1.to_dict()
@@ -114,8 +152,10 @@ class Test_instantation(unittest.TestCase):
         self.assertEqual(dict_usr2['__class__'], "User")
 
 
-class Test_save(unittest.TestCase):
-    """This class tests the instance method save(self)"""
+@unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                 "To be tested in the FileStorage Mode only")
+class test_save(unittest.TestCase):
+    """this class tests the instance method save(self)"""
 
     def test_save(self):
         """This function tests updating the time"""
@@ -219,6 +259,19 @@ class Test_to_dict(unittest.TestCase):
         with self.assertRaises(TypeError):
             User().to_dict("arg")
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_delete_file(self):
+        """Testing deleting the basemodel from the fileStorage"""
+        i = User()
+        i.save()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertIn("User." + i.id, read_data)
+        i.delete()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertNotIn("User." + i.id, read_data)
 
 if __name__ == '__main__':
     unittest.main()

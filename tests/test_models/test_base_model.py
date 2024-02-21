@@ -50,6 +50,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -58,6 +60,20 @@ class test_basemodel(unittest.TestCase):
         with open('file.json', 'r') as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_delete_file(self):
+        """Testing deleting the basemodel from the fileStorage"""
+        i = self.value()
+        i.save()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertIn("BaseModel." + i.id, read_data)
+        i.delete()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertNotIn("BaseModel." + i.id, read_data)
 
     def test_str(self):
         """testing the str representation"""

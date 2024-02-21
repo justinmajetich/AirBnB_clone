@@ -39,16 +39,18 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """
-        Returns the list of City instances with
-        state_id equals to the current State.id
-        """
-        from models import storage
 
-        all_cities = storage.all(City)
-        return [
-                city for city in all_cities.values()
-                if city.state_id == self.id
-                ]
+    if storage_type != "db":
+        @property
+        def cities(self):
+            """
+            Returns the list of City instances with
+            state_id equals to the current State.id
+            """
+            from models import storage
+
+            all_cities = storage.all(City)
+            return [
+                    city for city in all_cities.values()
+                    if city.state_id == self.id
+                    ]

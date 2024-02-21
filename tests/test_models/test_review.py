@@ -8,8 +8,13 @@ import unittest
 import datetime
 import uuid
 import models
+import os
 from unittest.mock import patch
 from models.review import Review
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
 
 
 class Test_Review(unittest.TestCase):
@@ -30,6 +35,8 @@ class Test_Review(unittest.TestCase):
         self.assertTrue(hasattr(rev, 'user_id'))
         self.assertTrue(hasattr(rev, 'text'))
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_type_attrs(self):
         '''Test instance types'''
         rev = Review()
@@ -63,6 +70,8 @@ class Test_Review(unittest.TestCase):
         self.assertEqual(rev.created_at.isoformat(), kw['created_at'])
         self.assertEqual(rev.updated_at.isoformat(), kw['updated_at'])
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_save(self):
         '''Test saving object to file.json'''
         rev = Review()
@@ -74,6 +83,68 @@ class Test_Review(unittest.TestCase):
         self.assertNotEqual(prev_date.isoformat(), curr_date.isoformat())
         with self.assertRaises(TypeError):
             rev.save('')
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_place_user_db(self):
+        user1 = User(first_name="John", last_name="Doe",
+                     email="johndoe@gmail.com", password="123john")
+        state = State(name="new york")
+        city = City(name="new york", state_id=state.id)
+        place1 = Place(city_id=city.id, user_id=user1.id,
+                       name="lovely_place", number_rooms=3,
+                       number_bathrooms=1, max_guest=6,
+                       price_by_night=120, latitude=37.773972,
+                       longitude=-122.431297)
+        place2 = Place(city_id=city.id, user_id=user1.id,
+                       name="green_room", number_rooms=2,
+                       number_bathrooms=1, max_guest=4,
+                       price_by_night=510, latitude=37.773972,
+                       longitude=-122.431297)
+        review1 = Review(text="What a great hotel!",
+                         place_id=place1.id, user_id=user1.id)
+        review2 = Review(text="LOVE IT!!!", place_id=place2.id,
+                         user_id=user1.id)
+        user1.save()
+        state.save()
+        city.save()
+        place1.save()
+        place2.save()
+        review1.save()
+        review2.save()
+        self.assertTrue(len(user1.reviews) == 2)
+        self.assertIn(review1, user1.reviews)
+        self.assertIn(review2, user1.reviews)
+        list_reviews = models.storage._DBStorage__session.\
+            query(Review).filter(Review.user == user1).all()
+        self.assertTrue(len(list_reviews) == 2)
+        user1.delete()
+        list_reviews = models.storage._DBStorage__session.\
+            query(Review).filter(Review.user == user1).all()
+        self.assertTrue(len(list_reviews) == 0)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the DBStorage Mode only")
+    def test_save_db(self):
+        """This function tests saving into a JSOM file"""
+        user = User(first_name="John", last_name="Doe",
+                    email="johndoe@gmail.com", password="123john")
+        state = State(name="New York")
+        city = City(name="New york", state_id=state.id)
+        place = Place(city_id=city.id, user_id=user.id, name="Lovely_place",
+                      number_rooms=3, number_bathrooms=1, max_guest=6,
+                      price_by_night=120, latitude=37.773972,
+                      longitude=-122.431297)
+        review = Review(text="What a great hotel!", place_id=place.id,
+                        user_id=user.id)
+        user.save()
+        state.save()
+        city.save()
+        place.save()
+        review.save()
+        review_saved = models.storage._DBStorage__session.\
+            query(Review).filter(Review.id == review.id).first()
+        self.assertEqual(review, review_saved)
 
     def test_to_dict(self):
         '''Test `to_dict` method'''
@@ -92,6 +163,20 @@ class Test_Review(unittest.TestCase):
             print(rev)
             self.assertEqual(m_stdout.getvalue(),
                              '[Review] ({}) {}\n'.format(rev.id, rev.__dict__))
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_delete_file(self):
+        """Testing deleting the basemodel from the fileStorage"""
+        i = Review()
+        i.save()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertIn("Review." + i.id, read_data)
+        i.delete()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertNotIn("Review." + i.id, read_data)
 
 
 if __name__ == '__main__':
