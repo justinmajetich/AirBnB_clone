@@ -143,5 +143,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 
 ## Authors
 
-1. Tasha Daije <mbuguanatasha01@gmail.com>
-2. Salome Njenga <sallynjenga8@gmail.com>
+1. Tasha Daije
+2. Salome Njenga
