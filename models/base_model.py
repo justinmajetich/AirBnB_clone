@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import models
 import uuid
 from datetime import datetime
+from models.engine import db_storage
 
 
 class BaseModel:
