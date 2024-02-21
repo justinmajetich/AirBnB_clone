@@ -59,18 +59,25 @@ class DBStorage:
 
     def new(self, obj):
         """Adds an object to the current session"""
-        self.__Session.add(obj)
+        try:
+            self.__Session.add(obj)
+            # self.__Session.close()
+        except Exception as e:
+            print(f"Error adding object to session: {e}")
 
     def save(self):
         """commit all changes to the db session"""
-        self.__Session.commit()
+        try:
+            self.__Session.commit()
+            # self.__Session.close()
+        except Exception as e:
+            print(f"Error committing changes to the database: {e}")
 
     def delete(self, obj=None):
         """Delete obj if from surrent db session"""
         try:
-            with self.__Session() as session:
-                if obj is not None:
-                    session.delete(obj)
+            if obj is not None:
+                self.__Session.delete(obj)
         except Exception as e:
             print(f"Error deleting object from database")
 
@@ -78,7 +85,6 @@ class DBStorage:
         """Create tables if they don't exist
           Also create session
         """
-
         Base.metadata.create_all(self.__engine)
         Session_set = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
