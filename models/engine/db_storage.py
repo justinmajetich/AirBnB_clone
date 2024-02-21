@@ -2,7 +2,16 @@
 """Describes a database instance"""
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
+from models.city import City
+from models.state import State
+from models.user import User
+from models.place import Place
+from models.review import Review
 import os
+
+models = {"State": State, "City": City,
+          "User": User, "Place": Place, "Review": Review}
 
 
 class DBStorage:
@@ -34,15 +43,15 @@ class DBStorage:
         result = {}
 
         try:
-            with self.__Session() as session:
-                if cls is not None:
-                    objs = session.query(cls).all()
-                else:
-                    from models.base_model import BaseModel
-                    objs = self.__Session.query(BaseModel).all()
+            if cls is not None:
+                cls = cls if type(cls) != str else models[cls]
+                for obj in self.__Session.query(cls):
+                    result[obj.__class__.__name__ + '.' + obj.id] = obj
+            else:
+                for mod in models:
+                    for obj in self.__Session.query(models[mod]):
+                        result[obj.__class__.__name__ + '.' + obj.id] = obj
 
-                    for obj in objs:
-                        result[f'{obj.__class__.__name__}.{obj.id}'] = obj
         except Exception as e:
             print(f"Error querying the database: {e}")
 
@@ -50,21 +59,11 @@ class DBStorage:
 
     def new(self, obj):
         """Adds an object to the current session"""
-        try:
-            with self.__Session() as session:
-                session.add(obj)
-                print("Added successfully")
-        except Exception as e:
-            print(f"Error adding object to session: {e}")
+        self.__Session.add(obj)
 
     def save(self):
         """commit all changes to the db session"""
-        try:
-            with self.__Session() as session:
-                session.commit()
-                print("Committed successfully")
-        except Exception as e:
-            print(f"Error committing changes to the database: {e}")
+        self.__Session.commit()
 
     def delete(self, obj=None):
         """Delete obj if from surrent db session"""
@@ -76,12 +75,9 @@ class DBStorage:
             print(f"Error deleting object from database")
 
     def reload(self):
-        """Create tables if they don't exist 
+        """Create tables if they don't exist
           Also create session
         """
-        from models.city import City
-        from models.state import State
-        from models.base_model import Base
 
         Base.metadata.create_all(self.__engine)
         Session_set = sessionmaker(
