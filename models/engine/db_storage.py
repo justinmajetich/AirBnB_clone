@@ -34,15 +34,14 @@ class DBStorage:
         result = {}
 
         try:
-            with self.__Session() as session:
-                if cls is not None:
-                    objs = session.query(cls).all()
-                else:
-                    from models.base_model import BaseModel
-                    objs = self.__Session.query(BaseModel).all()
+            if cls is not None:
+                objs = self.__Session.query(cls).all()
+            # else:
+            #     from models.base_model import BaseModel
+            #     objs = self.__Session.query(BaseModel).all()
 
-                    for obj in objs:
-                        result[f'{obj.__class__.__name__}.{obj.id}'] = obj
+                for obj in objs:
+                    result[f'{obj.__class__.__name__}.{obj.id}'] = obj
         except Exception as e:
             print(f"Error querying the database: {e}")
 
@@ -51,27 +50,24 @@ class DBStorage:
     def new(self, obj):
         """Adds an object to the current session"""
         try:
-            with self.__Session() as session:
-                session.add(obj)
-                print("Added successfully")
+            self.__Session.add(obj)
+            # self.__Session.close()
         except Exception as e:
             print(f"Error adding object to session: {e}")
 
     def save(self):
         """commit all changes to the db session"""
         try:
-            with self.__Session() as session:
-                session.commit()
-                print("Committed successfully")
+            self.__Session.commit()
+            # self.__Session.close()
         except Exception as e:
             print(f"Error committing changes to the database: {e}")
 
     def delete(self, obj=None):
         """Delete obj if from surrent db session"""
         try:
-            with self.__Session() as session:
-                if obj is not None:
-                    session.delete(obj)
+            if obj is not None:
+                self.__Session.delete(obj)
         except Exception as e:
             print(f"Error deleting object from database")
 
