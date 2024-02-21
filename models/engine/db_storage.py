@@ -7,6 +7,7 @@ from os import getenv
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import IntegrityError
 
 from models.amenity import Amenity
 from models.base_model import Base, BaseModel
@@ -61,7 +62,11 @@ class DBStorage:
 
     def save(self):
         """Commits all changes of the current database session"""
-        self.__session.commit()
+        try:
+            self.__session.commit()
+        except IntegrityError as e:
+            print(f"Error: {e}")
+            self.__session.rollback()
 
     def delete(self, obj=None):
         """Deletes obj from the current database session if not None"""
