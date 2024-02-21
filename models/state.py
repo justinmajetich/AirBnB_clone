@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models import storage
+from models.engine.file_storage import FileStorage
 
 
 class State(BaseModel, Base):
@@ -17,6 +17,7 @@ class State(BaseModel, Base):
         """Getter attribute that returns a list of city instances
             For use with Filestorage
         """
+        storage = FileStorage()
         filtered_cities = [(city) for city in storage.all()
                            if city.state_id == city.id]
 
