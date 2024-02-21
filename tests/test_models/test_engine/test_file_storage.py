@@ -5,7 +5,8 @@ from models.base_model import BaseModel
 from models import storage
 import os
 
-
+@unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == 'db',
+		 "Not support with database storage")
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
@@ -98,9 +99,11 @@ class test_fileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+        temp = ""
+        for key, val in storage.all().items():
+            if val.id == _id:
+                temp = key
+        self.assertEqual(temp, 'BaseModel.' + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
