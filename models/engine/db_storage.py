@@ -34,14 +34,15 @@ class DBStorage:
         result = {}
 
         try:
-            if cls is not None:
-                objs = self.__Session.query(cls).all()
-                for obj in objs:
-                    result[f'{cls}.{obj.id}'] = obj
-            else:
-                all_objs = self.__Session.query().all()
-                for obj in all_objs:
-                    result[f'{obj.__class__.__name__}.{obj.id}'] = obj
+            with self.__Session() as session:
+                if cls is not None:
+                    objs = session.query(cls).all()
+                else:
+                    from models.base_model import BaseModel
+                    objs = self.__Session.query(BaseModel).all()
+
+                    for obj in objs:
+                        result[f'{obj.__class__.__name__}.{obj.id}'] = obj
         except Exception as e:
             print(f"Error querying the database: {e}")
 
@@ -49,23 +50,30 @@ class DBStorage:
 
     def new(self, obj):
         """Adds an object to the current session"""
-        Session = self.__Session
-
-        with Session() as session:
-            session.add(obj)
+        try:
+            with self.__Session() as session:
+                session.add(obj)
+                print("Added successfully")
+        except Exception as e:
+            print(f"Error adding object to session: {e}")
 
     def save(self):
         """commit all changes to the db session"""
-        Session = self.__Session
-        with Session() as session:
-            session.commit()
+        try:
+            with self.__Session() as session:
+                session.commit()
+                print("Committed successfully")
+        except Exception as e:
+            print(f"Error committing changes to the database: {e}")
 
     def delete(self, obj=None):
         """Delete obj if from surrent db session"""
-        Session = self.__Session
-        if obj is not None:
-            with Session() as session:
-                session.delete(obj)
+        try:
+            with self.__Session() as session:
+                if obj is not None:
+                    session.delete(obj)
+        except Exception as e:
+            print(f"Error deleting object from database")
 
     def reload(self):
         """Create tables if they don't exist 
