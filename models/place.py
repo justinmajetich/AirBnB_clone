@@ -79,19 +79,19 @@ class Place(BaseModel, Base):
         super().__init__(*args, **kwargs)
         self.amenity_ids = []
 
-    @property
-    def reviews(self):
-        """
-        This is a getter attribute that returns a list of
-        Review instances with place_id equals the the current
-        Place.id.
-        """
-        from models import storage
-        all_reviews = storage.all(Review)
-        return [review for review in all_reviews.values()
-                if review.place_id == self.id]
-
     if storage_type != "db":
+        @property
+        def reviews(self):
+            """
+            This is a getter attribute that returns a list of
+            Review instances with place_id equals the the current
+            Place.id.
+            """
+            from models import storage
+            all_reviews = storage.all(Review)
+            return [review for review in all_reviews.values()
+                    if review.place_id == self.id]
+
         @property
         def amenities(self):
             """
