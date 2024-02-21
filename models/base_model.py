@@ -17,7 +17,7 @@ class BaseModel:
         update_at: attribute of the datetime object
     """
 
-    id = Column(String(60), nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
