@@ -39,20 +39,8 @@ class DBStorage:
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
-    def reload(self):
-        """Reloads all tables in the database"""
-        Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(
-                bind=self.__engine, expire_on_commit=False
-                )
-        Session = scoped_session(session_factory)
-        self.__session = Session()
-
     def all(self, cls=None):
         """Queries the current database session based on class name"""
-        self.__session.expire_all()
-        self.reload()
-
         new_dict = {}
         if cls:
             objs = self.__session.query(cls).all()
@@ -76,15 +64,20 @@ class DBStorage:
         """Commits all changes of the current database session"""
         try:
             self.__session.commit()
-        except Exception:
+        except IntegrityError as e:
+            print(f"Error: {e}")
             self.__session.rollback()
-            raise
 
     def delete(self, obj=None):
         """Deletes obj from the current database session if not None"""
         if obj:
             self.__session.delete(obj)
 
-    def close(self):
-        """Closes the current database session"""
-        self.__session.close()
+    def reload(self):
+        """Reloads all tables in the database"""
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(
+                bind=self.__engine, expire_on_commit=False
+                )
+        Session = scoped_session(session_factory)
+        self.__session = Session()
