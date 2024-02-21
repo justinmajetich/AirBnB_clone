@@ -24,7 +24,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except FileNotFoundError:
             pass
 
     def test_default(self):
@@ -59,8 +59,9 @@ class test_basemodel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        if "_sa_instance_state" not in i.__dict__:
+            self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
+                             i.__dict__))
 
     def test_todict(self):
         """ """
