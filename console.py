@@ -113,18 +113,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
+    def do_create(self, arg):
+        """Create a new instance of a class with given parameters."""
+        # Split the command line argument string into a list of arguments
+        args = arg.split()
+        # Check if the minimum number of arguments (class name) is provided
+        if len(args) <  2:
+            print("Invalid command")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        # Extract the class name from the first argument
+        class_name = args[1]
+        # Extract the remaining arguments as parameters
+        params = args[2:]
+        # Initialize an empty dictionary to hold the parameters
+        params_dict = {}
+        # Loop through each parameter
+        for param in params:
+            try:
+                # Split the parameter into key and value
+                key, value = param.split('=')
+                # Check if the value is a string (starts and ends with double quotes)
+                if value.startswith('"') and value.endswith('"'):
+                    # Remove the double quotes and replace escaped quotes with actual quotes
+                    value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+                # Check if the value is a float (contains a dot)
+                elif '.' in value:
+                    # Convert the value to a float
+                    value = float(value)
+                else:
+                    # Assume the value is an integer
+                    value = int(value)
+                # Add the key-value pair to the dictionary
+                params_dict[key] = value
+            except ValueError:
+                # If the parameter is not valid, skip it and print an error message
+                print(f"Parameter '{param}' is not valid.")
+                continue
 
     def help_create(self):
         """ Help information for the create method """
