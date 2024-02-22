@@ -14,9 +14,9 @@ class FileStorage:
             return FileStorage.__objects
         else:
             filtered_dict = {}
-            for key, value in self.__objects.items():
-                if key.split(".")[0] == cls:
-                    filtered_dict.update({key: value})
+            for x in self.__objects:
+                if type(self.__objects[x]) is cls:
+                    filtered_dict.update({x: self.__objects[x]})
             return filtered_dict
 
 
