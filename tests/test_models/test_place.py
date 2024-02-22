@@ -8,6 +8,7 @@ import unittest
 import time
 import datetime
 import uuid
+import pep8
 import inspect
 import models
 import os
@@ -31,6 +32,29 @@ class TestPlaceDocumentationAndStyle(unittest.TestCase):
         cls.place_funcs = inspect.getmembers(
                 Place, predicate=inspect.isfunction
                 )
+
+    def test_pep8_conformance_Place(self):
+        """
+        Test that models/place.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/place.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_Place(self):
+        """
+        Test that tests/test_models/test_place.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_place.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
 
     def test_place_class_docstring(self):
         """

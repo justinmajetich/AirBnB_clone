@@ -6,6 +6,7 @@ Unittest for the Class "Review"
 import os
 import io
 import unittest
+import pep8
 import inspect
 import datetime
 import uuid
@@ -30,6 +31,29 @@ class TestReviewDocumentationAndStyle(unittest.TestCase):
         cls.review_funcs = inspect.getmembers(
                 Review, predicate=inspect.isfunction
                 )
+
+    def test_pep8_conformance_Review(self):
+        """
+        Test that models/review.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/review.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_Review(self):
+        """
+        Test that tests/test_models/test_review.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_review.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
 
     def test_review_class_docstring(self):
         """

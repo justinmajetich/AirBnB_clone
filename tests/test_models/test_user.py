@@ -5,6 +5,7 @@ Unittest for th Class "User"
 import os
 import unittest
 import time
+import pep8
 import inspect
 import datetime
 import models
@@ -23,6 +24,42 @@ class TestUserDocumentationAndStyle(unittest.TestCase):
         cls.user_funcs = inspect.getmembers(
                 User, predicate=inspect.isfunction
                 )
+
+    def test_pep8_conformance_User(self):
+        """
+        Test that models/user.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/user.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_User(self):
+        """
+        Test that tests/test_models/test_user.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_user.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_user_class_docstring(self):
+        """
+        Test for the User class docstring
+        """
+        self.assertIsNot(
+                User.__doc__,
+                None,
+                "User class needs a docstring"
+                )
+        self.assertTrue(
+            len(User.__doc__) >= 1, "User class needs a docstring"
+        )
 
     def test_user_func_docstrings(self):
         """
