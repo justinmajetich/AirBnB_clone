@@ -92,9 +92,9 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if (
-                        pline[0] == "{"
-                        and pline[-1] == "}"
-                        and type(eval(pline)) is dict
+                        pline[0] == "{" and pline[-1] == "}" and type(
+                            eval(pline)
+                            ) is dict
                     ):
                         _args = pline
                     else:
@@ -286,7 +286,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """Help information for the help command """
         print("Usage: count <class_name>")
 
     def do_update(self, args):

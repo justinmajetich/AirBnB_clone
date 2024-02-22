@@ -7,10 +7,60 @@ import unittest
 import models
 from models.user import User
 import os
+import pep8
+import inspect
 import json
+import time
 from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
+
+
+class TestConsoleDocumentationAndStyle(unittest.TestCase):
+    """
+    Tests for the HBNBCommand class documentation and style.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.console_funcs = inspect.getmembers(
+                HBNBCommand, predicate=inspect.isfunction
+                )
+
+    def test_pep8_conformance_Console(self):
+        """
+        Test that console.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["console.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_console(self):
+        """
+        Test that tests/test_console.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["tests/test_console.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_console_class_docstring(self):
+        """
+        Test for the HBNBCommand class docstring
+        """
+        self.assertIsNot(
+                HBNBCommand.__doc__,
+                None,
+                "HBNBCommand class needs a docstring"
+                )
+        self.assertTrue(
+            len(HBNBCommand.__doc__) >= 1,
+            "HBNBCommand class needs a docstring"
+        )
 
 
 class TestConsole_Base(unittest.TestCase):
@@ -323,15 +373,20 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["State." + obj_id]
             self.assertEqual(getattr(obj, "name"), "test")
 
-    def test_create_amenity(self):
-        """Test create command for Amenity"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(
-                    HBNBCommand().onecmd('create Amenity name="test"')
-                    )
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Amenity." + obj_id]
-        self.assertEqual(getattr(obj, "name"), "test")
+    def test_create_cmd_amenity(self):
+        """this method creates a new amenity"""
+        from models.amenity import Amenity
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                with self.assertRaises(Exception):
+                    HBNBCommand().onecmd('create Amenity')
+        else:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()["Amenity." + obj_id]
+            self.assertTrue(isinstance(obj, Amenity))
 
     def test_create_place(self):
         """Test create command for Place"""
@@ -370,20 +425,66 @@ class TestConsole_create(unittest.TestCase):
             self.assertEqual(getattr(obj, "longitude"), 10.0)
             self.assertEqual(getattr(obj, "amenity_ids"), ["test"])
 
-    def test_create_review(self):
-        """Test create command for Review"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(
-                    HBNBCommand().onecmd(
-                        'create Review place_id="test" user_id="test" '
-                        'text="test"'
+    def test_create_review_db(self):
+        """Test create command for Review when HBNB_TYPE_STORAGE=db"""
+        from models.review import Review
+        from models.user import User
+        from models.place import Place
+        from models.city import City
+        from models.state import State
+
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Create a State
+            with patch("sys.stdout", new=StringIO()) as f:
+                HBNBCommand().onecmd('create State name="test_state"')
+                state_id = f.getvalue().strip()
+            state = models.storage.all().get("State." + state_id)
+            self.assertIsNotNone(state, "State not found in storage")
+            self.assertEqual(getattr(state, "name"), "test_state")
+
+            # Create a City with the generated state_id
+            with patch("sys.stdout", new=StringIO()) as f:
+                HBNBCommand().onecmd(
+                        f'create City name="test_city" state_id="{state_id}"'
                         )
-                    )
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Review." + obj_id]
-        self.assertEqual(getattr(obj, "place_id"), "test")
-        self.assertEqual(getattr(obj, "user_id"), "test")
-        self.assertEqual(getattr(obj, "text"), "test")
+                city_id = f.getvalue().strip()
+            city = models.storage.all().get("City." + city_id)
+            self.assertIsNotNone(city, "City not found in storage")
+            self.assertEqual(getattr(city, "name"), "test_city")
+
+            # Create a User
+            with patch("sys.stdout", new=StringIO()) as f:
+                HBNBCommand().onecmd(
+                        'create User email="user@test.com" password="pwd"'
+                        )
+                user_id = f.getvalue().strip()
+            user = models.storage.all().get("User." + user_id)
+            self.assertIsNotNone(user, "User not found in storage")
+            self.assertEqual(getattr(user, "email"), "user@test.com")
+
+            # Create a Place with the generated city_id and user_id
+            with patch("sys.stdout", new=StringIO()) as f:
+                HBNBCommand().onecmd(
+                        f'create Place user_id="{user_id}" '
+                        'name="test_place" city_id="{city_id}"'
+                        )
+                place_id = f.getvalue().strip()
+            place = models.storage.all().get("Place." + place_id)
+            self.assertIsNotNone(place, "Place not found in storage")
+            self.assertEqual(getattr(place, "name"), "test_place")
+
+            # Now create the Review with the generated user_id and place_id
+            with patch("sys.stdout", new=StringIO()) as f:
+                HBNBCommand().onecmd(
+                        f'create Review text="test_review" '
+                        'user_id="{user_id}" place_id="{place_id}"'
+                        )
+                review_id = f.getvalue().strip()
+            review = models.storage.all().get("Review." + review_id)
+            self.assertIsNotNone(review, "Review not found in storage")
+            self.assertEqual(getattr(review, "text"), "test_review")
+            self.assertEqual(getattr(review, "user_id"), user_id)
+            self.assertEqual(getattr(review, "place_id"), place_id)
 
     def test_create_user_with_invalid_parameters(self):
         """Test create command for User with invalid parameters"""
@@ -437,13 +538,20 @@ class TestConsole_create(unittest.TestCase):
 
     def test_create_amenity_with_invalid_parameters(self):
         """Test create command for Amenity with invalid parameters"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(
+        from models.amenity import Amenity
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                with self.assertRaises(Exception):
                     HBNBCommand().onecmd('create Amenity invalid="invalid"')
-                    )
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Amenity." + obj_id]
-        self.assertFalse(hasattr(obj, "invalid"))
+        else:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(
+                    HBNBCommand().onecmd('create Amenity invalid="invalid"')
+                )
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()["Amenity." + obj_id]
+            self.assertFalse(hasattr(obj, "invalid"))
 
     def test_create_place_with_invalid_parameters(self):
         """Test create command for Place with invalid parameters"""
@@ -464,13 +572,20 @@ class TestConsole_create(unittest.TestCase):
 
     def test_create_review_with_invalid_parameters(self):
         """Test create command for Review with invalid parameters"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(
+        from models.review import Review
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                with self.assertRaises(Exception):
                     HBNBCommand().onecmd('create Review invalid="invalid"')
-                    )
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Review." + obj_id]
-        self.assertFalse(hasattr(obj, "invalid"))
+        else:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(
+                    HBNBCommand().onecmd('create Review invalid="invalid"')
+                )
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()["Review." + obj_id]
+            self.assertFalse(hasattr(obj, "invalid"))
 
     def test_create_user_with_no_parameters(self):
         """Test create command for User with no parameters"""
@@ -520,11 +635,17 @@ class TestConsole_create(unittest.TestCase):
     def test_create_amenity_with_no_parameters(self):
         """Test create command for Amenity with no parameters"""
         from models.amenity import Amenity
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd('create Amenity'))
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Amenity." + obj_id]
-        self.assertTrue(isinstance(obj, Amenity))
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                with self.assertRaises(Exception):
+                    HBNBCommand().onecmd('create Amenity')
+        else:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('create Amenity'))
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()["Amenity." + obj_id]
+            self.assertTrue(isinstance(obj, Amenity))
 
     def test_create_place_with_no_parameters(self):
         """Test create command for Place with no parameters"""

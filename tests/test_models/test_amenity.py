@@ -3,6 +3,9 @@
 Unittest for the Class "Amenity"
 """
 
+import os
+import inspect
+import pep8
 import unittest
 import datetime
 import models
@@ -12,6 +15,70 @@ from models.user import User
 from models.city import City
 from models.state import State
 from models.place import Place
+
+
+class TestAmenityDocumentationAndStyle(unittest.TestCase):
+    """
+    Tests for the DBStorage class documentation and style.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.amenity_funcs = inspect.getmembers(
+                Amenity, predicate=inspect.isfunction
+                )
+
+    def test_pep8_conformance_Amenity(self):
+        """
+        Test that models/amenity conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/amenity.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_Amenity(self):
+        """
+        Test that tests/test_models/test_amenity.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_amenity.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_amenity_class_docstring(self):
+        """
+        Test for the Amenity class docstring
+        """
+        self.assertIsNot(
+                Amenity.__doc__,
+                None,
+                "Amenity class needs a docstring"
+                )
+        self.assertTrue(
+            len(Amenity.__doc__) >= 1, "Amenity class needs a docstring"
+        )
+
+    def test_amenity_func_docstrings(self):
+        """
+        Tests for the presence of docstrings in Amenity methods
+        """
+        for func in self.amenity_funcs:
+            self.assertIsNot(
+                func[1].__doc__,
+                None,
+                "{:s} method needs a docstring".format(func[0])
+                )
+            self.assertTrue(
+                len(func[1].__doc__) >= 1,
+                "{:s} method needs a docstring".format(func[0]),
+                )
 
 
 class Test_Amenity(unittest.TestCase):
@@ -286,6 +353,7 @@ class Test_to_dict(unittest.TestCase):
         amenities = models.storage.all(Amenity)
         self.assertNotIn("Amenity." + i.id, amenities)
         self.assertNotIn(i, amenities.values())
+
 
 if __name__ == '__main__':
     unittest.main()

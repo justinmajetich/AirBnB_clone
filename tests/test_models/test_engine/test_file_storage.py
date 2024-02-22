@@ -2,8 +2,76 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 from models import storage
 import os
+import pep8
+import inspect
+
+
+class TestFileStorageDocumentationAndStyle(unittest.TestCase):
+    """
+    Tests for the FileStorage class documentation and style.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.filestorage_funcs = inspect.getmembers(
+                FileStorage, predicate=inspect.isfunction
+                )
+
+    def test_pep8_conformance_FileStorage(self):
+        """
+        Test that models/engine/file_storage.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/engine/file_storage.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_FileStorage(self):
+        """
+        Test that tests/test_models/test_engine/test_file_storage.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_engine/test_file_storage.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_filestorage_class_docstring(self):
+        """
+        Test for the FileStorage class docstring
+        """
+        self.assertIsNot(
+                FileStorage.__doc__,
+                None,
+                "FileStorage class needs a docstring"
+                )
+        self.assertTrue(
+            len(FileStorage.__doc__) >= 1,
+            "FileStorage class needs a docstring"
+        )
+
+    def test_filestorage_func_docstrings(self):
+        """
+        Tests for the presence of docstrings in FileStorage methods
+        """
+        for func in self.filestorage_funcs:
+            self.assertIsNot(
+                func[1].__doc__,
+                None,
+                "{:s} method needs a docstring".format(func[0])
+                )
+            self.assertTrue(
+                len(func[1].__doc__) >= 1,
+                "{:s} method needs a docstring".format(func[0]),
+                )
 
 
 @unittest.skipIf(

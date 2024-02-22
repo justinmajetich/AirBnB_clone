@@ -2,12 +2,79 @@
 """
 Unittest for th Class "User"
 """
+import os
 import unittest
 import time
+import pep8
+import inspect
 import datetime
 import models
 import os
 from models.user import User
+
+
+class TestUserDocumentationAndStyle(unittest.TestCase):
+    """
+    Tests for the User class documentation and style.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.user_funcs = inspect.getmembers(
+                User, predicate=inspect.isfunction
+                )
+
+    def test_pep8_conformance_User(self):
+        """
+        Test that models/user.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["models/user.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_User(self):
+        """
+        Test that tests/test_models/test_user.py
+        conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(
+            ["tests/test_models/test_user.py"]
+        )
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_user_class_docstring(self):
+        """
+        Test for the User class docstring
+        """
+        self.assertIsNot(
+                User.__doc__,
+                None,
+                "User class needs a docstring"
+                )
+        self.assertTrue(
+            len(User.__doc__) >= 1, "User class needs a docstring"
+        )
+
+    def test_user_func_docstrings(self):
+        """
+        Tests for the presence of docstrings in User methods
+        """
+        for func in self.user_funcs:
+            self.assertIsNot(
+                func[1].__doc__,
+                None,
+                "{:s} method needs a docstring".format(func[0])
+                )
+            self.assertTrue(
+                len(func[1].__doc__) >= 1,
+                "{:s} method needs a docstring".format(func[0]),
+                )
 
 
 class Test_user_attr(unittest.TestCase):
