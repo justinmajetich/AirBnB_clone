@@ -6,7 +6,12 @@ Unittest for the Class "Amenity"
 import unittest
 import datetime
 import models
+import os
 from models.amenity import Amenity
+from models.user import User
+from models.city import City
+from models.state import State
+from models.place import Place
 
 
 class Test_Amenity(unittest.TestCase):
@@ -43,10 +48,36 @@ class Test_Amenity(unittest.TestCase):
         """This function tests for the type of updated_at attr"""
         self.assertIs(type(Amenity().updated_at), datetime.datetime)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_type_name(self):
         """This function tests the type of name attr"""
         self.assertIs(type(Amenity().name), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the DBStorage Mode only")
+    def test_attributes_db(self):
+        amenity = Amenity(name="TV")
+        amenity.save()
+        amenity_saved = models.storage._DBStorage__session.\
+            query(Amenity).filter(Amenity.id == amenity.id).first()
+        self.assertIs(type(amenity_saved.id), str)
+        self.assertIs(type(amenity_saved.created_at), datetime.datetime)
+        self.assertIs(type(amenity_saved.updated_at), datetime.datetime)
+        self.assertEqual(type(amenity_saved.name), str)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the DBStorage Mode only")
+    def test_save_db(self):
+        """This function tests saving into a JSOM file"""
+        amenity = Amenity(name="TV")
+        amenity.save()
+        saved_am = models.storage._DBStorage__session.\
+            query(Amenity).filter(Amenity.id == amenity.id).first()
+        self.assertEqual(amenity, saved_am)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_obj_storage(self):
         """This function tests that an object is automatically saved in
         the ___objects attr of storage instance"""
@@ -68,6 +99,46 @@ class Test_Amenity(unittest.TestCase):
         self.assertIn("'id': '123456'", amenity.__str__())
         self.assertIn("'created_at': " + repr(tdy), amenity.__str__())
         self.assertIn("'updated_at': " + repr(tdy), amenity.__str__())
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_place_reviews_db(self):
+        user = User(first_name="John", last_name="Doe",
+                    email="johndoe@gmail.com", password="123john")
+        state = State(name="new york")
+        city = City(name="new york", state_id=state.id)
+        place1 = Place(city_id=city.id, user_id=user.id,
+                       name="lovely_place", number_rooms=3,
+                       number_bathrooms=1, max_guest=6,
+                       price_by_night=120, latitude=37.773972,
+                       longitude=-122.431297)
+        place2 = Place(city_id=city.id, user_id=user.id,
+                       name="green_room", number_rooms=1,
+                       number_bathrooms=1, max_guest=2,
+                       price_by_night=300, latitude=35.43272,
+                       longitude=-192.54597)
+        amenity1 = Amenity(name="TV")
+        amenity2 = Amenity(name="Pets_allowed")
+        user.save()
+        state.save()
+        city.save()
+        place1.save()
+        place2.save()
+        amenity1.save()
+        amenity2.save()
+
+        place1.amenities.append(amenity1)
+        place1.amenities.append(amenity2)
+        place2.amenities.append(amenity1)
+        place2.amenities.append(amenity2)
+        place1.save()
+        place2.save()
+        amenity1.save()
+        amenity2.save()
+        self.assertTrue(len(amenity1.place_amenity) == 2)
+        self.assertTrue(isinstance(amenity1.place_amenity, list))
+        self.assertIn(place1, amenity1.place_amenity)
+        self.assertIn(place2, amenity1.place_amenity)
 
 
 class Test_instantation(unittest.TestCase):
@@ -102,6 +173,8 @@ class Test_instantation(unittest.TestCase):
         self.assertEqual(dict_amenity2['__class__'], "Amenity")
 
 
+@unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                 "To be tested in the FileStorage Mode only")
 class Test_save(unittest.TestCase):
     """This class tests the instance method save(self)"""
 
@@ -196,6 +269,35 @@ class Test_to_dict(unittest.TestCase):
         """This function tests giving the instance method to_dict arguments"""
         with self.assertRaises(TypeError):
             Amenity().to_dict("arg")
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_delete_file(self):
+        """Testing deleting the basemodel from the fileStorage"""
+        i = Amenity()
+        i.save()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertIn("Amenity." + i.id, read_data)
+        i.delete()
+        with open("file.json", "r") as f:
+            read_data = f.read()
+            self.assertNotIn("Amenity." + i.id, read_data)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "To be tested in the FileStorage Mode only")
+    def test_delete_db(self):
+        """Testing deleting the basemodel from the fileStorage"""
+        amenities_before = models.storage.all(Amenity)
+        i = Amenity(name="TV")
+        i.save()
+        amenities_after = models.storage.all(Amenity)
+        self.assertTrue(len(amenities_after) == len(amenities_before) + 1)
+        self.assertIn(i, amenities_after.values())
+        i.delete()
+        amenities = models.storage.all(Amenity)
+        self.assertNotIn("Amenity." + i.id, amenities)
+        self.assertNotIn(i, amenities.values())
 
 
 if __name__ == '__main__':

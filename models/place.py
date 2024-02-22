@@ -73,7 +73,7 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
         amenities = relationship("Amenity", secondary=association_table,
-                                 backref="place_amenities")
+                                 backref="place_amenity")
 
     def __init__(self, *args, **kwargs):
         """
@@ -108,10 +108,11 @@ class Place(BaseModel, Base):
                     if any(x in k for x in self.amenity_ids)]
 
         @amenities.setter
-        def amenities(self, obj):
+        def amenities(self, obj=None):
             """
             This is a setter attribute which handles append method for
             adding an Amenity.id to the attribute amenity_id.
             """
             if isinstance(obj, Amenity):
-                self.amenity_ids = obj.id
+                print(obj.id)
+                self.amenity_ids.append(obj.id)
