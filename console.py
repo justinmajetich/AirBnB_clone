@@ -128,6 +128,10 @@ class HBNBCommand(cmd.Cmd):
         # Initialize an empty dictionary to hold the parameters
         params_dict = {}
         # Loop through each parameter
+        new_instance = HBNBCommand.classes[args[0]]()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
         for param in params:
             try:
                 # Split the parameter into key and value
@@ -149,10 +153,12 @@ class HBNBCommand(cmd.Cmd):
                 # If the parameter is not valid, skip it and print an error message
                 print(f"Parameter '{param}' is not valid.")
                 continue
-            new_instance = HBNBCommand.classes[args[1]]()
-            storage.save()
-            print(new_instance.id)
-            storage.save()
+                # Update the instance with the parameters
+            for key, value in params_dict.items():
+                setattr(new_instance, key, value)
+        # Save the updated instance to storage
+        storage.new(new_instance)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
