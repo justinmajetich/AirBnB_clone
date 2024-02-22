@@ -19,8 +19,12 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
+               'BaseModel': BaseModel,
+               'User': User,
+               'Place': Place,
+               'State': State,
+               'City': City,
+               'Amenity': Amenity,
                'Review': Review
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
@@ -118,18 +122,14 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
         arguments = args.split()
         class_name = arguments[0]
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        arguments = arguments[1:]
 
         params = {}
-        for param in arguments:
+        for param in arguments[1:]:
             parts = param.split('=')
             if len(parts) != 2:
                 print(f"Invalid parameter: {param}")
@@ -155,10 +155,9 @@ class HBNBCommand(cmd.Cmd):
 
             params[key] = value
 
-        new_instance = HBNBCommand.classes[args](**params)
-        storage.save()
+        new_instance = self.classes[class_name](**params)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
