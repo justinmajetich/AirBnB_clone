@@ -149,6 +149,10 @@ class HBNBCommand(cmd.Cmd):
                 # If the parameter is not valid, skip it and print an error message
                 print(f"Parameter '{param}' is not valid.")
                 continue
+            new_instance = HBNBCommand.classes[args[1]]()
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
