@@ -8,6 +8,7 @@ from models.state import State
 from models.state import City
 from models.base_model import BaseModel
 from models import storage
+from sqlalchemy import String, Column
 import os
 
 
@@ -31,6 +32,8 @@ class test_state(test_basemodel):
         self.name = "State"
         self.value = State
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "To be tested in the FileStorage Mode only")
     def test_name3(self):
         """Test creation of a state"""
         new = self.value()

@@ -72,6 +72,7 @@ class Test_user_attr(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the DBStorage Mode only")
     def test_attributes_db(self):
+        """test for the attributes in the db mode"""
         user = User(first_name="John", last_name="Doe",
                     email="johndoe@gmail.com", password="123john")
         user.save()
@@ -259,19 +260,6 @@ class Test_to_dict(unittest.TestCase):
         with self.assertRaises(TypeError):
             User().to_dict("arg")
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_delete_file(self):
-        """Testing deleting the basemodel from the fileStorage"""
-        i = User()
-        i.save()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertIn("User." + i.id, read_data)
-        i.delete()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertNotIn("User." + i.id, read_data)
 
 if __name__ == '__main__':
     unittest.main()

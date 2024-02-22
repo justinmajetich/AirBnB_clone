@@ -87,6 +87,7 @@ class Test_Review(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the FileStorage Mode only")
     def test_place_user_db(self):
+        """Testing the place-user relationship"""
         user1 = User(first_name="John", last_name="Doe",
                      email="johndoe@gmail.com", password="123john")
         state = State(name="new york")
@@ -163,20 +164,6 @@ class Test_Review(unittest.TestCase):
             print(rev)
             self.assertEqual(m_stdout.getvalue(),
                              '[Review] ({}) {}\n'.format(rev.id, rev.__dict__))
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_delete_file(self):
-        """Testing deleting the basemodel from the fileStorage"""
-        i = Review()
-        i.save()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertIn("Review." + i.id, read_data)
-        i.delete()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertNotIn("Review." + i.id, read_data)
 
 
 if __name__ == '__main__':

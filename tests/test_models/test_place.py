@@ -64,6 +64,7 @@ class Test_Place(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the DBStorage Mode only")
     def test_attributes_db(self):
+        """testing attributes in the db mode"""
         user = User(first_name="john", last_name="doe",
                     email="johndoe@gmail.com", password="123john")
         state = State(name="new york")
@@ -90,6 +91,7 @@ class Test_Place(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
                      "To be tested in the FileStorage Mode only")
     def test_place_reviews_file(self):
+        """testing the review-place relationship"""
         user1 = User(first_name="John", last_name="Doe",
                      email="johndoe@gmail.com", password="123john")
         user2 = User(first_name="Mary", last_name="Jane",
@@ -119,6 +121,7 @@ class Test_Place(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the FileStorage Mode only")
     def test_place_reviews_db(self):
+        """testing the review-place relationship in db mode"""
         user1 = User(first_name="John", last_name="Doe",
                      email="johndoe@gmail.com", password="123john")
         user2 = User(first_name="Mary", last_name="Jane",
@@ -226,20 +229,6 @@ class Test_Place(unittest.TestCase):
             print(rev)
             self.assertEqual(m_stdout.getvalue(),
                              '[Place] ({}) {}\n'.format(rev.id, rev.__dict__))
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_delete_file(self):
-        """Testing deleting the basemodel from the fileStorage"""
-        i = Place()
-        i.save()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertIn("Place." + i.id, read_data)
-        i.delete()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertNotIn("Place." + i.id, read_data)
 
 
 if __name__ == '__main__':

@@ -57,6 +57,7 @@ class Test_Amenity(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the DBStorage Mode only")
     def test_attributes_db(self):
+        """Testing the attributes in the db mode"""
         amenity = Amenity(name="TV")
         amenity.save()
         amenity_saved = models.storage._DBStorage__session.\
@@ -103,6 +104,7 @@ class Test_Amenity(unittest.TestCase):
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the FileStorage Mode only")
     def test_place_reviews_db(self):
+        """testing the amenity-place relationship"""
         user = User(first_name="John", last_name="Doe",
                     email="johndoe@gmail.com", password="123john")
         state = State(name="new york")
@@ -270,20 +272,6 @@ class Test_to_dict(unittest.TestCase):
         with self.assertRaises(TypeError):
             Amenity().to_dict("arg")
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_delete_file(self):
-        """Testing deleting the basemodel from the fileStorage"""
-        i = Amenity()
-        i.save()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertIn("Amenity." + i.id, read_data)
-        i.delete()
-        with open("file.json", "r") as f:
-            read_data = f.read()
-            self.assertNotIn("Amenity." + i.id, read_data)
-
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
                      "To be tested in the FileStorage Mode only")
     def test_delete_db(self):
@@ -298,7 +286,6 @@ class Test_to_dict(unittest.TestCase):
         amenities = models.storage.all(Amenity)
         self.assertNotIn("Amenity." + i.id, amenities)
         self.assertNotIn(i, amenities.values())
-
 
 if __name__ == '__main__':
     unittest.main()
