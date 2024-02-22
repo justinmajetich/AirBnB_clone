@@ -13,8 +13,11 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         dict_ = {}
+        """ iterate over the key and value pairs in the dict"""
         for key, value in FileStorage.__objects.items():
+            """ check if value is an instance of cls class"""
             if isinstance(value, cls):
+                """ add key value pair to the dict"""
                 dict_[key] = value
         return dict_
 
@@ -42,16 +45,16 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
