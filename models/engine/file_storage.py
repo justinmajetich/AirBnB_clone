@@ -22,7 +22,7 @@ class FileStorage:
         """
         if obj is not None:
             obj_key = obj.to_dict()['__class__'] + '.' + obj.id
-            self.all().pop(obj_key, None)
+            FileStorage.__objects.pop(obj_key, None)
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
