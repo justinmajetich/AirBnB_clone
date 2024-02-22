@@ -115,13 +115,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        #tokenize the args
+
+        #replaced certain parts of code from args to toks to
+        #account for tokenization 2/22
+        toks = args.split()
+        if not toks:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        
+        #HBNBCommand.classes refers to the dictionary defined
+        #at the top of the file
+        elif toks[1] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[toks[1]]()
         storage.save()
         print(new_instance.id)
         storage.save()
