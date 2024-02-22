@@ -1,0 +1,5 @@
+#  Ignore Python test files
+__pycahce__/
+
+#  Ignore JSON files
+*.json
