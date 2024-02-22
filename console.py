@@ -139,9 +139,9 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def help_create(self):
-        """ Help information for the create method """
+        """ Help information for the updated create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> <param1> <param2> <param3>...")
 
     def do_show(self, args):
         """ Method to show an individual object """
