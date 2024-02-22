@@ -4,10 +4,9 @@ import unittest
 
 import pep8
 import os
-
+from sqlalchemy.orm import Session
 from models.engine import db_storage
 from models.engine.db_storage import DBStorage
-
 from models import storage
 from models.state import State
 from models.city import City
@@ -95,14 +94,15 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
             )
 
 
+@unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') != 'db',
+        "skip if not database storage"
+        )
 class TestDBStorage(unittest.TestCase):
     """Test for the DBStorage class"""
-    @unittest.skipIf(
-            os.getenv('HBNB_TYPE_STORAGE') != 'db',
-            "skip if not database storage"
-            )
     def setUp(self):
         """Set up for the tests"""
+        self.__session = Session()
         self.storage = storage
         self.instances = {}
 
@@ -164,7 +164,12 @@ class TestDBStorage(unittest.TestCase):
     def tearDown(self):
         """Tear down the tests"""
         for instance in self.instances.values():
+            if not self.storage._DBStorage__session.is_active:
+                self.storage._DBStorage__session.rollback()
+            self.storage._DBStorage__session.expunge_all()
             self.storage.delete(instance)
+
+        self.storage.reload()
         self.storage.save()
 
     def test_all(self):
