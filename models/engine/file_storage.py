@@ -49,9 +49,12 @@ class FileStorage:
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                if f.read():
+                    temp = json.load(f)
+                    for key, val in temp.items():
+                            self.all()[key] = classes[val['__class__']](**val)
+                else:
+                    print("File is empty, no data to load.")
         except FileNotFoundError:
             pass
 
