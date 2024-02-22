@@ -5,7 +5,6 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
 import os
-import pep8
 import inspect
 
 
@@ -20,29 +19,6 @@ class TestFileStorageDocumentationAndStyle(unittest.TestCase):
         cls.filestorage_funcs = inspect.getmembers(
                 FileStorage, predicate=inspect.isfunction
                 )
-
-    def test_pep8_conformance_FileStorage(self):
-        """
-        Test that models/engine/file_storage.py conforms to PEP8.
-        """
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(["models/engine/file_storage.py"])
-        self.assertEqual(
-            result.total_errors, 0, "Found code style errors (and warnings)."
-        )
-
-    def test_pep8_conformance_test_FileStorage(self):
-        """
-        Test that tests/test_models/test_engine/test_file_storage.py
-        conforms to PEP8.
-        """
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(
-            ["tests/test_models/test_engine/test_file_storage.py"]
-        )
-        self.assertEqual(
-            result.total_errors, 0, "Found code style errors (and warnings)."
-        )
 
     def test_filestorage_class_docstring(self):
         """

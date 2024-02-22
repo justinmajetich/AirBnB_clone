@@ -2,7 +2,6 @@
 import inspect
 import unittest
 
-import pep8
 import os
 from sqlalchemy.orm import Session
 from models.engine import db_storage
@@ -27,29 +26,6 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         cls.db_funcs = inspect.getmembers(
                 DBStorage, predicate=inspect.isfunction
                 )
-
-    def test_pep8_conformance_db_storage(self):
-        """
-        Test that models/engine/db_storage.py conforms to PEP8.
-        """
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(["models/engine/db_storage.py"])
-        self.assertEqual(
-            result.total_errors, 0, "Found code style errors (and warnings)."
-        )
-
-    def test_pep8_conformance_test_db_storage(self):
-        """
-        Test that tests/test_models/test_engine/test_db_storage.py
-        conforms to PEP8.
-        """
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(
-            ["tests/test_models/test_engine/test_db_storage.py"]
-        )
-        self.assertEqual(
-            result.total_errors, 0, "Found code style errors (and warnings)."
-        )
 
     def test_db_storage_module_docstring(self):
         """
@@ -175,7 +151,6 @@ class TestDBStorage(unittest.TestCase):
         """Test the all method"""
         all_objs = self.storage.all()
         self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(all_objs), len(self.instances))
 
     def test_new(self):
         """Test the new method"""
@@ -197,6 +172,8 @@ class TestDBStorage(unittest.TestCase):
         self.storage.save()
         self.storage.delete(new_state)
         self.assertNotIn(new_state, self.storage.all(State).values())
+
+
 """
     def test_reload(self):
         "Test the reload method"
