@@ -117,8 +117,8 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         """ Create an object of any class"""
         args = arg.split()
-        class_name = args[1]
-        params = args[2:]
+        class_name = args[0]
+        params = args[1:]
         if not self.is_valid_class(class_name):
             print("Need a valid class name")
             return

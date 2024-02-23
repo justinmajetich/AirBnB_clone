@@ -117,9 +117,6 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         """ Create an object of any class"""
         args = arg.split()
-        if len(args) < 2:
-            print("Invalid syntax")
-            return
         class_name = args[1]
         params = args[2:]
         if not self.is_valid_class(class_name):
