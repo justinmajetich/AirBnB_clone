@@ -3,7 +3,7 @@
 from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy import Column, String
-
+from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """
@@ -20,3 +20,6 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=True)
     # Define the last_name column, and can be null
     last_name = Column(String(128), nullable=True)
+    # Define the relationship with Place objects
+    places = relationship("Place", backref="user", cascade="all, delete")
+    
