@@ -116,24 +116,40 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Create object of any class with specified parameters"""
         #  separate into class name ([0]) and parameters [1:]
-
         args_split = args.split()
         if not args_split:
             print("** Missing class name **")
             return
         #  extract class name and assign to variable class_name
         class_name = args_split[0]
-        if class_name not in HBNBCommand.classes:
+        if class_name not in HBNBCommand.classes:  #  checks if class is recognized
             print("** class doesn't exist **")
             return
-        #  extract parameters and place into a list 'param'
-        param = {}
-        for param in args_split[1:]:  # splice list starting at first index
-            # each parameter split into <key name> = <value> max 1 time
-            key, value = param.split("=", 1)
-
+        #  extract parameters and place into a dict 'param_dict'
+        params = args_split[1:]
+        params_dict = {}
+        #  splice list starting at first index
+        for param in params:
+            try:
+                # each parameter split into <key name> = <value> max 1 time
+                key, value = param.split("=", 1)
+                #  string value syntax
+                if value.startswith('"') and value.endswith('"'):
+                    #  for everything in-between "" (actual value), replace __ with spaces
+                    value = value[1:-1].replace('_', "")
+                #  float value syntax
+                elif '.' in value:
+                    value = float(value)
+                #  integer is default value
+                else:
+                    value = int(value)
+                #  adds key-value pair to dictionary where key = name of paramter
+                params_dict[key] = value
+            except ValueError:
+                print(f'** {param} is not recognized as parameter **')
+                continue
         #  Instance creation from original console with added parameter inclusion
-        new_instance = HBNBCommand.classes[class_name](**param)
+        new_instance = HBNBCommand.classes[class_name](**params_dict)
         storage.save()
         print(new_instance.id)
         storage.save()
