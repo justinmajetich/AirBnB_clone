@@ -18,12 +18,12 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-            with open(FileStorage.__file_path, 'w') as f:
-                temp = {}
-                temp.update(FileStorage.__objects)
-                for key, val in temp.items():
-                    temp[key] = val.to_dict()
-                    json.dump(temp, f)
+        with open(FileStorage.__file_path, 'w') as f:
+            temp = {}
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
+                temp[key] = val.to_dict()
+                json.dump(temp, f)
     def reload(self):
         """Loads storage dictionary from file"""
         from models.base_model import BaseModel
