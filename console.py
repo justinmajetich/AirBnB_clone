@@ -128,10 +128,9 @@ class HBNBCommand(cmd.Cmd):
             new_module = __import__(class_name)
             added_class = getattr(module, class_name)
         except (ImportError, AttributeError) as e:
-            print("Error importing class {}: {}".format(class_name, e)
+            print("Error importing class {}: {}".format(class_name, e))
             return
         obj = added_class()
-
         for param in params:
             key_pair = param.split('=')
         new_instance = HBNBCommand.classes[args]()
