@@ -157,8 +157,7 @@ class HBNBCommand(cmd.Cmd):
             #  sets attributes for new_instance obj based on passed params
             for key, value in params_dict.items():
                 setattr(new_instance, key, value)
-        #  adds new object to storage dictionary and saves it
-        storage.new(new_instance)
+        #  saves new_instance to storage
         storage.save()
 
     def help_create(self):
