@@ -132,29 +132,31 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
-        # Loop through each parameter
+        """
+        Loop through each parameter
+        Split the parameter into key and value
+        Check if the value is a string (starts and ends with double quotes)
+        Check if the value is a float (contains a dot)
+        Convert the value to a float
+        Assume the value is an integer
+        Add the key-value pair to the dictionary
+        If the parameter is not valid, skip it and print an error message
+        Update the instance with the parameters
+        """
         for param in params:
             try:
-                # Split the parameter into key and value
                 key, value = param.split('=')
-          #Check if the value is a string (starts and ends with double quotes)
                 if value.startswith('"') and value.endswith('"'):
-       #Remove the double quotes and replace escaped quotes with actual quotes
                     value = value[1:-1].replace('\\"', '"').replace('_', ' ')
-                # Check if the value is a float (contains a dot)
                 elif '.' in value:
-                    # Convert the value to a float
                     value = float(value)
                 else:
-                    # Assume the value is an integer
                     value = int(value)
-                # Add the key-value pair to the dictionary
                 params_dict[key] = value
-            except ValueError:
-            #If the parameter is not valid, skip it and print an error message
+            except ValueError:      
                 print(f"Parameter '{param}' is not valid.")
                 continue
-                # Update the instance with the parameters
+                
             for key, value in params_dict.items():
                 setattr(new_instance, key, value)
         # Save the updated instance to storage
@@ -358,4 +360,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
