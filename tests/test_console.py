@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models import storage
 import os
 
+
 class test_console(unittest.TestCase):
     """Class to test the console"""
     def setUp(self):
@@ -14,7 +15,7 @@ class test_console(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        finally:
             pass
 
     def test_default(self):
