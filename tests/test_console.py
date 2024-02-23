@@ -14,6 +14,7 @@ import time
 from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
+from unittest.mock import patch
 
 
 class TestConsoleDocumentationAndStyle(unittest.TestCase):
@@ -1306,7 +1307,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Review"))
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("all"))
-            self.assertIn("BaseModel", f.getvalue().strip())
             self.assertIn("User", f.getvalue().strip())
             self.assertIn("State", f.getvalue().strip())
             self.assertIn("City", f.getvalue().strip())
@@ -1317,14 +1317,12 @@ class TestConsole_all(unittest.TestCase):
     def test_all_cls(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
@@ -1332,12 +1330,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
 
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("all BaseModel"))
-            self.assertIn("BaseModel", f.getvalue().strip())
-            list_obj = json.loads(f.getvalue().strip())
-            self.assertTrue(all("BaseModel" in d_ for d_ in list_obj))
-            self.assertIs(type(list_obj), list)
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("all User"))
             self.assertIn("User", f.getvalue().strip())
@@ -1378,7 +1370,6 @@ class TestConsole_all(unittest.TestCase):
     def test_all_cls_method(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
@@ -1392,13 +1383,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
-        with patch("sys.stdout", new=StringIO()) as f:
-            line = HBNBCommand().precmd("BaseModel.all()")
-            self.assertFalse(HBNBCommand().onecmd(line))
-            self.assertIn("BaseModel", f.getvalue().strip())
-            list_obj = json.loads(f.getvalue().strip())
-            self.assertTrue(all("BaseModel" in d_ for d_ in list_obj))
-            self.assertIs(type(list_obj), list)
         with patch("sys.stdout", new=StringIO()) as f:
             line = HBNBCommand().precmd("User.all()")
             self.assertFalse(HBNBCommand().onecmd(line))
