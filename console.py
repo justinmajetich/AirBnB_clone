@@ -134,9 +134,8 @@ class HBNBCommand(cmd.Cmd):
 
         for param in params:
             key_pair = param.split('=')
-        new_instance = HBNBCommand.classes[args]()
         storage.save()
-        print(new_instance.id)
+        print(obj.id)
         storage.save()
 
     def help_create(self):
