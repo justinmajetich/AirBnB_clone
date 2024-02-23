@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """Defines the HBnB console."""
 import cmd
@@ -119,6 +118,9 @@ class HBNBCommand(cmd.Cmd):
                 storage.new(obj)
             print(obj.id)
             obj.save()
+
+            if my_list[0] == "State":
+                print(obj)
 
         except SyntaxError:
             print("** class name missing **")
