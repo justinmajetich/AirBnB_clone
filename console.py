@@ -88,40 +88,35 @@ class HBNBCommand(cmd.Cmd):
         """
         try:
             if not line:
-                raise SyntaxError()
+                raise SyntaxError("Usage: create <Class name> <param1> <param2> ...")
 
-            my_list = parse(line)
+            class_name, *params = parse(line)
 
-            if not my_list:
-                raise SyntaxError()
-
-            if my_list[0] not in self.__classes:
+            if class_name not in self.__classes:
                 print("** class doesn't exist **")
                 return
 
             kwargs = {}
-            for i in range(1, len(my_list)):
-                key_value = my_list[i].split("=")
-                if len(key_value) != 2:
-                    raise SyntaxError()
-
-                key, value = key_value
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
+            for param in params:
+                key, value = param.split("=")
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace("_", " ").replace("\\", "")
+                elif "." in value:
+                    value = float(value)
                 else:
                     try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
+                        value = int(value)
+                    except ValueError:
                         continue
                 kwargs[key] = value
 
-            obj = eval(my_list[0])(**kwargs)
+            obj = eval(class_name)(**kwargs)
             storage.new(obj)
+            storage.save()
             print(obj.id)
-            obj.save()
 
-        except SyntaxError:
-            print("** invalid syntax **")
+        except SyntaxError as e:
+            print(e)
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
