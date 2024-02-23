@@ -73,12 +73,12 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] is '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
+                        _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
         except Exception as mess:
@@ -115,23 +115,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        #Split args into tokens
-        toks = args.split()
-        if not toks:
+        if not args:
             print("** class name missing **")
             return
-        
-        #Nab that classname
-        class_name = toks[0]
-
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        elif args not in HBNBCommand.classes:
+            print("** class doesn't exist")
             return
-        
-        new_instance = HBNBCommand.classes[class_name]()
+        new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
-        #Why second classname tho?
         storage.save()
 
     def help_create(self):
@@ -144,11 +136,6 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
-
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
         if not c_name:
             print("** class name missing **")
             return
@@ -177,9 +164,6 @@ class HBNBCommand(cmd.Cmd):
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
         if not c_name:
             print("** class name missing **")
             return
@@ -193,9 +177,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-
         try:
-            del(storage.all()[key])
+            del(storage._FileStorage__objects[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -236,17 +219,13 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
-    def help_count(self):
-        """ """
-        print("Usage: count <class_name>")
-
     def do_update(self, args):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
-        if args[0]:
+        if args[0] is not ' ':
             c_name = args[0]
         else:  # class name not present
             print("** class name missing **")
@@ -257,7 +236,7 @@ class HBNBCommand(cmd.Cmd):
 
         # isolate id from args
         args = args[2].partition(" ")
-        if args[0]:
+        if args[0] is not ' ':
             c_id = args[0]
         else:  # id not present
             print("** instance id missing **")
@@ -279,25 +258,12 @@ class HBNBCommand(cmd.Cmd):
                 args.append(k)
                 args.append(v)
         else:  # isolate args
-            args = args[2]
-            if args and args[0] == '\"':  # check for quoted arg
-                second_quote = args.find('\"', 1)
-                att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
-
-            args = args.partition(' ')
-
-            # if att_name was not quoted arg
-            if not att_name and args[0] != ' ':
+            args = args[2].replace('\"', '').split(' ')
+            try:  # assign
                 att_name = args[0]
-            # check for quoted val arg
-            if args[2] and args[2][0] == '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
-
-            # if att_val was not quoted arg
-            if not att_val and args[2]:
-                att_val = args[2].partition(' ')[0]
-
+                att_val = args[1]
+            except IndexError:  # do nothing on KeyError
+                pass
             args = [att_name, att_val]
 
         # retrieve dictionary of current objects
