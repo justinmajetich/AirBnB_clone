@@ -166,7 +166,6 @@ class TestDBStorage(unittest.TestCase):
                 self.storage.delete(instance)
 
         self.storage.save()
-        self.storage.reload()
 
     def test_all(self):
         """Test the all method"""
