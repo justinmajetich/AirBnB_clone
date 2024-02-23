@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -122,12 +123,18 @@ class HBNBCommand(cmd.Cmd):
             return
         #  extract class name and assign to variable class_name
         class_name = args_split[0]
-        if class_name not in HBNBCommand.classes:  #  checks if class is recognized
+        #  checks if class name is recognized
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         #  extract parameters and place into a dict 'param_dict'
         params = args_split[1:]
         params_dict = {}
+        #  creates new instance where class_name passed as class
+        new_instance = HBNBCommand.classes[class_name]()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
         #  splice list starting at first index
         for param in params:
             try:
@@ -135,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = param.split("=", 1)
                 #  string value syntax
                 if value.startswith('"') and value.endswith('"'):
-                    #  for everything in-between "" (actual value), replace __ with spaces
+                    #  for everything in-between "", replace __ with spaces
                     value = value[1:-1].replace('_', "")
                 #  float value syntax
                 elif '.' in value:
@@ -143,15 +150,15 @@ class HBNBCommand(cmd.Cmd):
                 #  integer is default value
                 else:
                     value = int(value)
-                #  adds key-value pair to dictionary where key = name of paramter
+                #  adds key-value pair to dictionary where key = name of param
                 params_dict[key] = value
             except ValueError:
                 print(f'** {param} is not recognized as parameter **')
                 continue
-        #  Instance creation from original console with added parameter inclusion
-        new_instance = HBNBCommand.classes[class_name](**params_dict)
-        storage.save()
-        print(new_instance.id)
+            #  sets attributes for new_instance obj passed on passed params
+            for key, value in params_dict.items():
+                setattr(new_instance, key, value)
+        storage.new(new_instance)
         storage.save()
 
     def help_create(self):
@@ -215,7 +222,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -347,6 +354,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
