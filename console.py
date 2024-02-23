@@ -12,6 +12,20 @@ from models.amenity import Amenity
 from models.review import Review
 
 
+def normalize_value(value):
+    """ Normalizes a the value of a parameter
+    """
+    if '.' in value and not value.startswith('"'):
+        return float(value)
+    elif value.isdigit() or (value[0] == '-' and value[1:].isdigit()):
+        return int(value)
+    elif value.startswith('"'):
+        formatted_val = value.replace('"', "").replace('_', ' ')
+        return formatted_val
+    else:
+        return None  # To indicate that parameter should be skipped
+
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -73,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,13 +132,33 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        # isolate class name
+        _cls, *params = args.split()
+        if _cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        if not params:  # No parameters passed to create
+            new_instance = HBNBCommand.classes[_cls]()
+            storage.save()
+            print(new_instance.id)
+            return
+
+        # If parameters were passed
+        print(params)
+        kwargs = {}
+        for param in params:
+            key = param[:param.find('=')]
+            val = normalize_value(param[param.find('=') + 1:])
+            if val is not None:  # Skip any parameter whose value can't be normalized
+                kwargs[key] = val
+        print(kwargs)
+
+        # Create object with parameters
+        new_instance = HBNBCommand.classes[_cls](**kwargs)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +306,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +314,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
