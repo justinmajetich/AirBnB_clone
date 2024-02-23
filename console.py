@@ -153,10 +153,10 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     value = int(value)
                 params_dict[key] = value
-            except ValueError:      
+            except ValueError:
                 print(f"Parameter '{param}' is not valid.")
                 continue
-                
+
             for key, value in params_dict.items():
                 setattr(new_instance, key, value)
         # Save the updated instance to storage
