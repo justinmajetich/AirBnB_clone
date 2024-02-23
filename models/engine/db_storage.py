@@ -16,7 +16,6 @@ from models.amenity import Amenity
 class DBStorage:
     __engine = None
     __session = None
-    storage = None
 
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
@@ -25,7 +24,7 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
-        from models.base_model import Base
+
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, passwd, host, db),
@@ -70,5 +69,4 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        self.__session.__class__.close(self.__session)
-        self.reload()
+        self.__session.remove()

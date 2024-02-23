@@ -10,7 +10,7 @@ import models
 Base = declarative_base()
 
 
-class BaseModel(Base):
+class State(BaseModel, Base):
     """This class defines all common attributes/methods for other classes"""
     __tablename__ = 'base_model'
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
