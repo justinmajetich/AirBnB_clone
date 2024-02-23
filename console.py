@@ -118,13 +118,13 @@ class HBNBCommand(cmd.Cmd):
         # Split the command line argument string into a list of arguments
         args = arg.split()
         # Check if the minimum number of arguments (class name) is provided
-        if len(args) <  2:
+        if len(args) <  1:
             print("Invalid command")
             return
         # Extract the class name from the first argument
-        class_name = args[1]
+        class_name = args[0]
         # Extract the remaining arguments as parameters
-        params = args[2:]
+        params = args[1:]
         # Initialize an empty dictionary to hold the parameters
         params_dict = {}
         # Loop through each parameter
