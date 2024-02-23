@@ -83,48 +83,46 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_create(self, arg):
-    # Split the input into parts
-    parts = arg.split()
-    if len(parts) <  1:
-        print("Invalid command")
-        return
+    def do_create(self, line):
+        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+        Create a new class instance with given keys/values and print its id.
+        """
+        try:
+            if not line:
+                raise SyntaxError()
 
-    # The first part is the class name
-    class_name = parts[0]
+            my_list = parse(line)
 
-    # Initialize an empty dictionary to store parameters
-    params = {}
+            if not my_list:
+                raise SyntaxError()
 
-    # Iterate over the remaining parts
-    for part in parts[1:]:
-        # Check if the part matches the key=value syntax
-        if "=" in part:
-            key, value = part.split("=",  1)
-            # Handle string values
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace("_", " ")
-                value = value.replace('\"', '\\"')
-            # Handle float values
-            elif "." in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    print(f"Invalid float value for {key}")
-                    continue
-            # Handle integer values
+            if my_list[0] not in self.__classes:
+                print("** class doesn't exist **")
+                return
+
+            kwargs = {}
+            for i in range(1, len(my_list)):
+                key, value = tuple(my_list[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+
+            if not kwargs:
+                obj = eval(my_list[0])()
             else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    print(f"Invalid integer value for {key}")
-                    continue
-            # Add the parsed parameter to the dictionary
-            params[key] = value
+                obj = eval(my_list[0])(**kwargs)
+                storage.new(obj)
+            print(obj.id)
+            obj.save()
 
-    # Assuming you have a method to create and store objects
-    self.create_and_store_object(class_name, **params)
-
+        except SyntaxError:
+            print("** class name missing **")
+    
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
         Display the string representation of a class instance of a given id.
