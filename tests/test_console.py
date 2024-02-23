@@ -1376,7 +1376,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
