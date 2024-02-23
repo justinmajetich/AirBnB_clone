@@ -7,14 +7,14 @@ import unittest
 import models
 from models.user import User
 import os
+import pep8
 import inspect
 import json
 import time
 from console import HBNBCommand
-from sqlalchemy import create_engine, MetaData
 from unittest.mock import patch
 from io import StringIO
-from models.base_model import Base
+from unittest.mock import patch
 
 
 class TestConsoleDocumentationAndStyle(unittest.TestCase):
@@ -28,6 +28,26 @@ class TestConsoleDocumentationAndStyle(unittest.TestCase):
         cls.console_funcs = inspect.getmembers(
                 HBNBCommand, predicate=inspect.isfunction
                 )
+
+    def test_pep8_conformance_Console(self):
+        """
+        Test that console.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["console.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
+
+    def test_pep8_conformance_test_console(self):
+        """
+        Test that tests/test_console.py conforms to PEP8.
+        """
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(["tests/test_console.py"])
+        self.assertEqual(
+            result.total_errors, 0, "Found code style errors (and warnings)."
+        )
 
     def test_console_class_docstring(self):
         """
@@ -170,19 +190,25 @@ class TestConsole_create(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """sets up the environment for testing"""
-        try:
-            os.remove("file.json")
-        except IOError:
+        if os.getenv("HBNB_TYPE_STORAGE") != "db":
+            try:
+                os.remove("file.json")
+            except IOError:
+                pass
+            models.storage._FileStorage__objects = {}
+        else:
             pass
-        models.storage._FileStorage__objects = {}
 
     def tearDown(self):
         """removes files created and resets the value of __objects"""
-        try:
-            os.remove("file.json")
-        except IOError:
+        if os.getenv("HBNB_TYPE_STORAGE") != "db":
+            try:
+                os.remove("file.json")
+            except IOError:
+                pass
+            models.storage._FileStorage__objects = {}
+        else:
             pass
-        models.storage._FileStorage__objects = {}
 
     def test_create_invalid(self):
         """This function tests create command with missing class name"""
@@ -205,8 +231,9 @@ class TestConsole_create(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("User.create()"))
             self.assertEqual(out2, f.getvalue().strip())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db")
     def test_create_cmd_basemodel(self):
         """This method creates a new BaseModel"""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -218,16 +245,14 @@ class TestConsole_create(unittest.TestCase):
             self.assertIn("BaseModel." + obj_id, read_data)
         self.assertIn("BaseModel." + obj_id, models.storage.all().keys())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_cmd_user(self):
         """This method creates a new User"""
         from models.user import User
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create User')
+                self.assertFalse(HBNBCommand().onecmd('create User'))
+                self.assertEqual("** email missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create User'))
@@ -239,16 +264,16 @@ class TestConsole_create(unittest.TestCase):
                 self.assertIn("User." + obj_id, read_data)
             self.assertIn("User." + obj_id, models.storage.all().keys())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_cmd_city(self):
         """this method creates a new city"""
         from models.city import City
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create City')
+                self.assertFalse(HBNBCommand().onecmd('create City'))
+                self.assertEqual(
+                        "** state_id missing **", f.getvalue().strip()
+                        )
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create City'))
@@ -260,16 +285,14 @@ class TestConsole_create(unittest.TestCase):
                 self.assertIn("City." + obj_id, read_data)
             self.assertIn("City." + obj_id, models.storage.all().keys())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_cmd_state(self):
         """this method creates a new state"""
         from models.state import State
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create State')
+                self.assertFalse(HBNBCommand().onecmd('create State'))
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create State'))
@@ -283,28 +306,38 @@ class TestConsole_create(unittest.TestCase):
 
     def test_create_cmd_amenity(self):
         """this method creates a new amenity"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
-            obj_id = f.getvalue().strip()
-        with open(models.storage._FileStorage__file_path,
-                  encoding="utf-8") as file:
-            read_data = file.read()
-            self.assertIn("Amenity." + obj_id, read_data)
-        self.assertIn("Amenity." + obj_id, models.storage.all().keys())
+        from models.state import State
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('create Amenity'))
+                self.assertEqual("** name missing **", f.getvalue().strip())
+        else:
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+                obj_id = f.getvalue().strip()
+            with open(
+                    models.storage._FileStorage__file_path,
+                    encoding="utf-8"
+                    ) as file:
+                read_data = file.read()
+                self.assertIn("Amenity." + obj_id, read_data)
+            self.assertIn("Amenity." + obj_id, models.storage.all().keys())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_user(self):
         """Test create command for User"""
         from models.user import User
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd(
-                        'create User email="test@test.com" password="test" '
-                        'first_name="John" last_name="Doe"'
-                    )
+                self.assertFalse(HBNBCommand().onecmd(
+                    'create User email="test@test.com" password="123test"'
+                    ))
+                obj_id = f.getvalue().strip().strip().split('\n')[-1]
+            models.storage.reload()
+            obj = models.storage.all()["User." + obj_id]
+            self.assertEqual(getattr(obj, "email"), "test@test.com")
+            self.assertEqual(getattr(obj, "password"), "123test")
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -320,8 +353,6 @@ class TestConsole_create(unittest.TestCase):
             self.assertEqual(getattr(obj, "first_name"), "John")
             self.assertEqual(getattr(obj, "last_name"), "Doe")
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_city(self):
         """Test create command for City"""
         from models.city import City
@@ -345,20 +376,24 @@ class TestConsole_create(unittest.TestCase):
                 )
             )
             city_id = f.getvalue().strip()
+        models.storage.reload()
         city = models.storage.all()["City." + city_id]
         self.assertEqual(getattr(city, "name"), "test")
         self.assertEqual(getattr(city, "state_id"), state_id)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_state(self):
         """Test create command for State"""
         from models.state import State
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create State name="test"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create State name="test"')
+                        )
+                obj_id = f.getvalue().strip().strip().split('\n')[-1]
+            models.storage.reload()
+            obj = models.storage.all()["State." + obj_id]
+            self.assertEqual(getattr(obj, "name"), "test")
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -368,16 +403,14 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["State." + obj_id]
             self.assertEqual(getattr(obj, "name"), "test")
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_cmd_amenity(self):
         """this method creates a new amenity"""
         from models.amenity import Amenity
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Amenity')
+                self.assertFalse(HBNBCommand().onecmd('create Amenity'))
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd("create Amenity"))
@@ -385,21 +418,19 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Amenity." + obj_id]
             self.assertTrue(isinstance(obj, Amenity))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_place(self):
         """Test create command for Place"""
         from models.place import Place
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd(
-                        'create Place city_id="test" user_id="test" '
-                        'name="test" description="test" number_rooms=2 '
-                        'number_bathrooms=1 max_guest=3 price_by_night=100 '
-                        'latitude=10.0 longitude=10.0 amenity_ids=["test"]'
-                    )
+                self.assertFalse(HBNBCommand().onecmd(
+                    'create Place '
+                    'name="test" description="test" number_rooms=2 '
+                    'number_bathrooms=1 max_guest=3 price_by_night=100 '
+                    'latitude=10.0 longitude=10.0 amenity_ids=["test"]'
+                    ))
+                self.assertEqual("** city_id missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -424,9 +455,8 @@ class TestConsole_create(unittest.TestCase):
             self.assertEqual(getattr(obj, "longitude"), 10.0)
             self.assertEqual(getattr(obj, "amenity_ids"), ["test"])
 
-    """
     def test_create_review_db(self):
-        Test create command for Review when HBNB_TYPE_STORAGE=db
+        """Test create command for Review when HBNB_TYPE_STORAGE=db"""
         from models.review import Review
         from models.user import User
         from models.place import Place
@@ -438,6 +468,7 @@ class TestConsole_create(unittest.TestCase):
             with patch("sys.stdout", new=StringIO()) as f:
                 HBNBCommand().onecmd('create State name="test_state"')
                 state_id = f.getvalue().strip()
+            models.storage.reload()
             state = models.storage.all().get("State." + state_id)
             self.assertIsNotNone(state, "State not found in storage")
             self.assertEqual(getattr(state, "name"), "test state")
@@ -448,8 +479,10 @@ class TestConsole_create(unittest.TestCase):
                         f'create City name="test_city" state_id="{state_id}"'
                         )
                 city_id = f.getvalue().strip()
+            models.storage.reload()
             city = models.storage.all().get("City." + city_id)
-            self.assertEqual(getattr(city, "name"), "test_city")
+            self.assertIsNotNone(city, "City not found in storage")
+            self.assertEqual(getattr(city, "name"), "test city")
 
             # Create a User
             with patch("sys.stdout", new=StringIO()) as f:
@@ -457,6 +490,7 @@ class TestConsole_create(unittest.TestCase):
                         'create User email="user@test.com" password="pwd"'
                         )
                 user_id = f.getvalue().strip()
+            models.storage.reload()
             user = models.storage.all().get("User." + user_id)
             self.assertIsNotNone(user, "User not found in storage")
             self.assertEqual(getattr(user, "email"), "user@test.com")
@@ -465,37 +499,38 @@ class TestConsole_create(unittest.TestCase):
             with patch("sys.stdout", new=StringIO()) as f:
                 HBNBCommand().onecmd(
                         f'create Place user_id="{user_id}" '
-                        'name="test place" city_id="{city_id}"'
+                        f'name="test_place" city_id="{city_id}"'
                         )
                 place_id = f.getvalue().strip()
+            models.storage.reload()
             place = models.storage.all().get("Place." + place_id)
             self.assertIsNotNone(place, "Place not found in storage")
-            self.assertEqual(getattr(place, "name"), "test_place")
+            self.assertEqual(getattr(place, "name"), "test place")
 
             # Now create the Review with the generated user_id and place_id
             with patch("sys.stdout", new=StringIO()) as f:
                 HBNBCommand().onecmd(
                         f'create Review text="test_review" '
-                        'user_id="{user_id}" place_id="{place_id}"'
+                        f'user_id="{user_id}" place_id="{place_id}"'
                         )
                 review_id = f.getvalue().strip()
+            models.storage.reload()
             review = models.storage.all().get("Review." + review_id)
             self.assertIsNotNone(review, "Review not found in storage")
-            self.assertEqual(getattr(review, "text"), "test_review")
+            self.assertEqual(getattr(review, "text"), "test review")
             self.assertEqual(getattr(review, "user_id"), user_id)
             self.assertEqual(getattr(review, "place_id"), place_id)
-    """
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_user_with_invalid_parameters(self):
         """Test create command for User with invalid parameters"""
         from models.user import User
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create User invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create User invalid="invalid"')
+                        )
+                self.assertEqual("** email missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -505,15 +540,18 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["User." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_city_with_invalid_parameters(self):
         """Test create command for City with invalid parameters"""
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create City invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create City invalid="invalid"')
+                        )
+                self.assertEqual(
+                        "** state_id missing **",
+                        f.getvalue().strip()
+                        )
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -523,16 +561,16 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["City." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_state_with_invalid_parameters(self):
         """Test create command for State with invalid parameters"""
         from models.state import State
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create State invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create State invalid="invalid"')
+                        )
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -542,16 +580,18 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["State." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_amenity_with_invalid_parameters(self):
         """Test create command for Amenity with invalid parameters"""
         from models.amenity import Amenity
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Amenity invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd(
+                            'create Amenity invalid="invalid"'
+                            )
+                        )
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -561,16 +601,16 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Amenity." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_place_with_invalid_parameters(self):
         """Test create command for Place with invalid parameters"""
         from models.place import Place
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Place invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create Place invalid="invalid"')
+                        )
+                self.assertEqual("** city_id missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -580,16 +620,19 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Place." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_review_with_invalid_parameters(self):
         """Test create command for Review with invalid parameters"""
         from models.review import Review
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Review invalid="invalid"')
+                self.assertFalse(
+                        HBNBCommand().onecmd('create Review invalid="invalid"')
+                        )
+                self.assertEqual(
+                        "** place_id missing **",
+                        f.getvalue().strip()
+                        )
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(
@@ -599,16 +642,14 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Review." + obj_id]
             self.assertFalse(hasattr(obj, "invalid"))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_user_with_no_parameters(self):
         """Test create command for User with no parameters"""
         from models.user import User
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create User')
+                self.assertFalse(HBNBCommand().onecmd('create User'))
+                self.assertEqual("** email missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create User'))
@@ -616,16 +657,17 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["User." + obj_id]
             self.assertTrue(isinstance(obj, User))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_city_with_no_parameters(self):
         """Test create command for City with no parameters"""
         from models.city import City
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create City')
+                self.assertFalse(HBNBCommand().onecmd('create City'))
+                self.assertEqual(
+                        "** state_id missing **",
+                        f.getvalue().strip()
+                        )
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create City'))
@@ -633,16 +675,14 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["City." + obj_id]
             self.assertTrue(isinstance(obj, City))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_state_with_no_parameters(self):
         """Test create command for State with no parameters"""
         from models.state import State
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create State')
+                self.assertFalse(HBNBCommand().onecmd('create State'))
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create State'))
@@ -650,16 +690,14 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["State." + obj_id]
             self.assertTrue(isinstance(obj, State))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_amenity_with_no_parameters(self):
         """Test create command for Amenity with no parameters"""
         from models.amenity import Amenity
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Amenity')
+                self.assertFalse(HBNBCommand().onecmd('create Amenity'))
+                self.assertEqual("** name missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create Amenity'))
@@ -667,16 +705,14 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Amenity." + obj_id]
             self.assertTrue(isinstance(obj, Amenity))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_place_with_no_parameters(self):
         """Test create command for Place with no parameters"""
         from models.place import Place
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             # Behavior when HBNB_TYPE_STORAGE=db
             with patch("sys.stdout", new=StringIO()) as f:
-                with self.assertRaises(Exception):
-                    HBNBCommand().onecmd('create Place')
+                self.assertFalse(HBNBCommand().onecmd('create Place'))
+                self.assertEqual("** city_id missing **", f.getvalue().strip())
         else:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create Place'))
@@ -684,16 +720,23 @@ class TestConsole_create(unittest.TestCase):
             obj = models.storage.all()["Place." + obj_id]
             self.assertTrue(isinstance(obj, Place))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_create_review_with_no_parameters(self):
         """Test create command for Review with no parameters"""
         from models.review import Review
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd('create Review'))
-            obj_id = f.getvalue().strip()
-        obj = models.storage.all()["Review." + obj_id]
-        self.assertTrue(isinstance(obj, Review))
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            # Behavior when HBNB_TYPE_STORAGE=db
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('create Review'))
+                self.assertEqual(
+                        "** place_id missing **",
+                        f.getvalue().strip()
+                        )
+        else:
+            with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('create Review'))
+                obj_id = f.getvalue().strip()
+            obj = models.storage.all()["Review." + obj_id]
+            self.assertTrue(isinstance(obj, Review))
 
     def test_create_with_nonexistent_class(self):
         """Test create command with nonexistent class"""
@@ -789,20 +832,10 @@ class TestConsole_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             self.assertEqual(msg, f.getvalue().strip())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_show_bm_invalid_id(self):
-        """This function tests all possibilities of reieving an
-        invalid id message"""
-        msg = "** no instance found **"
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("show BaseModel 1212121"))
-            self.assertEqual(msg, f.getvalue().strip())
-        with patch("sys.stdout", new=StringIO()) as f:
-            line = HBNBCommand().precmd('BaseModel.show("1212121")')
-            self.assertFalse(HBNBCommand().onecmd(line))
-            self.assertEqual("** no instance found **", f.getvalue().strip())
-
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
     def test_show_invalid_id(self):
         """This function tests all the possibilities of recieving an
         invalid id msg"""
@@ -825,6 +858,10 @@ class TestConsole_show(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("show Review 1212121"))
             self.assertEqual(msg, f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            line = HBNBCommand().precmd('BaseModel.show("1212121")')
+            self.assertFalse(HBNBCommand().onecmd(line))
+            self.assertEqual("** no instance found **", f.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as f:
             line = HBNBCommand().precmd('User.show("1212121")')
             self.assertFalse(HBNBCommand().onecmd(line))
@@ -850,29 +887,19 @@ class TestConsole_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             self.assertEqual("** no instance found **", f.getvalue().strip())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_show_bm(self):
-        """This function tests the functionality of the show method"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-            obj_id = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("show BaseModel " + obj_id))
-            obj = models.storage.all()["BaseModel." + obj_id]
-            self.assertEqual(f.getvalue().strip(), str(obj))
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-            obj_id = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("show BaseModel " + obj_id))
-            obj = models.storage.all()["BaseModel." + obj_id]
-            self.assertEqual(f.getvalue().strip(), str(obj))
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
     def test_show_objs(self):
         """This function tests the functionality of the show method"""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("show BaseModel " + obj_id))
+            obj = models.storage.all()["BaseModel." + obj_id]
+            self.assertEqual(f.getvalue().strip(), str(obj))
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create User"))
             obj_id = f.getvalue().strip()
@@ -915,10 +942,19 @@ class TestConsole_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("show Review " + obj_id))
             obj = models.storage.all()["Review." + obj_id]
             self.assertEqual(f.getvalue().strip(), str(obj))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("show BaseModel " + obj_id))
+            obj = models.storage.all()["BaseModel." + obj_id]
+            self.assertEqual(f.getvalue().strip(), str(obj))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_show_method_format_bm(self):
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
+    def test_show_method_format(self):
         """This function tests the show method in the dot notation"""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
@@ -928,11 +964,6 @@ class TestConsole_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             obj = models.storage.all()["BaseModel." + obj_id]
             self.assertEqual(f.getvalue().strip(), str(obj))
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_show_method_format(self):
-        """This function tests the show method in the dot notation"""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create User"))
             obj_id = f.getvalue().strip()
@@ -1124,9 +1155,11 @@ class TestConsole_destroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             self.assertEqual("** no instance found **", f.getvalue().strip())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_destroy_bm(self):
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
+    def test_destroy_objs(self):
         """This function tests the functionality of the destroy method"""
         msg = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as f:
@@ -1135,9 +1168,6 @@ class TestConsole_destroy(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("destroy BaseModel " + _id))
             self.assertNotIn("BaseModel." + _id, models.storage.all())
-
-    def test_destroy_objs(self):
-        """This function tests the functionality of the destroy method"""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create User"))
             obj_id = f.getvalue().strip()
@@ -1175,10 +1205,12 @@ class TestConsole_destroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("destroy Review " + obj_id))
             self.assertNotIn("Place." + obj_id, models.storage.all())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_destroy_basemodel_method_format(self):
-        """This function tests destroy method in dot notation w/BaseModel"""
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
+    def test_destroy_method_format(self):
+        """This function tests the destroy method in the dot notation"""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             obj_id = f.getvalue().strip()
@@ -1186,9 +1218,6 @@ class TestConsole_destroy(unittest.TestCase):
             li = HBNBCommand().precmd("BaseModel.destroy('{}')".format(obj_id))
             self.assertFalse(HBNBCommand().onecmd(li))
             self.assertNotIn("BaseModel." + obj_id, models.storage.all())
-
-    def test_destroy_method_format(self):
-        """This function tests the destroy method in the dot notation"""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("create User"))
             obj_id = f.getvalue().strip()
@@ -1233,6 +1262,10 @@ class TestConsole_destroy(unittest.TestCase):
             self.assertNotIn("Review." + obj_id, models.storage.all())
 
 
+@unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "skip if storage type is db"
+        )
 class TestConsole_all(unittest.TestCase):
     """This class defines unittests for the all method of the console"""
 
@@ -1263,18 +1296,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             self.assertEqual("** class doesn't exist **", f.getvalue().strip())
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_all_basemodel(self):
-        """This function tests the functionatlity of all w/BaseModel"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("all"))
-            self.assertIn("BaseModel", f.getvalue().strip())
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_all_objs(self):
         """This function tests the functionality of the all method"""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -1293,21 +1314,15 @@ class TestConsole_all(unittest.TestCase):
             self.assertIn("Place", f.getvalue().strip())
             self.assertIn("Review", f.getvalue().strip())
 
-    @unittest.skipIf(
-            os.getenv("HBNB_TYPE_STORAGE") == "db",
-            "Not running on FileStorage"
-            )
     def test_all_cls(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
@@ -1315,12 +1330,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
 
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("all BaseModel"))
-            self.assertIn("BaseModel", f.getvalue().strip())
-            list_obj = json.loads(f.getvalue().strip())
-            self.assertTrue(all("BaseModel" in d_ for d_ in list_obj))
-            self.assertIs(type(list_obj), list)
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("all User"))
             self.assertIn("User", f.getvalue().strip())
@@ -1358,23 +1367,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertIs(type(list_obj), list)
             self.assertTrue(all("Review" in d_ for d_ in list_obj))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
-    def test_all_basemodel_cls(self):
-        """This function tests the functionality of all w/BaseModel"""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-        with patch("sys.stdout", new=StringIO()) as f:
-            line = HBNBCommand().precmd("BaseModel.all()")
-            self.assertFalse(HBNBCommand().onecmd(line))
-            self.assertIn("BaseModel", f.getvalue().strip())
-            list_obj = json.loads(f.getvalue().strip())
-            self.assertTrue(all("BaseModel" in d_ for d_ in list_obj))
-            self.assertIs(type(list_obj), list)
-
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "To be tested in the FileStorage Mode only")
     def test_all_cls_method(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -1434,6 +1426,10 @@ class TestConsole_all(unittest.TestCase):
             self.assertTrue(all("Review" in d_ for d_ in list_obj))
 
 
+@unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "skip if storage type is db"
+        )
 class TestConsole_update(unittest.TestCase):
     """This class defines unittests for the update method of the console"""
 
@@ -1441,18 +1437,7 @@ class TestConsole_update(unittest.TestCase):
     def setUpClass(cls):
         '''Remove the file/db at the beginning of the test'''
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            user = os.getenv('HBNB_MYSQL_USER')
-            pwd = os.getenv('HBNB_MYSQL_PWD')
-            host = os.getenv('HBNB_MYSQL_HOST')
-            db = os.getenv('HBNB_MYSQL_DB')
-
-            engine = create_engine(f'mysql+mysqldb://{user}:{pwd}@{host}/{db}')
-
-            Base.metadata = MetaData()
-
-            Base.metadata.reflect(bind=engine)
-
-            Base.metadata.drop_all(bind=engine)
+            os.environ['HBNB_ENV'] = 'test'
         else:
             try:
                 models.FileStorage._FileStorage__objects = {}
@@ -1462,11 +1447,14 @@ class TestConsole_update(unittest.TestCase):
 
     def tearDown(self):
         """removes files created and resets the value of __objects"""
-        try:
-            os.remove("file.json")
-        except IOError:
-            pass
-        models.storage._FileStorage__objects = {}
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            os.environ['HBNB_ENV'] = 'test'
+        else:
+            try:
+                os.remove("file.json")
+            except IOError:
+                pass
+            models.storage._FileStorage__objects = {}
 
     def test_update_invalid(self):
         """This function tests update command with missing class name"""
@@ -2118,24 +2106,17 @@ class TestConsole_update(unittest.TestCase):
         self.assertEqual(_dict['first_name'], "John Doe")
 
 
+@unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "skip if storage type is db"
+        )
 class Test_count(unittest.TestCase):
     '''class test counting the number of instances'''
     @classmethod
     def setUpClass(cls):
         '''Remove the file/db at the beginning of the test'''
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            user = os.getenv('HBNB_MYSQL_USER')
-            pwd = os.getenv('HBNB_MYSQL_PWD')
-            host = os.getenv('HBNB_MYSQL_HOST')
-            db = os.getenv('HBNB_MYSQL_DB')
-
-            engine = create_engine(f'mysql+mysqldb://{user}:{pwd}@{host}/{db}')
-
-            metadata = MetaData()
-
-            metadata.reflect(bind=engine)
-
-            metadata.drop_all(bind=engine)
+            os.environ['HBNB_ENV'] = 'test'
         else:
             try:
                 models.FileStorage._FileStorage__objects = {}
@@ -2146,18 +2127,7 @@ class Test_count(unittest.TestCase):
     def setUp(self):
         '''Reset the `FileStorage.__objects`'''
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            user = os.getenv('HBNB_MYSQL_USER')
-            pwd = os.getenv('HBNB_MYSQL_PWD')
-            host = os.getenv('HBNB_MYSQL_HOST')
-            db = os.getenv('HBNB_MYSQL_DB')
-
-            engine = create_engine(f'mysql+mysqldb://{user}:{pwd}@{host}/{db}')
-
-            metadata = MetaData()
-
-            metadata.reflect(bind=engine)
-
-            metadata.drop_all(bind=engine)
+            os.environ['HBNB_ENV'] = 'test'
         else:
             try:
                 models.FileStorage._FileStorage__objects = {}
@@ -2193,6 +2163,10 @@ class Test_count(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd('count Place'))
             self.assertEqual(int(f.getvalue().strip()), 0)
 
+    @unittest.skipIf(
+            os.getenv('HBNB_TYPE_STORAGE') == 'db',
+            "skip if storage type is db"
+            )
     def test_count_BaseModel(self):
         '''Test there's number of counting instances printed'''
         from models.base_model import BaseModel
@@ -2212,21 +2186,37 @@ class Test_count(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd('count User'))
             self.assertEqual(int(f.getvalue().strip()), 0)
         with patch("sys.stdout", new=StringIO()) as f:
-            User().save()
-            line = HBNBCommand().precmd('User.count()')
-            self.assertFalse(HBNBCommand().onecmd(line))
-            self.assertEqual(int(f.getvalue().strip()), 1)
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        'create User email="test@test" password="test123"'
+                        )
+                    )
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('count User'))
+            count = f.getvalue().strip()
+            self.assertEqual(int(count), 1)
 
     def test_count_City(self):
         '''Test count City'''
+        from models.state import State
         from models.city import City
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd('count City'))
             self.assertEqual(int(f.getvalue().strip()), 0)
         with patch("sys.stdout", new=StringIO()) as f:
-            City().save()
-            line = HBNBCommand().precmd('City.count()')
-            self.assertFalse(HBNBCommand().onecmd(line))
+            self.assertFalse(
+                    HBNBCommand().onecmd('create State name="Test_State"')
+                    )
+            state_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        f'create City state_id="{state_id}" '
+                        'name="Test_City"'
+                        )
+                    )
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('count City'))
             self.assertEqual(int(f.getvalue().strip()), 1)
 
     def test_count_Amenity(self):
@@ -2256,13 +2246,50 @@ class Test_count(unittest.TestCase):
     def test_count_Review(self):
         '''Test count Review'''
         from models.review import Review
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd('count Review'))
             self.assertEqual(int(f.getvalue().strip()), 0)
         with patch("sys.stdout", new=StringIO()) as f:
-            Review().save()
-            line = HBNBCommand().precmd('Review.count()')
-            self.assertFalse(HBNBCommand().onecmd(line))
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        'create User email="test@test" password="test123"'
+                        )
+                    )
+            user_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(
+                    HBNBCommand().onecmd('create State name="Kharotum"')
+                    )
+            state_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        f'create City state_id="{state_id}" name="Bahry"'
+                        )
+                    )
+            city_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        f'create Place city_id="{city_id}" user_id="{user_id}"'
+                        ' name="My_Place" description="A_lovely_place" '
+                        'number_rooms=2 number_bathrooms=1 max_guest=2 '
+                        'price_by_night=100 latitude=37.77 longitude=-122.41')
+                    )
+            place_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(
+                    HBNBCommand().onecmd(
+                        f'create Review place_id="{place_id}" '
+                        f'user_id="{user_id}" text="Great place!"'
+                        )
+                    )
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('count Review'))
             self.assertEqual(int(f.getvalue().strip()), 1)
 
     def test_count_Place(self):

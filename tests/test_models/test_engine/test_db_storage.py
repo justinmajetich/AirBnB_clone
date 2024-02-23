@@ -65,9 +65,8 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
                 "db_storage.py needs a docstring"
                 )
 
-    """
     def test_db_storage_class_docstring(self):
-        Test for the DBStorage class docstring
+        """Test for the DBStorage class docstring"""
         self.assertIsNot(
                 DBStorage.__doc__,
                 None,
@@ -76,7 +75,6 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         self.assertTrue(
             len(DBStorage.__doc__) >= 1, "DBStorage class needs a docstring"
         )
-    """
 
     def test_db_func_docstrings(self):
         """
@@ -106,11 +104,15 @@ class TestDBStorage(unittest.TestCase):
         self.storage = storage
         self.instances = {}
 
+        for class_ in [State, User, City, Place, Review, Amenity]:
+            for obj in self.storage.all(class_).values():
+                self.storage.delete(obj)
+        self.storage.save()
+
         # Create and save State instance
         self.instances['State'] = State(name="California")
         self.storage.new(self.instances['State'])
         self.storage.save()
-        self.storage.reload()
 
         # Create and save User instance
         self.instances['User'] = User(
@@ -119,16 +121,14 @@ class TestDBStorage(unittest.TestCase):
                 )
         self.storage.new(self.instances['User'])
         self.storage.save()
-        self.storage.reload()
 
         # create City instance
         self.instances['City'] = City(
-                name="San Francisco",
+                name="San_Francisco",
                 state_id=self.instances['State'].id
                 )
         self.storage.new(self.instances['City'])
         self.storage.save()
-        self.storage.reload()
 
         # create Place instance
         self.instances['Place'] = Place(
@@ -138,23 +138,20 @@ class TestDBStorage(unittest.TestCase):
                 )
         self.storage.new(self.instances['Place'])
         self.storage.save()
-        self.storage.reload()
 
         # create Review instance
         self.instances['Review'] = Review(
-                text="Great place",
+                text="Great_place",
                 place_id=self.instances['Place'].id,
                 user_id=self.instances['User'].id
                 )
         self.storage.new(self.instances['Review'])
         self.storage.save()
-        self.storage.reload()
 
         # Create and save Amenity instance
         self.instances['Amenity'] = Amenity(name="Wifi")
         self.storage.new(self.instances['Amenity'])
         self.storage.save()
-        self.storage.reload()
 
         # append Amenity to Place
         #  self.instances['Place'].amenities.append(self.instances['Amenity'])
@@ -164,10 +161,9 @@ class TestDBStorage(unittest.TestCase):
     def tearDown(self):
         """Tear down the tests"""
         for instance in self.instances.values():
-            if not self.storage._DBStorage__session.is_active:
-                self.storage._DBStorage__session.rollback()
-            self.storage._DBStorage__session.expunge_all()
-            self.storage.delete(instance)
+            if self.storage._DBStorage__session.is_active:
+                self.storage._DBStorage__session.expunge_all()
+                self.storage.delete(instance)
 
         self.storage.save()
 
@@ -197,14 +193,17 @@ class TestDBStorage(unittest.TestCase):
         self.storage.save()
         self.storage.delete(new_state)
         self.assertNotIn(new_state, self.storage.all(State).values())
-"""
+
     def test_reload(self):
         "Test the reload method"
         self.storage.reload()
         all_objs = self.storage.all()
+        relevant_objs = {k: v for k, v in all_objs.items() if type(v) in [
+            State, User, City, Place, Review, Amenity
+            ]}
         self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(all_objs), len(self.instances))
-"""
+        self.assertEqual(len(relevant_objs), len(self.instances))
+
 
 if __name__ == "__main__":
     unittest.main()
