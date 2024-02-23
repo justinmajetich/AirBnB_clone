@@ -132,8 +132,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj = added_class()
 
-        for param in params:
-            key_pair = param.split('=')
+        
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
