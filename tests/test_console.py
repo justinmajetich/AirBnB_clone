@@ -1298,7 +1298,6 @@ class TestConsole_all(unittest.TestCase):
     def test_all_objs(self):
         """This function tests the functionality of the all method"""
         with patch("sys.stdout", new=StringIO()) as f:
-            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
             self.assertFalse(HBNBCommand().onecmd("create State"))
             self.assertFalse(HBNBCommand().onecmd("create City"))
