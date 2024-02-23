@@ -1,0 +1,56 @@
+# Ignore Python artifacts
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pyc
+*.pyc
+*$py.class
+
+# Ignore IDE/editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Ignore OS generated files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore build artifacts
+/dist/
+/build/
+
+# Ignore documentation
+/docs/build/
+
+# Ignore .env files
+.env
+.venv
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore .cache directories
+.cache/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore OS generated files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore C extensions
+*.so
