@@ -88,35 +88,42 @@ class HBNBCommand(cmd.Cmd):
         """
         try:
             if not line:
-                raise SyntaxError("Usage: create <Class name> <param1> <param2> ...")
+                raise SyntaxError()
 
-            class_name, *params = parse(line)
+            my_list = parse(line)
 
-            if class_name not in self.__classes:
+            if not my_list:
+                raise SyntaxError()
+
+            if my_list[0] not in self.__classes:
                 print("** class doesn't exist **")
                 return
 
             kwargs = {}
-            for param in params:
-                key, value = param.split("=")
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace("_", " ").replace("\\", "")
-                elif "." in value:
-                    value = float(value)
+            for i in range(1, len(my_list)):
+                key, value = tuple(my_list[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
                 else:
                     try:
-                        value = int(value)
-                    except ValueError:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
                         continue
                 kwargs[key] = value
 
-            obj = eval(class_name)(**kwargs)
-            storage.new(obj)
-            storage.save()
+            if not kwargs:
+                obj = eval(my_list[0])()
+            else:
+                obj = eval(my_list[0])(**kwargs)
+                storage.new(obj)
             print(obj.id)
+            obj.save()
 
-        except SyntaxError as e:
-            print(e)
+            if my_list[0] == "State":
+                print(obj)
+
+        except SyntaxError:
+            print("** class name missing **")
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
