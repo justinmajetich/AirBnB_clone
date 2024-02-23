@@ -34,11 +34,24 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        # """Convert instance into dict format"""
+        # dictionary = {}
+        # dictionary.update(self.__dict__)
+        # dictionary.update({'__class__':
+        #                   (str(type(self)).split('.')[-1]).split('\'')[0]})
+        # dictionary['created_at'] = self.created_at.isoformat()
+        # dictionary['updated_at'] = self.updated_at.isoformat()
+        # return dictionary
+        """
+        yet another attempt to 
+        convert object to dictionary
+        """
+        d = {}
+        self.__dict__['__class__'] = self.__class__.__name__
+        for attribute in self.__dict__.keys():
+            d.update({attribute: getattr(self, attribute)})
+        d['__class__'] = self.__class__.__name__
+        # if d['__class__'] == "BaseModel" or d['__class__'] == "User":
+        d['updated_at'] = self.updated_at.isoformat()
+        d['created_at'] = self.created_at.isoformat()
+        return d
