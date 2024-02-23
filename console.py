@@ -127,14 +127,12 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        #  create new object using class passed as parameter and print ID #
+        new_instance = HBNBCommand.classes[class_name]()
+        print(new_instance.id)
         #  extract parameters and place into a dict 'param_dict'
         params = args_split[1:]
         params_dict = {}
-        #  creates new instance where class_name passed as class
-        new_instance = HBNBCommand.classes[class_name]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
         #  splice list starting at first index
         for param in params:
             try:
@@ -158,6 +156,7 @@ class HBNBCommand(cmd.Cmd):
             #  sets attributes for new_instance obj passed on passed params
             for key, value in params_dict.items():
                 setattr(new_instance, key, value)
+        #  adds new object to storage dictionary and saves it
         storage.new(new_instance)
         storage.save()
 
