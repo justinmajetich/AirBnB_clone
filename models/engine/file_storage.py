@@ -60,4 +60,4 @@ def delete(self, obj=None):
     if obj:
         for key, value in FileStorage .__objects.items()
         if value == obj:
-            el FileStorage.__objects[key]
+            del FileStorage.__objects[key]
