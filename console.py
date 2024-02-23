@@ -20,8 +20,8 @@ def normalize_value(value):
     elif value.isdigit() or (value[0] == '-' and value[1:].isdigit()):
         return int(value)
     elif value.startswith('"'):
-        formatted_val = value.replace('"', "").replace('_', ' ')
-        return formatted_val
+        formatted_str = value.strip('"').replace('"', '\"').replace('_', ' ')
+        return formatted_str
     else:
         return None  # To indicate that parameter should be skipped
 
@@ -134,29 +134,27 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # isolate class name
-        _cls, *params = args.split()
-        if _cls not in HBNBCommand.classes:
+        cls, *params = args.split()
+        if cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
         if not params:  # No parameters passed to create
-            new_instance = HBNBCommand.classes[_cls]()
+            new_instance = HBNBCommand.classes[cls]()
             storage.save()
             print(new_instance.id)
             return
 
         # If parameters were passed
-        print(params)
         kwargs = {}
         for param in params:
             key = param[:param.find('=')]
             val = normalize_value(param[param.find('=') + 1:])
-            if val is not None:  # Skip any parameter whose value can't be normalized
+            if val is not None:  # Skip unrecognized parameters
                 kwargs[key] = val
-        print(kwargs)
 
         # Create object with parameters
-        new_instance = HBNBCommand.classes[_cls](**kwargs)
+        new_instance = HBNBCommand.classes[cls](**kwargs)
         storage.save()
         print(new_instance.id)
 
@@ -353,6 +351,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
