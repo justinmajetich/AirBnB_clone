@@ -70,9 +70,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        self.__session.remove()
-
-
-# Instance of DBStorage
-storage = DBStorage()
-storage.reload()
+        self.__session.__class__.close(self.__session)
+        self.reload()
