@@ -40,4 +40,9 @@ class DBStorage:
             query = self.__session.query().all()
         else:
             query = self.__session.query(cls).all()
-        
+        for record in query:
+            key = "{}.{}".format(record.name, record.id)
+            res.update({key: record})
+
+    def new(self, obj):
+        self._session.add(obj)
