@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
                 #  string value syntax
                 if value.startswith('"') and value.endswith('"'):
                     #  for everything in-between "", replace __ with spaces
-                    value = value[1:-1].replace('_', "")
+                    value = value[1:-1].replace('_', " ")
                 #  float value syntax
                 elif '.' in value:
                     value = float(value)
