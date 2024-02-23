@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         # Split the command line argument string into a list of arguments
         args = arg.split()
         # Check if the minimum number of arguments (class name) is provided
-        if len(args) <  1:
+        if len(args) < 1:
             print("Invalid command")
             return
         # Extract the class name from the first argument
@@ -127,18 +127,19 @@ class HBNBCommand(cmd.Cmd):
         params = args[1:]
         # Initialize an empty dictionary to hold the parameters
         params_dict = {}
-        # Loop through each parameter
+        # Create a new instance of the specified class and save it to storage
         new_instance = HBNBCommand.classes[args[0]]()
         storage.save()
         print(new_instance.id)
         storage.save()
+        # Loop through each parameter
         for param in params:
             try:
                 # Split the parameter into key and value
                 key, value = param.split('=')
-                # Check if the value is a string (starts and ends with double quotes)
+          #Check if the value is a string (starts and ends with double quotes)
                 if value.startswith('"') and value.endswith('"'):
-                    # Remove the double quotes and replace escaped quotes with actual quotes
+       #Remove the double quotes and replace escaped quotes with actual quotes
                     value = value[1:-1].replace('\\"', '"').replace('_', ' ')
                 # Check if the value is a float (contains a dot)
                 elif '.' in value:
@@ -150,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
                 # Add the key-value pair to the dictionary
                 params_dict[key] = value
             except ValueError:
-                # If the parameter is not valid, skip it and print an error message
+            #If the parameter is not valid, skip it and print an error message
                 print(f"Parameter '{param}' is not valid.")
                 continue
                 # Update the instance with the parameters
@@ -221,7 +222,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -354,5 +355,7 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
