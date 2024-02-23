@@ -128,6 +128,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist")
             return
 
+        for token in toks[1:]:
+            if '"' in token:
+                token = token.replace('"', '\\"')
+                token = token.replace("_", " ")
+            elif "." in token:
+                token = float(token)
+            else:
+                token = int(token)
+
         new_instance = HBNBCommand.classes[toks[0]]()
         storage.save()
         print(new_instance.id)
