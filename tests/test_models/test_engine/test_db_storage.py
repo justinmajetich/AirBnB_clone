@@ -104,6 +104,11 @@ class TestDBStorage(unittest.TestCase):
         self.storage = storage
         self.instances = {}
 
+        for class_ in [State, User, City, Place, Review, Amenity]:
+            for obj in self.storage.all(class_).values():
+                self.storage.delete(obj)
+        self.storage.save()
+
         # Create and save State instance
         self.instances['State'] = State(name="California")
         self.storage.new(self.instances['State'])
@@ -167,7 +172,7 @@ class TestDBStorage(unittest.TestCase):
         """Test the all method"""
         all_objs = self.storage.all()
         self.assertIsInstance(all_objs, dict)
-        self.assertNotEqual(len(all_objs), len(self.instances))
+        self.assertEqual(len(all_objs), len(self.instances))
 
     def test_new(self):
         """Test the new method"""
@@ -198,7 +203,7 @@ class TestDBStorage(unittest.TestCase):
             State, User, City, Place, Review, Amenity
             ]}
         self.assertIsInstance(all_objs, dict)
-        self.assertNotEqual(len(relevant_objs), len(self.instances))
+        self.assertEqual(len(relevant_objs), len(self.instances))
 
 
 if __name__ == "__main__":
