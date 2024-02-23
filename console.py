@@ -130,6 +130,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """Creates an instance of a given class with provided parameters """
+        storage_type = os.getenv("HBNB_TYPE_STORAGE")
         args = args.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -137,6 +138,24 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
+        # Define necessary attributes for each class
+        necessary_attributes = {
+            "User": ["email", "password"],
+            "Place": ["city_id", "user_id", "name"],
+            "State": ["name"],
+            "City": ["state_id", "name"],
+            "Amenity": ["name"],
+            "Review": ["place_id", "user_id", "text"],
+            }
+
+        # Check if necessary attributes are provided
+        if storage_type == "db" and args[0] in necessary_attributes:
+            attributes_provided = [arg.split("=")[0] for arg in args[1:]]
+            for necessary_attribute in necessary_attributes[args[0]]:
+                if necessary_attribute not in attributes_provided:
+                    print(f"** {necessary_attribute} missing **")
+                    return
 
         new_instance = HBNBCommand.classes[args[0]]()
         if len(args) > 1:
@@ -280,10 +299,17 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split(".")[0]:
-                count += 1
-        print(count)
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            objects = storage.all()
+            for k, v in objects.items():
+                if args == k.split(".")[0]:
+                    count += 1
+            print(count)
+        else:
+            for k, v in storage._FileStorage__objects.items():
+                if args == k.split(".")[0]:
+                    count += 1
+            print(count)
 
     def help_count(self):
         """Help information for the help command """
