@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         param = {}
         for param in args_split[1:]:  # splice list starting at first index
             # each parameter split into <key name> = <value> max 1 time
-            key, value = param.split(=, 1)
+            key, value = param.split("=", 1)
 
         #  Instance creation from original console with added parameter inclusion
         new_instance = HBNBCommand.classes[class_name](**param)
