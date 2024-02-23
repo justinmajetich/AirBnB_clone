@@ -36,56 +36,58 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb)')
 
     
-    # def precmd(self, line):
-    #     """Reformat command line for advanced command syntax.
+    def precmd(self, line):
+        """Reformat command line for advanced command syntax.
 
-    #     Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-    #     (Brackets denote optional fields in usage example.)
-    #     """
-    #     _cmd = _cls = _id = _args = ''  # initialize line elements
+        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
+        (Brackets denote optional fields in usage example.)
+        """
+        _cmd = _cls = _id = _args = ''  # initialize line elements
 
-    #     # scan for general formating - i.e '.', '(', ')'
-    #     if not ('.' in line and '(' in line and ')' in line):
-    #         return line
+        # scan for general formating - i.e '.', '(', ')'
+        if not ('.' in line and '(' in line and ')' in line):
+            return line
 
-    #     try:  # parse line left to right
-    #         pline = line[:]  # parsed line
+        print("precmd method has triggered")
+        try:  # parse line left to right
+            pline = line[:]  # parsed line
 
-    #         # isolate <class name>
-    #         _cls = pline[:pline.find('.')]
+            # isolate <class name>
+            _cls = pline[:pline.find('.')]
 
-    #         # isolate and validate <command>
-    #         _cmd = pline[pline.find('.') + 1:pline.find('(')]
-    #         if _cmd not in HBNBCommand.dot_cmds:
-    #             raise Exception
+            # isolate and validate <command>
+            _cmd = pline[pline.find('.') + 1:pline.find('(')]
+            if _cmd not in HBNBCommand.dot_cmds:
+                print("Command does not exist")
+                raise Exception
 
-    #         # if parantheses contain arguments, parse them
-    #         pline = pline[pline.find('(') + 1:pline.find(')')]
-    #         if pline:
-    #             # partition args: (<id>, [<delim>], [<*args>])
-    #             pline = pline.partition(', ')  # pline convert to tuple
+            # if parantheses contain arguments, parse them
+            pline = pline[pline.find('(') + 1:pline.find(')')]
+            if pline:
+                # partition args: (<id>, [<delim>], [<*args>])
+                pline = pline.partition(', ')  # pline convert to tuple
 
-    #             # isolate _id, stripping quotes
-    #             _id = pline[0].replace('\"', '')
-    #             # possible bug here:
-    #             # empty quotes register as empty _id when replaced
+                # isolate _id, stripping quotes
+                _id = pline[0].replace('\"', '')
+                # possible bug here:
+                # empty quotes register as empty _id when replaced
 
-    #             # if arguments exist beyond _id
-    #             pline = pline[2].strip()  # pline is now str
-    #             if pline:
-    #                 # check for *args or **kwargs
-    #                 if pline[0] == '{' and pline[-1] == '}'\
-    #                         and type(eval(pline)) is dict:
-    #                     _args = pline
-    #                 else:
-    #                     _args = pline.replace(',', '')
-    #                     # _args = _args.replace('\"', '')
-    #         line = ' '.join([_cmd, _cls, _id, _args])
+                # if arguments exist beyond _id
+                pline = pline[2].strip()  # pline is now str
+                if pline:
+                    # check for *args or **kwargs
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) is dict:
+                        _args = pline
+                    else:
+                        _args = pline.replace(',', '')
+                        # _args = _args.replace('\"', '')
+            line = ' '.join([_cmd, _cls, _id, _args])
 
-    #     except Exception as mess:
-    #         pass
-    #     finally:
-    #         return line
+        except Exception as mess:
+            pass
+        finally:
+            return line
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
@@ -105,9 +107,6 @@ class HBNBCommand(cmd.Cmd):
         """ Handles EOF to exit program """
         print()
         exit()
-
-    def default(self, line: str):
-        self.line = line.strip()
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -130,27 +129,14 @@ class HBNBCommand(cmd.Cmd):
     #     print(new_instance.id)
     #     storage.save()
 
-    def do_create(self, *args, **kwargs):
+    def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
         
-        print(args)
-
-        str = ''
-        for item in args:
-            str = str + item
-        str_args = str.strip()
-        print(str_args)
-        cmd_args = str_args.partition(" ")
-        print(cmd_args)
-
-        str = ''
-        for item in cmd_args:
-            str = str + item
-        
-        cmd_args = str.split(" ")
+        cmd_args = args.strip()
+        cmd_args = cmd_args.split(" ")
 
         if cmd_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
@@ -163,17 +149,20 @@ class HBNBCommand(cmd.Cmd):
             if tok_args[i] and '=' in tok_args[i]:
                 dic_args = tok_args[i].split("=")
                 i += 1
-                print("the object has a =")
-                print(dic_args[0])
-                print(type(dic_args[0]))
-                print(dic_args[1])
+                dic_args[1] = dic_args[1].replace('"', '')
+                dic_args[1] = dic_args[1].replace("'", '')
                 if hasattr(new_instance, dic_args[0]):
-                    print("the attribute has been found ")
+                    class_attribute = getattr(new_instance, dic_args[0])
+                    if type(class_attribute) is int:
+                         dic_args[1] = int(dic_args[1])
+                    elif type(class_attribute) is float:
+                         dic_args[1] = float(dic_args[1])
+                
                     setattr(new_instance, dic_args[0], dic_args[1])
+
             else:
                 i += 1
-                   
-        print(new_instance)
+            
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +308,7 @@ class HBNBCommand(cmd.Cmd):
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
+            print("this is kwargs")
             for k, v in kwargs.items():
                 args.append(k)
                 args.append(v)
