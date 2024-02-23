@@ -151,6 +151,7 @@ class HBNBCommand(cmd.Cmd):
         for key, value in vars(obj).items():
             print(f"{key}: {value}")
         storage.save()
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
