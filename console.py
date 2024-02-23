@@ -101,7 +101,11 @@ class HBNBCommand(cmd.Cmd):
 
             kwargs = {}
             for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
+                key_value = my_list[i].split("=")
+                if len(key_value) != 2:
+                    raise SyntaxError()
+
+                key, value = key_value
                 if value[0] == '"':
                     value = value.strip('"').replace("_", " ")
                 else:
@@ -111,16 +115,13 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 kwargs[key] = value
 
-            if not kwargs:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
+            obj = eval(my_list[0])(**kwargs)
+            storage.new(obj)
             print(obj.id)
             obj.save()
 
         except SyntaxError:
-            print("** class name missing **")
+            print("** invalid syntax **")
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
