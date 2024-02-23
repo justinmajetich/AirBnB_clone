@@ -151,6 +151,7 @@ class HBNBCommand(cmd.Cmd):
                 i += 1
                 dic_args[1] = dic_args[1].replace('"', '')
                 dic_args[1] = dic_args[1].replace("'", '')
+                dic_args[1] = dic_args[1].replace("_", ' ')
                 if hasattr(new_instance, dic_args[0]):
                     class_attribute = getattr(new_instance, dic_args[0])
                     if type(class_attribute) is int:
