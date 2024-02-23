@@ -12,12 +12,6 @@ class test_console(unittest.TestCase):
         """Set up test environment"""
         pass
 
-    def tearDown(self):
-        try:
-            os.remove('file.json')
-        finally:
-            pass
-
     def test_true(self):
         """True test"""
         self.assertTrue(True)
