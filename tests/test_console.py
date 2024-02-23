@@ -1261,6 +1261,10 @@ class TestConsole_destroy(unittest.TestCase):
             self.assertNotIn("Review." + obj_id, models.storage.all())
 
 
+@unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "skip if storage type is db"
+        )
 class TestConsole_all(unittest.TestCase):
     """This class defines unittests for the all method of the console"""
 
@@ -1291,10 +1295,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(line))
             self.assertEqual("** class doesn't exist **", f.getvalue().strip())
 
-    @unittest.skipIf(
-            os.getenv('HBNB_TYPE_STORAGE') == 'db',
-            "skip if storage type is db"
-            )
     def test_all_objs(self):
         """This function tests the functionality of the all method"""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -1315,10 +1315,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertIn("Place", f.getvalue().strip())
             self.assertIn("Review", f.getvalue().strip())
 
-    @unittest.skipIf(
-            os.getenv("HBNB_TYPE_STORAGE") == "db",
-            "Not running on FileStorage"
-            )
     def test_all_cls(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -1380,10 +1376,6 @@ class TestConsole_all(unittest.TestCase):
             self.assertIs(type(list_obj), list)
             self.assertTrue(all("Review" in d_ for d_ in list_obj))
 
-    @unittest.skipIf(
-            os.getenv('HBNB_TYPE_STORAGE') == 'db',
-            "skip if storage type is db"
-            )
     def test_all_cls_method(self):
         """This function tests the functionality of all with arg method"""
         with patch("sys.stdout", new=StringIO()) as f:
