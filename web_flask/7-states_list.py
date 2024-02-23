@@ -19,7 +19,7 @@ def states_list():
     states = storage.all(State)
     """sort State object alphabetically by name"""
     sorted_states = sorted(states.values(), key=lambda state: state.name)
-    return render_template(path, sorted_states=sorted_states)
+    return render_template(path, sorted_states=sorted_states), 200
 
 
 @app.teardown_appcontext
