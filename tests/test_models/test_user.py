@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-""" """
+"""Module for testing the the user model"""
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
 
 
 class test_User(test_basemodel):
-    """ """
-
+    """Class for testing the user"""
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
