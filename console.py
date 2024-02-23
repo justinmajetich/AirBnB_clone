@@ -133,10 +133,23 @@ class HBNBCommand(cmd.Cmd):
         obj = added_class()
         for param in params:
             key_pair = param.split('=')
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            key, value = key_pair
+            value = value.replace('_', ' ')
+            if value.starswith('"') and value.endswith('"'):
+                setattr(obj, key, value)
+            elif '.' in value:
+                try:
+                    setattr(obj, key, float(value))
+                except ValueError:
+                    print("Invalid float value for {}".format(key))
+            else:
+                try:
+                    setattr(obj, key, int(value))
+                except ValueError:
+                    print("Invalid integer value")
+        print("Success!!")
+        for key, value in vars(obj).items():
+            print(f"{key}: {value}")
 
     def help_create(self):
         """ Help information for the create method """
