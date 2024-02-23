@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
         try:
             new_module = __import__(class_name)
-            added_class = getattr(module, class_name)
+            added_class = getattr(new_module, class_name)
         except (ImportError, AttributeError) as e:
             print("Error importing class {}: {}".format(class_name, e))
             return
@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
             key_pair = param.split('=')
             key, value = key_pair
             value = value.replace('_', ' ')
-            if value.starswith('"') and value.endswith('"'):
+            if value.startswith('"') and value.endswith('"'):
                 setattr(obj, key, value)
             elif '.' in value:
                 try:
@@ -152,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
         for key, value in vars(obj).items():
             print(f"{key}: {value}")
         storage.save()
-
+        
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
