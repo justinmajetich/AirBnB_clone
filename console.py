@@ -130,17 +130,18 @@ class HBNBCommand(cmd.Cmd):
         #  create new object using class passed as parameter and print ID #
         new_instance = HBNBCommand.classes[class_name]()
         print(new_instance.id)
-        #  extract parameters and place into a dict 'param_dict'
+        #  splice list starting at first index - separates parameters
         params = args_split[1:]
+        # create dictionary for parameters
         params_dict = {}
-        #  splice list starting at first index
+        # iterate over each element in 'params'
         for param in params:
             try:
                 # each parameter split into <key name> = <value> max 1 time
                 key, value = param.split("=", 1)
                 #  string value syntax
                 if value.startswith('"') and value.endswith('"'):
-                    #  for everything in-between "", replace __ with spaces
+                    #  for everything between "" (value), replace __ with space
                     value = value[1:-1].replace('_', " ")
                 #  float value syntax
                 elif '.' in value:
@@ -153,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 print(f'** {param} is not recognized as parameter **')
                 continue
-            #  sets attributes for new_instance obj passed on passed params
+            #  sets attributes for new_instance obj based on passed params
             for key, value in params_dict.items():
                 setattr(new_instance, key, value)
         #  adds new object to storage dictionary and saves it
@@ -162,8 +163,10 @@ class HBNBCommand(cmd.Cmd):
 
     def help_create(self):
         """ Help information for the updated create method """
-        print("Creates a class of any type")
+        print("[Description] Creates class with specified parameters")
         print("[Usage]: create <className> <param1> <param2> <param3>...")
+        print("[Syntax]: <param> written as <key name>=<value>")
+        print("[Syntax]: any string passed as value must have double quotes")
 
     def do_show(self, args):
         """ Method to show an individual object """
