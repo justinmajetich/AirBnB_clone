@@ -7,7 +7,5 @@ from sqlalchemy import Column, String
 
 class User(BaseModel):
     """This class defines a user by various attributes"""
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    __tablename__ = "users"
+
