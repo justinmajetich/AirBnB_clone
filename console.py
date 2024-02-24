@@ -143,11 +143,12 @@ class HBNBCommand(cmd.Cmd):
         if args[0] in classes:
             params = self.key_parser(args[1:])
             instance = classes[args[0]](**params)
+            storage.new(instance)
+            storage.save()
+            print(instance.id)
         else:
             print("** class doesn't exist **")
             return
-        print(instance.id)
-        instance.save()
 
     def help_create(self):
         """ Help information for the create method """
