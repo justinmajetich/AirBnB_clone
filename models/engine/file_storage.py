@@ -24,29 +24,29 @@ class FileStorage:
     def all(self, cls=None):
         """Return a dictionary of instantiated objects in __objects.
 
-        Args:
-            cls (str): The class name to filter objects by.
-
         Return:
-            If cls is specified, a dictionary of objects of that type.
+            If a cls is specified, a dictionary of objects of that type.
             Otherwise, the __objects dictionary.
         """
-        if cls:
-            if isinstance(cls, str):
+        if cls is not None:
+            if type(cls) == str:
                 cls = eval(cls)
-            return {key: obj for key, obj in self.__objects.items() if isinstance(obj, cls)}
+            dictionary = {}
+            for k, v in self.__objects.items():
+                if type(v) == cls:
+                    dictionary[k] = v
+            return dictionary
         return self.__objects
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id."""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        self.__objects[key] = obj
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         dictionary = {}
-        for key, obj in self.__objects.items():
-            dictionary[key] = obj.to_dict(remove_password=False)
+        for key in self.__objects:
+            dictionary[key] = self.__objects[key].to_dict(remove_password=False)
         with open(self.__file_path, "w", encoding="utf-8") as f:
             json.dump(dictionary, f)
 
@@ -63,9 +63,10 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete a given object from __objects, if it exists."""
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects.pop(key, None)
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
+            pass
 
     def close(self):
         """Call the reload method."""
@@ -75,7 +76,7 @@ class FileStorage:
         """Returns a given instance from __objects.
 
         Args:
-            cls (str): The class name of the instance to retrieve.
+            cls (str): The class name of  instance to retrieve.
             id  (str): The ID of the instance to retrieve.
         """
         if cls is None or id is None:
@@ -84,13 +85,13 @@ class FileStorage:
         return self.__objects.get(key, None)
 
     def count(self, cls=None):
-        """Returns a count of all instances of the given class in __objects.
+        """Returns  count of  instances of the given class in __objects.
 
-        If no class is given, returns the total object count.
+        If no class given, returns total object count.
 
         Args:
-            cls (str): The class type to count instances of.
+            cls (str): The  type to count instances of.
         """
         if not cls:
             return len(self.__objects)
-        return sum(1 for key in self.__objects if key.startswith(cls))
+        return len([key for key in self.__objects if key.startswith(cls)])
