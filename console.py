@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """Defines the HBnB console."""
 import cmd
@@ -122,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
 
         except SyntaxError:
             print("** class name missing **")
-    
+
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
         Display the string representation of a class instance of a given id.
