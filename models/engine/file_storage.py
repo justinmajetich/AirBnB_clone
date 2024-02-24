@@ -14,7 +14,7 @@ class FileStorage:
             return list(FileStorage.__objects.values())
         else:
             object_types = []
-            for obj in self.objects_list:
+            for obj in FileStorage.__objects.values():
                 if isinstance(obj, cls):
                     object_types.append(obj)
             return object_types
