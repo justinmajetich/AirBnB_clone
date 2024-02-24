@@ -1,0 +1,12 @@
+#!/bin/bash
+# Pushes the current branch to the remote repository.
+#make new files executable before pushing
+chmod u+x *.sh
+chmod u+x *.py
+#git add -A
+git add .  
+git commit -m "$1"
+git push origin $(git rev-parse --abbrev-ref HEAD)
+
+# add alias to .bashrc
+alias push='~/push'
