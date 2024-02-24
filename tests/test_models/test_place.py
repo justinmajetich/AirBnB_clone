@@ -61,9 +61,19 @@ class test_Place(test_basemodel):
     def test_longitude(self):
         """ """
         new = self.value()
-        self.assertEqual(type(new.latitude), float)
+        self.assertEqual(type(new.longitude), float)
 
     def test_amenity_ids(self):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    def test_city_relationship(self):
+        """ """
+        new = self.value()
+        self.assertIsInstance(new.city, str)
+
+    def test_user_relationship(self):
+        """ """
+        new = self.value()
+        self.assertIsInstance(new.user, str)
