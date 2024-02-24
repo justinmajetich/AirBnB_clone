@@ -1,111 +1,96 @@
-#!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+#!/usr/bin/env python3
+"""Defines the FileStorage class."""
 import json
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
-    __file_path = 'file.json'
+    """Represent an abstracted storage engine.
+
+    Attributes:
+        __file_path (str): The name of the file to save objects to.
+        __objects (dict): A dictionary of instantiated objects.
+    """
+
+    __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
-        else:
-            filtered_objects = {}
-            for key, obj in FileStorage.__objects.items():
-                if isinstance(obj, cls):
-                    filtered_objects[key] = obj
-            return filtered_objects
+        """Return a dictionary of instantiated objects in __objects.
+
+        Args:
+            cls (str): The class name to filter objects by.
+
+        Return:
+            If cls is specified, a dictionary of objects of that type.
+            Otherwise, the __objects dictionary.
+        """
+        if cls:
+            if isinstance(cls, str):
+                cls = eval(cls)
+            return {key: obj for key, obj in self.__objects.items() if isinstance(obj, cls)}
+        return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
+        """Set in __objects obj with key <obj_class_name>.id."""
         key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
-        """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            for key, val in FileStorage.__objects.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        """Serialize __objects to the JSON file __file_path."""
+        dictionary = {}
+        for key, obj in self.__objects.items():
+            dictionary[key] = obj.to_dict(remove_password=False)
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(dictionary, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
+        """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    cls_name = val['__class__']
-                    cls = classes.get(cls_name)
-                    if cls:
-                        self.__objects[key] = cls(**val)
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                for o in json.load(f).values():
+                    name = o["__class__"]
+                    del o["__class__"]
+                    self.new(eval(name)(**o))
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Deletes obj from __objects if it's inside"""
-        if obj is not None:
+        """Delete a given object from __objects, if it exists."""
+        if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
+            self.__objects.pop(key, None)
 
+    def close(self):
+        """Call the reload method."""
+        self.reload()
 
-if __name__ == "__main__":
-    fs = FileStorage()
+    def get(self, cls, id):
+        """Returns a given instance from __objects.
 
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
+        Args:
+            cls (str): The class name of the instance to retrieve.
+            id  (str): The ID of the instance to retrieve.
+        """
+        if cls is None or id is None:
+            return None
+        key = '{}.{}'.format(cls, id)
+        return self.__objects.get(key, None)
 
-    # Create a new State
-    new_state = State()
-    new_state.name = "California"
-    fs.new(new_state)
-    fs.save()
-    print("New State: {}".format(new_state))
+    def count(self, cls=None):
+        """Returns a count of all instances of the given class in __objects.
 
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
+        If no class is given, returns the total object count.
 
-    # Create another State
-    another_state = State()
-    another_state.name = "Nevada"
-    fs.new(another_state)
-    fs.save()
-    print("Another State: {}".format(another_state))
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
-
-    # Delete the new State
-    fs.delete(new_state)
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
+        Args:
+            cls (str): The class type to count instances of.
+        """
+        if not cls:
+            return len(self.__objects)
+        return sum(1 for key in self.__objects if key.startswith(cls))
