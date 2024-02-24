@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -123,34 +124,29 @@ class HBNBCommand(cmd.Cmd):
         args_list = args.split()
         class_name = args_list[0]
 
-
-        if class_name not in HBNBCommand.classes:
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
+        kwargs = {}
 
-        args_list = args_list[1:]
-        parameters = {}
+        for pair in args_list[1:]:
+            if '=' in pair:
+                key, value = pair.split('=', 1)
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            continue
+                kwargs[key] = value
 
-
-        for arg in args_list:
-            key, value = arg.split('=')
-            key = key.replace('_', ' ')
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('\\"', '"')
-            if '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            elif value.isdigit():
-                value = int(value)
-            else:
-                continue
-            parameters[key] = value
-        new_instance = HBNBCommand.classes[class_name](**parameters)
-
-        storage.save()
-        print(new_instance.id)
+        instance = self.classes[class_name](**kwargs)
+        print(instance.id)
+        instance.save()
 
     def help_create(self):
         """ Help information for the create method """
