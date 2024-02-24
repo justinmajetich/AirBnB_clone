@@ -146,8 +146,14 @@ class HBNBCommand(cmd.Cmd):
             else:
                 continue
             parameters[key] = value
-        new_instance = HBNBCommand.classes[class_name](**parameters)
+        if class_name == 'State':
+            if 'name' not in parameters:
+                name = " "
+            else:
+                name = parameters.pop('name')
+                parameters['name'] = name
 
+        new_instance = HBNBCommand.classes[class_name](**parameters)
         storage.save()
         print(new_instance.id)
 
