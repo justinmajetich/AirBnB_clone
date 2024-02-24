@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" State Module for the HBNB project."""
+""" State Module for HBNB project."""
 from models import storage_type
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
@@ -9,7 +9,7 @@ from os import getenv
 
 
 class State(BaseModel, Base):
-    """A class that defines a state rep"""
+    """A class that defines a state representation"""
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'states'
         name = Column(String(128),
@@ -21,8 +21,8 @@ class State(BaseModel, Base):
 
         @property
         def cities(self):
-            """ Returns the no of cities where given
-            state_id == to the current state_id."""
+            """ Returns the number of cities where the given
+            state_id is equal to the current state_id."""
             from models import storage
             cities_related = []
             cities = storage.all(City)
