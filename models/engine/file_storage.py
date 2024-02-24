@@ -105,6 +105,7 @@ if __name__ == "__main__":
     # Delete the new State
     fs.delete(new_state)
 
+
     # All States
     all_states = fs.all(State)
     print("All States: {}".format(len(all_states.keys())))
