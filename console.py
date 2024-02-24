@@ -144,10 +144,12 @@ class HBNBCommand(cmd.Cmd):
             #^^^ error handle that may be necessary
             print("elem.val to handle type: {}".format(split_toks[elem]))
             if '"' in split_toks[elem]:
-                print("elem is str: {}".format(split_toks[elem]))
+                #Debug Print
+                #print("elem is str: {}".format(split_toks[elem]))
                 split_toks[elem] = split_toks[elem].replace('"', '\\"')
                 split_toks[elem] = split_toks[elem].replace("_", " ")
-                print("elem after update: {}".format(split_toks[elem]))
+                #Debug Print
+                #print("elem after update: {}".format(split_toks[elem]))
             elif "." in split_toks[elem]:
                 split_toks[elem] = float(split_toks[elem])
             elif isinstance(split_toks[elem], int):
@@ -157,7 +159,7 @@ class HBNBCommand(cmd.Cmd):
                 #elem = int(elem)
 
         new_instance = HBNBCommand.classes[toks[0]]()
-        #Set attrs here??f
+        #Set attrs here??
         for elem in split_toks:
             setattr(new_instance, elem, split_toks[elem])
 
