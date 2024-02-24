@@ -142,13 +142,16 @@ class HBNBCommand(cmd.Cmd):
         for elem in split_toks:
             #if '"' not in elem and "." not in elem and 
             #^^^ error handle that may be necessary
-            if '"' in elem:
-                elem = elem.replace('"', '\\"')
-                elem = elem.replace("_", " ")
-            elif "." in elem:
-                elem = float(elem)
-            elif isinstance(elem, int):
-                elem = int(elem)
+            print("elem.val to handle type: {}".format(split_toks[elem]))
+            if '"' in split_toks[elem]:
+                print("elem is str: {}".format(split_toks[elem]))
+                split_toks[elem] = split_toks[elem].replace('"', '\\"')
+                split_toks[elem] = split_toks[elem].replace("_", " ")
+                print("elem after update: {}".format(split_toks[elem]))
+            elif "." in split_toks[elem]:
+                split_toks[elem] = float(split_toks[elem])
+            elif isinstance(split_toks[elem], int):
+                split_toks[elem] = int(split_toks[elem])
             else:
                 pass
                 #elem = int(elem)
