@@ -144,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 parameters[key] = value
 
-        parameters['updated_at'] = datetime.now()
         new_instance = HBNBCommand.classes[class_name](**parameters)
 
         storage.save()
