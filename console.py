@@ -83,44 +83,52 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, line):
-        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
+        """Usage: create <Class name> <param  1> <param  2> <param  3>...
         Create a new class instance with given keys/values and print its id.
         """
-        try:
-            if not line:
-                raise SyntaxError()
+    try:
+        if not line:
+            raise SyntaxError()
 
-            my_list = parse(line)
+        my_list = parse(line)
 
-            if not my_list:
-                raise SyntaxError()
+        if not my_list:
+            raise SyntaxError()
 
-            if my_list[0] not in self.__classes:
-                print("** class doesn't exist **")
-                return
+        if my_list[0] not in self.__classes:
+            print("** class doesn't exist **")
+            return
 
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if not kwargs:
-                obj = eval(my_list[0])()
+        kwargs = {}
+        for i in range(1, len(my_list)):
+            key, value = tuple(my_list[i].split("="))
+            if value[0] == '"':
+                value = value.strip('"').replace("_", " ")
+                # Unescape quotes if any
+                value = value.replace('\\"', '"')
             else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
+                try:
+                    # Check for float
+                    value = float(value)
+                except ValueError:
+                    try:
+                        # Assume integer if not float
+                        value = int(value)
+                    except ValueError:
+                        # Skip unrecognized value
+                        continue
+            kwargs[key] = value
 
-        except SyntaxError:
-            print("** class name missing **")
+        if not kwargs:
+            obj = eval(my_list[0])()
+        else:
+            obj = eval(my_list[0])(**kwargs)
+            storage.new(obj)
+        print(obj.id)
+        obj.save()
+
+    except SyntaxError:
+        print("** class name missing **")
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
