@@ -11,12 +11,14 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls:
+            #vvv debug prints (that were useless)
             #print("Class detected")
             #print("Class: {}".format(cls))
             return_dict = {}
             for elem in self.__objects:
                 if type(self.__objects[elem]) is cls:
-                    return_dict.update(self.__objects[elem].to_dict())
+                    return_dict.update({elem: self.__objects[elem]})
+                    #vvv debug prints (that were useless)
                     #print("Added to Dict:")
                     #print("{}".format(self.__objects[elem].to_dict()))
             #print("dict returned: {}".format(return_dict))
@@ -42,7 +44,7 @@ class FileStorage:
         if obj:
             del_item = obj.to_dict()['__class__'] + '.' + obj.id
             if del_item in self.__objects:
-                del del_item
+                del self.__objects[del_item]
 
     def reload(self):
         """Loads storage dictionary from file"""
