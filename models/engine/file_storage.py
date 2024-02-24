@@ -14,18 +14,13 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
-            self.__objects[key] = obj
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        odict = {o: self.__objects[o].to_dict() for o in self.__objects.keys()}
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(odict, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
