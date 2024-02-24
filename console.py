@@ -13,18 +13,17 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -141,14 +140,14 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args[0] in HBNBCommand.classes:
+        if args[0] in classes:
             params = self.key_parser(args[1:])
-            instance = HBNBCommand.classes[args[0]](**params)
+            instance = classes[args[0]](**params)
         else:
             print("** class doesn't exist **")
             return
         print(instance.id)
-        storage.save()
+        instance.save()
 
     def help_create(self):
         """ Help information for the create method """
