@@ -11,10 +11,15 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls:
+            print("Class detected")
+            print("Class: {}".format(cls))
             return_dict = {}
             for elem in self.__objects:
                 if type(self.__objects[elem]) is cls:
                     return_dict.update(self.__objects[elem].to_dict())
+                    print("Added to Dict:")
+                    print("{}".format(self.__objects[elem].to_dict()))
+            print("dict returned: {}".format(return_dict))
             return return_dict
         else:
             return FileStorage.__objects
