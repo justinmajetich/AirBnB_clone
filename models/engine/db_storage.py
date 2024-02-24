@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
 
+
 class DBStorage:
     """This class manages storage of hbnb models using SQLAlchemy"""
     __engine = None
@@ -29,10 +30,15 @@ class DBStorage:
         if cls:
             objects = self.__session.query(cls).all()
         else:
-            objects = self.__session.query(State).all() + \
-                      self.__session.query(City).all() + \
-                      self.__session.query(BaseModel).all()
-        return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objects}
+            objects = (
+                self.__session.query(State).all() +
+                self.__session.query(City).all() +
+                self.__session.query(BaseModel).all()
+            )
+        return {
+            "{}.{}".format(type(obj).__name__, obj.id): obj
+            for obj in objects
+        }
 
     def new(self, obj):
         """Adds new object to storage"""
