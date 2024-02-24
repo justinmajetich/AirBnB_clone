@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -143,6 +144,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 parameters[key] = value
 
+        parameters['updated_at'] = datetime.now()
         new_instance = HBNBCommand.classes[class_name](**parameters)
 
         storage.save()
