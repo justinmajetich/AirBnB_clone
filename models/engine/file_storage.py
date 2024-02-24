@@ -8,12 +8,9 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self, cls=None):
+    def all(self):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return self.__objects
-        else:
-            return [obj for obj in self.__objects if isinstance(obj, cls)]
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -27,15 +24,6 @@ class FileStorage:
             for key, val in temp.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
-            #^^^ Some bug is here
-            # JSON is not playing nice with whatever
-            # we're sending to it
-
-    def delete(self, obj=None):
-        """Deletes an obj from __objects"""
-        if obj is not None:
-            if obj in self.__objects:
-                self.__objects.remove(obj)
 
     def reload(self):
         """Loads storage dictionary from file"""

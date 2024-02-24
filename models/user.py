@@ -5,8 +5,8 @@ from .base_model import Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-
-class User(BaseModel, Base):
+#class User(BaseModel, Base):
+class User(BaseModel):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
     email = Column('email', String(128), nullable=False)
