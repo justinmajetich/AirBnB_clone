@@ -118,7 +118,18 @@ class HBNBCommand(cmd.Cmd):
         toks = args.split()
 
         #assign class to variable for further use
-        class_name = toks[0]     
+        class_name = toks[0]
+
+        #I'm assigning these even if I may not have to
+        temp_str = []
+        split_toks = {}
+
+        for token in toks[1:]:
+            temp_str = token.split('=')
+            split_toks[temp_str[0]] = temp_str[1]
+            print("split tokens: {0} = {1}".format(temp_str[0], split_toks[temp_str[0]]))
+
+            #split_toks.update(token.split('='))
 
         if not args:
             print("** class name missing **")
@@ -128,14 +139,19 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist")
             return
 
-        for token in toks[1:]:
-            if '"' in token:
-                token = token.replace('"', '\\"')
-                token = token.replace("_", " ")
-            elif "." in token:
-                token = float(token)
+        for elem in split_toks:
+            #if '"' not in elem and "." not in elem and 
+            #^^^ error handle that may be necessary
+            if '"' in elem:
+                elem = elem.replace('"', '\\"')
+                elem = elem.replace("_", " ")
+            elif "." in elem:
+                elem = float(elem)
+            elif isinstance(elem, int):
+                elem = int(elem)
             else:
-                token = int(token)
+                pass
+                #elem = int(elem)
 
         new_instance = HBNBCommand.classes[toks[0]]()
         storage.save()
