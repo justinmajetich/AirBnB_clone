@@ -14,18 +14,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+    classes = {	
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,	
+            'State': State, 'City': City, 'Amenity': Amenity,	
+            'Review': Review	
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -116,33 +114,43 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+# bookmark
+
     def do_create(self, arg):
-        """Creates a new instance of a class"""
-        # Split the argument string into a list of words
-        args = arg.split()
-
-        # Check if the class name is missing
-        if len(args) == 0:
+        """ Create an object of any class"""
+        if not arg:
             print("** class name missing **")
-            return False
+            return
+        params = arg.split()
+        class_name = params[0]
 
-        # Check if the class name is in the defined classes
-        if args[0] in classes:
-            # Parse the remaining key-value pairs and create a dictionary
-            new_dict = self._key_value_parser(args[1:])
-
-            # Create a new instance of the specified class using the dictionary
-            instance = classes[args[0]](**new_dict)
-        else:
-            # Print an error message if the class doesn't exist
+        if class_name not in self.classes:
             print("** class doesn't exist **")
-            return False
+            return
+        params = params[1:]
+        parameters = {}
 
-            # Print the ID of the newly created instance
-        print(instance.id)
+        for pair in params:
+            key, value = pair.split('=')
+            value = value.replace('_', ' ')
+            if value[0] == value[-1] == '"':
+                value = value[1:-1].replace('"', '\"')
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            parameters[key] = value
+        new_instance = self.classes[class_name](**parameters)
+        storage.new(new_instance)
+        print(new_instance.id)
+        storage.save()
 
-        # Save the newly created instance to the storage
-        instance.save()
+#check the code above
 
     def help_create(self):
         """ Help information for the create method """
@@ -340,3 +348,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+    
