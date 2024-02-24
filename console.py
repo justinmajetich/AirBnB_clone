@@ -138,17 +138,19 @@ class HBNBCommand(cmd.Cmd):
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('\\"', '"')
             if '.' in value:
-                parameters[key] = float(value)
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
             elif value.isdigit():
-                parameters[key] = int(value)
+                value = int(value)
             else:
-                parameters[key] = value
-
+                continue
+            parameters[key] = value
         new_instance = HBNBCommand.classes[class_name](**parameters)
 
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
