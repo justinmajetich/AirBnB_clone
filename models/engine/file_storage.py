@@ -1,7 +1,4 @@
-#!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
 import json
-import os
 
 
 class FileStorage:
@@ -65,49 +62,3 @@ class FileStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             if key in FileStorage.__objects:
                 del FileStorage.__objects[key]
-
-
-if __name__ == "__main__":
-    fs = FileStorage()
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
-
-    # Create a new State
-    new_state = State()
-    new_state.name = "California"
-    fs.new(new_state)
-    fs.save()
-    print("New State: {}".format(new_state))
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
-
-    # Create another State
-    another_state = State()
-    another_state.name = "Nevada"
-    fs.new(another_state)
-    fs.save()
-    print("Another State: {}".format(another_state))
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
-
-    # Delete the new State
-    fs.delete(new_state)
-
-
-    # All States
-    all_states = fs.all(State)
-    print("All States: {}".format(len(all_states.keys())))
-    for state_key in all_states.keys():
-        print(all_states[state_key])
