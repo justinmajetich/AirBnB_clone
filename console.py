@@ -154,6 +154,10 @@ class HBNBCommand(cmd.Cmd):
                 #elem = int(elem)
 
         new_instance = HBNBCommand.classes[toks[0]]()
+        #Set attrs here??f
+        for elem in split_toks:
+            setattr(self, elem, split_toks[elem])
+
         storage.save()
         print(new_instance.id)
         storage.save()
