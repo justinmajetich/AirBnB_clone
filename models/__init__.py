@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module instantiates storage type that used for projects"""
+"""The module instantiates db storage"""
 import os
 
 
@@ -13,4 +13,4 @@ else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
 
-storage.reload()r
+storage.reload()
