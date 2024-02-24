@@ -142,11 +142,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 continue
             parameters[key] = value
-
-        new_instance = self.classes[class_name](**parameters)
-        storage.new(new_instance)
+        if parameters == {}:
+            instance = eval(class_name)()
+        else:
+            instance = eval(class_name)(**parameters)
+            storage.new(instance)
+        print(instance.id)
         storage.save()
-        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
