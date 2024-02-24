@@ -142,9 +142,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 continue
             parameters[key] = value
-        new_instance = self.classes[class_name](**parameters)
-        storage.new(new_instance)
-        print(new_instance.id)
+        storage.new(self.classes[class_name](**parameters))
+        print(storage.all()[class_name + '.' + parameters['id']].id)
         storage.save()
 
     def help_create(self):
