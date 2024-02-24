@@ -35,6 +35,7 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
+    
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
@@ -47,6 +48,7 @@ class HBNBCommand(cmd.Cmd):
         if not ('.' in line and '(' in line and ')' in line):
             return line
 
+        print("precmd method has triggered")
         try:  # parse line left to right
             pline = line[:]  # parsed line
 
@@ -56,6 +58,7 @@ class HBNBCommand(cmd.Cmd):
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
             if _cmd not in HBNBCommand.dot_cmds:
+                print("Command does not exist")
                 raise Exception
 
             # if parantheses contain arguments, parse them
@@ -113,15 +116,54 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    # def do_create(self, args):
+    #     """ Create an object of any class"""
+    #     if not args:
+    #         print("** class name missing **")
+    #         return
+    #     elif args not in HBNBCommand.classes:
+    #         print("** class doesn't exist **")
+    #         return
+    #     new_instance = HBNBCommand.classes[args]()
+    #     storage.save()
+    #     print(new_instance.id)
+    #     storage.save()
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        
+        cmd_args = args.strip()
+        cmd_args = cmd_args.split(" ")
+
+        if cmd_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[cmd_args[0]]()
+
+        i = 0
+        tok_args = cmd_args[1:]
+        while i < len(tok_args):
+            if tok_args[i] and '=' in tok_args[i]:
+                dic_args = tok_args[i].split("=")
+                i += 1
+                dic_args[1] = dic_args[1].replace('"', '')
+                dic_args[1] = dic_args[1].replace("'", '')
+                dic_args[1] = dic_args[1].replace("_", ' ')
+                if hasattr(new_instance, dic_args[0]):
+                    class_attribute = getattr(new_instance, dic_args[0])
+                    if type(class_attribute) is int:
+                         dic_args[1] = int(dic_args[1])
+                    elif type(class_attribute) is float:
+                         dic_args[1] = float(dic_args[1])
+                
+                    setattr(new_instance, dic_args[0], dic_args[1])
+
+            else:
+                i += 1
+            
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -267,6 +309,7 @@ class HBNBCommand(cmd.Cmd):
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
+            print("this is kwargs")
             for k, v in kwargs.items():
                 args.append(k)
                 args.append(v)
