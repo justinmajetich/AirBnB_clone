@@ -13,8 +13,8 @@ class FileStorage:
         if cls:
             return_dict = {}
             for elem in self.__objects:
-                if self.__objects[elem].__class__ == cls:
-                    return_dict.update(self.__objects)
+                if type(self.__objects[elem]) is cls:
+                    return_dict.update(self.__objects[elem].to_dict())
             return return_dict
         else:
             return FileStorage.__objects
