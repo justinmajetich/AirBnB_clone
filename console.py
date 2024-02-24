@@ -13,17 +13,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-            }
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    classes = {	
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,	
+            'State': State, 'City': City, 'Amenity': Amenity,	
+            'Review': Review	
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -114,41 +113,43 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def key_parser(self,args):
-        """ Create a dictionary from a list."""
-        params = {}
-        for pair in args:
-            if '=' in pair:
-                key_param = pair.split('=', 1)
-                key = key_param[0]
-                value = key_param[1]
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            continue
-                params[key] = value
-        return params
-
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        if args[0] in classes:
-            params = self.key_parser(args[1:])
-            instance = classes[args[0]](**params)
-            storage.new(instance)
-            storage.save()
-            print(instance.id)
-        else:
+
+        args_list = args.split()
+        class_name = args_list[0]
+
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
+        args_list = args_list[1:]
+        parameters = {}
+
+
+        for arg in args_list:
+            key, value = arg.split('=')
+            key = key.replace('_', ' ')
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            parameters[key] = value
+        new_instance = HBNBCommand.classes[class_name](**parameters)
+
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
