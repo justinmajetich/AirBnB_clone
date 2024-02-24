@@ -140,13 +140,18 @@ class HBNBCommand(cmd.Cmd):
             return
 
         for elem in split_toks:
+            #if '"' not in elem and "." not in elem and 
+            #^^^ error handle that may be necessary
             if '"' in elem:
                 elem = elem.replace('"', '\\"')
                 elem = elem.replace("_", " ")
             elif "." in elem:
                 elem = float(elem)
-            else:
+            elif isinstance(elem, int):
                 elem = int(elem)
+            else:
+                pass
+                #elem = int(elem)
 
         new_instance = HBNBCommand.classes[toks[0]]()
         storage.save()

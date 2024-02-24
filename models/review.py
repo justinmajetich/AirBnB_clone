@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 """ Review module for the HBNB project """
 from models.base_model import BaseModel
-from .base_model import Base
+#vvv to be reimplimented
+#from .base_model import Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class Review(BaseModel, Base):
+#vvv to be reimplimented
+#class Review(BaseModel, Base):
+class Review(BaseModel):
     """ Review class to store review information """
     __tablename__ = 'reviews'
     place_id = Column('place_id', String(60), ForeignKey('places.id'), nullable=False)
