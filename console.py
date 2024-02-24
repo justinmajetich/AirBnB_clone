@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             instance = eval(class_name)(**parameters)
             storage.new(instance)
-        print(instance.id)
+        print(instance)
         storage.save()
 
     def help_create(self):
