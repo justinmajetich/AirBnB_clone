@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         parameters = {}
 
         for pair in params:
-            key, value = pair.split('=', 1)
+            key, value = pair.split('=')
             value = value.replace('_', ' ')
             if value[0] == value[-1] == '"':
                 value = value[1:-1].replace('"', '\"')
@@ -142,12 +142,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 continue
             parameters[key] = value
-        if parameters == {}:
-            instance = eval(class_name)()
-        else:
-            instance = eval(class_name)(**parameters)
-            storage.new(instance)
-        print(instance.id)
+        new_instance = self.classes[class_name](**parameters)
+        storage.new(new_instance)
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
