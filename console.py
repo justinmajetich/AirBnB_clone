@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,16 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+env = os.environ
+hbnb_env = env.get('HBNB_ENV', 'test')
+hbnb_mysql_user = env.get('HBNB_MYSQL_USER', 'root')
+hbnb_mysql_pwd = env.get('HBNB_MYSQL_PWD', 'root')
+hbnb_mysql_host = env.get('HBNB_MYSQL_HOST', 'localhost')
+hbnb_mysql_db = env.get('HBNB_MYSQL_DB', 'hbnb_test_db')
+hbnb_type_storage = env.get('HBNB_TYPE_STORAGE', 'db')
+
 
 
 class HBNBCommand(cmd.Cmd):
