@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module establishes a base class for use across all models within our HBNB clone."""
+"""This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -16,14 +16,14 @@ else:
 
 
 class BaseModel:
-    """A base class model for all hbnb models"""
+    """A base class for all hbnb models"""
     if getenv("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        """Instantiates new model"""
+        """Instantiates a new model"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
@@ -37,18 +37,18 @@ class BaseModel:
                 self.updated_at = datetime.strptime(self.updated_at, time_fmt)
 
     def __str__(self):
-        """Returns a str rep of the instance"""
+        """Returns a string representation of the instance"""
         return '[{:s}] ({:s}) {}'.format(
                 self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time anytime instance is altered"""
+        """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self, save_to_disk=False):
-        """Returns a dic containing all keys/values of an instance"""
+        """Returns a dictionary containing all keys/values of an instance"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].isoformat()
@@ -68,5 +68,5 @@ class BaseModel:
         return new_dict
 
     def delete(self):
-        """ Deletescurrent instance from storage """
+        """ Deletes the current instance from the storage """
         models.storage.delete(self)
