@@ -115,37 +115,32 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """Creates a new instance of a class"""
+        # Split the argument string into a list of words
+        args = arg.split()
+
+        # Check if the class name is missing
+        if len(args) == 0:
             print("** class name missing **")
-            return
+            return False
 
-        args_list = args.split()
-        class_name = args_list[0]
+        # Check if the class name is in the defined classes
+        if args[0] in classes:
+            # Parse the remaining key-value pairs and create a dictionary
+            new_dict = self._key_value_parser(args[1:])
 
-        if class_name not in self.classes:
+            # Create a new instance of the specified class using the dictionary
+            instance = classes[args[0]](**new_dict)
+        else:
+            # Print an error message if the class doesn't exist
             print("** class doesn't exist **")
-            return
-        kwargs = {}
+            return False
 
-        for pair in args_list[1:]:
-            if '=' in pair:
-                key, value = pair.split('=', 1)
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        try:
-                            value = float(value)
-                        except ValueError:
-                            continue
-                kwargs[key] = value
-
-        instance = self.classes[class_name](**kwargs)
+            # Print the ID of the newly created instance
         print(instance.id)
+
+        # Save the newly created instance to the storage
         instance.save()
 
     def help_create(self):
