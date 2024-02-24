@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         for token in toks[1:]:
             temp_str = token.split('=')
             split_toks[temp_str[0]] = temp_str[1]
-            print("split tokens: {0} = {1}".format(temp_str[0], split_toks[temp_str[0]]))
+            #print("split tokens: {0} = {1}".format(temp_str[0], split_toks[temp_str[0]]))
 
             #split_toks.update(token.split('='))
 
