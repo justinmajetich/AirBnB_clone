@@ -1,0 +1,3 @@
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://s3.amazonaws.com/alx-intranet.hbtn.io/files/correction_system/289/2650/db_list_users.sql?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20240119%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240119T105254Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=065dcea67271c83c66cdbef28be0d748bb7339781410b566824026892caf95fa
