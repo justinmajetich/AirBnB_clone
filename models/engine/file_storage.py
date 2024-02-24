@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -11,17 +17,10 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls:
-            #vvv debug prints (that were useless)
-            #print("Class detected")
-            #print("Class: {}".format(cls))
             return_dict = {}
             for elem in self.__objects:
-                if type(self.__objects[elem]) is cls:
+                if isinstance(self.__objects[elem], cls):
                     return_dict.update({elem: self.__objects[elem]})
-                    #vvv debug prints (that were useless)
-                    #print("Added to Dict:")
-                    #print("{}".format(self.__objects[elem].to_dict()))
-            #print("dict returned: {}".format(return_dict))
             return return_dict
         else:
             return FileStorage.__objects
@@ -48,14 +47,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
