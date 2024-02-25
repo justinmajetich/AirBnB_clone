@@ -24,11 +24,13 @@ class FileStorage:
             cls (class, optional): The class of objects to filter by.
 
         Returns:
-            dict: A dictionary containing objects of the specified class if cls is provided,
+            dict: A dictionary containing objects
+            of the specified class if cls is provided,
             otherwise returns all objects in storage.
         """
         if cls is not None:
-            return {k: v for k, v in self.__objects.items() if isinstance(v, cls)}
+            return {k: v for k, v in self.__objects.items()
+                    if isinstance(v, cls)}
         else:
             return self.__objects
 
