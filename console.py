@@ -117,39 +117,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """ Create an object of any class"""
-        if not arg:
+        try:
+            class_name = arg.split(" ")[0]
+        except IndexError:
+            pass
+        if not class_name:
             print("** class name missing **")
             return
-        params = arg.split(" ")
-        class_name = params[0]
-
-        if class_name not in self.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        params = params[1:]
-        parameters = {}
-
-        for pair in params:
-            key, value = pair.split('=')
-            value = value.replace('_', ' ')
-            if value[0] == value[-1] == '"':
-                value = value[1:-1].replace('"', '\"')
-            if '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            elif value.isdigit():
-                value = int(value)
+        # create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4
+        arg_list = arg.split(" ")[1:]
+        new_instance = eval(class_name)()
+        for pair in arg_list:
+            key = pair.split("=")[0]
+            val = pair.split("=")[1]
+            if val.startswith('"'):
+                val = val.strip('"').replace("_", " ")
             else:
-                continue
-            parameters[key] = value
-        new_instance = self.classes[class_name](**parameters)
+                try:
+                    val = eval(val)
+                except Exception:
+                    pass
+            if hasattr(new_instance, key):
+                setattr(new_instance, key, val)
+
         storage.new(new_instance)
         print(new_instance.id)
-        storage.save()
-
-
+        new_instance.save()
 
 #check the code above
 
