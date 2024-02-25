@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
 import models
 from models.city import City
-from sqlalchemy.ext.declarative import
+from sqlalchemy.ext.declarative import declarative_base
 class State(BaseModel):
     """This is the class for State
     Attributes:
