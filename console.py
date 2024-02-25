@@ -117,35 +117,38 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """ Create an object of any class"""
-        try:
-            if not arg:
-                raise SyntaxError()
-            my_list = arg.split(" ")
-
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
-        except SyntaxError:
+        if not arg:
             print("** class name missing **")
-        except NameError:
+            return
+        params = arg.split(" ")
+        class_name = params[0]
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+        params = params[1:]
+        parameters = {}
+
+        for pair in params:
+            key, value = pair.split('=')
+            value = value.replace('_', ' ')
+            if value[0] == value[-1] == '"':
+                value = value[1:-1].replace('"', '\"')
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            parameters[key] = value
+        new_instance = self.classes[class_name](**parameters)
+        storage.new(new_instance)
+        print(new_instance.id)
+        storage.save()
+
 
 
 #check the code above
