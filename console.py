@@ -157,7 +157,6 @@ class HBNBCommand(cmd.Cmd):
             params[key] = value
 
         new_instance = self.classes[class_name](**params)
-        storage.new(new_instance)
         print(new_instance.id)
         new_instance.save()
 
