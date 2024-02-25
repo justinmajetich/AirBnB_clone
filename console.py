@@ -134,15 +134,12 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        print("\n\n1\n\n")
         cmd_args = args.strip()
         cmd_args = cmd_args.split(" ")
 
         if cmd_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #ISSUE HERE: When in database mode creating instance causes error because some
-        #classes have attributes that can not be null.
         new_instance = HBNBCommand.classes[cmd_args[0]]()
         i = 0
         tok_args = cmd_args[1:]
@@ -162,9 +159,9 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, dic_args[0], dic_args[1])
             else:
                 i += 1
-        storage.save()
         print(new_instance.id)
-        storage.save()
+        storage.new(new_instance)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
