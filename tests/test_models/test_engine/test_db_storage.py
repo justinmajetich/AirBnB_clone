@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import inspect
 import unittest
-
-import pep8
+import MySQLdb
+import pycodestyle as pep8
 import os
 from sqlalchemy.orm import Session
 from models.engine import db_storage
@@ -14,6 +14,16 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+
+
+def createCursor():
+    cur = MySQLdb.connect(host=os.getenv("HBNB_MYSQL_HOST"),
+                          port=3306,
+                          user=os.getenv("HBNB_MYSQL_USER"),
+                          passwd=os.getenv("HBNB_MYSQL_PWD"),
+                          db=os.getenv("HBNB_MYSQL_DB")
+                          )
+    return cur.cursor()
 
 
 class TestDBStorageDocumentationAndStyle(unittest.TestCase):
@@ -32,7 +42,7 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         """
         Test that models/engine/db_storage.py conforms to PEP8.
         """
-        pep8style = pep8.StyleGuide(quiet=True)
+        pep8style = pep8.StyleGuide()
         result = pep8style.check_files(["models/engine/db_storage.py"])
         self.assertEqual(
             result.total_errors, 0, "Found code style errors (and warnings)."
@@ -43,7 +53,7 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         Test that tests/test_models/test_engine/test_db_storage.py
         conforms to PEP8.
         """
-        pep8style = pep8.StyleGuide(quiet=True)
+        pep8style = pep8.StyleGuide()
         result = pep8style.check_files(
             ["tests/test_models/test_engine/test_db_storage.py"]
         )
@@ -158,6 +168,8 @@ class TestDBStorage(unittest.TestCase):
         #  self.storage.save()
         #  self.storage.reload()
 
+        self.cursor = createCursor()
+
     def tearDown(self):
         """Tear down the tests"""
         for instance in self.instances.values():
@@ -166,6 +178,7 @@ class TestDBStorage(unittest.TestCase):
                 self.storage.delete(instance)
 
         self.storage.save()
+        self.cursor.close()
 
     def test_all(self):
         """Test the all method"""
@@ -177,6 +190,10 @@ class TestDBStorage(unittest.TestCase):
         """Test the new method"""
         new_state = State(name="Nevada")
         self.storage.new(new_state)
+        self.cursor.execute("SELECT * FROM states WHERE id = '{}'"
+                            .format(new_state.id))
+        row = self.fetchone()
+        self.assertEqual(row, new_state)
         self.assertIn(new_state, self.storage.all(State).values())
 
     def test_save(self):
