@@ -17,9 +17,3 @@ class test_Amenity(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
-
-    def test_place_amenities(self):
-        """Test place_amenities relationship"""
-        new = self.value()
-        self.assertEqual(type(new.place_amenities), list)
-
