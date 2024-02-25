@@ -1,8 +1,7 @@
-#!/usr/bin/python3
-""" Console Module """
 import cmd
 import sys
-import os
+import os  # Add this import
+
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,7 +10,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -30,11 +28,6 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-    get_environment = os.getenv('HBNB_TYPE_STORAGE')
-
-    def __init__(self):
-        super().__init__()
-        # You can use self.get_environment throughout the class now
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -79,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
+                    if pline[0] is '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -121,6 +114,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        get_environment = os.getenv('HBNB_TYPE_STORAGE')
+
         if not args:
             print("** class name missing **")
             return
@@ -128,9 +123,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        if get_environment == "db":
+            new_instance.save()
+        elif get_environment == "file":
+            storage.save()
+        else:
+            print("Unknown storage type. Please set HBNB_TYPE_STORAGE.")
         print(new_instance.id)
-        storage.save()
+        if get_environment == "file":
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -193,7 +194,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
