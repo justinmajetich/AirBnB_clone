@@ -17,6 +17,9 @@ from models.amenity import Amenity
 
 
 def createCursor():
+    """
+    This function creates a cursor for the MySQLdb
+    """
     cur = MySQLdb.connect(host=os.getenv("HBNB_MYSQL_HOST"),
                           port=3306,
                           user=os.getenv("HBNB_MYSQL_USER"),
@@ -114,9 +117,8 @@ class TestDBStorage(unittest.TestCase):
         self.storage = storage
         self.instances = {}
 
-        for class_ in [State, User, City, Place, Review, Amenity]:
-            for obj in self.storage.all(class_).values():
-                self.storage.delete(obj)
+        for obj in self.storage.all().values():
+            self.storage.delete(obj)
         self.storage.save()
 
         # Create and save State instance
@@ -174,7 +176,6 @@ class TestDBStorage(unittest.TestCase):
         """Tear down the tests"""
         for instance in self.instances.values():
             if self.storage._DBStorage__session.is_active:
-                self.storage._DBStorage__session.expunge_all()
                 self.storage.delete(instance)
 
         self.storage.save()
