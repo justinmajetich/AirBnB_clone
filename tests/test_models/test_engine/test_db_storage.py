@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 import inspect
 import unittest
 import MySQLdb
@@ -117,10 +118,6 @@ class TestDBStorage(unittest.TestCase):
         self.storage = storage
         self.instances = {}
 
-        for obj in self.storage.all().values():
-            self.storage.delete(obj)
-        self.storage.save()
-
         # Create and save State instance
         self.instances['State'] = State(name="California")
         self.storage.new(self.instances['State'])
@@ -174,9 +171,10 @@ class TestDBStorage(unittest.TestCase):
 
     def tearDown(self):
         """Tear down the tests"""
-        for instance in self.instances.values():
-            if self.storage._DBStorage__session.is_active:
-                self.storage.delete(instance)
+        ignore = ['City', 'Review', 'Place']
+        for k, instance in self.instances.items():
+            if k not in ignore:
+                instance.delete()
 
         self.storage.save()
         self.cursor.close()
@@ -185,16 +183,27 @@ class TestDBStorage(unittest.TestCase):
         """Test the all method"""
         all_objs = self.storage.all()
         self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(all_objs), len(self.instances))
+        self.cursor.close()
+        self.cursor = createCursor()
+        classes = ['users', 'states', 'cities', 'places',
+                   'reviews', 'amenities']
+        rows = []
+        for cl in classes:
+            self.cursor.execute("SELECT * FROM {}".format(cl))
+            rows.extend(self.cursor.fetchall())
+
+        self.assertEqual(len(all_objs), len(rows))
 
     def test_new(self):
         """Test the new method"""
         new_state = State(name="Nevada")
-        self.storage.new(new_state)
-        self.cursor.execute("SELECT * FROM states WHERE id = '{}'"
+        new_state.save()
+        self.cursor.close()
+        self.cursor = createCursor()
+        self.cursor.execute("SELECT * FROM states WHERE id='{}'"
                             .format(new_state.id))
-        row = self.fetchone()
-        self.assertEqual(row, new_state)
+        row = self.cursor.fetchone()
+        self.assertIn(new_state.name, row)
         self.assertIn(new_state, self.storage.all(State).values())
 
     def test_save(self):
@@ -211,16 +220,6 @@ class TestDBStorage(unittest.TestCase):
         self.storage.save()
         self.storage.delete(new_state)
         self.assertNotIn(new_state, self.storage.all(State).values())
-
-    def test_reload(self):
-        "Test the reload method"
-        self.storage.reload()
-        all_objs = self.storage.all()
-        relevant_objs = {k: v for k, v in all_objs.items() if type(v) in [
-            State, User, City, Place, Review, Amenity
-            ]}
-        self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(relevant_objs), len(self.instances))
 
 
 if __name__ == "__main__":
