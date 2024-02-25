@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    
+
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
 
@@ -134,15 +134,16 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        
+        print("\n\n1\n\n")
         cmd_args = args.strip()
         cmd_args = cmd_args.split(" ")
 
         if cmd_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        #ISSUE HERE: When in database mode creating instance causes error because some
+        #classes have attributes that can not be null.
         new_instance = HBNBCommand.classes[cmd_args[0]]()
-
         i = 0
         tok_args = cmd_args[1:]
         while i < len(tok_args):
@@ -158,12 +159,9 @@ class HBNBCommand(cmd.Cmd):
                          dic_args[1] = int(dic_args[1])
                     elif type(class_attribute) is float:
                          dic_args[1] = float(dic_args[1])
-                
                     setattr(new_instance, dic_args[0], dic_args[1])
-
             else:
                 i += 1
-            
         storage.save()
         print(new_instance.id)
         storage.save()
