@@ -54,3 +54,7 @@ class BaseModel:
         if '_sa_instance_state' in self.__dict__:
             del self.__dict__['_sa_instance_state']
         return dictionary
+
+    def delete(self):
+        """delete insatnce from storage"""
+        models.storage.delete(self)
