@@ -89,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
+            print('(hbnb) ', end="")
         return stop
 
     def do_quit(self, command):
@@ -117,9 +117,9 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         """ Create an object of any class"""
         args = arg.split()
-        class_name = args[1]
-        params = args[2:]
-        if not self.is_valid_class(class_name):
+        class_name = args[0]
+        params = args[1:]
+        if not self.isvalid(class_name):
             print("Need a valid class name")
             return
         try:

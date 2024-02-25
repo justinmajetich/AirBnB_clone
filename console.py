@@ -89,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
+            print('(hbnb) ', end="")
         return stop
 
     def do_quit(self, command):
@@ -114,42 +114,25 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        storage.save()
         """ Create an object of any class"""
-        args = arg.split()
-        class_name = args[0]
-        params = args[1:]
-        if not self.is_valid_class(class_name):
-            print("Need a valid class name")
-            return
         try:
-            new_module = __import__(class_name)
-            added_class = getattr(new_module, class_name)
-        except (ImportError, AttributeError) as e:
-            print("Error importing class {}: {}".format(class_name, e))
-            return
-        obj = added_class()
-        for param in params:
-            key_pair = param.split('=')
-            key, value = key_pair
-            value = value.replace('_', ' ')
-            if value.startswith('"') and value.endswith('"'):
-                setattr(obj, key, value)
-            elif '.' in value:
-                try:
-                    setattr(obj, key, float(value))
-                except ValueError:
-                    print("Invalid float value for {}".format(key))
-            else:
-                try:
-                    setattr(obj, key, int(value))
-                except ValueError:
-                    print("Invalid integer value")
-        print("Success!!")
-        for key, value in vars(obj).items():
-            print(f"{key}: {value}")
-        storage.save()
-        
+            if not args:
+                raise SyntaxError()
+            args = arg.split(" ")
+            list = {}
+            for arg in args[1:]:
+                splited = arg.split("=")
+                splited[1] = eval(splited[1])
+                if type (splited[1]) is str:
+                    splited[1] = splited[1].replace("_", " ").replace('"', '\\"')
+                list[splited[0]] = splited[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[args[0]](**list)
+        new_instance.save()
+        print(new_instance.id)
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
