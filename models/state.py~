@@ -6,5 +6,7 @@ import sys
 class State(BaseModel):
     """ State class """
     name = ""
-    if 'id' not in kwargs:
-        self.id = str(uuid4())
+    def __init(self, *args, **kwargs):
+        super().__init__(*args, **kwargs):
+        if 'id' not in kwargs:
+            self.id = str(uuid4())
