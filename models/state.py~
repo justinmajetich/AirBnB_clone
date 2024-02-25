@@ -2,7 +2,7 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel
 import sys
-import uuid4
+from uuid import uuid4
 
 class State(BaseModel):
     """ State class """
