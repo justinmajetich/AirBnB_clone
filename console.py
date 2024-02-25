@@ -2,6 +2,7 @@
 import cmd
 import sys
 import os
+from os import getenv
 import shlex
 from models.base_model import BaseModel, Base
 from models.user import User
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -97,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def do_create(self, line):
-         from models import storage
+        from models import storage
         """ Create an object of any class with optional initialization parameters."""
         if not line:
             print("** class name missing **")
@@ -143,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: create <className>\n")
 
     def do_show(self, args):
-         from models import storage
+        from models import storage
         """ Method to show an individual object """
         new = args.partition(" ")
         c_name = new[0]
@@ -177,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: show <className> <objectId>\n")
 
     def do_destroy(self, args):
-         from models import storage
+        from models import storage
         """ Destroys a specified object """
         new = args.partition(" ")
         c_name = new[0]
