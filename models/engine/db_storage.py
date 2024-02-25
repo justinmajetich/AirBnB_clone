@@ -3,6 +3,12 @@
 Module to create an engine for database storage in SQL using SQLAlchemy
 """
 from models.base_model import Base
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage():
@@ -27,12 +33,6 @@ class DBStorage():
 
     def all(self, cls=None):
         """Gets all instances of cls or of all classes if cls is None"""
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
         dict = {}
         classes = [User, State, City, Amenity, Place, Review] if cls is None else [cls]
         for cls in classes:
@@ -41,7 +41,7 @@ class DBStorage():
                 dict[f"{cls.__name__}.{instance.id}"] = instance
         return dict
 
-    def add(self, obj):
+    def new(self, obj):
         """Saves a specific object to the database"""
         try:
             self.__session.add(obj)
