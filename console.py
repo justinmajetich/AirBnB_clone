@@ -13,15 +13,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-    classes = {	
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,	
-            'State': State, 'City': City, 'Amenity': Amenity,	
-            'Review': Review	
+    classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
             }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -125,7 +126,6 @@ class HBNBCommand(cmd.Cmd):
         elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # create Place city_id="0001" user_id="0001" name="My_little_house" number_rooms=4
         arg_list = arg.split(" ")[1:]
         new_instance = eval(class_name)()
         for pair in arg_list:
@@ -206,7 +206,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -339,7 +339,6 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
-    
