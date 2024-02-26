@@ -20,11 +20,12 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if kwargs:
+            if kwargs.get('__class__', None):
+                del kwargs['__class__']
             for key, val in kwargs.items():
-                if key == "created_up" or key == "updated_at":
+                if key == 'created_at' or key == 'updated_at':
                     val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
-                if hasattr(self, key):
-                    setattr(self, key, val)
+                self.__dict__.update({key: val})
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -46,10 +47,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        try:
-            del dictionary["_sa_instance_state"]
-        except KeyError:
-            pass
+        dictionary.pop('_sa_instance_state', None)
         return dictionary
 
     def delete(self):
