@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 from models.amenity import Amenity
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -88,9 +88,9 @@ class DBStorage:
         """Reloads the database, effectively creating all tables in DB
         """
         Base.metadata.create_all(self.__engine)
-        if self.__session is None:
-            created_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-            self.__session = scoped_session(created_session)
+        created_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(created_session)
+        self.__session = Session()
 
     def close(self):
         """close session"""
