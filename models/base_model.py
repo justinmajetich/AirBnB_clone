@@ -40,6 +40,7 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models.engine.file_storage import storage
+        #Need check for SQLAlchemy?
         self.updated_at = datetime.now()
         storage.save()
 

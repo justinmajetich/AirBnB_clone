@@ -10,4 +10,4 @@ from sqlalchemy.orm import relationship
 class Amenity(BaseModel, Base):
     __tablename__ = 'amenities'
     name = Column('name', String(128), nullable=False)
-    places = relationship('Place', secondary=place_amenity, back_populates='place_amenities')
+    places = relationship('Place', secondary=place_amenity, back_populates='amenities')
