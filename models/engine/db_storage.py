@@ -6,7 +6,7 @@ Module containing HBnB Console's Database engine
 
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-from dotenv import load_dotenv
+from os import getenv
 from os import environ as env
 from models.user import User
 from models.place import Place
@@ -16,14 +16,12 @@ from models.amenity import Amenity
 from models.review import Review
 from models.base_model import BaseModel, Base
 
-load_dotenv()
-
 mydb = "mysql+mysqldb"
-usr = env["HBNB_MYSQL_USER"]
-pwd = env["HBNB_MYSQL_PWD"]
-host = env["HBNB_MYSQL_HOST"]
-db = env["HBNB_MYSQL_DB"]
-environment = env["HBNB_ENV"]
+usr = getenv("HBNB_MYSQL_USER")
+pwd = getenv("HBNB_MYSQL_PWD")
+host = getenv("HBNB_MYSQL_HOST")
+db = getenv("HBNB_MYSQL_DB")
+environment = getenv("HBNB_ENV")
 connect = '{0}://{1}:{2}@{3}:3306/{4}'.format(mydb, usr, pwd, host, db)
 db_metadata = MetaData()
 
@@ -35,8 +33,8 @@ class DBStorage:
         __session: the current DB session
     """
 
-    __engine = None
-    __session = None
+    # __engine = None
+    # __session = None
 
     def __init__(self):
         self.__engine = create_engine(connect, pool_pre_ping=True)
@@ -45,10 +43,20 @@ class DBStorage:
 
     def all(self, cls=None):
         res = {}
-        if cls is None:
-            query = self.__session.query().all()
+        if cls == 'Amenity':
+            query = self.__session.query(Amenity).all()
+        elif cls == 'City':
+            query = self.__session.query(City).all()
+        elif cls == 'Place':
+            query = self.__session.query(Place).all()
+        elif cls == 'Review':
+            query = self.__session.query(Review).all()
+        elif cls == 'State':
+            query = self.__session.query(State).all()
+        elif cls == 'User':
+            query = self.__session.query(User).all()
         else:
-            query = self.__session.query(cls).all()
+            query = self.__session.query().all()
         for record in query:
             key = "{}.{}".format(record.name, record.id)
             res.update({key: record})
@@ -57,13 +65,16 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
+        print("Committing session")
         self.__session.commit()
 
     def delete(self, obj=None):
         self.__session.delete(obj)
 
     def reload(self):
+        print("Reloading session")
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session)
+        Session = scoped_session(session)
+        self.__session = Session()
