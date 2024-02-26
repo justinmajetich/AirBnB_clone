@@ -25,7 +25,7 @@ class DBStorage:
 
         # Set ENV Variables
         user = os.getenv('HBNB_MYSQL_USER', 'hbnb_dev')
-        pwd = os.getenv('HBNB_MYSQL_PWD', 'hbnb_dev_db')
+        pwd = os.getenv('HBNB_MYSQL_PWD', 'hbnb_dev_pwd')
         host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
         db = os.getenv('HBNB_MYSQL_DB', 'hbnb_dev_db')
         env = os.getenv('HBNB_ENV')
