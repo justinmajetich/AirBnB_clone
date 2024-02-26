@@ -22,4 +22,4 @@ class Place(BaseModel, Base):
     def review(self):
         from models import storage
         all_reviews = storage.all(BaseModel.Review)
-        return [review for review in all_reviews.values() if review.state_id == self.id]
+        return [review for review in all_reviews.values() if review.place_id == self.id]
