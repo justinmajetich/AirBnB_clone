@@ -22,3 +22,8 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="all, delete")
     
+    @property
+    def reviews(self):
+        """Getter for reviews"""
+        from models.review import Review
+        return [review for review in Review.all() if review.place_id == self.id]
