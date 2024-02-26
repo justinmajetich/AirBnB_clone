@@ -8,10 +8,8 @@ from sqlalchemy.orm import relationship
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False, default="")
+    name = Column(String(128), nullable=False)
     _cities = relationship("City", backref="state", cascade="all, delete, delete-orphan")
-
-    #Returns all City instances with matching state_id to the State instance calling this method
     @property
     def cities(self):
         from models import storage
