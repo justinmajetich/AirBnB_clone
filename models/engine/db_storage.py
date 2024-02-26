@@ -46,14 +46,21 @@ class DBStorage:
             Format :
         """
         obj_dict = {}
-        if cls is None:
-            query = self.__session.query(Base).all()
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                k = "{}.{}".format(type(elem).__name__, elem.id)
+                obj_dict[k] = elem
         else:
-            query = self.__session.query(cls).all()
-        # fill in object dictionary with object IDs as key valeues
-        for obj in query:
-            obj_dict[f'{obj.__class__.__name__}.{obj.id}'] = obj
-        return obj_dict
+            attr_list = [State, Amenity, Review, Place, City, User]
+            for clss in attr_list:
+                query = self.__session.query(clss)
+                for elem in query:
+                    k = "{}.{}"..format(type(elem).__name__, elem.id)
+                    obj_dict[k] = elem
+        return(obj_dict)
 
     def new(self, obj):
         """Add the object to the current database session
