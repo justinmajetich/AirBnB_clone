@@ -2,17 +2,16 @@
 """
 This module will define the storage engine db_storage
 """
-from sqlalchemy import create_engine
 from os import getenv
-from sqlalchemy.orm import scoped_session, sessionmaker, Session
-from sqlalchemy.exc import InvalidRequestError
-from models.base_model import Base, BaseModel
+from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 
 
 class DBStorage:
