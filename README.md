@@ -73,12 +73,12 @@ The script then creates a virtual environment, installs necessary packages, sets
 
 **Launch the Console:**
 
-Start the console in non-interactive mode by specifying the environment variables during piping the command. For example:
+You can run the console in non-interactive mode without using the script by specifying the environment variables during piping the command. For example:
 
 ```
  $ echo 'create State name="California"' | HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py 
 ```
-Alternatively, you can launch the interactive console as follows or without specifying the environment variables to store data using File Storage:
+Alternatively, you can launch the interactive console as follows but with running the above script first or without specifying the environment variables to store data using File Storage:
 
     $ ./console
 
