@@ -51,15 +51,15 @@ class DBStorage:
                 cls = eval(cls)
             query = self.__session.query(cls)
             for elem in query:
-                k = "{}.{}".format(type(elem).__name__, elem.id)
-                obj_dict[k] = elem
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                obj_dict[key] = elem
         else:
             attr_list = [State, Amenity, Review, Place, City, User]
             for clss in attr_list:
                 query = self.__session.query(clss)
                 for elem in query:
-                    k = "{}.{}"..format(type(elem).__name__, elem.id)
-                    obj_dict[k] = elem
+                    key = "{}.{}"..format(type(elem).__name__, elem.id)
+                    obj_dict[key] = elem
         return(obj_dict)
 
     def new(self, obj):
@@ -93,3 +93,6 @@ class DBStorage:
             created_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
             self.__session = scoped_session(created_session)
 
+    def close(self):
+        """close session"""
+        self.__session.close()
