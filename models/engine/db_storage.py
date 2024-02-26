@@ -82,7 +82,7 @@ class DBStorage:
         Args:
             obj : The object to be deleted from session. Defaults to None.
         """
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
