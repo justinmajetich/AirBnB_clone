@@ -60,6 +60,7 @@ class DBStorage:
         for record in query:
             key = "{}.{}".format(record.name, record.id)
             res.update({key: record})
+        return res
 
     def new(self, obj):
         self.__session.add(obj)
