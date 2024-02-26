@@ -29,6 +29,10 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    
+    non_null = {
+        'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -143,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
         #\/ Error if class attr has no default because attr non nullable
         if not cmd_args[1]:
             return
-        if cmd_args[0] == "User" and not cmd_args[2]:
+        if cmd_args[0] in HBNBCommand.non_null.keys() and len(cmd_args[1:]) < HBNBCommand.non_null[cmd_args[0]]:
             return
         new_instance = HBNBCommand.classes[cmd_args[0]]()
         i = 0
