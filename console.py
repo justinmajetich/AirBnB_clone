@@ -31,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
             }
     
     non_null = {
-        'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1
+        'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1, 'City': 2, 'State': 1
     }
 
     def preloop(self):
