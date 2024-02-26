@@ -5,8 +5,18 @@ Module containing HBnB Console's Database engine
 """
 
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from dotenv import load_dotenv
 from os import environ as env
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.base_model import BaseModel, Base
+
+load_dotenv()
 
 mydb = "mysql+mysqldb"
 usr = env["HBNB_MYSQL_USER"]
@@ -30,9 +40,8 @@ class DBStorage:
 
     def __init__(self):
         self.__engine = create_engine(connect, pool_pre_ping=True)
-        self.__session = sessionmaker(bind=self.__engine)
         if environment == 'test':
-            db_metadata.drop_all()
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         res = {}
@@ -40,4 +49,21 @@ class DBStorage:
             query = self.__session.query().all()
         else:
             query = self.__session.query(cls).all()
-        
+        for record in query:
+            key = "{}.{}".format(record.name, record.id)
+            res.update({key: record})
+
+    def new(self, obj):
+        self.__session.add(obj)
+
+    def save(self):
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        self.__session.delete(obj)
+
+    def reload(self):
+        Base.metadata.create_all(self.__engine)
+        session = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(session)
