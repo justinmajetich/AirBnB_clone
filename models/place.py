@@ -2,9 +2,8 @@
 """ Place Module for HBNB project """
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel, Base
-from models.review import Review
-from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.base_model import Base
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -40,10 +39,12 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """Getter for amenities"""
+        from models.amenity import Amenity
         return [Amenity.all()[id] for id in self.amenity_ids]
 
     @amenities.setter
     def amenities(self, value):
         """Setter for amenities"""
+        from models.amenity import Amenity
         if isinstance(value, Amenity):
             self.amenity_ids.append(value.id)
