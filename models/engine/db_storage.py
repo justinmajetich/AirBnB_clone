@@ -10,5 +10,3 @@ __session = None
 
 def __init__(self):
     """Engine linked to MySQL database and user"""
-    hbnb_dev = hbnb_dev_db
-    self.__engine = create_engine(hbnb_dev_db)
