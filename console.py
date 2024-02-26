@@ -149,25 +149,25 @@ class HBNBCommand(cmd.Cmd):
             return
         if cmd_args[0] in HBNBCommand.non_null.keys() and len(cmd_args[1:]) < HBNBCommand.non_null[cmd_args[0]]:
             return
-        new_instance = HBNBCommand.classes[cmd_args[0]]()
         i = 0
         tok_args = cmd_args[1:]
+        d = {}
         while i < len(tok_args):
             if tok_args[i] and '=' in tok_args[i]:
                 dic_args = tok_args[i].split("=")
-                i += 1
                 dic_args[1] = dic_args[1].replace('"', '')
                 dic_args[1] = dic_args[1].replace("'", '')
                 dic_args[1] = dic_args[1].replace("_", ' ')
-                if hasattr(new_instance, dic_args[0]):
-                    class_attribute = getattr(new_instance, dic_args[0])
+                if hasattr(HBNBCommand.classes[cmd_args[0]], dic_args[0]):
+                    class_attribute = getattr(HBNBCommand.classes[cmd_args[0]], dic_args[0])
                     if type(class_attribute) is int:
-                         dic_args[1] = int(dic_args[1])
+                        dic_args[1] = int(dic_args[1])
                     elif type(class_attribute) is float:
-                         dic_args[1] = float(dic_args[1])
-                    setattr(new_instance, dic_args[0], dic_args[1])
-            else:
-                i += 1
+                        dic_args[1] = float(dic_args[1])
+                    d.update({dic_args[0]:dic_args[1]})
+            i += 1
+        print(d)
+        new_instance = HBNBCommand.classes[cmd_args[0]](**d)
         print(new_instance.id)
         storage.new(new_instance)
         new_instance.save()

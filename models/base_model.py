@@ -16,6 +16,8 @@ class BaseModel:
         """Instatntiates a new model and kwags are given if objects in json"""
         from uuid import uuid4
         if kwargs:
+            if 'id' not in kwargs.keys():
+                self.id = str(uuid4())
             for key, value in kwargs.items():
                 #setting created_at and updated at
                 if key in ["created_at", "updated_at"]:
