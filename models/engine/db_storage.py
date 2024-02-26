@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-    """Module that houses the database storage engine
-    """
+"""Module that houses the database storage engine
+"""
 
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
