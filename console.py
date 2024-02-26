@@ -29,6 +29,10 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    
+    non_null = {
+        'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1, 'City': 2, 'State': 1
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -141,25 +145,29 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         #\/ Error if class attr has no default because attr non nullable
-        new_instance = HBNBCommand.classes[cmd_args[0]]()
+        if not cmd_args[1]:
+            return
+        if cmd_args[0] in HBNBCommand.non_null.keys() and len(cmd_args[1:]) < HBNBCommand.non_null[cmd_args[0]]:
+            return
         i = 0
         tok_args = cmd_args[1:]
+        d = {}
         while i < len(tok_args):
             if tok_args[i] and '=' in tok_args[i]:
                 dic_args = tok_args[i].split("=")
-                i += 1
                 dic_args[1] = dic_args[1].replace('"', '')
                 dic_args[1] = dic_args[1].replace("'", '')
                 dic_args[1] = dic_args[1].replace("_", ' ')
-                if hasattr(new_instance, dic_args[0]):
-                    class_attribute = getattr(new_instance, dic_args[0])
+                if hasattr(HBNBCommand.classes[cmd_args[0]], dic_args[0]):
+                    class_attribute = getattr(HBNBCommand.classes[cmd_args[0]], dic_args[0])
                     if type(class_attribute) is int:
-                         dic_args[1] = int(dic_args[1])
+                        dic_args[1] = int(dic_args[1])
                     elif type(class_attribute) is float:
-                         dic_args[1] = float(dic_args[1])
-                    setattr(new_instance, dic_args[0], dic_args[1])
-            else:
-                i += 1
+                        dic_args[1] = float(dic_args[1])
+                    d.update({dic_args[0]:dic_args[1]})
+            i += 1
+        print(d)
+        new_instance = HBNBCommand.classes[cmd_args[0]](**d)
         print(new_instance.id)
         storage.new(new_instance)
         new_instance.save()
@@ -244,11 +252,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
