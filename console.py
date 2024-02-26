@@ -143,6 +143,8 @@ class HBNBCommand(cmd.Cmd):
         #\/ Error if class attr has no default because attr non nullable
         if not cmd_args[1]:
             return
+        if cmd_args[0] == "User" and not cmd_args[2]:
+            return
         new_instance = HBNBCommand.classes[cmd_args[0]]()
         i = 0
         tok_args = cmd_args[1:]
