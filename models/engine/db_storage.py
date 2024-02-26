@@ -33,8 +33,8 @@ class DBStorage:
         __session: the current DB session
     """
 
-    # __engine = None
-    # __session = None
+    __engine = None
+    __session = None
 
     def __init__(self):
         self.__engine = create_engine(connect, pool_pre_ping=True)
