@@ -14,12 +14,11 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-
-user = getenv["HBNB_MYSQL_USER"]
-pw = getenv["HBNB_MYSQL_PWD"]
-host = getenv["HBNB_MYSQL_HOST"]
-db = getenv["HBNB_MYSQL_DB"]
-connect_script = f"mysql+mysqldb://{user}:{pw}@{host}:3306/{db}"
+user = getenv('HBNB_MYSQL_USER')
+pw = getenv('HBNB_MYSQL_PWD')
+host = getenv('HBNB_MYSQL_HOST')
+db = getenv('HBNB_MYSQL_DB')
+connect_script = 'mysql+mysqldb://{}:{}@{}:3306/{}'
 
 class DBStorage:
     """Engine responsible for connecting to database and
@@ -29,7 +28,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine(connect_script, pool_pre_ping=True)
+        self.__engine = create_engine(connect_script.format(user, pw, host, db), pool_pre_ping=True)
         #  Drop all tables if environment is in 'test' mode
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
