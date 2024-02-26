@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
-from models.base_model import Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float, Relationship 
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from models.review import Review
+from models.amenity import Amenity
 
+
+place_amenity = Table('place_amenity', Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False)
+    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)                      
+)
 
 class Place(BaseModel, Base):
     """Place model for HBNB"""
@@ -19,4 +26,24 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = Relationship("Review", backref="place", cascade="all, delete")
+    reviews = relationship("Review", backref="place", cascade="all, delete")
+    place_amenities = relationship("Amenity", secondary=place_amenity, backref="places")
+    amenities = relationship("Amenity", secondary=place_amenity, backref="places", viewonly=False)
+
+    
+    @property
+    def reviews(self):
+        """Getter for reviews"""
+        from models.review import Review
+        return [review for review in Review.all() if review.place_id == self.id]
+
+     @property
+    def amenities(self):
+        """Getter for amenities"""
+        return [Amenity.all()[id] for id in self.amenity_ids]
+
+    @amenities.setter
+    def amenities(self, value):
+        """Setter for amenities"""
+        if isinstance(value, Amenity):
+            self.amenity_ids.append(value.id)
