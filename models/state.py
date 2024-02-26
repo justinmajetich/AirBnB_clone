@@ -2,6 +2,10 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+from os import getenv
+from models.city import City
+import models
 
 
 class State(BaseModel, Base):
@@ -9,3 +13,4 @@ class State(BaseModel, Base):
         Inherits from Basemodel and Base """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
+
