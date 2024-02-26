@@ -25,6 +25,19 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+    def get(self, cls, id):
+        """Retrieve one object"""
+        key = "{}.{}".format(cls.__name__, id)
+        objects_dict = self.all(cls)
+        return objects_dict.get(key, None)
+
+    def count(self, cls=None):
+        """count the number of objects in storage"""
+        if cls:
+            pass
+        else:
+            pass
+
     def close(self):
         """closes"""
         self.reload()
