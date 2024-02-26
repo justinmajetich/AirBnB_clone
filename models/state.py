@@ -7,6 +7,6 @@ from sqlalchemy import Column
 class State(BaseModel, Base):
     """ State class """
     name = Column(str(128), nullable=False)
-    __tablename__ = states
+    __tablename__ = 'states'
 
 
