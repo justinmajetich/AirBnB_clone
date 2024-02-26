@@ -127,8 +127,10 @@ class HBNBCommand(cmd.Cmd):
         for token in toks[1:]:
             temp_str = token.split('=')
             split_toks[temp_str[0]] = temp_str[1]
+            #Debug Print
             #print("split tokens: {0} = {1}".format(temp_str[0], split_toks[temp_str[0]]))
 
+            #Old leftover code
             #split_toks.update(token.split('='))
 
         if not args:
@@ -142,7 +144,8 @@ class HBNBCommand(cmd.Cmd):
         for elem in split_toks:
             #if '"' not in elem and "." not in elem and 
             #^^^ error handle that may be necessary
-            print("elem.val to handle type: {}".format(split_toks[elem]))
+            #It wasn't necessary
+            #print("elem.val to handle type: {}".format(split_toks[elem]))
             if '"' in split_toks[elem]:
                 #Debug Print
                 #print("elem is str: {}".format(split_toks[elem]))
@@ -156,10 +159,12 @@ class HBNBCommand(cmd.Cmd):
                 split_toks[elem] = int(split_toks[elem])
             else:
                 pass
+                #leftover from old code
                 #elem = int(elem)
 
         new_instance = HBNBCommand.classes[toks[0]]()
         #Set attrs here??
+        #Yes, set attrs here
         for elem in split_toks:
             setattr(new_instance, elem, split_toks[elem])
 
