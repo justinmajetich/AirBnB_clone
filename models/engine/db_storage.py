@@ -31,7 +31,7 @@ class DBStorage:
     def __init__(self):
         self.__engine = create_engine(connect_script, pool_pre_ping=True)
         #  Drop all tables if environment is in 'test' mode
-        if getenv('HBNB_ENV') == "test":
+        if running_environment == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
