@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from models.city import City
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     city_id = Column(str(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(str(60), ForeignKey('users.id'), nullable=False)

@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-Base = declarative_base():
+Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
