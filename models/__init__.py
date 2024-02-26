@@ -9,6 +9,6 @@ storage_switch = os.environ.get('HBNB_TYPE_STORAGE')
 if storage_switch == 'db':
     storage = DBStorage()
     storage.reload()
-elif storage_switch == 'file':
+else:
     storage = FileStorage()
     storage.reload() 
