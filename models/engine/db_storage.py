@@ -34,7 +34,7 @@ class DBStorage():
     def all(self, cls=None):
         """Gets all instances of cls or of all classes if cls is None"""
         dict = {}
-        classes = [User, State, City, Amenity, Place, Review] if cls is None else [cls]
+        classes = [User, State, City] if cls is None else [cls]
         for cls in classes:
             instances = self.__session.query(cls).all()
             for instance in instances:
