@@ -36,9 +36,12 @@ class DBStorage():
         dict = {}
         classes = [User, State, City] if cls is None else [cls]
         for cls in classes:
-            instances = self.__session.query(cls).all()
-            for instance in instances:
-                dict[f"{cls.__name__}.{instance.id}"] = instance
+            try:
+                instances = self.__session.query(cls).all()
+                for instance in instances:
+                    dict[f"{cls.__name__}.{instance.id}"] = instance
+            except Exception:
+                pass
         return dict
 
     def new(self, obj):
