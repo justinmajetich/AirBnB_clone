@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         #\/ Error if class attr has no default because attr non nullable
-        if not cmd_args[2]:
+        if not cmd_args[1]:
             return
         new_instance = HBNBCommand.classes[cmd_args[0]]()
         i = 0
