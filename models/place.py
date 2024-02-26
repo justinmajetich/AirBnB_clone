@@ -37,7 +37,7 @@ class Place(BaseModel, Base):
         from models.review import Review
         return [review for review in Review.all() if review.place_id == self.id]
 
-     @property
+    @property
     def amenities(self):
         """Getter for amenities"""
         return [Amenity.all()[id] for id in self.amenity_ids]
