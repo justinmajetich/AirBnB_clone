@@ -2,9 +2,11 @@
 """ Place Module for HBNB project """
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
-from models import env
 from models.base_model import BaseModel
 from models.base_model import Base
+from os import getenv
+
+env = getenv('HBNB_TYPE_STORAGE')
 
 
 place_amenity = Table('place_amenity', Base.metadata,
