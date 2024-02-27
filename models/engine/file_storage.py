@@ -17,13 +17,13 @@ class FileStorage:
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Saves storage dictionary to file"""
-        with open(self.__file_path, 'w') as f:
-            temp = {}
-            temp.update(self.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        """serialize the file path to JSON file path
+        """
+        my_dict = {}
+        for key, value in self.__objects.items():
+            my_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w', encoding="UTF-8") as f:
+            json.dump(my_dict, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
