@@ -46,8 +46,8 @@ class DBStorage:
         """
         obj_dict = {}
         if cls:
-            if type(cls) is str:
-                cls = eval(cls)
+            if isinstance(cls, str):
+                cls=getattr(models, cls, None)
             query = self.__session.query(cls)
             for elem in query:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
@@ -57,7 +57,7 @@ class DBStorage:
             for clss in attr_list:
                 query = self.__session.query(clss)
                 for elem in query:
-                    key = "{}.{}"..format(type(elem).__name__, elem.id)
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
                     obj_dict[key] = elem
         return(obj_dict)
 
