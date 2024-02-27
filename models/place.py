@@ -26,36 +26,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade='all, delete, delete-orphan', backref="place")
-        amenities = relationaship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
+    reviews = relationship("Review", cascade='all, delete, delete-orphan', backref="place")
+    amenities = relationaship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
 
-    else:
-        @property
-        def reviews(self):
-            """Return reviews.id list"""
-            mod = models.storage.all()
-            tmp = []
-            final = []
-            for key in var:
-                check = key.replace('.', ' ')
-                check = shlex.split(check)
-                if (check[0] == 'Review'):
-                    tmp.append(var[key])
-            for elem in tmp:
-                if (elem.plac_id == self.id):
-                    final.append(elem)
-            return (final)
-
-        @property
-        def amenities(self):
-            """Return amenity_ids list"""
-            return self.amenity_ids
-
-        @amenities.setter
-        def amenities(self, obj=None):
-            """Append"""
-            from models.amenity import Amenity
-            if type(obj) is Amenity and obj.id not in self.amenity_ids:
-                self.amenity_ids.append(obj.id)
 
