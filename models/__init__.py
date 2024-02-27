@@ -4,7 +4,8 @@ from os import environ as env
 from os import getenv
 
 
-if getenv('HBNB_TYPE_STORAGE' )== "db":
+env = getenv('HBNB_TYPE_STORAGE' )
+if env == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
     storage.reload()
