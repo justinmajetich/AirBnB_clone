@@ -18,8 +18,8 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 class Place(BaseModel, Base):
     """Place model for HBNB"""
+    __tablename__ = 'places'
     if env == 'db':
-        __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=True)
@@ -43,8 +43,7 @@ class Place(BaseModel, Base):
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
-        reviews = []
-        amenities = []
+        amenity_ids = []
 
         @property
         def reviews(self):
