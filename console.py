@@ -144,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
         if cmd_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #\/ Error if class attr has no default because attr non nullable
         if not cmd_args[1]:
             return
         if cmd_args[0] in HBNBCommand.non_null.keys() and len(cmd_args[1:]) < HBNBCommand.non_null[cmd_args[0]]:
@@ -245,7 +244,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        #print_list = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -254,12 +253,14 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all().items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    #print_list.append(str(v))
+                    print(v)
         else:
             for k, v in storage.all().items():
-                print_list.append(str(v))
+                #print_list.append(str(v))
+                print(v)
 
-        print(print_list)
+        #print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
