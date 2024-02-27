@@ -137,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
         for token in toks[1:]:
             temp_str = token.split("=")
             split_toks[temp_str[0]] = temp_str[1]
+            # Ace maybe put a check for params here
             # Debug Print
 
             # Old leftover code
