@@ -15,11 +15,11 @@ class City(BaseModel, Base):
 
     #Set up relationships
     if storage_type == 'db':
-        state = relationship('State', back_populates='cities')
-        places = relationship('Place', back_populates='city', cascade='all, delete-orphan')
-
         name = Column('name', String(128), nullable=False)
         state_id = Column('state_id', String(60), ForeignKey('states.id'), nullable=False)
+
+        state = relationship('State', back_populates='cities')
+        places = relationship('Place', back_populates='city', cascade='all, delete-orphan')
     else:
         name = ""
         state_id = ""
