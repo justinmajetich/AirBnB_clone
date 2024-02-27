@@ -28,20 +28,20 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
-        """Returns the list of Review instances for the current place"""
+        """Returns the list of Review instances from current place"""
         from models import storage
         all_reviews = storage.all(BaseModel.Review)
         return [review for review in all_reviews.values() if review.place_id == self.id]
 
     @property
     def amenities(self):
-        """Getter for amenities that are linked to this place."""
+        """Getter for amenities from current place"""
         from models import storage
         all_amenities = storage.all(BaseModel.Amenity)
         return [amenity for amenity in all_amenities.values() if amenity.id in self.amenity_ids]
 
     @amenities.setter
     def amenities(self, value):
-        """Adds an amenity.id to the list of linked amenities if not already present."""
+        """Adds an amenity.id to the list of linked amenities"""
         if type(value) == BaseModel.Amenity and value.id not in self.amenity_ids:
             self.amenity_ids.append(value.id)
