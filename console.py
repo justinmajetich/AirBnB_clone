@@ -29,7 +29,7 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-    
+
     non_null = {
         'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1, 'City': 2, 'State': 1
     }
@@ -169,8 +169,8 @@ class HBNBCommand(cmd.Cmd):
         print(d)
         new_instance = HBNBCommand.classes[cmd_args[0]](**d)
         print(new_instance.id)
-        storage.new(new_instance)
         new_instance.save()
+        #create City state_id=50bf1798-3eb4-407d-9090-59f70b824b4b name="Tulsa"
 
     def help_create(self):
         """ Help information for the create method """
