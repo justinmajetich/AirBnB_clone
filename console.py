@@ -135,8 +135,10 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         storage.save()
         new_instance.save()
-        print (new_instance.id)
-
+        try:
+            print(new_instance.id)
+        except AttributeError:
+            print("ERROR")
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
