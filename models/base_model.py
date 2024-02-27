@@ -19,7 +19,7 @@ class BaseModel:
             if 'id' not in kwargs.keys():
                 self.id = str(uuid4())
             for key, value in kwargs.items():
-                #setting created_at and updated at
+                # setting created_at and updated at
                 if key in ["created_at", "updated_at"]:
                     value = datetime.strptime(
                         value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -27,7 +27,7 @@ class BaseModel:
                     continue
                 setattr(self, key, value)
         else:
-            #Case for new instance creation
+            # Case for new instance creation
             self.id = str(uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
