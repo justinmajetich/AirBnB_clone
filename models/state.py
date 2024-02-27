@@ -10,6 +10,7 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     _cities = relationship("City", backref="state", cascade="all, delete, delete-orphan")
+    
     @property
     def cities(self):
         from models import storage
