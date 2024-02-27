@@ -33,12 +33,20 @@ class DBStorage():
 
     def all(self, cls=None):
         """Gets all instances of cls or of all classes if cls is None"""
+        import copy
         dict = {}
-        classes = [User, State, City] if cls is None else [cls]
+        classes = [User, State, City, Place, Amenity, Review]\
+            if cls is None else [cls]
         for cls in classes:
-            instances = self.__session.query(cls).all()
-            for instance in instances:
-                dict[f"{cls.__name__}.{instance.id}"] = instance
+            try:
+                instances = self.__session.query(cls).all()
+                for instance in instances:
+                    deep_copy = copy.deepcopy(instance)
+                    if '_sa_instance_state' in deep_copy.__dict__.keys():
+                        del deep_copy.__dict__['_sa_instance_state']
+                    dict[f"{cls.__name__}.{deep_copy.id}"] = deep_copy
+            except Exception:
+                pass
         return dict
 
     def new(self, obj):
