@@ -13,7 +13,7 @@ class test_Amenity(test_basemodel):
         self.name = "Amenity"
         self.value = Amenity
 
-    def test_name2(self):
+    def test_name(self):
         """ """
-        new = self.value()
+        new = self.value(name="wifi")
         self.assertEqual(type(new.name), str)
