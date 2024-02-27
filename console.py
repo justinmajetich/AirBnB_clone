@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from uuid import uuid4
+
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -115,7 +115,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        print("TESTING")
         try:
             if not args:
                 raise SyntaxError()
@@ -131,11 +130,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        kw['id'] = str(uuid4())
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        storage.save()
         new_instance.save()
-        print (new_instance.id)
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
