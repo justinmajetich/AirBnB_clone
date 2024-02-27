@@ -131,16 +131,8 @@ class HBNBCommand(cmd.Cmd):
         except NameError:
             print("** class doesn't exist **")
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
-<<<<<<< HEAD
-        try:
-            print(new_instance.id)
-        except AttributeError:
-            print("ERROR")
-=======
-        print(new_instance.id)
+        new_instance.save()\
 
->>>>>>> 7643fb79126650d6978d0400d27c9cb411886356
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
