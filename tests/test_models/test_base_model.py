@@ -3,14 +3,12 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
 import json
 import os
 
 
 class test_basemodel(unittest.TestCase):
     """Class to test the base model"""
-
     def __init__(self, *args, **kwargs):
         """initializing tests"""
         super().__init__(*args, **kwargs)
@@ -50,11 +48,11 @@ class test_basemodel(unittest.TestCase):
     def test_save(self):
         """Testing save"""
         i = self.value()
-        i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
+        i.save()
 
     def test_str(self):
         """a"""
