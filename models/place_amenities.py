@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 """Module containing place_amenities shared table"""
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from models.base_model import Base
+from sqlalchemy import Column, String, ForeignKey, Table
 import os
+from models.base_model import Base
+
 storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 if storage_type == 'db':
