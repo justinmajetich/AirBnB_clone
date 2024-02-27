@@ -86,7 +86,9 @@ Usage:  *all* (with no class name provided)
 ```
 ### Update the attributes of an object
 Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*<br>
-Note that if the attribute is a string, it must be inserted with double quotes from the command line.
+Note that: 
+1. If the attribute is a string, it must be inserted with double quotes from the command line.
+2. Any spaces in the string are represented with  __ 
 ```
 (hbnb) create User
 12999f2c-0dca-4945-9142-00106678b34a
