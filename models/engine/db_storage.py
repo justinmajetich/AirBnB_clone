@@ -23,6 +23,7 @@ db = getenv("HBNB_MYSQL_DB")
 environment = getenv("HBNB_ENV")
 connect = '{0}://{1}:{2}@{3}:3306/{4}'.format(mydb, usr, pwd, host, db)
 db_metadata = MetaData()
+s
 
 class DBStorage:
     """
