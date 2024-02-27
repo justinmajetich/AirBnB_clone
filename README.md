@@ -4,7 +4,11 @@ For the original AirBNB clone project, visit [this repository](https://github.co
 
 This version (created by [Ryan](https://github.com/donaldrs01) and [Luke](https://github.com/lukeschula)) has expanded on this original project by implementing a more advanced console as well as creating a new database storage engine utilizing MYSQL and SQLAlchemy. 
 
-The finalized product can toggle between a file storage engine and a database storage engine depending on the user's needs. 
+The finalized product can toggle between a file storage engine and a database storage engine depending on the user's needs. This is done through the verification of **environmental variables**.
+
+When an instance of any class is created, the console will check to see if the variable HBNB_TYPE_STORAGE is set to *"db"* (database) or *"file"* (file storage). 
+
+If the variable is set to 'db', all objects will be stored and retrieved from a connected database accessed through SQLAlchemy. If the variable is set to 'file', a file storage system will be used that serialzies an object as a JSON file when it is ready to be stored and deserializes it when it is ready to be retrieved. 
 
 ## Usage
 To begin, the console can be called by running a basic Python command in the terminal:
@@ -43,14 +47,14 @@ db1a66c3-84af-4006-96db-f8257d3bf84f
 (hbnb)
 ```
 ### Creating a named 'State' object from the console
-Usage : create <class_name> <name="..."><br>
-(*note that the space in the name is represented with  _*)
+Usage: create <class_name> <name="..."><br>
+(*note that the space in the name is represented with  __* )
 ```
 (hbnb) create State name="New_Testico"
 03049433-44d0-4485-ac48-88531a06f7d9
 ```
 ### Show description of 'Place' object from the console
-Usage : show <class_name> < id>
+Usage: show <class_name> < id>
 ```
 ./console.py
 (hbnb) show Place db1a66c3-84af-4006-96db-f8257d3bf84f
@@ -59,7 +63,7 @@ Usage : show <class_name> < id>
 'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}
 ```
 ### Display all objects of specific class in storage
-Usage: all <class_name>
+Usage:  all <class_name>
 ```
 ./console.py
 (hbnb) all State 
@@ -78,3 +82,13 @@ Usage:  all (with no class name provided)
 "[State] (be79504c-7419-400d-b06c-38ccf862800c) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94670>, 'id': 'be79504c-7419-400d-b06c-38ccf862800c', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847556), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847570)}", 
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
+### Remove an object from storage
+Usage:   destroy <class_name> < id>
+```
+(hbnb) create User
+f9431502-8a48-46b8-91a1-6588cf0acfc2
+(hbnb) all User
+["[User] (f9431502-8a48-46b8-91a1-6588cf0acfc2) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fb82899ee00>, 'id': 'f9431502-8a48-46b8-91a1-6588cf0acfc2', 'created_at': datetime.datetime(2024, 2, 27, 17, 3, 55, 133211), 'updated_at': datetime.datetime(2024, 2, 27, 17, 3, 55, 133229)}"] 
+(hbnb) destroy User f9431502-8a48-46b8-91a1-6588cf0acfc2
+(hbnb) all User
+[]
