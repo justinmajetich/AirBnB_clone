@@ -131,10 +131,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
+        kw['id'] = str(uuid4())
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         storage.save()
         new_instance.save()
-        return new_instance.id
+        print (new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
