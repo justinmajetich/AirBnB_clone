@@ -9,11 +9,12 @@ from sqlalchemy import Column, Integer, String
 import models
 from models.city import City
 from sqlalchemy.ext.declarative import declarative_base
+
+
 class State(BaseModel):
     """This is the class for State
     Attributes:
-        name: input name
-    """
+        name: input name"""
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
     cities = relationship("City", cascade='all, delete, delete-orphan',
