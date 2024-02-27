@@ -8,5 +8,5 @@ class User(BaseModel, Base):
     email = Column(str(128), nullable=False)
     password = Column(str(128), nullable=False)
     first_name = Column(str(128), nullable=True)
-    last_name = Column(str(128) nullable=True)
+    last_name = Column(str(128), nullable=True)
     __tablename__ = 'users'
