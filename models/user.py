@@ -13,4 +13,4 @@ class User(BaseModel, Base):
     last_name = Column('last_name', String(128))
 
     places = relationship('Place', back_populates='user', cascade='all, delete-orphan')
-    reviews = relationship('Review', back_populates='user', cascade='all, delete-orphan')
+    reviews = relationship('Review', back_populates='reviews', cascade='all, delete-orphan')
