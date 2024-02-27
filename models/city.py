@@ -4,6 +4,8 @@ from .base_model import BaseModel, Base
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import os
+storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 
 class City(BaseModel, Base):
@@ -14,5 +16,6 @@ class City(BaseModel, Base):
     state_id = Column('state_id', String(60), ForeignKey('states.id'), nullable=False)
 
     #Set up relationships
-    state = relationship('State', back_populates='cities')
-    places = relationship('Place', back_populates='city', cascade='all, delete-orphan')
+    if storage_type == 'db':
+        state = relationship('State', back_populates='cities')
+        places = relationship('Place', back_populates='city', cascade='all, delete-orphan')
