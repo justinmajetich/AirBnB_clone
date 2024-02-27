@@ -165,12 +165,10 @@ class HBNBCommand(cmd.Cmd):
         if count < len(required_attrs):
             print(f"Must fill all required attrs {required_attrs}")
             return
-        try:
-            new_instance = HBNBCommand.classes[model](**d)
-            print(new_instance.id)
-            new_instance.save()
-        except Exception:
-            print("Failed to create instance")
+
+        new_instance = HBNBCommand.classes[model](**d)
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
