@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel
-from .base_model import Base
 from sqlalchemy import Column, String
 import os
+from models.base_model import BaseModel, Base
+
 storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 

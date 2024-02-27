@@ -1,11 +1,11 @@
 # #!/usr/bin/python3
 
 """ Place Module for HBNB project """
-from models.base_model import BaseModel, Base
 from .amenity import Amenity
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 import os
+from models.base_model import BaseModel, Base
 
 storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
