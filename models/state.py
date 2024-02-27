@@ -3,13 +3,12 @@
 from models.base_model import BaseModel, Base
 import models
 from models.city import City
-
+import shlex
 
 class State(BaseModel):
     """This is the class for State
     Attributes:
-        name: input name
-    """
+        name: input name"""
 
     name = ""
 
