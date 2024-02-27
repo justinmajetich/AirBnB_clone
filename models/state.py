@@ -5,6 +5,25 @@ import models
 from models.city import City
 
 
-class State(BaseModel, Base):
-    """This is the class for State"""
+class State(BaseModel):
+    """This is the class for State
+    Attributes:
+        name: input name
+    """
+
     name = ""
+
+    @property
+    def cities(self):
+        var = models.storage.all()
+        lista = []
+        result = []
+        for key in var:
+            city = key.replace('.', ' ')
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                lista.append(var[key])
+        for elem in lista:
+            if (elem.state_id == self.id):
+                result.append(elem)
+        return result
