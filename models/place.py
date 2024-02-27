@@ -7,11 +7,13 @@ from .amenity import Amenity
 from .place_amenities import place_amenity
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
-
+import os
+storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 
 class Place(BaseModel, Base):
      """ A place to stay """
+     # if storage_type == 'db':
      __tablename__ = 'places'
      city_id = Column('city_id', String(60), ForeignKey('cities.id'), nullable=False)
      user_id = Column('user_id', String(60), ForeignKey('users.id'), nullable=False)
@@ -25,17 +27,29 @@ class Place(BaseModel, Base):
      longitude = Column('longitude', Float)
      amenity_ids = []
 
-     reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
-     user = relationship('User', back_populates='places')
-     amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
+     if storage_type == 'db':
+          reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
+          user = relationship('User', back_populates='places')
+          amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
+          city = relationship('City', back_populates='places')
 
-     # @property
-     # def reviews(self):
-     #      """Getter that returns the list of Amenity instances based on amenity_ids"""
-     #      return [review for review in self.reviews if review.place_id == self.id]    
+     else:
+          # reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
+          # user = relationship('User', back_populates='places')
+          # amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
+          # city = relationship('City', back_populates='places')
+     
+          @property
+          def reviews(self):
+               """Getter that returns the list of Amenity instances based on amenity_ids"""
+               return [review for review in self.reviews if review.place_id == self.id]   
 
-     # @amenities.setter
-     # def amenities(self, value):
-     #      """Setter that handles append method for adding an Amenity.id to amenity_ids"""
-     #      if isinstance(value, Amenity):
-     #           self.amenity_ids.append(value.id)
+          @property
+          def amenities(self):
+               return [amenity for amenity in self.amenities if amenity.place_id == self.id]
+
+          @amenities.setter
+          def amenities(self, value):
+               """Setter that handles append method for adding an Amenity.id to amenity_ids"""
+               if isinstance(value, Amenity):
+                    self.amenity_ids.append(value.id)
