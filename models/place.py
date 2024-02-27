@@ -19,3 +19,6 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullabe=True)
     longitude = Column(Float, nullabe=True)
     amenity_ids = []
+    #  When 'place' obj is deleted, all orphaned Review instances are too 
+    reviews = relationship("Review", cascade="all, delete-orphan",
+                           backref="place")

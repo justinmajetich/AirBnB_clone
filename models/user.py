@@ -16,4 +16,6 @@ class User(BaseModel, Base):
     #  create relationship between 'User' and 'Place'
     #  deleting user automatically deletes associated 'Place' obj
     places = relationship("Place", cascade="all, delete-orphan",
-                          backref = "user")
+                          backref="user")
+    reviews = relationship("Review", cascade="all, delete-orphan",
+                           backref="user")
