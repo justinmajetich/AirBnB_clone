@@ -38,7 +38,7 @@ Upon opening the console, the user has a number of different commands that can b
 - **quit() / EOF** --> exits out of console interface
 
 ## Examples
-### Creating a 'Place' object from the console with no other attributes
+### Creating a 'Place' object with no other attributes
 Usage : *create <class_name>*
 ```
 ./console.py
@@ -46,14 +46,16 @@ Usage : *create <class_name>*
 db1a66c3-84af-4006-96db-f8257d3bf84f
 (hbnb)
 ```
-### Creating a named 'State' object from the console
+### Creating a 'State' object with a name attribute
 Usage: *create <class_name> <name="...">*<br>
-(*note that the space in the name is represented with  __* )
+Note that: 
+1. If the attribute is a string, it must be inserted with double quotes from the command line.
+2. Any spaces in the string are represented with  __ 
 ```
 (hbnb) create State name="New_Testico"
 03049433-44d0-4485-ac48-88531a06f7d9
 ```
-### Show description of 'Place' object from the console
+### Show description of 'Place' object
 Usage: *show <class_name> < id>*
 ```
 ./console.py
@@ -71,7 +73,7 @@ Usage:  *all <class_name>*
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f89531ad4e0>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
 ### Display all objects in storage
-Usage:  *all (with no class name provided)*
+Usage:  *all* (with no class name provided)
 ```
 (hbnb) all
 ["[User] (8efafb1e-d473-4042-bcd1-064d052a64e2) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf949d0>, 'id': '8efafb1e-d473-4042-bcd1-064d052a64e2', 'created_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257599), 'updated_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257633)}", 
@@ -81,6 +83,18 @@ Usage:  *all (with no class name provided)*
 "[State] (59e71503-fd84-4e33-a0cf-6f05af11b78b) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf26230>, 'id': '59e71503-fd84-4e33-a0cf-6f05af11b78b', 'created_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647616), 'updated_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647642), 'name': 'Testlahoma'}", 
 "[State] (be79504c-7419-400d-b06c-38ccf862800c) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94670>, 'id': 'be79504c-7419-400d-b06c-38ccf862800c', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847556), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847570)}", 
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
+```
+### Update the attributes of an object
+Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*<br>
+Note that: 
+1. If the attribute is a string, it must be inserted with double quotes from the command line.
+2. Any spaces in the string are represented with  __ 
+```
+(hbnb) create User
+12999f2c-0dca-4945-9142-00106678b34a
+(hbnb) update User 12999f2c-0dca-4945-9142-00106678b34a first_name="Pierre", last_name="DuBois"
+(hbnb) show User 12999f2c-0dca-4945-9142-00106678b34a
+[User] (12999f2c-0dca-4945-9142-00106678b34a) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fbf5cfb2e00>, 'id': '12999f2c-0dca-4945-9142-00106678b34a', 'created_at': datetime.datetime(2024, 2, 27, 17, 29, 0, 9011), 'updated_at': datetime.datetime(2024, 2, 27, 17, 29, 43, 835523), 'first_name="Pierre",': 'last_name="DuBois"'}
 ```
 ### Delete an object from storage
 Usage:   *destroy <class_name> < id>*
