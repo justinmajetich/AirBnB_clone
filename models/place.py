@@ -26,13 +26,13 @@ class Place(BaseModel, Base):
      amenity_ids = []
 
      reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
-     user = relationship('User', back_populates='user', cascade='all, delete-orphan')
+     user = relationship('User', back_populates='places', cascade='all, delete-orphan')
      amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
 
-     @property
-     def reviews(self):
-          """Getter that returns the list of Amenity instances based on amenity_ids"""
-          return [review for review in self.reviews if review.place_id == self.id]    
+     # @property
+     # def reviews(self):
+     #      """Getter that returns the list of Amenity instances based on amenity_ids"""
+     #      return [review for review in self.reviews if review.place_id == self.id]    
 
      # @amenities.setter
      # def amenities(self, value):
