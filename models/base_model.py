@@ -12,8 +12,7 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        id = Column(String(60), primary_key=True, unique=True)
+    id = Column(String(60), primary_key=True, unique=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
@@ -54,8 +53,8 @@ class BaseModel:
         dictionary["__class__"] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in self.__dict__:
-            del self.__dict__['_sa_instance_state']
+        if '_sa_instance_state' in dictionary:
+            del dictionary['_sa_instance_state']
         return dictionary
 
     def delete(self):
