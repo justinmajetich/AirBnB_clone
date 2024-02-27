@@ -24,6 +24,7 @@ environment = getenv("HBNB_ENV")
 connect = '{0}://{1}:{2}@{3}:3306/{4}'.format(mydb, usr, pwd, host, db)
 db_metadata = MetaData()
 
+
 class DBStorage:
     """
     Engine for the console's database connection
