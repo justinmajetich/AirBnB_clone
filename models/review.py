@@ -19,4 +19,3 @@ class Review(BaseModel, Base):
         text = ""
         place_id = ""
         user_id = ""
-    
