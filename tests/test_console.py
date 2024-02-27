@@ -5,6 +5,7 @@ import os
 import unittest
 from console import HBNBCommand
 
+
 class TestConsole(unittest.TestCase):
     """Test module for console functionality
     """
@@ -18,7 +19,7 @@ class TestConsole(unittest.TestCase):
         open("file.json", "a").close()
         # create instance of HBNBCommand
         cls.console = HBNBCommand()
-    
+
     def test_docstring(self):
         """Test that looks for docstring for each console method
         """
@@ -43,6 +44,7 @@ class TestConsole(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.help_count.__doc__)
         self.assertIsNotNone(HBNBCommand.do_update.__doc__)
         self.assertIsNotNone(HBNBCommand.help_update.__doc__)
-        
+
+
 if __name__ == '__main__':
     unittest.main()
