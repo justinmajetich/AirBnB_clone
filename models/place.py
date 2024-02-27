@@ -2,19 +2,19 @@
 
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from .review import Review
 from .amenity import Amenity
-from .place_amenities import place_amenity
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 import os
+
 storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 
 class Place(BaseModel, Base):
      """ A place to stay """
+     __tablename__ = 'places'
+
      if storage_type == 'db':
-          __tablename__ = 'places'
           city_id = Column('city_id', String(60), ForeignKey('cities.id'), nullable=False)
           user_id = Column('user_id', String(60), ForeignKey('users.id'), nullable=False)
           name = Column('name', String(128), nullable=False)
@@ -29,7 +29,6 @@ class Place(BaseModel, Base):
 
           reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
           user = relationship('User', back_populates='places')
-          amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
           city = relationship('City', back_populates='places')
 
      else:
