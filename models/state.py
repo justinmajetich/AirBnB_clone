@@ -10,12 +10,14 @@ storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 class State(BaseModel, Base):
     """ State class """
-    __tablename__ = 'states'
-    name = Column('name', String(128), nullable=False)
-
     if storage_type == 'db':
+        __tablename__ = 'states'
+        name = Column('name', String(128), nullable=False)
+    
         cities = relationship('City', back_populates='state', cascade='all, delete-orphan')
+    else:
+        name = ""
 
-    # @property
-    # def cities(self):
-    #     return [city for city in City.query.filter_by(state_id=self.id).all()]
+        @property
+        def cities(self):
+            return [city for city in City.query.filter_by(state_id=self.id).all()]

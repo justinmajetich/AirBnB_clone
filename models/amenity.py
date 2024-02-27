@@ -16,4 +16,3 @@ class Amenity(BaseModel, Base):
         name = Column('name', String(128), nullable=False)
     else:
         name = ""
-    # places = relationship('Place', secondary=place_amenity, back_populates='amenities')
