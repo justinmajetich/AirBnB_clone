@@ -32,3 +32,19 @@ Upon opening the console, the user has a number of different commands that can b
 - **update()** --> allows user to update a certain object with new information based on object's class name and UUID
 
 - **quit() / EOF** --> exits out of console interface
+
+## Examples
+### **Creating** a 'Place' object from the console
+```
+./console.py
+(hbnb) create Place
+db1a66c3-84af-4006-96db-f8257d3bf84f
+(hbnb)
+```
+### **Show** description of 'Place' object from the console
+Usage - show <class_name> <id>
+```
+./console.py
+(hbnb) show Place db1a66c3-84af-4006-96db-f8257d3bf84f
+[Place] (db1a66c3-84af-4006-96db-f8257d3bf84f) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f60d0ea29b0>, 'id': 'db1a66c3-84af-4006-96db-f8257d3bf84f', 'created_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886623), 'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}
+```
