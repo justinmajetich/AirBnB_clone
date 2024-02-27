@@ -26,12 +26,11 @@ class test_console(unittest.TestCase):
 
     def test_quit(self):
         """Test quit command input."""
-        with patch('builtins.exit') as mock_exit:  # Adjusted to patch 'builtins.exit'
+        with patch('builtins.exit') as mock_exit:
             with patch("sys.stdout", new=StringIO()) as f:
                 self.HBNB.onecmd("quit")
                 mock_exit.assert_called_once()
                 self.assertEqual("", f.getvalue())
-
 
     def test_docstrings(self):
         """Check for docstrings."""
@@ -43,6 +42,7 @@ class test_console(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
         self.assertIsNotNone(HBNBCommand.do_all.__doc__)
         self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+
 
 if __name__ == "__main__":
     unittest.main()
