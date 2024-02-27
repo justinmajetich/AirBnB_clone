@@ -2,7 +2,6 @@
 
 """This module defines a class for creating the engine DBStorage"""
 import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -13,7 +12,6 @@ from ..amenity import Amenity
 from ..place import Place
 from ..review import Review
 
-load_dotenv()
 Base = declarative_base()
 
 class DBStorage:
