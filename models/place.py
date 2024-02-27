@@ -26,7 +26,7 @@ class Place(BaseModel, Base):
      amenity_ids = []
 
      reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
-     user = relationship('User', back_populates='places', cascade='all, delete-orphan')
+     user = relationship('User', back_populates='places')
      amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
 
      # @property
