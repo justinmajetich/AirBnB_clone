@@ -1,6 +1,6 @@
 # AirBnB Clone (V2)
 
-For the original AirBNB clone project, visit [this repository](https://github.com/justinmajetich/AirBnB_clone)
+For the original AirBNB clone project, visit [this repository](https://github.com/justinmajetich/AirBnB_clone).
 
 This version (created by [Ryan](https://github.com/donaldrs01) and [Luke](https://github.com/lukeschula)) has expanded on this original project by implementing a more advanced console as well as creating a new database storage engine utilizing MYSQL and SQLAlchemy. 
 
@@ -16,14 +16,13 @@ You know you have successfully opened the console when you are greeted with the 
 (hbnb)
 ```
 Upon opening the console, the user has a number of different commands that can be run directly from the CLI. A list of available commands is below:
-### Commands
-```
+### Console Commands
 - **create()** --> creates an object of any class with specified parameters
 
 - **show()** --> shows a printout of object-specific information
     (including its class name, its UUID, and its time of creation / last updated)
 
-- **destroy()** --> removes an object from storage 
+- **destroy()** --> removes an object from storage based on its class and UUID
 
 - **all()** --> shows all objects of a specified class 
     (shows all objects in storage if no class is specified)
@@ -33,4 +32,3 @@ Upon opening the console, the user has a number of different commands that can b
 - **update()** --> allows user to update a certain object with new information based on object's class name and UUID
 
 - **quit() / EOF** --> exits out of console interface
-```
