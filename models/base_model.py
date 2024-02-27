@@ -10,6 +10,7 @@ from os import getenv
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True, unique=True)
