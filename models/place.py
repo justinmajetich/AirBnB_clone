@@ -1,8 +1,14 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+
+place_amenity = Table("place_amenity", Base.metadata,
+                    Column('place_id', String(60), ForeignKey('places.id'),
+                    primary_key=True, nullable=False),
+                    Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                    primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -19,6 +25,6 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    #  When 'place' obj is deleted, all orphaned Review instances are too 
+    #  When 'place' obj is deleted, all orphaned Review instances are too
     reviews = relationship("Review", cascade="all, delete-orphan",
                            backref="place")
