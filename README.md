@@ -34,7 +34,7 @@ Upon opening the console, the user has a number of different commands that can b
 - **quit() / EOF** --> exits out of console interface
 
 ## Examples
-### *Creating* a 'Place' object from the console with no other attributes
+### Creating a 'Place' object from the console with no other attributes
 Usage : create <class_name>
 ```
 ./console.py
@@ -42,14 +42,14 @@ Usage : create <class_name>
 db1a66c3-84af-4006-96db-f8257d3bf84f
 (hbnb)
 ```
-### **Creating** a named 'State' object from the console
-Usage : create <class_name> <name="..."> 
+### Creating a named 'State' object from the console
+Usage : create <class_name> <name="..."><br>
 (*note that the space in the name is represented with  _*)
 ```
 (hbnb) create State name="New_Testico"
 03049433-44d0-4485-ac48-88531a06f7d9
 ```
-### **Show** description of 'Place' object from the console
+### Show description of 'Place' object from the console
 Usage : show <class_name> < id>
 ```
 ./console.py
@@ -58,7 +58,7 @@ Usage : show <class_name> < id>
 'id': 'db1a66c3-84af-4006-96db-f8257d3bf84f', 'created_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886623),
 'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}
 ```
-### Display **all** objects of specific class in storage
+### Display all objects of specific class in storage
 Usage: all <class_name>
 ```
 ./console.py
