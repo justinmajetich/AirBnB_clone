@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -17,9 +18,13 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    _review = relationship("Review", backref="place", cascade="all, delete, delete-orphan")
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete, delete-orphan")
+
     @property
-    def review(self):
+    def reviews(self):
+        """Returns the list of Review instances from current place"""
         from models import storage
         all_reviews = storage.all(BaseModel.Review)
-        return [review for review in all_reviews.values() if review.place_id == self.id]
+        return [review for review in all_reviews.values()
+                if review.place_id == self.id]

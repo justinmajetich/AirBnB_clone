@@ -29,16 +29,16 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-    
+
     non_null = {
-        'User': 2, 'Place': 7, 'Review': 3, 'Amenity' : 1, 'City': 2, 'State': 1
+        'User': 2, 'Place': 3, 'Review': 3,
+        'Amenity': 1, 'City': 2, 'State': 1
     }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
-
+            print('(hbnb)', end=" ")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -120,19 +120,6 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    # def do_create(self, args):
-    #     """ Create an object of any class"""
-    #     if not args:
-    #         print("** class name missing **")
-    #         return
-    #     elif args not in HBNBCommand.classes:
-    #         print("** class doesn't exist **")
-    #         return
-    #     new_instance = HBNBCommand.classes[args]()
-    #     storage.save()
-    #     print(new_instance.id)
-    #     storage.save()
-
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
@@ -140,14 +127,13 @@ class HBNBCommand(cmd.Cmd):
             return
         cmd_args = args.strip()
         cmd_args = cmd_args.split(" ")
-
-        if cmd_args[0] not in HBNBCommand.classes:
+        model = cmd_args[0]
+        # if command doesnt start with a class
+        if model not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #\/ Error if class attr has no default because attr non nullable
-        if not cmd_args[1]:
-            return
-        if cmd_args[0] in HBNBCommand.non_null.keys() and len(cmd_args[1:]) < HBNBCommand.non_null[cmd_args[0]]:
+        # if args has no attr setting (create Place)
+        if len(cmd_args) < 2:
             return
         i = 0
         tok_args = cmd_args[1:]
@@ -155,21 +141,36 @@ class HBNBCommand(cmd.Cmd):
         while i < len(tok_args):
             if tok_args[i] and '=' in tok_args[i]:
                 dic_args = tok_args[i].split("=")
-                dic_args[1] = dic_args[1].replace('"', '')
-                dic_args[1] = dic_args[1].replace("'", '')
-                dic_args[1] = dic_args[1].replace("_", ' ')
-                if hasattr(HBNBCommand.classes[cmd_args[0]], dic_args[0]):
-                    class_attribute = getattr(HBNBCommand.classes[cmd_args[0]], dic_args[0])
+                value = dic_args[1]
+                attr = dic_args[0]
+                value =\
+                    value.replace('"', '').replace("'", '').replace("_", ' ')
+                if hasattr(HBNBCommand.classes[model], attr):
+                    class_attribute = getattr(HBNBCommand.classes[model], attr)
                     if type(class_attribute) is int:
-                        dic_args[1] = int(dic_args[1])
+                        value = int(value)
                     elif type(class_attribute) is float:
-                        dic_args[1] = float(dic_args[1])
-                    d.update({dic_args[0]:dic_args[1]})
+                        value = float(value)
+                    d.update({attr: value})
             i += 1
-        print(d)
-        new_instance = HBNBCommand.classes[cmd_args[0]](**d)
+        required_attrs = []
+        # get non nullable attributes that have no default
+        for column in HBNBCommand.classes[model].__table__.columns:
+            # if attr is not nullable and has no default set
+            if not column.nullable and\
+                column.default is None and\
+                    not column.primary_key:
+                required_attrs.append(column.name)
+        count = 0
+        for attr in d:
+            if attr in required_attrs:
+                count += 1
+        if count < len(required_attrs):
+            print(f"Must fill all required attrs {required_attrs}")
+            return
+
+        new_instance = HBNBCommand.classes[model](**d)
         print(new_instance.id)
-        storage.new(new_instance)
         new_instance.save()
 
     def help_create(self):
@@ -233,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del storage.all()[key]
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -245,7 +246,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -254,12 +254,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all().items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print(v)
         else:
             for k, v in storage.all().items():
-                print_list.append(str(v))
-
-        print(print_list)
+                print(v)
 
     def help_all(self):
         """ Help information for the all command """
@@ -366,6 +364,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

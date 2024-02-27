@@ -35,7 +35,8 @@ class DBStorage():
         """Gets all instances of cls or of all classes if cls is None"""
         import copy
         dict = {}
-        classes = [User, State, City, Amenity, Place, Review] if cls is None else [cls]
+        classes = [User, State, City, Place, Amenity, Review]\
+            if cls is None else [cls]
         for cls in classes:
             try:
                 instances = self.__session.query(cls).all()
