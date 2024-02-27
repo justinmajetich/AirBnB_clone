@@ -50,6 +50,7 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
+            # return {column.name: getattr(self, column.name) for column in self.__table__.columns}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                         (str(type(self)).split('.')[-1]).split('\'')[0]})
