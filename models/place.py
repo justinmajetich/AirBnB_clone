@@ -42,15 +42,15 @@ class Place(BaseModel, Base):
         return [review for review in Review.all()
             if review.place_id == self.id]
 
-    @property
-    def amenities(self):
-        """Getter for amenities"""
-        from models.amenity import Amenity
-        return [Amenity.all()[id] for id in self.amenity_ids]
+    # @property
+    # def amenities(self):
+        # """Getter for amenities"""
+        # from models.amenity import Amenity
+        # return [Amenity.all()[id] for id in self.amenity_ids]
 
-    @amenities.setter
-    def amenities(self, value):
-        """Setter for amenities"""
-        from models.amenity import Amenity
-        if isinstance(value, Amenity):
-            self.amenity_ids.append(value.id)
+    # @amenities.setter
+    # def amenities(self, value):
+        # """Setter for amenities"""
+        # from models.amenity import Amenity
+        # if isinstance(value, Amenity):
+            # self.amenity_ids.append(value.id)
