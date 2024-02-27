@@ -3,6 +3,8 @@
 from .base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import os
+storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
@@ -12,5 +14,6 @@ class User(BaseModel, Base):
     first_name = Column('first_name', String(128))
     last_name = Column('last_name', String(128))
 
-    places = relationship('Place', back_populates='user', cascade='all, delete-orphan')
-    reviews = relationship('Review', back_populates='user', cascade='all, delete-orphan')
+    if storage_type == 'db':
+        places = relationship('Place', back_populates='user', cascade='all, delete-orphan')
+        reviews = relationship('Review', back_populates='user', cascade='all, delete-orphan')
