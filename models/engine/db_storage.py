@@ -57,8 +57,10 @@ class DBStorage:
         else:
             query = self.__session.query().all()
         for record in query:
-            key = "{}.{}".format(record.name, record.id)
-            res.update({key: record})
+            key = "{}.{}".format(type(record).__name__, record.id)
+            value = record.to_dict()
+            del value['__class__']
+            res.update({key: value})
         return res
 
     def new(self, obj):
