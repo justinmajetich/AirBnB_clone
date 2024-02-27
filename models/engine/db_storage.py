@@ -11,8 +11,9 @@ from ..city import City
 from ..amenity import Amenity
 from ..place import Place
 from ..review import Review
+from models.base_model import BaseModel, Base
 
-Base = declarative_base()
+# Base = declarative_base()
 
 class DBStorage:
     """This class manages storage of hbnb models in database format"""
@@ -30,7 +31,7 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
 
         # Set DB connection
-        connect = "mysql+mysqldb://{}:{}@{}/{}".format(user, pwd, host, db)
+        connect = "mysql+mysqldb://{0}:{1}@{2}:3306/{3}".format(user, pwd, host, db)
 
         # Create engine
         self.__engine = create_engine(connect, pool_pre_ping=True)
@@ -63,6 +64,7 @@ class DBStorage:
 
     def save(self):
         """Commit session changes"""
+        print("Saving to commit")
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -73,7 +75,7 @@ class DBStorage:
     def reload(self):
         """Recreate tables and create new session"""
         Base.metadata.create_all(self.__engine)
-        self.__session.close()
+        # self.__session.close()
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
