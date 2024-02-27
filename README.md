@@ -48,9 +48,9 @@ db1a66c3-84af-4006-96db-f8257d3bf84f
 ```
 ### Creating a 'State' object with a name attribute
 Usage: *create <class_name> <name="...">*<br>
-(Note that:<br> 
+Note that: 
 1. If the attribute is a string, it must be inserted with double quotes from the command line.
-2. Any spaces in the string are represented with  __ )
+2. Any spaces in the string are represented with  __ 
 ```
 (hbnb) create State name="New_Testico"
 03049433-44d0-4485-ac48-88531a06f7d9
