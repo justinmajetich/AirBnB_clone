@@ -13,6 +13,6 @@ class State(BaseModel, Base):
 
     cities = relationship('City', back_populates='state', cascade='all, delete-orphan')
 
-    @property
-    def cities(self):
-        return [city for city in City.query.filter_by(state_id=self.id).all()]
+    # @property
+    # def cities(self):
+    #     return [city for city in City.query.filter_by(state_id=self.id).all()]
