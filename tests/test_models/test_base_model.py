@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-""" """
+""" Module for running test cases """
 from models.base_model import BaseModel
 import unittest
 import datetime
 from uuid import UUID
 import json
 import os
-
 
 class test_basemodel(unittest.TestCase):
     """ """
@@ -97,3 +96,7 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+
+if __name__ == "__main__":
+    unittest.main()
