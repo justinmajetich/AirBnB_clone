@@ -39,7 +39,7 @@ Upon opening the console, the user has a number of different commands that can b
 
 ## Examples
 ### Creating a 'Place' object from the console with no other attributes
-Usage : create <class_name>
+Usage : *create <class_name>*
 ```
 ./console.py
 (hbnb) create Place
@@ -47,14 +47,14 @@ db1a66c3-84af-4006-96db-f8257d3bf84f
 (hbnb)
 ```
 ### Creating a named 'State' object from the console
-Usage: create <class_name> <name="..."><br>
+Usage: *create <class_name> <name="...">*<br>
 (*note that the space in the name is represented with  __* )
 ```
 (hbnb) create State name="New_Testico"
 03049433-44d0-4485-ac48-88531a06f7d9
 ```
 ### Show description of 'Place' object from the console
-Usage: show <class_name> < id>
+Usage: *show <class_name> < id>*
 ```
 ./console.py
 (hbnb) show Place db1a66c3-84af-4006-96db-f8257d3bf84f
@@ -63,7 +63,7 @@ Usage: show <class_name> < id>
 'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}
 ```
 ### Display all objects of specific class in storage
-Usage:  all <class_name>
+Usage:  *all <class_name>*
 ```
 ./console.py
 (hbnb) all State 
@@ -71,7 +71,7 @@ Usage:  all <class_name>
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f89531ad4e0>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
 ### Display all objects in storage
-Usage:  all (with no class name provided)
+Usage:  *all (with no class name provided)*
 ```
 (hbnb) all
 ["[User] (8efafb1e-d473-4042-bcd1-064d052a64e2) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf949d0>, 'id': '8efafb1e-d473-4042-bcd1-064d052a64e2', 'created_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257599), 'updated_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257633)}", 
@@ -82,8 +82,8 @@ Usage:  all (with no class name provided)
 "[State] (be79504c-7419-400d-b06c-38ccf862800c) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94670>, 'id': 'be79504c-7419-400d-b06c-38ccf862800c', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847556), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847570)}", 
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
-### Remove an object from storage
-Usage:   destroy <class_name> < id>
+### Delete an object from storage
+Usage:   *destroy <class_name> < id>*
 ```
 (hbnb) create User
 f9431502-8a48-46b8-91a1-6588cf0acfc2
