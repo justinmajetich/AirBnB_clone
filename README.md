@@ -83,7 +83,8 @@ Usage:  *all* (with no class name provided)
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
 ### Update the attributes of an object
-Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*
+Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*<br>
+Note that if the attribute is a string, it must be inserted with double quotes from the command line.
 ```
 (hbnb) create User
 12999f2c-0dca-4945-9142-00106678b34a
