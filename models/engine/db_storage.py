@@ -7,7 +7,6 @@ Module containing HBnB Console's Database engine
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from os import environ as env
 from models.user import User
 from models.place import Place
 from models.state import State
