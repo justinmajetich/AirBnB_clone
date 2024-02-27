@@ -14,11 +14,12 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-user = getenv('HBNB_MYSQL_USER')
+usr = getenv('HBNB_MYSQL_USER')
 pw = getenv('HBNB_MYSQL_PWD')
 host = getenv('HBNB_MYSQL_HOST')
 db = getenv('HBNB_MYSQL_DB')
 connect_script = 'mysql+mysqldb://{}:{}@{}:3306/{}'
+
 
 class DBStorage:
     """Engine responsible for connecting to database and
@@ -28,7 +29,8 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine(connect_script.format(user, pw, host, db), pool_pre_ping=True)
+        self.__engine = create_engine(connect_script.format
+                                      (usr, pw, host, db), pool_pre_ping=True)
         #  Drop all tables if environment is in 'test' mode
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
@@ -47,7 +49,7 @@ class DBStorage:
         obj_dict = {}
         if cls:
             if isinstance(cls, str):
-                cls=getattr(models, cls, None)
+                cls = getattr(models, cls, None)
             query = self.__session.query(cls)
             for elem in query:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
@@ -59,7 +61,7 @@ class DBStorage:
                 for elem in query:
                     key = "{}.{}".format(type(elem).__name__, elem.id)
                     obj_dict[key] = elem
-        return(obj_dict)
+        return (obj_dict)
 
     def new(self, obj):
         """Add the object to the current database session
@@ -88,7 +90,8 @@ class DBStorage:
         """Reloads the database, effectively creating all tables in DB
         """
         Base.metadata.create_all(self.__engine)
-        created_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        created_session = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(created_session)
         self.__session = Session()
 
