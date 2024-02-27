@@ -61,12 +61,12 @@ class HBNBCommand(cmd.Cmd):
             _cls = pline[: pline.find(".")]
 
             # isolate and validate <command>
-            _cmd = pline[pline.find(".") + 1 : pline.find("(")]
+            _cmd = pline[pline.find(".") + 1: pline.find("(")]
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
             # if parantheses contain arguments, parse them
-            pline = pline[pline.find("(") + 1 : pline.find(")")]
+            pline = pline[pline.find("(") + 1: pline.find(")")]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(", ")  # pline convert to tuple
@@ -138,7 +138,6 @@ class HBNBCommand(cmd.Cmd):
             temp_str = token.split("=")
             split_toks[temp_str[0]] = temp_str[1]
             # Debug Print
-            # print("split tokens: {0} = {1}".format(temp_str[0], split_toks[temp_str[0]]))
 
             # Old leftover code
             # split_toks.update(token.split('='))
