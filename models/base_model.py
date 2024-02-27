@@ -42,6 +42,7 @@ class BaseModel:
         from models.engine.file_storage import storage
         #Need check for SQLAlchemy?
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):

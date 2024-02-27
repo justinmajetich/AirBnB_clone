@@ -5,7 +5,7 @@ from models.base_model import BaseModel, Base
 from .review import Review
 from .amenity import Amenity
 from .place_amenities import place_amenity
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
+from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 
@@ -26,8 +26,8 @@ class Place(BaseModel, Base):
      amenity_ids = []
 
      reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
-     amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
      user = relationship('User', back_populates='user', cascade='all, delete-orphan')
+     amenities = relationship('Amenity', secondary=place_amenity, back_populates='places', viewonly=False)
 
      @property
      def reviews(self):
