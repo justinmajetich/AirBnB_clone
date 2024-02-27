@@ -31,14 +31,14 @@ class HBNBCommand(cmd.Cmd):
             }
 
     non_null = {
-        'User': 2, 'Place': 3, 'Review': 3, 'Amenity' : 1, 'City': 2, 'State': 1
+        'User': 2, 'Place': 3, 'Review': 3,
+        'Amenity': 1, 'City': 2, 'State': 1
     }
 
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)', end=" ")
-
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -128,11 +128,11 @@ class HBNBCommand(cmd.Cmd):
         cmd_args = args.strip()
         cmd_args = cmd_args.split(" ")
         model = cmd_args[0]
-        #if command doesnt start with a class
+        # if command doesnt start with a class
         if model not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #if args has no attr setting (create Place)
+        # if args has no attr setting (create Place)
         if len(cmd_args) < 2:
             return
         i = 0
@@ -143,20 +143,23 @@ class HBNBCommand(cmd.Cmd):
                 dic_args = tok_args[i].split("=")
                 value = dic_args[1]
                 attr = dic_args[0]
-                value = value.replace('"', '').replace("'", '').replace("_", ' ')
+                value =\
+                    value.replace('"', '').replace("'", '').replace("_", ' ')
                 if hasattr(HBNBCommand.classes[model], attr):
                     class_attribute = getattr(HBNBCommand.classes[model], attr)
                     if type(class_attribute) is int:
                         value = int(value)
                     elif type(class_attribute) is float:
                         value = float(value)
-                    d.update({attr:value})
+                    d.update({attr: value})
             i += 1
         required_attrs = []
-        #get non nullable attributes that have no default
+        # get non nullable attributes that have no default
         for column in HBNBCommand.classes[model].__table__.columns:
-            #if attr is not nullable and has no default set
-            if not column.nullable and column.default is None and not column.primary_key:
+            # if attr is not nullable and has no default set
+            if not column.nullable and\
+                column.default is None and\
+                    not column.primary_key:
                 required_attrs.append(column.name)
         count = 0
         for attr in d:
@@ -243,7 +246,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        #print_list = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -252,14 +254,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all().items():
                 if k.split('.')[0] == args:
-                    #print_list.append(str(v))
                     print(v)
         else:
             for k, v in storage.all().items():
-                #print_list.append(str(v))
                 print(v)
-
-        #print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -366,6 +364,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
