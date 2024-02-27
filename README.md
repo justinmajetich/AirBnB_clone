@@ -82,6 +82,15 @@ Usage:  *all* (with no class name provided)
 "[State] (be79504c-7419-400d-b06c-38ccf862800c) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94670>, 'id': 'be79504c-7419-400d-b06c-38ccf862800c', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847556), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847570)}", 
 "[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
+### Update the attributes of an object
+Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*
+```
+(hbnb) create User
+12999f2c-0dca-4945-9142-00106678b34a
+(hbnb) update User 12999f2c-0dca-4945-9142-00106678b34a first_name="Pierre", last_name="DuBois"
+(hbnb) show User 12999f2c-0dca-4945-9142-00106678b34a
+[User] (12999f2c-0dca-4945-9142-00106678b34a) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fbf5cfb2e00>, 'id': '12999f2c-0dca-4945-9142-00106678b34a', 'created_at': datetime.datetime(2024, 2, 27, 17, 29, 0, 9011), 'updated_at': datetime.datetime(2024, 2, 27, 17, 29, 43, 835523), 'first_name="Pierre",': 'last_name="DuBois"'}
+```
 ### Delete an object from storage
 Usage:   *destroy <class_name> < id>*
 ```
