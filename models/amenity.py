@@ -11,9 +11,9 @@ storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 class Amenity(BaseModel, Base):
 
-    # if storage_type == 'db':
     __tablename__ = 'amenities'
-    name = Column('name', String(128), nullable=False)
-    # else:
-    #     name = ""
+    if storage_type == 'db':
+        name = Column('name', String(128), nullable=False)
+    else:
+        name = ""
     # places = relationship('Place', secondary=place_amenity, back_populates='amenities')
