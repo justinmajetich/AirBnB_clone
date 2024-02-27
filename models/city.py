@@ -7,6 +7,7 @@ from models.base_model import BaseModel, Base
 
 env = getenv('HBNB_TYPE_STORAGE')
 
+
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
 

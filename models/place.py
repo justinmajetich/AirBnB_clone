@@ -32,15 +32,10 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship(
-            "Review",
-            backref="place",
-            cascade="all, delete"
+            "Review", backref="place", cascade="all, delete"
         )
         amenities = relationship(
-            "Amenity",
-            secondary="place_amenity",
-            backref="place_amenities",
-            viewonly=False
+            "Amenity", secondary="place_amenity", backref="places"
         )
 
     else:
@@ -60,8 +55,9 @@ class Place(BaseModel, Base):
         def reviews(self):
             """Getter for reviews"""
             from models.review import Review
-            return [review for review in Review.all()
-                    if review.place_id == self.id
+            return [
+                review for review in Review.all()
+                if review.place_id == self.id
             ]
 
         @property
