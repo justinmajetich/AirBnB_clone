@@ -14,4 +14,5 @@ class Review(BaseModel, Base):
     text = Column('text', String(1024), nullable=False)
 
     place = relationship('Place', back_populates='reviews')
-    user = relationship('User', back_populates='users')
+    user = relationship('User', back_populates='reviews')
+    
