@@ -16,8 +16,8 @@ class Place(BaseModel, Base):
     number_bathrooms = Column(Integer, nullable=False, default=0)
     max_guest = Column(Integer, nullable=False, default=0)
     price_by_night = Column(Integer, nullable=False, default=0)
-    latitude = Column(Float, nullabe=True)
-    longitude = Column(Float, nullabe=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
     amenity_ids = []
     #  When 'place' obj is deleted, all orphaned Review instances are too 
     reviews = relationship("Review", cascade="all, delete-orphan",
