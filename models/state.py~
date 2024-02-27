@@ -5,9 +5,10 @@ import sys
 import shlex
 import models
 from models.city import City
-from sqlalchemy.ext.declarative import declarative_base
-
+from uuid import uuid4
 
 class State(BaseModel):
     """State class"""
-    
+
+    def __init__(self):
+        super().id
