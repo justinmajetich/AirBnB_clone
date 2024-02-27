@@ -51,7 +51,7 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         if storage_type == 'db':
-            return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+            return {column.name: os.getattr(self, column.name) for column in self.__table__.columns}
         else:
             dictionary.update(self.__dict__)
             dictionary.update({'__class__':
