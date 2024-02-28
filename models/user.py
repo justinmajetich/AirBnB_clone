@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 
-s = "HBNB_TYPE_STORAGE"
+cs = "HBNB_TYPE_STORAGE"
 if cs in environ.keys() and environ["HBNB_TYPE_STORAGE"] == "db":
     class User(BaseModel, Base):
         """This is the class for user
