@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         # if args has no attr setting (create Place)
-        if len(cmd_args) < 2:
+        if len(cmd_args) < 2 and model != "State":
             return
         i = 0
         tok_args = cmd_args[1:]
@@ -162,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
         for attr in d:
             if attr in required_attrs:
                 count += 1
-        if count < len(required_attrs):
+        if count < len(required_attrs) and model != "State":
             print(f"Must fill all required attrs {required_attrs}")
             return
 
