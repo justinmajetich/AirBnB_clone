@@ -18,6 +18,7 @@ class test_console(unittest.TestCase):
         self.assertTrue(True)
 
     def create_state(self):
+        """Test if create State is present"""
         self.assertTrue("create State")
 
         result = HBNBCommand.do_create("create_State")
