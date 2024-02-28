@@ -3,12 +3,17 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+import os
 
 
 
 place_amenity = Table('place_amenity', Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), nullable=False, primary_key=True),        
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False, primary_key=True)    
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
+                             nullable=False),
+                             Column('amenity_id', String(60),
+                                    ForeignKey('amenities.id'),
+                                    primary_key=True, nullable=False)
 )
 
 class Place(BaseModel, Base):
@@ -27,44 +32,30 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place",
                            cascade="all, delete, delete-orphan")
-    _amenities = relationship("Amenity", backref="amenities", overlaps="_amenities", secondary=place_amenity, viewonly=False)
-    amenity_id = ''
-    
-    @property
-    def reviews(self):
-        """Returns the list of Review instances from current place"""
-        from models import storage
-        all_reviews = storage.all(BaseModel.Review)
-        return [review for review in all_reviews.values()
-                if review.place_id == self.id]
-    
-    @property
-    def amenities(self):
-        """returns the list of amenity instances from current place"""
-        from models import storage
-        from models.amenity import Amenity
-        import os
-        if os.getenv("HBNB_MYSQL_DB") == 'db':
-            pass
-        else:
-            list = []
-            for id in self.amenity_id:
-                for key in storage.all().keys():
-                    if id == key.split('.')[1]:
-                        list.append(storage.all()[key])
-            return list
+    amenities = relationship("Amenity", secondary=place_amenity,
+                             back_populates="place_amenities", viewonly=False)
 
-            # all_amenities = storage.all(Amenity)
-            # self.amenity_ids = [amenity for amenity in all_amenities.values()
-            #         if place_amenity.place_id == self.id]
-            # return self.amenity_ids
-    
-    @amenities.setter
-    def amenities(self, value):
-        """sets value of amenity property"""
-        from models.amenity import Amenity
-        #  if value.__class__.__name__ == "Amenity":
-        print("The setter has run")
-        self.amenity_id = []
-        if isinstance(value, Amenity):
-            self.amenity_id.append(value.id) 
+    if os.getenv("HBNB_TYPE_STORAGE") != 'db':
+        @property
+        def reviews(self):
+            """Returns the list of Review instances from current place"""
+            from models import storage
+            all_reviews = storage.all(BaseModel.Review)
+            return [review for review in all_reviews.values()
+                    if review.place_id == self.id]
+
+        @property
+        def amenities(self):
+            from models.amenity import Amenity
+            from models.__init__ import storage
+            """Getter attribute amenities for FileStorage."""
+            return [amenity for amenity in storage.all(Amenity).values()
+                    if amenity.id in self.amenity_ids]
+
+        @amenities.setter
+        def amenities(self, obj):
+            """Setter attribute amenities for FileStorage."""
+            from models.amenity import Amenity
+            if isinstance(obj, Amenity):
+                if obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(obj.id)
