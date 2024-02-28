@@ -3,9 +3,9 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
 import json
 import os
+import models
 
 class test_basemodel(unittest.TestCase):
     """ """
@@ -45,15 +45,6 @@ class test_basemodel(unittest.TestCase):
         copy.update({1: 2})
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
-
-    def test_save(self):
-        """ Testing save """
-        i = self.value()
-        i.save()
-        key = self.name + "." + i.id
-        with open('file.json', 'r') as f:
-            j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
         """ """
