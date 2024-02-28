@@ -17,7 +17,6 @@ class DatabaseStorage:
     """Database management of storage for hbnb clone"""
     __engine = None
     __session = None
-    __tablename__ = 'states'
     def __init__(self):
         db_config = {
             'user': 'HBNB_MYSQL_USER',
