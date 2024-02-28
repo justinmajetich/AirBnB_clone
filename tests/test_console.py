@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Module that tests the console"""
 import unittest
-import console
+from console import HBNBCommand
 from models.base_model import BaseModel
 from models import storage
 import os
