@@ -29,6 +29,8 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    if sys.__stdin__.isatty():
+        storage.save()
 
     def preloop(self):
         """Prints if isatty is false"""
