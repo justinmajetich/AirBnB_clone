@@ -11,6 +11,7 @@ class DBStorage:
     """Class that manages DBStorage"""
     __engine = None
     __session = None
+    __file_storage = FileStorage()
 
     def __init__(self):
         """Initializes DBStorage"""
