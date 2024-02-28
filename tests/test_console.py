@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Module that tests the console"""
 import unittest
-from console.py import HBNBCommand
+from console import HBNBCommand
 from models.base_model import BaseModel
 from models import storage
 import os
@@ -21,4 +21,4 @@ class test_console(unittest.TestCase):
         self.assertTrue("create State")
 
         result = HBNBCommand.do_create("create_State")
-        self.assertEqual(HBNBCommand.do_create(result, result.id)
+        self.assertEqual(HBNBCommand.do_create(result, result.id))
