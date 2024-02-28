@@ -28,7 +28,6 @@ class Place(BaseModel, Base):
           amenity_ids = []
 
           reviews = relationship('Review', backref='place', cascade='all, delete')
-          city = relationship('City', backref='places')
 
      else:
          city_id = ""
