@@ -62,8 +62,6 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
-        except json.decoder.JSONDecodeError:
-            pass
 
     def delete(self, obj=None):
         """delete an existing element"""
