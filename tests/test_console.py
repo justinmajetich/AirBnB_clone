@@ -27,6 +27,5 @@ class test_console(unittest.TestCase):
         printed_output = mock_print.call_args[0][0]
         self.assertTrue(printed_output)
 
-    def test_create(self)
 if __name__ == "__main__":
     unittest.main()
