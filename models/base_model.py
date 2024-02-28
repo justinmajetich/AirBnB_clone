@@ -48,12 +48,14 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = self.__dict__.copy()
-        dictionary['__class__'] = type(self).__name__
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        dictionary.pop('_sa_instance_state', None)
-        return dictionary
+        diction = {}
+        self.__dict__['__class__'] = self.__class__.__name__
+        for attri in self.__dict__.keys():
+            diction.update({attri: getattr(self, attri)})
+        diction['__class__'] = self.__class__.__name__
+        diction['updated_at'] = self.updated_at.isoformat
+        diction['created_at'] = self.created_at.isoformat
+        return diction
 
     def delete(self):
         """Deleting current instance from storage"""
