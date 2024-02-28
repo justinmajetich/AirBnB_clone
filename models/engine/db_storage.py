@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
+from models import city, place, review, state, amenity, user
 
 
 class DBStorage:
