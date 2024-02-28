@@ -16,8 +16,9 @@ class test_console(unittest.TestCase):
     def test_true(self):
         """True test"""
         self.assertTrue(True)
+
     def create_state(self):
         self.assertTrue("create State")
 
         result = HBNBCommand.do_create("create_State")
-        self.assertequal(result, result.id)
+        self.assertEqual(HBNBCommand.do_create(result, result.id))
