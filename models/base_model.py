@@ -8,14 +8,20 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 
 
-Base = declarative_base()
+STOP_TYP = getenv("HBNB_TYPE_STORAGE")
+if STO_TYP == 'db':
+    Base = declarative_base()
+else:
+    class Base:
+        pass
+
 
 class BaseModel:
     """A base class for all hbnb models"""
-
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    if STO_TYP == 'db':
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -31,6 +37,8 @@ class BaseModel:
             if 'created_at' in kwargs:
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
+            if STO_TYP != 'db':
+                kwargs.pop('__class__', None)
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
