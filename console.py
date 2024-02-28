@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
                 elif key in floats:
                     value = float(value)
                     setattr(obj, key, value)
-                elif type(value) == str:
+                elif isinstance(value, str):
                     value = value[1:-1]
                     value = value.replace('_', ' ')
                     value = value.replace('"', '\\"')
