@@ -37,7 +37,7 @@ class test_console(unittest.TestCase):
     def test_general_command(self):
         """Test if a general command works"""
 
-        user_input = "your_command_here"
+        user_input = ""
         
         with patch('builtins.input', return_value=user_input):
             with patch('builtins.print') as mock_print:
