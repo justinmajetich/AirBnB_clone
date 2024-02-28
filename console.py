@@ -30,11 +30,6 @@ class HBNBCommand(cmd.Cmd):
              'latitude': float, 'longitude': float
             }
 
-    non_null = {
-        'User': 2, 'Place': 3, 'Review': 3,
-        'Amenity': 1, 'City': 2, 'State': 1
-    }
-
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
