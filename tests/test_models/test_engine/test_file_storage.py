@@ -62,6 +62,7 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
         new = BaseModel()
+        loaded = BaseModel()
         storage.save()
         storage.reload()
         for obj in storage.all().values():
