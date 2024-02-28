@@ -29,11 +29,8 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-
-    non_null = {
-        'User': 2, 'Place': 3, 'Review': 3,
-        'Amenity': 1, 'City': 2, 'State': 1
-    }
+    if sys.__stdin__.isatty():
+        storage.save()
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -104,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def help_quit(self):
-        """ Prints the help documentation for quit  """
+        """ Prints the help documentation for quit """
         print("Exits the program with formatting\n")
 
     def do_EOF(self, arg):
@@ -133,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         # if args has no attr setting (create Place)
-        if len(cmd_args) < 2:
+        if len(cmd_args) < 2 and model != "State":
             return
         i = 0
         tok_args = cmd_args[1:]
@@ -165,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
         for attr in d:
             if attr in required_attrs:
                 count += 1
-        if count < len(required_attrs):
+        if count < len(required_attrs) and model != "State":
             print(f"Must fill all required attrs {required_attrs}")
             return
 
