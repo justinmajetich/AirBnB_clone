@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Module that tests the console"""
 import unittest
+from unittest.mock import patch
 from console import HBNBCommand
 from models.base_model import BaseModel
 from models import storage
@@ -19,7 +20,12 @@ class test_console(unittest.TestCase):
 
     def create_state(self):
         """Test if create State is present"""
-        self.assertTrue("create State")
 
-        result = HBNBCommand.do_create("create_State")
-        self.assertEqual(HBNBCommand.do_create(result, result.id))
+        command = HBNBCommand()
+        with patch('builtins.print') as mock_print:
+            result = command.do_create("create_State")
+        printed_output = mock_print.call_args[0][0]
+        self.assertTrue(printed_output)
+
+if __name__ == "__main__":
+    unittest.main()
