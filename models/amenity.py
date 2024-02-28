@@ -4,7 +4,7 @@ from sqlalchemy import Column, String
 import os
 from models.base_model import BaseModel, Base
 
-storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
+storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class Amenity(BaseModel, Base):

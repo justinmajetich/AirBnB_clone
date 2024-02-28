@@ -4,7 +4,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import os
 from .base_model import BaseModel, Base
-storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
+storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""

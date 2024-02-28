@@ -6,7 +6,7 @@ from .city import City
 import os
 from .base_model import BaseModel, Base
 
-storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
+storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 

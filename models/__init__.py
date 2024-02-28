@@ -5,9 +5,10 @@ from .engine.db_storage import DBStorage
 import os
 
 
-storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
+storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 if storage_type == 'db':
+    print("we're da db")
     storage = DBStorage()
     storage.reload()
 else:
