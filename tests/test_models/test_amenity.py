@@ -3,9 +3,7 @@
 Contains the TestAmenityDocs classes
 """
 
-import os
 import inspect
-import models
 from models import amenity
 from models.base_model import BaseModel
 import unittest
