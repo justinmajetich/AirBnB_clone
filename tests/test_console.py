@@ -15,5 +15,6 @@ class test_console(unittest.TestCase):
     def test_true(self):
         """True test"""
         self.assertTrue(True)
+
     def create_state(self):
         self.assertTrue("create State")
