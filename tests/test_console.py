@@ -27,5 +27,13 @@ class test_console(unittest.TestCase):
         printed_output = mock_print.call_args[0][0]
         self.assertTrue(printed_output)
 
+    def test_create_with_name(self):
+        """Test if create_state with name is present (new feature)"""
+        command = HBNBCommand()
+        with patch('builtins.print') as mock_print:
+            result = command.do_create("create_state name='California'")
+        printed_output = mock_print.call_args[0][0]
+        self.assertTrue(printed_output)
+
 if __name__ == "__main__":
     unittest.main()
