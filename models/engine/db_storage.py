@@ -17,6 +17,7 @@ class DBStorage():
     __session = None
 
     def __init__(self):
+        """Init for dbstorage"""
         import os
         from sqlalchemy import create_engine
         user = os.getenv('HBNB_MYSQL_USER')
