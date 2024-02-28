@@ -23,9 +23,10 @@ class test_console(unittest.TestCase):
 
         command = HBNBCommand()
         with patch('builtins.print') as mock_print:
-            result = command.do_create("create_State")
+            result = command.do_create("create State")
         printed_output = mock_print.call_args[0][0]
         self.assertTrue(printed_output)
 
+    def test_create(self)
 if __name__ == "__main__":
     unittest.main()
