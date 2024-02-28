@@ -8,17 +8,11 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 
 
-STOP_TYP = getenv("HBNB_TYPE_STORAGE")
-if STO_TYP == 'db':
-    Base = declarative_base()
-else:
-    class Base:
-        pass
-
+Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if STO_TYP == 'db':
+
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
@@ -37,8 +31,6 @@ class BaseModel:
             if 'created_at' in kwargs:
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            if STO_TYP != 'db':
-                kwargs.pop('__class__', None)
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
