@@ -14,7 +14,7 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    id= Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
@@ -66,8 +66,7 @@ class BaseModel:
 
     def to_dict(self):
         """creates dictionary of the class  and returns
-        Return:
-            returns a dictionary of all the key values in __dict__
+        a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
