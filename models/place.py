@@ -32,7 +32,7 @@ if s in environ.keys() and environ["HBNB_TYPE_STORAGE"] == "db":
         number_rooms: number of room in int
         number_bathrooms: number of bathrooms in int
         max_guest: maximum guest in int
-        price_by_night:: pice for a staying in int
+        price_by_night:: price for a staying in int
         latitude: latitude in flaot
         longitude: longitude in float
         amenity_ids: list of Amenity ids
