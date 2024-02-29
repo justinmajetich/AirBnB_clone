@@ -12,7 +12,7 @@ from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-Base = declarative_base
+Base = declarative_base()
 class DatabaseStorage:
     """Database management of storage for hbnb clone"""
     __engine = None
