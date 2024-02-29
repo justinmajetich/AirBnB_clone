@@ -17,15 +17,16 @@ class DatabaseStorage:
     """Database management of storage for hbnb clone"""
     __engine = None
     __session = None
+
     def __init__(self):
-        db_config = {
-            'user': 'HBNB_MYSQL_USER',
-            'password': 'HBNB_MYSQL_PWD',
-            'host': 'HBNB_MYSQL_HOST',
-            'database': 'HBNB_MYSQL_DB'
-        }
-        self.__engine = create_engine(f"mysql+mysqldb://{db_config['user']}:{db_config['password']}@{db_config['host']}:{db_config['port']}/{db_config['database']}", pool_pre_ping=True)
-        if os.environ.get('HBNB_ENV') == 'test':
+        user = getenv("HBNB_MYSQL_USER")
+        password = getenv("HBNB_MYSQL_PWD")
+        host = getenv("HBNB_MYSQL_HOST")
+        database = getenv("HBNB_MYSQL_DB")
+        env = getenv("HBNB_ENV")
+
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, database), pool_pre_ping=True)
+        if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
