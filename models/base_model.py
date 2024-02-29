@@ -52,7 +52,6 @@ class BaseModel:
         dictionary['__class__'] = type(self).__name__
         if self.created_at is not None:
             dictionary['created_at'] = self.created_at.isoformat()
-        # dictionary['created_at'] = self.created_at.isoformat()
         if self.updated_at is not None:
             dictionary['updated_at'] = self.updated_at.isoformat()
         dictionary.pop('_sa_instance_state', None)
