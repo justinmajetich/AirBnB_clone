@@ -20,15 +20,19 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            object_types = {}
-            for key, obj in FileStorage.__objects.items():
-                if isinstance(obj, cls):
-                    object_types[key] = obj
-            return object_types
+           return {key: obj for key, obj in FileStorage.__objects.items() if isinstance(obj, cls)}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        obj_dict = obj.to_dict()
+        if '__class__' in obj_dict:
+            key = obj_dict['__class__'] + '.' + obj.id
+            print(obj.id)
+            print(key)
+            self.all().update({key: obj})
+        else:
+            print("Error: '__class__' key not found in object dictionary.")
+
 
     def save(self):
         """Saves storage dictionary to file"""

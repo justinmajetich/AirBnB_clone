@@ -4,12 +4,14 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
+from models import city, place, review, state, amenity, user
 
 
 class DBStorage:
     """Class that manages DBStorage"""
     __engine = None
     __session = None
+    __file_storage = FileStorage()
 
     def __init__(self):
         """Initializes DBStorage"""
@@ -54,6 +56,6 @@ class DBStorage:
 
     def reload(self):
         """Reloads Object"""
-        Base.metdata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
