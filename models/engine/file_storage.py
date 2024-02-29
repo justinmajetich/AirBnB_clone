@@ -27,6 +27,8 @@ class FileStorage:
         obj_dict = obj.to_dict()
         if '__class__' in obj_dict:
             key = obj_dict['__class__'] + '.' + obj.id
+            print(obj.id)
+            print(key)
             self.all().update({key: obj})
         else:
             print("Error: '__class__' key not found in object dictionary.")
