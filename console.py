@@ -123,6 +123,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         kwargs = {}
+        obj = eval(args[0])()
         for param in range(1, len(args)):
             key, value = args[param].split("=")
             if value[0] == '"':
@@ -132,11 +133,7 @@ class HBNBCommand(cmd.Cmd):
                     value = eval(value)
                 except (SyntaxError, NameError):
                     continue
-            kwargs[key] = value
-        if len(kwargs) == 0:
-            obj = eval(args[0])()
-        else:
-            obj = eval(args[0])(**kwargs)
+            setattr(obj, key, value) 
         print(obj.id)
         obj.save()
 
