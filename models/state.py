@@ -10,15 +10,14 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name"""
-
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     state_id = Column(String(128), nullable=False)
-
     @property
     def cities(self):
         var = models.storage.all()
