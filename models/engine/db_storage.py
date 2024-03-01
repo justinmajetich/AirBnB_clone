@@ -12,7 +12,10 @@ from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
 Base = declarative_base()
+
+
 class DatabaseStorage:
     """Database management of storage for hbnb clone"""
     __engine = None
@@ -25,7 +28,9 @@ class DatabaseStorage:
         database = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, database), pool_pre_ping=True)
+        self.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                user, password, host, database), pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
