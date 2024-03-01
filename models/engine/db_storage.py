@@ -11,7 +11,7 @@ from models.place import Place
 from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 Base = declarative_base()
 class DatabaseStorage:
     """Database management of storage for hbnb clone"""
@@ -40,3 +40,22 @@ class DatabaseStorage:
                     objects.extend(session.query(queryclass).all())
         session.close()
         return objects
+
+    def new(self, obj):
+         self.session.add(obj)
+
+    def save(self):
+         self.__session.commit()
+
+    def delete(self, obj=None):
+         if obj:
+              self.session.delete(obj)
+
+    def reload(self):
+        Base.metadata.create_all(self.__engine)
+        sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sec)
+        self.__session = Session()
+
+    def close(self):
+         self.__session.close()

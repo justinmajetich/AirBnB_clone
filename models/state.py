@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 import models
 from models.city import City
 import shlex
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, Session
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -17,7 +17,7 @@ class State(BaseModel, Base):
 
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    state_id = Column(String(128), nullable=False)
+    cities = relationship("City", cascade='all, delete, delete-orphan', backref="state")
 
     @property
     def cities(self):
