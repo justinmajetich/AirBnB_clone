@@ -2,7 +2,9 @@
 """This is the state class"""
 from models.base_model import BaseModel, Base
 import models
-from models.city import City
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from models.city import City
 import shlex
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, Session
