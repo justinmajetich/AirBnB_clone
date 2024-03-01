@@ -20,7 +20,6 @@ class test_console(unittest.TestCase):
 
     def test_create_state(self):
         """Test if create State is present"""
-
         command = HBNBCommand()
         with patch('builtins.print') as mock_print:
             result = command.do_create("create State")
@@ -34,16 +33,16 @@ class test_console(unittest.TestCase):
             result = command.do_create("create_state name='California'")
         printed_output = mock_print.call_args[0][0]
         self.assertTrue(printed_output)
+
     def test_general_command(self):
         """Test if a general command works"""
-
         user_input = ""
-        
         with patch('builtins.input', return_value=user_input):
             with patch('builtins.print') as mock_print:
                 self.command.onecmd(user_input)
         printed_output = mock_print.call_args[0][0]
         self.assertTrue(printed_output.startswith("Expected output"))
+
 
 if __name__ == "__main__":
     unittest.main()
