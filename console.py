@@ -322,6 +322,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    storage = DBStorage()
-    storage.reload()
-    HBNBCommand(storage).cmdloop()
+    HBNBCommand().cmdloop()
