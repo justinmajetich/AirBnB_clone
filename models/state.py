@@ -11,8 +11,9 @@ class State(BaseModel):
     Attributes:
         name: input name"""
 
-    name = ""
 
+    name = ""
+    
     @property
     def cities(self):
         var = models.storage.all()
