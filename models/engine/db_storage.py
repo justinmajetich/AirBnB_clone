@@ -17,51 +17,64 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 Base = declarative_base()
 
 
-class DatabaseStorage:
-    """Database management of storage for hbnb clone"""
+class DBStorage:
+    """create tables in environmental"""
     __engine = None
     __session = None
 
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
+        passwd = getenv("HBNB_MYSQL_PWD")
+        db = getenv("HBNB_MYSQL_DB")
         host = getenv("HBNB_MYSQL_HOST")
-        database = getenv("hbnb_dev_db")
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
-                user, password, host, database), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(user, passwd, host, db),
+                                      pool_pre_ping=True)
+
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        session = self.__session()
-        if cls is not None:
-            objects = session.query(cls).all()
+        """returns a dictionary Return: returns a dictionary of __object"""
+        dic = {}
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                dic[key] = elem
         else:
-            objects = []
-            queryclass = [User, State, City, Amenity, Place, Review]
-            for char in queryclass:
-                    objects.extend(session.query(queryclass).all())
-        session.close()
-        return objects
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
+                query = self.__session.query(clase)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    dic[key] = elem
+        return (dic)
 
     def new(self, obj):
-         self.session.add(obj)
+        """add a new element in the table"""
+        self.__session.add(obj)
 
     def save(self):
-         self.__session.commit()
+        """save changes"""
+        self.__session.commit()
 
     def delete(self, obj=None):
-         if obj:
-              self.session.delete(obj)
+        """delete an element in the table"""
+        if obj:
+            self.session.delete(obj)
 
     def reload(self):
+        """configuration"""
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sec)
         self.__session = Session()
 
     def close(self):
-         self.__session.close()
+        """ calls remove()"""
+        self.__session.close()
