@@ -1,20 +1,38 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-
+# Seeing if these imports are needed
+# from models.base_model import BaseModel
+# from models.user import User
+# from models.place import Place
+# from models.state import State
+# from models.city import City
+# from models.amenity import Amenity
+# from models.review import Review
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if cls is None:
+            return FileStorage.__objects
+        else:
+           return {key: obj for key, obj in FileStorage.__objects.items() if isinstance(obj, cls)}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        obj_dict = obj.to_dict()
+        if '__class__' in obj_dict:
+            key = obj_dict['__class__'] + '.' + obj.id
+            print(obj.id)
+            print(key)
+            self.all().update({key: obj})
+        else:
+            print("Error: '__class__' key not found in object dictionary.")
+
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -45,6 +63,17 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
+            pass
+
+    def delete(self, obj=None):
+        """To delete obj from objects if inside"""
+        if obj is None:
+            return
+        obj_del = f"{obj.__class__.__name__}.{obj.id}"
+
+        try:
+            del FileStorage.__objects[obj_del]
+        except AttributeError:
             pass
