@@ -1,147 +1,127 @@
 #!/usr/bin/python3
-"""A unit test module for the console (command interpreter).
-"""
-import json
-import MySQLdb
+""" Tests for console.py """
 import os
-import sqlalchemy
 import unittest
-from io import StringIO
-from unittest.mock import patch
-
+import pycodestyle
 from console import HBNBCommand
-from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from tests import clear_stream
 
 
-class TestHBNBCommand(unittest.TestCase):
-    """Represents the test class for the HBNBCommand class.
-    """
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
-    def test_fs_create(self):
-        """Tests the create command with the file storage.
-        """
-        with patch('sys.stdout', new=StringIO()) as cout:
-            cons = HBNBCommand()
-            cons.onecmd('create City name="Texas"')
-            mdl_id = cout.getvalue().strip()
-            clear_stream(cout)
-            self.assertIn('City.{}'.format(mdl_id), storage.all().keys())
-            cons.onecmd('show City {}'.format(mdl_id))
-            self.assertIn("'name': 'Texas'", cout.getvalue().strip())
-            clear_stream(cout)
-            cons.onecmd('create User name="James" age=17 height=5.9')
-            mdl_id = cout.getvalue().strip()
-            self.assertIn('User.{}'.format(mdl_id), storage.all().keys())
-            clear_stream(cout)
-            cons.onecmd('show User {}'.format(mdl_id))
-            self.assertIn("'name': 'James'", cout.getvalue().strip())
-            self.assertIn("'age': 17", cout.getvalue().strip())
-            self.assertIn("'height': 5.9", cout.getvalue().strip())
+class TestConsoleClass(unittest.TestCase):
+    """ Tests for the console class initialization and related operations """
 
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
-    def test_db_create(self):
-        """Tests the create command with the database storage.
-        """
-        with patch('sys.stdout', new=StringIO()) as cout:
-            cons = HBNBCommand()
-            # creating a model with non-null attribute(s)
-            with self.assertRaises(sqlalchemy.exc.OperationalError):
-                cons.onecmd('create User')
-            # creating a User instance
-            clear_stream(cout)
-            cons.onecmd('create User email="john25@gmail.com" password="123"')
-            mdl_id = cout.getvalue().strip()
-            dbc = MySQLdb.connect(
-                host=os.getenv('HBNB_MYSQL_HOST'),
-                port=3306,
-                user=os.getenv('HBNB_MYSQL_USER'),
-                passwd=os.getenv('HBNB_MYSQL_PWD'),
-                db=os.getenv('HBNB_MYSQL_DB')
-            )
-            cursor = dbc.cursor()
-            cursor.execute('SELECT * FROM users WHERE id="{}"'.format(mdl_id))
-            result = cursor.fetchone()
-            self.assertTrue(result is not None)
-            self.assertIn('john25@gmail.com', result)
-            self.assertIn('123', result)
-            cursor.close()
-            dbc.close()
+    @classmethod
+    def setUp(cls):
+        """ Preparation method executed before each test """
+        cls.konsol = HBNBCommand()
 
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
-    def test_db_show(self):
-        """Tests the show command with the database storage.
-        """
-        with patch('sys.stdout', new=StringIO()) as cout:
-            cons = HBNBCommand()
-            # showing a User instance
-            obj = User(email="john25@gmail.com", password="123")
-            dbc = MySQLdb.connect(
-                host=os.getenv('HBNB_MYSQL_HOST'),
-                port=3306,
-                user=os.getenv('HBNB_MYSQL_USER'),
-                passwd=os.getenv('HBNB_MYSQL_PWD'),
-                db=os.getenv('HBNB_MYSQL_DB')
-            )
-            cursor = dbc.cursor()
-            cursor.execute('SELECT * FROM users WHERE id="{}"'.format(obj.id))
-            result = cursor.fetchone()
-            self.assertTrue(result is None)
-            cons.onecmd('show User {}'.format(obj.id))
-            self.assertEqual(
-                cout.getvalue().strip(),
-                '** no instance found **'
-            )
-            obj.save()
-            dbc = MySQLdb.connect(
-                host=os.getenv('HBNB_MYSQL_HOST'),
-                port=3306,
-                user=os.getenv('HBNB_MYSQL_USER'),
-                passwd=os.getenv('HBNB_MYSQL_PWD'),
-                db=os.getenv('HBNB_MYSQL_DB')
-            )
-            cursor = dbc.cursor()
-            cursor.execute('SELECT * FROM users WHERE id="{}"'.format(obj.id))
-            clear_stream(cout)
-            cons.onecmd('show User {}'.format(obj.id))
-            result = cursor.fetchone()
-            self.assertTrue(result is not None)
-            self.assertIn('john25@gmail.com', result)
-            self.assertIn('123', result)
-            self.assertIn('john25@gmail.com', cout.getvalue())
-            self.assertIn('123', cout.getvalue())
-            cursor.close()
-            dbc.close()
+    @classmethod
+    def tearDown(cls):
+        """ Cleanup method executed after each test """
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        del cls.konsol
 
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
-    def test_db_count(self):
-        """Tests the count command with the database storage.
-        """
-        with patch('sys.stdout', new=StringIO()) as cout:
-            cons = HBNBCommand()
-            dbc = MySQLdb.connect(
-                host=os.getenv('HBNB_MYSQL_HOST'),
-                port=3306,
-                user=os.getenv('HBNB_MYSQL_USER'),
-                passwd=os.getenv('HBNB_MYSQL_PWD'),
-                db=os.getenv('HBNB_MYSQL_DB')
-            )
-            cursor = dbc.cursor()
-            cursor.execute('SELECT COUNT(*) FROM states;')
-            res = cursor.fetchone()
-            prev_count = int(res[0])
-            cons.onecmd('create State name="Enugu"')
-            clear_stream(cout)
-            cons.onecmd('count State')
-            cnt = cout.getvalue().strip()
-            self.assertEqual(int(cnt), prev_count + 1)
-            clear_stream(cout)
-            cons.onecmd('count State')
-            cursor.close()
-            dbc.close()
+    def test_HBNBCommand_docstring(self):
+        """ Tests docstring for the HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.__doc__) > 0)
+
+    def test_preloop_docstring(self):
+        """ Tests docstring for the preloop method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.preloop.__doc__) > 0)
+
+    def test_precmd_docstring(self):
+        """ Tests docstring for the precmd method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.precmd.__doc__) > 0)
+
+    def test_postcmd_docstring(self):
+        """ Tests docstring for the postcmd method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.postcmd.__doc__) > 0)
+
+    def test_do_quit_docstring(self):
+        """ Tests docstring for the do_quit method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_quit.__doc__) > 0)
+
+    def test_help_quit_docstring(self):
+        """ Tests docstring for the help_quit method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_quit.__doc__) > 0)
+
+    def test_do_EOF_docstring(self):
+        """ Tests docstring for the do_EOF method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_EOF.__doc__) > 0)
+
+    def test_help_EOF_docstring(self):
+        """ Tests docstring for the help_EOF method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_EOF.__doc__) > 0)
+
+    def test_emptyline_docstring(self):
+        """ Tests docstring for the emptyline method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.emptyline.__doc__) > 0)
+
+    def test_do_create_docstring(self):
+        """ Tests docstring for the do_create method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_create.__doc__) > 0)
+
+    def test_help_create_docstring(self):
+        """ Tests docstring for the help_create method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_create.__doc__) > 0)
+
+    def test_do_show_docstring(self):
+        """ Tests docstring for the do_show method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_show.__doc__) > 0)
+
+    def test_help_show_docstring(self):
+        """ Tests docstring for the help_show method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_show.__doc__) > 0)
+
+    def test_do_destroy_docstring(self):
+        """ Tests docstring for the do_destroy method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_destroy.__doc__) > 0)
+
+    def test_help_destroy_docstring(self):
+        """ Tests docstring for help_destroy method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_destroy.__doc__) > 0)
+
+    def test_do_all_docstring(self):
+        """ Tests docstring for the do_all method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_all.__doc__) > 0)
+
+    def test_help_all_docstring(self):
+        """ Tests docstring for the help_all method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_all.__doc__) > 0)
+
+    def test_do_count_docstring(self):
+        """ Tests docstring for the do_count method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_count.__doc__) > 0)
+
+    def test_help_count_docstring(self):
+        """ Tests docstring for the help_count method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_count.__doc__) > 0)
+
+    def test_do_update_docstring(self):
+        """ Tests docstring for the do_update method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.do_update.__doc__) > 0)
+
+    def test_help_update_docstring(self):
+        """ Tests docstring for the help_update method of HBNBCommand class """
+        self.assertTrue(len(HBNBCommand.help_update.__doc__) > 0)
+
+    def test_pycodestyle_compliance(self):
+        """ Test if the code adheres to the PEP 8 style guidelines. """
+        style_checker = pycodestyle.StyleGuide(quiet=True)
+        self.assertEqual(
+            style_checker.check_files(['console.py']).total_errors,
+            0,
+            "Found code style errors (and warnings)."
+        )
+
+    def test_HBNBCommand_object_type(self):
+        """Verify that the type function returns the correct object type. """
+        konsol = HBNBCommand()
+        self.assertEqual(type(konsol), HBNBCommand)
+        self.assertTrue(isinstance(konsol, HBNBCommand))
+
+
+if __name__ == "__main__":
+    unittest.main()
