@@ -42,6 +42,6 @@ class DatabaseStorage:
             objects = []
             queryclass = [User, State, City, Amenity, Place, Review]
             for queryclass in classes_to_query:
-                    objects.extend(session.query(queryclass).all())
+                objects.extend(session.query(queryclass).all())
         session.close()
         return objects
