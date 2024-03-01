@@ -26,7 +26,7 @@ class DatabaseStorage:
         user = getenv("HBNB_MYSQL_USER")
         password = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
-        database = getenv("HBNB_MYSQL_DB")
+        database = getenv("hbnb_dev_db")
         env = getenv("HBNB_ENV")
 
         self.__engine = create_engine(
