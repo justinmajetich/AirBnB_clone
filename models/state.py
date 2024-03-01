@@ -4,16 +4,21 @@ from models.base_model import BaseModel, Base
 import models
 from models.city import City
 import shlex
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, Session
+from sqlalchemy.ext.declarative import declarative_base
 
+Base = declarative_base()
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name"""
 
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(128), nullable=False)
 
-    name = ""
-    
     @property
     def cities(self):
         var = models.storage.all()
