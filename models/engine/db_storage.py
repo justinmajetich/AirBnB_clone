@@ -2,6 +2,7 @@
 """This module defines a class to manage database storage for hbnb clone"""
 import os
 import json
+from os import getenv 
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -41,8 +42,8 @@ class DatabaseStorage:
         else:
             objects = []
             queryclass = [User, State, City, Amenity, Place, Review]
-            for queryclass in classes_to_query:
-                objects.extend(session.query(queryclass).all())
+            for char in queryclass:
+                    objects.extend(session.query(queryclass).all())
         session.close()
         return objects
 
