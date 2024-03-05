@@ -23,11 +23,35 @@ class TestConsoleDoCreate(BaseTest):
         """
         Param syntax: <key name>=<value>
         """
-        command = 'create State name="California"'
+        len_before = len(self.objects)
+        command = 'create State name="Kampala"'
         self.onecmd(command)
-        self.assertNotEqual(len(stdout.getvalue()), 0)
+        len_after = len(self.objects)
+        self.assertNotEqual(len_before, len_after)
         
-        command = 'create State name = "California"'
+        self.clear(stdout)
+        command = 'create State myname = "California"'
         self.onecmd(command)
-        self.assertEqual(len(stdout.getvalue()), 0)
+        obj_id = "State." + stdout.getvalue().replace('\n', '')
+        self.assertFalse(hasattr(self.objects[obj_id], 'myname'))
 
+
+    def test_string_values_quotes(self, stdout):
+        """
+        "<value>" => starts with a double quote
+        """
+        command = 'create State myname="Lagos'
+        self.onecmd(command)
+        obj_id = "State." + stdout.getvalue().replace('\n', '')
+        self.assertFalse(hasattr(self.objects[obj_id], 'myname'))
+    
+    def test_string_values_underscore(self, stdout):
+        """
+        all underscores _ must be replace by spaces
+        """
+        command = 'create State name="Cape_Town"'
+        self.onecmd(command)
+        obj_id = "State." + stdout.getvalue().replace('\n', '')
+        attr = getattr(self.objects[obj_id], 'name', None)
+        error_msg = "underscores not removed"
+        self.assertEqual(attr, "Cape Town", msg=error_msg)
