@@ -16,4 +16,6 @@ class State(BaseModel):
         super().__init__(*args, **kwargs)
         if kwargs:
             for key, value in kwargs.items():
+                if key == '__class__':
+                    continue
                 setattr(self, key, value)
