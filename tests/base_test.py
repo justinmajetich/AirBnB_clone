@@ -43,21 +43,25 @@ class BaseTest(TestCase):
     def setUp(self):
         """
         set onecmd
+        set objects
         """
         self.onecmd = HBNBCommand().onecmd
+        self.objects = FileStorage._FileStorage__objects
 
     def teardown(self):
         """
         clear __objects
         clear test_file
         delete one cmd
+        delete objects
         """
         FileStorage._FileStorage__objects.clear()
         with open(test_file, 'w') as f:
             pass
         del self.onecmd
+        del self.objects
     
-    def clear(stdout):
+    def clear(self, stdout):
         """clear stdout StringIO object."""
         if not isinstance(stdout, StringIO):
             return
