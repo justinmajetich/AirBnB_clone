@@ -35,6 +35,8 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             for k, v in kwargs.items():
+                if k == '__class__':
+                    continue
                 if k == 'created_at':
                     v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
                 elif k == 'updated_at':
