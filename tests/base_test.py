@@ -60,7 +60,7 @@ class BaseTest(TestCase):
             pass
         del self.onecmd
         del self.objects
-    
+
     def clear(self, stdout):
         """clear stdout StringIO object."""
         if not isinstance(stdout, StringIO):

@@ -16,7 +16,7 @@ from io import StringIO
 
 
 @unittest.skipUnless(os.getenv('HBNB_TYPE_STORAGE') == 'file',
-                    "requires FileStorage type")
+                     "requires FileStorage type")
 @patch('sys.stdout', new_callable=StringIO)
 class TestConsoleDoCreate(BaseTest):
     """Test the do_create method."""
@@ -30,13 +30,12 @@ class TestConsoleDoCreate(BaseTest):
         self.onecmd(command)
         len_after = len(self.objects)
         self.assertNotEqual(len_before, len_after)
-        
+
         self.clear(stdout)
         command = 'create State myname = "California"'
         self.onecmd(command)
         obj_id = "State." + stdout.getvalue().replace('\n', '')
         self.assertFalse(hasattr(self.objects[obj_id], 'myname'))
-
 
     def test_value_string_quotes(self, stdout):
         """
@@ -46,7 +45,7 @@ class TestConsoleDoCreate(BaseTest):
         self.onecmd(command)
         obj_id = "State." + stdout.getvalue().replace('\n', '')
         self.assertFalse(hasattr(self.objects[obj_id], 'myname'))
-    
+
     def test_value_tring_values_underscore(self, stdout):
         """
         all underscores _ must be replace by spaces
@@ -80,7 +79,7 @@ class TestConsoleDoCreate(BaseTest):
         obj_id = "State." + stdout.getvalue().replace('\n', '')
         error_msg = "attribute should not be added"
         self.assertFalse(hasattr(self.objects[obj_id], 'latitude'),
-                                 msg=error_msg)
+                         msg=error_msg)
 
     def test_value_integer(self, stdout):
         """
@@ -106,4 +105,3 @@ class TestConsoleDoCreate(BaseTest):
         len1 = len(self.objects[obj_id_1].__dict__)
         error_msg = "lengths of these 2 objects must be equal"
         self.assertEqual(len0, len1, msg=error_msg)
-
