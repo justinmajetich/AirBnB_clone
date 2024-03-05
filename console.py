@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
             if not re.search(r'\w+="*\w+"*', arg):
                 continue
             key, value = arg.split('=')
-            key = key.replace('_', ' ')
+            value = value.replace('_', ' ')
             # String
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('\"', '"')
