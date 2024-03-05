@@ -1,0 +1,5 @@
+# exclude compiled files in __pycache__
+**/__pycache__/
+*.swp
+file.json
+template.html
