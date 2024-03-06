@@ -1,142 +1,86 @@
-<center> <h1>HBNB - The Console</h1> </center>
-
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
-
----
-
-<center><h3>Repository Contents by Project Task</h3> </center>
-
-| Tasks | Files | Description |
-| ----- | ----- | ------ |
-| 0: Authors/README File | [AUTHORS](https://github.com/justinmajetich/AirBnB_clone/blob/dev/AUTHORS) | Project authors |
-| 1: Pep8 | N/A | All code is pep8 compliant|
-| 2: Unit Testing | [/tests](https://github.com/justinmajetich/AirBnB_clone/tree/dev/tests) | All class-defining modules are unittested |
-| 3. Make BaseModel | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a parent class to be inherited by all model classes|
-| 4. Update BaseModel w/ kwargs | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Add functionality to recreate an instance of a class from a dictionary representation|
-| 5. Create FileStorage class | [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/_ _init_ _.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/__init__.py) [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a class to manage persistent file storage system|
-| 6. Console 0.0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Add basic functionality to console program, allowing it to quit, handle empty lines and ^D |
-| 7. Console 0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Update the console with methods allowing the user to create, destroy, show, and update stored data |
-| 8. Create User class | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) | Dynamically implements a user class |
-| 9. More Classes | [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) [/models/place.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/place.py) [/models/city.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/city.py) [/models/amenity.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/amenity.py) [/models/state.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/state.py) [/models/review.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/review.py) | Dynamically implements more classes |
-| 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
-<br>
-<br>
-<center> <h2>General Use</h2> </center>
-
-1. First clone this repository.
-
-3. Once the repository is cloned locate the "console.py" file and run it as follows:
-```
-/AirBnB_clone$ ./console.py
-```
-4. When this command is run the following prompt should appear:
-```
-(hbnb)
-```
-5. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
-
-##### Commands
-    * create - Creates an instance based on given class
-
-    * destroy - Destroys an object based on class and UUID
-
-    * show - Shows an object based on class and UUID
-
-    * all - Shows all objects the program has access to, or all objects of a given class
-
-    * update - Updates existing attributes an object based on class name and UUID
-
-    * quit - Exits the program (EOF will as well)
+# AirBnB clone - MySQL
 
 
-##### Alternative Syntax
-Users are able to issue a number of console command using an alternative syntax:
+Welcome to the continuation of the [AirBnB clone project!](https://github.com/Mohabdo21/AirBnB_clone) In this phase, our main objective is to delve into the realm of object-relational mapping (ORM) and leverage the powerful SQLAlchemy tool to integrate a robust database system into our backend design.
 
-	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
-Advanced syntax is implemented for the following commands: 
+## Authors
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+This version of the project was forked from this [codebase](https://github.com/justinmajetich/AirBnB_clone.git) and got modified, enhanced and incorporated with the new features by:  
 
-	* count - Return number of object instances by class
+- Mohannad Babeker
+- Reem Osama
 
-    * show - Shows an object based on class and UUID
 
-	* destroy - Destroys an object based on class and UUID
+## Project Overview
+  
+In the updated version of the AirBnB clone project, we've introduced a significant enhancement by incorporating MySQL database support alongside the existing JSON file storage. This expansion not only broadens the storage options but also utilizes object-relational mapping (ORM) to seamlessly integrate object-oriented models with relational database tables.
 
-    * update - Updates existing attributes an object based on class name and UUID
+![hbnb-step2.png](https://i.postimg.cc/MGrzP7bN/hbnb-step2.png)
 
-<br>
-<br>
-<center> <h2>Examples</h2> </center>
-<h3>Primary Command Syntax</h3>
+## New Features
+-   The project now supports MySQL database storage alongside JSON file storage, offering scalability and robustness for larger applications.
+-   Users can select their preferred storage method (JSON or MySQL) during setup or runtime for flexibility.
+-   MySQL integration includes ORM support, enabling the definition of relationships between entities like users, properties, reviews, and amenities.
+- Users can specify parameters using a syntax that includes key-value pairs  in the console while creating new instances enabling them to set attributes with various data types.
 
-###### Example 0: Create an object
-Usage: create <class_name>
-```
-(hbnb) create BaseModel
-```
-```
-(hbnb) create BaseModel
-3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb)                   
-```
-###### Example 1: Show an object
-Usage: show <class_name> <_id>
+## Relationships
+In addition to the MySQL database support and ORM integration, the updated version of the project introduces support for defining relationships between different entities using many-to-one and many-to-many relationships. These relational features enhance the data model's flexibility and enable more complex data structures within the AirBnB platform.
+
+![daaef631636b40e0a279a8f240703e065f9d3481.jpg](https://i.postimg.cc/7ZyxR1GQ/daaef631636b40e0a279a8f240703e065f9d3481.jpg)
+
+
+### One-to-Many Relationships:
+
+1.  **User - Review - Place:**
+    
+    -   Each review is associated with a specific rental property and the user who submitted it. This structure allows users to provide property-specific feedback.
+2.  **User - Place:**
+    
+    -   Users can own multiple rental properties, enabling them to manage and list multiple properties for rent.
+3.  **Place - City:**
+    
+    -   Rental properties are located within specific cities, facilitating location-based search and filtering.
+4.  **City - State:**
+    
+    -   Cities are grouped within specific states, establishing a geographic hierarchy for property organization.
+
+### Many-to-Many Relationship:
+
+1.  **Place - Amenity:**
+    -   Rental properties can offer various amenities, with multiple properties associated with each amenity. An intermediate table streamlines querying for properties with specific amenities.
+
+## Usage
+To install and run the project, follow these simple steps:
+
+**Retrieve the Project:**
+Begin by cloning the project repository from its GitHub location. Execute the following command in your terminal:
+
+    $ git clone https://github.com/Mohabdo21/AirBnB_clone_v2.git
+
+**Enter Project Directory:**
+Navigate into the project directory by executing the following command:
+
+    $ cd AirBnB_clone_v2
+    
+**Configure Environment and Dependencies:**
+Execute the  `set_env_db.sh`  script to establish the environment and install necessary dependencies:
+
+    $ ./set_env_db.sh
+
+**#Note:** The script `set_env_db.sh`  prompts you to select the storage type (file or database) and the environment (development or test).
+For database storage, provide MySQL admin credentials, and choose between development and test environments.
+The script then creates a virtual environment, installs necessary packages, sets up the MySQL database based on the selected environment, and exports environment variables.
+
+**Launch the Console:**
+
+You can run the console in non-interactive mode without using the script by specifying the environment variables during piping the command. For example:
 
 ```
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
-(hbnb)  
+ $ echo 'create State name="California"' | HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py 
 ```
-###### Example 2: Destroy an object
-Usage: destroy <class_name> <_id>
-```
-(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-** no instance found **
-(hbnb)   
-```
-###### Example 3: Update an object
-Usage: update <class_name> <_id>
-```
-(hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
-(hbnb) show BaseModel b405fc64-9724-498f-b405-e4071c3d857f
-[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
-(hbnb)
-```
-<h3>Alternative Syntax</h3>
+Alternatively, you can launch the interactive console as follows but with running the above script first or without specifying the environment variables to store data using File Storage:
 
-###### Example 0: Show all User objects
-Usage: <class_name>.all()
-```
-(hbnb) User.all()
-["[User] (99f45908-1d17-46d1-9dd2-b7571128115b) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92071), 'id': '99f45908-1d17-46d1-9dd2-b7571128115b', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92056)}", "[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
+    $ ./console
 
-###### Example 1: Destroy a User
-Usage: <class_name>.destroy(<_id>)
-```
-(hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-###### Example 2: Update User (by attribute)
-Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'name': 'Todd the Toad', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-###### Example 3: Update User (by dictionary)
-Usage: <class_name>.update(<_id>, <dictionary>)
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
-```
-<br>
+## Additional Resources
+For more information about the console and the class hierarchy in the AirBnB Backend System, please refer to the documentation available at [AirBnB_clone](https://github.com/Mohabdo21/AirBnB_clone/tree/824b17f030aa8a129e69de9dfff4c9f8f260e551/#).

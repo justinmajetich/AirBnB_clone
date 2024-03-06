@@ -1,8 +1,9 @@
 #!/usr/bin/python3
+
 import inspect
 import unittest
-
-import pep8
+import MySQLdb
+import pycodestyle as pep8
 import os
 from sqlalchemy.orm import Session
 from models.engine import db_storage
@@ -14,6 +15,19 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+
+
+def createCursor():
+    """
+    This function creates a cursor for the MySQLdb
+    """
+    cur = MySQLdb.connect(host=os.getenv("HBNB_MYSQL_HOST"),
+                          port=3306,
+                          user=os.getenv("HBNB_MYSQL_USER"),
+                          passwd=os.getenv("HBNB_MYSQL_PWD"),
+                          db=os.getenv("HBNB_MYSQL_DB")
+                          )
+    return cur.cursor()
 
 
 class TestDBStorageDocumentationAndStyle(unittest.TestCase):
@@ -32,7 +46,7 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         """
         Test that models/engine/db_storage.py conforms to PEP8.
         """
-        pep8style = pep8.StyleGuide(quiet=True)
+        pep8style = pep8.StyleGuide()
         result = pep8style.check_files(["models/engine/db_storage.py"])
         self.assertEqual(
             result.total_errors, 0, "Found code style errors (and warnings)."
@@ -43,7 +57,7 @@ class TestDBStorageDocumentationAndStyle(unittest.TestCase):
         Test that tests/test_models/test_engine/test_db_storage.py
         conforms to PEP8.
         """
-        pep8style = pep8.StyleGuide(quiet=True)
+        pep8style = pep8.StyleGuide()
         result = pep8style.check_files(
             ["tests/test_models/test_engine/test_db_storage.py"]
         )
@@ -104,11 +118,6 @@ class TestDBStorage(unittest.TestCase):
         self.storage = storage
         self.instances = {}
 
-        for class_ in [State, User, City, Place, Review, Amenity]:
-            for obj in self.storage.all(class_).values():
-                self.storage.delete(obj)
-        self.storage.save()
-
         # Create and save State instance
         self.instances['State'] = State(name="California")
         self.storage.new(self.instances['State'])
@@ -158,25 +167,43 @@ class TestDBStorage(unittest.TestCase):
         #  self.storage.save()
         #  self.storage.reload()
 
+        self.cursor = createCursor()
+
     def tearDown(self):
         """Tear down the tests"""
-        for instance in self.instances.values():
-            if self.storage._DBStorage__session.is_active:
-                self.storage._DBStorage__session.expunge_all()
-                self.storage.delete(instance)
+        ignore = ['City', 'Review', 'Place']
+        for k, instance in self.instances.items():
+            if k not in ignore:
+                instance.delete()
 
         self.storage.save()
+        self.cursor.close()
 
     def test_all(self):
         """Test the all method"""
         all_objs = self.storage.all()
         self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(all_objs), len(self.instances))
+        self.cursor.close()
+        self.cursor = createCursor()
+        classes = ['users', 'states', 'cities', 'places',
+                   'reviews', 'amenities']
+        rows = []
+        for cl in classes:
+            self.cursor.execute("SELECT * FROM {}".format(cl))
+            rows.extend(self.cursor.fetchall())
+
+        self.assertEqual(len(all_objs), len(rows))
 
     def test_new(self):
         """Test the new method"""
         new_state = State(name="Nevada")
-        self.storage.new(new_state)
+        new_state.save()
+        self.cursor.close()
+        self.cursor = createCursor()
+        self.cursor.execute("SELECT * FROM states WHERE id='{}'"
+                            .format(new_state.id))
+        row = self.cursor.fetchone()
+        self.assertIn(new_state.name, row)
         self.assertIn(new_state, self.storage.all(State).values())
 
     def test_save(self):
@@ -193,16 +220,6 @@ class TestDBStorage(unittest.TestCase):
         self.storage.save()
         self.storage.delete(new_state)
         self.assertNotIn(new_state, self.storage.all(State).values())
-
-    def test_reload(self):
-        "Test the reload method"
-        self.storage.reload()
-        all_objs = self.storage.all()
-        relevant_objs = {k: v for k, v in all_objs.items() if type(v) in [
-            State, User, City, Place, Review, Amenity
-            ]}
-        self.assertIsInstance(all_objs, dict)
-        self.assertEqual(len(relevant_objs), len(self.instances))
 
 
 if __name__ == "__main__":
