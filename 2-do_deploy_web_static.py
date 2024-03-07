@@ -33,43 +33,32 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
-    Distributes an archive to the web servers.
+    Distributes an archive to your web servers
     """
     if not os.path.exists(archive_path):
         return False
 
     try:
-        # Extract filename and name without extension from archive_path
-        filename = os.path.basename(archive_path)
-        name = filename.split(".")[0]
-
-        # Define remote paths
-        remote_tmp_path = f"/tmp/{filename}"
-        remote_release_path = f"/data/web_static/releases/{name}/"
-
-        # Upload archive to /tmp/ directory of the web server
+        # Upload the archive to the /tmp/ directory of the web server
         put(archive_path, "/tmp/")
-
-        # Uncompress the archive to the folder on the web server
-        run(f"mkdir -p {remote_release_path}")
-        run(f"tar -xzf {remote_tmp_path} -C {remote_release_path}")
-
+        # Uncompress the archive to the folder /data/web_static/releases/
+        archive_name = os.path.basename(archive_path)
+        archive_name_no_ext = archive_name.split(".")[0]
+        run(f"mkdir -p /data/web_static/releases/{archive_name_no_ext}/")
+        run(
+            f"tar -xzf /tmp/{archive_name} -C "
+            f"/data/web_static/releases/{archive_name_no_ext}/"
+        )
         # Delete the archive from the web server
-        run(f"rm {remote_tmp_path}")
-
-        # Move files from web_static_* to releases/ folder
-        run(f"mv {remote_release_path}web_static/* {remote_release_path}")
-
-        # Delete the now empty web_static_* folder
-        run(f"rm -rf {remote_release_path}web_static")
-
+        run(f"rm /tmp/{archive_name}")
         # Delete the symbolic link /data/web_static/current from the web server
         run("rm -rf /data/web_static/current")
-
-        # Create a new symbolic link /data/web_static/current on the web server
-        run(f"ln -s {remote_release_path} /data/web_static/current")
-
+        # Create a new the symbolic link /data/web_static/current on server
+        # linked to the new version of your code
+        run(
+            f"ln -s /data/web_static/releases/{archive_name_no_ext}/ "
+            "/data/web_static/current"
+        )
         return True
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
+    except Exception:
         return False
