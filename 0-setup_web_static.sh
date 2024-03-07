@@ -1,60 +1,34 @@
 #!/usr/bin/env bash
-# This script sets up web servers for web_static deployment
+# This script sets up web servers for the deployment of web_static
 
-# Install Nginx if not already installed
-if ! [ "$(command -v nginx)" ]; then
-    apt-get update
-    apt-get install -y nginx
-fi
+# Install Nginx if it is not already installed
+sudo apt-get update
+sudo apt-get -y install nginx
 
-# Create necessary folders with proper ownership
-mkdir -p /data/web_static/releases/test
-mkdir -p /data/web_static/shared
+# Create the required directories if they do not exist
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
 
-# Create a test HTML file
+# Create a fake HTML file
 echo "<html>
-        <head>
-        </head>
-        <body>
-          Holberton School
-        </body>
-</html>" > /data/web_static/releases/test/index.html
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
-# Manage symbolic link for current release
-rm -rf /data/web_static/current || true
-ln -s /data/web_static/releases/test /data/web_static/current
+# Create a symbolic link
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Proper ownership
-chown -R ubuntu /data/
-chgrp -R ubuntu /data/
+# Give ownership of the /data/ folder to the ubuntu user AND group
+sudo chown -R ubuntu:ubuntu /data/
 
-# Update Nginx configuration
-cat << EOF > /etc/nginx/sites-available/default
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+# Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
+sudo sed -i "38i \\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
 
-    add_header X-Served-By $HOSTNAME;
+# Restart Nginx
+sudo service nginx restart
 
-    root /var/www/html;
-    index index.html index.htm;
-
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;
-    }
-
-    location /hbnb_static {
-        alias /data/web_static/current/;
-		index index.html index.htm;
-	}
-
-    error_page 404 /custom_404.html;
-    location = /custom_404.html {
-        root /var/www/html;
-        internal;
-    }
-}
-EOF
-
-# Reload Nginx configuration
-service nginx reload
+# Exit successfully
+exit 0
