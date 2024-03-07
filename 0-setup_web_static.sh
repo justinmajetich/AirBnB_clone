@@ -10,20 +10,22 @@ fi
 # Create necessary folders with proper ownership
 mkdir -p /data/web_static/releases/test
 mkdir -p /data/web_static/shared
-chown -R ubuntu:ubuntu /data
 
 # Create a test HTML file
 echo "<html>
-	<head>
-	</head>
-	<body>
-	  Holberton School
-	</body>
+        <head>
+        </head>
+        <body>
+          Holberton School
+        </body>
 </html>" > /data/web_static/releases/test/index.html
 
 # Manage symbolic link for current release
 rm -rf /data/web_static/current || true
 ln -s /data/web_static/releases/test /data/web_static/current
+
+# Proper ownership
+chown -R ubuntu:ubuntu /data/
 
 # Update Nginx configuration
 cat << EOF > /etc/nginx/sites-available/default
@@ -47,7 +49,8 @@ server {
 
     location /hbnb_static {
         alias /data/web_static/current/;
-    }
+		index index.html index.htm;
+	}
 
     error_page 404 /custom_404.html;
     location = /custom_404.html {
@@ -58,4 +61,4 @@ server {
 EOF
 
 # Reload Nginx configuration
-nginx -t > /dev/null 2>&1 && service nginx reload
+service nginx reload
