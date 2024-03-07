@@ -13,7 +13,7 @@ env.hosts = ['100.26.228.186', '100.25.177.192']
 
 
 def do_pack():
-    """generates a tgz archive"""
+    """Generates a tgz archive"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         if isdir("versions") is False:
