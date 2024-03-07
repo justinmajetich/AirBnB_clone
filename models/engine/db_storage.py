@@ -1,7 +1,16 @@
+#!/usr/bin/python3
+""" setting up mysql database """
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 from models.base_model import Base
+from models.state import State
+from models.city import City
+from models.user import User
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 
 class DBStorage:
@@ -23,11 +32,6 @@ class DBStorage:
         )
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-        Base.metadata.create_all(self.__engine)
-        self.__session = sessionmaker(
-            bind=self.__engine,
-            expire_on_commit=False
-        )()
 
     def all(self, cls=None):
         """Query on the current database session"""
@@ -46,6 +50,7 @@ class DBStorage:
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
+        self.__session.commit()
 
     def save(self):
         """Commit all changes of the current database session"""
@@ -55,11 +60,17 @@ class DBStorage:
         """Delete obj from the current database session"""
         if obj:
             self.__session.delete(obj)
-        self.__session.commit()
 
     def reload(self):
         """Create all tables in the database"""
+        Base.metadata.create_all(self.__engine)
         self.__session = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False
-        )()
+        )
+        NEWSession = scoped_session(self.__session)
+        self.__session = NEWSession()
+    
+    def close(self):
+        """ Calls the remove function in db """
+        self.__session.close()
