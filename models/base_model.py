@@ -41,7 +41,7 @@ class BaseModel:
         if '_sa_instance_state' in insta:
             del insta['_sa_instance_state']
         return '[{}] ({}) {}'.format(cls, self.id, str(insta))
-    
+
     def __repr__(self):
         """Returns a string representation of the instance"""
         return str(self)

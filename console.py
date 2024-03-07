@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args_list = shlex.split(args)
-        
+
         if args_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             value = value.replace('_', ' ').replace('"', '\\"')
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('\"', '"')
-            elif '.' in value:
+            elif '.' in value and '@' not in value:
                 value = float(value)
             else:
                 try:
@@ -229,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
             'State', 'City', 'Amenity',
             'Review'
         ]
-        
+
         formatted_list = []
         if not args:
             instances = storage.all()
