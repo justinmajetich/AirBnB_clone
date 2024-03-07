@@ -1,48 +1,51 @@
-# Class: setup_web_static
+# == Class: web_static_setup
 #
 # This class sets up web servers for the deployment of web_static.
 #
-class setup_web_static {
-  $nginx_package_name = 'nginx'
-  $web_static_dirs = ['/data', '/data/web_static', '/data/web_static/releases', '/data/web_static/shared', '/data/web_static/releases/test']
-  $web_static_current_link = '/data/web_static/current'
-  $web_static_test_index = '/data/web_static/releases/test/index.html'
-  $nginx_config_file = '/etc/nginx/sites-available/default'
-
-  package { $nginx_package_name:
+class web_static_setup {
+  # Ensure Nginx is installed
+  package { 'nginx':
     ensure => installed,
   }
 
-  file { $web_static_dirs:
-    ensure => directory,
+  # Ensure the required directories exist
+  file { ['/data', '/data/web_static', '/data/web_static/releases', '/data/web_static/shared', '/data/web_static/releases/test']:
+    ensure => 'directory',
     owner  => 'ubuntu',
     group  => 'ubuntu',
   }
 
-  file { $web_static_test_index:
-    ensure  => file,
-    content => 'This is a test',
+  # Ensure the fake HTML file exists
+  file { '/data/web_static/releases/test/index.html':
+    ensure  => 'present',
+    content => '<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>\n',
     owner   => 'ubuntu',
     group   => 'ubuntu',
   }
 
-  file { $web_static_current_link:
-    ensure => link,
+  # Ensure the symbolic link exists
+  file { '/data/web_static/current':
+    ensure => 'link',
     target => '/data/web_static/releases/test',
     force  => true,
     owner  => 'ubuntu',
     group  => 'ubuntu',
   }
 
-  exec { 'update_nginx_config':
-    command => "sed -i '38i\\\\tlocation /hbnb_static/ {\\\\n\\\\t\\\\talias " +
-            "/data/web_static/current/;\\\\n\\\\t}\\\\n' ${nginx_config_file}",
-    require => Package[$nginx_package_name],
+  # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
+  file_line { 'nginx_config':
+    path  => '/etc/nginx/sites-available/default',
+    line  => '    location /hbnb_static { alias /data/web_static/current/; }',
+    match => '^    location /hbnb_static',
+    after => 'server_name _;',
   }
 
-  service { $nginx_package_name:
-    ensure    => running,
+  # Ensure Nginx is running
+  service { 'nginx':
+    ensure    => 'running',
     enable    => true,
-    subscribe => Exec['update_nginx_config'],
+    subscribe => File['/etc/nginx/sites-available/default'],
   }
 }
+
+include web_static_setup
