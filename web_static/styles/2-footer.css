@@ -1,9 +1,16 @@
+/* Footer style */
 footer {
-	position: fixed;
-	bottom: 0;
-	background-color: #00FF00;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
+  background-color: green;
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer text style */
+.in-footer {
+  margin: 0;
 }

@@ -1,10 +1,17 @@
+/* Footer style */
 footer {
-	position: fixed;
-	bottom: 0;
-	background-color: white;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
-	border-top: 1px solid #CCCCCC;
+  background-color: white;
+  height: 60px;
+  width: 100%;
+  border-top: solid 1px #cccccc;
+  bottom: 0;
+  display: flex;
+  margin-top: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer text style */
+.in-footer {
+  margin: 0;
 }

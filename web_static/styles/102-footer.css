@@ -1,10 +1,24 @@
 footer {
-	position: fixed;
-	bottom: 0;
-	background-color: white;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
-	border-top: 1px solid #CCCCCC;
+  background-color: white;
+  height: 60px;
+  width: 100%;
+  border-top: solid 1px #cccccc;
+  position: relative;
+  bottom: 0;
+  display: flex;
+  margin-top: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.in-footer {
+  margin: 0;
+}
+
+/* Media query for screens smaller than 600px */
+@media only screen and (max-width: 600px) {
+  /* Footer */
+  footer {
+    height: 80px;
+  }
 }
