@@ -1,6 +1,7 @@
-# Configures a web server for deployment of web_static.
+# 101-setup_web_static.pp
+# This Puppet manifest configures a web server for the deployment of web_static.
 
-# Nginx configuration file
+# Define the Nginx configuration file
 $nginx_conf = "server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -20,68 +21,66 @@ $nginx_conf = "server {
     }
 }"
 
+# Ensure Nginx is installed
 package { 'nginx':
   ensure   => 'present',
-  provider => 'apt'
-} ->
-
-file { '/data':
-  ensure  => 'directory'
-} ->
-
-file { '/data/web_static':
-  ensure => 'directory'
-} ->
-
-file { '/data/web_static/releases':
-  ensure => 'directory'
-} ->
-
-file { '/data/web_static/releases/test':
-  ensure => 'directory'
-} ->
-
-file { '/data/web_static/shared':
-  ensure => 'directory'
-} ->
-
-file { '/data/web_static/releases/test/index.html':
-  ensure  => 'present',
-  content => "Holberton School Puppet\n"
-} ->
-
-file { '/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test'
-} ->
-
-exec { 'chown -R ubuntu:ubuntu /data/':
-  path => '/usr/bin/:/usr/local/bin/:/bin/'
+  provider => 'apt',
 }
 
-file { '/var/www':
-  ensure => 'directory'
-} ->
+# Ensure the required directories exist
+file { ['/data', '/data/web_static', '/data/web_static/releases', '/data/web_static/shared', '/data/web_static/releases/test']:
+  ensure  => 'directory',
+  require => Package['nginx'],
+}
 
-file { '/var/www/html':
-  ensure => 'directory'
-} ->
+# Create a fake HTML file
+file { '/data/web_static/releases/test/index.html':
+  ensure  => 'present',
+  content => "Holberton School Alx\n",
+  require => File['/data/web_static/releases/test'],
+}
 
+# Create a symbolic link
+file { '/data/web_static/current':
+  ensure  => 'link',
+  target  => '/data/web_static/releases/test',
+  require => File['/data/web_static/releases/test/index.html'],
+}
+
+# Change ownership of the /data/ directory
+exec { 'chown -R ubuntu:ubuntu /data/':
+  path    => '/usr/bin/:/usr/local/bin/:/bin/',
+  require => File['/data/web_static/current'],
+}
+
+# Ensure the /var/www/ and /var/www/html directories exist
+file { ['/var/www', '/var/www/html']:
+  ensure  => 'directory',
+  require => Exec['chown -R ubuntu:ubuntu /data/'],
+}
+
+# Create the index.html and 404.html files
 file { '/var/www/html/index.html':
   ensure  => 'present',
-  content => "Holberton School\n"
-} ->
+  content => "Holberton School\n",
+  require => File['/var/www/html'],
+}
 
 file { '/var/www/html/404.html':
   ensure  => 'present',
-  content => "Ceci n'est pas une page\n"
-} ->
+  content => "Ceci n'est pas une page\n",
+  require => File['/var/www/html'],
+}
 
+# Update the Nginx configuration file
 file { '/etc/nginx/sites-available/default':
   ensure  => 'present',
-  content => $nginx_conf
-} ->
+  content => $nginx_conf,
+  require => File['/var/www/html/404.html'],
+}
 
+# Restart Nginx
 exec { 'nginx restart':
-  path => '/etc/init.d/'
+  path    => '/etc/init.d/',
+  require => File['/etc/nginx/sites-available/default'],
 }
