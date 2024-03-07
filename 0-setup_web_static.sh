@@ -25,7 +25,8 @@ rm -rf /data/web_static/current || true
 ln -s /data/web_static/releases/test /data/web_static/current
 
 # Proper ownership
-chown -R ubuntu:ubuntu /data/
+chown -R ubuntu /data/
+chgrp -R ubuntu /data/
 
 # Update Nginx configuration
 cat << EOF > /etc/nginx/sites-available/default
@@ -36,12 +37,7 @@ server {
     add_header X-Served-By $HOSTNAME;
 
     root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-    server_name _;
-
-    location / {
-        try_files \$uri \$uri/  =404;
-    }
+    index index.html index.htm;
 
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;
