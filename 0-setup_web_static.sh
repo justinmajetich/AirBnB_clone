@@ -13,7 +13,13 @@ mkdir -p /data/web_static/shared
 chown -R ubuntu:ubuntu /data
 
 # Create a test HTML file
-echo "<html><head></head><body>Holberton School</body></html>" > /data/web_static/releases/test/index.html
+echo "<html>
+	<head>
+	</head>
+	<body>
+	  Holberton School
+	</body>
+</html>" > /data/web_static/releases/test/index.html
 
 # Manage symbolic link for current release
 rm -rf /data/web_static/current || true
@@ -52,4 +58,4 @@ server {
 EOF
 
 # Reload Nginx configuration
-nginx -t && service nginx reload
+nginx -t > /dev/null 2>&1 && service nginx reload
