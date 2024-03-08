@@ -62,8 +62,8 @@ def do_deploy(archive_path):
                 archive_name, archive_name_no_ext
             )
         )
-        # Move the contents of web_static up one level
-        sudo("mv /data/web_static/releases/{}/web_static/* "
+        # Copy the contents of web_static to the parent directory
+        sudo("rsync -a /data/web_static/releases/{}/web_static/ "
              "/data/web_static/releases/{}/".format(
                 archive_name_no_ext, archive_name_no_ext
             ))
