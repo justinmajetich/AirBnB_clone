@@ -6,7 +6,7 @@ folder and distributes it to web servers.
 import os
 from datetime import datetime
 
-from fabric.api import env, local, put, run, task
+from fabric.api import env, local, put, run, task, sudo
 
 # List of servers to deploy to
 env.hosts = ["34.234.193.86", "54.90.40.86"]
@@ -53,21 +53,31 @@ def do_deploy(archive_path):
         # Uncompress the archive to the folder /data/web_static/releases/
         archive_name = os.path.basename(archive_path)
         archive_name_no_ext = archive_name.split(".")[0]
-        run("mkdir -p /data/web_static/releases/{}/".format(
+        sudo("mkdir -p /data/web_static/releases/{}/".format(
             archive_name_no_ext
             ))
-        run(
+        sudo(
             "tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
                 archive_name, archive_name_no_ext
             )
         )
+        # Copy the contents of web_static to the parent directory
+        sudo("rsync -a /data/web_static/releases/{}/web_static/ "
+             "/data/web_static/releases/{}/".format(
+                archive_name_no_ext, archive_name_no_ext
+                )
+             )
+        # Remove the now empty web_static directory
+        sudo("rm -rf /data/web_static/releases/{}/web_static".format(
+            archive_name_no_ext
+        ))
         # Delete the archive from the web server
-        run("rm -rf /tmp/{}".format(archive_name))
+        sudo("rm -rf /tmp/{}".format(archive_name))
         # Delete the symbolic link /data/web_static/current from the web server
-        run("rm -rf /data/web_static/current")
+        sudo("rm -rf /data/web_static/current")
         # Create a new the symbolic link /data/web_static/current on server
         # linked to the new version of your code
-        run(
+        sudo(
             "ln -s /data/web_static/releases/{}/ "
             "/data/web_static/current".format(
                 archive_name_no_ext
