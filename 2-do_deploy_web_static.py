@@ -62,7 +62,7 @@ def do_deploy(archive_path):
             )
         )
         # Delete the archive from the web server
-        run("rm /tmp/{}".format(archive_name))
+        run("rm -rf /tmp/{}".format(archive_name))
         # Delete the symbolic link /data/web_static/current from the web server
         run("rm -rf /data/web_static/current")
         # Create a new the symbolic link /data/web_static/current on server
@@ -73,8 +73,6 @@ def do_deploy(archive_path):
                 archive_name_no_ext
             )
         )
-        # Delete the extracted directory from the /tmp/ directory on server
-        run("rm -rf /tmp/{}".format(archive_name_no_ext))
         print("New version deployed!")
         return True
     except Exception:
