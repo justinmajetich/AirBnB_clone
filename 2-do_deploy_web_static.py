@@ -62,6 +62,15 @@ def do_deploy(archive_path):
             archive_name, archive_name_no_ext
         )
         sudo(cmd)
+        # Move the contents of web_static up one level
+        sudo("mv /data/web_static/releases/{}/web_static/* "
+             "/data/web_static/releases/{}/".format(
+                archive_name_no_ext, archive_name_no_ext
+            ))
+        # Remove the now empty web_static directory
+        sudo("rm -rf /data/web_static/releases/{}/web_static".format(
+            archive_name_no_ext
+        ))
         # Delete the archive from the web server
         sudo("rm -rf /tmp/{}".format(archive_name))
         # Delete the symbolic link /data/web_static/current from the web server
@@ -69,7 +78,7 @@ def do_deploy(archive_path):
         # Create a new the symbolic link /data/web_static/current on server
         # linked to the new version of your code
         sudo(
-            "ln -s /data/web_static/releases/{}/web_static/ "
+            "ln -s /data/web_static/releases/{}/ "
             "/data/web_static/current".format(
                 archive_name_no_ext
             )
