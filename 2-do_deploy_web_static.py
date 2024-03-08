@@ -66,7 +66,8 @@ def do_deploy(archive_path):
         sudo("rsync -a /data/web_static/releases/{}/web_static/ "
              "/data/web_static/releases/{}/".format(
                 archive_name_no_ext, archive_name_no_ext
-            ))
+                )
+             )
         # Remove the now empty web_static directory
         sudo("rm -rf /data/web_static/releases/{}/web_static".format(
             archive_name_no_ext
