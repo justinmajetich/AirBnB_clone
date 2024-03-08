@@ -5,19 +5,25 @@
 $nginx_conf = "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    add_header X-Served-By ${hostname};
-    root   /var/www/html;
-    index  index.html index.htm;
 
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
+    add_header X-Served-By ${hostname};
+
+    root /var/www/html;
+    index index.html index.htm;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;
     }
 
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
+    location /hbnb_static {
+        alias /data/web_static/current/;
+                index index.html index.htm;
+        }
+
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+        root /var/www/html;
+        internal;
     }
 }"
 
