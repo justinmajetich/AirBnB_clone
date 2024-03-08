@@ -7,11 +7,13 @@ import os
 from datetime import datetime
 
 from fabric.api import env, local, put, run, task, sudo
+from fabric.decorators import runs_once
 
 # List of servers to deploy to
 env.hosts = ["34.234.193.86", "54.90.40.86"]
 
 
+@runs_once
 def do_pack():
     """
     Generates a .tgz archive from the contents of the web_static folder.
@@ -94,25 +96,7 @@ def deploy():
     """
     Creates and distributes an archive to your web servers
     """
-    # Call the do_pack() function and store the path of the created archive
     archive_path = do_pack()
-
-    # Return False if no archive has been created
     if archive_path is None:
         return False
-
-    # Initialize a result variable
-    result = False
-
-    # Iterate over each host in the env.hosts list
-    for host in env.hosts:
-        # Set the current host
-        env.host_string = host
-        # Call the do_deploy(archive_path) function,
-        # using the new path of the new archive
-        # If do_deploy returns True for any host, set result to True
-        if do_deploy(archive_path):
-            result = True
-
-    # Return the result
-    return result
+    return do_deploy(archive_path)
