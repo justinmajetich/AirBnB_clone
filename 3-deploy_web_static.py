@@ -92,13 +92,27 @@ def do_deploy(archive_path):
 @task(default=True)
 def deploy():
     """
-    Creates and distributes an archive to the web servers.
+    Creates and distributes an archive to your web servers
     """
-    # Check if archive_path is defined, if not call do_pack()
-    if 'archive_path' not in env or env.archive_path is None:
-        env.archive_path = do_pack()
-    # If do_pack() fails (returns None), return False
-    if env.archive_path is None:
+    # Call the do_pack() function and store the path of the created archive
+    archive_path = do_pack()
+
+    # Return False if no archive has been created
+    if archive_path is None:
         return False
-    # Call do_deploy(), return its result
-    return do_deploy(env.archive_path)
+
+    # Initialize a result variable
+    result = False
+
+    # Iterate over each host in the env.hosts list
+    for host in env.hosts:
+        # Set the current host
+        env.host_string = host
+        # Call the do_deploy(archive_path) function,
+        # using the new path of the new archive
+        # If do_deploy returns True for any host, set result to True
+        if do_deploy(archive_path):
+            result = True
+
+    # Return the result
+    return result
