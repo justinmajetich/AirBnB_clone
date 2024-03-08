@@ -15,7 +15,7 @@ def do_pack():
     The archive is stored in the 'versions' folder.
     """
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_name = f"web_static_{timestamp}.tgz"
+    archive_name = "web_static_{}.tgz".format(timestamp)
     archive_path = os.path.join("versions", archive_name)
 
     # Create 'versions' directory if it doesn't exist
@@ -23,6 +23,15 @@ def do_pack():
         os.mkdir("versions")
 
     # Create a .tgz archive of the web_static directory
-    local(f"tar -cvzf {archive_path} web_static")
+    print("Packing web_static to {}".format(archive_path))
+    result = local(
+            "tar -cvzf {} web_static".format(archive_path),
+            capture=False
+            )
 
-    return archive_path if os.path.exists(archive_path) else None
+    if result.return_code == 0:
+        size = os.path.getsize(archive_path)
+        print("web_static packed: {} -> {}Bytes".format(archive_path, size))
+        return archive_path
+    else:
+        return None
