@@ -73,6 +73,7 @@ def do_deploy(archive_path):
                 archive_name_no_ext
             )
         )
+        print("New version deployed!")
         return True
     except Exception:
         return False
