@@ -6,7 +6,7 @@ folder and distributes it to web servers.
 import os
 from datetime import datetime
 
-from fabric.api import env, local, put, run
+from fabric.api import env, local, put, run, task
 
 # List of servers to deploy to
 env.hosts = ["34.234.193.86", "54.90.40.86"]
@@ -79,6 +79,7 @@ def do_deploy(archive_path):
         return False
 
 
+@task(default=True)
 def deploy():
     """
     Creates and distributes an archive to the web servers.
