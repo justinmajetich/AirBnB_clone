@@ -73,6 +73,8 @@ def do_deploy(archive_path):
                 archive_name_no_ext
             )
         )
+        # Delete the extracted directory from the /tmp/ directory on server
+        run("rm -rf /tmp/{}".format(archive_name_no_ext))
         print("New version deployed!")
         return True
     except Exception:
