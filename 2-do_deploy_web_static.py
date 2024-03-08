@@ -26,9 +26,15 @@ def do_pack():
         os.mkdir("versions")
 
     # Create a .tgz archive of the web_static directory
-    local(f"tar -cvzf {archive_path} web_static")
+    print(f"Packing web_static to {archive_path}")
+    result = local(f"tar -cvzf {archive_path} web_static", capture=False)
 
-    return archive_path if os.path.exists(archive_path) else None
+    if result.return_code == 0:
+        size = os.path.getsize(archive_path)
+        print(f"web_static packed: {archive_path} -> {size}Bytes")
+        return archive_path
+    else:
+        return None
 
 
 def do_deploy(archive_path):
