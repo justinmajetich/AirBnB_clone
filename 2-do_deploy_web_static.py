@@ -69,7 +69,7 @@ def do_deploy(archive_path):
         # Create a new the symbolic link /data/web_static/current on server
         # linked to the new version of your code
         sudo(
-            "ln -s /data/web_static/releases/{}/ "
+            "ln -s /data/web_static/releases/{}/web_static/ "
             "/data/web_static/current".format(
                 archive_name_no_ext
             )
