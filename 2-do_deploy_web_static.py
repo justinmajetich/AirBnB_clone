@@ -57,11 +57,11 @@ def do_deploy(archive_path):
         sudo("mkdir -p /data/web_static/releases/{}/".format(
             archive_name_no_ext
             ))
-        sudo(
-            "tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
-                archive_name, archive_name_no_ext
-            )
+        cmd = ("tar --strip-components=1 -xzf /tmp/{} "
+               "-C /data/web_static/releases/{}/").format(
+            archive_name, archive_name_no_ext
         )
+        sudo(cmd)
         # Delete the archive from the web server
         sudo("rm -rf /tmp/{}".format(archive_name))
         # Delete the symbolic link /data/web_static/current from the web server
