@@ -94,7 +94,11 @@ def deploy():
     """
     Creates and distributes an archive to the web servers.
     """
-    archive_path = do_pack()
-    if archive_path is None:
+    # Check if archive_path is defined, if not call do_pack()
+    if 'archive_path' not in env or env.archive_path is None:
+        env.archive_path = do_pack()
+    # If do_pack() fails (returns None), return False
+    if env.archive_path is None:
         return False
-    return do_deploy(archive_path)
+    # Call do_deploy(), return its result
+    return do_deploy(env.archive_path)
