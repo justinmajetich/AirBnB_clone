@@ -18,7 +18,7 @@ def do_pack():
     The archive is stored in the 'versions' folder.
     """
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_name = f"web_static_{timestamp}.tgz"
+    archive_name = "web_static_{}.tgz".format(timestamp)
     archive_path = os.path.join("versions", archive_name)
 
     # Create 'versions' directory if it doesn't exist
@@ -26,12 +26,15 @@ def do_pack():
         os.mkdir("versions")
 
     # Create a .tgz archive of the web_static directory
-    print(f"Packing web_static to {archive_path}")
-    result = local(f"tar -cvzf {archive_path} web_static", capture=False)
+    print("Packing web_static to {}".format(archive_path))
+    result = local(
+            "tar -cvzf {} web_static".format(archive_path),
+            capture=False
+            )
 
     if result.return_code == 0:
         size = os.path.getsize(archive_path)
-        print(f"web_static packed: {archive_path} -> {size}Bytes")
+        print("web_static packed: {} -> {}Bytes".format(archive_path, size))
         return archive_path
     else:
         return None
@@ -50,20 +53,25 @@ def do_deploy(archive_path):
         # Uncompress the archive to the folder /data/web_static/releases/
         archive_name = os.path.basename(archive_path)
         archive_name_no_ext = archive_name.split(".")[0]
-        run(f"mkdir -p /data/web_static/releases/{archive_name_no_ext}/")
+        run("mkdir -p /data/web_static/releases/{}/".format(
+            archive_name_no_ext
+            ))
         run(
-            f"tar -xzf /tmp/{archive_name} -C "
-            f"/data/web_static/releases/{archive_name_no_ext}/"
+            "tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
+                archive_name, archive_name_no_ext
+            )
         )
         # Delete the archive from the web server
-        run(f"rm /tmp/{archive_name}")
+        run("rm /tmp/{}".format(archive_name))
         # Delete the symbolic link /data/web_static/current from the web server
         run("rm -rf /data/web_static/current")
         # Create a new the symbolic link /data/web_static/current on server
         # linked to the new version of your code
         run(
-            f"ln -s /data/web_static/releases/{archive_name_no_ext}/ "
-            "/data/web_static/current"
+            "ln -s /data/web_static/releases/{}/ "
+            "/data/web_static/current".format(
+                archive_name_no_ext
+            )
         )
         return True
     except Exception:
