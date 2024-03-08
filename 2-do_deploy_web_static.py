@@ -57,11 +57,11 @@ def do_deploy(archive_path):
         sudo("mkdir -p /data/web_static/releases/{}/".format(
             archive_name_no_ext
             ))
-        cmd = ("tar --strip-components=1 -xzf /tmp/{} "
-               "-C /data/web_static/releases/{}/").format(
-            archive_name, archive_name_no_ext
+        sudo(
+            "tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
+                archive_name, archive_name_no_ext
+            )
         )
-        sudo(cmd)
         # Move the contents of web_static up one level
         sudo("mv /data/web_static/releases/{}/web_static/* "
              "/data/web_static/releases/{}/".format(
