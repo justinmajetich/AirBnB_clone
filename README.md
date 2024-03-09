@@ -1,142 +1,127 @@
-<center> <h1>HBNB - The Console</h1> </center>
+# AirBnB Clone (V2)
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+For the original AirBNB clone project, visit [this repository](https://github.com/justinmajetich/AirBnB_clone).
 
----
+This version (created by [Ryan](https://github.com/donaldrs01) and [Luke](https://github.com/lukeschula)) has expanded on this original project by implementing a more advanced console as well as creating a new database storage engine utilizing MYSQL and SQLAlchemy. 
 
-<center><h3>Repository Contents by Project Task</h3> </center>
+The finalized product can toggle between a file storage engine and a database storage engine depending on the user's needs. This is done through the verification of **environmental variables**.
 
-| Tasks | Files | Description |
-| ----- | ----- | ------ |
-| 0: Authors/README File | [AUTHORS](https://github.com/justinmajetich/AirBnB_clone/blob/dev/AUTHORS) | Project authors |
-| 1: Pep8 | N/A | All code is pep8 compliant|
-| 2: Unit Testing | [/tests](https://github.com/justinmajetich/AirBnB_clone/tree/dev/tests) | All class-defining modules are unittested |
-| 3. Make BaseModel | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a parent class to be inherited by all model classes|
-| 4. Update BaseModel w/ kwargs | [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Add functionality to recreate an instance of a class from a dictionary representation|
-| 5. Create FileStorage class | [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/_ _init_ _.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/__init__.py) [/models/base_model.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/base_model.py) | Defines a class to manage persistent file storage system|
-| 6. Console 0.0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Add basic functionality to console program, allowing it to quit, handle empty lines and ^D |
-| 7. Console 0.1 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) | Update the console with methods allowing the user to create, destroy, show, and update stored data |
-| 8. Create User class | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) | Dynamically implements a user class |
-| 9. More Classes | [/models/user.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/user.py) [/models/place.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/place.py) [/models/city.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/city.py) [/models/amenity.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/amenity.py) [/models/state.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/state.py) [/models/review.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/review.py) | Dynamically implements more classes |
-| 10. Console 1.0 | [console.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/console.py) [/models/engine/file_storage.py](https://github.com/justinmajetich/AirBnB_clone/blob/dev/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
-<br>
-<br>
-<center> <h2>General Use</h2> </center>
+When an instance of any class is created, the console will check to see if the variable HBNB_TYPE_STORAGE is set to *"db"* (database) or *"file"* (file storage). 
 
-1. First clone this repository.
+If the variable is set to 'db', all objects will be stored and retrieved from a connected database accessed through SQLAlchemy. If the variable is set to 'file', a file storage system will be used that serialzies an object as a JSON file when it is ready to be stored and deserializes it when it is ready to be retrieved. 
 
-3. Once the repository is cloned locate the "console.py" file and run it as follows:
+## Usage
+To begin, the console can be called by running a basic Python command in the terminal:
+```python
+>>> ./console.py
 ```
-/AirBnB_clone$ ./console.py
-```
-4. When this command is run the following prompt should appear:
+You know you have successfully opened the console when you are greeted with the following prompt: 
 ```
 (hbnb)
 ```
-5. This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.
+Upon opening the console, the user has a number of different commands that can be run directly from the CLI. A list of available commands is below:
+### Console Commands
+- **create()** --> creates an object of any class with specified parameters
 
-##### Commands
-    * create - Creates an instance based on given class
+- **show()** --> shows a printout of object-specific information
+    (including its class name, its UUID, and its time of creation / last updated)
 
-    * destroy - Destroys an object based on class and UUID
+- **destroy()** --> removes an object from storage based on its class and UUID
 
-    * show - Shows an object based on class and UUID
+- **all()** --> shows all objects of a specified class 
+    (shows all objects in storage if no class is specified)
 
-    * all - Shows all objects the program has access to, or all objects of a given class
+- **count()** --> prints the current number of class instances
 
-    * update - Updates existing attributes an object based on class name and UUID
+- **update()** --> allows user to update a certain object with new information based on object's class name and UUID
 
-    * quit - Exits the program (EOF will as well)
+- **quit() / EOF** --> exits out of console interface
 
-
-##### Alternative Syntax
-Users are able to issue a number of console command using an alternative syntax:
-
-	Usage: <class_name>.<command>([<id>[name_arg value_arg]|[kwargs]])
-Advanced syntax is implemented for the following commands: 
-
-    * all - Shows all objects the program has access to, or all objects of a given class
-
-	* count - Return number of object instances by class
-
-    * show - Shows an object based on class and UUID
-
-	* destroy - Destroys an object based on class and UUID
-
-    * update - Updates existing attributes an object based on class name and UUID
-
-<br>
-<br>
-<center> <h2>Examples</h2> </center>
-<h3>Primary Command Syntax</h3>
-
-###### Example 0: Create an object
-Usage: create <class_name>
+## Examples
+### Creating a 'Place' object with no other attributes
+Usage : *create <class_name>*
 ```
-(hbnb) create BaseModel
-```
-```
-(hbnb) create BaseModel
-3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb)                   
-```
-###### Example 1: Show an object
-Usage: show <class_name> <_id>
+(hbnb) create Place
 
+db1a66c3-84af-4006-96db-f8257d3bf84f
 ```
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
-(hbnb)  
+### Creating a 'State' object with a name attribute
+Usage: *create <class_name> <name="...">*<br>
+Note that: 
+1. If the attribute is a string, it must be inserted with double quotes from the command line.
+2. Any spaces in the string are represented with  __ 
 ```
-###### Example 2: Destroy an object
-Usage: destroy <class_name> <_id>
-```
-(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-** no instance found **
-(hbnb)   
-```
-###### Example 3: Update an object
-Usage: update <class_name> <_id>
-```
-(hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
-(hbnb) show BaseModel b405fc64-9724-498f-b405-e4071c3d857f
-[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889), 
-'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
-(hbnb)
-```
-<h3>Alternative Syntax</h3>
+(hbnb) create State name="New_Testico"
 
-###### Example 0: Show all User objects
-Usage: <class_name>.all()
+03049433-44d0-4485-ac48-88531a06f7d9
 ```
-(hbnb) User.all()
-["[User] (99f45908-1d17-46d1-9dd2-b7571128115b) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92071), 'id': '99f45908-1d17-46d1-9dd2-b7571128115b', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92056)}", "[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
+### Show description of 'Place' object
+Usage: *show <class_name> < id>*
 ```
+(hbnb) show Place db1a66c3-84af-4006-96db-f8257d3bf84f
 
-###### Example 1: Destroy a User
-Usage: <class_name>.destroy(<_id>)
+[Place] (db1a66c3-84af-4006-96db-f8257d3bf84f) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f60d0ea29b0>, 
+'id': 'db1a66c3-84af-4006-96db-f8257d3bf84f', 'created_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886623),
+'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}
 ```
-(hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
+### Display all objects of specific class in storage
+Usage:  *all <class_name>*
 ```
-###### Example 2: Update User (by attribute)
-Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
+(hbnb) all State
+
+["[State] (59e71503-fd84-4e33-a0cf-6f05af11b78b) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f89550ce9b0>, 'id': '59e71503-fd84-4e33-a0cf-6f05af11b78b', 'created_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647616), 'updated_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647642), 'name': 'Testlahoma'}",
+
+"[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7f89531ad4e0>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'name': 'Todd the Toad', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
+### Display all objects in storage
+Usage:  *all* (with no class name provided)
 ```
-###### Example 3: Update User (by dictionary)
-Usage: <class_name>.update(<_id>, <dictionary>)
+(hbnb) all
+
+["[User] (8efafb1e-d473-4042-bcd1-064d052a64e2) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf949d0>, 'id': '8efafb1e-d473-4042-bcd1-064d052a64e2', 'created_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257599), 'updated_at': datetime.datetime(2024, 2, 27, 16, 4, 54, 257633)}",
+
+"[User] (7e9919c1-5396-4f81-a3bc-aea3541849b4) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf25510>, 'id': '7e9919c1-5396-4f81-a3bc-aea3541849b4', 'created_at': datetime.datetime(2024, 2, 27, 16, 8, 13, 798403), 'updated_at': datetime.datetime(2024, 2, 27, 16, 8, 13, 798411)}",
+
+"[Place] (9ed60a26-3f67-4549-8bb5-ce52ae4a8c77) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf27d00>, 'id': '9ed60a26-3f67-4549-8bb5-ce52ae4a8c77', 'created_at': datetime.datetime(2024, 2, 27, 16, 8, 23, 207165), 'updated_at': datetime.datetime(2024, 2, 27, 16, 8, 23, 207175)}", 
+
+"[Place] (db1a66c3-84af-4006-96db-f8257d3bf84f) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf27f70>, 'id': 'db1a66c3-84af-4006-96db-f8257d3bf84f', 'created_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886623), 'updated_at': datetime.datetime(2024, 2, 27, 16, 22, 58, 886633)}", 
+
+"[State] (59e71503-fd84-4e33-a0cf-6f05af11b78b) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf26230>, 'id': '59e71503-fd84-4e33-a0cf-6f05af11b78b', 'created_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647616), 'updated_at': datetime.datetime(2024, 2, 27, 16, 44, 25, 647642), 'name': 'Testlahoma'}", 
+
+"[State] (be79504c-7419-400d-b06c-38ccf862800c) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94670>, 'id': 'be79504c-7419-400d-b06c-38ccf862800c', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847556), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 6, 847570)}", 
+
+"[State] (03049433-44d0-4485-ac48-88531a06f7d9) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fd8eaf94a30>, 'id': '03049433-44d0-4485-ac48-88531a06f7d9', 'created_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426291), 'updated_at': datetime.datetime(2024, 2, 27, 16, 49, 30, 426300), 'name': 'New Testico'}"]
 ```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
-(hbnb)
-(hbnb) User.all()
-(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
+### Update the attributes of an object
+Usage:   *update <class_name> < id> <attribute_name>=<attribute_value>...*<br>
+Note that: 
+1. If the attribute is a string, it must be inserted with double quotes from the command line.
+2. Any spaces in the string are represented with  __ 
 ```
-<br>
+(hbnb) create User
+
+12999f2c-0dca-4945-9142-00106678b34a
+
+(hbnb) update User 12999f2c-0dca-4945-9142-00106678b34a first_name="Pierre", last_name="DuBois"
+
+(hbnb) show User 12999f2c-0dca-4945-9142-00106678b34a
+
+[User] (12999f2c-0dca-4945-9142-00106678b34a) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fbf5cfb2e00>, 'id': '12999f2c-0dca-4945-9142-00106678b34a', 'created_at': datetime.datetime(2024, 2, 27, 17, 29, 0, 9011), 'updated_at': datetime.datetime(2024, 2, 27, 17, 29, 43, 835523), 'first_name="Pierre",': 'last_name="DuBois"'}
+```
+### Delete an object from storage
+Usage:   *destroy <class_name> < id>*
+```
+(hbnb) create User
+
+f9431502-8a48-46b8-91a1-6588cf0acfc2
+
+(hbnb) all User
+
+["[User] (f9431502-8a48-46b8-91a1-6588cf0acfc2) {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fb82899ee00>, 'id': 'f9431502-8a48-46b8-91a1-6588cf0acfc2', 'created_at': datetime.datetime(2024, 2, 27, 17, 3, 55, 133211), 'updated_at': datetime.datetime(2024, 2, 27, 17, 3, 55, 133229)}"]
+
+(hbnb) destroy User f9431502-8a48-46b8-91a1-6588cf0acfc2
+
+(hbnb) all User
+
+[]
+```
