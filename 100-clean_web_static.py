@@ -103,11 +103,12 @@ def do_clean(number=0):
 
         # Delete remote archives
         command = (
-            "ls -1t /data/web_static/releases/ | "
-            f"tail -n +{number + 1} | "
-            "xargs -d '\n' rm -rf --"
-        )
-        run(command)
+                "for dir in $(ls -1t /data/web_static/releases/ | "
+                f"tail -n +{number + 1}); do "
+                "rm -rf /data/web_static/releases/$dir; "
+                "done"
+                )
+        sudo(command)
 
         return True
     except Exception as e:
