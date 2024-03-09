@@ -50,7 +50,7 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         archive_name = os.path.basename(archive_path)
         archive_name_no_ext = archive_name.split(".")[0]
-        release_dir = f"/data/web_static/releases/{archive_name_no_ext}/"
+        release_dir = f"/data/web_static/releases/{archive_name_no_ext}"
 
         # Uncompress the archive to the folder /data/web_static/releases/
         sudo(f"mkdir -p {release_dir}")
