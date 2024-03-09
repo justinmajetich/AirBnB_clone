@@ -6,7 +6,7 @@ folder and distributes it to web servers.
 import os
 from datetime import datetime
 
-from fabric.api import env, local, put, run, task, sudo
+from fabric.api import env, local, put, sudo, task
 from fabric.decorators import runs_once
 
 # List of servers to deploy to
@@ -20,26 +20,22 @@ def do_pack():
     The archive is stored in the 'versions' folder.
     """
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_name = "web_static_{}.tgz".format(timestamp)
+    archive_name = f"web_static_{timestamp}.tgz"
     archive_path = os.path.join("versions", archive_name)
 
     # Create 'versions' directory if it doesn't exist
-    if not os.path.exists("versions"):
-        os.mkdir("versions")
+    os.makedirs("versions", exist_ok=True)
 
     # Create a .tgz archive of the web_static directory
-    print("Packing web_static to {}".format(archive_path))
-    result = local(
-            "tar -cvzf {} web_static".format(archive_path),
-            capture=False
-            )
+    print(f"Packing web_static to {archive_path}")
+    result = local(f"tar -cvzf {archive_path} web_static", capture=False)
 
     if result.return_code == 0:
         size = os.path.getsize(archive_path)
-        print("web_static packed: {} -> {}Bytes".format(archive_path, size))
+        print(f"web_static packed: {archive_path} -> {size}Bytes")
         return archive_path
-    else:
-        return None
+
+    return None
 
 
 def do_deploy(archive_path):
@@ -52,39 +48,30 @@ def do_deploy(archive_path):
     try:
         # Upload the archive to the /tmp/ directory of the web server
         put(archive_path, "/tmp/")
-        # Uncompress the archive to the folder /data/web_static/releases/
         archive_name = os.path.basename(archive_path)
         archive_name_no_ext = archive_name.split(".")[0]
-        sudo("mkdir -p /data/web_static/releases/{}/".format(
-            archive_name_no_ext
-            ))
-        sudo(
-            "tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
-                archive_name, archive_name_no_ext
-            )
-        )
+        release_dir = f"/data/web_static/releases/{archive_name_no_ext}"
+
+        # Uncompress the archive to the folder /data/web_static/releases/
+        sudo(f"mkdir -p {release_dir}")
+        sudo(f"tar -xzf /tmp/{archive_name} -C {release_dir}")
+
         # Copy the contents of web_static to the parent directory
-        sudo("rsync -a /data/web_static/releases/{}/web_static/ "
-             "/data/web_static/releases/{}/".format(
-                archive_name_no_ext, archive_name_no_ext
-                )
-             )
+        sudo(f"rsync -a {release_dir}/web_static/ {release_dir}/")
+
         # Remove the now empty web_static directory
-        sudo("rm -rf /data/web_static/releases/{}/web_static".format(
-            archive_name_no_ext
-        ))
+        sudo(f"rm -rf {release_dir}/web_static")
+
         # Delete the archive from the web server
-        sudo("rm -rf /tmp/{}".format(archive_name))
+        sudo(f"rm -rf /tmp/{archive_name}")
+
         # Delete the symbolic link /data/web_static/current from the web server
         sudo("rm -rf /data/web_static/current")
+
         # Create a new the symbolic link /data/web_static/current on server
         # linked to the new version of your code
-        sudo(
-            "ln -s /data/web_static/releases/{}/ "
-            "/data/web_static/current".format(
-                archive_name_no_ext
-            )
-        )
+        sudo(f"ln -s {release_dir} /data/web_static/current")
+
         print("New version deployed!")
         return True
     except Exception:
