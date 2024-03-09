@@ -84,6 +84,13 @@ def deploy():
     Creates and distributes an archive to your web servers
     """
     archive_path = do_pack()
-    if archive_path is None:
-        return False
-    return do_deploy(archive_path)
+
+    if not archive_path:
+        abort("Packing failed")
+
+    for host in env.hosts:
+        env.host_string = host
+        if not do_deploy(archive_path):
+            abort("Deploy failed")
+
+    print("Deploy complete")
