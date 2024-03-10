@@ -72,7 +72,7 @@ file { '/var/www/html/index.html':
   require => File['/var/www/html'],
 }
 
-file { '/var/www/html/404.html':
+file { '/var/www/html/custom_404.html':
   ensure  => 'present',
   content => "Ceci n'est pas une page\n",
   require => File['/var/www/html'],
@@ -82,7 +82,7 @@ file { '/var/www/html/404.html':
 file { '/etc/nginx/sites-available/default':
   ensure  => 'present',
   content => $nginx_conf,
-  require => File['/var/www/html/404.html'],
+  require => File['/var/www/html/custom_404.html'],
 }
 
 # Restart Nginx
