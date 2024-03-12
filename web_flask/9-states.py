@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Import necessary modules
 from flask import Flask, render_template, request, jsonify
 from sqlalchemy import create_engine
