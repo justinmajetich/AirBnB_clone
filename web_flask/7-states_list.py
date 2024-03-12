@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""tarts a Flask web application"""
+"""starts a Flask web application"""
 from models import storage
 from flask import Flask, render_template
 from models.state import State
