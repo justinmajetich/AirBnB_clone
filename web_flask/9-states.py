@@ -1,58 +1,52 @@
-#!/usr/bin/python3
-"""
-You must use storage for fetching data from
-the storage engine (FileStorage or DBStorage) =>
-from models import storage and storage.all(...)
-"""
-from models import storage
-from flask import render_template, Flask
+# Import necessary modules
+from flask import Flask, render_template, request, jsonify
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import State, City, storage # Import models and storage engine
 
+# Configure the database connection
+# Replace the connection string with your actual database credentials
+DATABASE_URI = 'mysql+pymysql://hbnb_dev:hbnb_dev_pwd@localhost/hbnb_dev_db'
+engine = create_engine(DATABASE_URI)
+Session = sessionmaker(bind=engine)
+
+# Initialize the Flask application
 app = Flask(__name__)
 
-
-@app.route("/states", strict_slashes=False)
+# Route for displaying all states
+@app.route('/states', methods=['GET'])
 def states():
-    """
-    Routes:
-    /states: display a HTML page: (inside the tag BODY)
-    H1 tag: “States”
-    UL tag: with the list of all State objects
-    present in DBStorage sorted by name (A->Z) tip
-    LI tag: description of one State: <state.id>: <B><state.name></B>
-    """
-    states = storage.all("State")
-    return render_template("9-states.html", state=states)
+    # Create a new session
+    session = Session()
+    # Query all states, ordered by name
+    states = session.query(State).order_by(State.name).all()
+    # Close the session
+    session.close()
+    # Render the states template with the list of states
+    return render_template('states.html', states=states)
 
+# Route for displaying a specific state and its cities
+@app.route('/states/<int:state_id>', methods=['GET'])
+def state_detail(state_id):
+    # Create a new session
+    session = Session()
+    # Query the state by its ID
+    state = session.query(State).filter(State.id == state_id).first()
+    if state:
+        # If the state is found, get its cities
+        cities = state.cities # Adjust based on your relationship setup
+        # Render the state detail template with the state and its cities
+        return render_template('state_detail.html', state=state, cities=cities)
+    else:
+        # If the state is not found, close the session and render a not found page
+        session.close()
+        return render_template('not_found.html')
 
-@app.route("/states/<id>", strict_slashes=False)
-def states_id(id):
-    """
-    Routes:
-    /states/<id>: display a HTML page: (inside the tag BODY)
-    If a State object is found with this id:
-    H1 tag: “State: ”
-    H3 tag: “Cities:”
-    UL tag: with the list of City objects linked
-    to the State sorted by name (A->Z)
-    LI tag: description of one City: <city.id>: <B><city.name></B>
-    Otherwise:
-    H1 tag: “Not found!”
-    """
-    for state in storage.all("State").values():
-        if state.id == id:
-            return render_template("9-states.html", state=state)
-    return render_template("9-states.html")
-
-
+# Teardown function to close the SQLAlchemy session after each request
 @app.teardown_appcontext
-def teardown(exc):
-    """
-    After each request you must remove the current SQLAlchemy Session:
-    Declare a method to handle @app.teardown_appcontext
-    Call in this method storage.close()
-    """
+def teardown_db(exception=None):
     storage.close()
 
-
-if __name__ == "__main__":
+# Run the Flask application
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
