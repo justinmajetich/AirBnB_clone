@@ -21,7 +21,7 @@ class State(BaseModel, Base):
     def cities(self):
         """add a public getter method cities to
         return the list of City"""
-        val = models.stoarge.all()
+        val = models.storage.all()
         tmp = []
         final = []
         for key in val:
