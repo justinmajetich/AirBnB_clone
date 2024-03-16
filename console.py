@@ -120,27 +120,27 @@ class HBNBCommand(cmd.Cmd):
         Param syntax: <key name>=<value>
         """
         args_list = args.split()
-
+        class_name = args_list.pop(0)
         if not args:
             print("** class name missing **")
             return
-        elif args_list[0] not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         # construct a dict using attributes as listed by <param 1><param 2>...
         new_dict = {}
-        for key_value in args_list[1:]:
+        for key_value in args_list:
             separated_kv = key_value.split('=')
-            new_dict[separated_kv[0]] = separated_kv[1]
-        # create an instance (with BaseModel attributes)
-        new_instance = HBNBCommand.classes[args_list[0]]()
-        storage.save()
+            new_dict[separated_kv[0]] = eval(separated_kv[1])
 
-        key = "{}.{}".format(args_list[0], new_instance.id)
+        # create an instance (with BaseModel attributes)
+        new_instance = HBNBCommand.classes[class_name]()
+
         # add more attributes as listed by <param 1><param 2>...
         for k, v in new_dict.items():
-            storage.all()[key].__dict__[k] = v
-            storage.save()
+            setattr(new_instance, k, v)
+
+        storage.save()
         print(new_instance.id)
         storage.save()
 
