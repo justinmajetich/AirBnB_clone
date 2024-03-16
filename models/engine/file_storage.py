@@ -48,16 +48,3 @@ class FileStorage:
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-
-    @property
-    def cities(self):
-        """
-        Getter attribute that returns a list of City instances
-        with state_id equals to the current State.id
-        """
-        city_lst = []
-        from models.city import City
-        for city in self.all().values():
-            if city.__class__.__name__ == 'City' and city.state_id == self.id:
-                city_lst.append(city)
-                return city_lst
