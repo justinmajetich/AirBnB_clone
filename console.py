@@ -25,7 +25,7 @@ def parse_args(args):
         temp = ""
         for c in value:
             if c == '"':
-                temp += '\\"'
+                temp += '\"'
             else:
                 temp += c
         value = temp
