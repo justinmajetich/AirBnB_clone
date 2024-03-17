@@ -23,10 +23,10 @@ def do_deploy(archive_path):
         return False
 
     try:
-        put(archive_path, '/tmp/')
         file_name = archive_path.split('/')[-1]
         folder_name = file_name.split('.')[0]
         path = "/data/web_static/releases/"
+        put(archive_path, '/tmp/')
         run('mkdir -p {}{}/'.format(path, folder_name))
         run('tar -xzf /tmp/{} -C {}{}/'.format(file_name, path, folder_name))
         run('rm /tmp/{}'.format(file_name))
