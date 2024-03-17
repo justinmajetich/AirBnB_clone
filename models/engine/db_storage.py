@@ -25,7 +25,6 @@ class DBStorage():
 
     def __init__(self):
         """create the engine"""
-        from models.base_model import BaseModel, Base
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(hbnb_dev, hbnb_dev_pwd,
                                               localhost, hbnb_dev_db),
