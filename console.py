@@ -119,16 +119,40 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        class_name = args.split()[0]
-
-        if class_name not in HBNBCommand.classes:
+        args = args.partition(" ")
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        # Use class name to get class from dict
-        new_instance = HBNBCommand.classes[class_name]()
+        new_instance = HBNBCommand.classes[args[0]]()
+        new_instance.save()
 
-        storage.save()
+        if args[2]:
+            class_name = args[0]
+            id = new_instance.id
+            parameters = args[2]
+            parameters = parameters.split(" ")[:]
+
+            for parameter in parameters:
+                att_name = parameter.partition("=")[0]  # name
+                sign = parameter.partition("=")[1]  # =
+                att_value = parameter.partition("=")[2]  # "Antonio"
+
+                if sign and att_value:
+                    if att_value.startswith('\"') and\
+                            not att_value.endswith('\"'):
+                        pass
+
+                    elif not att_value.startswith('\"') and\
+                            att_value.endswith('\"'):
+                        pass
+
+                    else:
+                        att_value = att_value.replace('_', ' ')
+                        update_str = " ".join(
+                            [class_name, id, att_name, att_value])
+                        self.do_update(update_str)
+
         print(new_instance.id)
 
     def help_create(self):
