@@ -3,6 +3,13 @@
 from sqlalchemy import (create_engine)
 import os
 from sqlalchemy.orm import scoped_session, sessionmaker
+from models.base_model import BaseModel, Base
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 hbnb_dev = os.getenv('HBNB_MYSQL_USER')
@@ -28,24 +35,16 @@ class DBStorage():
 
     def all(self, cls=None):
         """query on the current database session"""
-        from models.base_model import BaseModel, Base
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-        new_dict = {}
         if cls != None:
-            for instance in self.__session.query(cls).all():
-                key = "{}.{}".format(instance.__class__.__name__, instance.id)
-                new_dict[key] = instance
+            classes = [cls]
+        else:
+            classes = [User, State, City, Amenity, Place, Review]
+        new_dict = {}
+        for each_cls in classes:
+            for obj in self.__session.query(each_cls).all():
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                new_dict[key] = obj
             return new_dict
-        for instance in self.__session.query(User, State, City,
-                                             Amenity, Place, Review).all():
-            key = "{}.{}".format(instance.__class__.__name__, instance.id)
-            new_dict[key] = instance
-        return new_dict
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -62,13 +61,6 @@ class DBStorage():
 
     def reload(self):
         """create all tables in the database"""
-        from models.base_model import BaseModel, Base
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
