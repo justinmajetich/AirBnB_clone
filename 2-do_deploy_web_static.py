@@ -30,10 +30,11 @@ def do_deploy(archive_path):
         run('mkdir -p {}{}/'.format(path, folder_name))
         run('tar -xzf /tmp/{} -C {}{}/'.format(file_name, path, folder_name))
         run('rm /tmp/{}'.format(file_name))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, folder_name))
+        run('cp -R {0}{1}/web_static/* {0}{1}/'.format(path, folder_name))
         run('rm -rf {}{}/web_static'.format(path, folder_name))
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, folder_name))
         return True
     except Exception as e:
+        print("Error deploying:", e)
         return False
