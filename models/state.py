@@ -14,7 +14,7 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities_rel = relationship("City", passive_deletes=True, backref="state")
+        cities = relationship('City', passive_deletes=True, backref='state')
     else:
         name = ""
 
@@ -24,8 +24,7 @@ class State(BaseModel, Base):
         Returns a list of City in the current State
         """
         city_list = []
-        from models.city import City
-        for city in self.cities_rel:
+        for city in models.storage.all('City').values():
             if city.state_id == self.id:
                 city_list.append(city)
         return city_list
