@@ -166,18 +166,23 @@ class HBNBCommand(cmd.Cmd):
             keyAndValue = params[1:]
             kwargs = {}
             for i in keyAndValue:
-                key, value = parse_args(i)
-                if key and value:
-                    kwargs[key] = value
-            kwargs['updated_at'] = datetime.now().isoformat()
-            kwargs['created_at'] = datetime.now().isoformat()
-            kwargs['__class__'] = params[0]
-            kwargs['id'] = str(uuid.uuid4())
-            new_instance = HBNBCommand.classes[params[0]](**kwargs)
-            storage.new(new_instance)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
+                d = parse_args(i)
+                if d:
+                    key, value = parse_args(i)
+                    if key and value:
+                        kwargs[key] = value
+                else:
+                    pass
+            if len(kwargs.keys()) != 0:
+                kwargs['updated_at'] = datetime.now().isoformat()
+                kwargs['created_at'] = datetime.now().isoformat()
+                kwargs['__class__'] = params[0]
+                kwargs['id'] = str(uuid.uuid4())
+                new_instance = HBNBCommand.classes[params[0]](**kwargs)
+                storage.new(new_instance)
+                storage.save()
+                print(new_instance.id)
+                storage.save()
 
     def help_create(self):
         """ Help information for the create method """
