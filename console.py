@@ -21,7 +21,7 @@ def parse_args(args):
     key, value = args.split('=')
     if value[0] == '"':
         value = value[1:-1]
-        value.replace('_', ' ')
+        value = value.replace('_', ' ')
         temp = ""
         for c in value:
             if c == '"':
