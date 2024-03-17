@@ -1,5 +1,5 @@
 -- This script is used to setup the MySQL database for the 
--- development environment.
+-- test environment.
 
 -- Create the database
 CREATE DATABASE IF NOT EXISTS `hbnb_test_db`;
