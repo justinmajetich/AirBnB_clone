@@ -1,0 +1,25 @@
+name: Airbnb pipline
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  workflow:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: install dependencies
+        run: |
+            sudo apt install python3
+            sudo apt install python3-pip
+            pip3 install pycodestyle
+      - name: run linter and tests
+        run: |
+            pycodestyle --first --show-source --show-pep8 *py models tests
+            python3 -m unittest discover tests
+            curl -sSL https://raw.githubusercontent.com/Adewale66/alx-tools/main/check.sh > check.sh
+            chmod +x check.sh
+            ./check.sh
