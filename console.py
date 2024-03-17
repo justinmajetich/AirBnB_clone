@@ -14,6 +14,9 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+# Debbuger
+from icecream import ic
+
 
 class HBNBCommand(cmd.Cmd):
     """Contains the functionality for the HBNB console"""
@@ -151,16 +154,37 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """Create an object of any class"""
+        args = args.split()
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[args[0]]()
+        for arg in args[1:]:
+            key_value = arg.split("=")
+            if len(key_value) < 2:
+                continue
+            key = key_value[0]
+            value = "=".join(key_value[1:])
+            if value.startswith('"') and value.endswith('"'):
+                value = value.replace("_", " ").strip('"')
+            elif "." in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            setattr(new_instance, key, value)
+
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """Help information for the create method"""
