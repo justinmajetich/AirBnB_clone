@@ -15,7 +15,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 # Debbuger
-from icecream import ic
+# from icecream import ic
 
 
 class HBNBCommand(cmd.Cmd):
@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print("(hbnb)")
+            print("(hbnb)", end=" ")
 
     # Method called before each command is executed
     # responsible for reformatting the command line
@@ -170,7 +170,7 @@ class HBNBCommand(cmd.Cmd):
             key = key_value[0]
             value = "=".join(key_value[1:])
             if value.startswith('"') and value.endswith('"'):
-                value = value.replace("_", " ").strip('"')
+                value = value.replace("_", " ").strip('"').replace('\\"', '"')
             elif "." in value:
                 try:
                     value = float(value)
