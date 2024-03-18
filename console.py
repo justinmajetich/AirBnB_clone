@@ -127,6 +127,9 @@ class HBNBCommand(cmd.Cmd):
         i = 1
         while i < len(line):
             parm = re.search('(.*)=(.*)', line[i])
+            if parm is None:
+                i += 1
+                continue
             key_name = parm.group(1)
             value = parm.group(2)
             if value[0] == '"' and value[-1] == '"':
