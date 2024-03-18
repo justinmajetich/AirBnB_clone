@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ Review module for the HBNB project """
 from models.base_model import BaseModel
+from . import storage
+import uuid
 
 
 class Review(BaseModel):
@@ -8,3 +10,11 @@ class Review(BaseModel):
     place_id = ""
     user_id = ""
     text = ""
+
+    def __init__(self, *args, **kwargs):
+        self.id = kwargs.get('id', str(uuid.uuid4()))
+        Review.place_id = kwargs.get('place_id', Review.place_id)
+        Review.user_id = kwargs.get('user_id', Review.user_id)
+        Review.text = kwargs.get('text', Review.text)
+        super().__init__(*args, **kwargs)
+        storage.new(self)

@@ -164,7 +164,6 @@ class HBNBCommand(cmd.Cmd):
                 kwargs.update({key: val})
             kwargs['created_at'] = datetime.now().isoformat()
             kwargs['updated_at'] = datetime.now().isoformat()
-            print(kwargs)
             new_instance = HBNBCommand.classes[args_list[0]](**kwargs)
             storage.save()
             print(new_instance.id)
