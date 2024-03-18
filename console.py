@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             parm = re.search('(.*)=(.*)', line[i])
             key_name = parm.group(1)
             value = parm.group(2)
-            if value[0] == '"':
+            if value[0] == '"' and value[-1] == '"':
                 string = value[1:-1]
                 string = string.replace('_', ' ' )
                 string = string.replace('\\"' ,'"')
