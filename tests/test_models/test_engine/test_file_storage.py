@@ -4,6 +4,8 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+import subprocess
+import MySQLdb
 
 
 class test_fileStorage(unittest.TestCase):
@@ -16,6 +18,10 @@ class test_fileStorage(unittest.TestCase):
             del_list.append(key)
         for key in del_list:
             del storage._FileStorage__objects[key]
+        self.db = MySQLdb.connect(host="localhost",
+                                  user="username",
+                                  passwd="password", db="test_db")
+        self.cursor = self.db.cursor()
 
     def tearDown(self):
         """ Remove storage file at end of tests """
@@ -23,6 +29,7 @@ class test_fileStorage(unittest.TestCase):
             os.remove('file.json')
         except:
             pass
+        self.db.close()
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
@@ -107,3 +114,19 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_create_state_command(self):
+        # Get the initial count of records in the states table
+        self.cursor.execute("SELECT COUNT(*) FROM states")
+        initial_count = self.cursor.fetchone()[0]
+
+        # Invoke the command to create a new state using the console script
+        subprocess.run(["python", "console.py", "create",
+                        "State", "name='California'"])
+
+        # Get the count of records in the states table after executing command
+        self.cursor.execute("SELECT COUNT(*) FROM states")
+        final_count = self.cursor.fetchone()[0]
+
+        # Check if the difference is +1
+        self.assertEqual(final_count - initial_count, 1)
