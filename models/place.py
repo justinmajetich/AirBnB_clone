@@ -13,6 +13,7 @@ metadata = MetaData()
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    __tablename__ = 'places'
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         place_amenity = Table(
             'place_amenity',
@@ -24,7 +25,6 @@ class Place(BaseModel, Base):
                    primary_key=True, nullable=False)
         )
 
-        __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'))
         user_id = Column(String(60), ForeignKey('users.id'))
         name = Column(String(128), nullable=False)
