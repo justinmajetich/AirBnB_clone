@@ -21,9 +21,10 @@ class FileStorage:
         """Returns a dictionary of models currently in the file storage,
         filtered by the type of class, if provided."""
         if cls:
-            return [
-                obj for obj in self.__objects.values() if isinstance(obj, cls)
-            ]
+            return {
+                k: v for k, v in self.__objects.items() if isinstance(v, cls)
+            }
+
         return self.__objects
 
     def new(self, obj):
