@@ -38,11 +38,11 @@ class Place(BaseModel, Base):
             review_objects = storage.all(Review)
             return [review for review in review_objects.values()
                     if review.place_id == Place.id]
-    amenity_ids = []
+        amenity_ids = []
         def amenities(Self):
              """Return all the amenities associated with the place"""
-            amenity_object = storage.all(Amenity)
-            return [amenity for amenity in self.amenities
+             amenity_object = storage.all(Amenity)
+             return [amenity for amenity in self.amenities
                     if amenity in self.amenities]
         @amenities.setter
         def amenities(self, obj):
