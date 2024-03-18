@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from models.review import Review
 from models.amenity import Amenity
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, null
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table, MetaData
 import os
@@ -13,8 +13,8 @@ metadata = MetaData()
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    __tablename__ = 'places'
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = 'places'
         place_amenity = Table(
             'place_amenity',
             metadata,
