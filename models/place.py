@@ -21,6 +21,7 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         Place.city_id = kwargs.get('city_id', Place.city_id)
         Place.user_id = kwargs.get('user_id', Place.user_id)
         Place.name = kwargs.get('name', Place.name)
@@ -32,5 +33,4 @@ class Place(BaseModel):
         Place.latitude = kwargs.get('latitude', Place.latitude)
         Place.longitude = kwargs.get('longitude', Place.longitude)
         Place.amenity_ids = kwargs.get('amenity_ids', Place.amenity_ids)
-        super().__init__(*args, **kwargs)
-        storage.new(self)
+        

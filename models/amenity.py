@@ -8,6 +8,6 @@ class Amenity(BaseModel):
     name = ""
 
     def __init__(self, *args, **kwargs):
-        Amenity.name = kwargs.get('name', Amenity.name)
         super().__init__(*args, **kwargs)
-        storage.new(self)
+        Amenity.name = kwargs.get('name', Amenity.name)
+        

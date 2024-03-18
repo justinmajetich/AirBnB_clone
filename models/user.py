@@ -13,9 +13,9 @@ class User(BaseModel):
     last_name = ''
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         User.email = kwargs.get('email', User.email)
         User.password = kwargs.get('password', User.password)
         User.first_name = kwargs.get('first_name', User.first_name)
         User.last_name = kwargs.get('last_name', User.last_name)
-        super().__init__(*args, **kwargs)
-        storage.new(self)
+        

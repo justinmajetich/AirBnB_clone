@@ -16,4 +16,3 @@ class State(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         State.name = kwargs.get('name', State.name)
         super().__init__(*args, **kwargs)
-        storage.new(self)

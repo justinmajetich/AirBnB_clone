@@ -16,4 +16,3 @@ class City(BaseModel, Base):
         super().__init__(*args, **kwargs)
         City.state_id = kwargs.get('state_id', City.state_id)
         City.name = kwargs.get('name', City.name)
-        storage.new(self)
