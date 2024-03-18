@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
+
+import re
 from ast import literal_eval
 import cmd
 import sys
@@ -84,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
                     if (
                         pline[0] == "{"
                         and pline[-1] == "}"
-                        and type(eval(pline)) is dict
+                        and isinstance(literal_eval(pline), dict)
                     ):
                         _args = pline
                     else:
@@ -92,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = " ".join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception:
             pass
         finally:
             return line
@@ -122,20 +124,55 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """Overrides the emptyline method of CMD"""
-        pass
 
     def do_create(self, args):
         """Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        model_name = args.split()[0]
+        if model_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[model_name]()
+        if len(args.split()) > 1:
+            # there's a string of attributes to parse
+            new_instance.__dict__.update(self.get_attributes(args))
+
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+
+    @staticmethod
+    def get_attributes(args):
+        """Returns a dictionary of attributes from a string"""
+        pattern = re.compile(r"(\w+)=([^\s]*)")
+        attributes = dict(pattern.findall(args))
+
+        if len(attributes) == 0:
+            return {}
+
+        keys = list(attributes.keys())
+        for key in keys:
+            value = attributes[key]
+            # check for strings, also we will not accept strings with spaces
+            if value[0] == '"' and value[-1] == '"':
+                value = value[1:-1]
+                value = value.replace("_", " ").replace('"', '\"')
+                attributes[key] = value
+            elif "." in value:
+                try:
+                    attributes[key] = float(value)
+                except ValueError:
+                    del attributes[key]
+            else:
+                try:
+                    attributes[key] = int(value)
+                except ValueError:
+                    del attributes[key]
+
+        return attributes
 
     def help_create(self):
         """Help information for the create method"""
@@ -166,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -217,11 +254,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split(".")[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -234,7 +271,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split(".")[0]:
                 count += 1
         print(count)
@@ -290,7 +327,7 @@ class HBNBCommand(cmd.Cmd):
             if args and args[0] == '"':  # check for quoted arg
                 second_quote = args.find('"', 1)
                 att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
+                args = args[second_quote + 1 :]
 
             args = args.partition(" ")
 
@@ -299,7 +336,7 @@ class HBNBCommand(cmd.Cmd):
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '"':
-                att_val = args[2][1:args[2].find('"', 1)]
+                att_val = args[2][1 : args[2].find('"', 1)]
 
             # if att_val was not quoted arg
             if not att_val and args[2]:
