@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-import uuid
-from . import storage
-from datetime import datetime
 from models.base_model import BaseModel
 
 
@@ -27,10 +24,11 @@ class Place(BaseModel):
         Place.name = kwargs.get('name', Place.name)
         Place.description = kwargs.get('description', Place.description)
         Place.number_rooms = kwargs.get('number_rooms', Place.number_rooms)
-        Place.number_bathrooms = kwargs.get('number_bathrooms', Place.number_bathrooms)
+        Place.number_bathrooms = kwargs.get('number_bathrooms',
+                                            Place.number_bathrooms)
         Place.max_guest = kwargs.get('max_guest', Place.max_guest)
-        Place.price_by_night = kwargs.get('price_by_night', Place.price_by_night)
+        Place.price_by_night = kwargs.get('price_by_night',
+                                          Place.price_by_night)
         Place.latitude = kwargs.get('latitude', Place.latitude)
         Place.longitude = kwargs.get('longitude', Place.longitude)
         Place.amenity_ids = kwargs.get('amenity_ids', Place.amenity_ids)
-        

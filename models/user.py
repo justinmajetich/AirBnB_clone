@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class User"""
 from models.base_model import BaseModel
-from . import storage
-import uuid
 
 
 class User(BaseModel):
@@ -18,4 +16,3 @@ class User(BaseModel):
         User.password = kwargs.get('password', User.password)
         User.first_name = kwargs.get('first_name', User.first_name)
         User.last_name = kwargs.get('last_name', User.last_name)
-        
