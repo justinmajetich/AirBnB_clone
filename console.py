@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import argparse
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,45 +116,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
+        parser = argparse.ArgumentParser(
+            description="Create an object of any class")
+        parser.add_argument(
+            "class_name", help="Name of the class to create an object from")
+        parser.add_argument("--attribute", nargs="+",
+                            help="Object attributes in the format key=value",
+                            metavar="key=value")
 
-        args = args.partition(" ")
-        if args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+        try:
+            parsed_args = parser.parse_args(args.split())
 
-        new_instance = HBNBCommand.classes[args[0]]()
-        new_instance.save()
+            if parsed_args.class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        if args[2]:
-            class_name = args[0]
-            id = new_instance.id
-            parameters = args[2]
-            parameters = parameters.split(" ")[:]
+            attrs = {}
+            if parsed_args.attrs:
+                for attr in parsed_args.attrs:
+                    key, value = attr.split("=")
+                    attrs[key] = eval(value) if value else None
 
-            for parameter in parameters:
-                att_name = parameter.partition("=")[0]  # name
-                sign = parameter.partition("=")[1]  # =
-                att_value = parameter.partition("=")[2]  # "Antonio"
+            new_instance = HBNBCommand.classes[parsed_args.class_name](**attrs)
+            new_instance.save()
 
-                if sign and att_value:
-                    if att_value.startswith('\"') and\
-                            not att_value.endswith('\"'):
-                        pass
+            print(new_instance.id)
 
-                    elif not att_value.startswith('\"') and\
-                            att_value.endswith('\"'):
-                        pass
-
-                    else:
-                        att_value = att_value.replace('_', ' ')
-                        update_str = " ".join(
-                            [class_name, id, att_name, att_value])
-                        self.do_update(update_str)
-
-        print(new_instance.id)
+        except argparse.ArgumentError as e:
+            print(e)
+        except Exception as e:
+            print("Error:", e)
 
     def help_create(self):
         """ Help information for the create method """
