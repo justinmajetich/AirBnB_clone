@@ -7,11 +7,15 @@ from sqlalchemy import Column, Integer, String, DateTime
 import os
 
 
-Base = declarative_base()
+Base = object
+if os.getenv('HBNB_TYPE_STORAGE') == "db":
+    Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
     storage_engine = os.getenv('HBNB_TYPE_STORAGE')
+    if storage_engine is None:
+        storage_engine = "db"
 
     if storage_engine == "db":
         id = Column(String(60), primary_key=True)
