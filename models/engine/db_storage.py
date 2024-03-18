@@ -36,7 +36,8 @@ class DBStorage:
         else:
             q = self.__session.query(State).all() + \
                 self.__session.query(City).all() + \
-                self.__session.query(User).all()
+                self.__session.query(User).all() + \
+                self.__session.query(Place).all()
         return {f"{obj.__class__.__name__}.{obj.id}": obj
                 for obj in q}
 
