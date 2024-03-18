@@ -8,8 +8,8 @@ import os
 
 class Amenity(BaseModel, Base):
     """ The amenity class """
+    __tablename__ = 'amenities'
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
-        __tablename__ = 'amenities'
         place_amenity = Table(
             'place_amenity',
             Base.metadata,
