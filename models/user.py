@@ -13,7 +13,6 @@ class User(BaseModel):
     last_name = ''
 
     def __init__(self, *args, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
         User.email = kwargs.get('email', User.email)
         User.password = kwargs.get('password', User.password)
         User.first_name = kwargs.get('first_name', User.first_name)

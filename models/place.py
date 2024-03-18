@@ -21,7 +21,6 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
         Place.city_id = kwargs.get('city_id', Place.city_id)
         Place.user_id = kwargs.get('user_id', Place.user_id)
         Place.name = kwargs.get('name', Place.name)

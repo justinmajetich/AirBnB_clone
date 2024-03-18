@@ -162,14 +162,13 @@ class HBNBCommand(cmd.Cmd):
 
                 # append key: value pair to kwargs
                 kwargs.update({key: val})
-            kwargs['created_at'] = datetime.now().isoformat()
-            kwargs['updated_at'] = datetime.now().isoformat()
             new_instance = HBNBCommand.classes[args_list[0]](**kwargs)
-            storage.save()
+            storage.reload()
+            new_instance.save()
             print(new_instance.id)
         else:
             new_instance = HBNBCommand.classes[args]()
-            storage.save()
+            new_instance.save()
             print(new_instance.id)
 
     def help_create(self):
@@ -245,6 +244,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        from models.engine.db_storage import DBStorage
         print_list = []
 
         if args:
@@ -252,14 +252,23 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            # Retrieve all objects of the specified class
+            if isinstance(storage, DBStorage):
+                cls = HBNBCommand.classes[args]
+                objects = storage.all(cls)
+            else:
+                objects = storage.all(args)
+
+            for obj in objects.values():
+                print_list.append(str(obj))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            # Retrieve all objects
+            objects = storage.all()
+            for obj in objects.values():
+                print_list.append(str(obj))
 
         print(print_list)
+
 
     def help_all(self):
         """ Help information for the all command """

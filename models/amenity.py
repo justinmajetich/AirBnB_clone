@@ -8,7 +8,6 @@ class Amenity(BaseModel):
     name = ""
 
     def __init__(self, *args, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
         Amenity.name = kwargs.get('name', Amenity.name)
         super().__init__(*args, **kwargs)
         storage.new(self)
