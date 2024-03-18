@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import argparse
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,21 +116,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
+        parser = argparse.ArgumentParser(
+            description="Create an object of any class")
+        parser.add_argument(
+            "class_name", help="Name of the class to create an object from")
+        parser.add_argument("--attribute", nargs="+",
+                            help="Object attributes in the format key=value",
+                            metavar="key=value")
 
-        class_name = args.split()[0]
+        try:
+            parsed_args = parser.parse_args(args.split())
 
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+            if parsed_args.class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        # Use class name to get class from dict
-        new_instance = HBNBCommand.classes[class_name]()
+            attrs = {}
+            if parsed_args.attrs:
+                for attr in parsed_args.attrs:
+                    key, value = attr.split("=")
+                    attrs[key] = eval(value) if value else None
 
-        storage.save()
-        print(new_instance.id)
+            new_instance = HBNBCommand.classes[parsed_args.class_name](**attrs)
+            new_instance.save()
+
+            print(new_instance.id)
+
+        except argparse.ArgumentError as e:
+            print(e)
+        except Exception as e:
+            print("Error:", e)
 
     def help_create(self):
         """ Help information for the create method """
