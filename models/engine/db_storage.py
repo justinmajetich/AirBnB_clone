@@ -34,7 +34,7 @@ class DBStorage():
 
     def all(self, cls=None):
         """query on the current database session"""
-        if cls != None:
+        if cls is not None:
             classes = [cls]
         else:
             classes = [User, State, City, Amenity, Place, Review]
@@ -55,7 +55,7 @@ class DBStorage():
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
-        if obj != None:
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
