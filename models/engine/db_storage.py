@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 This module defines a DB storage engine for hbnbclone
+Sets up SQLAchemy and conncets to db
 """
 
 import os
@@ -13,6 +14,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models import classes
+import models
 
 
 class DBStorage:
@@ -41,14 +44,16 @@ class DBStorage:
         Queries a dictionary of models in storage
         """
         obj_dict = {}
-        classes = [User, State, City, Amenity, Place, Review]
-        if cls is None:
-            for cl in classes:
-                obj_dict.update({obj.id: obj for obj in self.__session.query(cl).all()})
-        else:
-            for obj in self.__session.query(cls).all():
-                obj_dict[obj.id] = obj
-        return obj_dict
+        objs = [v for k, v in classes.items()]
+        if cls:
+            if isinstance(cls, str):
+                cls = classes[cls]
+            objs = [cls]
+        for c in objs:
+            for instance in self.__session.query(c):
+                key = str(instance.__class__.__name__) + "." + str(instance.id)
+                obj_dict[key] = instance
+        return (obj_dict)
 
     def new(self, obj):
         """
@@ -62,6 +67,12 @@ class DBStorage:
         """
         self.__session.commit()
 
+    def delete(self, obj=None):
+        """delete from current db session obj"""
+        if obj:
+            self.__session.delete(obj)
+            self.save()
+
     def reload(self):
         """
         Loads storage database'
@@ -70,4 +81,10 @@ class DBStorage:
         SessionFactory = sessionmaker(
             bind=self.__engine, expire_on_commit=False
             )
-        self.__session = scoped_session(SessionFactory)()
+        Session = scoped_session(SessionFactory)
+        self.__session = Session()
+
+    def close(self):
+        """Closes db session"""
+        if self.__session:
+            self.__session.close()
