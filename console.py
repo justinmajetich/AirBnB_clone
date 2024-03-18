@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 value = value.strip('"').replace('"', '\\"')
             else:
                 try:
-                        value = eval(value)
+                    value = eval(value)
                 except Exception:
                     print(f"** couldn't evaluate {value}")
                     pass
@@ -143,15 +143,12 @@ class HBNBCommand(cmd.Cmd):
             if isinstance(value, str):
                 value = value.replace("_", " ")
 
-            
             if hasattr(new_instance, key):
                 setattr(new_instance, key, value)
 
         storage.new(new_instance)
         print(new_instance.id)
         new_instance.save()
-
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -346,6 +343,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

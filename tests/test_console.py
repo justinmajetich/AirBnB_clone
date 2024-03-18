@@ -131,8 +131,8 @@ class TestHBNBCommand(unittest.TestCase):
             call = (f'create Place city_id="0001" name="My_house" number_rooms=4 latitude=37.77 longitude=43.434')  # noqa
             self.HBNB.onecmd(call)
             pl = f.getvalue().strip()
-         # Test if the created instance and kwargs are in the
-         #    output of "all" command
+        # Test if the created instance and kwargs are in the
+        #  output of "all" command
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("all Place")
             output = f.getvalue()
