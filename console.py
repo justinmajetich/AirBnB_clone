@@ -22,13 +22,7 @@ def parse_args(args):
     if value[0] == '"' and value[-1] == '"':
         value = value[1:-1]
         value = value.replace('_', ' ')
-        temp = ""
-        for c in value:
-            if c == '"':
-                temp += '\"'
-            else:
-                temp += c
-        value = temp
+        value = value.replace('"', '\\"')
         return (key, value)
     if '.' in value:
         try:
@@ -182,7 +176,11 @@ class HBNBCommand(cmd.Cmd):
                 storage.new(new_instance)
                 storage.save()
                 print(new_instance.id)
+            else:
+                new_instance = HBNBCommand.classes[params[0]]()
+                storage.new(new_instance)
                 storage.save()
+                print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
