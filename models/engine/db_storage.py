@@ -7,6 +7,7 @@ from models.base_model import Base
 from models.city import City
 from models.state import State
 from models.user import User
+from models.place import Place
 
 
 class DBStorage:
@@ -14,7 +15,7 @@ class DBStorage:
 
     __engine = None
     __session = None
-    __models = [State, City, User]
+    __models = [State, City, User, Place]
 
     def __init__(self):
         """Instantiates a new DBStorage object."""
