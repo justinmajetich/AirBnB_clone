@@ -14,8 +14,3 @@ class City(BaseModel, Base):
     name = Column(String(128), nullable=False)
     places = relationship("Place", backref="city",
                           cascade="all, delete-orphan")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        City.state_id = kwargs.get('state_id', City.state_id)
-        City.name = kwargs.get('name', City.name)

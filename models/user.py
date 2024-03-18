@@ -16,10 +16,3 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
     places = relationship("Place", backref="user",
                           cascade="all, delete-orphan")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        User.email = kwargs.get('email', User.email)
-        User.password = kwargs.get('password', User.password)
-        User.first_name = kwargs.get('first_name', User.first_name)
-        User.last_name = kwargs.get('last_name', User.last_name)
