@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.city import City
 from models.state import State
+from models.user import User
 
 
 class DBStorage:
@@ -13,7 +14,7 @@ class DBStorage:
 
     __engine = None
     __session = None
-    __models = [State, City]
+    __models = [State, City, User]
 
     def __init__(self):
         """Instantiates a new DBStorage object."""
