@@ -18,7 +18,7 @@ classes = {"User": User,
            "Amenity": Amenity,
            "Review": Review
            }
-if os.getenv('HBNB_TYPE+STORAGE') == 'db':
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
