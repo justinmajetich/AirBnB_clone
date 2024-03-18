@@ -143,8 +143,8 @@ class HBNBCommand(cmd.Cmd):
                     continue
                 key = key_val[0]
 
-                # if not hasattr(HBNBCommand.classes[args_list[0]], key):
-                #    continue
+                if not hasattr(HBNBCommand.classes[args_list[0]], key):
+                    continue
 
                 # check for string, float, and integer in value
                 if '\"' in key_val[1]:
