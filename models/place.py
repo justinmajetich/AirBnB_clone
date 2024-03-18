@@ -3,6 +3,9 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+from os import environ
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -17,4 +20,14 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, default=0)
     longitude = Column(Float, default=0)
+    if environ['HBNB_TYPE_STORAGE'] == 'db':
+        reviews = relationship("Review", cascade="all, delete", backref="place")
+    else:
+        @property
+        def reviews(self):
+            """Return all the cities associated with the state"""
+            from models import storage
+            review_objects = storage.all(Review)
+            return [review for review in review_objects.values()
+                    if review.place_id == Place.id]
     amenity_ids = []
