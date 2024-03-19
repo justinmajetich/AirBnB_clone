@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
             from models import storage
             review_objects = storage.all(Review)
             return [review for review in review_objects.values()
-                    if review.place_id == Place.id]
+                    if review.place_id == self.id]
 
         @property
         def amenities(Self):
