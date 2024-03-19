@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
-from . import storage
-import uuid
+from models.base_model import Base
 
-class State(BaseModel):
+
+class State(BaseModel, Base):
     """ State class """
-    name = ""
+    from sqlalchemy import Column, String
+    from sqlalchemy.orm import relationship
 
-    def __init__(self, *args, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
-        State.name = kwargs.get('name', State.name)
-        super().__init__(*args, **kwargs)
-        storage.new(self)
-
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="state",
+                          cascade="all, delete-orphan")
