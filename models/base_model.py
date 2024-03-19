@@ -42,6 +42,7 @@ class BaseModel:
                 setattr(self, key, value)
 
     def __str__(self):
+        from hashlib import sha256
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]#
         dictionary = self.to_dict().copy()
@@ -50,6 +51,8 @@ class BaseModel:
         del dictionary['__class__']
         if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
+        if 'password' in dictionary:
+            dictionary['password'] = sha256(dictionary['password'].encode()).hexdigest()
         return '[{}] ({}) {}'.format(cls, self.id, dictionary)
 
     def save(self):
