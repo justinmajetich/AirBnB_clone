@@ -3,10 +3,15 @@
 
 from os import getenv
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Table, MetaData, Float
+from sqlalchemy import Column, String, Integer, ForeignKey
 from models.base_model import BaseModel, Base
-import models
+from models.amenity import Amenity
 from models.review import Review
+import models
+from sqlalchemy.ext.declarative import declarative_base
+
+MetaData = Base.MetaData
 
 
 class Place(BaseModel, Base):
@@ -24,6 +29,11 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
+    place_amenity = Table('place_amenity', metadata,
+            Column('place_id', String(60),
+                    ForeignKey('place.id'),
+                    primary_key=True,nullable=False))
+
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship(
             "Review", backref="place", cascade="all, delete"
@@ -40,3 +50,5 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+
