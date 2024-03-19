@@ -44,4 +44,4 @@ $  python3 console.py
 ```
 ### Authors
 - Khalfani Khalfan
-- Ken Onyoni
+- Sam Elijah Kwasi
