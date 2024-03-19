@@ -3,13 +3,14 @@
 import uuid
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime
+
 
 Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
+    from sqlalchemy import Column, String, DateTime
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(
         DateTime,
@@ -23,7 +24,6 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
@@ -36,9 +36,7 @@ class BaseModel:
                                                      "%Y-%m-%dT%H:%M:%S.%f")
             kwargs['updated_at'] = datetime.strptime(updated_at,
                                                      "%Y-%m-%dT%H:%M:%S.%f")
-            if 'id' not in kwargs:
-                id_string = str(uuid.uuid4())
-                kwargs.update({'id': id_string})
+            kwargs['id'] = kwargs.get('id', str(uuid.uuid4()))
 
             for key, value in kwargs.items():
                 setattr(self, key, value)

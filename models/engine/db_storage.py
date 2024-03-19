@@ -3,8 +3,6 @@
 """
 
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
 
@@ -15,6 +13,7 @@ class DBStorage:
 
     def __init__(self):
         """Constructor"""
+        from sqlalchemy import create_engine
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}:3306/{}'.format(
                 os.getenv('HBNB_MYSQL_USER'),
@@ -38,7 +37,6 @@ class DBStorage:
         objects = {}
         if cls:
             object_list = self.__session.query(cls).all()
-            print(object_list)
             for obj in object_list:
                 objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
         else:
@@ -54,7 +52,6 @@ class DBStorage:
                 print(object_list)
                 for obj in object_list:
                     objects[f"{class_name}.{obj.id}"] = obj
-
         return objects
 
     def new(self, obj):
@@ -72,6 +69,7 @@ class DBStorage:
 
     def reload(self):
         """ Create all tables in the database """
+        from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)
