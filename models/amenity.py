@@ -2,18 +2,17 @@
 """ State Module for HBNB project """
 
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
-from models.place import Place
-import models
 
 
 class Amenity(BaseModel, Base):
-    """ Amenities present in the airbnb """
+    """Amenities present in the airbnb"""
 
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('place',
-                            secondary='place_amenity',
-                            backref='amenities',
-                            cascade='delete')
+    place_amenities = relationship(
+        "Place",
+        secondary="place_amenity",
+        backref="amenities",
+    )
