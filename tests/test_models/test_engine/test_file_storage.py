@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
-import unittest
-from models.base_model import BaseModel
-from models import storage
 import os
+import unittest
+from unittest.mock import MagicMock
+
+from models import storage
+from models.base_model import BaseModel
 
 
 class test_fileStorage(unittest.TestCase):
@@ -107,3 +109,22 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_valid_object(self):
+        from models.engine.file_storage import FileStorage
+        test_obj = MagicMock()
+        test_obj.id = 1
+        key = "{}.{}".format(type(test_obj).__name__, test_obj.id)
+        FileStorage.__objects[key] = "some value"
+
+        del (self, test_obj)
+
+        self.assertNotIn(key, FileStorage.__objects)
+
+    def test_delete_none_object(self):
+        from models.engine.file_storage import FileStorage
+        initial_objects = FileStorage.__objects.copy()
+
+        del (self, None)
+
+        self.assertEqual(initial_objects, FileStorage.__objects)
