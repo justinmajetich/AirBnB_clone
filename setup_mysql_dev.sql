@@ -1,4 +1,4 @@
--- script that prepares a MySQL server for the project:
+-- script that prepares a MySQL dev server for the project:
 -- Creates a database
 -- Creates a user
 -- Sets password
