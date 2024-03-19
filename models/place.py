@@ -33,10 +33,16 @@ class Place(BaseModel, Base):
             Column('place_id', String(60),
                     ForeignKey('place.id'),
                     primary_key=True,nullable=False))
+            Column('amenity_id', String(60),
+                    ForeignKey('amenities.id'),
+                    primary_key=True, nullable=False))
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship(
             "Review", backref="place", cascade="all, delete"
+        )
+        amenities = relationship(
+                "Amenity", secondary="place_amenity",viewonly=False
         )
 
     else:
@@ -50,5 +56,13 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+        
+        @property
+        def amenities(self):
+            """ Returns the list of Amenity instances"""
 
-
+            amenities_list = []
+            for amenity in models.storage.all(amenity_id).values():
+                if amenity.place_id == self.id:
+                    amenities_list.append(amenity)
+            return amenities_list
