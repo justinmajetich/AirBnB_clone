@@ -164,29 +164,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        class_name = HBNBCommand.classes[args[0]]
-        if class_name == City:
-            state_id = None
-            for arg in args[1:]:
-                key_value = arg.split("=")
-                if len(key_value) < 2:
-                    continue
-                key = key_value[0]
-                value = "=".join(key_value[1:])
-                if key == "state_id":
-                    state_id = value
-                    break
-
-            if state_id is None:
-                print("** no state_id found **")
-                return
-
-            state_key = "State." + state_id
-            if state_key not in storage.all():
-                print("** no state found for state_id **")
-                return
-
-        new_instance = class_name()
+        new_instance = HBNBCommand.classes[args[0]]()
         for arg in args[1:]:
             key_value = arg.split("=")
             if len(key_value) < 2:
