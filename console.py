@@ -118,16 +118,17 @@ class HBNBCommand(cmd.Cmd):
         # Convert each pair into a tuple and then into a dictionary
         result_dict = {}
         for pair in pairs:
-            key, value = pair.split("=")
-            # Remove quotes if present
-            value = value.strip("\"")
-            value = value.replace("_", " ")
-            # Try converting numeric values to int
-            # try:
-            #     value = int(value)
-            # except ValueError:
-            #     pass
-            result_dict[key] = value
+            if '=' in pair:
+                key, value = pair.split("=")
+                # Remove quotes if present
+                value = value.strip("\"")
+                value = value.replace("_", " ")
+                # Try converting numeric values to int
+                # try:
+                #     value = int(value)
+                # except ValueError:
+                #     pass
+                result_dict[key] = value
         return result_dict
 
     def do_create(self, args, **kwargs):
@@ -139,6 +140,8 @@ class HBNBCommand(cmd.Cmd):
             return
         elif class_model not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+        elif not kwargs:
             return
         new_instance = HBNBCommand.classes[class_model](**kwargs)
         storage.save()
