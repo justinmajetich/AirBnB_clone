@@ -25,14 +25,22 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
+        self.id = str(uuid.uuid4())
+        self.created_at = self.updated_at = datetime.now()
+
         if kwargs:
-            kwargs["updated_at"] = datetime.fromisoformat(kwargs["updated_at"])
-            kwargs["created_at"] = datetime.fromisoformat(kwargs["created_at"])
-            del kwargs["__class__"]
+            try:
+                kwargs["updated_at"] = datetime.fromisoformat(
+                    kwargs["updated_at"]
+                )
+                kwargs["created_at"] = datetime.fromisoformat(
+                    kwargs["created_at"]
+                )
+            except (KeyError, ValueError):
+                kwargs["updated_at"] = kwargs["created_at"] = datetime.now()
+
+            kwargs.pop("__class__", None)
             self.__dict__.update(kwargs)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the instance"""
