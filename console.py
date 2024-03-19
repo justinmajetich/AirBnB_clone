@@ -121,20 +121,22 @@ class HBNBCommand(cmd.Cmd):
             if '=' in pair:
                 key, value = pair.split("=")
                 # Remove quotes if present
-                value = value.strip("\"")
-                value = value.replace("_", " ")
-                # Try converting numeric values to int
-                # try:
-                #     value = int(value)
-                # except ValueError:
-                #     pass
-                result_dict[key] = value
+                if key and value:
+                    value = value.strip("\"")
+                    value = value.replace("_", " ")
+                    # Try converting numeric values to int
+                    # try:
+                    #     value = int(value)
+                    # except ValueError:
+                    #     pass
+                    result_dict[key] = value
         return result_dict
 
     def do_create(self, args, **kwargs):
         """ Create an object of any class"""
         class_model, key_val = args.split(maxsplit=1)
         kwargs = self.to_dict(key_val)
+        print(kwargs)
         if not class_model:
             print("** class name missing **")
             return
