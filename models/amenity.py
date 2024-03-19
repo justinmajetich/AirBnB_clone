@@ -13,4 +13,7 @@ class Amenity(BaseModel, Base):
 
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
-    place_amenities = 
+    place_amenities = relationship('place',
+                            secondary='place_amenity',
+                            backref='amenities',
+                            cascade='delete')
