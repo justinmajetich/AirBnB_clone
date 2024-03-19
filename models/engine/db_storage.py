@@ -4,6 +4,8 @@
 This module defines a class to
 manage db storage for hbnb clone
 """
+
+
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
