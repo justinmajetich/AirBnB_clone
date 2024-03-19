@@ -1,20 +1,13 @@
 #!/usr/bin/python3
 """ Review module for the HBNB project """
 from models.base_model import BaseModel
-from . import storage
-import uuid
+from models.base_model import Base
 
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """ Review classto store review information """
-    place_id = ""
-    user_id = ""
-    text = ""
-
-    def __init__(self, *args, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
-        Review.place_id = kwargs.get('place_id', Review.place_id)
-        Review.user_id = kwargs.get('user_id', Review.user_id)
-        Review.text = kwargs.get('text', Review.text)
-        super().__init__(*args, **kwargs)
-        storage.new(self)
+    from sqlalchemy import String, Column, ForeignKey
+    __tablename__ = 'reviews'
+    place_id = Column(String(60), ForeignKey('places.id'), nullable=ForeignKey)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    text = Column(String(1024), nullable=False)
