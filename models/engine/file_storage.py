@@ -15,9 +15,9 @@ class FileStorage:
             return FileStorage.__objects
         else:
             return {
-                key: obj
-                for key, obj in FileStorage.__objects.items()
-                if isinstance(obj, cls)
+                key: value
+                for key, value in FileStorage.__objects.items()
+                if isinstance(value, cls)
             }
 
     def new(self, obj):
@@ -27,14 +27,14 @@ class FileStorage:
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, "w") as f:
-            dict_for_json = {}
-            dict_for_json.update(FileStorage.__objects)
-            for key, obj in dict_for_json.items():
-                dict_for_json[key] = obj.to_dict()
-            json.dump(dict_for_json, f)
+            temp = {}
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
+                temp[key] = val.to_dict()
+            json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file.json"""
+        """Loads storage dictionary from file"""
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -43,7 +43,7 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        classes_dict = {
+        classes = {
             "BaseModel": BaseModel,
             "User": User,
             "Place": Place,
@@ -52,20 +52,17 @@ class FileStorage:
             "Amenity": Amenity,
             "Review": Review,
         }
-
         try:
-            dict_from_json = {}
+            temp = {}
             with open(FileStorage.__file_path, "r") as f:
-                dict_from_json = json.load(f)
-                for key, obj_dictionary in dict_from_json.items():
-                    class_name = obj_dictionary["__class__"]  # Get class name
-                    class_to_call = classes_dict[class_name]
-                    self.__objects[key] = class_to_call(**obj_dictionary)
+                temp = json.load(f)
+                for key, val in temp.items():
+                    self.all()[key] = classes[val["__class__"]](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Deletes obj from __objects"""
+        """Deletes an object from the storage dictionary"""
         if obj is not None:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            del FileStorage.__objects[key]
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            FileStorage.__objects.pop(key, None)
