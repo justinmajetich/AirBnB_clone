@@ -46,7 +46,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    @unittest.skipIf(os.environ['HBNB_TYPE_STORAGE'] == 'db',
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                      'BaseModel not suppurt database model')
     def test_save(self):
         """ Testing save """
