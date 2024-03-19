@@ -45,7 +45,7 @@ class Place(BaseModel, Base):
              """Return all the amenities associated with the place"""
              amenity_object = storage.all(Amenity)
              return [amenity for amenity in amenity_ids
-                    if amenity in place_amenity]
+                    if amenity in amenities]
         @amenities.setter
         def amenities(self, obj):
             """Set all the amenities associated with the place"""
