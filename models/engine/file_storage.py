@@ -62,4 +62,3 @@ class FileStorage:
         objects = FileStorage.__objects
         if obj is not None and obj in objects.values():
             del objects[f"{obj.__class__.__name__}.{obj.id}"]
-

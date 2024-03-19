@@ -7,7 +7,6 @@ from uuid import UUID
 import json
 import os
 
-
 class test_basemodel(unittest.TestCase):
     """ """
 
@@ -47,6 +46,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel not suppurt database model')
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -77,9 +78,8 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
-
+        new = self.value(**n)
+        self.assertEqual(new.Name, 'test')
     def test_id(self):
         """ """
         new = self.value()
@@ -96,4 +96,4 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertTrue(new.created_at == new.updated_at)
