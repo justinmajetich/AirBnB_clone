@@ -28,8 +28,6 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            if '__class__' in kwargs:
-                del kwargs['__class__']
             created_at = kwargs.get('created_at', datetime.now().isoformat())
             updated_at = kwargs.get('updated_at', datetime.now().isoformat())
             kwargs['created_at'] = datetime.strptime(created_at,
@@ -39,21 +37,14 @@ class BaseModel:
             kwargs['id'] = kwargs.get('id', str(uuid.uuid4()))
 
             for key, value in kwargs.items():
-                setattr(self, key, value)
+                if key != '_sa_instance_state' and  key != '__class__':
+                    setattr(self, key, value)
 
     def __str__(self):
         from hashlib import sha256
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]#
-        dictionary = self.to_dict().copy()
-        dictionary['created_at'] = self.created_at
-        dictionary['updated_at'] = self.updated_at
-        del dictionary['__class__']
-        if '_sa_instance_state' in dictionary:
-            del dictionary['_sa_instance_state']
-        if 'password' in dictionary:
-            dictionary['password'] = sha256(dictionary['password'].encode()).hexdigest()
-        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
