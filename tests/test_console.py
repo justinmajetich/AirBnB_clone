@@ -132,7 +132,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.HBNB.onecmd(call)
             pl = f.getvalue().strip()
         # Test if the created instance and kwargs are in the
-        #  output of "all" command
+        #  output of "all" command.
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("all Place")
             output = f.getvalue()
