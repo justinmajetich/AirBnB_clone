@@ -33,8 +33,9 @@ class Place(BaseModel, Base):
             Column('place_id', String(60),
                     ForeignKey('place.id'),
                     primary_key=True,nullable=False)),
-            Column('amenity_id',
-                    String(60),
+
+            
+            Column('amenity_id', String(60),
                     ForeignKey('amenities.id'),
                     primary_key=True, nullable=False))
 
