@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
-from os import environ
+from os import getenv
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -31,7 +31,7 @@ class Place(BaseModel, Base):
     amenities = relationship('Amenity', secondary='place_amenity',
                              viewonly=False, backref='place_amenities')
                           
-    if environ['HBNB_TYPE_STORAGE'] != 'db':
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def reviews(self):
             """Return all the cities associated with the state"""
@@ -39,6 +39,8 @@ class Place(BaseModel, Base):
             review_objects = storage.all(Review)
             return [review for review in review_objects.values()
                     if review.place_id == Place.id]
+
+        @property
         def amenities(Self):
              """Return all the amenities associated with the place"""
              amenity_objects = storage.all(Amenity)
