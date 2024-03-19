@@ -22,12 +22,7 @@ class FileStorage:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
-                if isinstance(val.created_at, str):
-                      temp[key] = val.created_at
-                elif isinstance(val.updated_at, str):
-                      temp[key] = val.updated_at
-                else:
-                    temp[key] = val.to_dict()
+                temp[key] = val.to_dict()
             json.dump(temp, f)
 
     def reload(self):
@@ -50,20 +45,17 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
     def delete(self, obj=None):
-            # from models.base_model import BaseModel
-            self.reload()
-            string = f"{obj.to_dict()['__class__']}.{obj.id}"
-            if string in self.__objects:
-                del self.__objects[string]
-            else:
-                pass
-            print("After delete")
-            for key in self.__objects:
-                print(key)
-            save()
-            for state_key in self.__objects:
-                print("IN FILESTORAGE ", self.__objects[state_key]) 
+        if obj is None:
+            return
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        print(key)
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
+        else:
+            print("Object not found in storage")
