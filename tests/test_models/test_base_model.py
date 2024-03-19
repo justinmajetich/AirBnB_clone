@@ -1,30 +1,26 @@
 #!/usr/bin/python3
 """ """
-from models.base_model import BaseModel
+
+import os
 import unittest
 import datetime
-from uuid import UUID
 import json
-import os
+from models.base_model import BaseModel
 
 
-class test_basemodel(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
+        self.name = "BaseModel"
         self.value = BaseModel
-
-    def setUp(self):
-        """ """
-        pass
 
     def tearDown(self):
         try:
-            os.remove('file.json')
-        except:
+            os.remove("file.json")
+        except FileNotFoundError:
             pass
 
     def test_default(self):
@@ -45,22 +41,24 @@ class test_basemodel(unittest.TestCase):
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
-            new = BaseModel(**copy)
+            _ = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """Testing save"""
         i = self.value()
         i.save()
         key = self.name + "." + i.id
-        with open('file.json', 'r') as f:
+        with open("file.json", "r", encoding="utf-8") as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        dictionary = i.get_dict_without_sa_instance()
+        self.assertEqual(
+            str(i), "[{}] ({}) {}".format(self.name, i.id, dictionary)
+        )
 
     def test_todict(self):
         """ """
@@ -72,13 +70,13 @@ class test_basemodel(unittest.TestCase):
         """ """
         n = {None: None}
         with self.assertRaises(TypeError):
-            new = self.value(**n)
+            _ = self.value(**n)
 
     def test_kwargs_one(self):
         """ """
-        n = {'Name': 'test'}
+        n = {"Name": "test"}
         with self.assertRaises(KeyError):
-            new = self.value(**n)
+            _ = self.value(**n)
 
     def test_id(self):
         """ """
@@ -96,4 +94,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
+        new.save()
         self.assertFalse(new.created_at == new.updated_at)
