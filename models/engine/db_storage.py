@@ -49,7 +49,6 @@ class DBStorage:
             for class_name, class_ in classes.items():
                 # returns a list of obj of the queried class
                 object_list = self.__session.query(class_).all()
-                print(object_list)
                 for obj in object_list:
                     objects[f"{class_name}.{obj.id}"] = obj
         return objects
