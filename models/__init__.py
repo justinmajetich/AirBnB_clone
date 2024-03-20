@@ -1,35 +1,17 @@
 #!/usr/bin/python3
 """
-    instantiates the storage system, and defines
-    dummy classes for further use
+initialize the models package
 """
-from models.engine.file_storage import FileStorage
-from models.engine.db_storage import DBStorage
 
-from models.base_model import BaseModel
-from models.city import City
-from models.review import Review
-from models.state import State
-from models.user import User
-from models.place import Place
-from models.amenity import Amenity
+from os import getenv
 
-from os import environ
 
-dummy_classes = {"BaseModel": BaseModel, "User": User,
-                 "Review": Review, "City": City,
-                 "State": State, "Place": Place,
-                 "Amenity": Amenity}
+storage_t = getenv("HBNB_TYPE_STORAGE")
 
-dummy_tables = {"states": State, "cities": City,
-                "users": User, "places": Place,
-                "reviews": Review, "amenities": Amenity}
-
-storage_engine = environ.get("HBNB_TYPE_STORAGE")
-
-if (storage_engine == "db"):
+if storage_t == "db":
+    from models.engine.db_storage import DBStorage
     storage = DBStorage()
-    storage.reload()
 else:
+    from models.engine.file_storage import FileStorage
     storage = FileStorage()
-    storage.reload()
+storage.reload()

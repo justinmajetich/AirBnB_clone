@@ -1,18 +1,10 @@
 footer {
-        background:white;
-        width: 100%;
-        border-top: 1px solid #CCCCCC;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        bottom: 0;
-        position: fixed;
-        text-align: center;
-}
-
-
-@media only screen and (min-width : 150px) and (max-width : 700px)
-{
-        footer {
-                font-size: 3.5ch;
-        }
+	position: fixed;
+	bottom: 0;
+	background-color: white;
+	height: 60px;
+	width: 100%;
+	text-align: center;
+	line-height: 30px;
+	border-top: 1px solid #CCCCCC;
 }
