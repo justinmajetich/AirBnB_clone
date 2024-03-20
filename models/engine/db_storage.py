@@ -27,7 +27,6 @@ class DBStorage:
         password = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
         db_name = getenv('HBNB_MYSQL_DB')
-
         self.__engine = create_engine("{}+{}://{}:{}@{}/{}".format(
             dialect, driver, user, password, host, db_name
         ), pool_pre_ping=True)
@@ -40,10 +39,10 @@ class DBStorage:
         classes = {
             'State': State,
             'City': City,
-            'User': User,
-            'Amenity': Amenity,
-            'Place': Place,
-            'Review': Review
+            # 'User': User,
+            # 'Amenity': Amenity,
+            # 'Place': Place,
+            # 'Review': Review
         }
 
         objects = {}
