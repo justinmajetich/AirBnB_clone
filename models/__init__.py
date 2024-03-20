@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-"""BACKUP VERSIOON"""
-
-
-from models.engine.file_storage import FileStorage
+"""This module instantiates an object of class FileStorage"""
 import os
 
-storage = os.getenv("HBNB_TYPE_STORAGE")
-
-if storage == "db":
+# Import necessary storage classes
+if os.environ.get("HBNB_TYPE_STORAGE") == "db":
     from models.engine.db_storage import DBStorage
+
     storage = DBStorage()
 else:
+    from models.engine.file_storage import FileStorage
+
     storage = FileStorage()
 
+# Execute storage reload() after instantiation
 storage.reload()
