@@ -43,8 +43,14 @@ class DBStorage:
         """
         db_dict = {}
         classes = {
-            'State': State, 'City': City, 'Place': Place, 'Amenity': Amenity, 'User': User, 'Review': Review
+            'State': State,
+            'City': City,
+            'Place': Place,
+            'Amenity': Amenity,
+            'User': User,
+            'Review': Review
         }
+
         if cls:
             for key in classes.keys():
                 if cls.__name__ == key:
