@@ -9,7 +9,8 @@ from os import environ
 import MySQLdb
 
 
-@unittest.skipIf(environ.get('HBNB_TYPE_STORAGE') != 'db', "Testing Filestorage now!")
+@unittest.skipIf(environ.get('HBNB_TYPE_STORAGE') != 'db',
+                 "Testing Filestorage now!")
 class test_db_Storage(unittest.TestCase):
     """Test class for dbstorage"""
 
@@ -28,5 +29,5 @@ class test_db_Storage(unittest.TestCase):
         try:
             self.cursor.close()
             self.conn.close()
-        except:
+        except Exception:
             pass
