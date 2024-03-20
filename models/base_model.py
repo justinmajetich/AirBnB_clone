@@ -43,6 +43,7 @@ class BaseModel:
     def __str__(self):
         from hashlib import sha256
         """Returns a string representation of the instance"""
+
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         if '_sa_instance_state' in self.__dict__:
             del self.__dict__['_sa_instance_state']
