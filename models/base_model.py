@@ -37,9 +37,13 @@ class BaseModel:
             if 'updated_at' in kwargs:
                 self.updated_at = datetime.strptime(kwargs['updated_at'],
                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                # kwargs['updated_at'] = self.updated_at
+                kwargs.update({'updated_at': self.updated_at})
             if 'created_at' in kwargs:
                 self.created_at = datetime.strptime(kwargs['created_at'],
                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs.update({'created_at': self.created_at})
+                # kwargs['created_a'] = self.created_at
             if '__class__' in kwargs:
                 del kwargs['__class__']
 
