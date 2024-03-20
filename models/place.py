@@ -29,7 +29,6 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    user = relationship("User")
     city = relationship("City")
     reviews = relationship("Review", cascade="all, delete",
                            backref="place", passive_deletes=True)

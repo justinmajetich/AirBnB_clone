@@ -14,12 +14,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models import classes
-import models
 
 
 class DBStorage:
-    """Manaages storage of hbnb models in MySQL database"""
+    """Manages storage of hbnb models in MySQL database"""
     __engine = None
     __session = None
 
@@ -32,28 +30,41 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
         DB_URL = 'mysql+mysqldb://{}:{}@{}:3306/{}'.format(
             user, pwd, host, db
-            )
+        )
         self.__engine = create_engine(
             DB_URL, pool_pre_ping=True
-            )
+        )
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
-        Queries a dictionary of models in storage
+            Queries a dictionary of models in storage
         """
-        obj_dict = {}
-        objs = [v for k, v in classes.items()]
+        db_dict = {}
+        classes = {
+            'State': State, 'City': City, 'Place': Place, 'Amenity': Amenity, 'User': User, 'Review': Review
+        }
         if cls:
-            if isinstance(cls, str):
-                cls = classes[cls]
-            objs = [cls]
-        for c in objs:
-            for instance in self.__session.query(c):
-                key = str(instance.__class__.__name__) + "." + str(instance.id)
-                obj_dict[key] = instance
-        return (obj_dict)
+            for key in classes.keys():
+                if cls.__name__ == key:
+                    objects = (self.__session.query(classes[key]).all())
+                    obj_class = key
+                    break
+            for obj in objects:
+                id = obj.id
+                obj_key = '{}.{}'.format(obj_class, id)
+                db_dict[obj_key] = obj
+            return db_dict
+
+        all_objects = []
+        for cls in classes.values():
+            all_objects.extend(self.__session.query(cls).all())
+        for obj in all_objects:
+            id = obj.id
+            obj_key = '{}.{}'.format(obj.__class__, id)
+            db_dict.update({obj_key: obj})
+        return db_dict
 
     def new(self, obj):
         """
@@ -80,7 +91,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         SessionFactory = sessionmaker(
             bind=self.__engine, expire_on_commit=False
-            )
+        )
         Session = scoped_session(SessionFactory)
         self.__session = Session()
 

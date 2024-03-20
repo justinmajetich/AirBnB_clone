@@ -3,6 +3,7 @@
 import cmd
 import sys
 import argparse
+from os import getenv
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,37 +116,69 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        parser = argparse.ArgumentParser(
-            description="Create an object of any class")
-        parser.add_argument(
-            "class_name", help="Name of the class to create an object from")
-        parser.add_argument("--attribute", nargs="+",
-                            help="Object attributes in the format key=value",
-                            metavar="key=value")
+        """
+            Create an object of any class
+        """
+        import uuid
+        from datetime import datetime
+        att_dict = {}
 
-        try:
-            parsed_args = parser.parse_args(args.split())
+        if not args:
+            print("** class name missing **")
+            return
 
-            if parsed_args.class_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
+        args = args.partition(" ")
+        if args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
 
-            attrs = {}
-            if parsed_args.attrs:
-                for attr in parsed_args.attrs:
-                    key, value = attr.split("=")
-                    attrs[key] = eval(value) if value else None
+        if args[2]:
+            parameters = args[2]
+            parameters = parameters.split(" ")[:]
+            id = str(uuid.uuid4())
 
-            new_instance = HBNBCommand.classes[parsed_args.class_name](**attrs)
-            new_instance.save()
+            att_dict['id'] = id
 
-            print(new_instance.id)
+            if getenv("HBNB_TYPE_STORAGE") == "db":
+                att_dict['created_at'] = datetime.utcnow().isoformat()
+                att_dict['updated_at'] = datetime.utcnow().isoformat()
+            else:
+                att_dict['created_at'] = datetime.now().isoformat()
+                att_dict['updated_at'] = datetime.now().isoformat()
 
-        except argparse.ArgumentError as e:
-            print(e)
-        except Exception as e:
-            print("Error:", e)
+            att_dict['__class__'] = str(args[0])
+
+            for parameter in parameters:
+                att_name = parameter.partition("=")[0]
+                sign = parameter.partition("=")[1]
+                att_value = parameter.partition("=")[2]
+
+                if sign and att_value:
+                    if att_value.startswith('\"') and\
+                            not att_value.endswith('\"'):
+                        pass
+
+                    elif not att_value.startswith('\"') and\
+                            att_value.endswith('\"'):
+                        pass
+
+                    else:
+                        att_value = att_value.replace('_', ' ')
+                        if '"' in att_value:
+                            att_value = att_value[1:-1]
+                            att_value = str(att_value)
+
+                        elif '.' in att_value:
+                            att_value = float(att_value)
+                        else:
+                            att_value = int(att_value)
+
+                    att_dict[att_name] = att_value
+
+        new_instance = HBNBCommand.classes[args[0]](**att_dict)
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -223,16 +256,17 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(self.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            objects = storage.all()
+            for obj in objects.values():
+                print_list.append(str(obj))
 
         print(print_list)
 

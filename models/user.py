@@ -16,7 +16,7 @@ class User(BaseModel, Base):
         last_name = Column(String(128), nullable=True)
 
         places = relationship("Place", cascade="all, delete",
-                              backref="city", passive_deletes=True)
+                              backref="user", passive_deletes=True)
         reviews = relationship("Review", cascade="all, delete",
                                backref="user", passive_deletes=True)
     else:
