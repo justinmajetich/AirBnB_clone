@@ -29,6 +29,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
+        """Deletes obj from __objects if it’s inside, otherwise do nothing""" 
         if not obj:
             return
         keys = "{}.{}".format(type(obj).__name__, obj.id)
