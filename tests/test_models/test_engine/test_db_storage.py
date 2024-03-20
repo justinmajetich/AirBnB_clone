@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""Contains tests for the database storage implementation"""
-
-# Import necessary modules and classes
+"""
+Contains the TestDBStorageDocs and TestDBStorage classes
+"""
 from datetime import datetime
 import inspect
 import models
@@ -17,21 +17,14 @@ import json
 import os
 import pycodestyle
 import unittest
-
-# Alias the DBStorage class for easier reference
 DBStorage = db_storage.DBStorage
-
-# Define a dictionary of classes for testing
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
-
-# Get the value of the environment variable HBNB_TYPE_STORAGE
 storage_t = os.getenv("HBNB_TYPE_STORAGE")
 
 
 class TestDBStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of DBStorage class"""
-
     @classmethod
     def setUpClass(cls):
         """Set up for the doc tests"""
@@ -47,8 +40,8 @@ class TestDBStorageDocs(unittest.TestCase):
     def test_pep8_conformance_test_db_storage(self):
         """Test tests/test_models/test_db_storage.py conforms to PEP8."""
         pep8s = pycodestyle.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_engine/'
-                                    'test_db_storage.py'])
+        result = pep8s.check_files(['tests/test_models/test_engine/\
+test_db_storage.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
@@ -77,7 +70,6 @@ class TestDBStorageDocs(unittest.TestCase):
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
-
     @unittest.skipIf(storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionary"""
