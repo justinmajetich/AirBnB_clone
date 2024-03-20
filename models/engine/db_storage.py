@@ -1,9 +1,5 @@
 #!/usr/bin/python3
-
-"""
-This module defines a class to
-manage db storage for hbnb clone
-"""
+"""Engine for db"""
 
 
 from os import getenv
@@ -17,8 +13,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-
-class DBStorage:
+class DBStorage():
     __engine = None
     __session = None
 
@@ -40,40 +35,32 @@ class DBStorage:
         """Returns dict of current database"""
         db_dict = {}
         classes = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "Place": Place,
-            "State": State,
-            "City": City,
-            "Amenity": Amenity,
-            "Review": Review,
-        }
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
         if cls:
             for key in classes.keys():
                 if cls.__name__ == key:
-                    objects = self.__session.query(classes[key]).all()
+                    objects = (self.__session.query(classes[key]).all())
                     obj_class = key
                     break
             for obj in objects:
                 id = obj.id
-                obj_key = "{}.{}".format(obj_class, id)
+                obj_key = '{}.{}'.format(obj_class, id)
                 db_dict[obj_key] = obj
             return db_dict
-        all_objects = (
-            self.__session.query(City, State, User, Place, Review, Amenity)
-            .filter(
-                City.state_id == State.id,
-                Place.user_id == User.id,
-                Place.city_id == City.id,
-                Review.place_id == Place.id,
-                Review.user_id == User.id,
-            )
-            .all()
-        )
+        all_objects = (self.__session.query
+                            (City, State, User, Place, Review, Amenity)
+                            .filter(City.state_id == State.id,
+                                    Place.user_id == User.id,
+                                    Place.city_id == City.id,
+                                    Review.place_id == Place.id,
+                                    Review.user_id == User.id).all())
         for objs in all_objects:
             for obj in range(0, len(objs)):
                 id = objs[obj].id
-                obj_key = "{}.{}".format(objs[obj].__class__, id)
+                obj_key = '{}.{}'.format(objs[obj].__class__, id)
                 db_dict.update({obj_key: objs[obj]})
         return db_dict
 
@@ -99,7 +86,8 @@ class DBStorage:
     def reload(self):
         """Reload, create all tables"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = (sessionmaker(bind=self.__engine,
+                                        expire_on_commit=False))
         Session = scoped_session(session_factory)
         self.__session = Session()
 
