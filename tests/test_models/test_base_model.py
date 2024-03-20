@@ -47,6 +47,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 
+                     'skipped it tests file storage!')
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -74,11 +76,13 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    # def test_kwargs_one(self):
-    #     """ """
-    #     n = {'Name': 'test'}
-    #     with self.assertRaises(KeyError):
-    #         new = self.value(**n)
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 
+                     'skipp')
+    def test_kwargs_one(self):
+        """ """
+        n = {'Name': 'test'}
+        with self.assertRaises(KeyError):
+            new = self.value(**n)
 
     def test_id(self):
         """ """
