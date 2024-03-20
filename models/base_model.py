@@ -1,23 +1,25 @@
 #!/usr/bin/python3
-"""This module defines the base model class for AirBnB"""
-
+"""This is the base model class for AirBnB"""
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
 import models
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 
+
 Base = declarative_base()
 
-class BaseModel:
-    """This class defines all common attributes/methods for other classes"""
 
+class BaseModel:
+    """This class defines all common attributes/methods for other classes."""
+
+    # Base attributes for all classes
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
     updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a base model object with optional attributes"""
+        """Instantiation of base model class."""
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -35,22 +37,22 @@ class BaseModel:
             self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
-        """Returns a string representation of the base model object"""
+        """Returns a string representation."""
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
-        """Returns a string representation of the base model object"""
+        """Returns a string representation."""
         return self.__str__()
 
     def save(self):
-        """Updates the public instance attribute updated_at to current time"""
+        """Updates the public instance attribute updated_at to current."""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
-        """Converts the base model object to a dictionary"""
+        """Creates a dictionary representation of the instance."""
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
@@ -60,5 +62,5 @@ class BaseModel:
         return my_dict
 
     def delete(self):
-        """Deletes the current instance from storage"""
+        """Deletes the current instance from storage."""
         models.storage.delete(self)
