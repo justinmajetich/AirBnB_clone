@@ -3,9 +3,11 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
+from os import environ
 import os
 
 
+@unittest.skipIf(environ.get('HBNB_TYPE_STORAGE') == 'db', "Testing DB storage now!")
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 

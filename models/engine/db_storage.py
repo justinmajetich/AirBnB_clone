@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """
+This module contains a class that saves class objects
+to MySQL DB tables
 """
 
 import os
