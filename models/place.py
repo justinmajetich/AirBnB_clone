@@ -9,30 +9,30 @@ import models
 
 
 place_amenity = Table("place_amenity", Base.metadata,
-                        Column("place_id", String(60),
-                            ForeignKey("places.id"),
-                            primary_key=True,
-                            nullable=False),
-                        Column("amenity_id", String(60),
-                            ForeignKey("amenities.id"),
-                            primary_key=True,
-                            nullable=False))
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
-    city_id: city id
-    user_id: user id
-    name: name input
-    description: string of description
-    number_rooms: number of room in int
-    number_bathrooms: number of bathrooms in int
-    max_guest: maximum guest in int
-    price_by_night:: pice for a staying in int
-    latitude: latitude in flaot
-    longitude: longitude in float
-    amenity_ids: list of Amenity ids
+        city_id: city id
+        user_id: user id
+        name: name input
+        description: string of description
+        number_rooms: number of room in int
+        number_bathrooms: number of bathrooms in int
+        max_guest: maximum guest in int
+        price_by_night:: pice for a staying in int
+        latitude: latitude in flaot
+        longitude: longitude in float
+        amenity_ids: list of Amenity ids
     """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -49,11 +49,11 @@ class Place(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                                backref="place")
+                               backref="place")
 
         amenities = relationship("Amenity", secondary=place_amenity,
-                                    viewonly=False,
-                                    back_populates="place_amenities")
+                                 viewonly=False,
+                                 back_populates="place_amenities")
     else:
         @property
         def reviews(self):
@@ -66,10 +66,9 @@ class Place(BaseModel, Base):
                 review = shlex.split(review)
                 if (review[0] == 'Review'):
                     lista.append(var[key])
-         
             for elem in lista:
                 if (elem.place_id == self.id):
-                    result.append(elem)                   
+                    result.append(elem)
             return (result)
 
         @property
@@ -81,5 +80,4 @@ class Place(BaseModel, Base):
         def amenities(self, obj=None):
             """ Appends amenity ids to the attribute """
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
-                self.amenity_ids.append(obj.i
-
+                self.amenity_ids.append(obj.id)

@@ -1,29 +1,29 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
-from models.base_model import BaseModel
+"""This is the state class"""
+from sqlalchemy.ext.declarative import declarative_base
+from models.base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
+import models
+from models.city import City
+import shlex
 
 
-class State(BaseModel):
-    """ State class """
-    from sqlalchemy import Column, String
-    from sqlalchemy.orm import relationship
-
-    __tablename__ = 'states'
+class State(BaseModel, Base):
+    """This is the class for State
+    Attributes:
+        name: input name
+    """
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state",
-                            cascade="all, delete-orphan")
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state")
 
     @property
     def cities(self):
-        """Getter attribute cities that returns the list of City instances
-        with state_id equals to the current State.id"""
-        from models import storage
-        # get all obj from storage
-        var = storage.all()
-        #initialize empty lists to store city obj & filtered city obj
+        var = models.storage.all()
         lista = []
         result = []
-        # iterate through each key replace chr split key to list of str
         for key in var:
             city = key.replace('.', ' ')
             city = shlex.split(city)
