@@ -44,7 +44,10 @@ class BaseModel:
         from hashlib import sha256
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        dictionary = self.__dict__.copy()
+        if '_sa_instance_state' in dictionary:
+            del dictionary['_sa_instance_state']
+        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
