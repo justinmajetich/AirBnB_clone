@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""BACKUP VERSION"""
+""""""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
@@ -7,18 +7,28 @@ from os import getenv
 from models.city import City
 import models
 
+
 class State(BaseModel, Base):
     """
     State class representing a geographical state.
     Attributes:
         name (str): The name of the state.
     """
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
 
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship('City', backref='state', cascade='all, delete')
+    __tablename__ = "states"
+    # fmt: off
+    name = Column(
+        String(128),
+        nullable=False)
+
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        cities = relationship(
+            "City",
+            backref="state",
+            cascade="all, delete")
+    # fmt: on
     else:
+
         @property
         def cities(self):
             """
