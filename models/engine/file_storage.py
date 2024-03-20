@@ -30,12 +30,12 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, "w") as f:
-            dict_for_json = {}
-            dict_for_json.update(FileStorage.__objects)
-            for key, obj in dict_for_json.items():
-                dict_for_json[key] = obj.to_dict()
-            json.dump(dict_for_json, f)
+        with open(FileStorage.__file_path, "w") as file:
+            dictionary_to_json = {}
+            dictionary_to_json.update(FileStorage.__objects)
+            for key, my_object in dictionary_to_json.items():
+                dictionary_to_json[key] = my_object.to_dict()
+            json.dump(dictionary_to_json, file)
 
     def reload(self):
         """Loads storage dictionary from file.json"""
@@ -47,7 +47,7 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        classes_dict = {
+        cls_dictionary = {
             "BaseModel": BaseModel,
             "User": User,
             "Place": Place,
@@ -59,11 +59,11 @@ class FileStorage:
 
         try:
             dict_from_json = {}
-            with open(FileStorage.__file_path, "r") as f:
-                dict_from_json = json.load(f)
+            with open(FileStorage.__file_path, "r") as file:
+                dict_from_json = json.load(file)
                 for key, obj_dictionary in dict_from_json.items():
-                    class_name = obj_dictionary["__class__"]  # Get class name
-                    class_to_call = classes_dict[class_name]
+                    class_name = obj_dictionary["__class__"]
+                    class_to_call = cls_dictionary[class_name]
                     self.__objects[key] = class_to_call(**obj_dictionary)
         except FileNotFoundError:
             pass
