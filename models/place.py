@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey
 
 
 class Place(BaseModel, Base):
+    """ The Place class, contains infor about a BnB"""
     __tablename__ = 'places'
 
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
