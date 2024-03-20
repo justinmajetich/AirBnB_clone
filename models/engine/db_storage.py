@@ -92,8 +92,11 @@ class DBStorage:
     def delete(self, obj=None):
         """Delete obj"""
         if obj is not None:
-            results = self.__session.query(State, City, Place, User).all()
-            for row in results:
+            # fmt: off
+            queried_table = self.__session.query(
+                State, City, Place, User).all()
+            # fmt: on
+            for row in queried_table:
                 if obj == row:
                     self.__session.delete(row)
                     break
@@ -102,8 +105,12 @@ class DBStorage:
     def reload(self):
         """Reload, create all tables"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
+        # fmt: off
+        factory = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False)
+        # fmt: on
+        Session = scoped_session(factory)
         self.__session = Session()
 
     def close(self):
