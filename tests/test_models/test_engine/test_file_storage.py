@@ -42,13 +42,13 @@ class TestFileStorage(unittest.TestCase):
 
     def test_all(self):
         """__objects is properly returned"""
-        new = BaseModel()
+        _ = BaseModel()
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
     def test_base_model_instantiation(self):
         """File is not created on BaseModel save"""
-        new = BaseModel()
+        _ = BaseModel()
         self.assertFalse(os.path.exists("file.json"))
 
     def test_empty(self):
