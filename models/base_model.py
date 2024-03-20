@@ -37,17 +37,16 @@ class BaseModel:
             kwargs['id'] = kwargs.get('id', str(uuid.uuid4()))
 
             for key, value in kwargs.items():
-                if key != '_sa_instance_state' and  key != '__class__':
+                if key != '_sa_instance_state' and key != '__class__':
                     setattr(self, key, value)
 
     def __str__(self):
         from hashlib import sha256
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        dictionary = self.__dict__.copy()
-        if '_sa_instance_state' in dictionary:
-            del dictionary['_sa_instance_state']
-        return '[{}] ({}) {}'.format(cls, self.id, dictionary)
+        if '_sa_instance_state' in self.__dict__:
+            del self.__dict__['_sa_instance_state']
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
