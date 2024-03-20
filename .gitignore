@@ -2,3 +2,7 @@
 file.json
 console.py.bak
 main_delete.py
+main_place_amenities.py
+
+# Ignore directories
+**/__pycache__/
