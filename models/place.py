@@ -6,9 +6,13 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 
 association_table = Table('place_amenity', Base.metadata,
-        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
-        )
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False)
+                          )
 
 
 class Place(BaseModel, Base):
@@ -27,7 +31,9 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=False, default=0)
     amenity_ids = []
     reviews = relationship("Review", backref="place", cascade="all, delete")
-    place_amenities = relationship("Amenity", secondary=association_table, viewonly=False)
+    place_amenities = relationship("Amenity",
+                                   secondary=association_table,
+                                   viewonly=False)
 
     @property
     def reviews(self):

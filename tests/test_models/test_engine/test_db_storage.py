@@ -32,7 +32,7 @@ class test_db_Storage(unittest.TestCase):
             self.conn.close()
         except Exception:
             pass
-    
+
     def test_all_given_cls(self):
         """"""
         new = State(name="Carlifonia")
