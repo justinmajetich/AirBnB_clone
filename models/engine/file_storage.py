@@ -8,8 +8,18 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
+        if cls:
+            if isinstance(cls, str):
+                cls = globals().get(cls)
+            if cls and issubclass(cls, BaseModel):
+                cls_dictionary = {
+                        m: n for m,
+                        n in self._objects.items()
+                        if isinstance (n, cls)
+                        }
+                return cls_dictionary
         return FileStorage.__objects
 
     def new(self, obj):
