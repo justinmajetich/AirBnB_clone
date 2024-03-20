@@ -114,14 +114,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class with given parameters
-        Usage: create <Class name> <param 1> <param 2> <param 3>...
-        Param syntax: <key name>=<value>
-        Value syntax:
-        - String: "<value>" (escaped double quotes with a backslash if needed)
-        -Float: <unit>.<decimal>
-        -Integer: <number>
-        """
+        """ Create an object of any class"""
         try:
             if not args:
                 raise SyntaxError()
