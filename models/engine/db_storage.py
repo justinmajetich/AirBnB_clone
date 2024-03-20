@@ -24,9 +24,10 @@ class DBStorage:
         db = getenv("HBNB_MYSQL_DB")
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
+
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                    .format(user, passwd, host, db),
-                                    pool_pre_ping=True)
+                                      .format(user, passwd, host, db),
+                                      pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
@@ -34,7 +35,7 @@ class DBStorage:
     def all(self, cls=None):
         """returns a dictionary
         Return:
-        returns a dictionary of __object
+            returns a dictionary of __object
         """
         dic = {}
         if cls:
@@ -81,4 +82,3 @@ class DBStorage:
         """ calls remove()
         """
         self.__session.close()
-
