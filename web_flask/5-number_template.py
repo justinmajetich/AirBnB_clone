@@ -1,41 +1,49 @@
 #!/usr/bin/python3
-"""placeholder"""
-from flask import render_template, Flask
+"""Script that starts a Flask web application"""
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def num_temp(n):
-    return render_template('5-number.html', n=n)
-
-
-@app.route('/number/<int:n>', methods=['GET'], strict_slashes=False)
-def num_int(n):
-    return "{} is a number".format(n)
-
-
-@app.route('/', methods=['GET'], strict_slashes=False)
-def holla_hbnb():
+@app.route("/", strict_slashes=False)
+def home_page():
+    """Display str"""
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', methods=['GET'], strict_slashes=False)
-def hbnbbb():
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    """Display HBNB"""
     return "HBNB"
 
 
-@app.route('/c/<text>', methods=['GET'], strict_slashes=False)
-def c_is_meh(text):
-    return "C " + text.replace("_", " ")
+@app.route("/c/<text>", strict_slashes=False)
+def c(text):
+    """Display C + text"""
+    text = text.replace("_", " ")
+    return f"C {text}"
 
 
-@app.route('/python/', defaults={'text': 'is cool'},
-           methods=['GET'], strict_slashes=False)
-@app.route('/python/<text>', methods=['GET'], strict_slashes=False)
-def python_awesome(text):
-    return "Python " + text.replace("_", " ")
+@app.route("/python/", defaults={"text": "is_cool"})
+@app.route("/python/<text>", strict_slashes=False)
+def python(text):
+    """Display Python + text"""
+    text = text.replace("_", " ")
+    return f"Python {text}"
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """Display n if it is an int"""
+    return f"{n} is a number"
+
+
+@app.route("/number_template/<int:n>", strict_slashes=False)
+def number_template(n):
+    """Display a HTML page"""
+    return render_template("5-number.html", num=n)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
