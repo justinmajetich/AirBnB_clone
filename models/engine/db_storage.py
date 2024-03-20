@@ -39,7 +39,7 @@ class DBStorage:
         classes = {
             'State': State,
             'City': City,
-            # 'User': User,
+            'User': User,
             # 'Amenity': Amenity,
             # 'Place': Place,
             # 'Review': Review
