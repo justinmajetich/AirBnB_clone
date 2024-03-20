@@ -113,42 +113,28 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def to_dict(self, s):
-        pairs = s.split()
-        # Convert each pair into a tuple and then into a dictionary
-        result_dict = {}
-        for pair in pairs:
-            if '=' in pair:
-                key, value = pair.split("=")
-                # Remove quotes if present
-                if key and value:
-                    value = value.strip("\"")
-                    value = value.replace("_", " ")
-                    # Try converting numeric values to int
-                    # try:
-                    #     value = int(value)
-                    # except ValueError:
-                    #     pass
-                    result_dict[key] = value
-        return result_dict
-
-    def do_create(self, args, **kwargs):
+    def do_create(self, args):
         """ Create an object of any class"""
-        class_model, key_val = args.split(maxsplit=1)
-        kwargs = self.to_dict(key_val)
-        print(kwargs)
-        if not class_model:
+        if not args:
             print("** class name missing **")
             return
-        elif class_model not in HBNBCommand.classes:
+        params = args.split()
+        cls_name = params[0]
+        if cls_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        elif not kwargs:
-            return
-        new_instance = HBNBCommand.classes[class_model](**kwargs)
-        storage.save()
+        new_instance = HBNBCommand.classes[cls_name]()
+        for param in params[1:]:
+            key, value = param.split('=', 1)
+            if value.startswith('"'):
+                value = value.strip('"').replace('_', ' ').replace('\\"', '"')
+            elif '.' in value:
+                value = float(value)
+            else:
+                value = int(value)
+            setattr(new_instance, key, value)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
