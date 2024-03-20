@@ -36,44 +36,49 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns dict of current database"""
-        db_dict = {}
-        classes = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "Place": Place,
-            "State": State,
-            "City": City,
-            "Amenity": Amenity,
-            "Review": Review,
-        }
+        # fmt: off
+        from_databases = {}
+        cls_dictionary = {"BaseModel": BaseModel,
+                   "User": User, "Place": Place,
+                   "State": State, "City": City,
+                   "Amenity": Amenity, "Review": Review,}
+        # fmt: on
         if cls:
-            for key in classes.keys():
+            for key in cls_dictionary.keys():
                 if cls.__name__ == key:
-                    objects = self.__session.query(classes[key]).all()
-                    obj_class = key
+                    my_objs = self.__session
+                    my_objs = my_objs.query(cls_dictionary[key])
+                    my_objs = my_objs.all()
+                    obj_cls = key
                     break
-            for obj in objects:
-                id = obj.id
-                obj_key = "{}.{}".format(obj_class, id)
-                db_dict[obj_key] = obj
-            return db_dict
-        all_objects = (
-            self.__session.query(City, State, User, Place, Review, Amenity)
-            .filter(
-                City.state_id == State.id,
-                Place.user_id == User.id,
-                Place.city_id == City.id,
-                Review.place_id == Place.id,
-                Review.user_id == User.id,
-            )
-            .all()
-        )
-        for objs in all_objects:
-            for obj in range(0, len(objs)):
-                id = objs[obj].id
-                obj_key = "{}.{}".format(objs[obj].__class__, id)
-                db_dict.update({obj_key: objs[obj]})
-        return db_dict
+            for obj in my_objs:
+                object_id = obj.id
+                objectkey = "{}.{}".format(obj_cls, object_id)
+                from_databases[objectkey] = obj
+            return from_databases
+        # fmt: off
+        queried_classes = (
+            self.__session.query(
+                City, State, User,
+                Place, Review, Amenity)
+                .filter(
+                    City.state_id == State.id,
+                    Place.user_id == User.id,
+                    Place.city_id == City.id,
+                    Review.place_id == Place.id,
+                    Review.user_id == User.id,
+                    ).all())
+        # fmt: on
+        for instances in queried_classes:
+            for obj in range(0, len(instances)):
+                object_id = instances[obj].id
+                # fmt: off
+                objectkey = "{}.{}".format(
+                    instances[obj].__class__, object_id)
+                from_databases.update(
+                    {objectkey: instances[obj]})
+                # fmt: on
+        return from_databases
 
     def new(self, obj):
         """Add new obj"""
