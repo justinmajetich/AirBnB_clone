@@ -11,5 +11,5 @@ class Review(BaseModel, Base):
 
     text = Column(String(1025), nullable=False)
     place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
-    user_id = Column(String(60), ForeignKey('userr.id'), nulable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
 
