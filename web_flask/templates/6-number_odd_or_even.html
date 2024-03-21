@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBNB Web Frameworks</title>
-</head>
-<body>
-    <H1>{{text}}</H1>
-</body>
-</html>
+<HTML lang="en">
+<HEAD>
+  <TITLE>HBNB</TITLE>
+</HEAD>
+<BODY>
+  {% if n is divisibleby 2 %}
+  <H1>Number: {{ n }} is even</H1>
+  {% else %}
+  <H1>Number: {{ n }} is odd</H1>
+  {% endif %}
+</BODY>
+</HTML>

@@ -1,36 +1,31 @@
 #!/usr/bin/python3
-
-"""
-Simple flask server with three end points /,  /hbnb and /c
-and listens on port 5000
-"""
+""" 2. Script to start a Flask web application with 3 view functions """
 
 from flask import Flask
 
+
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def hello_holberton():
-    """
-    route to / to Display Hello HBNB on any request
-    """
-    return "Hello HBNB!"
+@app.route('/')
+def hello_world():
+    """ Returns some text. """
+    return 'Hello HBNB!'
 
 
-@app.route("/hbnb", strict_slashes=False)
-def hbnb_route():
-    """
-    Route to /hbnb to display HBNB on any request
-    """
-    return "HBNB"
+@app.route('/hbnb')
+def hello():
+    """ Return other text. """
+    return 'HBNB'
 
 
-@app.route("/c/<string:text>", strict_slashes=False)
-def c_is_fun(text):
-    """Route to /c to display 'C' followed by text"""
-    return "C {}".format(text.replace("_", " "))
+@app.route('/c/<text>')
+def c_text(text):
+    """ replace text with variable. """
+    text = text.replace('_', ' ')
+    return 'C {}'.format(text)
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

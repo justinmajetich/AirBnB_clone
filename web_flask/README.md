@@ -1,36 +1,72 @@
-![img](https://assets.imaginablefutures.com/media/images/ALX_Logo.max-200x150.png)
+# 0x04. AirBnB clone - Web framework
 
-# AirBnB Clone Web framework - Flask
+## Description
+What you should learn from this project:
 
-## Concepts
-For this project, you are expected to look at the following concepts
-- [AirBnB Clone](https://intranet.alxswe.com/concepts/74)
+* What is a Web Framework
+* How to build a web framework with Flask
+* How to define routes in Flask
+* What is a route
+* How to handle variables in a route
+* What is a template
+* How to create a HTML response in Flask by using a template
+* How to create a dynamic template (loops, conditions…)
+* How to display in HTML data from a MySQL database
 
-## Resources
-__Read or watch__:
-1. [What is a web framework](https://intelegain-technologies.medium.com/what-are-web-frameworks-and-why-you-need-them-c4e8806bd0fb)
-2. [A minimal Application](https://flask.palletsprojects.com/en/1.0.x/quickstart/#a-minimal-application)
-3. [Routing](https://flask.palletsprojects.com/en/1.0.x/quickstart/#routing) ( Except "HTTP Methods")
-4. [Rendering templates](https://flask.palletsprojects.com/en/1.0.x/quickstart/#rendering-templates)
-5. [Synopsis](https://jinja.palletsprojects.com/en/2.9.x/templates/#synopsis)
-6. [Variables](https://jinja.palletsprojects.com/en/2.9.x/templates/#variables)
-7. [Comments](https://jinja.palletsprojects.com/en/2.9.x/templates/#list-of-control-structures)
-8. [White space control](https://palletsprojects.com/p/flask/)
-9. [List of control structures](https://jinja.palletsprojects.com/en/2.9.x/templates/#list-of-control-structures)
-10. [Flask](https://palletsprojects.com/p/flask/)
-11. [Jinja](https://jinja.palletsprojects.com/en/2.9.x/templates/)
+---
 
-## Learning objectives
-By the end of this project, you are expected to be able to [explain to anyone]() __without the help of Google__
+### [0. Hello Flask!](./0-hello_route.py)
+* Write a script that starts a Flask web application:
 
-### General
 
-* [X] What is a Web Framework
-* [X] How to build a web framework with Flask
-* [X] How to define routes in Flask
-* [X] What is a route
-* [X]  How to handle variables in a route
-* [X] What is a template
-* [X] How to create a HTML response in Flask by using a template
-* [X] How to create a dynamic template (loops, conditions…)
-* [X] How to display in HTML data from a MySQL database
+### [1. HBNB](./1-hbnb_route.py)
+* Write a script that starts a Flask web application:
+
+
+### [2. C is fun!](./2-c_route.py)
+* Write a script that starts a Flask web application:
+
+
+### [3. Python is cool!](./3-python_route.py)
+* Write a script that starts a Flask web application:
+
+
+### [4. Is it a number?](./4-number_route.py)
+* Write a script that starts a Flask web application:
+
+
+### [5. Number template](./5-number_template.py)
+* Write a script that starts a Flask web application:
+
+
+### [6. Odd or even?](./6-number_odd_or_even.py)
+* Write a script that starts a Flask web application:
+
+
+### [7. Improve engines](./models/engine/file_storage.py)
+* Before using Flask to display our HBNB data, you will need to update some part of our engine:
+
+
+### [8. List of states](./web_flask/7-states_list.py)
+* Write a script that starts a Flask web application:
+
+
+### [9. Cities by states](./web_flask/8-cities_by_states.py)
+* Write a script that starts a Flask web application:
+
+
+### [10. States and State](./web_flask/9-states.py)
+* Write a script that starts a Flask web application:
+
+
+### [11. HBNB filters](./web_flask/10-hbnb_filters.py)
+* Write a script that starts a Flask web application:
+
+
+### [12. HBNB is alive!](./web_flask/100-hbnb.py)
+* Write a script that starts a Flask web application:
+
+---
+
+## Author
+* **Nathan Petersen** - [blueExcess](https://github.com/blueExcess)
