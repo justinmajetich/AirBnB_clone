@@ -149,3 +149,5 @@ Will do so much more, soon
 Explored the Declarative Methods
 Hopes to use AI to scale this up
 Future Projects: Airline and Road transport system, Booking APP.
+Take home lessons:
+- 
