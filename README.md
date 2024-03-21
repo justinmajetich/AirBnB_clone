@@ -148,3 +148,4 @@ Will do so much more, soon
 `Deborah Rise`: Worked more on the MySql side of things
 Explored the Declarative Methods
 Hopes to use AI to scale this up
+Future Projects: Airline and Road transport system, Booking APP.
