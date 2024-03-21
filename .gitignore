@@ -1,0 +1,18 @@
+*
+
+!/**/
+!*.py
+!*.html
+!*.css
+!*.js
+!*.png
+!*.jpg
+!*.sql
+!.gitignore
+!README.md
+!AUTHORS
+!requirements.txt
+
+# exclude driver test files
+*-*.py
+.venv/

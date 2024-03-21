@@ -1,19 +1,13 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""This module tests the State class"""
+from tests.test_models.test_base_model import TestBaseModel
 from models.state import State
 
 
-class test_state(test_basemodel):
-    """ """
+class TestState(TestBaseModel):
+    """Tests the State class"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "State"
-        self.value = State
-
-    def test_name3(self):
-        """ """
-        new = self.value()
+    def test_state_name(self):
+        """Tests the name attribute of the State class"""
+        new = State(name="San Francisco")
         self.assertEqual(type(new.name), str)
