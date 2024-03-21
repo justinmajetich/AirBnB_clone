@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" """
+"""This module tests the Review class"""
 from tests.test_models.test_base_model import TestBaseModel
 from models.review import Review
 
 
 class TestReview(TestBaseModel):
-    """ """
+    """Tests the Review class"""
 
     data = {
         "Review.01d5b8b0-2f20-460a-a303-069a14fc7461": {
@@ -25,13 +25,13 @@ class TestReview(TestBaseModel):
         )
 
     def test_place_id(self):
-        """ """
+        """Tests the `place_id` attribute of the Review class"""
         self.assertEqual(type(self.review.place_id), str)
 
     def test_user_id(self):
-        """ """
+        """Tests the `user_id` attribute of the Review class"""
         self.assertEqual(type(self.review.user_id), str)
 
     def test_text(self):
-        """ """
+        """Tests the `text` attribute of the Review class"""
         self.assertEqual(type(self.review.text), str)

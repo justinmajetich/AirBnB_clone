@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" """
+"""This module tests the Amenity class"""
 from tests.test_models.test_base_model import TestBaseModel
 from models.amenity import Amenity
 
 
 class TestAmenity(TestBaseModel):
-    """ """
+    """Tests the Amenity class"""
 
     data = {
         "__class__": "Amenity",
@@ -15,7 +15,7 @@ class TestAmenity(TestBaseModel):
         "updated_at": "2024-03-19T19:12:06.548249",
     }
 
-    def test_name2(self):
-        """ """
+    def test_amenity_name(self):
+        """Tests the name attribute of the Amenity class"""
         new = Amenity(**self.data)
         self.assertEqual(type(new.name), str)
