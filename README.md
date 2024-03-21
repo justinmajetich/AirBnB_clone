@@ -150,4 +150,4 @@ Explored the Declarative Methods
 Hopes to use AI to scale this up
 Future Projects: Airline and Road transport system, Booking APP.
 Take home lessons:
-- List comprehensions is more time efficient
+- List comprehensions is more time efficient than iterative
