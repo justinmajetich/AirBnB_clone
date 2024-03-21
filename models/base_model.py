@@ -22,22 +22,22 @@ class BaseModel:
                         )
 
     def __init__(self, *args, **kwargs):
-    """
-    Initializes object attributes:
-        - id: randomly generated string
-        - created_at: current datetime
-        - updated_at: same as created_at initially
-    """
-    self.id = str(uuid4())
-    self.created_at = datetime.utcnow()
-    self.updated_at = self.created_at
-    if kwargs:
-        for key, val in kwargs.items():
-            if key in ("created_at", "updated_at"):
-                val = datetime.strptime(kwargs['updated_at'],
-                                        '%Y-%m-%dT%H:%M:%S.%f')
-            if "__class__" not in key:
-                setattr(self, key, val)
+        """
+        Initializes object attributes:
+            - id: randomly generated string
+            - created_at: current datetime
+            - updated_at: same as created_at initially
+        """
+        self.id = str(uuid4())
+        self.created_at = datetime.utcnow()
+        self.updated_at = self.created_at
+        if kwargs:
+            for key, val in kwargs.items():
+                if key in ("created_at", "updated_at"):
+                    val = datetime.strptime(kwargs['updated_at'],
+                                            '%Y-%m-%dT%H:%M:%S.%f')
+                if "__class__" not in key:
+                    setattr(self, key, val)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -66,3 +66,4 @@ class BaseModel:
         purge the object from storage
         """
         models.storage.delete(self)
+
