@@ -144,5 +144,7 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 `NanaFox`: Refactored codes, making them more readable
 Fixed alot of bugs and Errors.
 Worked on afew test cases
+Will do so much more, soon
 `Deborah Rise`: Worked more on the MySql side of things
 Explored the Declarative Methods
+Hopes to use AI to scale this up
