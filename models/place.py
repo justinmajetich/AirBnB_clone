@@ -15,7 +15,7 @@ place_amenity = Table('user', metadata,
 )
 
 class Place(BaseModel, Base):
-    """ The Place class, contains infor about a BnB"""
+    """ The Place class, contains infor about a BnBs"""
     __tablename__ = 'places'
 
 
