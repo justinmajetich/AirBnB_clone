@@ -4,8 +4,10 @@ This module defines a class User
 """
 
 import models
+import sqlalchemy
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
