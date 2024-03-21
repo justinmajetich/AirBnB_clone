@@ -151,4 +151,4 @@ Hopes to use AI to scale this up
 Future Projects: Airline and Road transport system, Booking APP.
 Take home lessons:
 - List comprehensions is more time efficient than iterative methods
-- An Untested code is 
+- An Untested code is an untrusted 
