@@ -140,8 +140,9 @@ class HBNBCommand(cmd.Cmd):
                 dict_args[key] = value
         """Create instance base on parameters"""
         new_instance = HBNBCommand.classes[args](dict_args)
-        new_instance.save()
+        storage.save()
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
