@@ -1,69 +1,35 @@
 #!/usr/bin/python3
-"""
-    Test Case For state Model and its Test
-"""
-from models.base_model import BaseModel
-from models.state import State
-import unittest
-import inspect
-import time
-from datetime import datetime
-import pep8 as pcs
-from unittest import mock
+""" State Module for HBNB project """
 import models
+from models.base_model import BaseModel, Base
+from models.city import City
+import sqlalchemy
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class Teststate(unittest.TestCase):
-    """
-        unitesst for state class
-    """
+class State(BaseModel, Base):
+    """ State class """
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="state")
 
-    def issub_class(self):
+    def __init__(self, *args, **kwargs):
         """
-            test if state class is sub class of base model
+        init inherited
         """
-        state = State()
-        self.assertIsInstance(state, BaseModel)
-        self.assertTrue(hasattr(state, "id"))
-        self.assertTrue(hasattr(state, "created_at"))
-        self.assertTrue(hasattr(state, "update_at"))
+        super().__init__(*args, **kwargs)
 
-    def test_name_attr(self):
-        """
-            Test that State has attribute name
-        """
-        state = State()
-        self.assertTrue(hasattr(state, "name"))
-        if models.storage_type == "db":
-            self.assertEqual(state.name, None)
-        pass
-
-    def test_to_dictstate(self):
-        """
-            test to dict method with state and the type
-            and content
-        """
-        state = State()
-        dict_cont = state.to_dict()
-        self.assertEqual(type(dict_cont), dict)
-        for attr in state.__dict__:
-            self.assertTrue(attr in dict_cont)
-            self.assertTrue("__class__" in dict_cont)
-
-    def test_dict_value(self):
-        """
-            test the returned dictionar values
-        """
-        time_format = "%Y-%m-%dT%H:%M:%S.%f"
-        state = State()
-        dict_con = state.to_dict()
-        self.assertEqual(dict_con["__class__"], "State")
-        self.assertEqual(type(dict_con["created_at"]), str)
-        self.assertEqual(type(dict_con["updated_at"]), str)
-        self.assertEqual(
-            dict_con["created_at"],
-            state.created_at.strftime(time_format)
-        )
-        self.assertEqual(
-            dict_con["updated_at"],
-            state.updated_at.strftime(time_format))
+    if models.storage_type != "db":
+        @property
+        def cities(self):
+            """getter for cities that return
+            a list of city instance equale to
+            curent state id
+            """
+            list_city = []
+            all_inst_c = models.storage.all(City)
+            for value in all_inst_c.values():
+                if value.state_id == self.id:
+                    list_city.append(value)
+            return list_city
