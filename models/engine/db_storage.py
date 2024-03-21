@@ -41,7 +41,7 @@ class DBStorage:
             'City': City,
             'User': User,
             # 'Amenity': Amenity,
-            # 'Place': Place,
+            'Place': Place,
             # 'Review': Review
         }
 

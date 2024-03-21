@@ -11,15 +11,24 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    __tablename__ = 'base_model'
 
-    id = Column(String(60), nullable=False, primary_key=True,
-                default=str(uuid.uuid4()))
-    created_at = Column(DateTime, nullable=False,
-                        default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False,
-                        default=datetime.utcnow(),
-                        onupdate=datetime.now())
+    __tablename__ = "base_model"
+
+    id = Column(
+        String(60),
+        nullable=False,
+        primary_key=True,
+        default=str(uuid.uuid4()),
+    )
+    created_at = Column(
+        DateTime, nullable=False, default=datetime.utcnow()
+    )
+    updated_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow(),
+        onupdate=datetime.now(),
+    )
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
@@ -34,29 +43,32 @@ class BaseModel:
                 if not hasattr(self, key):
                     setattr(self, key, value)
 
-            if 'updated_at' in kwargs:
-                self.updated_at = datetime.strptime(kwargs['updated_at'],
-                                                    '%Y-%m-%dT%H:%M:%S.%f')
+            if "updated_at" in kwargs:
+                self.updated_at = datetime.strptime(
+                    kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
+                )
                 # kwargs['updated_at'] = self.updated_at
-                kwargs.update({'updated_at': self.updated_at})
-            if 'created_at' in kwargs:
-                self.created_at = datetime.strptime(kwargs['created_at'],
-                                                    '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs.update({'created_at': self.created_at})
+                kwargs.update({"updated_at": self.updated_at})
+            if "created_at" in kwargs:
+                self.created_at = datetime.strptime(
+                    kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f"
+                )
+                kwargs.update({"created_at": self.created_at})
                 # kwargs['created_a'] = self.created_at
-            if '__class__' in kwargs:
-                del kwargs['__class__']
+            if "__class__" in kwargs:
+                del kwargs["__class__"]
 
             self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        cls = (str(type(self)).split(".")[-1]).split("'")[0]
+        return "[{}] ({}) {}".format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
+
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -64,14 +76,20 @@ class BaseModel:
     def delete(self):
         """Deletes the curent instance"""
         from models import storage
+
         storage.delete(self)
 
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = self.__dict__.copy()
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.update(
+            {
+                "__class__": (str(type(self)).split(".")[-1]).split(
+                    "'"
+                )[0]
+            }
+        )
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
         dictionary.pop("_sa_instance_state", None)
         return dictionary
