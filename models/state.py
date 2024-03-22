@@ -2,8 +2,6 @@
 """ State Module for HBNB project """
 import models
 from models.base_model import BaseModel, Base
-from models.city import City
-import sqlalchemy
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -12,10 +10,9 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    
-    if models.storage_type == "db":
-        cities = relationship("City", backref="state", cascade="all, delete")
-    else:
+    cities = relationship("City", backref="state")
+
+    if models.storage_type != "db":
         @property
         def cities(self):
             """getter for cities that return
@@ -28,10 +25,4 @@ class State(BaseModel, Base):
                 if value.state_id == self.id:
                     list_city.append(value)
             return list_city
-
-    def __init__(self, *args, **kwargs):
-        """
-        init inherited
-        """
-        super().__init__(*args, **kwargs)
 
