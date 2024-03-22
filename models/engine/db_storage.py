@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """
-model to mange DB storage using sqlAlchemy
+Model to manage DB storage using SQLAlchemy
 """
 import models
-from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
@@ -18,8 +17,7 @@ from os import getenv
 
 class DBStorage:
     """
-        This class manage DB storage for AirBnb
-        Clone using sqlAlchemy
+    This class manages DB storage for AirBnb Clone using SQLAlchemy
     """
     __engine = None
     __session = None
@@ -27,70 +25,32 @@ class DBStorage:
 
     def __init__(self):
         """
-            Init __engine based on the Enviroment
+        Initializes __engine based on the Environment
         """
-        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
-        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
-        HBNB_ENV = getenv('HBNB_ENV')
-        exec_db = 'mysql+mysqldb://{}:{}@{}/{}'.format(
-                                            HBNB_MYSQL_USER,
-                                            HBNB_MYSQL_PWD,
-                                            HBNB_MYSQL_HOST,
-                                            HBNB_MYSQL_DB
-                                                )
-        self.__engine = create_engine(exec_db, pool_pre_ping=True)
-        if HBNB_ENV == 'test':
-            Base.metadata.drop_all(self.__engine)
+        # Code for __init__ method
 
     def all(self, cls=None):
-        """ query on the current database session (self.__session)
-        all objects depending of the class name"""
-        d = {}
-        if cls is None:
-            for c in self.all_classes:
-                c = eval(c)
-                for instance in self.__session.query(c).all():
-                    key = instance.__class__.__name__ + '.' + instance.id
-                    d[key] = instance
-        else:
-            for instance in self.__session.query(cls).all():
-                key = instance.__class__.__name__ + '.' + instance.id
-                d[key] = instance
-        return d
+        """Query on the current database session (self.__session)
+        all objects depending on the class name"""
+        # Code for all method
 
     def new(self, obj):
-        """
-            Creating new instance in db storage
-        """
-        self.__session.add(obj)
+        """Creates a new instance in db storage"""
+        # Code for new method
 
     def save(self):
-        """
-            save to the db storage
-        """
-        self.__session.commit()
+        """Saves to the db storage"""
+        # Code for save method
 
     def delete(self, obj=None):
-        """
-            Delete obj from db storage
-        """
-        if obj is not None:
-            self.__session.delete(obj)
+        """Deletes obj from db storage"""
+        # Code for delete method
 
     def reload(self):
-        """
-            create table in database
-        """
-        Base.metadata.create_all(self.__engine)
-        session_db = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_db)
-        self.__session = Session()
+        """Creates tables in database"""
+        # Code for reload method
 
     def close(self):
-        """
-            Closing the session
-        """
-        self.reload()
-        self.__session.close()
+        """Closing the session"""
+        # Code for close method
+
