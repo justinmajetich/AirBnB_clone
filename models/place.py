@@ -69,25 +69,19 @@ class Place(BaseModel, Base):
         "Amenity",
         secondary="place_amenity",
         viewonly=False)
-    
-    place_amenity = Table(
-        "place_amenity",
-        Base.metadata,
-        Column(
-            "place_id",
-            String(60),
-            ForeignKey(
-                "places.id"),
-                primary_key=True,
-                nullable=False),
-                Column(
-                    "amenity_id",
-                    String(60),
-                    ForeignKey(
-                        "amenities.id"),
-                        primary_key=True,
-                        nullable=False)
-                        )
+
+    place_amenity = Table("place_amenity",
+                          Base.metadata,
+                          Column("place_id",
+                                 String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True,
+                                 nullable=False), Column("amenity_id",
+                                                         String(60),
+                                                         ForeignKey(
+                                                             "amenities.id"),
+                                                         primary_key=True,
+                                                         nullable=False))
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
@@ -95,8 +89,7 @@ class Place(BaseModel, Base):
         def reviews(self):
             """get a list of linked reviews"""
             review_list = []
-            for review in list(
-                models.storage.all(Review).values()):
+            for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
@@ -105,8 +98,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """get amenities"""
             amenity_list = []
-            for amenity in list(
-                models.storage.all(Amenity).values()):
+            for amenity in list(models.storage.all(Amenity).values()):
                 if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list
@@ -114,5 +106,5 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, value):
-            if type(value) == Amenity:
+            if type(value) is Amenity:
                 self.amenity_ids.append(value.id)
