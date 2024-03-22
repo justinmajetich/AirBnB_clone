@@ -1,17 +1,14 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
 from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
 from models.review import Review
+from models.state import State
+from models.user import User
 
-classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-    'State': State, 'City': City, 'Amenity': Amenity,
-    'Review': Review}
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -19,14 +16,14 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-        new_dict = {}
-        if cls:
-            for key, value in FileStorage.__objects.items():
-                if value.__class__ == cls:
+        """returns the dictionary __objects"""
+        if cls is not None:
+            new_dict = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
                     new_dict[key] = value
             return new_dict
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -43,7 +40,11 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-
+        classes = {
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -54,7 +55,13 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        '''delete obj from __objects'''
-        if obj:
-            key = '{}.{}'.format(type(obj).__name__, obj.id)
-            del FileStorage.__objects[key]
+        """Method that deletes obj from __objects"""
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in self.__objects:
+                del self.__objects[key]
+
+    def close(self):
+        """
+        """
+        self.reload()

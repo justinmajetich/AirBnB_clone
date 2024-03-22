@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """
-DBStorage module for HBNB project
+model to mange DB storage using sqlAlchemy
 """
 import models
-from models.base_model import BaseModel, Base
 from models.amenity import Amenity
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -18,7 +18,8 @@ from os import getenv
 
 class DBStorage:
     """
-    This class manages the MySQL database for the HBNB project.
+        This class manage DB storage for AirBnb
+        Clone using sqlAlchemy
     """
     __engine = None
     __session = None
@@ -26,12 +27,13 @@ class DBStorage:
 
     def __init__(self):
         """
-        Initializes the DBStorage instance.
+            Init __engine based on the Enviroment
         """
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
+        HBNB_ENV = getenv('HBNB_ENV')
         exec_db = 'mysql+mysqldb://{}:{}@{}/{}'.format(
                                             HBNB_MYSQL_USER,
                                             HBNB_MYSQL_PWD,
@@ -39,13 +41,12 @@ class DBStorage:
                                             HBNB_MYSQL_DB
                                                 )
         self.__engine = create_engine(exec_db, pool_pre_ping=True)
-        if getenv('HBNB_ENV') == 'test':
+        if HBNB_ENV == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """
-        Queries all objects from the current database session.
-        """
+        """ query on the current database session (self.__session)
+        all objects depending of the class name"""
         d = {}
         if cls is None:
             for c in self.all_classes:
@@ -53,7 +54,7 @@ class DBStorage:
                 for instance in self.__session.query(c).all():
                     key = instance.__class__.__name__ + '.' + instance.id
                     d[key] = instance
-        elif cls.__name__ in self.all_classes:
+        else:
             for instance in self.__session.query(cls).all():
                 key = instance.__class__.__name__ + '.' + instance.id
                 d[key] = instance
@@ -61,26 +62,26 @@ class DBStorage:
 
     def new(self, obj):
         """
-        Adds a new object to the database session.
+            Creating new instance in db storage
         """
         self.__session.add(obj)
 
     def save(self):
         """
-        Saves all changes made to the current database session.
+            save to the db storage
         """
         self.__session.commit()
 
     def delete(self, obj=None):
         """
-        Deletes an object from the database session.
+            Delete obj from db storage
         """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
         """
-        Creates all tables in the database and initializes a new session.
+            create table in database
         """
         Base.metadata.create_all(self.__engine)
         session_db = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -89,8 +90,7 @@ class DBStorage:
 
     def close(self):
         """
-        Closes the current database session.
+            Closing the session
         """
+        self.reload()
         self.__session.close()
-
-
