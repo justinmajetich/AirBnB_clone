@@ -15,7 +15,7 @@ class FileStorage:
             return FileStorage.__objects
         else:
             # fmt: off
-            return {key: my_object 
+            return {key: my_object
                     for key, my_object
                     in FileStorage.__objects.items()
                     if isinstance(my_object, cls)}
