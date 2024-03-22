@@ -78,10 +78,7 @@ class TestConsole(unittest.TestCase):
         Test the destroy command
         """
         with captured_output() as (out, err):
-            # fmt: off
-            self.console.onecmd(
-                "destroy BaseModel {}".format(self.test_obj.id))
-            # fmt: on
+            self.console.onecmd("destroy BaseModel {}".format(self.test_obj.id))
         self.assertNotIn(self.test_obj.id, storage.all().keys())
 
 
