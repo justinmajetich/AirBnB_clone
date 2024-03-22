@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<HTML lang="en-US">
+<HEAD>
+    <META charset="utf-8">
+    <META http-equiv="X-UA-Compatible" content="IE=edge">
+    <META name="viewport" content="width=device-width,initial-scale=1.0">
+    <LINK rel="icon" href="{{ url_for('static', filename = 'images/icon.png') }}">
+    <TITLE>AirBnB Clone</TITLE>
+    <LINK rel="stylesheet" href="{{ url_for('static', filename = 'styles/4-common.css') }}"/>
+    <LINK rel="stylesheet" href="{{ url_for('static', filename = 'styles/3-header.css') }}"/>
+    <LINK rel="stylesheet" href="{{ url_for('static', filename = 'styles/3-footer.css') }}"/>
+    <LINK rel="stylesheet" href="{{ url_for('static', filename = 'styles/6-filters.css') }}"/>
+</HEAD>
+<BODY>
+    <HEADER>
+        <A href="/hbnb_filters"></A>
+    </HEADER>
+    <DIV class="container">
+        <SECTION class="filters">
+            <DIV class="locations">
+                <H3>States</H3>
+                <H4>&nbsp;</H4>
+                <UL class="popover">
+                    {% for state in states %}
+                    <LI>
+                        <H2>{{ state.name }}</H2>
+                        <UL>
+                            {% for city in state.cities %}
+                            <LI>{{ city.name }}</LI>
+                            {% endfor %}
+                        </UL>
+                    </LI>
+                    {% endfor %}
+                </UL>
+            </DIV>
+            <DIV class="amenities">
+                <H3>Amenities</H3>
+                <H4>&nbsp;</H4>
+                <UL class="popover">
+                    {% for amenity in amenities %}
+                    <LI>{{ amenity.name }}</LI>
+                    {% endfor %}
+                </UL>
+            </DIV>
+            <BUTTON>Search</BUTTON>
+        </SECTION>
+    </DIV>
+    <FOOTER>
+        Holberton School
+    </FOOTER>
+</BODY>
+</HTML>
