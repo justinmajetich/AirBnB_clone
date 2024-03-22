@@ -27,3 +27,16 @@ class City(BaseModel, Base):
                     list_place.append(value)
             return list_place
 
+    if models.storage_type != "db":
+        @property
+        def places(self):
+            """getter for places that return
+            a list of place instance equale to
+            curent city id
+            """
+            list_place = []
+            all_inst_p = models.storage.all(Place)
+            for value in all_inst_p.values():
+                if value.city_id == self.id:
+                    list_place.append(value)
+            return list_place
