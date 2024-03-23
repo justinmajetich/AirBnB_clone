@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -113,20 +114,51 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, *args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, args):
+        """Create an object of any class with parameters"""
+
+        """split args into a list"""
+        args_list = args.split()
+        """grabs the first element thats the class name"""
+        class_name = args_list[0]
+
+        if not class_name:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        posible_args = args[1:]
-        line_args = self.precmd(posible_args)
-        new_instance = HBNBCommand.classes[args[0]](line_args)
+        params = {}
+
+        """Creates a dictionary with values from args/cmd-line"""
+        for arg in args_list[1:]:
+            key, value = arg.split('=')
+            """escapes the double quotes, then set each value
+                To there respective type (int, float, str)
+            """
+            if value.startswith('"'):
+                value = value.replace('\\"', '"').replace('_', ' ')
+                value = value[1:-1]
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            params[key] = value
+
+        """Adds create_at & update_at if not exist"""
+        if 'created_at' not in params:
+            params['created_at'] = datetime.datetime.now().isoformat()
+        if 'updated_at' not in params:
+            params['updated_at'] = datetime.datetime.now().isoformat()
+
+        new_instance = HBNBCommand.classes[class_name](**params)
         new_instance.save()
-        print(new_instance.id)
-        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
