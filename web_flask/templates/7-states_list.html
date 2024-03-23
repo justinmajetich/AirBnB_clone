@@ -1,15 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>HBNB</title>
   </head>
   <body>
     <h1>States</h1>
     <ul>
       {% for state_id, state in states.items() %}
-      <li>{{ state_id }}: <b>{{ state.name }}</b></li>
-      {% endfor %}
+      <li>{{ state_id }}: <b>{{ state.name }}</b></li> {% endfor %}
     </ul>
   </body>
 </html>
