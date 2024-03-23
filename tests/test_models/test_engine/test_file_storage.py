@@ -108,3 +108,4 @@ class test_fileStorage(unittest.TestCase):
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
+    
