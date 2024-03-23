@@ -7,7 +7,7 @@
   <body>
     <h1>States</h1>
     <ul>
-      {% for state_id, state in states.items() %}
+      {% for state in states %}
       <li>{{ state.id }}: <b>{{ state.name }}</b></li> {% endfor %}
     </ul>
   </body>
