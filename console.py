@@ -356,32 +356,5 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-    def do_create_user(self, args):
-        """ Creates a new User object """
-        user_info = {}
-        try:
-            for arg in args.split():
-                key, value = arg.split("=")
-                user_info[key] = value.strip('"')
-
-        except ValueError:
-            print("Invalid format")
-            return
-        
-        if all(key in user_info for key in ['email', 'password', 'first_name', 'last_name']):
-            new_user = User(**user_info)
-            new_user.save()
-            print("User created!")
-
-        else:
-            print("Please provide email, password, first_name and last_name")
-
-    def help_create_user(self):
-        """ Prints the help information for the create_user command """
-        print("Creates a new User object")
-        print("Usage: create_user email=\"a@a.com\" password=\"pwd\" first_name=\"fn\" last_name=\"ln\"")
-
-
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
