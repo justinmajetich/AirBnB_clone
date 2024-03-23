@@ -5,18 +5,15 @@
 	</HEAD>
 	<BODY>
 		<H1>States</H1>
-		<UL>
-			{% for state in states %}
+		<UL>{% for state in states %}
 			<LI>{{ state.id }}: <B>{{ state.name }}</B>
-				{% if state.cities %}
 				<UL>
 					{% for city in state.cities|sort(attribute='name') %}
 					<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
 					{% endfor %}
 				</UL>
-				{% endif %}
-			</LI>
-			{% endfor %}
+			
+			</LI>{% endfor %}
 		</UL>
 	</BODY>
 </HTML>
