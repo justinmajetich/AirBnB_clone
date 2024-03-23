@@ -158,6 +158,8 @@ class HBNBCommand(cmd.Cmd):
             params['updated_at'] = datetime.datetime.now().isoformat()
 
         new_instance = HBNBCommand.classes[class_name](**params)
+        storage.new(new_instance)
+        print(new_instance.id)
         new_instance.save()
 
     def help_create(self):
