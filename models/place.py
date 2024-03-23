@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+from models.amenity import Amenity
+from models.review import Review
 
 
 place_amenity = Table('place_amenity', Base.metadata,
