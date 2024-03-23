@@ -3,6 +3,10 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.user import User
 import os
 
 
@@ -108,3 +112,51 @@ class test_fileStorage(unittest.TestCase):
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
+    def test_create_state(self):
+        """ Test creating a State """
+        new_state = State()
+        self.assertTrue(new_state.id in storage.all())
+
+    def test_create_state_with_name(self):
+        """ Test creating a State with a name """
+        new_state = State(name="California")
+        self.assertTrue(new_state.id in storage.all())
+        self.assertEqual(new_state.name, "California")
+
+    def test_create_city_with_state(self):
+        """ Test creating a City with a State """
+        new_state = State(name="California")
+        new_city = City(state_id=new_state.id, name="San_Francisco")
+        self.assertTrue(new_city.id in storage.all())
+        self.assertEqual(new_city.state_id, new_state.id)
+        self.assertEqual(new_city.name, "San_Francisco")
+
+    def test_create_multiple_cities_with_same_state(self):
+        """ Test creating multiple Cities with the same State """
+        new_state = State(name="California")
+        city1 = City(state_id=new_state.id, name="San_Francisco")
+        city2 = City(state_id=new_state.id, name="Fremont")
+        self.assertTrue(city1.id in storage.all())
+        self.assertTrue(city2.id in storage.all())
+
+    def test_create_user_place_related_objects(self):
+        """ Test creating User, Place, and related objects """
+        new_state = State(name="California")
+        new_city = City(state_id=new_state.id, name="San_Francisco_is_super_cool")
+        new_user = User(email="my@me.com", password="pwd", first_name="FN", last_name="LN")
+        new_place = Place(city_id=new_city.id, user_id=new_user.id, name="My_house",
+                          description="no_description_yet", number_rooms=4, number_bathrooms=1,
+                          max_guest=3, price_by_night=100, latitude=120.12, longitude=101.4)
+        self.assertTrue(new_user.id in storage.all())
+        self.assertTrue(new_place.id in storage.all())
+
+    def test_show_place(self):
+        """ Test showing a Place """
+        new_state = State(name="California")
+        new_city = City(state_id=new_state.id, name="San_Francisco_is_super_cool")
+        new_user = User(email="my@me.com", password="pwd", first_name="FN", last_name="LN")
+        new_place = Place(city_id=new_city.id, user_id=new_user.id, name="My_house",
+                          description="no_description_yet", number_rooms=4, number_bathrooms=1,
+                          max_guest=3, price_by_night=100, latitude=120.12, longitude=101.4)
+        output = storage.all()[f"Place.{new_place.id}"]
+        self.assertEqual(new_place.id, output.id)
