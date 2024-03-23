@@ -57,18 +57,16 @@ class Place(BaseModel, Base):
             from models import storage
             
             amenity_list = []
-            amenitites = storage.all('Amenity').values()
 
-            for amenity in amenitites:
-                if self.id == amenity.amenity_ids:
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
-
             return amenity_list
         
         @amenities.setter
-        def amenitites(self, obj):
+        def amenitites(self, value):
             """ Handles the append method for adding an Amenity.id
                 to the attribute amenity_ids
             """
-            if isinstance(obj, 'Amenity'):
-                self.amenity_id.append(obj.id)
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
