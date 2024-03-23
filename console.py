@@ -124,9 +124,9 @@ class HBNBCommand(cmd.Cmd):
         posible_args = args[1:]
         line_args = self.precmd(posible_args)
         new_instance = HBNBCommand.classes[args[0]](line_args)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
