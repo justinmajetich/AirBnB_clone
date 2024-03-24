@@ -12,8 +12,8 @@ body {
 
 /* Container style */
 .container {
-  max-width: 1000px;
-  margin: 30px;
+  width: 1000px;
+  margin: 30px auto;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
