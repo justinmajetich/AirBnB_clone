@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.city import City
+import models
 import os
 
 
@@ -11,7 +12,6 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="delete", backref="state")
 
     if os.getenv('HBNB_TYPE_STORAGE') != "db":
         @property
@@ -24,3 +24,6 @@ class State(BaseModel, Base):
                     city_list.append(city)
             
             return city_list
+    else:
+        cities = relationship("City", cascade="delete", backref="state")
+

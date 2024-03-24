@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}' \
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -158,7 +158,6 @@ class HBNBCommand(cmd.Cmd):
             params['updated_at'] = datetime.datetime.now().isoformat()
 
         new_instance = HBNBCommand.classes[class_name](**params)
-        storage.new(new_instance)
         print(new_instance.id)
         new_instance.save()
 
@@ -235,21 +234,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        args = args.split()
         print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        
+        if len(args) == 0:
+            objects = storage.all()
+        elif args[0] in HBNBCommand.classes:
+            objects = storage.all(HBNBCommand.classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in objects:
+            print_list.append(str(objects[key]))
+        print("[" + ", ".join(print_list) + "]")
 
     def help_all(self):
         """ Help information for the all command """
