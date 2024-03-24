@@ -58,7 +58,7 @@ def number_odd_or_even(n):
 def states_list():
     """Display a HTML page with all State objects present in DBStorage"""
     states = storage.all(State)
-    states = sorted(states.values(), key=lambda state: state.name)
+#    states = sorted(states.values(), key=lambda state: state.name)
     return render_template("7-states_list.html", states=states)
 
 
@@ -70,8 +70,7 @@ def cities_by_states():
     cities = storage.all(City)
     return render_template(
             "8-cities_by_states.html",
-            states=states,
-            cities=cities
+            states=states
             )
 
 
