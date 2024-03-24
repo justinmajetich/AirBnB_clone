@@ -236,7 +236,7 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         args = args.split()
         print_list = []
-        
+
         if len(args) == 0:
             objects = storage.all()
         elif args[0] in HBNBCommand.classes:
@@ -356,4 +356,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
