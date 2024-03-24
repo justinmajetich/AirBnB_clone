@@ -1,0 +1,11 @@
+/*
+ * === Header style ===
+ */
+
+/* Header style */
+header {
+  background: #fff url('../images/logo.png') 20px center no-repeat;
+  border-bottom: 1px solid #ccc;
+  height: 70px;
+  width: 100%;
+}
