@@ -38,13 +38,18 @@ class DBStorage:
     def all(self, cls=None):
         """ Query objects from the database """
         dict_objs = {}
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                objs = self.__session.query(classes[clss]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    dict_objs[key] = obj
-        return (dict_objs)
+        if cls:
+            db_list = self.__session.query(cls).all()
+            for target in db_list:
+                key = target.__class__.__name__ + '.' + target.id
+                dict_objs[key] = target
+        else:
+            for inst in classes.values():
+                db_list = self.__session.query(inst).all()
+                for target in db_list:
+                    key = target.__class__.__name__ + '.' + target.id
+                    dict_objs[key] = target
+        return dict_objs
 
     def new(self, obj):
         """ Add a new object to the current session """
