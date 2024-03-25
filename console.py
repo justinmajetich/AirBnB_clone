@@ -118,9 +118,15 @@ class HBNBCommand(cmd.Cmd):
         """Create an object of any class with parameters"""
 
         """split args into a list"""
-        args_list = args.split()
+        if len(args) != 0:
+            args_list = args.split()
+        else:
+            args_list = None
         """grabs the first element thats the class name"""
-        class_name = args_list[0]
+        if args_list:
+            class_name = args_list[0]
+        else:
+            class_name = None
 
         if not class_name:
             print("** class name missing **")
