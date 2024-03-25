@@ -143,12 +143,12 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     value = float(value)
                 except ValueError:
-                    pass
+                    continue
             else:
                 try:
                     value = int(value)
                 except ValueError:
-                    pass
+                    continue
             params[key] = value
 
         """Adds create_at & update_at if not exist"""
