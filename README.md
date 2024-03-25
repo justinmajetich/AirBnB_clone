@@ -145,7 +145,7 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 
 ### Original Authors : 
 
-- Ezra Nobrega : [@eNobreg](https://github.com/eNobreg)
+- Ezra Nobrega : [eNobreg](https://github.com/eNobreg)
 - Justin Majetich : [justinmajetich](https://github.com/justinmajetich)
 
 ### Fork Authors : 
