@@ -36,7 +36,7 @@
           </ul>
         </div>
         <div class="amenities">
-          <h3>Amenities:</h3>
+          <h3>Amenities</h3>
           <h4>&nbsp;</h4>
           <ul class="popover">
 		<li>
@@ -48,6 +48,7 @@
           </ul>
         </div>
         <button>Search</button>
+      </section>
 	<section class="places">
 		<h1>Places</h1>
 		{% for place in places %}
@@ -68,7 +69,7 @@
 					<p>{{ place.number_bathrooms }} Bathrooms</p>
 				</div>
 			</div>
-			<div class="user"><strong>Owner:</strong> {{ place.user.first_name }}</div>
+			<div class="user"><strong>Owner:</strong> {{ place.user.first_name }} {{ place.user.last_name }}</div>
 			<div class="description">
 				<p>{{ place.description|safe }}</p>
 			</div>
