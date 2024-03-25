@@ -22,7 +22,10 @@ class TestHBNBCommand(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def assert_stdout(self, expected_output, mock_stdout, function, *args):
-        function(*args)
+        if callable(function):
+            function(*args)
+        else:
+            raise TypeError("The 'function' argument must be callable.")
         self.assertEqual(mock_stdout.getvalue(), expected_output)
 
     def test_create_state_present(self):
