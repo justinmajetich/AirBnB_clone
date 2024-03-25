@@ -62,15 +62,16 @@ class Place(BaseModel, Base):
         def amenities(self):
             """ Getter attribute for the linked amenities """
             amenity_list = []
-            all_ame = models.storage.all(Amenity)
-            for key, value in all_ame.items():
-                if key in self.amenity_ids:
-                    amenity_list.append(value)
+            all_ame = models.storage.all(Amenity).values()
+            for obj in all_ame:
+                if 'Amenity' + obj.id in self.amenity_ids:
+                    amenity_list.append(obj)
             return amenity_list
 
         @amenities.setter
         def amenities(self, value=None):
             """ Setter attribute for amenities """
-            if type(value).__name__ == 'Amenity':
-                new_ame = 'Amenity' + '.' + value.id
-                self.amenity_ids.append(new_ame)
+            if isinstance(value, Amenity):
+                amenity_id = 'Amenity' + value.id
+                if amenity_id not in self.amenity_ids:
+                    self.amenity_ids.append(amenity_id)
