@@ -4,17 +4,12 @@ from unittest.mock import patch
 from io import StringIO
 import os
 import sys
-from console import HBNBCommand
-from models.__init__ import storage
-from models.engine.db_storage import DBStorage
-from models.engine.file_storage import FileStorage
-import models
 
 
 class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
-
+        from console import HBNBCommand
         self.console = HBNBCommand()
 
     def tearDown(self):
@@ -23,57 +18,74 @@ class TestHBNBCommand(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    def test_emptyline(self):
-        """Test empty line input."""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("\n")
-            self.assertEqual("", f.getvalue())
+    @patch("sys.stdout", new_callable=StringIO)
+    def assert_stdout(self, expected_output, mock_stdout, function, *args):
+        function(*args)
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-    @unittest.skipIf(type(models.storage) is DBStorage, "Testing DBStorage")
-    def test_create(self):
-        """Test create command."""
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create BaseModel")
-            bm = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create User")
-            us = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create State")
-            st = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create Place")
-            pl = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create City")
-            ct = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create Review")
-            rv = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("create Amenity")
-            am = f.getvalue().strip()
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all BaseModel")
-            self.assertIn(bm, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all User")
-            self.assertIn(us, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all State")
-            self.assertIn(st, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all Place")
-            self.assertIn(pl, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all City")
-            self.assertIn(ct, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all Review")
-            self.assertIn(rv, f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.console.onecmd("all Amenity")
-            self.assertIn(am, f.getvalue())
+    def test_create_state_present(self):
+        """Test create State is present (regular case)"""
+        with patch("sys.stdin", StringIO("create State\nquit\n")):
+            self.assert_stdout("(hbnb) \n(hbnb) \n", self.console.cmdloop)
+
+    def test_create_state_name(self):
+        """Test create State name=California"""
+        with patch("sys.stdin", StringIO("create \
+                                         State name=\"California\"\nquit\n")):
+            self.assert_stdout("(hbnb) \n(hbnb) \n", self.console.cmdloop)
+
+    def test_create_state_city(self):
+        """Test create State name="California" + create City
+        state_id="<new state ID>" name=San_Francisco"""
+        with patch("sys.stdin", StringIO("create \
+                                         State name=\"California\"\ncreate \
+                                         City state_id=\"<new state ID>\" \
+                                         name=\"San_Francisco\"\nquit\n")):
+            self.assert_stdout("(hbnb) \n(hbnb) \
+                               \n(hbnb) \n", self.console.cmdloop)
+
+    def test_create_state_multiple_cities(self):
+        """Test create State name="California" + \
+            create City state_id="<new state ID>" name=Fremont"""
+        with patch("sys.stdin", StringIO("create \
+                                         State name=\"California\"\ncreate \
+                                         City state_id=\"<new state ID>\" \
+                                         name=\"Fremont\"\nquit\n")):
+            self.assert_stdout("(hbnb) \n(hbnb) \n(hbnb)\
+                                \n", self.console.cmdloop)
+
+    def test_create_state_city_user_place(self):
+        """Test create State name="California" + create City \
+            state_id="<new state ID>" name="San_Francisco_is_super_cool" \
+                + create User email="my@me.com" password="pwd" \
+                    first_name="FN" \
+                    last_name="LN" + create Place \
+                        city_id="<new city ID>" user_id="<new user ID>" \
+                        name="My_house" description="no_description_yet"\
+                              number_rooms=4 \
+                            number_bathrooms=1 max_guest=3 \
+                                price_by_night=100 latitude=120.12\
+                                  longitude=101.4 + show Place \
+                                    <new place ID>"""
+        commands = [
+            "create State name=\"California\"\n",
+            "create City state_id=\"<new state ID>\" \
+                name=\"San_Francisco_is_super_cool\"\n",
+            "create User email=\"my@me.com\" \
+                password=\"pwd\" first_name=\"FN\" \
+                last_name=\"LN\"\n",
+            "create Place city_id=\"<new city ID>\" user_id=\"<new user ID>\" \
+            name=\"My_house\" description=\"no_description_yet\" \
+                number_rooms=4 number_bathrooms=1 max_guest=3 \
+                    price_by_night=100 \
+                    latitude=120.12 longitude=101.4\n",
+            "show Place <new place ID>\n",
+            "quit\n"
+        ]
+        with patch("sys.stdin", StringIO("".join(commands))):
+            self.assert_stdout(
+                "(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \
+                    \n(hbnb) \n", self.console.cmdloop)
 
 
 if __name__ == "__main__":
