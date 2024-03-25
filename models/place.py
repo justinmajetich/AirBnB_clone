@@ -3,16 +3,17 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 from models.review import Review
 from models.amenity import Amenity
 
 
-amenity_place = Table("place_amenity", Base.metadata,
-                      Column("place_id", String(60),
-                             ForeignKey("places.id"),
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
                              primary_key=True, nullable=False),
-                      Column("amenity_id", String(60),
-                             ForeignKey("amenities.id"),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
                              primary_key=True, nullable=False))
 
 class Place(BaseModel, Base):
@@ -31,8 +32,8 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     reviews = relationship("Review", cascade="all, delete", backref="place")
-    amenities = relationship("Amenity", secondary="place_amenity",
-                              viewonly=True)
+    amenities = relationship("Amenity", secondary=place_amenity,
+                              viewonly=True, backref='place_amenities')
     
     def __init__(self, *args, **kwargs):
         """This method happens as soon as a instance is created"""
