@@ -13,6 +13,3 @@ class Amenity(BaseModel, Base):
     __tablename__ = "amenities"
 
     name = Column(String(128), nullable=False) if storage_type == 'db' else ''
-#    place_amenities = relationship("Place", secondary="place_amenity",
-#                                    backref="amenities", viewonly=False)
-
