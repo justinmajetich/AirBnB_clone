@@ -11,7 +11,7 @@ from models.__init__ import storage
 class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
-        
+
         self.console = HBNBCommand()
 
     def tearDown(self):
@@ -122,18 +122,22 @@ class TestHBNBCommand(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_create(self, mock_stdout):
         self.console.do_create("BaseModel")
-        self.assertIn("created_at", storage.all()["BaseModel." + mock_stdout.getvalue().strip()].to_dict())
-        self.assertIn("updated_at", storage.all()["BaseModel." + mock_stdout.getvalue().strip()].to_dict())
+        self.assertIn("created_at", storage.all()["BaseModel." +
+                                                  mock_stdout.getvalue().strip()].to_dict())
+        self.assertIn("updated_at", storage.all()["BaseModel." +
+                                                  mock_stdout.getvalue().strip()].to_dict())
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_show(self, mock_stdout):
         self.console.do_show("BaseModel")
-        self.assertEqual(mock_stdout.getvalue().strip(), "** instance id missing **")
+        self.assertEqual(mock_stdout.getvalue().strip(),
+                         "** instance id missing **")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy(self, mock_stdout):
         self.console.do_destroy("BaseModel")
-        self.assertEqual(mock_stdout.getvalue().strip(), "** instance id missing **")
+        self.assertEqual(mock_stdout.getvalue().strip(),
+                         "** instance id missing **")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_all(self, mock_stdout):
@@ -148,7 +152,8 @@ class TestHBNBCommand(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_update(self, mock_stdout):
         self.console.do_update("BaseModel")
-        self.assertIn("** instance id missing **", mock_stdout.getvalue().strip())
+        self.assertIn("** instance id missing **",
+                      mock_stdout.getvalue().strip())
 
 
 if __name__ == "__main__":
