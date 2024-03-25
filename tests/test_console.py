@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 import os
+from models import storage
 import sys
 
 
@@ -86,6 +87,53 @@ class TestHBNBCommand(unittest.TestCase):
             self.assert_stdout(
                 "(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \
                     \n(hbnb) \n", self.console.cmdloop)
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
+    def test_create(self):
+        """Test create command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("create")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("create asdfsfsd")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("all User")
+            self.assertEqual(
+                '["[User', f.getvalue()[:7])
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create State name="California"\
+            lat=7.5 zip=513')
+            id = f.getvalue().strip("\n")
+        alldic = storage.all()
+        clas = "State."
+        Sname = alldic[clas + id].name
+        Slat = alldic[clas + id].lat
+        Szip = alldic[clas + id].zip
+        self.assertEqual(Sname, "California")
+        self.assertTrue(isinstance(Sname, str))
+        self.assertEqual(Slat, 7.5)
+        self.assertTrue(isinstance(Slat, float))
+        self.assertEqual(Szip, 513)
+        self.assertTrue(isinstance(Szip, int))
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create User name="Larry_Moon"\
+            nik="El\\"Macho"')
+            id = f.getvalue().strip("\n")
+        alldic = storage.all()
+        clas = "User."
+        Sname = alldic[clas + id].name
+        Snick = alldic[clas + id].nik
+        self.assertEqual(Sname, "Larry Moon")
+        self.assertTrue(isinstance(Sname, str))
+        self.assertEqual(Snick, 'El"Macho')
+        self.assertTrue(isinstance(Snick, str))
 
 
 if __name__ == "__main__":
