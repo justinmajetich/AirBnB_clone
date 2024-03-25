@@ -11,8 +11,7 @@ class Amenity(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    place_amenities = relationship("Place", secondary=place_amenity,
-                                   backref="amenities", viewonly=False)
+    place_amenities = relationship("Place", secondary=place_amenity)
     def __init__(self, *args, **kwargs):
         """This method happens as soon as a instance is created"""
         super().__init__(*args, **kwargs)
