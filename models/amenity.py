@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Table, ForeignKey
 from sqlalchemy.orm import relationship
+from models.place import place_amenity
 
 class Amenity(BaseModel, Base):
     """ Amenity class to store amenity information """
@@ -10,7 +11,7 @@ class Amenity(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    place_amenities = relationship("Place", secondary="place_amenity",
+    place_amenities = relationship("Place", secondary=place_amenity,
                                    backref="amenities", viewonly=False)
     def __init__(self, *args, **kwargs):
         """This method happens as soon as a instance is created"""
