@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ New engine 'DBStorage' """
-from sqlalchemy import create_engine, Table, Column, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, scoped_session, relationship
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -17,11 +17,6 @@ classes = {
     'State': State, 'City': City, 'Amenity': Amenity,
     'Review': Review
 }
-
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60), ForeignKey('places.id'), primary_key=True),
-                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True))
-
 
 class DBStorage:
     """ The class 'DBStorage' """
@@ -88,6 +83,3 @@ class DBStorage:
         """ Close the current session """
         if self.__session:
             self.__session.close()
-
-Place.amenities = relationship(
-    "Amenity", secondary=place_amenity, viewonly=False)

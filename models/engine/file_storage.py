@@ -59,19 +59,3 @@ class FileStorage:
         if obj:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             del FileStorage.__objects[key]
-
-    @property
-    def amenities(self):
-        """Getter attribute that returns the list of Amenity instances based on the attribute amenity_ids"""
-        amenities_list = []
-        for obj in self.all(Amenity).values():
-            if obj.id in self.__objects.values():
-                amenities_list.append(obj)
-        return amenities_list
-
-    @amenities.setter
-    def amenities(self, amenity_obj):
-        """Setter attribute that handles append method for adding an Amenity.id to the attribute amenity_ids"""
-        if isinstance(amenity_obj, Amenity):
-            self.new(amenity_obj)
-            self.save()

@@ -10,12 +10,8 @@ class Amenity(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    place_amenities = Table('place_amenity', Base.metadata,
-                            Column('place_id', String(60),
-                                   ForeignKey('places.id'),
-                                   primary_key=True),
-                            Column('amenity_id', String(60),
-                                   ForeignKey('amenities.id'),
-                                   primary_key=True))
-    places = relationship("Place", secondary=place_amenities,
-                          backref="amenities")
+    place_amenities = relationship("Place", secondary="place_amenity",
+                                   viewonly=False)
+    def __init__(self, *args, **kwargs):
+        """This method happens as soon as a instance is created"""
+        super().__init__(*args, **kwargs)
