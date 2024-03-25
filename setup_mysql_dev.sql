@@ -4,7 +4,6 @@ CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 -- Switch to the 'hbnb_dev_db' database for subsequent commands
 USE hbnb_dev_db;
 
--- My custom script :  
 -- Create the user 'hbnb_dev' with the password 'hbnb_dev_pwd' if it does not already exist
 -- and set the authentication method to 'mysql_native_password'
 CREATE USER IF NOT EXISTS 'hbnb_dev' @'localhost' IDENTIFIED
@@ -19,3 +18,6 @@ GRANT SELECT ON performance_schema.* TO 'hbnb_dev' @'localhost';
 
 -- Refresh any changes to the privileges
 FLUSH PRIVILEGES;
+
+-- Test if the user and database are accessible
+SELECT DATABASE() AS "Current Database", USER () AS "Current User";
