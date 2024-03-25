@@ -14,7 +14,6 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') != "db":
-        name = ''
         @property
         def cities(self):
             """ The getter attribute for cities"""

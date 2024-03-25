@@ -118,41 +118,48 @@ class HBNBCommand(cmd.Cmd):
         """Create an object of any class with parameters"""
 
         """split args into a list"""
-        arg_list = args.split()
-        if len(arg_list) == 0:
+        args_list = args.split()
+        """grabs the first element thats the class name"""
+        class_name = args_list[0]
+
+        if not class_name:
             print("** class name missing **")
-        else:
-            cls_name = arg_list[0]
-            if cls_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
+            return
+        elif class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        params = {}
+
+        """Creates a dictionary with values from args/cmd-line"""
+        for arg in args_list[1:]:
+            key, value = arg.split('=')
+            """escapes the double quotes, then set each value
+                To there respective type (int, float, str)
+            """
+            if value.startswith('"'):
+                value = value.replace('\\"', '"').replace('_', ' ')
+                value = value[1:-1]
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    pass
             else:
                 try:
-                    inst = HBNBCommand.classes[cls_name]()
-                    if arg_list[1:]:
-                        for param in arg_list[1:]:
-                            if '=' in param:
-                                key, value = param.split('=')
-                                key = key.strip()
-                                value = value.strip()
-                                if value.startswith('"') and\
-                                        value.endswith('"'):
-                                    value = value[1:-1].replace('\\"', '"')\
-                                            .replace('_', ' ')
-                                elif "." in value:
-                                    try:
-                                        value = float(value)
-                                    except ValueError:
-                                        continue
-                                else:
-                                    try:
-                                        value = int(value)
-                                    except ValueError:
-                                        continue
-                                setattr(inst, key, value)
-                    inst.save()
-                    print(inst.id)
-                except Exception as e:
-                    print(f"{e}")
+                    value = int(value)
+                except ValueError:
+                    pass
+            params[key] = value
+
+        """Adds create_at & update_at if not exist"""
+        if 'created_at' not in params:
+            params['created_at'] = datetime.datetime.now().isoformat()
+        if 'updated_at' not in params:
+            params['updated_at'] = datetime.datetime.now().isoformat()
+
+        new_instance = HBNBCommand.classes[class_name](**params)
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
