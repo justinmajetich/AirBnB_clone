@@ -151,6 +151,12 @@ class HBNBCommand(cmd.Cmd):
                     pass
             params[key] = value
 
+        """Adds create_at & update_at if not exist"""
+        if 'created_at' not in params:
+            params['created_at'] = datetime.datetime.now().isoformat()
+        if 'updated_at' not in params:
+            params['updated_at'] = datetime.datetime.now().isoformat()
+
         new_instance = HBNBCommand.classes[class_name](**params)
         print(new_instance.id)
         new_instance.save()
