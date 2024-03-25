@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,19 +112,55 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-
+    
+    # Task 2. Console improvements
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """Create an object of any class with given parameters."""
+        arguments = args.split(' ')
+        if not arguments or not arguments[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arguments[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        # Create an instance of the specified class
+        new_instance = HBNBCommand.classes[arguments[0]]()
+
+        # Process each attribute=value pair
+        for arg in arguments[1:]:
+            if '=' not in arg:
+                print(f"** attribute format error **: {arg} (expected key=value)")
+                continue
+            key, value = arg.split('=', 1)
+            if not key or not value:
+                print(f"** attribute format error **: {arg} (expected key=value)")
+                continue
+            # Assign the parsed value to the new instance
+            setattr(new_instance, key, self.parse_value(value))
+
+        # Save the new instance and print its id
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+
+    # Task 2. Console improvements
+    def parse_value(self, value):
+        """Parse a string value to the correct type."""
+        if value[0] == '"' and value[-1] == '"':
+            value = value.strip('"').replace('_', ' ').replace('\\"', '"')
+            return value  # Directly return the string value without converting to int/float
+        elif '.' in value:
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        else:
+            try:
+                return int(value)
+            except ValueError:
+                pass
+        return value  # Return the original value if it can't be converted
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +308,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +316,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
