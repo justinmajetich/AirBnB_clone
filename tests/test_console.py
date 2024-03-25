@@ -122,10 +122,12 @@ class TestHBNBCommand(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_create(self, mock_stdout):
         self.console.do_create("BaseModel")
-        self.assertIn("created_at", storage.all()["BaseModel." +
-                                                  mock_stdout.getvalue().strip()].to_dict())
-        self.assertIn("updated_at", storage.all()["BaseModel." +
-                                                  mock_stdout.getvalue().strip()].to_dict())
+        self.assertIn("created_at", storage.all()
+                      ["BaseModel." +
+                       mock_stdout.getvalue().strip()].to_dict())
+        self.assertIn("updated_at", storage.all()
+                      ["BaseModel." +
+                       mock_stdout.getvalue().strip()].to_dict())
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_show(self, mock_stdout):
