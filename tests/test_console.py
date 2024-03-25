@@ -29,7 +29,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("\n")
             self.assertEqual("", f.getvalue())
 
-    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    @unittest.skipIf(type(models.storage) is DBStorage, "Testing DBStorage")
     def test_create(self):
         """Test create command."""
         with patch("sys.stdout", new=StringIO()) as f:
