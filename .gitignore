@@ -99,3 +99,12 @@
 **/.vscode/
 # Json files
 **/*.json
+# My secret files
+**/Secret/
+**/Secret.txt
+**/Secret.key
+**/Secret.key.pub
+**/Secret.key.sec
+**/Secret.key.pub.sec
+**/Secret.key.sec.pub
+
