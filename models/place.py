@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
 
 
 class Place(BaseModel, Base):
@@ -32,3 +33,16 @@ class Place(BaseModel, Base):
             if review.place_id == self.id:
                 reviews_list.append(review)
         return reviews_list
+
+    @property
+    def amenities(self):
+        """getter for the linked amenities"""
+        from models import storage
+        all_ameny = storage.all(Amenity).values()
+        linked = [amenity for amenity in all_ameny if amenity.id in self.amenity_ids]
+        return linked
+
+    @amenities.setter
+    def amenities(self, value):
+        if isinstance(value, Amenity):
+            self.amenity_ids.append(value.id)
