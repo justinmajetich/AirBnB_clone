@@ -18,6 +18,7 @@ classes = {
     'Review': Review
 }
 
+
 class DBStorage:
     """ The class 'DBStorage' """
     __engine = None
