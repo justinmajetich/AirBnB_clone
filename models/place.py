@@ -9,17 +9,18 @@ from os import getenv
 import models
 
 
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60),
-                              ForeignKey('places.id'), primary_key=True),
-                      Column('amenity_id', String(60),
-                              ForeignKey('amenities.id'), primary_key=True))
 storage_type = getenv('HBNB_TYPE_STORAGE')
+if storage_type == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                        Column('place_id', String(60),
+                                ForeignKey('places.id'), primary_key=True),
+                        Column('amenity_id', String(60),
+                                ForeignKey('amenities.id'), primary_key=True))
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    __tablename__ = "places"
     if storage_type == 'db':
-        __tablename__ = "places"
 
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
