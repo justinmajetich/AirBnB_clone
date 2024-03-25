@@ -31,6 +31,8 @@ class Place(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """This method happens as soon as a instance is created"""
+        if 'amenity_ids' not in kwargs:
+            kwargs['amenity_ids'] = []
         super().__init__(*args, **kwargs)
 
     reviews = relationship("Review", cascade="all, delete", backref="place")
@@ -51,13 +53,15 @@ class Place(BaseModel, Base):
     def amenities(self):
         """getter for the linked amenities"""
         from models import storage
-        ame_list = []
-        for amenity in list(storage.all(Amenity).values()):
-            if amenity.id in self.amenity_ids:
-                ame_list.append(amenity)
-        return ame_list
+        amenity_list = []
+        for amenity_id in self.amenity_ids:
+            amenity_key = f"Amenity.{amenity_id}"
+            if amenity_key in storage.all(Amenity):
+                amenity_list.append(storage.all(Amenity)[amenity_key])
+        return amenity_list
 
     @amenities.setter
     def amenities(self, value):
-        if type(value) == Amenity:
-            self.amenity_ids.append(value.id)
+        if isinstance(value, Amenity):
+            if value.id not in self.amenity_ids:
+                self.amenity_ids.append(value.id)
