@@ -1,28 +1,25 @@
 #!/usr/bin/python3
-'''starts a Flask web application'''
-from models import storage
-from models.state import State
+"""Simple Flask Module instance"""
 from flask import Flask, render_template
 
+from models import storage
+from models.state import State
 
 app = Flask(__name__)
 
 
+@app.route("/states_list", strict_slashes=False)
+def states_list():
+    """Display a HTML page with all State objects present in DBStorage"""
+    states = storage.all(State).values()
+    return render_template("7-states_list.html", states=states)
+
+
 @app.teardown_appcontext
 def teardown_db(exception):
-    '''remove the current SQLAlchemy Session after each request
-    Args:
-        exception:
-    '''
+    """Remove the current SQLAlchemy Session"""
     storage.close()
 
 
-@app.route('/states_list', strict_slashes=False)
-def state():
-    '''list statues'''
-    states = storage.all(State)
-    return render_template('7-states_list.html', states=states)
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
