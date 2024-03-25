@@ -64,5 +64,4 @@ class Place(BaseModel, Base):
     @amenities.setter
     def amenities(self, value):
         if isinstance(value, Amenity):
-            if value.id not in self.amenity_ids:
-                self.amenity_ids.append(value.id)
+            self.amenity_ids.append(value.id)
