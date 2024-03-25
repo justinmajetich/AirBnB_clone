@@ -143,19 +143,13 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     value = float(value)
                 except ValueError:
-                    continue
+                    pass
             else:
                 try:
                     value = int(value)
                 except ValueError:
-                    continue
+                    pass
             params[key] = value
-
-        """Adds create_at & update_at if not exist"""
-        if 'created_at' not in params:
-            params['created_at'] = datetime.datetime.now().isoformat()
-        if 'updated_at' not in params:
-            params['updated_at'] = datetime.datetime.now().isoformat()
 
         new_instance = HBNBCommand.classes[class_name](**params)
         print(new_instance.id)
