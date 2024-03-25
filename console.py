@@ -123,11 +123,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             cls_name = arg_list[0]
-            if cls_name not in self.__class_list:
+            if cls_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
             else:
                 try:
-                    inst = eval(cls_name)()
+                    inst = HBNBCommand.classes[cls_name]()
                     if arg_list[1:]:
                         for param in arg_list[1:]:
                             if '=' in param:
