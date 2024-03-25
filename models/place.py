@@ -37,8 +37,7 @@ class Place(BaseModel, Base):
 
     reviews = relationship("Review", cascade="all, delete", backref="place")
     amenities = relationship("Amenity", secondary=place_amenity,
-                             backref='places', viewonly=False,
-                             back_populates="place_amenities")
+                             backref='places', viewonly=False)
 
     @property
     def reviews(self):
