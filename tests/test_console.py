@@ -20,8 +20,9 @@ class TestHBNBCommand(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def assert_stdout(self, expected_output, mock_stdout, function, *args):
-        function(*args)
-        self.assertEqual(mock_stdout.getvalue(), expected_output)
+        with mock_stdout as m:
+            function(*args)
+            self.assertEqual(m.getvalue(), expected_output)
 
     def test_create_state_present(self):
         """Test create State is present (regular case)"""
