@@ -28,6 +28,7 @@ class TestHBNBCommand(unittest.TestCase):
         with patch("sys.stdin", StringIO("create State\nquit\n")):
             self.assert_stdout("(hbnb) \n(hbnb) \n", self.console.cmdloop)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_create_state_name(self):
         """Test create State name=California"""
         with patch("sys.stdin", StringIO("create \
