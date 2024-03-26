@@ -17,15 +17,34 @@ class test_basemodel(unittest.TestCase):
         self.name = 'BaseModel'
         self.value = BaseModel
 
+    @classmethod
+    def setUpClass(cls):
+        """Setup to change name to JSON file"""
+        try:
+            os.rename("file.json", "buffer.json")
+        except FileNotFoundError:
+            pass
+
+    @classmethod
+    def tearDownClass(cls):
+        """Rename JSON file with well name"""
+        try:
+            os.rename("buffer.json", "file.json")
+        except FileNotFoundError:
+            pass
+
     def setUp(self):
-        """ """
+        """Setup for each test"""
         pass
 
     def tearDown(self):
+        """Cleanup after each test"""
+        from models.engine.file_storage import FileStorage
         try:
-            os.remove('file.json')
-        except:
+            os.remove("file.json")
+        except FileNotFoundError:
             pass
+        FileStorage._FileStorage__objects = {}
 
     def test_default(self):
         """ """
@@ -92,8 +111,12 @@ class test_basemodel(unittest.TestCase):
 
     def test_updated_at(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        base = self.value()
+        self.assertEqual(type(base.updated_at), datetime.datetime)
+        base_dict = base.to_dict()
+        new = BaseModel(**base_dict)
+        self.assertEqual(base.id, new.id)
+        self.assertEqual(base.created_at, new.created_at)
+        self.assertEqual(base.updated_at, new.updated_at)
+        self.assertIsInstance(new.created_at, datetime.datetime)
+        self.assertIsInstance(new.updated_at, datetime.datetime)
