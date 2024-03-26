@@ -12,7 +12,7 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade='all, delete, delete-orphan', backref="state", passive_deletes=True)
+    _cities = relationship("City", cascade='all, delete, delete-orphan', backref="state", passive_deletes=True)
     
     @property
     def cities(self):
