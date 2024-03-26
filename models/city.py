@@ -18,4 +18,4 @@ else:
     class City(BaseModel):
         """The city class, contains state ID and name."""
         state_id = ""
-    
+        name = ""
