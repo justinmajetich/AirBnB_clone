@@ -114,38 +114,25 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object with given parameters"""
         if not args:
             print("** class name missing **")
             return
-        
-        #Get the first element and set it as class_name
-        arg_list = args.split()
-        c_name = arg_list[0]
-        items = arg_list[1:]
-        # check that class_name is known
-        if c_name not in HBNBCommand.classes:
+        try:
+            parameters = args.split()
+            new_instance = eval(parameters[0])()
+            for i in parameters[1:]:
+                key = i.split("=")[0]
+                value = i.split("=")[1]
+                if hasattr(new_instance, key) is True:
+                    value = value.replace("_", " ")
+                    value = eval(value)
+                    setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
+        except NameError:
             print("** class doesn't exist **")
-            return        
-        # Create a dictionnary for kwargs
-        new_dict = []
-        # read the args
-        for parameters in items:
-            #check for parameters and split them if needed
-            key, value = parameters.split('=')
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ')
-            elif '.' in value:
-                #Cast value as a float if needed (ie longitude/latitude)
-                value = float(value)
-            elif value.isdigit():
-                #Cast value as a number if needed (ie number_rooms...)
-                value = int(value)
-            new_dict.append(value)
-        new_instance = HBNBCommand.classes[c_name](*new_dict)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            return
 
     def help_create(self):
         """ Help information for the create method """
@@ -208,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -233,7 +220,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
-        
+
         for item in print_list:
             print(item)
 
@@ -341,6 +328,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
