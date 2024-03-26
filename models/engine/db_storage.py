@@ -9,15 +9,15 @@ from models.review import Review
 from models.amenity import Amenity
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 
 USER = getenv('HBNB_MYSQL_USER')
 PWD = getenv('HBNB_MYSQL_PWD')
 HOST = getenv('HBNB_MYSQL_HOST')
 DB = getenv('HBNB_MYSQL_DB')
 
-classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-           'State': State, 'City': City, 'Amenity': Amenity, 'Review': Review}
+classes = {'User': User, 'Place': Place, 'State': State,
+           'City': City, 'Amenity': Amenity, 'Review': Review}
 
 
 class DBStorage:
