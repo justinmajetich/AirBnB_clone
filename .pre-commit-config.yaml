@@ -9,10 +9,14 @@ repos:
     -   id: check-yaml
 
         language_version: python3
--   repo: https://github.com/pycqa/pydocstyle
-    rev: 4.0.0
+-   repo: local
     hooks:
     -   id: pydocstyle
+        name: Run pycodestyle
+        entry: pycodestyle
+        language: system
+        files: \.py$
+
 -   repo: local
     hooks:
     -   id: pytest
