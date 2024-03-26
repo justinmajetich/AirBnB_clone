@@ -21,6 +21,7 @@ class BaseModel:
                             default=datetime.utcnow())
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -83,3 +84,10 @@ class BaseModel:
     def delete(self):
         """Delete current instance from the storage"""
         FileStorage.delete(self)
+        from models import storage
+        storage.delete(self)
+
+    def delete(self):
+        """Delete current instance from the storage"""
+        from models import storage
+        storage.delete(self)
