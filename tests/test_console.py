@@ -26,7 +26,7 @@ class TestHBNBCommand(unittest.TestCase):
     def test_create_state_present(self):
         """Test create State is present (regular case)"""
         with patch("sys.stdin", StringIO("create State\nquit\n")):
-            self.assert_stdout("(hbnb) \n(hbnb) \n", self.console.cmdloop)
+            self.assert_stdout("(hbnb)\n(hbnb)\n", self.console.cmdloop)
 
     def test_create_state_name(self):
         """Test create State name=California"""
@@ -41,8 +41,8 @@ class TestHBNBCommand(unittest.TestCase):
                                          State name=\"California\"\ncreate \
                                          City state_id=\"<new state ID>\" \
                                          name=\"San_Francisco\"\nquit\n")):
-            self.assert_stdout("(hbnb) \n(hbnb) \
-                               \n(hbnb) \n", self.console.cmdloop)
+            self.assert_stdout("(hbnb)\n(hbnb) \
+                               \n(hbnb)\n", self.console.cmdloop)
 
     def test_create_state_multiple_cities(self):
         """Test create State name="California" + \
@@ -51,7 +51,7 @@ class TestHBNBCommand(unittest.TestCase):
                                          State name=\"California\"\ncreate \
                                          City state_id=\"<new state ID>\" \
                                          name=\"Fremont\"\nquit\n")):
-            self.assert_stdout("(hbnb) \n(hbnb) \n(hbnb)\
+            self.assert_stdout("(hbnb)\n(hbnb)\n(hbnb)\
                                 \n", self.console.cmdloop)
 
     def test_create_state_city_user_place(self):
