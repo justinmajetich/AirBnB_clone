@@ -87,6 +87,7 @@ class TestHBNBCommand(unittest.TestCase):
                 "(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \
                     \n(hbnb) \n", self.console.cmdloop)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_all(self):
         """Test all command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
