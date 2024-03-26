@@ -55,6 +55,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assert_stdout("(hbnb) \n(hbnb) \n(hbnb)\
                                 \n", self.console.cmdloop)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_create_state_city_user_place(self):
         """Test create State name="California" + create City \
             state_id="<new state ID>" name="San_Francisco_is_super_cool" \
