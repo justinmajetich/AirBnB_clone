@@ -11,19 +11,24 @@ import os
 
 metadata = MetaData()
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = 'places'
-        place_amenity = Table(
-            'place_amenity',
-            metadata,
-            Column('place_id', String(60), ForeignKey('places.id'),
-                    primary_key=True, nullable=False),
-            Column('amenity_id', String(60),
-                   ForeignKey('amenities.id'),
-                   primary_key=True, nullable=False)
-        )
+        place_amenity = Table('place_amenity',
+                              metadata,
+                              Column('place_id',
+                                     String(60),
+                                     ForeignKey('places.id'),
+                                     primary_key=True,
+                                     nullable=False),
+                              Column('amenity_id',
+                                     String(60),
+                                     ForeignKey('amenities.id'),
+                                     primary_key=True,
+                                     nullable=False)
+                              )
 
         city_id = Column(String(60), ForeignKey('cities.id'))
         user_id = Column(String(60), ForeignKey('users.id'))
@@ -70,12 +75,12 @@ class Place(BaseModel, Base):
             amenity_list = storage.all(Amenity)
             return [amenity for amenity in amenity_list.values()
                     if amenity.amenity_ids == self.id]
-        
+
         @amenities.setter
         def amenities(self, obj):
             """
             Setter attribute amenities that handles append method for adding
-            an Amenity.id to the attribute amenity_ids. This method should
+            an Amenity. id to the attribute amenity_ids. This method should
             accept only Amenity object, otherwise, do nothing.
             """
             from models import storage

@@ -11,6 +11,7 @@ Base = object
 if os.getenv('HBNB_TYPE_STORAGE') == "db":
     Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     storage_engine = os.getenv('HBNB_TYPE_STORAGE')
@@ -19,8 +20,12 @@ class BaseModel:
 
     if storage_engine == "db":
         id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-        updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+        created_at = Column(DateTime,
+                            default=datetime.utcnow(),
+                            nullable=False)
+        updated_at = Column(DateTime,
+                            default=datetime.utcnow(),
+                            nullable=False)
     else:
         id = None
         created_at = None
