@@ -18,74 +18,17 @@ class TestHBNBCommand(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    @patch("sys.stdout", new_callable=StringIO)
-    def assert_stdout(self, expected_output, mock_stdout, function, *args):
-        function(*args)
-        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def test_emptyline(self):
+        """Test empty line input"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("\n")
+            self.assertEqual('', f.getvalue())
 
-    def test_create_state_present(self):
-        """Test create State is present (regular case)"""
-        with patch("sys.stdin", StringIO("create State\nquit\n")):
-            self.assert_stdout("(hbnb)\n(hbnb)\n", self.console.cmdloop)
-
-    def test_create_state_name(self):
-        """Test create State name=California"""
-        with patch("sys.stdin", StringIO("create \
-                                         State name=\"California\"\nquit\n")):
-            self.assert_stdout("(hbnb)\n(hbnb)\n", self.console.cmdloop)
-
-    def test_create_state_city(self):
-        """Test create State name="California" + create City
-        state_id="<new state ID>" name=San_Francisco"""
-        with patch("sys.stdin", StringIO("create \
-                                         State name=\"California\"\ncreate \
-                                         City state_id=\"<new state ID>\" \
-                                         name=\"San_Francisco\"\nquit\n")):
-            self.assert_stdout("(hbnb)\n(hbnb) \
-                               \n(hbnb)\n", self.console.cmdloop)
-
-    def test_create_state_multiple_cities(self):
-        """Test create State name="California" + \
-            create City state_id="<new state ID>" name=Fremont"""
-        with patch("sys.stdin", StringIO("create \
-                                         State name=\"California\"\ncreate \
-                                         City state_id=\"<new state ID>\" \
-                                         name=\"Fremont\"\nquit\n")):
-            self.assert_stdout("(hbnb)\n(hbnb)\n(hbnb)\
-                                \n", self.console.cmdloop)
-
-    def test_create_state_city_user_place(self):
-        """Test create State name="California" + create City \
-            state_id="<new state ID>" name="San_Francisco_is_super_cool" \
-                + create User email="my@me.com" password="pwd" \
-                    first_name="FN" \
-                    last_name="LN" + create Place \
-                        city_id="<new city ID>" user_id="<new user ID>" \
-                        name="My_house" description="no_description_yet"\
-                              number_rooms=4 \
-                            number_bathrooms=1 max_guest=3 \
-                                price_by_night=100 latitude=120.12\
-                                  longitude=101.4 + show Place \
-                                    <new place ID>"""
-        commands = [
-            "create State name=\"California\"\n",
-            "create City state_id=\"<new state ID>\" \
-                name=\"San_Francisco_is_super_cool\"\n",
-            "create User email=\"my@me.com\" \
-                password=\"pwd\" first_name=\"FN\" \
-                last_name=\"LN\"\n",
-            "create Place city_id=\"<new city ID>\" user_id=\"<new user ID>\" \
-            name=\"My_house\" description=\"no_description_yet\" \
-                number_rooms=4 number_bathrooms=1 max_guest=3 \
-                    price_by_night=100 \
-                    latitude=120.12 longitude=101.4\n",
-            "show Place <new place ID>\n",
-            "quit\n"
-        ]
-        with patch("sys.stdin", StringIO("".join(commands))):
-            self.assert_stdout(
-                "(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \
-                    \n(hbnb) \n", self.console.cmdloop)
+    def test_quit(self):
+        """test quit command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("quit")
+            self.assertEqual('\n', f.getvalue())
 
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_create(self):
@@ -133,6 +76,84 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertTrue(isinstance(Sname, str))
         self.assertEqual(Snick, 'El"Macho')
         self.assertTrue(isinstance(Snick, str))
+
+    def test_show(self):
+        """Test show command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("show")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("show asdfsdrfs")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("show BaseModel")
+            self.assertEqual(
+                "** instance id missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("show BaseModel abcd-123")
+            self.assertEqual(
+                "** no instance found **\n", f.getvalue())
+
+    def test_destroy(self):
+        """Test destroy command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("destroy")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("destroy Galaxy")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("destroy User")
+            self.assertEqual(
+                "** instance id missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("destroy BaseModel 12345")
+            self.assertEqual(
+                "** no instance found **\n", f.getvalue())
+
+    def test_all(self):
+        """Test all command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all asdfsdfsd")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all State")
+            self.assertEqual("[]\n", f.getvalue())
+
+    def test_update(self):
+        """Test update command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update sldkfjsl")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User")
+            self.assertEqual(
+                "** instance id missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User 12345")
+            self.assertEqual(
+                "** no instance found **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all User")
+            obj = f.getvalue()
+        my_id = obj[obj.find('(')+1:obj.find(')')]
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User " + my_id)
+            self.assertEqual(
+                "** attribute name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User " + my_id + " Name")
+            self.assertEqual(
+                "** value missing **\n", f.getvalue())
 
 
 if __name__ == "__main__":
