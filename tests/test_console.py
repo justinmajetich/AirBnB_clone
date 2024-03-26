@@ -87,6 +87,33 @@ class TestHBNBCommand(unittest.TestCase):
                 "(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \n(hbnb) \
                     \n(hbnb) \n", self.console.cmdloop)
 
+    def test_all(self):
+        """Test all command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all asdfsdfsd")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all State")
+            self.assertEqual("[]\n", f.getvalue())
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
+    def test_create(self):
+        """Test create command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create")
+            self.assertEqual(
+                "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create asdfsfsd")
+            self.assertEqual(
+                "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("all User")
+            self.assertEqual(
+                '["[User', f.getvalue()[:7])
+
 
 if __name__ == "__main__":
     unittest.main()
