@@ -8,6 +8,11 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    def __init__(self):
+        self.nb_objects = 0
+        self.objects = {}
+
+
     def all(self, cls=None):
         """returns the dictionary __objects"""
         if cls is not None:
