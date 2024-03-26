@@ -129,6 +129,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(
                 '["[User', f.getvalue()[:7])
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_filestorage(self):
         """Test FileStorage functionality"""
         storage = FileStorage()
@@ -138,25 +139,15 @@ class TestHBNBCommand(unittest.TestCase):
         user = User()
         review = Review()
         amenity = Amenity()
-        
-        # Add objects to storage
         storage.new(state)
         storage.new(city)
         storage.new(place)
         storage.new(user)
         storage.new(review)
         storage.new(amenity)
-
-        # Save objects to file
         storage.save()
-
-        # Clear current storage
         storage._FileStorage__objects = {}
-
-        # Reload objects from file
         storage.reload()
-
-        # Check if objects were loaded correctly
         self.assertTrue(len(storage.all(State)) == 1)
         self.assertTrue(len(storage.all(City)) == 1)
         self.assertTrue(len(storage.all(Place)) == 1)
