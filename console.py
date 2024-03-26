@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -125,47 +125,37 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()"""
-   
-    def do_create(self, args):
+
+    def do_create(self, arg):
         """ Create an object of any class"""
+        args = arg.split()
         if not args:
             print("** class name missing **")
             return
-        # Séparation des arguments
-        arg_list = args.split()
-        class_name = arg_list[0]
-        if class_name not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # Récupération des paramètres sous forme de dictionnaire
-        params = {}
-        for arg in arg_list[1:]:
-            key, value = arg.split('=')
-            # Suppression des guillemets si présents
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1]
-            # Remplacement des tirets bas par des espaces
-            value = value.replace('_', ' ')
-            # Conversion en float si le format correspond
-            if '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    pass
-            # Conversion en int si le format correspond
+        new_instance = HBNBCommand.classes[args[0]]()
+        param = [i.split('=') for i in args[1:]]
+        for pair in param:
+            if len(pair) != 2:
+                continue
+            if pair[1].startswith('"'):
+                pair[1] = pair[1][1:-1].replace('_', ' ').replace('\"', '"')
             else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    pass
-            params[key] = value
-        # Création de l'instance avec les paramètres donnés
-        new_instance = HBNBCommand.classes[class_name](**params)
-        # Sauvegarde dans le stockage
+                if '.' in pair[1]:
+                    try:
+                        pair[1] = float(pair[1])
+                    except ValueError:
+                        pass
+                else:
+                    try:
+                        pair[1] = int(pair[1])
+                    except ValueError:
+                        pass
+            setattr(new_instance, pair[0], pair[1])
         storage.save()
         print(new_instance.id)
-        storage.save()
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -313,7 +303,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -321,10 +311,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
