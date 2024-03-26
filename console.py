@@ -113,8 +113,8 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
+    """def do_create(self, args):
+        \""" Create an object of any class\"""
         if not args:
             print("** class name missing **")
             return
@@ -124,7 +124,48 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
+        storage.save()"""
+   
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
+            print("** class name missing **")
+            return
+        # Séparation des arguments
+        arg_list = args.split()
+        class_name = arg_list[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        # Récupération des paramètres sous forme de dictionnaire
+        params = {}
+        for arg in arg_list[1:]:
+            key, value = arg.split('=')
+            # Suppression des guillemets si présents
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+            # Remplacement des tirets bas par des espaces
+            value = value.replace('_', ' ')
+            # Conversion en float si le format correspond
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    pass
+            # Conversion en int si le format correspond
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    pass
+            params[key] = value
+        # Création de l'instance avec les paramètres donnés
+        new_instance = HBNBCommand.classes[class_name](**params)
+        # Sauvegarde dans le stockage
         storage.save()
+        print(new_instance.id)
+        storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
