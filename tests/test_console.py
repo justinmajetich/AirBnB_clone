@@ -5,6 +5,7 @@ from io import StringIO
 import os
 from models import storage
 
+
 class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
