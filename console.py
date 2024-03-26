@@ -132,13 +132,10 @@ class HBNBCommand(cmd.Cmd):
 
             try:
                 if value[0] != '\"':
-                    for k, v in HBNBCommand.types.items():
-                        if key == k:
-                            if v == int:
-                                value = int(value)
-                            else:
-                                value = float(value)
-                            new_dict[key] = value
+                    if '.' in value:
+                        new_dict[key] = float(value)
+                    else:
+                        new_dict[key] = int(value)
                 else:
                     value_updated = value.replace('\"', '')
                     if '_' in value_updated:
