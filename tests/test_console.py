@@ -32,7 +32,7 @@ class TestHBNBCommand(unittest.TestCase):
         """Test create State name=California"""
         with patch("sys.stdin", StringIO("create \
                                          State name=\"California\"\nquit\n")):
-            self.assert_stdout("(hbnb) \n(hbnb) \n", self.console.cmdloop)
+            self.assert_stdout("(hbnb)\n(hbnb)\n", self.console.cmdloop)
 
     def test_create_state_city(self):
         """Test create State name="California" + create City
