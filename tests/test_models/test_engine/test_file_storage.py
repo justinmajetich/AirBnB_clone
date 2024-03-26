@@ -9,20 +9,34 @@ import os
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
+    @classmethod
+    def setUpClass(cls):
+        """Setup to change name to JSON file"""
+        try:
+            os.rename("file.json", "buffer.json")
+        except FileNotFoundError:
+            pass
+
+    @classmethod
+    def tearDownClass(cls):
+        """Rename JSON file with well name"""
+        try:
+            os.rename("buffer.json", "file.json")
+        except FileNotFoundError:
+            pass
+
     def setUp(self):
-        """ Set up test environment """
-        del_list = []
-        for key in storage._FileStorage__objects.keys():
-            del_list.append(key)
-        for key in del_list:
-            del storage._FileStorage__objects[key]
+        """Setup for each test"""
+        pass
 
     def tearDown(self):
-        """ Remove storage file at end of tests """
+        """Cleanup after each test"""
+        from models.engine.file_storage import FileStorage
         try:
-            os.remove('file.json')
-        except:
+            os.remove("file.json")
+        except FileNotFoundError:
             pass
+        FileStorage._FileStorage__objects = {}
 
     def test_obj_list_empty(self):
         """ __objects is initially empty """
