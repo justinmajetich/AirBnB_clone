@@ -14,12 +14,20 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             storage.new(self)
-        else:
+
+        if 'updated_at' in kwargs:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
+        else:
+            self.updated_at = datetime.now()
+
+        if 'created_at' in kwargs:
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+        else:
+            self.created_at = datetime.now()
+
+        if kwargs:
             self.__dict__.update(kwargs)
 
     def __str__(self):
