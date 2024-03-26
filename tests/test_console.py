@@ -4,8 +4,6 @@ from unittest.mock import patch
 from io import StringIO
 import os
 from models import storage
-import sys
-
 
 class TestHBNBCommand(unittest.TestCase):
 
@@ -92,22 +90,22 @@ class TestHBNBCommand(unittest.TestCase):
     def test_create(self):
         """Test create command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("create")
+            self.console.onecmd("create")
             self.assertEqual(
                 "** class name missing **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("create asdfsfsd")
+            self.console.onecmd("create asdfsfsd")
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("create User")
+            self.console.onecmd("create User")
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("all User")
+            self.console.onecmd("all User")
             self.assertEqual(
                 '["[User', f.getvalue()[:7])
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd('create State name="California"\
+            self.console.onecmd('create State name="California"\
             lat=7.5 zip=513')
             id = f.getvalue().strip("\n")
         alldic = storage.all()
@@ -123,7 +121,7 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertTrue(isinstance(Szip, int))
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd('create User name="Larry_Moon"\
+            self.console.onecmd('create User name="Larry_Moon"\
             nik="El\\"Macho"')
             id = f.getvalue().strip("\n")
         alldic = storage.all()
