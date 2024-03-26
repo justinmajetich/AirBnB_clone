@@ -23,7 +23,6 @@ class TestHBNBCommand(unittest.TestCase):
         function(*args)
         self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_create_state_present(self):
         """Test create State is present (regular case)"""
         with patch("sys.stdin", StringIO("create State\nquit\n")):
