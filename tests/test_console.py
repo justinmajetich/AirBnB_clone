@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 import unittest
+import json
+from console import HBNBCommand
+from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.user import User
+from models.review import Review
+from models.amenity import Amenity
+from models.engine.file_storage import FileStorage
 from unittest.mock import patch
 from io import StringIO
 import os
@@ -118,6 +128,41 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("all User")
             self.assertEqual(
                 '["[User', f.getvalue()[:7])
+
+    def test_filestorage(self):
+        """Test FileStorage functionality"""
+        storage = FileStorage()
+        state = State()
+        city = City()
+        place = Place()
+        user = User()
+        review = Review()
+        amenity = Amenity()
+        
+        # Add objects to storage
+        storage.new(state)
+        storage.new(city)
+        storage.new(place)
+        storage.new(user)
+        storage.new(review)
+        storage.new(amenity)
+
+        # Save objects to file
+        storage.save()
+
+        # Clear current storage
+        storage._FileStorage__objects = {}
+
+        # Reload objects from file
+        storage.reload()
+
+        # Check if objects were loaded correctly
+        self.assertTrue(len(storage.all(State)) == 1)
+        self.assertTrue(len(storage.all(City)) == 1)
+        self.assertTrue(len(storage.all(Place)) == 1)
+        self.assertTrue(len(storage.all(User)) == 1)
+        self.assertTrue(len(storage.all(Review)) == 1)
+        self.assertTrue(len(storage.all(Amenity)) == 1)
 
 
 if __name__ == "__main__":
