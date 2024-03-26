@@ -1,33 +1,28 @@
 #!/usr/bin/python3
 """ New Engine DBStorage """
 from sqlalchemy import (create_engine)
-from os import getenv
-from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.schema import MetaData
+from os import getenv
+from models.base_model import Base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.scoping import scoped_session
 
-
-username = getenv('HBNB_MYSQL_USER')
-password = getenv('HBNB_MYSQL_PWD')
-db = getenv('HBNB_MYSQL_DB')
-host = getenv('HBNB_MYSQL_HOST')
-v_env = getenv('HBNB_ENV')
-
-URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"
 
 
 class DBStorage:
-    """ New Engine DBStorage """
     __engine = None
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine(URI, pool_pre_ping=True)
+        user = getenv("HBNB_MYSQL_USER")
+        passwd = getenv("HBNB_MYSQL_PWD")
+        db = getenv("HBNB_MYSQL_DB")
+        host = getenv("HBNB_MYSQL_HOST")
+        env = getenv("HBNB_ENV")
 
-        if v_env == 'test':
-            metadata = MetaData(self.__engine)
-            metadata.reflect()
-            metadata.drop_all()
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(user, passwd, host, db),
+                                      pool_pre_ping=True)
 
     def all(self, cls=None):
         """ Return all objects of specific cls or all cls """
