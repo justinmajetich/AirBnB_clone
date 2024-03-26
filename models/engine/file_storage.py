@@ -8,10 +8,16 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    def __init__(self):
+        self.nb_objects = 0
+        self.objects = {}
+
+
     def all(self, cls=None):
-        if cls is not None:
-            return [obj for obj in self.__objects if type(obj) is cls]
-        return self.__objects
+        """Return list of objects of type cls"""
+        if cls is None:
+            return self.objects
+        return {obj_id: obj for obj_id, obj in self.objects.items() if type(obj) is cls}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
