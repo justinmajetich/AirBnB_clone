@@ -22,6 +22,8 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        cities = relationship('City', back_populates='places')
+        user = relationship('User', back_populates='places')
 
 else:
     class Place(BaseModel):
