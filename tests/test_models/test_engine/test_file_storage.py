@@ -28,11 +28,10 @@ class test_fileStorage(unittest.TestCase):
         """ __objects is initially empty """
         self.assertEqual(len(storage.all()), 0)
 
-    @unittest.skip("A bare constructor no longer adds to the storage \
-                    dictionary, which breaks the test.")
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        new.save()
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is obj)
@@ -62,11 +61,10 @@ class test_fileStorage(unittest.TestCase):
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
 
-    @unittest.skip("A bare constructor no longer adds to the storage \
-                    dictionary, which breaks the test.")
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
+        new.save()
         storage.save()
         storage.reload()
         for obj in storage.all().values():
@@ -98,11 +96,10 @@ class test_fileStorage(unittest.TestCase):
         """ Confirm __objects is a dict """
         self.assertEqual(type(storage.all()), dict)
 
-    @unittest.skip("A bare constructor no longer adds to the storage \
-                    dictionary, which breaks the test.")
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
+        new.save()
         _id = new.to_dict()['id']
         for key in storage.all().keys():
             temp = key
