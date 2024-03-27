@@ -7,7 +7,7 @@ from models.base_model import Base, BaseModel
 
 class City(BaseModel, Base):
     """ Represents a city for a MySQL database.
-    
+
     Public class atributes:
         __tablename__ (str): Name of MySQL table to store cities.
 

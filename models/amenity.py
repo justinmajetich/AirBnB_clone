@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 
 class Amenity(BaseModel, Base):
     """ Represents an amenity for a MySQL database.
-    
+
     Public class atributes:
         __tablename__ (str): Name of MySQL table to store amnities.
 
