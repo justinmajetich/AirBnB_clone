@@ -20,7 +20,16 @@ class DBStorage:
 
     def all(self, cls=None):
         """Queries all objects by class name."""
-        # Implementation depends on the project requirements
+        from models import base_model
+        objects = {}
+        if cls:
+            if type(cls) == str:
+                cls = eval(cls)
+            objects = self.__session.query(cls).all()
+        else:
+            for cls in base_model.Base.__subclasses__():
+                objects.update({obj.id: obj for obj in self.__session.query(cls).all()})
+        return objects
 
     def new(self, obj):
         """Adds the object to the current database session."""
