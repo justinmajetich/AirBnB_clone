@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import os
+import os
 import unittest
 from models import storage
 from models.city import City
@@ -28,6 +29,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
+        except Exception:
         except Exception:
             pass
 
