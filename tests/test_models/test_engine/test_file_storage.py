@@ -30,7 +30,6 @@ class test_fileStorage(unittest.TestCase):
         try:
             os.remove('file.json')
         except Exception:
-        except Exception:
             pass
 
     def test_obj_list_empty(self):
