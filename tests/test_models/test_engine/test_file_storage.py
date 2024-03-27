@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
-import unittest
-from models.base_model import BaseModel
-from models import storage
 import os
+import unittest
+from models import storage
+from console import HBNBCommand
+from models.base_model import BaseModel
 
 
 class test_fileStorage(unittest.TestCase):
@@ -21,7 +22,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):
@@ -105,5 +106,14 @@ class test_fileStorage(unittest.TestCase):
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_created_int_paremeters(self):
+        """Test create command with integer parameter"""
+        cmd = 'crete State name="California" number_rooms=4'
+        result = HBNBCommand().do_create(cmd)
+        self.assertTrue(result.startswith('[State]'))
+
+
+if __name__ == '__main__':
+    unittest.main()
