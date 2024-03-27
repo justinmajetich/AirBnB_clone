@@ -26,7 +26,6 @@ class test_basemodel(unittest.TestCase):
         try:
             os.remove('file.json')
         except Exception:
-        except Exception:
             pass
 
     def test_default(self):
