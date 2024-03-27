@@ -143,7 +143,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(new_dict)
         new_instance.save()
-        new_dict = {}
         print(new_instance.id)
 
     def help_create(self):
@@ -228,10 +227,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
-                    print_list.append(v.to_dict())
+                    print_list.append(str(v))
         else:
             for k, v in storage.all().items():
-                print_list.append(v.to_dict())
+                print_list.append(str(v))
 
         print(print_list)
 

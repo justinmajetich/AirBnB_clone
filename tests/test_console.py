@@ -21,14 +21,14 @@ class test_console(unittest.TestCase):
         try:
             HBNBCommand.do_create(self, "Place number_rooms=four")
         except ValueError:
-            self.assertNotIsInstance(int, type(HBNBCommand.number_rooms))
+            self.assertNotIsInstance(int, type(Place.number_rooms))
 
     @patch('builtins.print')
     def test_do_create_float(self, mock_print):
         try:
             HBNBCommand.do_create(self, "Place latitude=thirty")
         except ValueError:
-            self.assertNotIsInstance(float, type(HBNBCommand.latitude))
+            self.assertNotIsInstance(float, type(Place.latitude))
 
 
 if __name__ == '__main__':
