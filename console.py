@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object with given parameters"""
+        """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
@@ -221,8 +221,7 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
-        for item in print_list:
-            print(item)
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
