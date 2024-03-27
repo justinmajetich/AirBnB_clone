@@ -17,4 +17,8 @@ class State(BaseModel, Base):
 @property
 def cities(self):
     """Returns the cities in this State"""
-    
+    Citylist = []
+    for city in FileStorage.all(City):
+        if city.state_id == self.id:
+            Citylist.append(city)
+    return Citylist
