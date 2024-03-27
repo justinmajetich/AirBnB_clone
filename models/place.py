@@ -7,7 +7,6 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import os
 import models
-from models.review import Review
 
 
 association_table = Table("place_amenity", Base.metadata,
