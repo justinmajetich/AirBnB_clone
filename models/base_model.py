@@ -2,10 +2,6 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from os import getenv
-<<<<<<< HEAD
-from os import getenv
-=======
->>>>>>> master
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from sqlalchemy.ext.declarative import declarative_base
@@ -22,8 +18,8 @@ class BaseModel:
                             default=datetime.utcnow())
         updated_at = Column(DateTime, nullable=False,
                             default=datetime.utcnow())
+
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
         """Instantiates a new model"""
         if not kwargs:
             self.id = str(uuid.uuid4())
@@ -44,23 +40,6 @@ class BaseModel:
                     kwargs['update_at'], '%Y-%m-%dT%H:%M:%S.%f')
             if '__class__' in kwargs:
                 del kwargs["__class__"]
-<<<<<<< HEAD
-            if 'id' not in kwargs:
-                self.id = str(uuid.uuid4())
-            if 'created_at' not in kwargs:
-                self.created_at = datetime.now()
-            else:
-                kwargs["created_at"] = datetime.strptime(
-                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
-            if 'update_at' not in kwargs:
-                self.updated_at = datetime.now()
-            else:
-                kwargs["update_at"] = datetime.strptime(
-                    kwargs['update_at'], '%Y-%m-%dT%H:%M:%S.%f')
-            if '__class__' in kwargs:
-                del kwargs["__class__"]
-=======
->>>>>>> master
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -84,23 +63,10 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary.keys():
-<<<<<<< HEAD
             del dictionary['_sa_instance_state']
-=======
-             del dictionary['_sa_instance_state']
->>>>>>> master
         return dictionary
 
     def delete(self):
         """Delete current instance from the storage"""
-<<<<<<< HEAD
-        FileStorage.delete(self)
-        from models import storage
-        storage.delete(self)
-
-    def delete(self):
-        """Delete current instance from the storage"""
-=======
->>>>>>> master
         from models import storage
         storage.delete(self)
