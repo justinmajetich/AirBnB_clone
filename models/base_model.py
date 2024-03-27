@@ -65,12 +65,13 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary.keys():
-            del dictionary['_sa_instance_state']
+             del dictionary['_sa_instance_state']
         return dictionary
 
     def delete(self):
         """Delete current instance from the storage"""
-        FileStorage.delete(self)
+        from models import storage
+        storage.delete(self)
 
     def delete(self):
         """Delete current instance from the storage"""
