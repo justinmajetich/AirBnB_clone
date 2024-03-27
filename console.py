@@ -2,14 +2,14 @@
 """ Console Module """
 import cmd
 import sys
-from models.base_model import BaseModel
-from models.__init__ import storage
 from models.user import User
+from models.city import City
 from models.place import Place
 from models.state import State
-from models.city import City
-from models.amenity import Amenity
 from models.review import Review
+from models.amenity import Amenity
+from models.__init__ import storage
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -124,12 +124,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_dict = {}
-
         for i in range(1, len(list_cmd)):
-            split_k_v = list_cmd[i].split("=")
-            key = split_k_v[0]
-            value = split_k_v[1]
-
+            split_cmd = list_cmd[i].split('=')
+            key = split_cmd[0]
+            value = split_cmd[1]
             try:
                 if value[0] != '\"':
                     if '.' in value:
@@ -137,15 +135,15 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         new_dict[key] = int(value)
                 else:
-                    value_updated = value.replace('\"', '')
-                    if '_' in value_updated:
-                        value_updated = value_updated.replace('_', ' ')
-                    new_dict[key] = value_updated
+                    value = value.replace('\"', '')
+                    value = value.replace('_', ' ')
+                    new_dict[key] = value
             except IndexError:
                 pass
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(new_dict)
         new_instance.save()
+        new_dict = {}
         print(new_instance.id)
 
     def help_create(self):
@@ -228,12 +226,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(v.to_dict())
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for k, v in storage.all().items():
+                print_list.append(v.to_dict())
 
         print(print_list)
 
