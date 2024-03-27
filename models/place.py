@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 
+
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     class Place(BaseModel, Base):
         """ A place to stay """
@@ -21,7 +22,6 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        reviews = relationship('Review', back_populates='place')
 
 else:
     class Place(BaseModel):
@@ -37,15 +37,3 @@ else:
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
-
-        @property
-        def reviews(self):
-            """ Returns the list of Review instances
-            with `state_id` equals to the current id
-            """
-            from models import storage
-            reviews = []
-            for value in storage.all(Review).values():
-                if value.place_id == self.id:
-                    reviews.append(value)
-            return reviews
