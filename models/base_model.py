@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
+import models
 from os import getenv
 from datetime import datetime
 from models.engine.file_storage import FileStorage
@@ -31,26 +32,29 @@ class BaseModel:
             if 'created_at' not in kwargs:
                 self.created_at = datetime.now()
             else:
-                kwargs["created_at"] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs["created_at"] = datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
             if 'updated_at' not in kwargs:
                 self.updated_at = datetime.now()
             else:
-                kwargs["updated_at"] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs["updated_at"] = datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
             if '__class__' in kwargs:
                 del kwargs["__class__"]
             self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        cls = self.__class__.__name__
+        str_dict = self.__dict__.copy()
+        str_dict.pop("_sa_instance_state", None)
+        return "[{}] ({}) {}".format(cls, self.id, str_dict)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -66,5 +70,4 @@ class BaseModel:
 
     def delete(self):
         """Delete current instance from the storage"""
-        from models import storage
-        storage.delete(self)
+        models.storage.delete(self)
