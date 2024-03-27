@@ -14,6 +14,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
+        places = relationship('Place', back_populates='user')
 
 else:
     class User(BaseModel):
