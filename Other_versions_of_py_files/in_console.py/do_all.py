@@ -1,4 +1,5 @@
- # Task 2. Console improvements - all method alternative for obtaining same task output
+# Task 2. Console improvements - all method alternative for obtaining
+# same task output
 def do_all(self, args):
     print_list = []
 

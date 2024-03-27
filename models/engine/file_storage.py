@@ -13,10 +13,11 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            return {k: v for k, v in FileStorage.__objects.items() if type(v) == cls}
+            return {k: v for k, v in FileStorage.__objects.items()
+                    if type(v) == cls}
 
     def delete(self, obj=None):
-        """Deletes object from storage dictionary __objects if it’s inside"""
+        """Deletes obj from __objects if it’s inside"""
         if obj is not None:
             obj_key = "{}.{}".format(type(obj).__name__, obj.id)
             if obj_key in FileStorage.__objects:
@@ -25,15 +26,14 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        obj_dict = obj.to_dict()
+        key = '{}.{}'.format(obj_dict['__class__'], obj.id)
+        self.all().update({key: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
+            temp = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
             json.dump(temp, f)
 
     def reload(self):
@@ -52,7 +52,6 @@ class FileStorage:
             'Review': Review
         }
         try:
-            temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():

@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -112,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-    
+
     # Task 2. Console improvements
     def do_create(self, args):
         """Create an object of any class with given parameters."""
@@ -130,11 +130,13 @@ class HBNBCommand(cmd.Cmd):
         # Process each attribute=value pair
         for arg in arguments[1:]:
             if '=' not in arg:
-                print(f"** attribute format error **: {arg} (expected key=value)")
+                print("** attribute format error **: {} (expected key=value)"
+                      .format(arg))
                 continue
             key, value = arg.split('=', 1)
             if not key or not value:
-                print(f"** attribute format error **: {arg} (expected key=value)")
+                print("** attribute format error **: {} (expected key=value)"
+                      .format(arg))
                 continue
             # Assign the parsed value to the new instance
             setattr(new_instance, key, self.parse_value(value))
@@ -148,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
         """Parse a string value to the correct type."""
         if value[0] == '"' and value[-1] == '"':
             value = value.strip('"').replace('_', ' ').replace('\\"', '"')
-            return value  # Directly return the string value without converting to int/float
+            return value  # Return string value without converting to int/float
         elif '.' in value:
             try:
                 return float(value)
@@ -160,7 +162,6 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 pass
         return value  # Return the original value if it can't be converted
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -355,6 +356,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

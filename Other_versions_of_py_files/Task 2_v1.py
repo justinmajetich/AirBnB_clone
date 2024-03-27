@@ -35,7 +35,7 @@ def parse_value(self, value):
     """Parse a string value to the correct type."""
     if value[0] == '"' and value[-1] == '"':
         value = value.strip('"').replace('_', ' ').replace('\\"', '"')
-        return value  # Directly return the string value without converting to int/float
+        return value  # Return string value without converting to int/float
     elif '.' in value:
         try:
             return float(value)
