@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
+import os
 import unittest
-from unittest.mock import patch
-from models.base_model import BaseModel
 from models import storage
-from console import HBNBCommand
 from models.user import User
+from models.city import City
 from models.place import Place
 from models.state import State
-from models.city import City
-from models.amenity import Amenity
+from console import HBNBCommand
+from unittest.mock import patch
 from models.review import Review
-import os
+from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
 class test_console(unittest.TestCase):
