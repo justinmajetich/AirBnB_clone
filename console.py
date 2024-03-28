@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.db_storage import DBStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -132,22 +133,16 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-
         args = args.split(' ')
         className = args[0]
-
         if className not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        # Getting attributes
         attributes = {}
         for attr in args[1:]:
-            new_dict = attr.split('=', 1)
-            attributes[new_dict[0]] = new_dict[1]
-
+            newDict = attr.split('=', 1)
+            attributes[newDict[0]] = newDict[1]
         new_instance = HBNBCommand.classes[className]()
-
         for key, value in attributes.items():
             value = value.strip("\"'").replace("_", " ")
             value = self.num_or_float(value)
