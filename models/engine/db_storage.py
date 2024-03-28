@@ -1,6 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models.base_model import Base
+from models.base_model import Base, BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
+from models.review import Review
+from models.user import User
+from models.place import Place
 from os import getenv
 
 
@@ -17,7 +23,8 @@ class DBStorage:
         host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine(
-            f'mysql+mysqldb://{user}:{pwd}@{host}/{db}', pool_pre_ping=True)
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                user, pwd, host, db), pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -25,14 +32,13 @@ class DBStorage:
         """Queries all objects by class name."""
         new_objects = {}
         if cls:
-            if type(cls) == str:
-                cls = eval(cls)
-                new_objects = {obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(cls).all()}
+            new_objects = {obj.__class__.__name__ + '.' + obj.id:
+                           obj for obj in self.__session.query(cls)}
         else:
-            for classname in Base.__subclasses__():
-                new_objects.update({obj.__class__.__name__ + '.' + obj.d: obj for obj in self.__session.query(classname).all()})
+            for clsn in Base.__subclasses__():
+                new_objects.update({obj.__class__.__name__ + '.' + obj.id:
+                                    obj for obj in self.__session.query(clsn)})
         return new_objects
-        
 
     def new(self, obj):
         """Adds the object to the current database session."""
