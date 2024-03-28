@@ -1,21 +1,24 @@
+#!/usr/bin/python3
+""" State Module for HBNB project """
 from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+from models import FileStorage
+from models.city import City
 
-class City(BaseModel, Base):
-    __tablename__ = 'cities'
+
+class State(BaseModel, Base):
+    """ State class """
+    __tablename__ = 'states'
+    
     name = Column(String(128), nullable=False)
-    state_id = Column(String(60), nullable=False)
-    state = relationship('State', back_populates='cities')
+    cities = relationship("City", cascade="all, delete", backref="state", passive_deletes=True)
 
-    def __init__(self, *args, **kwargs):
-        if 'state' in kwargs:
-            kwargs['state_id'] = kwargs.pop('state')
-        super().__init__(*args, **kwargs)
-
-    def __str__(self):
-        return '[City] ({}) {}'.format(self.id, self.name)
-
-    def to_dict(self):
-        dic = super().to_dict()
-        dic['state_id'] = dic.pop('state_id')
-        dic['state'] = dic.pop('state')
-        return dic
+@property
+def cities(self):
+    """Returns the cities in this State"""
+    Citylist = []
+    for city in FileStorage.all(City):
+        if city.state_id == self.id:
+            Citylist.append(city)
+    return Citylist
