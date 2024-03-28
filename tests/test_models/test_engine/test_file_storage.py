@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import os
+import MySQLdb
 import unittest
 from models import storage
 from models.city import City
@@ -116,9 +117,11 @@ class test_fileStorage(unittest.TestCase):
 
     def test_created_int_paremeters(self):
         """Test create command with integer parameter"""
-        cmd = 'crete State name="California" number_rooms=4'
+        db = MySQLdb.connect("localhost", user=hbnb_test, )
+        cmd = 'create State name="California" number_rooms=4'
         result = HBNBCommand().do_create(cmd)
-        self.assertTrue(result.startswith('[State]'))
+        print(result)
+        self.assertTrue(result.startswith("[State]"))
 
 
 if __name__ == '__main__':

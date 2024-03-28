@@ -1,15 +1,16 @@
 #!/usr/bin/python3
 """This class is the storage engine for the database"""
 from os import getenv
+
 from models.city import City
 from models.user import User
 from models.state import State
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models.base_model import Base
 
 USER = getenv('HBNB_MYSQL_USER')
 PWD = getenv('HBNB_MYSQL_PWD')
