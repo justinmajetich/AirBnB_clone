@@ -1,27 +1,26 @@
-#!/usr/bin/python
-""" holds class Place"""
+#!/usr/bin/python3
+"""Holds class Place"""
+
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql.schema import Table
 from sqlalchemy.sql.sqltypes import Float, Integer
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
-from models.review import Review
 import models
 from os import getenv
 from models.amenity import Amenity
 
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60),
-                             ForeignKey('places.id'),
-                             primary_key=True, nullable=False),
-                      Column('amenity_id', String(60),
-                             ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False))
+
+# Association table for the Many-To-Many relationship between Place and Amenity
+place_amenity = Table(
+    'place_amenity', Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+)
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
-
+    """A place to stay"""
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -36,29 +35,31 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     reviews = relationship(
-        'Review',
-        backref='state',
+        'Review', backref='place',
         cascade="all, delete, delete-orphan"
     )
-    amenities = relationship("Amenity",
-                             secondary='place_amenity', viewonly=False,
-                             backref="place_amenities")
+    amenities = relationship(
+        "Amenity", secondary=place_amenity, viewonly=False,
+        backref="places"
+    )
 
     @property
     def reviews(self):
-        """ Getter that that returns the list of Reviews instances """
-        instances = models.storage.all(Review)
+        """Getter that returns the list of Review instances"""
         new = []
-        for review in instances.values():
-            if review.place_id == (self.id):
+        for review in models.storage.all(Review).values():
+            if review.place_id == self.id:
                 new.append(review)
         return new
 
-    @reviews.setter
-    def amenities(self, obj):
-        """
-        Setter attribute amenities that handles append method
-        for adding an Amenity.id to the attribute amenity_ids.
-        """
-        if isinstance(obj, Amenity):
-            self.amenities.append(obj)
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def amenities(self):
+            """FileStorage: Getter that returns the list of Amenity instances"""
+            return [models.storage.all(Amenity)[id] for id in self.amenity_ids]
+
+        @amenities.setter
+        def amenities(self, obj):
+            """FileStorage: Setter to add an Amenity.id to the amenity_ids list"""
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
