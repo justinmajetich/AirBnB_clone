@@ -2,13 +2,22 @@
 """ Place Module for HBNB project """
 from os import getenv
 from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy import Integer, Float
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Table
 
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata, 
+                                Column('place_id', String(60),
+                                       ForeignKey('places.id'),
+                                       primary_key=True, nullable=False),
+                                Column('amenity_id', String(60),
+                                       ForeignKey('amenities.id'),
+                                       primary_key=True, nullable=False))
+
     class Place(BaseModel, Base):
         """ A place to stay """
         __tablename__ = 'places'
@@ -23,6 +32,10 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref="place", cascade="all")
+        amenities = relationship("Amenity",
+                                 secondary="place_amenity",
+                                 back_populates="place_amenities", viewonly=False)
+
 
 else:
     class Place(BaseModel):
@@ -50,3 +63,18 @@ else:
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
+        
+        @property
+        def amenities(self):
+            """"""
+            return self.amenity_ids
+        
+        @amenities.setter
+        def amenities(self, value):
+            """ """
+            from models import storage
+            amenities = []
+            for value in storage.all(Amenity).values():
+                if value in self.amenity_ids:
+                    amenities.append(value)
+            self.amenity_ids = amenities
