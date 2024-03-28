@@ -1,85 +1,107 @@
 #!/usr/bin/python3
-""" New Engine DBStorage """
-from sqlalchemy import (create_engine)
+"""This module defines a class to manage database storage for hbnb clone"""
+import importlib
 from os import getenv
-from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy.schema import MetaData
-from sqlalchemy.orm import sessionmaker
+from models.base_model import BaseModel, Base
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
-
-username = getenv('HBNB_MYSQL_USER')
-password = getenv('HBNB_MYSQL_PWD')
-db = getenv('HBNB_MYSQL_DB')
-host = getenv('HBNB_MYSQL_HOST')
-v_env = getenv('HBNB_ENV')
-
-URI = f"mysql+mysqldb://{username}:{password}@{host}/{db}"
+from sqlalchemy import (create_engine)
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage:
-    """ New Engine DBStorage """
+    """This class is for DBStorage"""
     __engine = None
     __session = None
+    __module_names = {
+        "BaseModel": "base_model",
+        "User": "user",
+        "State": "state",
+        "City": "city",
+        "Amenity": "amenity",
+        "Place": "place",
+        "Review": "review"
+    }
+
+    user = getenv('HBNB_MYSQL_USER')
+    pwd = getenv('HBNB_MYSQL_PWD')
+    host = getenv('HBNB_MYSQL_HOST')
+    db = getenv('HBNB_MYSQL_DB')
+
+    if getenv('HBNB_MYSQL_USER') is None:
+        user = "hbnb_dev"
+    if getenv('HBNB_MYSQL_PWD') is None:
+        pwd = "hbnb_dev_pwd"
+    if getenv('HBNB_MYSQL_HOST') is None:
+        host = "localhost"
+    if getenv('HBNB_MYSQL_DB') is None:
+        db = "hbnb_dev_db"
 
     def __init__(self):
-        self.__engine = create_engine(URI, pool_pre_ping=True)
+        self.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                self.user, self.pwd, self.host, self.db),
+            pool_pre_ping=True
+        )
 
-        if v_env == 'test':
-            metadata = MetaData(self.__engine)
-            metadata.reflect()
-            metadata.drop_all()
+        if self.db == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ Return all objects of specific cls or all cls """
-        from models.base_model import BaseModel, Base
-        from models.amenity import Amenity
-        from models.city import City
-        from models.place import Place
-        from models.review import Review
-        from models.state import State
-        from models.user import User
-        classDict = {"City": City, "State": State,
-                     "User": User, "Place": Place,
-                     "Review": Review, "Amenity": Amenity}
-        objects = {}
-        if cls is None:
-            for className in classDict:
-                data = self.__session.query(classDict[className]).all()
-                for obj in data:
-                    objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
+        """returns a dictionary of everything"""
+        output = {}
+        if self.__session is not None:
+            if cls is not None:
+                # # Older version of code to satisfy AirBnb MySQL project
+                # module = importlib.import_module("models." +
+                #       self.__module_names[cls])
+                # class_ = getattr(module, cls)
+                # rows = self.__session.query(class_).all()
 
-        else:
-            if isinstance(cls, str):
-                cls = classDict[cls]
-            data = self.__session.query(cls).all()
-            for obj in data:
-                objects[f"{obj.id}"] = obj
-        return objects
+                # for row in rows:
+                #     key = str(cls + "." + row.id)
+                #     output[key] = row
+
+                # # Newer ver of code to satisfy AirBnb Web framework
+                rows = self.__session.query(cls).all()
+                for row in rows:
+                    key = str(cls.__name__ + "." + row.id)
+                    output[key] = row
+            else:
+                for class_name, namespace in self.__module_names.items():
+                    module = importlib.import_module("models." + namespace)
+                    class_ = getattr(module, class_name)
+                    rows = self.__session.query(class_).all()
+
+                    for row in rows:
+                        key = str(class_name + "." + row.id)
+                        output[key] = row
+
+        return output
 
     def new(self, obj):
-        """ Adds the object to the current
-        database session (self.__session) """
-        self.__session.add(obj)
+        """Add new object to session"""
+        if self.__session is not None and obj is not None:
+            self.__session.add(obj)
 
     def save(self):
-        """ Commits all changes of the current database session """
-        self.__session.commit()
+        """Commit changes for current session"""
+        if self.__session is not None:
+            self.__session.commit()
 
     def delete(self, obj=None):
-        """Deletes from the current database session obj if not None"""
-        if obj:
-            self.__session.delete(obj)
+        """Delete object from session"""
+        if self.__session is not None:
+            if obj is not None:
+                self.__session.delete(obj)
 
     def reload(self):
-        """ Reload data from the database """
-        from models.base_model import BaseModel, Base
-        from models.amenity import Amenity
-        from models.city import City
-        from models.place import Place
-        from models.review import Review
-        from models.state import State
-        from models.user import User
-
+        """Recreate everything"""
         Base.metadata.create_all(self.__engine)
 
         session_factory = sessionmaker(
@@ -88,7 +110,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """
-        Call remove() method on the private session attribute
-        """
-        self.__session.remove()
+        """Close current session"""
+        self.__session.close()
+        
