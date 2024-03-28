@@ -9,6 +9,9 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        """
+        Create an engine and link to MySQL database
+        """
         user = getenv('HBNB_MYSQL_USER')
         pwd = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
