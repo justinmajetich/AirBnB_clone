@@ -1,42 +1,29 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from os import getenv
-from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
+from models import storage
+from models.base_model import Base, BaseModel
+from models.city import City
 
 
 class State(BaseModel, Base):
-    """Class to declare the State model or states database table
-    """
-    storage_engine = getenv('HBNB_TYPE_STORAGE')
-    if storage_engine is None:
-        storage_engine = "db"
+    """ State class """
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state", passive_deletes=True)
 
-    if storage_engine == "db":
-        __tablename__ = 'states'
-
-        name = Column(String(128), nullable=False)
-        cities = relationship(
-            "City", back_populates="state", cascade="delete, delete-orphan")
-    else:
-        name = ""
-
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def cities(self):
-            """FileStorage Getter that returns
+            """ Getter instance method """
+            all_cities = storage.all(City)
+            city_list = []
 
-                Returns:
-                    List of Cities with state_id of current instance id
-            """
-            from models.__init__ import storage
-            from models.city import City
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    city_list.append(city)
 
-            data = storage.all(City)
-            filtered = []
-            for k, v in data.items():
-                if k.split('.')[0] == "City" and self.id == v.state_id:
-                    filtered.append(v)
-
-            return filtered
-        
+            return city_list
