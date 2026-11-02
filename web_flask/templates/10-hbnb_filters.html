@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Holberton School</title>
+        <link rel="stylesheet" href="static/styles/3-header.css">
+        <link rel="stylesheet" href="static/styles/4-common.css">
+        <link rel="stylesheet" href="static/styles/3-footer.css">
+        <link rel="stylesheet" href="static/styles/6-filters.css">
+        <link rel="icon" href="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon.png">
+    </head>
+
+    <body>
+        <header>
+            <div class="logo"></div>
+        </header>
+        <div class="container">
+            <section class="filters">
+                <button type="button">Search</button>
+                <div class="locations">
+                    <h3>States</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+		      {% for state in state_obj | sort(attribute='name') %}
+                        <li><h2>{{ state.name }}:</h2></li>
+                        <li>
+                            <ul class="popover_list">
+			      {% for city in state.cities | sort(attribute='name') %}
+                                <li>{{ city.name }}</li>
+				{% endfor %}
+                            </ul>
+                        </li>
+			{% endfor %}
+                    </ul>
+                </div>
+                <div class="amenities">
+                    <h3>Amenities</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+                        {% for amenity in amenity_obj | sort(attribute='name') %}
+			<li>{{ amenity.name }}</li>
+			{% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <footer>
+            Holberton School
+        </footer>
+    </body>
+</html>
